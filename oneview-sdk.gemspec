@@ -1,24 +1,34 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unles $LOAD_PATH.include?(lib)
-require 'oneview/version'
+# http://guides.rubygems.org/specification-reference
 
+require_relative './lib/oneview-sdk-ruby/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'oneview-sdk-ruby'
-  spec.version       = Oneview::VERSION
-  spec.authors       = ['Henrique', 'Thiago']
-  spec.email         = ['henrique.diomede@hpe.com', 'thiago.mio.amaral@hpe.com']
-  spec.summary       = %q{Gem to interact with oneview API}
-  spec.description   = %q{Gem to interact with oneview API}
-  spec.license       = 'MIT'  
+  spec.version       = OneviewSDK::VERSION
+  spec.authors       = ['Henrique', 'Thiago', 'Jared']
+  spec.email         = ['henrique.diomede@hpe.com', 'thiago.mio.amaral@hpe.com', 'jared.smartt@hpe.com']
+  spec.summary       = 'Gem to interact with oneview API'
+  spec.description   = 'Gem to interact with oneview API'
+  spec.license       = 'Apache-2.0'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)}) 
+  spec.test_files    = spec.files.grep(/^(test|spec|features)/)
+  puts "\nFiles:"
+  puts spec.files
+  puts "\nExecutables:"
+  puts spec.executables
+  puts "\nTest Files:"
+  puts spec.test_files
   spec.require_paths = ['lib']
 
-  # spec.add_dependency ''
-  
+  # spec.add_runtime_dependency ''
+
   spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'rubocop'
+
 end
