@@ -6,7 +6,7 @@ require_relative './lib/oneview-sdk-ruby/version'
 Gem::Specification.new do |spec|
   spec.name          = 'oneview-sdk-ruby'
   spec.version       = OneviewSDK::VERSION
-  spec.authors       = ['Henrique', 'Thiago', 'Jared']
+  spec.authors       = ['Henrique', 'Thiago', 'Jared Smartt']
   spec.email         = ['henrique.diomede@hpe.com', 'thiago.mio.amaral@hpe.com', 'jared.smartt@hpe.com']
   spec.summary       = 'Gem to interact with oneview API'
   spec.description   = 'Gem to interact with oneview API'
