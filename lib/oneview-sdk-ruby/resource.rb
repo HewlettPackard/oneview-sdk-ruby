@@ -1,9 +1,12 @@
 module OneviewSDK
   class Resource
+    DEFAULT_API_VERSION = 200
+
     attr_accessor \
       :client,
       :name,
-      :uri
+      :uri,
+      :api_version
 
     def to_hash
       ret_val = {}

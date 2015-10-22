@@ -34,13 +34,14 @@ resource = OneviewSDK::EthernetNetwork.new(
 client.create(resource)
 puts "  Resource name: #{resource.name}"
 puts "  Resource type: #{resource.type}"
+puts "  API Version: #{resource.api_version}"
 
 
 
 # Example 2: Showing other rest-type methods for all resources
 # Yes, I know, it's putting profile data into a network, but same idea; there's just not a profile resource yet.
-profile = OneviewSDK::EthernetNetwork.new(profile_data)
-profile.client = client
+profile = OneviewSDK::EthernetNetwork.new(profile_data, client, 120)
 profile.create
 puts "  Resource name: #{profile.name}"
 puts "  Resource type: #{profile.type}"
+puts "  API Version: #{profile.api_version}"

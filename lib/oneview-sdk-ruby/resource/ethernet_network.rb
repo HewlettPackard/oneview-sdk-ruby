@@ -10,7 +10,7 @@ module OneviewSDK
       :type,
       :connectionTemplateUri
 
-    def initialize(params, client = nil)
+    def initialize(params, client = nil, api_ver = DEFAULT_API_VERSION)
       params.each do |key, value|
         unless %w(create delete save update refresh).include?(key.to_s)
           instance_variable_set("@#{key}", value)
@@ -18,6 +18,7 @@ module OneviewSDK
         end
       end
       @client ||= client if client
+      @api_version ||= api_ver
     end
 
     # Tell OneView to create the resource using the current attribute data
