@@ -1,5 +1,4 @@
-
-
+# oneview-sdk-ruby gem version defined here
 module OneviewSDK
-  VERSION = '2.0.0'
+  VERSION = '0.1.0'
 end

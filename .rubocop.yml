@@ -1,0 +1,24 @@
+# See default at https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
+Metrics/LineLength:
+  Max: 150
+
+Style/IndentationWidth:
+  Width: 2
+
+Style/VariableName:
+  EnforcedStyle: snake_case
+
+
+Style/FileName:
+  Exclude:
+    - 'lib/oneview-sdk-ruby.rb'
+
+Style/EmptyLines:
+  Enabled: false
+
+Style/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Style/EmptyLinesAroundClassBody:
+  Enabled: false
