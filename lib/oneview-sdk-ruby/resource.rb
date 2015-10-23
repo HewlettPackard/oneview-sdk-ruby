@@ -7,15 +7,19 @@ module OneviewSDK
       :uri,
       :api_version
 
-    def initialize(params, client = nil, api_ver = OneviewSDK::Client::DEFAULT_API_VERSION)
+    def initialize(params = {}, client = nil, api_ver = OneviewSDK::Client::DEFAULT_API_VERSION)
       params.each do |key, value|
         unless %w(create delete save update refresh).include?(key.to_s)
           instance_variable_set("@#{key}", value)
-          self.class.send(:attr_accessor, key) # If we'd rather, we can just use a get(key) method for additional attributes.
+          self.class.send(:attr_accessor, key)
         end
       end
       @client ||= client if client
       @api_version ||= api_ver
+    end
+
+    def each(&block)
+      to_hash.each(&block)
     end
 
     def to_hash
@@ -34,20 +38,31 @@ module OneviewSDK
       instance_variable_set("@#{key}", value)
     end
 
+    # Check equality of 2 resources
     def ==(other)
       self_state  = instance_variables.sort.map { |v| instance_variable_get(v) }
       other_state = other.instance_variables.sort.map { |v| other.instance_variable_get(v) }
       other.class == self.class && other_state == self_state
     end
 
+    # Check equality of 2 resources. Same as ==(other)
     def eql?(other)
       self == other
+    end
+
+    # Only check equality of attributes set on other resource with those of this resource.
+    # Note: Doesn't check the client object if another resource is passed in
+    def like?(other)
+      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
+      other.each { |key, val| return false if val != self[key] }
+      true
     end
 
     # Tell OneView to create the resource using the current attribute data
     def create
       ensure_client
       @client.rest_post(self.class::CREATE_URI, to_hash, @api_version)
+      # set uri
     end
 
     # Save current attribute data to OneView
@@ -76,6 +91,7 @@ module OneviewSDK
       ensure_client
       @client.rest_delete(@uri, @api_version)
     end
+
 
     private
 

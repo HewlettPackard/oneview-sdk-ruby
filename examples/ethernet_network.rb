@@ -38,16 +38,21 @@ puts "  Resource type: #{resource.type}"
 puts "  API Version: #{resource.api_version}"
 
 
-
 # Example 2: Showing other rest-type methods for all resources
 # Yes, I know, it's putting profile data into a network, but same idea; there's just not a profile resource yet.
 profile = OneviewSDK::EthernetNetwork.new(profile_data, client, 120)
 profile2 = OneviewSDK::EthernetNetwork.new(profile_data, client, 120)
 
-puts "\nprofile & profile2 are equal\n\n" if profile == profile2 # or profile.eql?(profile2)
+puts ''
+puts "profile #{profile.like?(name: 'chef-web01', status: 'OK') ? 'IS' : 'IS NOT'} like {name: 'chef-web01'}"
+puts "profile #{profile.like?(profile2) ? 'IS' : 'IS NOT'} like profile2"
+puts "profile & profile2 are equal\n\n" if profile == profile2 # or profile.eql?(profile2)
 
 profile.create
 puts "\nCreated profile #{profile.name}"
 puts "  Resource name: #{profile.name}"
 puts "  Resource type: #{profile.type}"
 puts "  API Version: #{profile.api_version}"
+
+puts ''
+puts "resource #{resource.like?(profile) ? 'IS' : 'IS NOT'} like profile"

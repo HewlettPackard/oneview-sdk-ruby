@@ -13,7 +13,7 @@ module OneviewSDK
       :type,
       :connectionTemplateUri
 
-    def initialize(params, client = nil, api_ver = OneviewSDK::Client::DEFAULT_API_VERSION)
+    def initialize(params = {}, client = nil, api_ver = OneviewSDK::Client::DEFAULT_API_VERSION)
       super(params, client, api_ver)
       # Do other custom things here if necessary
     end
