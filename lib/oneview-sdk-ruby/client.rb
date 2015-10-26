@@ -1,4 +1,5 @@
 require 'logger'
+require_relative 'config_loader'
 require_relative 'rest'
 Dir[File.dirname(__FILE__) + '/client/*.rb'].each { |file| require file }
 
@@ -23,7 +24,7 @@ module OneviewSDK
     # @option options [Integer] :api_version (200) API Version to use by default for requests
     # @option options [Boolean] :ssl_enabled (true) Use ssl for requests?
     def initialize(options)
-      # TODO: fail unless all required options are present
+      options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
       @logger = options[:logger] || Logger.new(STDOUT)
       [:debug, :info, :warn, :error, :level=].each { |m| fail "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
       @log_level = options[:log_level] || :info
