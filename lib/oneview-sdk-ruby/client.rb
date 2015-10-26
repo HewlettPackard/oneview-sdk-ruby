@@ -103,7 +103,7 @@ module OneviewSDK
         @logger.debug "Failed to log in to OneView: #{response['message'] if response['message']} Retrying..."
         return login(retries - 1)
       else
-        fail("\nERROR! Couldn't log into OneView server at #{@oneview_base_url}. Response:\n#{response}")
+        fail("\nERROR! Couldn't log into OneView server at #{@url}. Response:\n#{response}")
       end
     end
   end
