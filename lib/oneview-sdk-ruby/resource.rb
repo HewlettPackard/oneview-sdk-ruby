@@ -3,9 +3,10 @@ require_relative 'client'
 module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
+    BASE_URI = '/rest'
+
     attr_accessor \
       :client,
-      :name,
       :uri,
       :api_version
 
@@ -15,16 +16,23 @@ module OneviewSDK
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(params = {}, client = nil, api_ver = nil)
+      @client ||= client if client
+      @logger = @client ? @client.logger : Logger.new(STDOUT)
+      set_all(params)
+      api_ver ||= @client.api_version if @client
+      @api_version ||= api_ver || OneviewSDK::Client::DEFAULT_API_VERSION
+    end
+
+    def set_all(params = {})
+      reserved_methods = %w(create delete save update refresh each to_hash eql? like?)
       params.each do |key, value|
-        unless %w(create delete save update refresh).include?(key.to_s)
+        if reserved_methods.include?(key.to_s)
+          @logger.warn "Can't set attribute '#{key}' because that's a reserved method"
+        else
           instance_variable_set("@#{key}", value)
           self.class.send(:attr_accessor, key)
         end
       end
-      @client ||= client if client
-      @logger = @client ? @client.logger : Logger.new(STDOUT)
-      api_ver ||= @client.api_version if @client
-      @api_version ||= api_ver || OneviewSDK::Client::DEFAULT_API_VERSION
     end
 
     # Run block once for each key-value pair (excludes @client & @logger keys)
@@ -93,7 +101,7 @@ module OneviewSDK
     # @return [Resource] self
     def create
       ensure_client
-      response = @client.rest_post(self.class::CREATE_URI, to_hash, @api_version)
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => to_hash }, @api_version)
       fail "Failed to create #{self.class}\n Response: #{response}" unless response['uri']
       @uri = response['uri']
       refresh
@@ -138,6 +146,19 @@ module OneviewSDK
     def delete
       ensure_client && ensure_uri
       @client.rest_delete(@uri, @api_version)
+    end
+
+    # Make a GET request to the resource uri and return an array with results matching the search
+    # @param [Hash] attributes Hash containing the attributes name and value
+    # @return [Array<Resource>] Results matching the search
+    def self.find_by(client, attributes)
+      results = []
+      members = client.rest_get(self.class::BASE_URI)['members']
+      members.each do |member|
+        temp = self.class.new(member)
+        results.push(temp) if temp.like?(attributes)
+      end
+      results
     end
 
 

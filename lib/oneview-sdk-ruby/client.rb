@@ -1,7 +1,6 @@
 require 'logger'
 require_relative 'config_loader'
 require_relative 'rest'
-Dir[File.dirname(__FILE__) + '/client/*.rb'].each { |file| require file }
 
 module OneviewSDK
   # The client defines the connection to the OneView server and handles the communication with it.
@@ -31,7 +30,7 @@ module OneviewSDK
       @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
       @url = options[:url]
       fail 'Must set the url option' unless @url
-      set_max_api_version
+      @max_api_version = appliance_api_version
       if options[:api_version] && options[:api_version].to_i > @max_api_version
         logger.warn "API version #{options[:api_version]} is greater than the appliance API version (#{@max_api_version})"
       end
@@ -39,11 +38,12 @@ module OneviewSDK
       @ssl_enabled = true
       @ssl_enabled = options[:ssl_enabled] unless options[:ssl_enabled].nil?
       @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
-      @logger.warn 'User option not set. Using default (Administrator)' unless options[:user] || @token
-      @user = options[:user] || 'Administrator'
+      return if @token
+      @logger.warn 'User option not set. Using default (Administrator)' unless options[:user] || ENV['ONEVIEWSDK_USER']
+      @user = options[:user] || ENV['ONEVIEWSDK_USER'] || 'Administrator'
       @password = options[:password] || ENV['ONEVIEWSDK_PASSWORD']
-      fail 'Must set user & password options or token option' unless @password || @token
-      @token ||= login
+      fail 'Must set user & password options or token option' unless @password
+      @token = login
     end
 
     # Tell OneView to create the resource using the current attribute data
@@ -83,15 +83,16 @@ module OneviewSDK
 
     private
 
-    # Set max api version from the OneView appliance
-    def set_max_api_version
+    # Get current api version from the OneView appliance
+    def appliance_api_version
       options = { 'Content-Type' => :none, 'X-API-Version' => :none, 'auth' => :none }
       version = rest_api(:get, '/rest/version', options)['currentVersion']
       fail "Couldn't get API version" unless version
       version = version.to_i if version.class != Fixnum
-      @max_api_version = version
+      version
     rescue
       @logger.warn "Failed to get OneView max api version. Setting to default (#{DEFAULT_API_VERSION})"
+      DEFAULT_API_VERSION
     end
 
     # Log in to OneView appliance and set max_api_version

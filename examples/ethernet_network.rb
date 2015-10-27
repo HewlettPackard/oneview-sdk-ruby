@@ -17,7 +17,8 @@ profile_data = {
   'connections' => [{ 'id' => 1, 'name' => 'Altair PXE 1133', 'networkUri' => '/rest/ethernet-networks/02b0b5c3-1a0a-4d5f-b5c9-0c7532cb1e5e' }]
 }
 
-client = OneviewSDK::Client.new(url: 'https://oneview.example.com', password: 'secret')
+# client = OneviewSDK::Client.new(url: 'https://oneview.example.com', password: 'secret')
+client = OneviewSDK::Client.new(url: 'https://192.168.19.53', ssl_enabled: false)
 
 
 # Example 1: Using a resource class
@@ -28,7 +29,8 @@ resource = OneviewSDK::EthernetNetwork.new(
   purpose: 'General',
   name: 'vlan_01',
   type: 'EthernetNetwork',
-  vlanId: 10
+  vlanId: 10,
+  create: 1
 )
 
 client.create(resource)
