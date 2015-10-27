@@ -15,12 +15,6 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(/^(test|spec|features)/)
-  puts "\nFiles:"
-  puts spec.files
-  puts "\nExecutables:"
-  puts spec.executables
-  puts "\nTest Files:"
-  puts spec.test_files
   spec.require_paths = ['lib']
 
   # spec.add_runtime_dependency ''

@@ -59,7 +59,7 @@ module OneviewSDK
       @logger.debug "  Response: #{response.code}: #{response.body}"
       JSON.parse(response.body) rescue response
     rescue OpenSSL::SSL::SSLError => e
-      msg = "SSL verification failed for request. Please either:"
+      msg = 'SSL verification failed for request. Please either:'
       msg += "\n  1. Install the certificate into your cert store"
       msg += ". Using cert store: #{ENV['SSL_CERT_FILE']}" if ENV['SSL_CERT_FILE']
       msg += "\n  2. Set the :ssl_enabled option to false for your client"

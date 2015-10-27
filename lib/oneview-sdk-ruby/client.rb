@@ -28,7 +28,7 @@ module OneviewSDK
       @logger = options[:logger] || Logger.new(STDOUT)
       [:debug, :info, :warn, :error, :level=].each { |m| fail "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
       @log_level = options[:log_level] || :info
-      @logger.level = @logger.class.const_get(@log_level.upcase)
+      @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
       @url = options[:url]
       fail 'Must set the url option' unless @url
       set_max_api_version
@@ -47,29 +47,35 @@ module OneviewSDK
     end
 
     # Tell OneView to create the resource using the current attribute data
+    # @param [Resource] resource the object to create
     def create(resource)
       resource.client = self
       resource.create
     end
 
     # Save current attribute data to OneView
+    # @param [Resource] resource the object to save
     def save(resource)
       resource.client = self
       resource.save
     end
 
     # Set attribute data and save to OneView
+    # @param [Resource] resource the object to update
     def update(resource, attributes = {})
       resource.client = self
       resource.update(attributes)
     end
 
     # Updates this object using the data that exists on OneView
+    # @param [Resource] resource the object to refresh
     def refresh(resource)
       resource.client = self
       resource.refresh
     end
 
+    # Deletes this object from OneView
+    # @param [Resource] resource the object to delete
     def delete(resource)
       resource.client = self
       resource.delete

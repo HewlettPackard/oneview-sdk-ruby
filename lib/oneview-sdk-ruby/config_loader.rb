@@ -7,11 +7,11 @@ module OneviewSDK
 
     # Load config from .yaml or .json file
     # @param [String] path the full path to the configuration file
-    # @return [Hash] hash of the configuration 
+    # @return [Hash] hash of the configuration
     def self.load(path)
       expanded_path = File.expand_path(path)
-      if File.extname(expanded_path) == ".json"
-        return JSON.parse( IO.read(expanded_path) )
+      if File.extname(expanded_path) == '.json'
+        return JSON.parse(IO.read(expanded_path))
       else
         return YAML.load_file(expanded_path)
       end
