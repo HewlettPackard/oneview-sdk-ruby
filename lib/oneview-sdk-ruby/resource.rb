@@ -142,8 +142,9 @@ module OneviewSDK
     # @return [Resource] self
     def save
       ensure_client && ensure_uri
-      response = @client.rest_put(@uri, to_hash, @api_version)
-      fail "Failed to save #{self.class}\n Response: #{response}" unless response['uri']
+      task = @client.rest_put(@uri, { 'body' => to_hash }, @api_version)
+      fail "Failed to save #{self.class}\n Response: #{task}" unless task['uri']
+      @client.wait_for(task['uri'])
       self
     end
 
@@ -161,7 +162,9 @@ module OneviewSDK
     # @return [true] if resource was deleted successfully
     def delete
       ensure_client && ensure_uri
-      @client.rest_delete(@uri, @api_version)
+      task = @client.rest_delete(@uri, @api_version)
+      fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri']
+      @client.wait_for(task['uri'])
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search
