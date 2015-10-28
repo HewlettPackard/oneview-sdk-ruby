@@ -1,0 +1,11 @@
+require_relative './../lib/oneview-sdk-ruby'
+require 'pry'
+
+@client = OneviewSDK::Client.new(
+  url: 'https://oneview.example.com',
+  user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
+  password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
+  ssl_enabled: false
+)
+
+puts "Connected to OneView appliance at #{@client.url}"

@@ -14,6 +14,10 @@ Style/FileName:
   Exclude:
     - 'lib/oneview-sdk-ruby.rb'
 
+
+Style/AccessorMethodName:
+  Enabled: false
+
 Style/EmptyLines:
   Enabled: false
 
@@ -26,13 +30,17 @@ Style/EmptyLinesAroundBlockBody:
 Style/EmptyLinesAroundClassBody:
   Enabled: false
 
-Metrics/MethodLength:
-  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false
 
+Metrics/ClassLength:
+  Max: 200
+
 Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
   Enabled: false
 
 Metrics/PerceivedComplexity:

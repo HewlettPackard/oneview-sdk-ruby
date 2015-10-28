@@ -7,7 +7,7 @@ module OneviewSDK
   # Contains all the methods for making API REST calls
   module Rest
     # Make a restful API request to OneView
-    # @param [Symbol] type the rest method/type Options are :get, :post, :delete, and :put
+    # @param [Symbol] type the rest method/type Options are :get, :post, :delete, :patch and :put
     # @param [String] path the path for the request. Usually starts with "/rest/"
     # @param [Hash] options the options for the request
     # @option options [String] :body Hash to be converted into json and set as the request body
@@ -34,6 +34,8 @@ module OneviewSDK
         request = Net::HTTP::Post.new(uri.request_uri)
       when 'put', :put
         request = Net::HTTP::Put.new(uri.request_uri)
+      when 'patch', :patch
+        request = Net::HTTP::Patch.new(uri.request_uri)
       when 'delete', :delete
         request = Net::HTTP::Delete.new(uri.request_uri)
       else
@@ -59,7 +61,7 @@ module OneviewSDK
       @logger.debug "  Response: #{response.code}: #{response.body}"
       JSON.parse(response.body) rescue response
     rescue OpenSSL::SSL::SSLError => e
-      msg = "SSL verification failed for request. Please either:"
+      msg = 'SSL verification failed for request. Please either:'
       msg += "\n  1. Install the certificate into your cert store"
       msg += ". Using cert store: #{ENV['SSL_CERT_FILE']}" if ENV['SSL_CERT_FILE']
       msg += "\n  2. Set the :ssl_enabled option to false for your client"
@@ -72,19 +74,25 @@ module OneviewSDK
       rest_api(:get, path, {}, api_ver)
     end
 
-    # Make a restful GET request to OneView
+    # Make a restful POST request to OneView
     # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
     def rest_post(path, options = {}, api_ver = @api_version)
       rest_api(:post, path, options, api_ver)
     end
 
-    # Make a restful GET request to OneView
+    # Make a restful PUT request to OneView
     # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
     def rest_put(path, options = {}, api_ver = @api_version)
       rest_api(:put, path, options, api_ver)
     end
 
-    # Make a restful GET request to OneView
+    # Make a restful PATCH request to OneView
+    # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
+    def rest_patch(path, options = {}, api_ver = @api_version)
+      rest_api(:put, path, options, api_ver)
+    end
+
+    # Make a restful DELETE request to OneView
     # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
     def rest_delete(path, api_ver = @api_version)
       rest_api(:delete, path, {}, api_ver)
