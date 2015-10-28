@@ -45,8 +45,8 @@ module OneviewSDK
         if reserved_methods.include?(key.to_s)
           @logger.warn "Can't set attribute '#{key}' because that's a reserved method"
         else
-          instance_variable_set("@#{key}", value)
           self.class.send(:attr_accessor, key)
+          self.send("#{key}=", value)
         end
       end
     end

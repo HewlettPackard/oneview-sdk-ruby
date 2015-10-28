@@ -8,7 +8,6 @@ options = {
   name:  'OneViewSDK Test Vlan',
   smartLink:  false,
   privateNetwork:  false,
-  ethernetNetworkType:  'Tagged',
   connectionTemplateUri:  nil,
   type:  'ethernet-networkV3'
 }
