@@ -8,21 +8,37 @@ module OneviewSDK
     attr_accessor \
       :client,
       :uri,
-      :api_version
+      :api_version,
+      :logger
 
     # Create client object, establish connection, and set up logging and api version.
-    # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.
-    def initialize(params = {}, client = nil, api_ver = nil)
-      @client ||= client if client
-      @logger = @client ? @client.logger : Logger.new(STDOUT)
+    def initialize(client, params = {}, api_ver = nil)
+      @client = client
+      @logger = @client.logger
       set_all(params)
       api_ver ||= @client.api_version if @client
       @api_version ||= api_ver || OneviewSDK::Client::DEFAULT_API_VERSION
     end
 
+    # Retrieve resource details based on this resource's name.
+    # @note Name must be unique
+    # @param [String] name Resource name
+    # @return [Boolean] Whether or not retrieve was successful
+    def retrieve!(name = @name)
+      fail 'Must set resource name before trying to retrieve!' unless name
+      results = self.class.find_by(@client, name: name)
+      return false unless results.size == 1
+      set_all(results[0])
+      true
+    end
+
+    # Set the given hash of key-value pairs as resource attributes
+    # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
+    # @return [Resource] self
     def set_all(params = {})
       reserved_methods = %w(create delete save update refresh each to_hash eql? like?)
       params.each do |key, value|
@@ -35,17 +51,18 @@ module OneviewSDK
       end
     end
 
-    # Run block once for each key-value pair (excludes @client & @logger keys)
+    # Run block once for each key-value pair (excludes @api_version, @client & @logger keys)
     def each(&block)
       to_hash.each(&block)
     end
 
     # Get a hash representation of the resource
-    # @return [Hash] A hash representation of the resource. Excludes @client & @logger keys
+    # @return [Hash] A hash representation of the resource. Excludes @api_version, @client & @logger keys
     def to_hash
       ret_val = {}
       instance_variables.each do |key|
-        ret_val["#{key[1..-1]}"] = instance_variable_get(key) unless key == :@client || key == :@logger
+        next if [:@client, :@logger, :@api_version].include?(key.to_sym)
+        ret_val["#{key[1..-1]}"] = instance_variable_get(key)
       end
       ret_val
     end
@@ -62,7 +79,7 @@ module OneviewSDK
     # @param [Object] key Value to set for the given key
     # @return The value set for the given key
     def []=(key, value)
-      instance_variable_set("@#{key}", value)
+      set_all(key => value)
     end
 
     # Check equality of 2 resources. Same as eql?(other)
@@ -101,10 +118,20 @@ module OneviewSDK
     # @return [Resource] self
     def create
       ensure_client
-      response = @client.rest_post(self.class::BASE_URI, { 'body' => to_hash }, @api_version)
-      fail "Failed to create #{self.class}\n Response: #{response}" unless response['uri']
-      @uri = response['uri']
+      task = @client.rest_post(self.class::BASE_URI, { 'body' => to_hash }, @api_version)
+      fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri']
+      @uri = task['associatedResource']['resourceUri']
+      @client.wait_for(task['uri'])
       refresh
+      self
+    end
+
+    # Updates this object using the data that exists on OneView
+    # @return [Resource] self
+    def refresh
+      ensure_client && ensure_uri
+      response = @client.rest_get(@uri, @api_version)
+      set_all(response)
       self
     end
 
@@ -126,19 +153,8 @@ module OneviewSDK
     # @raise [RuntimeError] if the resource save fails
     # @return [Resource] self
     def update(attributes = {})
-      attributes.each do |key, value|
-        instance_variable_set("@#{key}", value)
-      end
+      set_all(attributes)
       save
-    end
-
-    # Updates this object using the data that exists on OneView
-    # @return [Resource] self
-    def refresh
-      ensure_client && ensure_uri
-      response = @client.rest_get(@uri, @api_version)
-      # TODO: Set values accordingly
-      self
     end
 
     # Delete resource from OneView
@@ -153,9 +169,9 @@ module OneviewSDK
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes)
       results = []
-      members = client.rest_get(self.class::BASE_URI)['members']
+      members = client.rest_get(self::BASE_URI)['members']
       members.each do |member|
-        temp = self.class.new(member)
+        temp = new(client, member)
         results.push(temp) if temp.like?(attributes)
       end
       results
