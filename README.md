@@ -1,4 +1,6 @@
 # oneview-sdk-ruby
+[![Gem Version](https://badge.fury.io/rb/oneview-sdk-ruby.svg)](https://badge.fury.io/rb/oneview-sdk-ruby)
+
 
 This OneView SDK provides a Ruby library to easily interract with OneView APIs and resources.
 
@@ -30,6 +32,7 @@ client = OneviewSDK::Client.new(
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   api_version: 200,                   # Defaults to minimum of (200 and appliance API version)
+  token: 'xxxx...'                    # Set EITHER this or the user & password
 )
 ```
 
@@ -57,7 +60,11 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ```
 
 ## Resources
-Each OneView resource is exposed for usage with REST-like functionality. For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.to_hash`, `retrieve!`, and many others. Please see the documentation for the complete list and usage details, but here's a few examples to get you started:
+Each OneView resource is exposed for usage with REST-like functionality.
+
+For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.to_hash`, `retrieve!`, and many others.
+
+Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here's a few examples to get you started:
 
 - **Create a resource**
   
@@ -94,7 +101,7 @@ Each OneView resource is exposed for usage with REST-like functionality. For exa
 
 - **Check resource equality**
   
-  You can use the `==`  or `.eql?` method to compare resource equality, and you can also use `.like` to compare just a subset of attributes.
+  You can use the `==`  or `.eql?` method to compare resource equality, or `.like` to compare just a subset of attributes.
   ```ruby
   ethernet2 = OneviewSDK::EthernetNetwork.new(client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General' })
   ethernet == ethernet2    # Returns false
@@ -138,5 +145,5 @@ To build and install the gem, run `$ rake install`. To build only, run `$ rake b
 
 ## Authors
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
- - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
- - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
+ - Henrique Diomede - [@hdiomede](https://github.com/hdiomede)
+ - Thiago Miotto - [@tmiotto](https://github.com/tmiotto)
