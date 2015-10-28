@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Gem to interact with oneview API'
   spec.description   = 'Gem to interact with oneview API'
   spec.license       = 'Apache-2.0'
+  spec.homepage      = 'https://github.com/HewlettPackard/oneview-sdk-ruby'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
