@@ -37,7 +37,7 @@ module OneviewSDK
     end
 
     # Validates data params.
-    # @note This should be overridden by Resource child classes to validate specific things
+    # @note This should be overridden by Resource child classes to validate specific things.
     # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
     # @return [Boolean] Always returns true
     def validate(_params = {})
