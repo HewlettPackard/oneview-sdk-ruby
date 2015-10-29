@@ -14,7 +14,7 @@ module OneviewSDK
 
     # Create client object, establish connection, and set up logging and api version.
     # @param [Hash] options the options to configure the client
-    # @option options [String] :logger (Logger.new(STDOUT)) Logger object to use.
+    # @option options [Logger] :logger (Logger.new(STDOUT)) Logger object to use.
     #   Must implement debug(String), info(String), warn(String), error(String), & level=
     # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
     # @option options [String] :url URL of OneView appliance
@@ -28,7 +28,7 @@ module OneviewSDK
       [:debug, :info, :warn, :error, :level=].each { |m| fail "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
       @log_level = options[:log_level] || :info
       @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
-      @url = options[:url]
+      @url = options[:url] || ENV['ONEVIEWSDK_URL']
       fail 'Must set the url option' unless @url
       @max_api_version = appliance_api_version
       if options[:api_version] && options[:api_version].to_i > @max_api_version
