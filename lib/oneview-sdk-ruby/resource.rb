@@ -50,7 +50,7 @@ module OneviewSDK
     # @return [Resource] self
     def set_all(params = {})
       params = params.data if params.class <= Resource
-      params = Hash[params.map{|(k,v)| [k.to_s,v]}]
+      params = Hash[params.map { |(k, v)| [k.to_s, v] }]
       validate(params)
       params.each { |key, value| @data[key.to_s] = value }
       self

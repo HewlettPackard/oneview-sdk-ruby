@@ -25,7 +25,7 @@ module OneviewSDK
 
     def initialize(client, params = {}, api_ver = nil)
       super
-      # Default values
+      # Default values:
       @data['ethernetNetworkType'] ||= 'Tagged'
     end
 
