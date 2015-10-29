@@ -8,7 +8,12 @@ Style/IndentationWidth:
 
 Style/VariableName:
   EnforcedStyle: snake_case
+  Exclude:
+    - 'lib/oneview-sdk-ruby/resource/*'
 
+Style/MethodName:
+  Exclude:
+    - 'lib/oneview-sdk-ruby/resource/*'
 
 Style/FileName:
   Exclude:
