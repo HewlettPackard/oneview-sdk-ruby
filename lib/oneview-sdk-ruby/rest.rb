@@ -18,6 +18,7 @@ module OneviewSDK
     # @return [NetHTTPResponse] if request is unsuccessful
     def rest_api(type, path, options = {}, api_ver = @api_version)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
+      fail 'Must specify path' unless path
 
       uri = URI.parse(URI.escape(@url + path))
       options['X-API-Version'] ||= api_ver || @api_version

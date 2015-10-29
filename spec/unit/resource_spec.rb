@@ -20,21 +20,15 @@ RSpec.describe OneviewSDK::Client do
       expect(res.api_version).to eq(120)
     end
 
-    it 'has a base subset of attributes' do
+    it 'starts with an empty data hash' do
       res = OneviewSDK::Resource.new(@client)
-      expect(res.uri).to be_nil
+      expect(res.data).to eq({})
     end
 
     it 'sets the provided attributes' do
       res = OneviewSDK::Resource.new(@client, name: 'Test', description: 'None')
-      expect(res.name).to eq('Test')
-      expect(res.description).to eq('None')
-    end
-
-    it 'does not allow reserved method names to be used as attribute names' do
-      res = nil
-      expect { res = OneviewSDK::Resource.new(@client, to_hash: 'Val') }.to output(/that's a reserved method/).to_stdout_from_any_process
-      expect(res.to_hash).to_not eq('Val')
+      expect(res[:name]).to eq('Test')
+      expect(res['description']).to eq('None')
     end
   end
 end
