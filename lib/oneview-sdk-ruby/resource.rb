@@ -20,8 +20,7 @@ module OneviewSDK
       @client = client
       @logger = @client.logger
       set_all(params)
-      api_ver ||= @client.api_version if @client
-      @api_version ||= api_ver || OneviewSDK::Client::DEFAULT_API_VERSION
+      @api_version = api_ver || @client.api_version
     end
 
     # Retrieve resource details based on this resource's name.
