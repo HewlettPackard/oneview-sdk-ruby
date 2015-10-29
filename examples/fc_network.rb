@@ -1,7 +1,7 @@
 require_relative '_client' # Gives access to @client
 
-# Example: Create an ethernet network
-# NOTE: This will create an ethernet network named 'OneViewSDK Test Vlan', then delete it.
+# Example: Create an fc network
+# NOTE: This will create an fc network named 'san01', then delete it.
 options = {
   name: 'san01',
   connectionTemplateUri: nil,
@@ -30,7 +30,7 @@ fc3.delete
 puts "\nSucessfully deleted fc-network '#{fc3.name}'."
 
 
-# Example: List all ethernet networks with certain attributes
+# Example: List all fc networks with certain attributes
 attributes = { fabricType: 'FabricAttach' }
 puts "\n\nFC networks with #{attributes}"
 OneviewSDK::FCNetwork.find_by(@client, attributes).each do |network|
