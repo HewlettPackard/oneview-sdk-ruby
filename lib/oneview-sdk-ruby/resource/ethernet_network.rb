@@ -24,13 +24,13 @@ module OneviewSDK
       :vlanId
 
     def initialize(client, params = {}, api_ver = nil)
-      # Default values 
+      # Default values
       @ethernetNetworkType = 'Tagged'
       super
     end
 
     def ethernetNetworkType=(value)
-      if ['NotApplicable', 'Tagged', 'Tunnel', 'Unknown', 'Untagged'].include? (value)
+      if %w('NotApplicable Tagged Tunnel Unknown Untagged).include?(value)
         @ethernetNetworkType = value
       else
         fail 'Invalid network type'
@@ -38,7 +38,7 @@ module OneviewSDK
     end
 
     def purpose=(value)
-      if ['FaultTolerance', 'General', 'Management', 'VMMigration'].include? (value)
+      if %w(FaultTolerance General Management VMMigration).include?(value)
         @purpose = value
       else
         fail 'Invalid ethernet purpose'
