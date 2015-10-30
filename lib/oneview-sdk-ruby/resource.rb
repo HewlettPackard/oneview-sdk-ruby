@@ -176,6 +176,21 @@ module OneviewSDK
       results
     end
 
+    # Build setters and getters for resource attributes, limiting the scope to hash @data
+    # @param [String] method name
+    # @param [Array] parameter values given to the method
+    # @return attribute value 
+    def method_missing(name, *args)
+      name = name.to_s
+      aname = name.sub("=", "")
+      
+      if name =~ /(.*)=/
+        @data[aname] = args[0]
+      else
+        @data[name]
+      end
+    end
+
 
     private
 
