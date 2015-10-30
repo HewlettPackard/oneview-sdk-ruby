@@ -62,7 +62,7 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ## Resources
 Each OneView resource is exposed for usage with REST-like functionality.
 
-For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.to_hash`, `retrieve!`, and many others.
+For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
 Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here's a few examples to get you started:
 
@@ -76,23 +76,27 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
 - **Access resource attributes**
   
   ```ruby
-  ethernet[:name] # Returns 'TestVlan'
-  ethernet.name   # Returns 'TestVlan' just like above
+  ethernet[:name]  # Returns 'TestVlan'
+  ethernet['name'] # Returns 'TestVlan' just like above
   
-  ethernet.to_hash # Returns attributes in hash form
+  ethernet.data # Returns hash of all data
   
   ethernet.each do |key, value|
     puts "Attribute #{key} = #{value}"
   end
   ```
+  
+  The resource's data is stored in its @data attribute.  However, you can access the data directly using a hash-like syntax on the resource object. `resource['key']` functions a lot like `resource.data['key']`. The difference is that when using the data attribute, you must be cautious to use the correct key type (Hash vs Symbol).
+  The direct hash accessor on the resource converts all keys to strings, so `resource[:key]` and `resource['key']` access the same thing: `resource.data['key']`.
+  We recommend using the direct hash accessor when possible.
 
 - **Update a resource**
   
   Notice that there's a few different ways to do things, so pick your poison!
   ```ruby
   ethernet.set_all(name: 'newName', vlanId:  1002)
-  ethernet[:purpose] = 'General'
-  ethernet.ethernetNetworkType = 'Tagged'
+  ethernet[:purpose] = 'General' # This will convert :purpose to 'purpose' under the hood.
+  ethernet['ethernetNetworkType'] = 'Tagged'
   ethernet.save # Saves current state to OneView
   
   # Alternatively, you could do this in 1 step with:
@@ -126,7 +130,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
   ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
   
   OneviewSDK::EthernetNetwork.find_by(client, { purpose: 'General' }).each do |network|
-    puts "  #{network.name}"
+    puts "  #{network[:name]}"
   end
   ```
 

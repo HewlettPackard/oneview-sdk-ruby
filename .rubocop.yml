@@ -26,6 +26,9 @@ Style/AccessorMethodName:
 Style/EmptyLines:
   Enabled: false
 
+Style/MultilineOperationIndentation:
+  Enabled: false
+
 Style/RescueModifier:
   Enabled: false
 

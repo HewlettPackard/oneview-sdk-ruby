@@ -7,7 +7,7 @@ module OneviewSDK
 
     attr_accessor \
       :client,
-      :uri,
+      :data,
       :api_version,
       :logger
 
@@ -19,6 +19,7 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       @client = client
       @logger = @client.logger
+      @data = {}
       set_all(params)
       @api_version = api_ver || @client.api_version
     end
@@ -27,58 +28,54 @@ module OneviewSDK
     # @note Name must be unique
     # @param [String] name Resource name
     # @return [Boolean] Whether or not retrieve was successful
-    def retrieve!(name = @name)
+    def retrieve!(name = @data['name'])
       fail 'Must set resource name before trying to retrieve!' unless name
       results = self.class.find_by(@client, name: name)
       return false unless results.size == 1
-      set_all(results[0])
+      set_all(results[0].data)
       true
     end
 
-    # Set the given hash of key-value pairs as resource attributes
+    # Validates data params.
+    # @note This should be overridden by Resource child classes to validate specific things.
     # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
+    # @return [Boolean] Always returns true
+    def validate(_params = {})
+      true
+    end
+
+    # Set the given hash of key-value pairs as resource data attributes
+    # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
+    # @note All top-level keys will be converted to strings
     # @return [Resource] self
     def set_all(params = {})
-      reserved_methods = %w(create delete save update refresh each to_hash eql? like?)
-      params.each do |key, value|
-        if reserved_methods.include?(key.to_s)
-          @logger.warn "Can't set attribute '#{key}' because that's a reserved method"
-        else
-          self.class.send(:attr_accessor, key)
-          send("#{key}=", value)
-        end
-      end
+      params = params.data if params.class <= Resource
+      params = Hash[params.map { |(k, v)| [k.to_s, v] }]
+      validate(params)
+      params.each { |key, value| @data[key.to_s] = value }
+      self
     end
 
-    # Run block once for each key-value pair (excludes @api_version, @client & @logger keys)
+    # Run block once for each data key-value pair
     def each(&block)
-      to_hash.each(&block)
+      @data.each(&block)
     end
 
-    # Get a hash representation of the resource
-    # @return [Hash] A hash representation of the resource. Excludes @api_version, @client & @logger keys
-    def to_hash
-      ret_val = {}
-      instance_variables.each do |key|
-        next if [:@client, :@logger, :@api_version].include?(key.to_sym)
-        ret_val["#{key[1..-1]}"] = instance_variable_get(key)
-      end
-      ret_val
-    end
-
-    # Access instance variables using hash syntax
+    # Access data using hash syntax
     # @param [String, Symbol] key Name of key to get value for
     # @return The value of the given key. If not found, returns nil
     def [](key)
-      instance_variable_get("@#{key}")
+      @data[key.to_s]
     end
 
-    # Set instance variables using hash syntax
+    # Set data using hash syntax
     # @param [String, Symbol] key Name of key to set the value for
     # @param [Object] key Value to set for the given key
+    # @note The key will be converted to a string
     # @return The value set for the given key
     def []=(key, value)
       set_all(key => value)
+      value
     end
 
     # Check equality of 2 resources. Same as eql?(other)
@@ -97,29 +94,29 @@ module OneviewSDK
       self == other
     end
 
-    # Check equality of attributes set on other resource with those of this resource.
-    # @note Doesn't check the client object if another resource is passed in
-    # @param [Enumerable, Resource] other Resource or hash to compare key-value pairs with
+    # Check equality of data on other resource with that of this resource.
+    # @note Doesn't check the client, logger, or api_version if another Resource is passed in
+    # @param [Hash, Resource] other Resource or hash to compare key-value pairs with
     # @example Compare to hash
     #   myResource = OneviewSDK::Resource.new({ name: 'res1', description: 'example'}, client, 200)
     #   myResource.like?(name: '', api_version: 200) # returns true
     # @return [Boolean] Whether or not the two objects are alike
     def like?(other)
       fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
-      other.each { |key, val| return false if val != self[key] }
+      other.each { |key, val| return false if val != @data[key.to_s] }
       true
     end
 
-    # Create the resource on OneView using the current attribute data
+    # Create the resource on OneView using the current data
     # @note Calls refresh method to set additional data
     # @raise [RuntimeError] if the client is not set
     # @raise [RuntimeError] if the resource creation fails
     # @return [Resource] self
     def create
       ensure_client
-      task = @client.rest_post(self.class::BASE_URI, { 'body' => to_hash }, @api_version)
+      task = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
       fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri']
-      @uri = task['associatedResource']['resourceUri']
+      @data['uri'] = task['associatedResource']['resourceUri']
       @client.wait_for(task['uri'])
       refresh
       self
@@ -129,25 +126,25 @@ module OneviewSDK
     # @return [Resource] self
     def refresh
       ensure_client && ensure_uri
-      response = @client.rest_get(@uri, @api_version)
+      response = @client.rest_get(@data['uri'], @api_version)
       set_all(response)
       self
     end
 
-    # Save current attribute data to OneView
+    # Save current data to OneView
     # @raise [RuntimeError] if the client is not set
     # @raise [RuntimeError] if the uri is not set
     # @raise [RuntimeError] if the resource save fails
     # @return [Resource] self
     def save
       ensure_client && ensure_uri
-      task = @client.rest_put(@uri, { 'body' => to_hash }, @api_version)
+      task = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
       fail "Failed to save #{self.class}\n Response: #{task}" unless task['uri']
       @client.wait_for(task['uri'])
       self
     end
 
-    # Set attribute data and save to OneView
+    # Set data and save to OneView
     # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
     # @raise [RuntimeError] if the uri is not set
     # @raise [RuntimeError] if the resource save fails
@@ -161,7 +158,7 @@ module OneviewSDK
     # @return [true] if resource was deleted successfully
     def delete
       ensure_client && ensure_uri
-      task = @client.rest_delete(@uri, @api_version)
+      task = @client.rest_delete(@data['uri'], @api_version)
       fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri']
       @client.wait_for(task['uri'])
     end
@@ -187,9 +184,9 @@ module OneviewSDK
       fail 'Please set client attribute before interacting with this resource' unless @client
     end
 
-    # Fail unless @uri is set for this resource.
+    # Fail unless @data['uri'] is set for this resource.
     def ensure_uri
-      fail 'Please set uri attribute before interacting with this resource' unless @uri
+      fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
     end
   end
 end
