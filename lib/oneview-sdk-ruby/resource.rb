@@ -19,9 +19,9 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       @client = client
       @logger = @client.logger
+      @api_version = api_ver || @client.api_version
       @data = {}
       set_all(params)
-      @api_version = api_ver || @client.api_version
     end
 
     # Retrieve resource details based on this resource's name.
@@ -116,8 +116,8 @@ module OneviewSDK
       ensure_client
       task = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
       fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri']
+      task = @client.wait_for(task['uri'])
       @data['uri'] = task['associatedResource']['resourceUri']
-      @client.wait_for(task['uri'])
       refresh
       self
     end
