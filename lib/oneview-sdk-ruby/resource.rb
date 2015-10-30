@@ -36,14 +36,6 @@ module OneviewSDK
       true
     end
 
-    # Validates data params.
-    # @note This should be overridden by Resource child classes to validate specific things.
-    # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
-    # @return [Boolean] Always returns true
-    def validate(_params = {})
-      true
-    end
-
     # Set the given hash of key-value pairs as resource data attributes
     # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
     # @note All top-level keys will be converted to strings
@@ -169,6 +161,7 @@ module OneviewSDK
       task = @client.rest_delete(@data['uri'], @api_version)
       fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri']
       @client.wait_for(task['uri'])
+      true
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search
