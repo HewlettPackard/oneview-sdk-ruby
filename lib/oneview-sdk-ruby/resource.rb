@@ -59,11 +59,9 @@ module OneviewSDK
     # @param [String] key attribute name
     # @param value value to assign to the given attribute
     def set(key, value)
-      method_name = "validate_#{key.to_s}"
-      if self.respond_to?(method_name.to_sym)
-        self.send(method_name.to_sym, value)
-      end
-      @data[key] = value 
+      method_name = "validate_#{key}"
+      send(method_name.to_sym, value) if self.respond_to?(method_name.to_sym)
+      @data[key] = value
     end
 
     # Run block once for each data key-value pair

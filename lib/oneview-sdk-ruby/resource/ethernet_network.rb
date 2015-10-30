@@ -27,19 +27,19 @@ module OneviewSDK
     end
 
     def validate_type(value)
-       fail 'Invalid type' if value != 'ethernet-networkV3'
+      fail 'Invalid type' if value != 'ethernet-networkV3'
     end
 
     # Validate ethernetNetworkType
     # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged
     def validate_ethernetNetworkType(value)
-      fail 'Invalid network type' if ! %w(NotApplicable Tagged Tunnel Unknown Untagged).include?(value)
+      fail 'Invalid network type' unless %w(NotApplicable Tagged Tunnel Unknown Untagged).include?(value)
     end
 
     # Validate purpose
     # @param [String] value FaultTolerance, General, Management, VMMigration
     def validate_purpose(value)
-      fail 'Invalid ethernet purpose' if ! %w(FaultTolerance General Management VMMigration).include?(value)
+      fail 'Invalid ethernet purpose' unless %w(FaultTolerance General Management VMMigration).include?(value)
     end
 
   end
