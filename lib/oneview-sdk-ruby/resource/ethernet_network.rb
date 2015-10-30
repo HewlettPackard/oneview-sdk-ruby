@@ -26,12 +26,20 @@ module OneviewSDK
       @data['ethernetNetworkType'] ||= 'Tagged'
     end
 
-    def validate(params = {})
-      fail 'Invalid network type' if params['ethernetNetworkType'] &&
-        ! %w(NotApplicable Tagged Tunnel Unknown Untagged).include?(params['ethernetNetworkType'])
+    def validate_type(value)
+       fail 'Invalid type' if value != 'ethernet-networkV3'
+    end
 
-      fail 'Invalid ethernet purpose' if params['purpose'] &&
-        ! %w(FaultTolerance General Management VMMigration).include?(params['purpose'])
+    # Validate ethernetNetworkType
+    # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged
+    def validate_ethernetNetworkType(value)
+      fail 'Invalid network type' if ! %w(NotApplicable Tagged Tunnel Unknown Untagged).include?(value)
+    end
+
+    # Validate purpose
+    # @param [String] value FaultTolerance, General, Management, VMMigration
+    def validate_purpose(value)
+      fail 'Invalid ethernet purpose' if ! %w(FaultTolerance General Management VMMigration).include?(value)
     end
 
   end

@@ -51,9 +51,19 @@ module OneviewSDK
     def set_all(params = {})
       params = params.data if params.class <= Resource
       params = Hash[params.map { |(k, v)| [k.to_s, v] }]
-      validate(params)
-      params.each { |key, value| @data[key.to_s] = value }
+      params.each { |key, value| set(key.to_s, value) }
       self
+    end
+
+    # Set a resource attribute with the given value and call any validation method if necessary
+    # @param [String] key attribute name
+    # @param value value to assign to the given attribute
+    def set(key, value)
+      method_name = "validate_#{key.to_s}"
+      if self.respond_to?(method_name.to_sym)
+        self.send(method_name.to_sym, value)
+      end
+      @data[key] = value 
     end
 
     # Run block once for each data key-value pair
@@ -74,7 +84,7 @@ module OneviewSDK
     # @note The key will be converted to a string
     # @return The value set for the given key
     def []=(key, value)
-      set_all(key => value)
+      set(key, value)
       value
     end
 
