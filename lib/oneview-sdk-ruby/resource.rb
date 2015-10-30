@@ -102,9 +102,15 @@ module OneviewSDK
     #   myResource = OneviewSDK::Resource.new({ name: 'res1', description: 'example'}, client, 200)
     #   myResource.like?(name: '', api_version: 200) # returns true
     # @return [Boolean] Whether or not the two objects are alike
-    def like?(other)
+    def like?(other, filter = @data)
       fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
-      other.each { |key, val| return false if val != @data[key.to_s] }
+      other.each do |key, val| 
+        if val.is_a?(Hash)
+          return like?(val, filter[key.to_s])
+        elsif val != filter[key.to_s]
+          return false
+        end
+      end
       true
     end
 
