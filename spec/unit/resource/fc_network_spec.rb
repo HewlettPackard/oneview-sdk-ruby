@@ -20,8 +20,13 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'validates linkStabilityTime' do
-      options = { linkStabilityTime: 0 }
+      options = { fabricType: 'FabricAttach', linkStabilityTime: 0 }
       expect { OneviewSDK::FCNetwork.new(@client, options) }.to raise_error(/Link stability time out of range/)
+    end
+
+    it 'does not validate linkStabilityTime for DirectAttach networks' do
+      options = { fabricType: 'DirectAttach', linkStabilityTime: 0 }
+      expect { OneviewSDK::FCNetwork.new(@client, options) }.to_not raise_error
     end
   end
 end

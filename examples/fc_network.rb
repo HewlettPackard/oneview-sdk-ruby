@@ -1,14 +1,12 @@
 require_relative '_client' # Gives access to @client
 
 # Example: Create an fc network
-# NOTE: This will create an fc network named 'san01', then delete it.
+# NOTE: This will create an fc network named 'OneViewSDK Test FC Network', then delete it.
 options = {
-  name: 'san01',
+  name: 'OneViewSDK Test FC Network',
   connectionTemplateUri: nil,
-  linkStabilityTime: 30,
   autoLoginRedistribution: true,
-  fabricType: 'FabricAttach',
-  type: 'fc-networkV2'
+  fabricType: 'FabricAttach'
 }
 
 fc = OneviewSDK::FCNetwork.new(@client, options)

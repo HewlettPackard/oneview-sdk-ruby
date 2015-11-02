@@ -8,7 +8,7 @@ module OneviewSDK
   #   description
   #   eTag
   #   fabricType (Required)
-  #   linkStabilityTime (Required)
+  #   linkStabilityTime (Required for FabricAttach)
   #   managedSunUri
   #   modified
   #   name (Required)
@@ -32,6 +32,7 @@ module OneviewSDK
     end
 
     def validate_linkStabilityTime(value)
+      return unless @data['fabricType'] && @data['fabricType'] == 'FabricAttach'
       fail 'Link stability time out of range 1..1800' unless value.between?(1, 1800)
     end
 
