@@ -1,22 +1,20 @@
-
 module OneviewSDK
   # Resource for ethernet networks
   # Common Data Attributes:
-  #   autoLoginRedistribution
+  #   autoLoginRedistribution (Required)
   #   category
   #   connectionTemplateUri
   #   created
   #   description
   #   eTag
-  #   fabricType
-  #   linkStabilityTime
+  #   fabricType (Required)
+  #   linkStabilityTime (Required)
   #   managedSunUri
   #   modified
-  #   name
+  #   name (Required)
   #   state
   #   status
-  #   type
-  #   uri
+  #   type (Required)
   class FCNetwork < Resource
     BASE_URI = '/rest/fc-networks'
 
@@ -35,10 +33,6 @@ module OneviewSDK
 
     def validate_linkStabilityTime(value)
       fail 'Link stability time out of range 1..1800' unless value.between?(1, 1800)
-    end
-    
-    def validate_status(value)
-      fail 'Invalid status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
     end
 
   end
