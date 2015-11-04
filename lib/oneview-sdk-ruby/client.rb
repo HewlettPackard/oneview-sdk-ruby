@@ -92,22 +92,22 @@ module OneviewSDK
     # @param [String] task_uri
     # @param [Boolean] print_dots Whether or not to print a dot after each wait iteration
     # @raise [RuntimeError] if the task resulted in an error or early termination.
-    # @return [true] if the task completed sucessfully
+    # @return [Hash] if the task completed sucessfully, return the task details
     def wait_for(task_uri, print_dots = false)
       fail 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
       loop do
         task = rest_get(task_uri)
         case task['taskState'].downcase
         when 'completed'
-          return true
+          return task
         when 'error', 'killed', 'terminated'
-          msg = 'Timed out waiting for the task to complete. '
-          if task['taskErrors'] && task['taskErrors'].first['message']
-            msg += task['taskErrors'].first['message']
+          msg = "Task ended with bad state: '#{task['taskState']}'.\nResponse: "
+          if task['taskErrors']
+            msg += JSON.pretty_generate(task['taskErrors'])
           else
-            msg += task
+            msg += JSON.pretty_generate(task)
           end
-          fail msg
+          fail(msg)
         else
           print '.' if print_dots
           sleep 10
