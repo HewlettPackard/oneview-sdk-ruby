@@ -18,6 +18,11 @@ Style/MethodName:
 Style/FileName:
   Exclude:
     - 'lib/oneview-sdk-ruby.rb'
+    - 'bin/oneview-sdk-ruby'
+
+Style/AlignParameters:
+  Exclude:
+    - 'lib/oneview-sdk-ruby/cli.rb'
 
 
 Style/AccessorMethodName:

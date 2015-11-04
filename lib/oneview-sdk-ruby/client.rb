@@ -21,8 +21,8 @@ module OneviewSDK
     # @option options [String] :user ('Administrator') Username to use for authentication with OneView appliance
     # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) Password to use for authentication with OneView appliance
     # @option options [Integer] :api_version (200) API Version to use by default for requests
-    # @option options [Boolean] :ssl_enabled (true) Use ssl for requests?
-    def initialize(options)
+    # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['ONEVIEWSDK_SSL_ENABLED']
+    def initialize(options = {})
       options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
       @logger = options[:logger] || Logger.new(STDOUT)
       [:debug, :info, :warn, :error, :level=].each { |m| fail "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
@@ -36,6 +36,13 @@ module OneviewSDK
       end
       @api_version = options[:api_version] || [DEFAULT_API_VERSION, @max_api_version].min
       @ssl_enabled = true
+      if ENV.key?('ONEVIEWSDK_SSL_ENABLED')
+        if %w(true false 1 0).include?(ENV['ONEVIEWSDK_SSL_ENABLED'])
+          @ssl_enabled = ! %w(false 0).include?(ENV['ONEVIEWSDK_SSL_ENABLED'])
+        else
+          @logger.warn "Unrecognized ssl_enabled value '#{ENV['ONEVIEWSDK_SSL_ENABLED']}'. Valid options are 'true' & 'false'"
+        end
+      end
       @ssl_enabled = options[:ssl_enabled] unless options[:ssl_enabled].nil?
       @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
       return if @token
