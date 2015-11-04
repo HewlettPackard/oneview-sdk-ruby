@@ -176,10 +176,16 @@ module OneviewSDK
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes)
       results = []
-      members = client.rest_get(self::BASE_URI)['members']
-      members.each do |member|
-        temp = new(client, member)
-        results.push(temp) if temp.like?(attributes)
+      uri = self::BASE_URI
+      loop do
+        response = client.rest_get(uri)
+        members = response['members']
+        members.each do |member|
+          temp = new(client, member)
+          results.push(temp) if temp.like?(attributes)
+        end
+        break unless response['nextPageUri']
+        uri = response['nextPageUri']
       end
       results
     end
