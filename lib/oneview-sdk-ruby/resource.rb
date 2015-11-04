@@ -19,9 +19,9 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       @client = client
       @logger = @client.logger
+      @api_version = api_ver || @client.api_version
       @data = {}
       set_all(params)
-      @api_version = api_ver || @client.api_version
     end
 
     # Retrieve resource details based on this resource's name.
@@ -33,14 +33,6 @@ module OneviewSDK
       results = self.class.find_by(@client, name: name)
       return false unless results.size == 1
       set_all(results[0].data)
-      true
-    end
-
-    # Validates data params.
-    # @note This should be overridden by Resource child classes to validate specific things.
-    # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
-    # @return [Boolean] Always returns true
-    def validate(_params = {})
       true
     end
 
@@ -124,8 +116,8 @@ module OneviewSDK
       ensure_client
       task = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
       fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri']
+      task = @client.wait_for(task['uri'])
       @data['uri'] = task['associatedResource']['resourceUri']
-      @client.wait_for(task['uri'])
       refresh
       self
     end
@@ -169,6 +161,7 @@ module OneviewSDK
       task = @client.rest_delete(@data['uri'], @api_version)
       fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri']
       @client.wait_for(task['uri'])
+      true
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search

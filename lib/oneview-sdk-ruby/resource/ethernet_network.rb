@@ -24,10 +24,12 @@ module OneviewSDK
       super
       # Default values:
       @data['ethernetNetworkType'] ||= 'Tagged'
-    end
-
-    def validate_type(value)
-      fail 'Invalid type' if value != 'ethernet-networkV3'
+      case @api_version
+      when 120
+        @data['type'] ||= 'ethernet-networkV2'
+      when 200
+        @data['type'] ||= 'ethernet-networkV3'
+      end
     end
 
     # Validate ethernetNetworkType
