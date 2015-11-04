@@ -177,7 +177,7 @@ module OneviewSDK
     def self.find_by(client, attributes)
       results = []
       uri = self::BASE_URI
-      10.times do
+      loop do
         response = client.rest_get(uri)
         members = response['members']
         members.each do |member|
