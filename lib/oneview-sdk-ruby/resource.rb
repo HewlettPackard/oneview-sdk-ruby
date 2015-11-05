@@ -116,8 +116,8 @@ module OneviewSDK
     def create
       ensure_client
       task = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
-      fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri']
-      task = @client.wait_for(task['uri'])
+      fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri'] || task['location']
+      task = @client.wait_for(task['uri'] || task['location'])
       @data['uri'] = task['associatedResource']['resourceUri']
       refresh
       self
@@ -140,8 +140,8 @@ module OneviewSDK
     def save
       ensure_client && ensure_uri
       task = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
-      fail "Failed to save #{self.class}\n Response: #{task}" unless task['uri']
-      @client.wait_for(task['uri'])
+      fail "Failed to save #{self.class}\n Response: #{task}" unless task['uri'] || task['location']
+      @client.wait_for(task['uri'] || task['location'])
       self
     end
 
@@ -160,8 +160,8 @@ module OneviewSDK
     def delete
       ensure_client && ensure_uri
       task = @client.rest_delete(@data['uri'], @api_version)
-      fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri']
-      @client.wait_for(task['uri'])
+      fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri'] || task['location']
+      @client.wait_for(task['uri'] || task['location'])
       true
     end
 
