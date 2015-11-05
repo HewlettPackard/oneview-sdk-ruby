@@ -34,7 +34,7 @@ module OneviewSDK
       end
       @data['type'] ||= 'ServerProfileTemplateV1'
     end
-    
+
     # Create ServerProfile using this template
     # @param [String] name Name of new server profile
     # @return [ServerProfile] New server profile from template.

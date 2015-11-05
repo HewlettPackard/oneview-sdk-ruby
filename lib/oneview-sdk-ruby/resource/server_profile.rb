@@ -50,7 +50,7 @@ module OneviewSDK
     def validate_templateCompliance(*)
       fail "Templates only exist on api version >= 200. Resource version: #{@api_version}" if @api_version < 200
     end
-    
+
     # Get available server hardware for this template
     # @return [Array<ServerHardware>] Array of ServerHardware that matches this profile's
     #   server hardware type and enclosure group and who's state is 'NoProfileApplied'

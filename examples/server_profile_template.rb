@@ -6,10 +6,8 @@ require_relative '_client' # Gives access to @client
 type = 'server profile template'
 options = {
   name:  'OneViewSDK Test ServerProfileTemplate',
-  serverHardwareTypeUri: '/rest/server-hardware-types/5B42EABE-5140-4E38-91F0-68367B529DE9', # TODO: Replace
-  enclosureGroupUri: '/rest/enclosure-groups/c0f86584-5a82-4480-ad13-8ed6544d6c98' # TODO: Replace
-  #serverHardwareTypeUri: '/rest/server-hardware-types/11111111-1111-1111-1111-111111111111', # TODO: Replace
-  #enclosureGroupUri: '/rest/enclosure-groups/11111111-1111-1111-1111-111111111111' # TODO: Replace
+  serverHardwareTypeUri: '/rest/server-hardware-types/11111111-1111-1111-1111-111111111111', # TODO: Replace
+  enclosureGroupUri: '/rest/enclosure-groups/11111111-1111-1111-1111-111111111111' # TODO: Replace
 }
 
 item = OneviewSDK::ServerProfileTemplate.new(@client, options)
