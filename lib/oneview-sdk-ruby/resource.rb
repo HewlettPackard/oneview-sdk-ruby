@@ -50,10 +50,11 @@ module OneviewSDK
     # Set a resource attribute with the given value and call any validation method if necessary
     # @param [String] key attribute name
     # @param value value to assign to the given attribute
+    # @note Keys will be converted to strings
     def set(key, value)
       method_name = "validate_#{key}"
       send(method_name.to_sym, value) if self.respond_to?(method_name.to_sym)
-      @data[key] = value
+      @data[key.to_s] = value
     end
 
     # Run block once for each data key-value pair
@@ -189,11 +190,13 @@ module OneviewSDK
     # Fail unless @client is set for this resource.
     def ensure_client
       fail 'Please set client attribute before interacting with this resource' unless @client
+      true
     end
 
     # Fail unless @data['uri'] is set for this resource.
     def ensure_uri
       fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
+      true
     end
   end
 end
