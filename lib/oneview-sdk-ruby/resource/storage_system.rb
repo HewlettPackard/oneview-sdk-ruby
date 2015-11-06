@@ -33,7 +33,12 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      @data['type'] ||= 'StorageSystemV3'
+      case @api_version
+      when 120
+        @data['type'] ||= 'StorageSystemV2'
+      when 200
+        @data['type'] ||= 'StorageSystemV3'
+      end
     end
 
     def create
@@ -51,19 +56,12 @@ module OneviewSDK
     def retrieve!(name = @data['name'], credentials = @data['credentials'])
       if name.nil?
         results = self.class.find_by(@client, credentials: { ip_hostname: credentials[:ip_hostname] })
-        return false unless results.size == 1 # FALSE OR SOMETHING ELSE ?
+        return false unless results.size == 1
         set_all(results[0].data)
+        true
       else
         super.retrieve!
       end
-    end
-
-    def validate_refreshState(value)
-      fail 'Invalid refresh state' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(value)
-    end
-
-    def validate_status(value)
-      fail 'Invalid status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
     end
 
   end
