@@ -51,17 +51,5 @@ module OneviewSDK
       fail 'Invalid network type' unless %w(Enclosure MultiEnclosure None SwitchPairs).include?(value)
     end
 
-    def validate_state(value)
-      fail 'Invalid network type' unless %w(Pending Failed Normal).include?(value)
-    end
-
-    def validate_status(value)
-      fail 'Invalid network type' unless %w(OK Disabled Warning Critical Unknown).include?(value)
-    end
-    
-    def validate_type(value)
-      fail 'Invalid type' unless value == 'EnclosureGroupV200'
-    end
-
   end
 end
