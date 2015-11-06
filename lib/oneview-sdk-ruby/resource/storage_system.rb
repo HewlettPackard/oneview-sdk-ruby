@@ -38,10 +38,11 @@ module OneviewSDK
    
     def create
       ensure_client
-      @client.rest_post(self.class::BASE_URI, { 'body' => @data['credentials'] }, @api_version)
+      task = @client.rest_post(self.class::BASE_URI, { 'body' => @data['credentials'] }, @api_version)
       temp = @data.clone
-      sleep 10
-      self.retrieve!
+      task = @client.wait_for(task['uri'] || task['location'])
+      @data['uri'] = task['associatedResource']['resourceUri']
+      refresh
       temp.delete('credentials')
       self.update(temp)
       self
