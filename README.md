@@ -155,11 +155,13 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
 ### Save/Load Resources with files
 Resources can be saved to files and loaded again very easily using the built-in `.to_file` & `.from_file` methods.
 
- - To save a Resource to a file: 
+ - To save a Resource to a file:
+   
    ```ruby
    ethernet.to_file("full_file_path.json")
    ```
  - To load a Resource from a file: (note the class method, not instance method)
+   
    ```ruby
    ethernet4 = OneviewSDK::Resource.from_file(client, "full_file_path.json")
    ```
