@@ -108,6 +108,24 @@ module OneviewSDK
       true
     end
 
+    def response_handler(response)
+      case response.code.to_i
+      when 200
+        return JSON.parse(response.body)
+      when 201
+        return JSON.parse(response.body)
+      when 202
+        task = @client.wait_for(response.header['location'])
+        resource_data = @client.rest_get(task['associatedResource']['resourceUri'])
+        resource_data = JSON.parse(resource_data.body)
+        puts resource_data
+        return resource_data
+      when 204
+        return {}
+      end 
+    
+    end
+
     # Create the resource on OneView using the current data
     # @note Calls refresh method to set additional data
     # @raise [RuntimeError] if the client is not set
@@ -115,11 +133,8 @@ module OneviewSDK
     # @return [Resource] self
     def create
       ensure_client
-      task = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
-      fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri'] || task['location']
-      task = @client.wait_for(task['uri'] || task['location'])
-      @data['uri'] = task['associatedResource']['resourceUri']
-      refresh
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+      set_all(response_handler(response))
       self
     end
 
@@ -172,7 +187,7 @@ module OneviewSDK
       results = []
       uri = self::BASE_URI
       loop do
-        response = client.rest_get(uri)
+        response = JSON.parse(client.rest_get(uri).body)
         members = response['members']
         members.each do |member|
           temp = new(client, member)

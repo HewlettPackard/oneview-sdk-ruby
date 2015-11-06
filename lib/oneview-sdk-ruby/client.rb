@@ -44,6 +44,7 @@ module OneviewSDK
       @password = options[:password] || ENV['ONEVIEWSDK_PASSWORD']
       fail 'Must set user & password options or token option' unless @password
       @token = login
+      puts @token
     end
 
     # Tell OneView to create the resource using the current attribute data
@@ -90,6 +91,7 @@ module OneviewSDK
       fail 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
       loop do
         task = rest_get(task_uri)
+        task = JSON.parse(task.body)
         case task['taskState'].downcase
         when 'completed'
           return task
@@ -113,7 +115,8 @@ module OneviewSDK
     # Get current api version from the OneView appliance
     def appliance_api_version
       options = { 'Content-Type' => :none, 'X-API-Version' => :none, 'auth' => :none }
-      version = rest_api(:get, '/rest/version', options)['currentVersion']
+      response = rest_api(:get, '/rest/version', options)
+      version = JSON.parse(response.body)['currentVersion']
       fail "Couldn't get API version" unless version
       version = version.to_i if version.class != Fixnum
       version
@@ -132,6 +135,7 @@ module OneviewSDK
         }
       }
       response = rest_post('/rest/login-sessions', options)
+      response = JSON.parse(response.body)
       return response['sessionID'] if response['sessionID']
       if retries > 0
         @logger.debug "Failed to log in to OneView: #{response['message'] if response['message']} Retrying..."

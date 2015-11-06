@@ -60,7 +60,7 @@ module OneviewSDK
 
       response = http.request(request)
       @logger.debug "  Response: #{response.code}: #{response.body}"
-      JSON.parse(response.body) rescue response
+      response
     rescue OpenSSL::SSL::SSLError => e
       msg = 'SSL verification failed for request. Please either:'
       msg += "\n  1. Install the certificate into your cert store"
