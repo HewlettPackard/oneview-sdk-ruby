@@ -7,17 +7,16 @@ options = {
   password: 'dcs'
 }
 
-storage = OneviewSDK::StorageSystem.new(@client)
-storage['credentials'] = options
-storage['managedDomain'] = 'TestDomain'
-storage.create
-puts storage['managedDomain']
+storage1 = OneviewSDK::StorageSystem.new(@client)
+storage1['credentials'] = options
+storage1['managedDomain'] = 'TestDomain'
+storage1.create
+puts storage1['managedDomain']
 
-OneviewSDK::StorageSystem.find_by(@client, credentials: { ip_hostname: '172.18.11.11'}).each do |storage|
+OneviewSDK::StorageSystem.find_by(@client, credentials: { ip_hostname: '172.18.11.11' }).each do |storage|
   puts storage['name']
 end
 
-storage = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: '172.18.11.11'})
+storage = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: '172.18.11.11' })
 storage.retrieve!
 storage.delete
-

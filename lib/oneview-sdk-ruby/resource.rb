@@ -104,7 +104,7 @@ module OneviewSDK
     # @return [Boolean] Whether or not the two objects are alike
     def like?(other, filter = @data)
       fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
-      other.each do |key, val| 
+      other.each do |key, val|
         if val.is_a?(Hash)
           return like?(val, filter[key.to_s])
         elsif val != filter[key.to_s]

@@ -35,7 +35,7 @@ module OneviewSDK
       # Default values:
       @data['type'] ||= 'StorageSystemV3'
     end
-   
+
     def create
       ensure_client
       task = @client.rest_post(self.class::BASE_URI, { 'body' => @data['credentials'] }, @api_version)
@@ -44,13 +44,13 @@ module OneviewSDK
       @data['uri'] = task['associatedResource']['resourceUri']
       refresh
       temp.delete('credentials')
-      self.update(temp)
+      update(temp)
       self
     end
 
     def retrieve!(name = @data['name'], credentials = @data['credentials'])
       if name.nil?
-        results = self.class.find_by(@client, credentials: {ip_hostname: credentials[:ip_hostname]})
+        results = self.class.find_by(@client, credentials: { ip_hostname: credentials[:ip_hostname] })
         return false unless results.size == 1 # FALSE OR SOMETHING ELSE ?
         set_all(results[0].data)
       else
