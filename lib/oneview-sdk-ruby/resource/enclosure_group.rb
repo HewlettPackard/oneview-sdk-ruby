@@ -36,7 +36,7 @@ module OneviewSDK
       end
     end
 
-    # Override because the request returns a the resource data, not a task
+    # Override because the request returns the resource data, not a task
     def create
       ensure_client
       resource = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
@@ -45,7 +45,7 @@ module OneviewSDK
       self
     end
 
-    # Override because the request returns a the resource data, not a task
+    # Override because the request returns the resource data, not a task
     def save
       ensure_client && ensure_uri
       resource = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
@@ -53,7 +53,7 @@ module OneviewSDK
       self
     end
 
-    # Override because the request returns a the resource data, not a task
+    # Override because the request returns the resource data, not a task
     def delete
       ensure_client && ensure_uri
       response = @client.rest_delete(@data['uri'], @api_version)
