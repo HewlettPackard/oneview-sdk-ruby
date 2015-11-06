@@ -48,6 +48,24 @@ export ONEVIEWSDK_PASSWORD='secret123'
 export ONEVIEWSDK_TOKEN='xxxx...'
 ```
 
+Configuration files can also be used to define client data (json or yaml formats):
+
+```json
+{
+  "url": "https://oneview.example.com",
+  "user": "Administrator",
+  "password": "secret123",
+  "ssl_enabled": false
+}
+```
+
+and load via:
+
+```ruby
+config = OneviewSDK::Config.load("full_file_path.json")
+client = OneviewSDK::Client.new(config)
+```
+
 ### Custom Logging
 The default logger is a standard logger to STDOUT, but if you want to specify your own logger, you can.  However, your logger must implement the following methods:
 
@@ -133,6 +151,19 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
     puts "  #{network[:name]}"
   end
   ```
+
+### Save/Load Resources with files
+Resources can be saved to files and loaded again very easily using the built-in `.to_file` & `.from_file` methods.
+
+ - To save a Resource to a file: 
+   ```ruby
+   ethernet.to_file("full_file_path.json")
+   ```
+ - To load a Resource from a file: (note the class method, not instance method)
+   ```ruby
+   ethernet4 = OneviewSDK::Resource.from_file(client, "full_file_path.json")
+   ```
+
 
 For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation.
 
