@@ -103,9 +103,7 @@ module OneviewSDK
     #   myResource.like?(name: '', api_version: 200) # returns true
     # @return [Boolean] Whether or not the two objects are alike
     def like?(other)
-      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
-      other.each { |key, val| return false if val != @data[key.to_s] }
-      true
+      recursive_like?(other, @data)
     end
 
     # Create the resource on OneView using the current data
@@ -182,6 +180,21 @@ module OneviewSDK
 
 
     private
+
+    # Recursive helper method for like?
+    # Allows comparison of nested hash structures
+    def recursive_like?(other, data = @data)
+      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
+      other.each do |key, val|
+        return false unless data && data.respond_to?(:[])
+        if val.is_a?(Hash)
+          return false unless recursive_like?(val, data[key.to_s])
+        else
+          return false if val != data[key.to_s]
+        end
+      end
+      true
+    end
 
     # Fail unless @client is set for this resource.
     def ensure_client
