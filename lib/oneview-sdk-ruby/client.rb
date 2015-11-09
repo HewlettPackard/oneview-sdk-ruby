@@ -6,13 +6,6 @@ module OneviewSDK
   # The client defines the connection to the OneView server and handles the communication with it.
   class Client
     DEFAULT_API_VERSION = 200
-    RESPONSE_CODE_OK = 200
-    RESPONSE_CODE_CREATED = 201
-    RESPONSE_CODE_ACCEPTED = 202
-    RESPONSE_CODE_NO_CONTENT = 204
-    RESPONSE_CODE_BAD_REQUEST = 400
-    RESPONSE_CODE_UNAUTHORIZED = 401
-    RESPONSE_CODE_NOT_FOUND = 404
 
     attr_reader :url, :user, :token, :password, :max_api_version
     attr_accessor :ssl_enabled, :api_version, :logger, :log_level
@@ -51,7 +44,6 @@ module OneviewSDK
       @password = options[:password] || ENV['ONEVIEWSDK_PASSWORD']
       fail 'Must set user & password options or token option' unless @password
       @token = login
-      puts @token
     end
 
     # Tell OneView to create the resource using the current attribute data
@@ -115,34 +107,6 @@ module OneviewSDK
           sleep 10
         end
       end
-    end
-
-    # Handle the response for rest call
-    # @param [String] HTTP response
-    # @return [Hash] return a hash with the parsed json
-    def response_handler(response)
-      case response.code.to_i
-      when RESPONSE_CODE_OK
-        return JSON.parse(response.body)
-      when RESPONSE_CODE_CREATED
-        return JSON.parse(response.body)
-      when RESPONSE_CODE_ACCEPTED
-        task = wait_for(response.header['location'])
-        resource_data = rest_get(task['associatedResource']['resourceUri'])
-        resource_data = JSON.parse(resource_data.body)
-        puts resource_data
-        return resource_data
-      when RESPONSE_CODE_NO_CONTENT
-        return {}
-      when RESPONSE_CODE_BAD_REQUEST
-        fail "400 BAD REQUEST #{response.body}"
-      when RESPONSE_CODE_UNAUTHORIZED
-        fail "401 UNAUTHORIZED #{response.body}"
-      when RESPONSE_CODE_NOT_FOUND
-        fail "404 NOT FOUND #{response.body}"
-      else
-        fail "#{response.code} #{response.body}"
-      end             
     end
 
 
