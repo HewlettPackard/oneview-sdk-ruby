@@ -172,7 +172,7 @@ module OneviewSDK
     # @note If a .yml or .yaml file extension is given, the format will be set automatically
     # @return [True] The Resource was saved successfully
     def to_file(file_path, format = :json)
-      format = :yml if %w(.yml .yaml).include? File.extname(file_name)
+      format = :yml if %w(.yml .yaml).include? File.extname(file_path)
       temp_data = { type: self.class.name, api_version: @api_version, data: @data }
       case format.to_sym
       when :json
