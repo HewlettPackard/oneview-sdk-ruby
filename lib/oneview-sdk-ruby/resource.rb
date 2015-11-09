@@ -114,8 +114,8 @@ module OneviewSDK
     def create
       ensure_client
       response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
-      response = @client.response_handler(response)
-      set_all(response)
+      body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -124,7 +124,8 @@ module OneviewSDK
     def refresh
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'], @api_version)
-      set_all(response)
+      body = @client.response_handler(response)
+      set_all(body)
       self
     end
 

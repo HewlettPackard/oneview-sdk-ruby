@@ -1,6 +1,6 @@
 require_relative './../spec_helper'
 
-RSpec.describe OneviewSDK::Client do
+RSpec.describe OneviewSDK::Resource do
   include_context 'shared context'
 
   describe '#initialize' do

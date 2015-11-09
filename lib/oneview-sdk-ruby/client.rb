@@ -116,12 +116,12 @@ module OneviewSDK
     def appliance_api_version
       options = { 'Content-Type' => :none, 'X-API-Version' => :none, 'auth' => :none }
       response = rest_api(:get, '/rest/version', options)
-      version = JSON.parse(response.body)['currentVersion']
+      version = response_handler(response)['currentVersion']
       fail "Couldn't get API version" unless version
       version = version.to_i if version.class != Fixnum
       version
     rescue
-      @logger.warn "Failed to get OneView max api version. Setting to default (#{DEFAULT_API_VERSION})"
+      @logger.warn "Failed to get OneView max api version. Using default (#{DEFAULT_API_VERSION})"
       DEFAULT_API_VERSION
     end
 
@@ -135,14 +135,13 @@ module OneviewSDK
         }
       }
       response = rest_post('/rest/login-sessions', options)
-      response = JSON.parse(response.body)
-      return response['sessionID'] if response['sessionID']
-      if retries > 0
-        @logger.debug "Failed to log in to OneView: #{response['message'] if response['message']} Retrying..."
-        return login(retries - 1)
-      else
-        fail("\nERROR! Couldn't log into OneView server at #{@url}. Response:\n#{response}")
-      end
+      body = response_handler(response)
+      return body['sessionID'] if body['sessionID']
+      fail "\nERROR! Couldn't log into OneView server at #{@url}. Response: #{response}\n#{response.body}"
+    rescue StandardError => e
+      raise e unless retries > 0
+      @logger.debug 'Failed to log in to OneView. Retrying...'
+      return login(retries - 1)
     end
   end
 end
