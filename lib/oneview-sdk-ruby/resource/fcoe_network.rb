@@ -2,7 +2,7 @@ module OneviewSDK
   # Resource for fcoe networks
   # Common Data Attributes:
   #   category
-  #   connectionTemplateUri (required to be nil)
+  #   connectionTemplateUri (Required. nil on creation)
   #   created
   #   description
   #   eTag
@@ -13,7 +13,7 @@ module OneviewSDK
   #   name (Required)
   #   state
   #   status
-  #   type (Required to be 'fcoe-network')
+  #   type (Required)
   #   uri
   #   vlanId (Required)
   class FCoENetwork < Resource
@@ -26,22 +26,10 @@ module OneviewSDK
       @data['type'] ||= 'fcoe-network'
     end
 
-    # Validate type
-    # @param [String] value fcoe-network
-    def validate_type(value)
-      fail 'Invalid type' unless %w(fcoe-network).include?(value)
-    end
-
     # Validate vlanId
     # @param [Fixnum] value 1..4094
     def validate_vlanId(value)
-      fail 'Invalid network type' unless value.between?(1, 4094)
-    end
-
-    # Validate status
-    # @param [String] value OK, Disabled, Warning, Critical, Unknown
-    def validate_status(value)
-      fail 'Invalid ethernet status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
+      fail 'vlanId out of range 1..4094' unless value.between?(1, 4094)
     end
 
   end
