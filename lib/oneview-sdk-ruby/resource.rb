@@ -113,11 +113,9 @@ module OneviewSDK
     # @return [Resource] self
     def create
       ensure_client
-      task = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
-      fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri'] || task['location']
-      task = @client.wait_for(task['uri'] || task['location'])
-      @data['uri'] = task['associatedResource']['resourceUri']
-      refresh
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+      body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -126,7 +124,8 @@ module OneviewSDK
     def refresh
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'], @api_version)
-      set_all(response)
+      body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -137,9 +136,8 @@ module OneviewSDK
     # @return [Resource] self
     def save
       ensure_client && ensure_uri
-      task = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
-      fail "Failed to save #{self.class}\n Response: #{task}" unless task['uri'] || task['location']
-      @client.wait_for(task['uri'] || task['location'])
+      response = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
+      @client.response_handler(response)
       self
     end
 
@@ -157,9 +155,8 @@ module OneviewSDK
     # @return [true] if resource was deleted successfully
     def delete
       ensure_client && ensure_uri
-      task = @client.rest_delete(@data['uri'], @api_version)
-      fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri'] || task['location']
-      @client.wait_for(task['uri'] || task['location'])
+      response = @client.rest_delete(@data['uri'], @api_version)
+      @client.response_handler(response)
       true
     end
 
@@ -170,7 +167,7 @@ module OneviewSDK
       results = []
       uri = self::BASE_URI
       loop do
-        response = client.rest_get(uri)
+        response = JSON.parse(client.rest_get(uri).body)
         members = response['members']
         members.each do |member|
           temp = new(client, member)

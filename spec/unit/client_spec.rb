@@ -73,18 +73,19 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'gets the api version from the appliance' do
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return('currentVersion' => '120')
+      fake_response = FakeResponse.new('currentVersion' => '120')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(fake_response)
       options = { url: 'https://oneview.example.com', token: 'token123' }
       client = OneviewSDK::Client.new(options)
       expect(client.api_version).to eq(120)
     end
 
     it 'sets a default api version value when it cannot be obtained from the appliance' do
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return({})
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(FakeResponse.new)
       options = { url: 'https://oneview.example.com', token: 'token123' }
       client = nil
       expect { client = OneviewSDK::Client.new(options) }.to output(
-        /Failed to get OneView max api version. Setting to default/).to_stdout_from_any_process
+        /Failed to get OneView max api version. Using default/).to_stdout_from_any_process
       expect(client.api_version).to eq(200)
     end
   end
@@ -95,14 +96,15 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'gets a token from the appliance' do
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return('sessionID' => 'secret789')
+      fake_response = FakeResponse.new(sessionID: 'secret789')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(fake_response)
       options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
       client = OneviewSDK::Client.new(options)
       expect(client.token).to eq('secret789')
     end
 
     it 'tries twice to get a token from the appliance' do
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return({})
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(FakeResponse.new)
       options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', log_level: :debug }
       expect { OneviewSDK::Client.new(options) rescue nil }.to output(/Retrying.../).to_stdout_from_any_process
       options.delete(:log_level)

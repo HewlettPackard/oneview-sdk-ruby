@@ -4,6 +4,7 @@ SimpleCov.start
 
 require 'oneview-sdk-ruby'
 require_relative 'shared_context'
+require_relative 'support/fake_request.rb'
 
 RSpec.configure do |config|
   config.before(:each) do
@@ -15,7 +16,6 @@ RSpec.configure do |config|
       ENV[name] = nil
     end
   end
-
 end
 
 # OneView::Config[:log_level] = :warn
