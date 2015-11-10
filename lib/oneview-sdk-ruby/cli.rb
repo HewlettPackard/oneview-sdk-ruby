@@ -195,10 +195,13 @@ module OneviewSDK
     end
 
     def client_setup(client_params = {})
-      client_params['ssl_enabled'] ||= false if @options['ssl_verify'] == false
+      client_params['ssl_enabled'] = true if @options['ssl_verify'] == true
+      client_params['ssl_enabled'] = false if @options['ssl_verify'] == false
       client_params['url'] ||= @options['url'] if @options['url']
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
       @client = OneviewSDK::Client.new(client_params)
+    rescue StandardError => e
+      fail_nice "ERROR: Failed to login to OneView appliance at '#{client_params['url']}'. Message: #{e}"
     end
 
     def parse_type(type)
