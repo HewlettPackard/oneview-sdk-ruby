@@ -59,8 +59,8 @@ module OneviewSDK
       @logger.debug "  Options: #{filtered_options}"
 
       response = http.request(request)
-      @logger.debug "  Response: #{response.code}: #{response.body}"
-      JSON.parse(response.body) rescue response
+      @logger.debug "  Response: Code=#{response.code}. Headers=#{response.to_hash}\n  Body=#{response.body}"
+      response
     rescue OpenSSL::SSL::SSLError => e
       msg = 'SSL verification failed for request. Please either:'
       msg += "\n  1. Install the certificate into your cert store"
@@ -97,6 +97,45 @@ module OneviewSDK
     # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
     def rest_delete(path, api_ver = @api_version)
       rest_api(:delete, path, {}, api_ver)
+    end
+
+    RESPONSE_CODE_OK           = 200
+    RESPONSE_CODE_CREATED      = 201
+    RESPONSE_CODE_ACCEPTED     = 202
+    RESPONSE_CODE_NO_CONTENT   = 204
+    RESPONSE_CODE_BAD_REQUEST  = 400
+    RESPONSE_CODE_UNAUTHORIZED = 401
+    RESPONSE_CODE_NOT_FOUND    = 404
+
+    # Handle the response for rest call.
+    #   If an asynchronous task was started, this waits for it to complete.
+    # @param [HTTPResponse] HTTP response
+    # @raise [RuntimeError] if the request failed
+    # @raise [RuntimeError] if a task was returned that did not complete successfully
+    # @return [Hash] The parsed JSON body
+    def response_handler(response)
+      case response.code.to_i
+      when RESPONSE_CODE_OK # Synchronous read/query
+        return JSON.parse(response.body)
+      when RESPONSE_CODE_CREATED # Synchronous add
+        return JSON.parse(response.body)
+      when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete
+        @logger.debug "Waiting for task: response.header['location']"
+        task = wait_for(response.header['location'])
+        resource_data = rest_get(task['associatedResource']['resourceUri'])
+        resource_data = JSON.parse(resource_data.body)
+        return resource_data
+      when RESPONSE_CODE_NO_CONTENT # Synchronous delete
+        return {}
+      when RESPONSE_CODE_BAD_REQUEST
+        fail "400 BAD REQUEST #{response.body}"
+      when RESPONSE_CODE_UNAUTHORIZED
+        fail "401 UNAUTHORIZED #{response.body}"
+      when RESPONSE_CODE_NOT_FOUND
+        fail "404 NOT FOUND #{response.body}"
+      else
+        fail "#{response.code} #{response.body}"
+      end
     end
   end
 end

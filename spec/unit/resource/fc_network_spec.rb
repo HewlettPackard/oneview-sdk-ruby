@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Client do
+RSpec.describe OneviewSDK::FCNetwork do
   include_context 'shared context'
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      profile = OneviewSDK::FCNetwork.new(@client)
-      expect(profile[:type]).to eq('fc-networkV2')
-      expect(profile[:autoLoginRedistribution]).to eq(false)
-      expect(profile[:linkStabilityTime]).to eq(30)
-      expect(profile[:fabricType]).to eq('FabricAttach')
+      item = OneviewSDK::FCNetwork.new(@client)
+      expect(item[:type]).to eq('fc-networkV2')
+      expect(item[:autoLoginRedistribution]).to eq(false)
+      expect(item[:linkStabilityTime]).to eq(30)
+      expect(item[:fabricType]).to eq('FabricAttach')
     end
   end
 

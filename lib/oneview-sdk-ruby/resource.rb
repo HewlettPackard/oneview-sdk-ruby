@@ -50,10 +50,11 @@ module OneviewSDK
     # Set a resource attribute with the given value and call any validation method if necessary
     # @param [String] key attribute name
     # @param value value to assign to the given attribute
+    # @note Keys will be converted to strings
     def set(key, value)
       method_name = "validate_#{key}"
       send(method_name.to_sym, value) if self.respond_to?(method_name.to_sym)
-      @data[key] = value
+      @data[key.to_s] = value
     end
 
     # Run block once for each data key-value pair
@@ -102,9 +103,7 @@ module OneviewSDK
     #   myResource.like?(name: '', api_version: 200) # returns true
     # @return [Boolean] Whether or not the two objects are alike
     def like?(other)
-      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
-      other.each { |key, val| return false if val != @data[key.to_s] }
-      true
+      recursive_like?(other, @data)
     end
 
     # Create the resource on OneView using the current data
@@ -114,11 +113,9 @@ module OneviewSDK
     # @return [Resource] self
     def create
       ensure_client
-      task = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
-      fail "Failed to create #{self.class}\n Response: #{task}" unless task['uri']
-      task = @client.wait_for(task['uri'])
-      @data['uri'] = task['associatedResource']['resourceUri']
-      refresh
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+      body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -127,7 +124,8 @@ module OneviewSDK
     def refresh
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'], @api_version)
-      set_all(response)
+      body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -138,9 +136,8 @@ module OneviewSDK
     # @return [Resource] self
     def save
       ensure_client && ensure_uri
-      task = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
-      fail "Failed to save #{self.class}\n Response: #{task}" unless task['uri']
-      @client.wait_for(task['uri'])
+      response = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
+      @client.response_handler(response)
       self
     end
 
@@ -158,9 +155,8 @@ module OneviewSDK
     # @return [true] if resource was deleted successfully
     def delete
       ensure_client && ensure_uri
-      task = @client.rest_delete(@data['uri'], @api_version)
-      fail "Failed to delete #{self.class}\n Response: #{task}" unless task['uri']
-      @client.wait_for(task['uri'])
+      response = @client.rest_delete(@data['uri'], @api_version)
+      @client.response_handler(response)
       true
     end
 
@@ -171,7 +167,7 @@ module OneviewSDK
       results = []
       uri = self::BASE_URI
       loop do
-        response = client.rest_get(uri)
+        response = JSON.parse(client.rest_get(uri).body)
         members = response['members']
         members.each do |member|
           temp = new(client, member)
@@ -186,14 +182,31 @@ module OneviewSDK
 
     private
 
+    # Recursive helper method for like?
+    # Allows comparison of nested hash structures
+    def recursive_like?(other, data = @data)
+      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
+      other.each do |key, val|
+        return false unless data && data.respond_to?(:[])
+        if val.is_a?(Hash)
+          return false unless recursive_like?(val, data[key.to_s])
+        else
+          return false if val != data[key.to_s]
+        end
+      end
+      true
+    end
+
     # Fail unless @client is set for this resource.
     def ensure_client
       fail 'Please set client attribute before interacting with this resource' unless @client
+      true
     end
 
     # Fail unless @data['uri'] is set for this resource.
     def ensure_uri
       fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
+      true
     end
   end
 end
