@@ -20,6 +20,9 @@ module OneviewSDK
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
+      if @api_version > @client.max_api_version
+        fail "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
+      end
       @data = {}
       set_all(params)
     end
@@ -158,6 +161,35 @@ module OneviewSDK
       response = @client.rest_delete(@data['uri'], @api_version)
       @client.response_handler(response)
       true
+    end
+
+    # Save resource to .json or .yaml file
+    # @param [String] file_path The full path to the file
+    # @param [Symbol] format The format. Options: [:json, :yml]
+    # @note If a .yml or .yaml file extension is given, the format will be set automatically
+    # @return [True] The Resource was saved successfully
+    def to_file(file_path, format = :json)
+      format = :yml if %w(.yml .yaml).include? File.extname(file_path)
+      temp_data = { type: self.class.name, api_version: @api_version, data: @data }
+      case format.to_sym
+      when :json
+        File.open(file_path, 'w') { |f| f.write(JSON.pretty_generate(temp_data)) }
+      when :yml, :yaml
+        File.open(file_path, 'w') { |f| f.write(temp_data.to_yaml) }
+      else
+        fail "Invalid format: #{format}"
+      end
+      true
+    end
+
+    # Load resource from .json or .yaml file
+    # @param [Client] client The client object to associate this resource with
+    # @param [String] file_path The full path to the file
+    # @return [Resource] New resource created from the file contents
+    def self.from_file(client, file_path)
+      resource = OneviewSDK::Config.load(file_path)
+      class_name = resource['type'] ? Object.const_get(resource['type']) : self
+      class_name.new(client, resource['data'], resource['api_version'])
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search

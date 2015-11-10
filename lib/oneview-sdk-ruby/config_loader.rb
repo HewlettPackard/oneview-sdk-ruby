@@ -10,11 +10,10 @@ module OneviewSDK
     # @return [Hash] hash of the configuration
     def self.load(path)
       expanded_path = File.expand_path(path)
-      if File.extname(expanded_path) == '.json'
-        return JSON.parse(IO.read(expanded_path))
-      else
-        return YAML.load_file(expanded_path)
-      end
+      JSON.parse(IO.read(expanded_path))
+    rescue
+      data = YAML.load_file(expanded_path)
+      Hash[data.map { |k, v| [k.to_s, v] }]
     end
   end
 end
