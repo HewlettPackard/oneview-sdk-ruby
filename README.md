@@ -184,3 +184,8 @@ To build and install the gem, run `$ rake install`. To build only, run `$ rake b
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
  - Henrique Diomede - [@hdiomede](https://github.com/hdiomede)
  - Thiago Miotto - [@tmiotto](https://github.com/tmiotto)
+
+text
+text
+text
+text
