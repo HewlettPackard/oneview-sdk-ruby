@@ -151,7 +151,6 @@ module OneviewSDK
       matches = resource_class.find_by(@client, options['filter'])
       data = []
       matches.each { |m| data.push(m.data) }
-      fail_nice 'Not Found' if data.empty?
       if options['attribute']
         new_data = []
         data.each do |d|
@@ -163,7 +162,6 @@ module OneviewSDK
         end
         data = new_data
       end
-      data = data.first if data.size == 1
       output data
     end
 
