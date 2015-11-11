@@ -17,8 +17,8 @@ RSpec.describe OneviewSDK::Cli do
     it 'requires the url to be set' do
       ENV.delete('ONEVIEWSDK_URL')
       expect(STDOUT).to receive(:puts).with(/.*/)
-      expect(STDOUT).to receive(:puts).with(/Must set the url option/)
-      expect { command }.to raise_error SystemExit
+      expect(STDOUT).to receive(:puts).with(/OneView appliance API version unknown/)
+      command
     end
   end
 end
