@@ -1,5 +1,10 @@
 # See default at https://github.com/bbatsov/rubocop/blob/master/config/default.yml
 
+Metrics/ClassLength:
+  Max: 200
+  Exclude:
+    - 'lib/oneview-sdk-ruby/cli.rb'
+
 Metrics/LineLength:
   Max: 150
 
@@ -43,12 +48,8 @@ Style/EmptyLinesAroundBlockBody:
 Style/EmptyLinesAroundClassBody:
   Enabled: false
 
-
 Metrics/AbcSize:
   Enabled: false
-
-Metrics/ClassLength:
-  Max: 200
 
 Metrics/CyclomaticComplexity:
   Enabled: false

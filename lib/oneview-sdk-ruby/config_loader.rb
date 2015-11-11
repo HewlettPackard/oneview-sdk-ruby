@@ -9,6 +9,7 @@ module OneviewSDK
     # @param [String] path the full path to the configuration file
     # @return [Hash] hash of the configuration
     def self.load(path)
+      path = File.join(Dir.pwd, path) unless Pathname.new(path).absolute?
       expanded_path = File.expand_path(path)
       JSON.parse(IO.read(expanded_path))
     rescue

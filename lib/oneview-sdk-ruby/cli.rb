@@ -183,7 +183,69 @@ module OneviewSDK
         resource.delete
         output 'Deleted Successfully!'
       rescue StandardError => e
-        fail_nice "Failed to delete #{resource.class} '#{name}': #{e}"
+        fail_nice "Failed to delete #{resource.class.name.split('::').last} '#{name}': #{e}"
+      end
+    end
+
+    method_option :force,
+      desc: 'Delete without confirmation',
+      type: :boolean,
+      aliases: '-f'
+    desc 'delete_from_file FILE_PATH', 'Delete resource defined in file'
+    def delete_from_file(file_path)
+      client_setup
+      resource = OneviewSDK::Resource.from_file(@client, file_path)
+      fail_nice 'File must define name or uri' unless resource[:name] || resource[:uri]
+      found = resource.retrieve! rescue false
+      found ||= resource.refresh rescue false
+      fail_nice "#{resource.class.name.split('::').last} '#{resource[:name] || resource[:uri]}' Not Found" unless found
+      unless options['force'] || agree("Delete '#{resource[:name]}'? [Y/N] ")
+        puts 'OK, exiting.'
+        return
+      end
+      begin
+        resource.delete
+        output 'Deleted Successfully!'
+      rescue StandardError => e
+        fail_nice "Failed to delete #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
+      end
+    end
+
+    method_option :force,
+      desc: 'Overwrite without confirmation',
+      type: :boolean,
+      aliases: '-f'
+    method_option :if_missing,
+      desc: 'Only create if missing (Don\'t update)',
+      type: :boolean,
+      aliases: '-i'
+    desc 'create_from_file FILE_PATH', 'Create/Overwrite resource defined in file'
+    def create_from_file(file_path)
+      fail_nice "Can't use the 'force' and 'if_missing' flags at the same time." if options['force'] && options['if_missing']
+      client_setup
+      resource = OneviewSDK::Resource.from_file(@client, file_path)
+      resource[:uri] = nil
+      fail_nice 'File must specify a resource name' unless resource[:name]
+      existing_resource = resource.class.find_by(@client, name: resource[:name]).first
+      if existing_resource
+        if options['if_missing']
+          puts "Skipped: '#{resource[:name]}': #{resource.class.name.split('::').last} already exists."
+          return
+        end
+        fail_nice "#{resource.class.name.split('::').last} '#{resource[:name]}' already exists." unless options['force']
+        begin
+          existing_resource.update(resource.data)
+          output "Updated Successfully!\n#{resource[:uri]}"
+        rescue StandardError => e
+          fail_nice "Failed to update #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
+        end
+      else
+        begin
+          resource.create
+          output "Created Successfully!\n#{resource[:uri]}"
+        rescue StandardError => e
+          fail_nice "Failed to create #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
+        end
       end
     end
 
@@ -201,7 +263,7 @@ module OneviewSDK
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
       @client = OneviewSDK::Client.new(client_params)
     rescue StandardError => e
-      fail_nice "ERROR: Failed to login to OneView appliance at '#{client_params['url']}'. Message: #{e}"
+      fail_nice "Failed to login to OneView appliance at '#{client_params['url']}'. Message: #{e}"
     end
 
     def parse_type(type)

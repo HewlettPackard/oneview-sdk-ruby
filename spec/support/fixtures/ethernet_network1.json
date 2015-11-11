@@ -1,0 +1,13 @@
+{
+  "type": "OneviewSDK::EthernetNetwork",
+  "api_version": 200,
+  "data": {
+    "uri": "/rest/ethernet-networks/11111111-1111-1111-1111-111111111111",
+    "description": "Short Description",
+    "ethernetNetworkType": "Tagged",
+    "vlanId": 1001,
+    "purpose": "General",
+    "smartLink": false,
+    "privateNetwork": false
+  }
+}
