@@ -313,7 +313,7 @@ module OneviewSDK
               puts "#{' ' * indent}#{d}"
             end
           end
-          puts "\nTotal: #{data.size}" if indent == 0 && data.size > 1
+          puts "\nTotal: #{data.size}" if indent == 0
         else
           puts "#{' ' * indent}#{data}"
         end
