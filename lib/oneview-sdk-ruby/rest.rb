@@ -123,8 +123,7 @@ module OneviewSDK
         @logger.debug "Waiting for task: response.header['location']"
         task = wait_for(response.header['location'])
         resource_data = rest_get(task['associatedResource']['resourceUri'])
-        resource_data = JSON.parse(resource_data.body)
-        return resource_data
+        return JSON.parse(resource_data.body)
       when RESPONSE_CODE_NO_CONTENT # Synchronous delete
         return {}
       when RESPONSE_CODE_BAD_REQUEST

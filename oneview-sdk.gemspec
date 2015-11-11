@@ -19,11 +19,14 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   # spec.add_runtime_dependency ''
+  spec.add_runtime_dependency 'highline'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'thor'
+  spec.add_development_dependency 'pry'
 
 end

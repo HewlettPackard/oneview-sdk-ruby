@@ -9,3 +9,13 @@ RSpec.shared_context 'shared context', a: :b do
   end
 
 end
+
+RSpec.shared_context 'cli context', a: :b do
+
+  before :each do
+    ENV['ONEVIEWSDK_URL'] = 'https://oneview.example.com'
+    ENV['ONEVIEWSDK_USER'] = 'Admin'
+    ENV['ONEVIEWSDK_TOKEN'] = 'secret456'
+  end
+
+end
