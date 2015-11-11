@@ -65,10 +65,10 @@ module OneviewSDK
     desc 'version', 'Print gem and OneView appliance versions'
     def version
       puts "Gem Version: #{OneviewSDK::VERSION}"
-      client_setup('log_level' => :error)
+      client_setup({ 'log_level' => :error }, true)
       puts "OneView appliance API version at '#{@client.url}' = #{@client.max_api_version}"
-    rescue StandardError => e
-      puts "Failed to get appliance API version. Message: #{e.message}"
+    rescue StandardError, SystemExit
+      puts 'OneView appliance API version unknown'
     end
 
     desc 'env', 'Show environment variables for oneview-sdk-ruby'
@@ -234,6 +234,7 @@ module OneviewSDK
         end
         fail_nice "#{resource.class.name.split('::').last} '#{resource[:name]}' already exists." unless options['force']
         begin
+          resource.data.delete('uri')
           existing_resource.update(resource.data)
           output "Updated Successfully!\n#{resource[:uri]}"
         rescue StandardError => e
@@ -251,18 +252,19 @@ module OneviewSDK
 
     private
 
-    def fail_nice(msg)
-      puts "ERROR: #{msg}"
+    def fail_nice(msg = nil)
+      puts "ERROR: #{msg}" if msg
       exit 1
     end
 
-    def client_setup(client_params = {})
+    def client_setup(client_params = {}, quiet = false)
       client_params['ssl_enabled'] = true if @options['ssl_verify'] == true
       client_params['ssl_enabled'] = false if @options['ssl_verify'] == false
       client_params['url'] ||= @options['url'] if @options['url']
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
       @client = OneviewSDK::Client.new(client_params)
     rescue StandardError => e
+      fail_nice if quiet
       fail_nice "Failed to login to OneView appliance at '#{client_params['url']}'. Message: #{e}"
     end
 
