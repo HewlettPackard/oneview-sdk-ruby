@@ -187,3 +187,4 @@ To build and install the gem, run `$ rake install`. To build only, run `$ rake b
 
 text
 text
+text
