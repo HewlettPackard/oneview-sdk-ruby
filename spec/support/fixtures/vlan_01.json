@@ -1,0 +1,9 @@
+{
+  "name" : "vlan_01",
+  "description": "Short Description",
+  "ethernetNetworkType": "Tagged",
+  "vlanId": 1001,
+  "purpose": "General",
+  "smartLink": false,
+  "privateNetwork": false
+}
