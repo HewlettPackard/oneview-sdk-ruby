@@ -169,6 +169,43 @@ Resources can be saved to files and loaded again very easily using the built-in 
 
 For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation.
 
+## CLI
+This gem also comes with a command-line interface to make interracting with OneView possible without the need to create a Ruby program or script.
+
+To get started, run `$ ruby-sdk-ruby --help`.
+
+To communicate with an appliace, you'll need to set up a few environment variables so it knows how to communicate. Run `$ ruby-sdk-ruby env` to see the available environment variables.
+
+The CLI doesn't expose everything in the sdk, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here's a few examples:
+
+ - List ServerProfiles: 
+ ```bash
+ oneview-sdk-ruby list ServerProfiles
+ # Or to show in yaml format (json is also supported):
+ oneview-sdk-ruby list ServerProfiles -f yaml
+ ```
+ 
+ - Show details for a specific resource:
+ ```bash
+ oneview-sdk-ruby show ServerProfile profile-1
+ # Or to show specific attributes only:
+ oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
+ ```
+ 
+ - Search by an attribute:
+ ```bash
+ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
+ # Again, you can show only certain attributes by using the -a option
+ # You can also chain keys together to search in nested hashes:
+ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
+ ```
+ 
+ - Create or delete resource by file:
+ ```bash
+ oneview-sdk-ruby create_from_file /my-server-profile.json
+ oneview-sdk-ruby delete_from_file /my-server-profile.json
+ ```
+
 ## Contributing
 You know the drill. Fork it, branch it, change it, commit it, and pull-request it. We're passionate about improving this project, and glad to accept help to make it better.
 

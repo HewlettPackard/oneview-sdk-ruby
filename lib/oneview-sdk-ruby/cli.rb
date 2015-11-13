@@ -17,7 +17,6 @@ module OneviewSDK
       end
 
       def execute!
-        require 'pry'
         exit_code = begin
           $stderr = @stderr
           $stdin = @stdin
@@ -148,7 +147,12 @@ module OneviewSDK
     def search(type)
       resource_class = parse_type(type)
       client_setup
-      matches = resource_class.find_by(@client, options['filter'])
+      filter = parse_hash(options['filter'])
+      matches = resource_class.find_by(@client, filter)
+      if matches.empty? # Search with integers & booleans converted
+        filter = parse_hash(options['filter'], true)
+        matches = resource_class.find_by(@client, filter) unless filter == options['filter']
+      end
       data = []
       matches.each { |m| data.push(m.data) }
       if options['attribute']
@@ -278,6 +282,34 @@ module OneviewSDK
       new_type = type.downcase.delete('_').delete('-')
       return classes[new_type] if classes.keys.include?(new_type)
       fail_nice "Invalid resource type: '#{type}'.\n  Valid options are #{orig_classes}"
+    end
+
+    def parse_hash(hash, convert_types = false)
+      new_hash = {}
+      hash.each do |k, v|
+        if convert_types
+          v = v.to_i if v.match(/^\d+$/)
+          v = true if v == 'true'
+          v = false if v == 'false'
+          v = nil if v == 'nil'
+        end
+        if k.match(/\./)
+          sub_hash = new_hash
+          split = k.split('.')
+          split.each do |sub_key|
+            if sub_key == split.last
+              sub_hash[sub_key] = v
+            else
+              sub_hash[sub_key] ||= {}
+              sub_hash = sub_hash[sub_key]
+            end
+          end
+          new_hash[split.first] ||= {}
+        else
+          new_hash[k] = v
+        end
+      end
+      new_hash
     end
 
     def output(data = {}, indent = 0)

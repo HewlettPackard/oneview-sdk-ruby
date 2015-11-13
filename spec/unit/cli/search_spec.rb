@@ -47,6 +47,13 @@ RSpec.describe OneviewSDK::Cli do
         expect { OneviewSDK::Cli.start(%w(search ServerProfile -f yaml --filter description:Blah -a uri)) }
           .to output(out.to_yaml).to_stdout_from_any_process
       end
+
+      it 'allows attribute chaining' do
+        expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, 'key1' => { 'key2' => { 'key3' => 'Blah' } })
+        out = [@resource_data.merge('type' => 'ServerProfileV5'), @resource_data2.merge('type' => 'ServerProfileV5')]
+        expect { OneviewSDK::Cli.start(%w(search ServerProfile -f yaml --filter key1.key2.key3:Blah)) }
+          .to output(out.to_yaml).to_stdout_from_any_process
+      end
     end
 
   end
