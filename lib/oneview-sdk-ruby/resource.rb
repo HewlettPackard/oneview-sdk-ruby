@@ -221,7 +221,7 @@ module OneviewSDK
       other.each do |key, val|
         return false unless data && data.respond_to?(:[])
         if val.is_a?(Hash)
-          return false unless recursive_like?(val, data[key.to_s])
+          return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
         else
           return false if val != data[key.to_s]
         end
