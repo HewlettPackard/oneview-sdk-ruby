@@ -14,3 +14,6 @@ puts "Connected to OneView appliance at #{@client.url}"
 # Instance variables for examples:
 # @server_hardware_type_uri = '/rest/server-hardware-types/11111111-1111-1111-1111-111111111111'
 # @enclosure_group_uri = '/rest/enclosure-groups/11111111-1111-1111-1111-111111111111'
+# @enclosure_hostname = '172.1.1.11'
+# @enclosure_username = 'Administrator'
+# @enclosure_password = 'password123'

@@ -90,7 +90,7 @@ module OneviewSDK
     # Make a restful PATCH request to OneView
     # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
     def rest_patch(path, options = {}, api_ver = @api_version)
-      rest_api(:put, path, options, api_ver)
+      rest_api(:patch, path, options, api_ver)
     end
 
     # Make a restful DELETE request to OneView
