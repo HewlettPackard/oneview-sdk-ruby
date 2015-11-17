@@ -6,15 +6,15 @@ RSpec.describe OneviewSDK::Enclosure do
   describe '#initialize' do
     context 'OneView 1.2' do
       it 'sets the defaults correctly' do
-        profile = OneviewSDK::Enclosure.new(@client_120)
-        expect(profile[:type]).to eq('EnclosureV2')
+        enclosure = OneviewSDK::Enclosure.new(@client_120)
+        expect(enclosure[:type]).to eq('EnclosureV2')
       end
     end
 
     context 'OneView 2.0' do
       it 'sets the defaults correctly' do
-        profile = OneviewSDK::Enclosure.new(@client)
-        expect(profile[:type]).to eq('EnclosureV200')
+        enclosure = OneviewSDK::Enclosure.new(@client)
+        expect(enclosure[:type]).to eq('EnclosureV200')
       end
     end
   end
@@ -35,30 +35,30 @@ RSpec.describe OneviewSDK::Enclosure do
           'licensingIntent' => 'OneView',
           'force' => true
         }
-        @profile = OneviewSDK::Enclosure.new(@client, @data)
+        @enclosure = OneviewSDK::Enclosure.new(@client, @data)
       end
 
       it 'only sends certain attributes on the POST' do
         expect(@client).to receive(:rest_post).with('/rest/enclosures', { 'body' => @data.select { |k, _v| k != 'name' } }, anything)
-        @profile.create
+        @enclosure.create
       end
 
       it 'sets the enclosure name correctly' do
-        @profile.create
-        expect(@profile[:name]).to eq('Fake-Enclosure')
+        @enclosure.create
+        expect(@enclosure[:name]).to eq('Fake-Enclosure')
       end
 
       it 'uses the given name if one is not specified' do
-        @profile.data.delete('name')
-        @profile.create
-        expect(@profile[:name]).to eq('Encl1')
+        @enclosure.data.delete('name')
+        @enclosure.create
+        expect(@enclosure[:name]).to eq('Encl1')
       end
     end
 
     context 'with invalid data' do
       it 'fails when certain attributes are not set' do
-        profile = OneviewSDK::Enclosure.new(@client, {})
-        expect { profile.create }.to raise_error(/Missing required attribute/)
+        enclosure = OneviewSDK::Enclosure.new(@client, {})
+        expect { enclosure.create }.to raise_error(/Missing required attribute/)
       end
     end
   end
