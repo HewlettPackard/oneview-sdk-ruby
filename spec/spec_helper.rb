@@ -4,7 +4,7 @@ SimpleCov.start
 
 require 'oneview-sdk-ruby'
 require_relative 'shared_context'
-require_relative 'support/fake_request.rb'
+require_relative 'support/fake_response.rb'
 
 RSpec.configure do |config|
   config.before(:each) do

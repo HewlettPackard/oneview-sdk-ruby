@@ -97,16 +97,19 @@ module OneviewSDK
       fail 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
       loop do
         task = rest_get(task_uri)
-        task = JSON.parse(task.body)
-        case task['taskState'].downcase
+        body = JSON.parse(task.body)
+        case body['taskState'].downcase
         when 'completed'
-          return task
+          return body
+        when 'warning'
+          @logger.warn "Task ended with warning status. Details: #{JSON.pretty_generate(body['taskErrors']) rescue body}"
+          return body
         when 'error', 'killed', 'terminated'
-          msg = "Task ended with bad state: '#{task['taskState']}'.\nResponse: "
-          if task['taskErrors']
-            msg += JSON.pretty_generate(task['taskErrors'])
+          msg = "Task ended with bad state: '#{body['taskState']}'.\nResponse: "
+          if body['taskErrors']
+            msg += JSON.pretty_generate(body['taskErrors'])
           else
-            msg += JSON.pretty_generate(task)
+            msg += JSON.pretty_generate(body)
           end
           fail(msg)
         else
