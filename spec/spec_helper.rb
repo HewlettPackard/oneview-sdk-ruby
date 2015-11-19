@@ -10,7 +10,6 @@ RSpec.configure do |config|
   config.before(:each) do
     allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(200)
     # allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_return('secretToken')
-    
     # Clear environment variables
     %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED).each do |name|
       ENV[name] = nil

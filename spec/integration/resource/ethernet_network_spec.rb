@@ -34,12 +34,12 @@ RSpec.describe OneviewSDK::EthernetNetwork do
 
   describe '#update' do
     it 'Update vlan_01 name' do
-        item = OneviewSDK::EthernetNetwork.new(@client, name: 'vlan_01')
-        item.retrieve!
-        item[:name] = 'vlan_02'
-        item.update
-        item.refresh
-        expect(item[:name]).to eq('vlan_02')
+      item = OneviewSDK::EthernetNetwork.new(@client, name: 'vlan_01')
+      item.retrieve!
+      item[:name] = 'vlan_02'
+      item.update
+      item.refresh
+      expec(item[:name]).to eq('vlan_02')
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe OneviewSDK::EthernetNetwork do
   end
 
   describe '#findBy' do
-    names = ['vlan_01', 'vlan_02', 'vlan_03']
+    names = %w(vlan_01 vlan_02 vlan_03)
     it 'Adding temporary networks' do
       file = File.read('spec/support/fixtures/integration/ethernet_network.json')
       configs = JSON.parse(file)
