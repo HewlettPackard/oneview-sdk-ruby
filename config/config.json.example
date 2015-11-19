@@ -1,0 +1,6 @@
+{
+  "url"         : "https://oneview.hpe.com",
+  "user"        : "Administrator",
+  "password"    : "oneview",
+  "ssl_enabled" : false
+ }

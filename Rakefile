@@ -6,8 +6,9 @@ require 'rubocop/rake_task'
 task default: :spec
 
 desc 'Run specs'
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
+RSpec::Core::RakeTask.new(:spec, [:arg1]) do |spec, args|
+  spec.pattern = 'spec/integration/**/*_spec.rb'
+  ENV['config_file'] = 'config/config.json' if args.arg1.nil?
 end
 
 RuboCop::RakeTask.new

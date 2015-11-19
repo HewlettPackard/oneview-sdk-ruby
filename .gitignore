@@ -23,3 +23,4 @@ tmp
 mkmf.log
 *.sw*
 examples/_client.rb
+config/*.json
