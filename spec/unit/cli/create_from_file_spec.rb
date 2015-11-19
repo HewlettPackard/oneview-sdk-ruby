@@ -5,8 +5,8 @@ RSpec.describe OneviewSDK::Cli do
   include_context 'shared context'
 
   describe '#create_from_file' do
-    let(:yaml_file) { 'spec/support/fixtures/ethernet_network1.yml' }
-    let(:json_file) { 'spec/support/fixtures/ethernet_network1.json' }
+    let(:yaml_file) { 'spec/support/fixtures/unit/cli/ethernet_network1.yml' }
+    let(:json_file) { 'spec/support/fixtures/unit/cli/ethernet_network1.json' }
 
     context 'with invalid options' do
       it 'requires a file name' do

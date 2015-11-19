@@ -1,16 +1,15 @@
 require 'spec_helper'
-require 'json'
 
-RSpec.describe OneviewSDK::EthernetNetwork do
-  include_context 'shared context'
+RSpec.describe OneviewSDK::EthernetNetwork, integration: true do
+  include_context 'integration context'
 
-  describe '#initialize' do
-    it 'sets the defaults correctly' do
-      file = File.read('spec/support/fixtures/integration/ethernet_network.json')
-      configs = JSON.parse(file)
-      item = OneviewSDK::EthernetNetwork.new(@client, configs)
+  let(:file_path) { 'spec/support/fixtures/integration/ethernet_network.json' }
+
+  describe '#create' do
+    it 'can create resources' do
+      item = OneviewSDK::EthernetNetwork.from_file(@client, file_path)
       item.create
-      expect(item[:name]).to eq('vlan_01')
+      expect(item[:name]).to eq('OneViewSDK_Int_Ethernet_Network')
       expect(item[:ethernetNetworkType]).to eq('Tagged')
       expect(item[:vlanId]).to eq(1001)
       expect(item[:purpose]).to eq('General')
@@ -20,10 +19,10 @@ RSpec.describe OneviewSDK::EthernetNetwork do
   end
 
   describe '#retrieve!' do
-    it 'Retrieves the resource' do
-      item = OneviewSDK::EthernetNetwork.new(@client, name: 'vlan_01')
+    it 'retrieves the resource' do
+      item = OneviewSDK::EthernetNetwork.new(@client, name: 'OneViewSDK_Int_Ethernet_Network')
       item.retrieve!
-      expect(item[:name]).to eq('vlan_01')
+      expect(item[:name]).to eq('OneViewSDK_Int_Ethernet_Network')
       expect(item[:ethernetNetworkType]).to eq('Tagged')
       expect(item[:vlanId]).to eq(1001)
       expect(item[:purpose]).to eq('General')
@@ -33,39 +32,33 @@ RSpec.describe OneviewSDK::EthernetNetwork do
   end
 
   describe '#update' do
-    it 'Update vlan_01 name' do
-      item = OneviewSDK::EthernetNetwork.new(@client, name: 'vlan_01')
+    it 'update OneViewSDK_Int_Ethernet_Network name' do
+      item = OneviewSDK::EthernetNetwork.new(@client, name: 'OneViewSDK_Int_Ethernet_Network')
       item.retrieve!
-      item[:name] = 'vlan_02'
-      item.update
+      item.update(name: 'OneViewSDK_Int_Eth_Net')
       item.refresh
-      expec(item[:name]).to eq('vlan_02')
+      expect(item[:name]).to eq('OneViewSDK_Int_Eth_Net')
+    end
+  end
+
+  describe '#find_by' do
+    it 'returns all resources when the hash is empty' do
+      names = OneviewSDK::EthernetNetwork.find_by(@client, {}).map { |item| item[:name] }
+      expect(names).to include('OneViewSDK_Int_Eth_Net')
+    end
+
+    it 'finds networks by multiple attributes' do
+      attrs = { name: 'OneViewSDK_Int_Eth_Net', vlanId: 1001, purpose: 'General' }
+      names = OneviewSDK::EthernetNetwork.find_by(@client, attrs).map { |item| item[:name] }
+      expect(names).to include('OneViewSDK_Int_Eth_Net')
     end
   end
 
   describe '#delete' do
-    it 'Deletes the resource' do
-      item = OneviewSDK::EthernetNetwork.new(@client, name: 'vlan_02')
+    it 'deletes the resource' do
+      item = OneviewSDK::EthernetNetwork.new(@client, name: 'OneViewSDK_Int_Eth_Net')
       item.retrieve!
       item.delete
-    end
-  end
-
-  describe '#findBy' do
-    names = %w(vlan_01 vlan_02 vlan_03)
-    it 'Adding temporary networks' do
-      file = File.read('spec/support/fixtures/integration/ethernet_network.json')
-      configs = JSON.parse(file)
-      names.each do |name|
-        item = OneviewSDK::EthernetNetwork.new(@client, configs)
-        item[:name] = name
-        item.create
-      end
-      network_list = OneviewSDK::EthernetNetwork.find_by(@client, {}).map { |item| item[:name] }
-      expect(names - network_list).to match_array([])
-      OneviewSDK::EthernetNetwork.find_by(@client, {}).each { |network| network.delete if names.include?(network[:name]) }
-      network_list = OneviewSDK::EthernetNetwork.find_by(@client, {})
-      expect(names - network_list).to match(names)
     end
   end
 
