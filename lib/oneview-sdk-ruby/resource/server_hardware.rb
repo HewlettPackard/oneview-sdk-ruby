@@ -94,5 +94,48 @@ module OneviewSDK
       fail 'Invalid configurationState' unless %w(Managed Monitored).include?(value) || value.nil?
     end
 
+    # Power on the server hardware
+    # @param [String] force Use 'PressAndHold' action
+    # @return [Boolean] Whether or not server was powered on
+    def power_on(force = false)
+      set_power_state('on', force)
+    end
+
+    # Power off the server hardware
+    # @param [String] force Use 'PressAndHold' action
+    # @return [Boolean] Whether or not server was powered off
+    def power_off(force = false)
+      set_power_state('off', force)
+    end
+
+    private
+
+    # Set power state. Takes into consideration the current state and does the right thing
+    def set_power_state(state, force)
+      refresh
+      return true if @data['powerState'].downcase == state
+      @logger.debug "Powering #{state} server hardware '#{@data['name']}'. Current state: '#{@data['powerState']}'"
+
+      action = 'PressAndHold' if force
+      action ||= case @data['powerState'].downcase
+                 when 'poweringon', 'poweringoff' # Wait
+                   sleep 5
+                   return set_power_state(state, force)
+                 when 'resetting'
+                   if state == 'on' # Wait
+                     sleep 5
+                     return set_power_state(state, force)
+                   end
+                   'PressAndHold'
+                 when 'unknown' then state == 'on' ? 'ColdBoot' : 'PressAndHold'
+                 else 'MomentaryPress'
+                 end
+      options = { 'body' => { powerState: state.capitalize, powerControl: action } }
+      response = @client.rest_put("#{@data['uri']}/powerState", options)
+      body = @client.response_handler(response)
+      set_all(body)
+      true
+    end
+
   end
 end
