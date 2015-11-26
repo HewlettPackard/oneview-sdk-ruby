@@ -25,19 +25,29 @@ end
 #   ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] = '/full/path/to/one_view/secrets.json'
 RSpec.shared_context 'integration context', a: :b do
   before :each do
-    if ENV['ONEVIEWSDK_INTEGRATION_CONFIG'] && ENV['ONEVIEWSDK_INTEGRATION_SECRETS']
+    config_path = 'spec/integration/one_view_config.json' if File.file?('spec/integration/config.json')
+    config_path ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG']
+
+    secrets_path = 'spec/integration/one_view_secrets.json' if File.file?('spec/integration/secrets.json')
+    secrets_path ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS']
+
+    if config_path && secrets_path
       allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
       allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
 
       # Secrets for URIs, server/enclosure credentials, etc.
-      @secrets = OneviewSDK::Config.load(ENV['ONEVIEWSDK_INTEGRATION_SECRETS'])
+      @secrets = OneviewSDK::Config.load(secrets_path)
 
-      config = OneviewSDK::Config.load(ENV['ONEVIEWSDK_INTEGRATION_CONFIG'])
+      config = OneviewSDK::Config.load(config_path)
       options_120 = config.merge(api_version: 120)
       options_200 = config.merge(api_version: 200)
 
       @client_120 = OneviewSDK::Client.new(options_120)
       @client = OneviewSDK::Client.new(options_200)
+    else
+      puts 'File config.json was not found' unless config_path
+      puts 'File secrets.json was not found' unless secrets_path
+      exit!
     end
   end
 end

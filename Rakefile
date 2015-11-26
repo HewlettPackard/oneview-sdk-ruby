@@ -13,11 +13,6 @@ end
 
 desc 'Run integration tests'
 RSpec::Core::RakeTask.new('spec:integration') do |spec|
-  unless ENV['ONEVIEWSDK_INTEGRATION_CONFIG'] && ENV['ONEVIEWSDK_INTEGRATION_SECRETS']
-    vars = "'ONEVIEWSDK_INTEGRATION_CONFIG' & 'ONEVIEWSDK_INTEGRATION_SECRETS'"
-    puts "\nERROR: Must set the #{vars} environment variables first!\n"
-    exit 1
-  end
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rspec_opts = '--tag integration'
 end

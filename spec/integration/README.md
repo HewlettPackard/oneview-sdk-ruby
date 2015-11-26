@@ -10,12 +10,12 @@
 ### Setup
 First, there's some setup you'll need to do:
 
-1. Copy the [one_view_config.json.example](one_view_config.json.example) and 
+1. Copy the [one_view_config.json.example](one_view_config.json.example) and
    [one_view_secrets.json.example](one_view_secrets.json.example) files to a secure location
    **outside** this repo. When you do so, drop the `.example` part of the filename.
-2. Blah
+2. You can copy the files to this folder and rename to one_view_config.json and one_view_secrets.json
 3. Set the following environment variables with the paths to the files you just created:
-   
+
    ```bash
    export ONEVIEWSDK_INTEGRATION_CONFIG='/path/to/one_view_config.json'
    export ONEVIEWSDK_INTEGRATION_SECRETS='/path/to/one_view_secrets.json'
