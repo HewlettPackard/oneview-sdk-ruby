@@ -1,5 +1,6 @@
 require_relative '_client'
 
+=begin
 options = {
   poolName: 'FST_CPG1',
   storageSystemUri: '/rest/storage-systems/TXQ1000307'
@@ -16,3 +17,12 @@ puts "\nFound ethernet-network by name: '#{storage_pool_2[:name]}'.\n  uri = '#{
 
 storage_pool.delete
 puts "\nDeleted storage-pool '#{storage_pool[:name]}' successfully.\n"
+=end
+
+options = {
+  poolName: 'FST_CPG1',
+  storageSystemUri: '/rest/storage-systems/TXQ1000307'
+}
+
+storage_pool = OneviewSDK::StoragePool.new(@client, options)
+storage_pool.storage_system('FST_CPG1')
