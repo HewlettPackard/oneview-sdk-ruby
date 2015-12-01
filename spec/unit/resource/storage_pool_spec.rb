@@ -27,9 +27,10 @@ RSpec.describe OneviewSDK::StoragePool do
       end
       it 'Invalid input' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
-        expect {storage_pool[:refreshState] = 'Complete'}.to raise_error.with_message(/Invalid refresh state/)
+        expect { storage_pool[:refreshState] = 'Complete' }.to raise_error.with_message(/Invalid refresh state/)
       end
     end
+
     context 'status' do
       it 'Valid input' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
@@ -46,7 +47,7 @@ RSpec.describe OneviewSDK::StoragePool do
       end
       it 'Invalid input' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
-        expect {storage_pool[:status] = 'Complete'}.to raise_error.with_message(/Invalid status/)
+        expect { storage_pool[:status] = 'Complete' }.to raise_error.with_message(/Invalid status/)
       end
     end
   end
