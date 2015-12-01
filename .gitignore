@@ -23,3 +23,5 @@ tmp
 mkmf.log
 *.sw*
 examples/_client.rb
+spec/integration/one_view_config.json
+spec/integration/one_view_secrets.json
