@@ -15,10 +15,9 @@ lig = OneviewSDK::LogicalInterconnectGroup.new(@client, options)
 lig.add_interconnect(1, HP_VC_FF_24_MODEL)
 lig.add_interconnect(2, HP_VC_FF_24_MODEL)
 
-puts "The LIG: #{lig["interconnectBayMap"]}"
-
+# Create an Ethernet Uplink Set
 upset01_options = {
-  name: 'ETH UP 01',
+  name: 'ETH_UP_01',
   networkType: 'Ethernet',
   ethernetNetworkType: 'Tagged'
 }
@@ -49,7 +48,6 @@ eth02 = OneviewSDK::EthernetNetwork.new(@client, eth2_options)
 
 eth01.create!
 eth02.create!
-
 upset01.add_network(eth01)
 upset01.add_network(eth02)
 
@@ -59,4 +57,30 @@ upset01.add_uplink(2, "X7")
 upset01.add_uplink(2, "X8")
 
 lig.add_uplink_set(upset01)
+
+# Create an FC Uplink Set
+upset02_options = {
+  name: 'FC_UP_01',
+  networkType: 'FibreChannel',
+}
+
+fc1_options = {
+  name: 'lig_fc_01',
+  connectionTemplateUri: nil,
+  autoLoginRedistribution: true,
+  fabricType: 'FabricAttach'
+}
+
+upset02 = OneviewSDK::LIGUplinkSet.new(@client, upset02_options)
+fc01 = OneviewSDK::FCNetwork.new(@client, fc1_options)
+
+fc01.create!
+upset02.add_network(fc01)
+
+upset02.add_uplink(1, 'X1')
+upset02.add_uplink(1, 'X2')
+
+lig.add_uplink_set(upset02)
+
+# Create the fully configured LIG
 lig.create!
