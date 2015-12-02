@@ -5,9 +5,15 @@ options = {
   storageSystemUri: '/rest/storage-systems/TXQ1000307'
 }
 
+storage_system = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: '172.18.11.11' })
+storage_system.retrieve!
+puts "Storage System uri=#{storage_system[:uri]}"
+
 storage_pool = OneviewSDK::StoragePool.new(@client, options)
+storage_pool.set_storage_system(storage_system)
 storage_pool.create
 puts "\nCreated storage-pool '#{storage_pool[:name]}' sucessfully.\n  uri = '#{storage_pool[:uri]}'"
+
 
 # Retrieve created storage pool
 storage_pool_2 = OneviewSDK::StoragePool.new(@client, name: 'FST_CPG1')

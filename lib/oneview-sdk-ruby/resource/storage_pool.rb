@@ -45,5 +45,11 @@ module OneviewSDK
       fail 'Invalid status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
     end
 
+    # Set storage system
+    # @param [StorageSystem] storage_system
+    def set_storage_system(storage_system)
+      @data[:storageSystemUri] = storage_system[:uri]
+    end
+
   end
 end
