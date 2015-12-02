@@ -3,7 +3,7 @@ require_relative '_client'
 # Example: Create a Logical Interconnect Group
 options = {
   name: 'FULL_LIG_SDK',
-  enclosureType: "C7000",
+  enclosureType: 'C7000',
   type: 'logical-interconnect-groupV3'
 }
 
@@ -51,17 +51,17 @@ eth02.create!
 upset01.add_network(eth01)
 upset01.add_network(eth02)
 
-upset01.add_uplink(1, "X5")
-upset01.add_uplink(1, "X6")
-upset01.add_uplink(2, "X7")
-upset01.add_uplink(2, "X8")
+upset01.add_uplink(1, 'X5')
+upset01.add_uplink(1, 'X6')
+upset01.add_uplink(2, 'X7')
+upset01.add_uplink(2, 'X8')
 
 lig.add_uplink_set(upset01)
 
 # Create an FC Uplink Set
 upset02_options = {
   name: 'FC_UP_01',
-  networkType: 'FibreChannel',
+  networkType: 'FibreChannel'
 }
 
 fc1_options = {

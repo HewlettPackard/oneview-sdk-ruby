@@ -13,7 +13,7 @@ module OneviewSDK
         interconnect_list = InterconnectType.find_by(@client, {})
         model_list = ''
         interconnect_list.each do |interconnect|
-          model_list += "\n#{interconnect["name"]}"
+          model_list += "\n#{interconnect['name']}"
         end
         fail "It wasn't possible to find the interconnect type #{model}. Supported types:#{model_list}"
       end

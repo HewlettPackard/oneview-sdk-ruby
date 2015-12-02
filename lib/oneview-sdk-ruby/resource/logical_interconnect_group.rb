@@ -20,10 +20,10 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      @data['enclosureType'] = "C7000"
-      @data['state'] = "Active"
+      @data['enclosureType'] = 'C7000'
+      @data['state'] = 'Active'
       @data['uplinkSets'] = []
-      @data['type'] = "logical-interconnect-groupV3"
+      @data['type'] = 'logical-interconnect-groupV3'
       @data['interconnectMapTemplate'] = {}
       # User friendly values:
       @data['interconnectBayMap'] = {}
@@ -54,21 +54,20 @@ module OneviewSDK
     private
 
     def interconnect_map_template_parse
-      if @data['interconnectMapTemplate'] == {}
-        @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] = []
-        1.upto(@bay_count) do |bay_number|
-          entry = {
-            "logicalDownlinkUri" => nil,
-            "logicalLocation" => {
-              "locationEntries" => [
-                {"relativeValue" => bay_number, "type" => "Bay" },
-                {"relativeValue" => 1, "type" => "Enclosure" }
-              ]
-            },
-            "permittedInterconnectTypeUri" => @data["interconnectBayMap"][bay_number]
-          }
-          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry
-        end
+      return if @data['interconnectMapTemplate'] == {}
+      @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] = []
+      1.upto(@bay_count) do |bay_number|
+        entry = {
+          'logicalDownlinkUri' => nil,
+          'logicalLocation' => {
+            'locationEntries' => [
+              { 'relativeValue' => bay_number, 'type' => 'Bay' },
+              { 'relativeValue' => 1, 'type' => 'Enclosure' }
+            ]
+          },
+          'permittedInterconnectTypeUri' => @data['interconnectBayMap'][bay_number]
+        }
+        @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry
       end
     end
 
