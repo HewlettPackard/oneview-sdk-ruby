@@ -20,3 +20,6 @@ puts "Connected to OneView appliance at #{@client.url}"
 # @server_hardware_hostname = '172.1.1.12'
 # @server_hardware_username = 'Administrator'
 # @server_hardware_password = 'password123'
+# @storage_system_ip = '172.18.11.11'
+# @storage_system_username = 'Administrator'
+# @storage_system_password = 'password123'

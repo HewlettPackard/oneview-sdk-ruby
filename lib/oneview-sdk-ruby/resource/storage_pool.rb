@@ -30,7 +30,12 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      @data['type'] ||= 'StoragePoolV2'
+      case @api_version
+      when 120
+        @data['type'] ||= 'StoragePool'
+      when 200
+        @data['type'] ||= 'StoragePoolV2'
+      end
     end
 
     # Validate refreshState

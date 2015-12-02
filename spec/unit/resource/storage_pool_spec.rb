@@ -4,7 +4,14 @@ RSpec.describe OneviewSDK::StoragePool do
   include_context 'shared context'
 
   describe '#initialize' do
-    context 'Defaults' do
+    context 'OneView 1.2' do
+      it 'sets the defaults correctly' do
+        profile = OneviewSDK::StoragePool.new(@client_120)
+        expect(profile[:type]).to eq('StoragePool')
+      end
+    end
+
+    context 'OneView 2.0' do
       it 'sets the defaults correctly' do
         profile = OneviewSDK::StoragePool.new(@client)
         expect(profile[:type]).to eq('StoragePoolV2')
@@ -14,38 +21,32 @@ RSpec.describe OneviewSDK::StoragePool do
 
   describe '#validate' do
     context 'refreshState' do
-      it 'Valid input' do
+      it 'allows valid refresh states' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
-        storage_pool[:refreshState] = 'NotRefreshing'
-        expect(storage_pool[:refreshState]).to eq('NotRefreshing')
-        storage_pool[:refreshState] = 'RefreshFailed'
-        expect(storage_pool[:refreshState]).to eq('RefreshFailed')
-        storage_pool[:refreshState] = 'RefreshPending'
-        expect(storage_pool[:refreshState]).to eq('RefreshPending')
-        storage_pool[:refreshState] = 'Refreshing'
-        expect(storage_pool[:refreshState]).to eq('Refreshing')
+        valid_states = %w(NotRefreshing RefreshFailed RefreshPending Refreshing)
+        valid_states.each do |state|
+          storage_pool[:refreshState] = state
+          expect(storage_pool[:refreshState]).to eq(state)
+        end
       end
-      it 'Invalid input' do
+
+      it 'does not allow invalid refresh states' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
         expect { storage_pool[:refreshState] = 'Complete' }.to raise_error.with_message(/Invalid refresh state/)
       end
     end
 
     context 'status' do
-      it 'Valid input' do
+      it 'allows valid statuses' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
-        storage_pool[:status] = 'OK'
-        expect(storage_pool[:status]).to eq('OK')
-        storage_pool[:status] = 'Disabled'
-        expect(storage_pool[:status]).to eq('Disabled')
-        storage_pool[:status] = 'Warning'
-        expect(storage_pool[:status]).to eq('Warning')
-        storage_pool[:status] = 'Critical'
-        expect(storage_pool[:status]).to eq('Critical')
-        storage_pool[:status] = 'Unknown'
-        expect(storage_pool[:status]).to eq('Unknown')
+        valid_statuses = %w(OK Disabled Warning Critical Unknown)
+        valid_statuses.each do |state|
+          storage_pool[:status] = state
+          expect(storage_pool[:status]).to eq(state)
+        end
       end
-      it 'Invalid input' do
+
+      it 'does not allow invalid statuses' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
         expect { storage_pool[:status] = 'Complete' }.to raise_error.with_message(/Invalid status/)
       end

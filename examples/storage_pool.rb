@@ -1,30 +1,39 @@
 require_relative '_client'
 
-options = {
-  poolName: 'FST_CPG1',
-  storageSystemUri: '/rest/storage-systems/TXQ1000307'
-}
+# Example: Create a storage pool
+# NOTE: This will create a storage pool, then delete it.
+# NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
+#   @storage_system_ip
 
-storage_system = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: '172.18.11.11' })
-storage_system.retrieve!
-puts "Storage System uri=#{storage_system[:uri]}"
+fail 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
-storage_pool = OneviewSDK::StoragePool.new(@client, options)
-storage_pool.set_storage_system(storage_system)
-storage_pool.create
-puts "\nCreated storage-pool '#{storage_pool[:name]}' sucessfully.\n  uri = '#{storage_pool[:uri]}'"
+type = 'storage pool'
+options = {}
 
+# Gather storage system information
+storage_system = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
+storage_system.retrieve! || fail("ERROR: Storage system at #{@storage_system_ip} not found!")
+puts "Storage System uri = #{storage_system[:uri]}"
+options[:storageSystemUri] = storage_system[:uri]
+fail 'ERROR: No unmanaged pools available!' unless storage_system[:unmanagedPools].size > 0
+puts "Unmanaged pool name = #{storage_system[:unmanagedPools].first['name']}"
+options[:poolName] = storage_system[:unmanagedPools].first['name']
+
+# Create storage pool
+item = OneviewSDK::StoragePool.new(@client, options)
+item.set_storage_system(storage_system)
+item.create
+puts "\nCreated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
 # Retrieve created storage pool
-storage_pool_2 = OneviewSDK::StoragePool.new(@client, name: 'FST_CPG1')
-storage_pool_2.retrieve!
-puts "\nRetrieved storage-pool by name: '#{storage_pool_2[:name]}'.\n  uri = '#{storage_pool_2[:uri]}'"
-
+item_2 = OneviewSDK::StoragePool.new(@client, name: options[:poolName])
+item_2.retrieve!
+puts "\nRetrieved #{type} by name: '#{item_2[:name]}'.\n  uri = '#{item_2[:uri]}'"
 
 # Find recently created storage pool by name
-matches = OneviewSDK::StoragePool.find_by(@client, name: storage_pool[:name])
-storage_pool_3 = matches.first
-puts "\nFound ethernet-network by name: '#{storage_pool_3[:name]}'.\n  uri = '#{storage_pool_3[:uri]}'"
+matches = OneviewSDK::StoragePool.find_by(@client, name: item[:name])
+item_3 = matches.first
+puts "\nFound #{type} by name: '#{item_3[:name]}'.\n  uri = '#{item_3[:uri]}'"
 
-storage_pool.delete
-puts "\nDeleted storage-pool '#{storage_pool[:name]}' successfully.\n"
+item.delete
+puts "\nDeleted #{type} '#{item[:name]}' successfully.\n"
