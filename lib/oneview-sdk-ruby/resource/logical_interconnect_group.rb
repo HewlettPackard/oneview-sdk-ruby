@@ -35,11 +35,12 @@ module OneviewSDK
       @data['interconnectBayMap'].store(bay, @interconnect_provider.model_link(model))
     end
 
-    def add_connection( )
+    def add_uplink_set(uplink_set)
+      @data['uplinkSets'] << uplink_set.to_hash
+    end
 
     def create
       interconnect_map_template_parse
-      puts "My Map template #{@data["interconnectMapTemplate"]}"
       @data.delete('interconnectBayMap')
       super
     end
@@ -51,22 +52,6 @@ module OneviewSDK
     # end
 
     private
-
-    # Relative values:
-    #   Downlink Ports: D1 is 1, D2 is 2, ....,D15 is 15, D16 is 16;
-    #   Uplink Ports: X1 is 17, X2 is 18, ....,X9 is 25, X10 is 26.
-    def relative_value_of (port)
-      identifier = port.slice!(0)
-      case identifier
-      when "D"
-        offset = 0
-      when "X"
-        offset = 16
-      else
-        fail"Port not supported: #{identifier} type not found"
-      end
-      port.to_i+offset
-    end
 
     def interconnect_map_template_parse
       if @data['interconnectMapTemplate'] == {}

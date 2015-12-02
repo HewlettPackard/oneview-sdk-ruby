@@ -1,6 +1,6 @@
 module OneviewSDK
   # Resource for Uplink Sets used in Logical interconnect groups
-  # Common Attributes:
+  ### Common Attributes:
   # name
   # networkUris
   # mode

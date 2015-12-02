@@ -82,6 +82,12 @@ module OneviewSDK
       value
     end
 
+    # Return hash representation of object
+    # @return The set of options of the object. If not set, returns {}
+    def to_hash
+      @data
+    end
+
     # Check equality of 2 resources. Same as eql?(other)
     # @param [Resource] other The other resource to check equality for
     # @return [Boolean] Whether or not the two objects are equal
@@ -120,6 +126,17 @@ module OneviewSDK
       body = @client.response_handler(response)
       set_all(body)
       self
+    end
+
+    # Create the resource on OneView using the current data even if it exists
+    # @note Calls refresh method to set additional data
+    # @raise [RuntimeError] if the client is not set
+    # @raise [RuntimeError] if the resource creation fails
+    # @return [Resource] self
+    def create!
+      temp = self.class.new(@client, @data)
+      temp.delete if temp.retrieve!
+      create
     end
 
     # Updates this object using the data that exists on OneView
