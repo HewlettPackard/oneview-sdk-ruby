@@ -100,7 +100,7 @@ module OneviewSDK
       resource_class = parse_type(type)
       client_setup
       data = []
-      resource_class.find_by(@client, {}).each { |r| data.push(r[:name]) }
+      resource_class.get_all(@client).each { |r| data.push(r[:name]) }
       output data
     end
 
@@ -270,20 +270,17 @@ module OneviewSDK
       fail_nice "Failed to login to OneView appliance at '#{client_params['url']}'. Message: #{e}"
     end
 
+    # Get resource class from given string
     def parse_type(type)
-      classes = {}
-      orig_classes = []
+      valid_classes = []
       ObjectSpace.each_object(Class).select { |klass| klass < OneviewSDK::Resource }.each do |c|
-        name = c.name.split('::').last
-        orig_classes.push(name)
-        classes[name.downcase.delete('_').delete('-')] = c
-        classes["#{name.downcase.delete('_').delete('-')}s"] = c
+        valid_classes.push(c.name.split('::').last)
       end
-      new_type = type.downcase.delete('_').delete('-')
-      return classes[new_type] if classes.keys.include?(new_type)
-      fail_nice "Invalid resource type: '#{type}'.\n  Valid options are #{orig_classes}"
+      OneviewSDK.resource_named(type) || fail_nice("Invalid resource type: '#{type}'.\n  Valid options are #{valid_classes}")
     end
 
+    # Parse options hash from input. Handles chaining and keywords such as true/false & nil
+    # Returns new hash with proper nesting and formatting
     def parse_hash(hash, convert_types = false)
       new_hash = {}
       hash.each do |k, v|
@@ -312,6 +309,7 @@ module OneviewSDK
       new_hash
     end
 
+    # Print output in a given format.
     def output(data = {}, indent = 0)
       case @options['format']
       when 'json'
