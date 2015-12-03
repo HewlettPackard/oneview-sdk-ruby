@@ -5,7 +5,7 @@ require_relative '_client' # Gives access to @client
 
 # Example: Add firmware bundle
 type = 'firmware bundle'
-file_path = 'spec/support/fixtures/integration/test.zip'
+file_path = 'spec/support/fixtures/integration/hp-firmware-powerpic-dl580-4.1-5.i386.rpm'
 
 begin
   item = OneviewSDK::FirmwareBundle.upload(@client, file_path)
@@ -19,7 +19,7 @@ end
 # Example: Search firmware drivers by name
 type = 'firmware bundle'
 
-item2 = OneviewSDK::FirmwareDriver.find_by(@client, name: File.basename(file_path)).first
+item2 = OneviewSDK::FirmwareDriver.find_by(@client, name: item[:name]).first
 puts "\nFound #{type} '#{item2[:name]}' by name.\n  uri = '#{item2[:uri]}'"
 
 
