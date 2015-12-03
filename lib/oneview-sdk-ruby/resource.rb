@@ -3,13 +3,14 @@ require_relative 'client'
 module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
-    BASE_URI = '/rest'
+    BASE_URI = nil # Overridden in individual resource classes
 
     attr_accessor \
       :client,
       :data,
       :api_version,
-      :logger
+      :logger,
+      :base_uri # Use only for undefined resources (this class)
 
     # Create client object, establish connection, and set up logging and api version.
     # @param [Client] client The Client object with a connection to the OneView appliance
@@ -116,7 +117,7 @@ module OneviewSDK
     # @return [Resource] self
     def create
       ensure_client
-      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+      response = @client.rest_post(self.class::BASE_URI || @base_uri, { 'body' => @data }, @api_version)
       body = @client.response_handler(response)
       set_all(body)
       self
@@ -197,7 +198,7 @@ module OneviewSDK
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes)
       results = []
-      uri = self::BASE_URI
+      uri = self::BASE_URI || @base_uri
       loop do
         response = JSON.parse(client.rest_get(uri).body)
         members = response['members']
