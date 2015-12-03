@@ -19,22 +19,24 @@ module OneviewSDK
     BASE_URI = '/rest/storage-volume-templates'
 
     def initialize(client, params = {}, api_ver = nil)
+      @data = {}
+      @data['provisioning'] = {}
       super
+
       # Default values:
       @data['type'] ||= 'StorageVolumeTemplateV3'
-      @data['provisioning'] ||= {}
     end
 
     # Validate refreshState
     # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     def validate_refreshState(value)
-      fail 'Invalid storage volume template type' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(value)
+      fail 'Invalid refresh state' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(value)
     end
 
     # Validate status
     # @param [String] value OK, Disabled, Warning, Critical, Unknown
     def validate_status(value)
-      fail 'Invalid storage volume template status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
+      fail 'Invalid status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
     end
 
     # Validate provisionType
@@ -54,6 +56,13 @@ module OneviewSDK
       body = @client.response_handler(response)
       set_all(body)
       self
+    end
+
+    def delete
+      ensure_client && ensure_uri
+      response = @client.rest_delete(@data['uri'], { 'Accept-Language' => 'en_US' }, @api_version)
+      @client.response_handler(response)
+      true
     end
 
     # Set a resource attribute with the given value and call any validation method if necessary
