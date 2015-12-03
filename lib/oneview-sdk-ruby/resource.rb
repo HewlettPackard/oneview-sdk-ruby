@@ -193,6 +193,7 @@ module OneviewSDK
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search
+    # @param [Client] client
     # @param [Hash] attributes Hash containing the attributes name and value
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes)
@@ -209,6 +210,21 @@ module OneviewSDK
         uri = response['nextPageUri']
       end
       results
+    end
+
+    # Get Resource Schema
+    # @param [Client] client
+    # @param [Integer] api_version
+    # @return [Hash] schema
+    def self.schema(client, api_version = nil)
+      response = client.rest_get("#{self::BASE_URI}/schema", api_version)
+      client.response_handler(response)
+    end
+
+    # Get Resource Schema
+    # @return [Hash] schema
+    def schema
+      self.class.schema(@client, @api_version)
     end
 
 
