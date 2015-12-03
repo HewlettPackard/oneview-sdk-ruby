@@ -111,4 +111,17 @@ RSpec.describe OneviewSDK::Client do
       expect { OneviewSDK::Client.new(options) }.to raise_error(/Couldn't log into OneView server/)
     end
   end
+
+  describe '#get_all' do
+    include_context 'shared context'
+
+    it "calls the correct resource's get_all method" do
+      expect(OneviewSDK::ServerProfile).to receive(:get_all).with(@client)
+      @client.get_all('ServerProfiles')
+    end
+
+    it 'fails when a bogus resource type is given' do
+      expect { @client.get_all('BogusResources') }.to raise_error(/Invalid resource type/)
+    end
+  end
 end

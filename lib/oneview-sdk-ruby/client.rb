@@ -88,6 +88,15 @@ module OneviewSDK
       resource.delete
     end
 
+    # Get array of all resources of a specified type
+    # @param [String] type Resource type
+    # @return [Array<Resource>] Results
+    def get_all(type)
+      OneviewSDK.resource_named(type).get_all(self)
+    rescue StandardError
+      raise "Invalid resource type '#{type}'"
+    end
+
     # Wait for a task to complete
     # @param [String] task_uri
     # @param [Boolean] print_dots Whether or not to print a dot after each wait iteration
