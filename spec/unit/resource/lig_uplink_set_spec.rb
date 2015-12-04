@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::LIGUplinkSet do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = OneviewSDK::LIGUplinkSet.new(@client, {networkType: 'FibreChannel'})
+      item = OneviewSDK::LIGUplinkSet.new(@client, networkType: 'FibreChannel')
       expect(item[:logicalPortConfigInfos]).to eq([])
       expect(item[:lacpTimer]).to eq('Short')
       expect(item[:mode]).to eq('Auto')
@@ -46,20 +46,20 @@ RSpec.describe OneviewSDK::LIGUplinkSet do
     it 'Add retrieved network resource' do
       options = { networkType: 'Ethernet', ethernetNetworkType: 'NotApplicable' }
       upset = OneviewSDK::LIGUplinkSet.new(@client, options)
-      net = OneviewSDK::EthernetNetwork.new(@client, {uri: '/rest/ethernet-networks/65546B-A55F20-663390-CA96F5'})
+      net = OneviewSDK::EthernetNetwork.new(@client, uri: '/rest/ethernet-networks/65546B-A55F20-663390-CA96F5')
       expect { upset.add_network(net) }.not_to raise_error
     end
     it 'Add X7 port' do
       upset = OneviewSDK::LIGUplinkSet.new(@client, def_options)
-      expect { upset.add_uplink(1,'X7') }.not_to raise_error
+      expect { upset.add_uplink(1, 'X7') }.not_to raise_error
     end
     it 'Add D5 port' do
       upset = OneviewSDK::LIGUplinkSet.new(@client, def_options)
-      expect { upset.add_uplink(1,'X7') }.not_to raise_error
+      expect { upset.add_uplink(1, 'D5') }.not_to raise_error
     end
     it 'Add not supported port' do
       upset = OneviewSDK::LIGUplinkSet.new(@client, def_options)
-      expect { upset.add_uplink(1,'V5') }.to raise_error(/Port not supported/)
+      expect { upset.add_uplink(1, 'V5') }.to raise_error(/Port not supported/)
     end
   end
 
