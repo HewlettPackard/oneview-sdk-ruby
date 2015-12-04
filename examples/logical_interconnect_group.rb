@@ -79,6 +79,7 @@ upset02.add_network(fc01)
 
 upset02.add_uplink(1, 'X1')
 upset02.add_uplink(1, 'X2')
+upset02.add_uplink(1, 'X3')
 
 lig.add_uplink_set(upset02)
 
