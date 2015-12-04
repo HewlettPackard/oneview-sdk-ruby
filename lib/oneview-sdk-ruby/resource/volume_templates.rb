@@ -58,6 +58,8 @@ module OneviewSDK
       self
     end
 
+    # Delete volume template from OneView
+    # @return [true] if volume template was deleted successfully
     def delete
       ensure_client && ensure_uri
       response = @client.rest_delete(@data['uri'], { 'Accept-Language' => 'en_US' }, @api_version)
@@ -65,7 +67,8 @@ module OneviewSDK
       true
     end
 
-    # Set a resource attribute with the given value and call any validation method if necessary
+    # Set a resource attribute with the given value and call any validation method if necessary,
+    # fill the nested attributes automatically for provisioning
     # @param [String] key attribute name
     # @param value value to assign to the given attribute
     # @note Keys will be converted to strings
