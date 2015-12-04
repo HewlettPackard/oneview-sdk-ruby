@@ -13,10 +13,10 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      @data['logicalPortConfigInfos'] = []
-      @data['lacpTimer'] = 'Short'
-      @data['mode'] = 'Auto'
-      @data['networkUris'] = []
+      @data['logicalPortConfigInfos'] ||= []
+      @data['lacpTimer'] ||= 'Short'
+      @data['mode'] ||= 'Auto'
+      @data['networkUris'] ||= []
     end
 
     # Add existing network to the network list.

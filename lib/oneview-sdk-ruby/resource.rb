@@ -82,12 +82,6 @@ module OneviewSDK
       value
     end
 
-    # Return hash representation of object
-    # @return The set of options of the object. If not set, returns {}
-    def to_hash
-      @data
-    end
-
     # Check equality of 2 resources. Same as eql?(other)
     # @param [Resource] other The other resource to check equality for
     # @return [Boolean] Whether or not the two objects are equal

@@ -44,7 +44,7 @@ module OneviewSDK
     end
 
     def add_uplink_set(uplink_set)
-      @data['uplinkSets'] << uplink_set.to_hash
+      @data['uplinkSets'] << uplink_set.data
     end
 
     private
