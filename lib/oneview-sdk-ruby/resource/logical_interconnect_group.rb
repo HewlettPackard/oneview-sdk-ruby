@@ -45,12 +45,6 @@ module OneviewSDK
       super
     end
 
-    # # Validate X
-    # # @param [X] value X..Y
-    # def validate_X(value)
-    #   fail 'X out of range X..Y' unless value.between?(X, Y)
-    # end
-
     private
 
     def interconnect_map_template_parse
