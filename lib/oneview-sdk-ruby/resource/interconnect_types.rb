@@ -7,6 +7,22 @@ module OneviewSDK
       super
     end
 
+    def create
+      fail 'Method not available for this resource!'
+    end
+
+    def update
+      create
+    end
+
+    def save
+      create
+    end
+
+    def delete
+      create
+    end
+
     def model_link(model)
       link = InterconnectType.find_by(@client, name: model)
       unless link
