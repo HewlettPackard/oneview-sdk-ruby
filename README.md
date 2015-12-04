@@ -216,6 +216,7 @@ To build and install the gem, run `$ rake install`. To build only, run `$ rake b
  - RuboCop: `$ rake rubocop` or `$ rubocop .`
  - Rspec: `$ rake spec` or `$ rspec`
  - Both: Run `$ rake test` to run both RuboCop and Rspec tests.
+ - Integration: See the [spec/integration](spec/integration/) README
 
 ## Authors
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)

@@ -1,0 +1,11 @@
+{
+  "data": {
+    "name" : "OneViewSDK_Int_Ethernet_Network",
+    "description": "Short Description",
+    "ethernetNetworkType": "Tagged",
+    "vlanId": 1001,
+    "purpose": "General",
+    "smartLink": false,
+    "privateNetwork": false
+  }
+}

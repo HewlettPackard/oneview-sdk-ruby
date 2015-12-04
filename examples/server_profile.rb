@@ -19,6 +19,10 @@ profile = OneviewSDK::ServerProfile.new(@client, options)
 profile.create
 puts "\nCreated server profile '#{profile[:name]}' sucessfully.\n  uri = '#{profile[:uri]}'"
 
+# Show available server hardware that matches this profile's requirements
+puts "\nAvailable server hardware for profile '#{profile[:name]}':"
+profile.available_hardware.each { |hw| puts "  - #{hw[:name]}" }
+
 # Find recently created server profile by name
 matches = OneviewSDK::ServerProfile.find_by(@client, name: profile[:name])
 profile2 = matches.first
