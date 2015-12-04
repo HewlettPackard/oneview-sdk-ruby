@@ -20,36 +20,36 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      @data['enclosureType'] = 'C7000'
-      @data['state'] = 'Active'
-      @data['uplinkSets'] = []
-      @data['type'] = 'logical-interconnect-groupV3'
-      @data['interconnectMapTemplate'] = {}
+      @data['enclosureType'] ||= 'C7000'
+      @data['state'] ||= 'Active'
+      @data['uplinkSets'] ||= []
+      @data['type'] ||= 'logical-interconnect-groupV3'
+      @data['interconnectMapTemplate'] ||= {}
+      @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] ||= []
       # User friendly values:
-      @data['interconnectBayMap'] = {}
-      @bay_count = 8
+      @bay_count ||= 8
       @interconnect_provider = OneviewSDK::InterconnectType.new(@client, {})
+      # Create all entries if empty
+      interconnect_map_template_parse if @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] == []
     end
 
     def add_interconnect(bay, model)
-      @data['interconnectBayMap'].store(bay, @interconnect_provider.model_link(model))
+      @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
+        entry['logicalLocation']['locationEntries'].each do |location|
+          if location['type'] == 'Bay' && location['relativeValue'] == bay
+            entry['permittedInterconnectTypeUri'] = @interconnect_provider.model_link(model)
+          end
+        end
+      end
     end
 
     def add_uplink_set(uplink_set)
       @data['uplinkSets'] << uplink_set.to_hash
     end
 
-    def create
-      interconnect_map_template_parse
-      @data.delete('interconnectBayMap')
-      super
-    end
-
     private
 
     def interconnect_map_template_parse
-      return if @data['interconnectMapTemplate'] == {}
-      @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] = []
       1.upto(@bay_count) do |bay_number|
         entry = {
           'logicalDownlinkUri' => nil,
@@ -59,7 +59,7 @@ module OneviewSDK
               { 'relativeValue' => 1, 'type' => 'Enclosure' }
             ]
           },
-          'permittedInterconnectTypeUri' => @data['interconnectBayMap'][bay_number]
+          'permittedInterconnectTypeUri' => nil
         }
         @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry
       end
