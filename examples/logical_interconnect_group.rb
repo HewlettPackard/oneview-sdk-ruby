@@ -60,7 +60,7 @@ upset01.add_uplink(1, 'X6')
 upset01.add_uplink(2, 'X7')
 upset01.add_uplink(2, 'X8')
 
-# lig.add_uplink_set(upset01)
+lig.add_uplink_set(upset01)
 
 # Create an FC Uplink Set
 fc1_options = {
@@ -86,7 +86,7 @@ upset02.add_uplink(1, 'X1')
 upset02.add_uplink(1, 'X2')
 upset02.add_uplink(1, 'X3')
 
-# lig.add_uplink_set(upset02)
+lig.add_uplink_set(upset02)
 
 
 # Create the fully configured LIG
