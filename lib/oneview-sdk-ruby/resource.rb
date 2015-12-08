@@ -122,6 +122,17 @@ module OneviewSDK
       self
     end
 
+    # Create the resource on OneView using the current data even if it exists
+    # @note Calls refresh method to set additional data
+    # @raise [RuntimeError] if the client is not set
+    # @raise [RuntimeError] if the resource creation fails
+    # @return [Resource] self
+    def create!
+      temp = self.class.new(@client, @data)
+      temp.delete if temp.retrieve!
+      create
+    end
+
     # Updates this object using the data that exists on OneView
     # @return [Resource] self
     def refresh
