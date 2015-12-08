@@ -4,18 +4,18 @@ module OneviewSDK
   #   category
   #   created
   #   description
+  #   enclosureType (Required)
   #   eTag
-  #   Uplink sets (default [])
+  #   interconnectMapTemplate (Required)
   #   modified
   #   name (Required)
   #   state
   #   status
-  #   enclosureType (Required)
+  #   uplinkSets (Required) (default = [])
   #   uri
-  #   interconnectMapTemplate (Required)
   class LogicalInterconnectGroup < Resource
     BASE_URI = '/rest/logical-interconnect-groups'
-    attr_reader :bay_count, :interconnect_provider
+    attr_reader :bay_count
 
     def initialize(client, params = {}, api_ver = nil)
       super
@@ -26,30 +26,39 @@ module OneviewSDK
       @data['type'] ||= 'logical-interconnect-groupV3'
       @data['interconnectMapTemplate'] ||= {}
       @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] ||= []
+
       # User friendly values:
-      @bay_count ||= 8
-      @interconnect_provider = OneviewSDK::InterconnectType.new(@client, {})
+      @bay_count = 8
+
       # Create all entries if empty
-      interconnect_map_template_parse if @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] == []
+      parse_interconnect_map_template if @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] == []
     end
 
-    def add_interconnect(bay, model)
+    # Add an interconnect
+    # @param [Fixnum] bay Bay number
+    # @param [String] type InterconnectType
+    def add_interconnect(bay, type)
       @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
         entry['logicalLocation']['locationEntries'].each do |location|
           if location['type'] == 'Bay' && location['relativeValue'] == bay
-            entry['permittedInterconnectTypeUri'] = @interconnect_provider.model_link(model)
+            entry['permittedInterconnectTypeUri'] = OneviewSDK::InterconnectType.find_by(@client, name: type).first['uri']
           end
         end
       end
+    rescue StandardError
+      list = OneviewSDK::InterconnectType.get_all(@client).map { |t| t['name'] }
+      raise "Interconnect type #{type} not found! Supported types: #{list}"
     end
 
+    # Add an uplink set
+    # @param [OneviewSDK::LIGUplinkSet] uplink_set
     def add_uplink_set(uplink_set)
       @data['uplinkSets'] << uplink_set.data
     end
 
     private
 
-    def interconnect_map_template_parse
+    def parse_interconnect_map_template
       1.upto(@bay_count) do |bay_number|
         entry = {
           'logicalDownlinkUri' => nil,

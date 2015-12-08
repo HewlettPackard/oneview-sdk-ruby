@@ -1,12 +1,12 @@
 module OneviewSDK
   # Resource for Uplink Sets used in Logical interconnect groups
-  ### Common Attributes:
-  # name
-  # networkUris
-  # mode
-  # lacpTimer
-  # networkType ['Ethernet', 'FibreChannel' ]
-  # ethernetNetworkType (Required if networkType == 'Ethernet')
+  # Common Data Attributes:
+  #   ethernetNetworkType (Required if networkType == 'Ethernet')
+  #   lacpTimer
+  #   mode
+  #   name
+  #   networkType ['Ethernet', 'FibreChannel' ]
+  #   networkUris
   class LIGUplinkSet < Resource
     BASE_URI = '/rest/logical-interconnect-groups'
 
@@ -21,7 +21,7 @@ module OneviewSDK
 
     # Add existing network to the network list.
     # Ethernet and FibreChannel networks are allowed.
-    # @param [Resource] network resource to be added to the list
+    # @param [OneviewSDK::Resource] network resource to be added to the list
     def add_network(network)
       fail 'Resource not retrieved from server' unless network['uri']
       @data['networkUris'] << network['uri']
@@ -75,14 +75,11 @@ module OneviewSDK
     #   Uplink Ports: X1 is 17, X2 is 18, ....,X9 is 25, X10 is 26.
     def relative_value_of(port)
       identifier = port.slice!(0)
-      case identifier
-      when 'D'
-        offset = 0
-      when 'X'
-        offset = 16
-      else
-        fail "Port not supported: #{identifier} type not found"
-      end
+      offset = case identifier
+               when 'D' then 0
+               when 'X' then 16
+               else fail "Port not supported: #{identifier} type not found"
+               end
       port.to_i + offset
     end
 

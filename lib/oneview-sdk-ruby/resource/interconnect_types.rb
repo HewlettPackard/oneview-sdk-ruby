@@ -23,18 +23,5 @@ module OneviewSDK
       create
     end
 
-    def model_link(model)
-      link = InterconnectType.find_by(@client, name: model)
-      unless link
-        interconnect_list = InterconnectType.find_by(@client, {})
-        model_list = ''
-        interconnect_list.each do |interconnect|
-          model_list += "\n#{interconnect['name']}"
-        end
-        fail "It wasn't possible to find the interconnect type #{model}. Supported types:#{model_list}"
-      end
-      link.first['uri']
-    end
-
   end
 end
