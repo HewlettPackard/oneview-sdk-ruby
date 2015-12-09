@@ -35,7 +35,6 @@ module OneviewSDK
     # @raise [RuntimeError] if the resource creation fails
     # @return [Resource] self
     def create
-      attributes =
       ensure_client
       response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
       body = @client.response_handler(response)
@@ -97,7 +96,7 @@ module OneviewSDK
     def support_dumps(options)
       ensure_client && ensure_uri
       response = @client.rest_post("#{@data['uri']}/support-dumps", { 'body' => options }, @api_version)
-      @client.response_handler(response)
+      @client.wait_for(response.header['location'], true)
       self
     end
 
