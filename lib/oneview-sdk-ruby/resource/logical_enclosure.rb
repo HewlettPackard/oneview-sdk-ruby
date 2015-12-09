@@ -96,7 +96,7 @@ module OneviewSDK
     def support_dumps(options)
       ensure_client && ensure_uri
       response = @client.rest_post("#{@data['uri']}/support-dumps", { 'body' => options }, @api_version)
-      @client.wait_for(response.header['location'], true)
+      @client.wait_for(response.header['location'])
       self
     end
 

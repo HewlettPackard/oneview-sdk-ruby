@@ -1,29 +1,38 @@
 require_relative '_client'
 
-options = {
-  name: 'Logical_Enclosure_1',
-  enclosureUris: [
-    '/rest/enclosures/09SGH100X6J1'
-  ],
-  enclosureGroupUri: '/rest/enclosure-groups/91ba226b-859e-4a44-8496-f09a31baac9cc',
-  firmwareBaselineUri: nil,
-  forceInstallFirmware: false
+
+# Get first logical enclosure
+logical_enclosure = OneviewSDK::LogicalEnclosure.find_by(@client, {}).first
+puts "Found logical-enclosure '#{logical_enclosure[:name]}'.\n uri = '#{logical_enclosure[:uri]}'"
+
+# Retrieve logical enclosure with name 'Encl2'
+logical_enclosure_2 = OneviewSDK::LogicalEnclosure.new(@client, name: 'Encl2')
+logical_enclosure_2.retrieve!
+puts "Retrieved logical-enclosure '#{logical_enclosure_2[:name]}'.\n uri = '#{logical_enclosure_2[:uri]}'"
+
+
+# Get configuration script
+puts "Retrieved logical-enclosure '#{logical_enclosure[:name]}'.\n script = '#{logical_enclosure.get_script}'"
+
+# Set configuration script
+logical_enclosure.set_script("test")
+puts "Setting logical-enclosure '#{logical_enclosure[:name]}'.\n configuration script"
+
+# Get configuration script
+puts "Retrieved logical-enclosure '#{logical_enclosure[:name]}'.\n script = '#{logical_enclosure.get_script}'"
+
+# Reset configuration script
+logical_enclosure.set_script("")
+
+# Update from Group
+logical_enclosure.updateFromGroup
+puts 'Logical enclosure updated'
+
+# Generate dump
+dump = {
+  errorCode: 'Mydump',
+  encrypt: false,
+  excludeApplianceDump: false
 }
-
-# logical_enclosure = OneviewSDK::LogicalEnclosure.new(@client, options)
-# logical_enclosure.create
-
-
-# OneviewSDK::LogicalEnclosure.find_by(@client, {}).first.configuration
-# OneviewSDK::LogicalEnclosure.find_by(@client, {}).first.updateFromGroup
-# OneviewSDK::LogicalEnclosure.find_by(@client, {}).first.script("")
-# dump = {
-#  errorCode: 'Mydump',
-#  encrypt: false,
-#  excludeApplianceDump: false
-# }
-
-puts OneviewSDK::LogicalEnclosure.find_by(@client, {}).first.get_script
-OneviewSDK::LogicalEnclosure.find_by(@client, {}).first.set_script("teste")
-puts 'Script update'
-puts OneviewSDK::LogicalEnclosure.find_by(@client, {}).first.get_script
+logical_enclosure.support_dumps(dump)
+puts "\nGenerated logical-enclosure '#{logical_enclosure[:name]}' dump"
