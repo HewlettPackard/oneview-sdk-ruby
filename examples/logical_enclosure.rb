@@ -15,14 +15,14 @@ puts "Retrieved logical-enclosure '#{logical_enclosure_2[:name]}'.\n uri = '#{lo
 puts "Retrieved logical-enclosure '#{logical_enclosure[:name]}'.\n script = '#{logical_enclosure.get_script}'"
 
 # Set configuration script
-logical_enclosure.set_script("test")
+logical_enclosure.set_script('test')
 puts "Setting logical-enclosure '#{logical_enclosure[:name]}'.\n configuration script"
 
 # Get configuration script
 puts "Retrieved logical-enclosure '#{logical_enclosure[:name]}'.\n script = '#{logical_enclosure.get_script}'"
 
 # Reset configuration script
-logical_enclosure.set_script("")
+logical_enclosure.set_script('')
 
 # Update from Group
 logical_enclosure.updateFromGroup
