@@ -204,6 +204,7 @@ module OneviewSDK
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search
+    # @param [Client] client
     # @param [Hash] attributes Hash containing the attributes name and value
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes)

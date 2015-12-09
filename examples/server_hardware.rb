@@ -32,7 +32,7 @@ puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item3[:uri]}'"
 
 # List all server hardware
 puts "\n\n#{type.capitalize} list:"
-OneviewSDK::ServerProfileTemplate.find_by(@client, {}).each do |p|
+OneviewSDK::ServerHardware.find_by(@client, {}).each do |p|
   puts "  #{p[:name]}"
 end
 
