@@ -212,21 +212,6 @@ module OneviewSDK
       results
     end
 
-    # Get Resource Schema
-    # @param [Client] client
-    # @param [Integer] api_version
-    # @return [Hash] schema
-    def self.schema(client, api_version = nil)
-      response = client.rest_get("#{self::BASE_URI}/schema", api_version)
-      client.response_handler(response)
-    end
-
-    # Get Resource Schema
-    # @return [Hash] schema
-    def schema
-      self.class.schema(@client, @api_version)
-    end
-
 
     private
 
