@@ -70,18 +70,23 @@ module OneviewSDK
       puts 'OneView appliance API version unknown'
     end
 
+    method_option :format,
+      desc: 'Output format',
+      aliases: '-f',
+      enum: %w(json yaml human),
+      default: 'human'
     desc 'env', 'Show environment variables for oneview-sdk-ruby'
     def env
-      print 'ONEVIEWSDK_URL         = '
-      puts ENV['ONEVIEWSDK_URL'] ? "'#{ENV['ONEVIEWSDK_URL']}'" : 'nil'
-      print 'ONEVIEWSDK_USER        = '
-      puts ENV['ONEVIEWSDK_USER'] ? "'#{ENV['ONEVIEWSDK_USER']}'" : 'nil'
-      print 'ONEVIEWSDK_PASSWORD    = '
-      puts ENV['ONEVIEWSDK_PASSWORD'] ? "'#{ENV['ONEVIEWSDK_PASSWORD']}'" : 'nil'
-      print 'ONEVIEWSDK_TOKEN       = '
-      puts ENV['ONEVIEWSDK_TOKEN'] ? "'#{ENV['ONEVIEWSDK_TOKEN']}'" : 'nil'
-      print 'ONEVIEWSDK_SSL_ENABLED = '
-      puts ENV['ONEVIEWSDK_SSL_ENABLED'] ? "#{ENV['ONEVIEWSDK_SSL_ENABLED']}" : 'nil'
+      data = {}
+      OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
+      if @options['format'] == 'human'
+        data.each do |key, value|
+          value = "'#{value}'" if value && ! %w(true false).include?(value)
+          printf "%-#{data.keys.max_by(&:length).length}s = %s\n", key, value || 'nil'
+        end
+      else
+        output(parse_hash(data, true))
+      end
     end
 
     desc 'login', 'Attempt authentication and return token'
@@ -285,7 +290,7 @@ module OneviewSDK
       new_hash = {}
       hash.each do |k, v|
         if convert_types
-          v = v.to_i if v.match(/^\d+$/)
+          v = v.to_i if v && v.match(/^\d+$/)
           v = true if v == 'true'
           v = false if v == 'false'
           v = nil if v == 'nil'

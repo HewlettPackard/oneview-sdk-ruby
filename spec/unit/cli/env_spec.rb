@@ -31,5 +31,11 @@ RSpec.describe OneviewSDK::Cli do
       ENV['ONEVIEWSDK_SSL_ENABLED'] = 'false'
       expect { command }.to output(/ONEVIEWSDK_SSL_ENABLED\s+=\sfalse/).to_stdout_from_any_process
     end
+
+    it 'prints the resource details in json format' do
+      data = {}
+      OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
+      expect { OneviewSDK::Cli.start(%w(env -f json)) }.to output(JSON.pretty_generate(data) + "\n").to_stdout_from_any_process
+    end
   end
 end
