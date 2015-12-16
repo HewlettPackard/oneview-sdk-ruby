@@ -60,7 +60,7 @@ module OneviewSDK
     end
 
     def add_snapshot(storage_volume_snapshot)
-      # TODO Need sub-resource snapshot
+      # TODO, Need sub-resource snapshot
     end
 
     # Defines the volume capacity
@@ -71,14 +71,14 @@ module OneviewSDK
 
     # Defines the type of provisioning
     # @param [String] The desired provisioning type. Must be Thin or Full. Default is Full.
-    def set_provision_type(type='Full')
+    def set_provision_type(type = 'Full')
       validate_provisionType(type)
       @data['provisioningParameters']['provisionType'] = type
     end
 
     # Defines the type of provisioning
     # @param [FalseClass|TrueClass] The shareability of the volume. Default is true.
-    def set_shareable(share=true)
+    def set_shareable(share = true)
       @data['provisioningParameters']['shareable'] = share
     end
 
