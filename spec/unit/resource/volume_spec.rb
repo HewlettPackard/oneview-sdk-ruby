@@ -14,7 +14,7 @@ RSpec.describe OneviewSDK::Volume do
   describe '#validate' do
     it 'provision type' do
       vol = OneviewSDK::Volume.new(@client, {})
-      expect{vol.set_provision_type('N/A')}.to raise_error(/Invalid provision type/)
+      expect { vol.set_provision_type('N/A') }.to raise_error(/Invalid provision type/)
     end
   end
 
