@@ -30,9 +30,9 @@ storage_pool.retrieve!
 
 volume1.add_storage_pool(storage_pool)
 
-volume1.set_provision_type  # Full
-volume1.set_shareable  # shareable
-volume1.set_requested_capacity(512*1024*1024)  # 512MB
+volume1.set_provision_type # Full
+volume1.set_shareable # shareable
+volume1.set_requested_capacity(512 * 1024 * 1024) # 512MB
 
 volume1.create!
 puts "Created #{volume1['name']}"
@@ -41,7 +41,7 @@ puts "Created #{volume1['name']}"
 # 2) Template = Storage Volume Template
 # CANNOT IMPLEMENT: Missing Storage Volume Templates resource
 puts '2) Template = Storage Volume Template'
-puts 'Method not implemented'
+puts 'Need Storage Volume Template'
 
 
 # 3) Common with snapshots = Storage System + Storage Pool + Snapshot Pool
@@ -59,8 +59,8 @@ volume3.add_storage_system(storage_system)
 # Provisioning Parameters
 volume3.add_storage_pool(storage_pool)
 volume3.set_provision_type('Thin')
-volume3.set_shareable(false)  # private
-volume3.set_requested_capacity(1024*1024*1024)  # 1GB
+volume3.set_shareable(false) # private
+volume3.set_requested_capacity(1024 * 1024 * 1024) # 1GB
 
 # The same snapshot pool of the storage pool
 volume3.add_snapshot_pool(storage_pool)
@@ -83,16 +83,16 @@ volume4 = OneviewSDK::Volume.new(@client, options4)
 volume4.add_storage_system(storage_system)
 
 # Provisioning Parameters
-volume4.set_shareable(false)  # private
+volume4.set_shareable(false) # private
 
 volume4.create!
 puts "Created #{volume4['name']}"
 
 
-puts "Clean up..."
+puts 'Clean up...'
 volume1.delete
 # volume2.delete
 volume3.delete
 volume4.delete
 
-puts "Clean up complete!"
+puts 'Clean up complete!'

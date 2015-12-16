@@ -82,17 +82,12 @@ module OneviewSDK
       @data['provisioningParameters']['shareable'] = share
     end
 
+    # Validation methods
+
+    # Validate the type of provisioning
+    # @param [String] Must be Thin or Full
     def validate_provisionType(value)
       fail 'Invalid provision type' unless %w(Thin Full).include?(value)
-    end
-
-    def validate_fabricType(value)
-      fail 'Invalid fabric type' unless %w(DirectAttach FabricAttach).include?(value)
-    end
-
-    def validate_linkStabilityTime(value)
-      return unless @data['fabricType'] && @data['fabricType'] == 'FabricAttach'
-      fail 'Link stability time out of range 1..1800' unless value.between?(1, 1800)
     end
 
     private
