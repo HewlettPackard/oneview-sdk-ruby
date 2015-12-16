@@ -87,3 +87,12 @@ volume4.set_shareable(false)  # private
 
 volume4.create!
 puts "Created #{volume4['name']}"
+
+
+puts "Clean up..."
+volume1.delete
+# volume2.delete
+volume3.delete
+volume4.delete
+
+puts "Clean up complete!"
