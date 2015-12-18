@@ -74,7 +74,7 @@ module OneviewSDK
     # @param [String] value FibreChannel, Ethernet
     def validate_reachability(value)
       values = %w(NotReachable Reachable RedundantlyReachable Unknown)
-      return if value.nil?
+      return unless value
       fail 'Invalid reachability' unless values.include?(value)
     end
 
