@@ -4,11 +4,10 @@ module OneviewSDK
   #   description
   #   isPermanent
   #   name
-  #   provisioningParameters
-  #     provisionType
-  #     requestedCapacity
-  #     shareable
-  #     storagePoolUri
+  #   requestedCapacity (for creation only)
+  #   provisionType
+  #   shareable
+  #   storagePoolUri
   #   snapshotPoolUri1
   #   snapshotUri
   #   storageSystemUri
@@ -25,64 +24,66 @@ module OneviewSDK
     # 4) Management = Storage System + wwn
     # 5) Management by name = Storage System + Storage System Volume Name
     # 6) Snapshot = Snapshot Pool + Storage Pool + Snapshot
-    def initialize(client, params = {}, api_ver = nil)
-      super
-      # Default values
+
+    def create
       @data['provisioningParameters'] ||= {}
+      %w(storagePoolUri requestedCapacity provisionType shareable).each do |k|
+        @data['provisioningParameters'][k] ||= @data.delete(k) if @data.key?(k)
+      end
+      super
+      @data.delete('provisioningParameters')
+      self
     end
 
-    # Adds storage system to the volume creation
-    # @param [OneviewSDK::Resource] Storage system to create the volume
-    def add_storage_system(storage_system)
+    # Delete resource from OneView only (not from storage system)
+    # @return [true] if resource was deleted successfully
+    def delete_from_oneview
+      ensure_client && ensure_uri
+      response = @client.rest_api(:delete, @data['uri'], { 'exportOnly' => true }, @api_version)
+      @client.response_handler(response)
+      true
+    end
+
+    # Sets the storage system to the volume
+    # @param [OneviewSDK::StorageSystem] Storage System
+    def set_storage_system(storage_system)
       assure_uri(storage_system)
       @data['storageSystemUri'] = storage_system['uri']
     end
 
-    # Adds storage pool to the volume creation inside provisioningParameters
-    # @param [OneviewSDK::Resource] Storage pool to create the volume
-    def add_storage_pool(storage_pool)
+    # Sets the storage pool to the volume
+    # @param [OneviewSDK::StoragePool] Storage pool
+    def set_storage_pool(storage_pool)
       assure_uri(storage_pool)
-      @data['provisioningParameters']['storagePoolUri'] = storage_pool['uri']
+      set('storagePoolUri', storage_pool['uri'])
     end
 
-    # Adds storage volume template  to the volume creation
-    # @param [OneviewSDK::Resource] Storage volume template to create the volume
+    # Adds storage volume template to the volume
+    # @param [OneviewSDK::Resource] Storage Volume Template
     def set_storage_volume_template(storage_volume_template)
       assure_uri(storage_volume_template)
-      @data['templateUri'] = storage_volume_template['uri']
+      set('templateUri', storage_volume_template['uri'])
     end
 
-    # Adds snapshot pool to the volume creation
-    # @param [OneviewSDK::Resource] Snapshot pool to create the volume
-    def add_snapshot_pool(storage_pool)
+    # Sets the snapshot pool to the volume
+    # @param [OneviewSDK::StoragePool] Storage Pool to use for snapshots
+    def set_snapshot_pool(storage_pool)
       assure_uri(storage_pool)
-      @data['snapshotPoolUri'] = storage_pool['uri']
+      set('snapshotPoolUri', storage_pool['uri'])
     end
 
-    def add_snapshot(storage_volume_snapshot)
-      # TODO, Need sub-resource snapshot
-    end
+    # def add_snapshot(storage_volume_snapshot)
+    #   TODO: Need sub-resource snapshot
+    # end
 
     # Defines the volume capacity
     # @param [Fixnum] The required capacity in Bytes.
     def set_requested_capacity(capacity)
-      @data['provisioningParameters']['requestedCapacity'] = capacity
+      set('requestedCapacity', capacity)
     end
 
-    # Defines the type of provisioning
-    # @param [String] The desired provisioning type. Must be Thin or Full. Default is Full.
-    def set_provision_type(type = 'Full')
-      validate_provisionType(type)
-      @data['provisioningParameters']['provisionType'] = type
-    end
 
-    # Defines the type of provisioning
-    # @param [FalseClass|TrueClass] The shareability of the volume. Default is true.
-    def set_shareable(share = true)
-      @data['provisioningParameters']['shareable'] = share
-    end
-
-    # Validation methods
+    # Validation methods:
 
     # Validate the type of provisioning
     # @param [String] Must be Thin or Full
