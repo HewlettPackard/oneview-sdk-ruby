@@ -67,24 +67,12 @@ module OneviewSDK
       true
     end
 
-    # Set a resource attribute with the given value and call any validation method if necessary,
-    # fill the nested attributes automatically for provisioning
-    # @param [String] key attribute name
-    # @param value value to assign to the given attribute
-    # @note Keys will be converted to strings
-    def set(key, value)
-      if %w(capacity provisionType shareable storagePoolUri).include?(key.to_s)
-        method_name = "validate_#{key}"
-        send(method_name.to_sym, value) if self.respond_to?(method_name.to_sym)
-        @data['provisioning'][key] = value
-      else
-        super
-      end
-    end
-
     # Set storage pool
     # @param [StoragePool]
-    def set_storage_pool(storage_pool)
+    def set_provisioning(shareable, provisionType, capacity, storage_pool)
+      @data['provisioning']['shareable'] = shareable
+      @data['provisioning']['provisionType'] = provisionType
+      @data['provisioning']['capacity'] = capacity
       @data['provisioning']['storagePoolUri'] = storage_pool[:uri]
     end
 

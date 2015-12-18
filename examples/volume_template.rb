@@ -3,9 +3,6 @@ require_relative '_client'
 options = {
   name: 'VolTemplate_1',
   description: 'Volume Template',
-  shareable: true,
-  provisionType: 'Thin',
-  capacity: '10737418240',
   stateReason: 'None'
 }
 
@@ -17,7 +14,7 @@ storage_system.retrieve!
 
 # Create Volume Template
 volume_template = OneviewSDK::VolumeTemplate.new(@client, options)
-volume_template.set_storage_pool(storage_pool)
+volume_template.set_provisioning(true, 'Thin', '10737418240',storage_pool)
 volume_template.set_snapshot_pool(storage_pool)
 volume_template.set_storage_system(storage_system)
 volume_template.create
