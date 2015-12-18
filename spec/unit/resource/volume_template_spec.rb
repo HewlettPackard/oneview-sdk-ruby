@@ -16,20 +16,11 @@ RSpec.describe OneviewSDK::VolumeTemplate do
     context 'provisioning' do
       it 'Attributes' do
         volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        volume_template[:shareable] = true
-        volume_template[:provisionType] = 'Thin'
-        volume_template[:capacity] = '1000000'
-        volume_template[:storagePoolUri] = ''
-        expect(volume_template[:provisioning][:shareable]).to eq(true)
-        expect(volume_template[:provisioning][:provisionType]).to eq('Thin')
-        expect(volume_template[:provisioning][:capacity]).to eq('1000000')
-        expect(volume_template[:provisioning][:storagePoolUri]).to eq('')
-      end
-
-      it 'storage pool' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        volume_template.set_storage_pool(uri: '/rest/storage-pools/abc123')
-        expect(volume_template[:provisioning]['storagePoolUri']).to eq('/rest/storage-pools/abc123')
+        volume_template.set_provisioning(true, 'Thin', '10737418240', { uri: '' })
+        expect(volume_template[:provisioning]['shareable']).to eq(true)
+        expect(volume_template[:provisioning]['provisionType']).to eq('Thin')
+        expect(volume_template[:provisioning]['capacity']).to eq('10737418240')
+        expect(volume_template[:provisioning]['storagePoolUri']).to eq('')
       end
     end
 
@@ -49,21 +40,6 @@ RSpec.describe OneviewSDK::VolumeTemplate do
   end
 
   describe '#validate' do
-    context 'provisionType' do
-      it 'Valid provisionTypes' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        volume_template[:provisionType] = 'Thin'
-        expect(volume_template[:provisioning][:provisionType]).to eq('Thin')
-        volume_template[:provisionType] = 'Full'
-        expect(volume_template[:provisioning][:provisionType]).to eq('Full')
-      end
-
-      it 'Invalid provisionType' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        expect { volume_template[:provisionType] = 'None' }.to raise_error.with_message(/Invalid provisionType/)
-      end
-    end
-
     context 'refreshState' do
       it 'allows valid refresh states' do
         volume_template = OneviewSDK::VolumeTemplate.new(@client)
