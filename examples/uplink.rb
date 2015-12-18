@@ -1,5 +1,9 @@
 require_relative '_client'
 
+ethernet = OneviewSDK::EthernetNetwork.new(@client, name: 'lig_eth01')
+ethernet.retrieve!
+puts "Ethernet uri = '#{ethernet[:uri]}'"
+
 options = {
   nativeNetworkUri: nil,
   reachability: 'Reachable',
@@ -21,6 +25,6 @@ uplink.add_portConfig(
 )
 
 puts uplink.data
+uplink.add_network(ethernet)
 uplink.create
-
 uplink.delete
