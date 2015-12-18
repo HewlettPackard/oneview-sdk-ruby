@@ -16,7 +16,7 @@ RSpec.describe OneviewSDK::VolumeTemplate do
     context 'provisioning' do
       it 'Attributes' do
         volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        volume_template.set_provisioning(true, 'Thin', '10737418240', { uri: '' })
+        volume_template.set_provisioning(true, 'Thin', '10737418240', uri: '')
         expect(volume_template[:provisioning]['shareable']).to eq(true)
         expect(volume_template[:provisioning]['provisionType']).to eq('Thin')
         expect(volume_template[:provisioning]['capacity']).to eq('10737418240')
