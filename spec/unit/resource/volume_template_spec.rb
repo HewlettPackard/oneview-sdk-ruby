@@ -4,11 +4,47 @@ RSpec.describe OneviewSDK::VolumeTemplate do
   include_context 'shared context'
 
   describe '#initialize' do
+    context 'OneView 1.2' do
+      it 'sets the defaults correctly' do
+        profile = OneviewSDK::VolumeTemplate.new(@client_120)
+        expect(profile[:type]).to eq('StorageVolumeTemplate')
+      end
+    end
+
     context 'OneView 2.0' do
       it 'sets the defaults correctly' do
         profile = OneviewSDK::VolumeTemplate.new(@client)
         expect(profile[:type]).to eq('StorageVolumeTemplateV3')
       end
+    end
+  end
+
+  describe '#create' do
+    it 'adds a language header to the request' do
+      item = OneviewSDK::VolumeTemplate.new(@client, name: 'Fake')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(true)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(uri: '/rest/fake')
+      expect(@client).to receive(:rest_post).with(
+        '/rest/storage-volume-templates',
+        { 'Accept-Language' => 'en_US', 'body' => item.data },
+        item.api_version
+      )
+      item.create
+      expect(item['uri']).to eq('/rest/fake')
+    end
+  end
+
+  describe '#delete' do
+    it 'adds a language header to the request' do
+      item = OneviewSDK::VolumeTemplate.new(@client, name: 'Fake', uri: '/rest/fake')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_delete).and_return(true)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
+      expect(@client).to receive(:rest_delete).with(
+        '/rest/fake',
+        { 'Accept-Language' => 'en_US' },
+        item.api_version
+      )
+      item.delete
     end
   end
 

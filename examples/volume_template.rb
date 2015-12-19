@@ -1,16 +1,22 @@
 require_relative '_client'
 
+# Example: Create a volume template
+# NOTE: You'll need to add the following instance variable to the _client.rb file with valid values for your environment:
+#   @storage_system_ip
+
+fail 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
+
 options = {
-  name: 'VolTemplate_1',
+  name: 'ONEVIEW_SDK_TEST VT1',
   description: 'Volume Template',
   stateReason: 'None'
 }
 
 # Retrieve storage pool and storage system
-storage_pool = OneviewSDK::StoragePool.new(@client, name: 'FST_CPG1')
-storage_pool.retrieve!
-storage_system = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: '172.18.11.11' })
-storage_system.retrieve!
+storage_pool = OneviewSDK::StoragePool.find_by(@client, {}).first
+fail 'ERROR: No storage pools found!' unless storage_pool
+storage_system = OneviewSDK::StorageSystem.find_by(@client, credentials: { ip_hostname: @storage_system_ip }).first
+fail "ERROR: Storage System #{@storage_system_ip} not found!" unless storage_system
 
 # Create Volume Template
 volume_template = OneviewSDK::VolumeTemplate.new(@client, options)
@@ -21,15 +27,15 @@ volume_template.create
 puts "\nCreated Volume Template '#{volume_template[:name]}' sucessfully.\n  uri = '#{volume_template[:uri]}'"
 
 # Retrieve created volume template
-volume_template_2 = OneviewSDK::VolumeTemplate.new(@client, name: 'VolTemplate_1')
+volume_template_2 = OneviewSDK::VolumeTemplate.new(@client, name: options[:name])
 volume_template_2.retrieve!
 puts "\nRetrieved Volume Template by name: '#{volume_template_2[:name]}'.\n  uri = '#{volume_template_2[:uri]}'"
 
 # Find recently created volume template by name
-matches = OneviewSDK::VolumeTemplate.find_by(@client, name: 'VolTemplate_1')
+matches = OneviewSDK::VolumeTemplate.find_by(@client, name: options[:name])
 volume_template_3 = matches.first
 puts "\nFound Volume Template by name: '#{volume_template_3[:name]}'.\n  uri = '#{volume_template_3[:uri]}'"
 
 # Delete Volume Template
-volume_template_3.delete
-puts "\nDeleted Volume Template '#{volume_template_3[:name]}' successfully.\n"
+volume_template.delete
+puts "\nDeleted Volume Template '#{volume_template[:name]}' successfully.\n"
