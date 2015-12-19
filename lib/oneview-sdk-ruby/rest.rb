@@ -95,8 +95,8 @@ module OneviewSDK
 
     # Make a restful DELETE request to OneView
     # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
-    def rest_delete(path, api_ver = @api_version)
-      rest_api(:delete, path, {}, api_ver)
+    def rest_delete(path, options = {}, api_ver = @api_version)
+      rest_api(:delete, path, options, api_ver)
     end
 
     RESPONSE_CODE_OK           = 200

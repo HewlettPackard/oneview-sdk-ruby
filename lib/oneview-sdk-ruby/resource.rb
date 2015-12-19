@@ -23,7 +23,7 @@ module OneviewSDK
       if @api_version > @client.max_api_version
         fail "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
       end
-      @data = {}
+      @data ||= {}
       set_all(params)
     end
 
