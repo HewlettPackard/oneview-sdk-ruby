@@ -24,7 +24,7 @@ module OneviewSDK
       if @api_version > @client.max_api_version
         fail "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
       end
-      @data = {}
+      @data ||= {}
       set_all(params)
     end
 
@@ -123,6 +123,17 @@ module OneviewSDK
       self
     end
 
+    # Create the resource on OneView using the current data even if it exists
+    # @note Calls refresh method to set additional data
+    # @raise [RuntimeError] if the client is not set
+    # @raise [RuntimeError] if the resource creation fails
+    # @return [Resource] self
+    def create!
+      temp = self.class.new(@client, @data)
+      temp.delete if temp.retrieve!
+      create
+    end
+
     # Updates this object using the data that exists on OneView
     # @return [Resource] self
     def refresh
@@ -194,6 +205,7 @@ module OneviewSDK
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search
+    # @param [Client] client
     # @param [Hash] attributes Hash containing the attributes name and value
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes)
@@ -218,6 +230,19 @@ module OneviewSDK
       find_by(client, {})
     end
 
+    protected
+
+    # Fail unless @client is set for this resource.
+    def ensure_client
+      fail 'Please set client attribute before interacting with this resource' unless @client
+      true
+    end
+
+    # Fail unless @data['uri'] is set for this resource.
+    def ensure_uri
+      fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
+      true
+    end
 
     private
 
@@ -236,19 +261,7 @@ module OneviewSDK
       true
     end
 
-    # Fail unless @client is set for this resource.
-    def ensure_client
-      fail 'Please set client attribute before interacting with this resource' unless @client
-      true
-    end
-
-    # Fail unless @data['uri'] is set for this resource.
-    def ensure_uri
-      fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
-      true
-    end
   end
-
 
   # Get resource class that matches the type given
   # @param [String] type Name of the desired class type

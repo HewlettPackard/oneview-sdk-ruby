@@ -1,0 +1,76 @@
+{
+"interconnectMapEntryTemplates" : [
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 1, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  },
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 2, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  },
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 3, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  },
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 4, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  },
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 5, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  },
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 6, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  },
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 7, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  },
+  {
+    "logicalDownlinkUri": null,
+    "logicalLocation" : {
+      "locationEntries" : [
+        { "relativeValue" : 8, "type" : "Bay" },
+        { "relativeValue" : 1, "type" : "Enclosure" }
+      ]
+    }, "permittedInterconnectTypeUri" : null
+  }
+]
+}

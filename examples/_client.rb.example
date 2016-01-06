@@ -8,7 +8,7 @@ require 'pry'
   ssl_enabled: false
 )
 
-puts "Connected to OneView appliance at #{@client.url}"
+puts "Connected to OneView appliance at #{@client.url}\n\n"
 
 
 # Instance variables for examples:
