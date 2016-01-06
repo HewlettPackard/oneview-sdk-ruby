@@ -223,6 +223,19 @@ module OneviewSDK
       results
     end
 
+    protected
+
+    # Fail unless @client is set for this resource.
+    def ensure_client
+      fail 'Please set client attribute before interacting with this resource' unless @client
+      true
+    end
+
+    # Fail unless @data['uri'] is set for this resource.
+    def ensure_uri
+      fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
+      true
+    end
 
     private
 
@@ -241,17 +254,6 @@ module OneviewSDK
       true
     end
 
-    # Fail unless @client is set for this resource.
-    def ensure_client
-      fail 'Please set client attribute before interacting with this resource' unless @client
-      true
-    end
-
-    # Fail unless @data['uri'] is set for this resource.
-    def ensure_uri
-      fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
-      true
-    end
   end
 end
 
