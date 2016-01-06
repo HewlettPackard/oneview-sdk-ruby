@@ -12,7 +12,8 @@ puts "Sucessfully retrieved the enclosure #{enclosure[:name]}"
 log_int = OneviewSDK::LogicalInterconnect.new(@client, {})
 
 # Create interconnect in Bay 1 of Enclosure
-log_int.create(1, enclosure[:uri])
+log_int.create(1, enclosure)
 puts "Created a new interconnect #{log_int[:name]}"
 
 log_int.delete
+puts "Deleted #{log_int[:name]}"
