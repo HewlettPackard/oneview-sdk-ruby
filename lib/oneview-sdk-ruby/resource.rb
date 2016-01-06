@@ -169,7 +169,7 @@ module OneviewSDK
     # @return [true] if resource was deleted successfully
     def delete
       ensure_client && ensure_uri
-      response = @client.rest_delete(@data['uri'], @api_version)
+      response = @client.rest_delete(@data['uri'], {}, @api_version)
       @client.response_handler(response)
       true
     end
@@ -211,14 +211,15 @@ module OneviewSDK
       results = []
       uri = self::BASE_URI
       loop do
-        response = JSON.parse(client.rest_get(uri).body)
-        members = response['members']
+        response = client.rest_get(uri)
+        body = client.response_handler(response)
+        members = body['members']
         members.each do |member|
           temp = new(client, member)
           results.push(temp) if temp.like?(attributes)
         end
-        break unless response['nextPageUri']
-        uri = response['nextPageUri']
+        break unless body['nextPageUri']
+        uri = body['nextPageUri']
       end
       results
     end
