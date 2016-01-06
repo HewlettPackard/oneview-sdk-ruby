@@ -1,5 +1,5 @@
 module OneviewSDK
-  # Resource for server hardware
+  # Resource for storage volumes
   # Common Data Attributes:
   #   description
   #   isPermanent
@@ -72,14 +72,61 @@ module OneviewSDK
       set('snapshotPoolUri', storage_pool['uri'])
     end
 
-    # def add_snapshot(storage_volume_snapshot)
-    #   TODO: Need sub-resource snapshot
-    # end
+    # Create a snapshot of the volume
+    # @param [Hash, OneviewSDK::VolumeSnapshot] Hash or OneviewSDK::VolumeSnapshot object
+    # @return [true] if snapshot was created successfully
+    def create_snapshot(options)
+      ensure_uri
+      ensure_client
+      options = options.data if options.class == VolumeSnapshot
+      response = @client.rest_post("#{@data['uri']}/snapshots", { 'body' => options }, @api_version)
+      @client.response_handler(response)
+      true
+    end
+
+    # Get snapshots of this volume
+    # @return [Array<OneviewSDK::VolumeSnapshot>] Array of snapshots
+    def snapshots
+      ensure_uri
+      ensure_client
+      results = []
+      uri = "#{@data['uri']}/snapshots"
+      loop do
+        response = @client.rest_get(uri, @api_version)
+        body = @client.response_handler(response)
+        members = body['members']
+        members.each do |member|
+          temp = OneviewSDK::VolumeSnapshot.new(@client, member)
+          temp.set_volume(self)
+          results.push(temp)
+        end
+        break unless body['nextPageUri']
+        uri = body['nextPageUri']
+      end
+      results
+    end
 
     # Defines the volume capacity
     # @param [Fixnum] The required capacity in Bytes.
     def set_requested_capacity(capacity)
       set('requestedCapacity', capacity)
+    end
+
+    # Get all the attachable volumes managed by the appliance
+    # @param [Client] client The client object for the appliance
+    # @return [Array<OneviewSDK::Volume>] Array of volumes
+    def self.attachable_volumes(client)
+      results = []
+      uri = "#{BASE_URI}/attachable-volumes"
+      loop do
+        response = client.rest_get(uri)
+        body = client.response_handler(response)
+        members = body['members']
+        members.each { |member| results.push(OneviewSDK::Volume.new(client, member)) }
+        break unless body['nextPageUri']
+        uri = body['nextPageUri']
+      end
+      results
     end
 
 

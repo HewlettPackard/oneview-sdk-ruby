@@ -65,10 +65,57 @@ RSpec.describe OneviewSDK::Volume do
       end
     end
 
+    describe '#create_snapshot' do
+      before :each do
+        @snapshot_options = {
+          'type' => 'Snapshot',
+          'name' => 'Vol1_Snapshot1',
+          'description' => 'New Snapshot'
+        }
+        @item['uri'] = '/rest/storage-volumes/fake'
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
+        expect(@client).to receive(:rest_post).with("#{@item['uri']}/snapshots", { 'body' => @snapshot_options }, @item.api_version)
+      end
+
+      it 'creates the snapshot from a hash' do
+        @item.create_snapshot(@snapshot_options)
+      end
+
+      it 'creates the snapshot from a VolumeSnapshot object' do
+        @item.create_snapshot(OneviewSDK::VolumeSnapshot.new(@client, @snapshot_options))
+      end
+    end
+
+    describe '#snapshots' do
+      it 'gets an array of snapshots' do
+        @item['uri'] = '/rest/storage-volumes/fake'
+        snapshot_options = { 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
+        snapshots = [OneviewSDK::VolumeSnapshot.new(@client, snapshot_options)]
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
+        expect(@client).to receive(:rest_get).with("#{@item['uri']}/snapshots", @item.api_version)
+        snapshots = @item.snapshots
+        expect(snapshots.class).to eq(Array)
+        expect(snapshots.size).to eq(1)
+        expect(snapshots.first['name']).to eq('Vol1_Snapshot1')
+      end
+    end
+
     describe '#set_requested_capacity' do
       it 'sets the requestedCapacity' do
         @item.set_requested_capacity(1000)
         expect(@item['requestedCapacity']).to eq(1000)
+      end
+    end
+
+    describe '#attachable_volumes' do
+      it 'returns an array of available volumes' do
+        volumes = [@item]
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => volumes)
+        expect(@client).to receive(:rest_get).with('/rest/storage-volumes/attachable-volumes')
+        items = OneviewSDK::Volume.attachable_volumes(@client)
+        expect(items.class).to eq(Array)
+        expect(items.size).to eq(1)
+        expect(items.first['name']).to eq('FakeVol')
       end
     end
   end

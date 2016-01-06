@@ -64,6 +64,8 @@ volume3.set_snapshot_pool(storage_pool) # The same snapshot pool of the storage 
 volume3.create!
 puts "  Created #{volume3['name']}"
 
+# Create volume snapshot:
+volume3.create_snapshot(type: 'Snapshot', name: '{volumeName}_{timestamp}', description: 'New snapshot')
 
 if @unmanaged_volume_wwn
   # 4) Management = Storage System + wwn
@@ -87,7 +89,7 @@ end
 puts 'Cleaning up...'
 volume1.delete
 # volume2.delete
+volume3.snapshots.first.delete
 volume3.delete
 volume4.delete if @unmanaged_volume_wwn
-
 puts 'Clean up complete!'
