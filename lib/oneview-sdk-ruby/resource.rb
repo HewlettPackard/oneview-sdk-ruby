@@ -1,5 +1,6 @@
 require_relative 'client'
 
+# OneviewSDK Resources
 module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
@@ -224,6 +225,12 @@ module OneviewSDK
       results
     end
 
+    # Make a GET request to the resource uri and return an array with all objects of this type
+    # @return [Array<Resource>] Results
+    def self.get_all(client)
+      find_by(client, {})
+    end
+
     protected
 
     # Fail unless @client is set for this resource.
@@ -255,6 +262,22 @@ module OneviewSDK
       true
     end
 
+  end
+
+  # Get resource class that matches the type given
+  # @param [String] type Name of the desired class type
+  # @return [Class] Resource class or nil if not found
+  def self.resource_named(type)
+    classes = {}
+    orig_classes = []
+    ObjectSpace.each_object(Class).select { |klass| klass < OneviewSDK::Resource }.each do |c|
+      name = c.name.split('::').last
+      orig_classes.push(name)
+      classes[name.downcase.delete('_').delete('-')] = c
+      classes["#{name.downcase.delete('_').delete('-')}s"] = c
+    end
+    new_type = type.to_s.downcase.delete('_').delete('-')
+    return classes[new_type] if classes.keys.include?(new_type)
   end
 end
 

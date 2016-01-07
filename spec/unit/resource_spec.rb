@@ -70,4 +70,32 @@ RSpec.describe OneviewSDK::Resource do
       expect { res.like?(nil) }.to raise_error(/Can't compare with object type: NilClass/)
     end
   end
+
+  describe '#get_all' do
+    it 'calls find_by with an empty attributes hash' do
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, {})
+      OneviewSDK::Resource.get_all(@client)
+    end
+  end
+end
+
+RSpec.describe OneviewSDK do
+  describe '#resource_named' do
+    it 'gets the correct resource class' do
+      expect(OneviewSDK.resource_named('ServerProfile')).to eq(OneviewSDK::ServerProfile)
+      expect(OneviewSDK.resource_named('FCoENetwork')).to eq(OneviewSDK::FCoENetwork)
+    end
+
+    it 'ignores case' do
+      expect(OneviewSDK.resource_named('SERVERProfilE')).to eq(OneviewSDK::ServerProfile)
+    end
+
+    it 'ignores dashes and underscores' do
+      expect(OneviewSDK.resource_named('server-prof_ile')).to eq(OneviewSDK::ServerProfile)
+    end
+
+    it 'supports symbols' do
+      expect(OneviewSDK.resource_named(:server_profile)).to eq(OneviewSDK::ServerProfile)
+    end
+  end
 end
