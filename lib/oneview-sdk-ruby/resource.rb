@@ -224,14 +224,15 @@ module OneviewSDK
     # Make a GET request to the resource uri and return an array with results matching the search
     # @param [Client] client
     # @param [Hash] attributes Hash containing the attributes name and value
+    # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
-    def self.find_by(client, attributes)
+    def self.find_by(client, attributes, uri = self::BASE_URI)
       results = []
-      uri = self::BASE_URI
       loop do
         response = client.rest_get(uri)
         body = client.response_handler(response)
         members = body['members']
+        break unless members
         members.each do |member|
           temp = new(client, member)
           results.push(temp) if temp.like?(attributes)
