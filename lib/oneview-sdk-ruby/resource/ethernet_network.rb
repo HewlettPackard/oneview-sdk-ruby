@@ -32,6 +32,20 @@ module OneviewSDK
       end
     end
 
+    # Get associatedProfiles
+    def get_associated_profiles
+      ensure_client && ensure_uri
+      response = @client.rest_get("#{@data['uri']}/associatedProfiles", @api_version)
+      response.body
+    end
+
+    # Get associatedUplinkGroups
+    def get_associated_uplink_groups
+      ensure_client && ensure_uri
+      response = @client.rest_get("#{@data['uri']}/associatedUplinkGroups", @api_version)
+      response.body
+    end
+
     # Validate ethernetNetworkType
     # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged
     def validate_ethernetNetworkType(value)
