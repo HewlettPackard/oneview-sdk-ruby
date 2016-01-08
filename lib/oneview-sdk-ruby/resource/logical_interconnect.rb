@@ -68,7 +68,7 @@ module OneviewSDK
     end
 
     # Lists internal networks on the logical interconnect
-    # @return [OneviewSDK::EthernetNetwork] List of networks
+    # @return [OneviewSDK::Resource] List of networks
     def list_vlan_networks
       results = OneviewSDK::Resource.find_by(@client, {}, @data['uri']+'/internalVlans')
       internal_networks = []
@@ -86,6 +86,15 @@ module OneviewSDK
       internal_networks
     end
 
+    # Updates ethernet settings of the Logical Interconnect
+    # @note The attribute is defined inside the instance of the Logical Interconnect
+    # @return Updated instance of the Logical Interconnect
+    def update_ethernet_settings
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['ethernetSettings']
+      response = @client.rest_put(@data['uri']+"/ethernetSettings", @data['ethernetSettings'])
+      body = @client.response_handler(response)
+      self
+    end
 
   end
 end

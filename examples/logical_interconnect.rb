@@ -18,34 +18,59 @@ log_int = OneviewSDK::LogicalInterconnect.new(@client, {name: 'OneViewSDK_Test_E
 log_int.retrieve!
 puts "Logical interconnect #{log_int['name']} was retrieved sucessfully"
 
-puts '#### Update of Internal networks ####'
+# puts '#### Update of Internal networks ####'
+#
+# internal_networks = log_int.list_vlan_networks
+# puts 'Listing all the internal networks'
+# internal_networks.each do |net|
+#   puts "Network #{net[:name]} with uri #{net[:uri]}"
+# end
+#
+# et01 = OneviewSDK::EthernetNetwork.new(@client, name: 'li_et01')
+# et02 = OneviewSDK::EthernetNetwork.new(@client, name: 'li_et02')
+#
+# puts "\nUpdating internal networks"
+# log_int.update_internal_networks(et01, et02)
+#
+# internal_networks2 = log_int.list_vlan_networks
+# puts 'Listing all the internal networks again'
+# internal_networks2.each do |net|
+#   puts "Network #{net[:name]} with uri #{net[:uri]}"
+# end
+#
+# puts "\nReturning to initial state"
+# log_int.update_internal_networks()
+#
+# internal_networks3 = log_int.list_vlan_networks
+# puts 'Listing all the internal networks one more time'
+# internal_networks3.each do |net|
+#   puts "Network #{net[:name]} with uri #{net[:uri]}"
+# end
 
-internal_networks = log_int.list_vlan_networks
-puts 'Listing all the internal networks'
-internal_networks.each do |net|
-  puts "Network #{net[:name]} with uri #{net[:uri]}"
-end
 
-et01 = OneviewSDK::EthernetNetwork.new(@client, name: 'li_et01')
-et02 = OneviewSDK::EthernetNetwork.new(@client, name: 'li_et02')
+puts "\n\n#### Updating Ethernet Settings ####"
+puts log_int['ethernetSettings']
+puts "\nChanging:\nigmpIdleTimeoutInterval to 300\nmacRefreshInterval to 12\nname to UPDATED_SETTINGS\nenableRichTLV to true"
 
-puts "\nUpdating internal networks"
-log_int.update_internal_networks(et01, et02)
+eth_set_backup = log_int['ethernetSettings']
 
-internal_networks2 = log_int.list_vlan_networks
-puts 'Listing all the internal networks again'
-internal_networks2.each do |net|
-  puts "Network #{net[:name]} with uri #{net[:uri]}"
-end
+# log_int['ethernetSettings']['igmpIdleTimeoutInterval'] = 300
+# log_int['ethernetSettings']['macRefreshInterval'] = 12
+# log_int['ethernetSettings']['name'] = 'UPDATED_SETTINGS'
+# log_int['ethernetSettings']['enableRichTLV'] = true
 
-puts "\nReturning to initial state"
-log_int.update_internal_networks()
+puts "\nUpdating internet settings"
+log_int.update_ethernet_settings
+log_int.retrieve! # Retrieving to guarantee the remote is updated
 
-internal_networks3 = log_int.list_vlan_networks
-puts 'Listing all the internal networks one more time'
-internal_networks3.each do |net|
-  puts "Network #{net[:name]} with uri #{net[:uri]}"
-end
+puts "\nNew Ethernet Settings:"
+puts log_int['ethernetSettings']
+
+puts "\nRolling back..."
+log_int['ethernetSettings'] = eth_set_backup
+log_int.update_ethernet_settings
+log_int.retrieve! # Retrieving to guarantee the remote is updated
+puts log_int['ethernetSettings']
 
 # This method is too dangerous to be used, it may misconfigure your appliance.
 # Be wise...
