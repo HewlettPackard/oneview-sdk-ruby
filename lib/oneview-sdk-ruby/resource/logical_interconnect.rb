@@ -67,13 +67,13 @@ module OneviewSDK
     end
 
     # Lists internal networks on the logical interconnect
-    # @return [OneviewSDK::EthernetNetworks] List of networks
+    # @return [OneviewSDK::EthernetNetwork] List of networks
     def list_internal_networks
-      # FIXME: This request DO NOT return 'members'
-      results = OneviewSDK::Resource.find_by(@client, {}, @data['uri'])
+      results = OneviewSDK::Resource.find_by(@client, {}, @data['uri']+'/internalVlans')
       internal_networks = []
       results.each do |vlan|
-        eth = OneviewSDK::EthernetNetworks.new(@client, {name: vlan['name'], uri: vlan['generalNetworkUri']})
+        eth = OneviewSDK::EthernetNetwork.new(@client, {name: vlan['name'], uri: vlan['generalNetworkUri']})
+        puts "Ethernet #{eth['name']} from the uri #{eth['uri']}"
         eth.retrieve!
         internal_networks.push(eth)
       end
