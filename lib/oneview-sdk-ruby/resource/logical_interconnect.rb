@@ -58,13 +58,13 @@ module OneviewSDK
     # @param [OneviewSDK::EthernetNetworks] List of networks to update the Logical Interconnect
     def update_internal_networks(*networks)
       uris = []
+      return @client.response_handler(@client.rest_put(@data['uri']+"/internalNetworks", 'body' => [])) unless networks
       networks.each do |net|
         net.retrieve! unless net['uri']
         uris.push(net['uri'])
       end
-      puts uris
-      response = @client.rest_put(@data['uri']+"/internalNetworks", uris, @api_version)
-      body = @client.response_handler(response)
+      response = @client.rest_put(@data['uri']+"/internalNetworks", 'body' => uris)
+      @client.response_handler(response)
     end
 
     # Lists internal networks on the logical interconnect
@@ -85,6 +85,7 @@ module OneviewSDK
       end
       internal_networks
     end
+
 
   end
 end

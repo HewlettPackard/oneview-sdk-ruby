@@ -21,7 +21,7 @@ module OneviewSDK
       fail 'Must specify path' unless path
 
       uri = URI.parse(URI.escape(@url + path))
-      options['X-API-Version'] ||= api_ver || @api_version
+      options['X-API-Version'] ||= api_ver
       options['auth'] ||= @token
 
       http = Net::HTTP.new(uri.host, uri.port)
