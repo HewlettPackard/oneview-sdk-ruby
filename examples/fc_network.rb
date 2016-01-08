@@ -23,18 +23,21 @@ fc3 = OneviewSDK::FCNetwork.new(@client, name: fc[:name])
 fc3.retrieve!
 puts "\nRetrieved fc-network data by name: '#{fc3[:name]}'.\n  uri = '#{fc3[:uri]}'"
 
-# Update fabricType from recently created network
+# Update autoLoginRedistribution from recently created network
 attribute = { autoLoginRedistribution: false }
 fc2.update(attribute)
 puts "\nUpdated fc-network: '#{fc[:name]}'.\n  uri = '#{fc2[:uri]}'"
 puts "with attribute: #{attribute}"
 
 # Example: List all fc networks with certain attributes
-attributes = { fabricType: 'fabricAttach' }
-puts "\n\nFC networks with #{attributes}"
+attributes = { fabricType: 'FabricAttach' }
+puts "\nFC networks with #{attributes}"
 OneviewSDK::FCNetwork.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
+
+# Get the fc networks schema
+puts "\nSuccessfully retrieved fc-networks schema: #{fc2.get_schema}"
 
 # Delete this network
 fc3.delete
