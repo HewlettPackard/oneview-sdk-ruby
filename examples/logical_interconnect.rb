@@ -17,11 +17,26 @@ log_int = OneviewSDK::LogicalInterconnect.new(@client, {name: 'OneViewSDK_Test_E
 
 log_int.retrieve!
 
-internal_networks = log_int.list_internal_networks
+internal_networks = log_int.list_vlan_networks
 puts 'Listing all the internal networks'
 internal_networks.each do |net|
   puts "Network #{net[:name]} with uri #{net[:uri]}"
 end
+
+et01 = OneviewSDK::EthernetNetwork.new(@client, name: 'li_et01')
+et02 = OneviewSDK::EthernetNetwork.new(@client, name: 'li_et02')
+fc01 = OneviewSDK::FCNetwork.new(@client, name: 'li_fc01')
+
+puts 'Updating internal networks'
+log_int.update_internal_networks(et01, et02, fc01)
+
+internal_networks = log_int.list_vlan_networks
+puts 'Listing all the internal networks again'
+internal_networks.each do |net|
+  puts "Network #{net[:name]} with uri #{net[:uri]}"
+end
+
+
 
 # Delete interconnect
 # log_int.delete

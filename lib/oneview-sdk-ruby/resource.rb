@@ -29,12 +29,12 @@ module OneviewSDK
     end
 
     # Retrieve resource details based on this resource's name.
-    # @note Name must be unique
-    # @param [String] name Resource name
+    # @note Name or URI must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
-    def retrieve!(name = @data['name'])
-      fail 'Must set resource name before trying to retrieve!' unless name
-      results = self.class.find_by(@client, name: name)
+    def retrieve!
+      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      results = self.class.find_by(@client, name: @data['name']) if @data['name']
+      results = self.class.find_by(@client, uri: @data['uri']) if @data['uri']
       return false unless results.size == 1
       set_all(results[0].data)
       true

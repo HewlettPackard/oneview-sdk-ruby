@@ -62,20 +62,26 @@ module OneviewSDK
         net.retrieve! unless net['uri']
         uris.push(net['uri'])
       end
-      response = @client.rest_delete(@data['uri']+"/internalNetworks", uris, @api_version)
+      puts uris
+      response = @client.rest_put(@data['uri']+"/internalNetworks", uris, @api_version)
       body = @client.response_handler(response)
     end
 
     # Lists internal networks on the logical interconnect
     # @return [OneviewSDK::EthernetNetwork] List of networks
-    def list_internal_networks
+    def list_vlan_networks
       results = OneviewSDK::Resource.find_by(@client, {}, @data['uri']+'/internalVlans')
       internal_networks = []
       results.each do |vlan|
-        eth = OneviewSDK::EthernetNetwork.new(@client, {name: vlan['name'], uri: vlan['generalNetworkUri']})
-        puts "Ethernet #{eth['name']} from the uri #{eth['uri']}"
-        eth.retrieve!
-        internal_networks.push(eth)
+        net = if vlan['generalNetworkUri'].include? "ethernet-network"
+          OneviewSDK::EthernetNetwork.new(@client, {uri: vlan['generalNetworkUri']})
+        elsif vlan['generalNetworkUri'].include? "fc-network"
+          OneviewSDK::FCNetwork.new(@client, {uri: vlan['generalNetworkUri']})
+        else
+          OneviewSDK::FCoENetwork.new(@client, {uri: vlan['generalNetworkUri']})
+        end
+        net.retrieve!
+        internal_networks.push(net)
       end
       internal_networks
     end
