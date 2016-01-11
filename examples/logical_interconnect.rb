@@ -48,39 +48,50 @@ puts "Logical interconnect #{log_int['name']} was retrieved sucessfully"
 # end
 
 
-puts "\n\n#### Updating Ethernet Settings ####"
-puts log_int['ethernetSettings']
+# puts "\n\n#### Updating Ethernet Settings ####"
+# puts log_int['ethernetSettings']
+#
+# #Backing up
+# eth_set_backup = {}
+# eth_set_backup['igmpIdleTimeoutInterval'] = log_int['ethernetSettings']['igmpIdleTimeoutInterval']
+# eth_set_backup['macRefreshInterval'] = log_int['ethernetSettings']['macRefreshInterval']
+# eth_set_backup['name'] = log_int['ethernetSettings']['name']
+#
+# log_int['ethernetSettings']['igmpIdleTimeoutInterval'] = 300
+# log_int['ethernetSettings']['macRefreshInterval'] = 10
+# log_int['ethernetSettings']['name'] = 'UPDT_SETTINGS'
+#
+#
+# puts "\nChanging:"
+# puts "igmpIdleTimeoutInterval to #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
+# puts "macRefreshInterval to #{log_int['ethernetSettings']['macRefreshInterval']}"
+# puts "name to #{log_int['ethernetSettings']['name']}"
+#
+# puts "\nUpdating internet settings"
+# log_int.update_ethernet_settings
+# log_int.retrieve! # Retrieving to guarantee the remote is updated
+#
+# puts "\nNew Ethernet Settings:"
+# puts log_int['ethernetSettings']
+#
+# puts "\nRolling back..."
+# eth_set_backup.each do |k,v|
+#   log_int[k] = v
+# end
+# log_int.update_ethernet_settings
+# log_int.retrieve! # Retrieving to guarantee the remote is updated
+# puts log_int['ethernetSettings']
 
-#Backing up
-eth_set_backup = {}
-eth_set_backup['igmpIdleTimeoutInterval'] = log_int['ethernetSettings']['igmpIdleTimeoutInterval']
-eth_set_backup['macRefreshInterval'] = log_int['ethernetSettings']['macRefreshInterval']
-eth_set_backup['name'] = log_int['ethernetSettings']['name']
+# ### Update Settings ###
+# puts 'Updating Logical Interconnect settings'
+# log_int.update_settings
+# puts 'Settings updated successfully'
 
-log_int['ethernetSettings']['igmpIdleTimeoutInterval'] = 300
-log_int['ethernetSettings']['macRefreshInterval'] = 10
-log_int['ethernetSettings']['name'] = 'UPDT_SETTINGS'
+### Static compliance ###
+puts 'Updating compliance of the Logical Interconnects'
+OneviewSDK::LogicalInterconnect.compliance(@client, log_int)
+puts 'Compliance update successful'
 
-
-puts "\nChanging:"
-puts "igmpIdleTimeoutInterval to #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
-puts "macRefreshInterval to #{log_int['ethernetSettings']['macRefreshInterval']}"
-puts "name to #{log_int['ethernetSettings']['name']}"
-
-puts "\nUpdating internet settings"
-log_int.update_ethernet_settings
-log_int.retrieve! # Retrieving to guarantee the remote is updated
-
-puts "\nNew Ethernet Settings:"
-puts log_int['ethernetSettings']
-
-puts "\nRolling back..."
-eth_set_backup.each do |k,v|
-  log_int[k] = v
-end
-log_int.update_ethernet_settings
-log_int.retrieve! # Retrieving to guarantee the remote is updated
-puts log_int['ethernetSettings']
 
 # This method is too dangerous to be used, it may misconfigure your appliance.
 # Be wise...

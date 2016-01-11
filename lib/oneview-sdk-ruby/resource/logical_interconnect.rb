@@ -100,5 +100,40 @@ module OneviewSDK
       self
     end
 
+    # Updates settings of the Logical Interconnect
+    # @param Options to update the Logical Interconnect
+    # @return Updated instance of the Logical Interconnect
+    def update_settings(options = {})
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
+      options['type'] ||= 'InterconnectSettingsV3'
+      options['ethernetSettings'] ||= {}
+      options['ethernetSettings']['type'] ||= 'EthernetInterconnectSettingsV3'
+      update_options = {
+        'If-Match' =>  @data['eTag'],
+        'Body' => options
+      }
+      response = @client.rest_put(@data['uri']+"/settings", update_options, @api_version )
+      body = @client.response_handler(response)
+      self
+    end
+
+    # Returns logical interconnects to a consistent state.
+    # The current logical interconnect state is compared to the associated logical interconnect group.
+    # @param [OneviewSDK:Resource] logical Interconnects to update compliance
+    # @return returns if the operation was successful
+    def self.compliance(client, *logical_interconnects)
+      fail 'Specify at least one Logical Interconnect' unless logical_interconnects
+      request = {
+        'uris' => []
+      }
+      logical_interconnects.each do |log_int|
+        log_int.retrieve! unless log_int['uri']
+        request['uris'].push(log_int['uri'])
+      end
+      response = client.rest_put(BASE_URI+"/compliance", request)
+      body = client.response_handler(response)
+      true
+    end
+
   end
 end
