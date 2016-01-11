@@ -91,7 +91,11 @@ module OneviewSDK
     # @return Updated instance of the Logical Interconnect
     def update_ethernet_settings
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['ethernetSettings']
-      response = @client.rest_put(@data['uri']+"/ethernetSettings", @data['ethernetSettings'])
+      update_options = {
+        'If-Match' =>  @data['ethernetSettings'].delete('eTag'),
+        'Body' => @data['ethernetSettings']
+      }
+      response = @client.rest_put(@data['uri']+"/ethernetSettings", update_options, @api_version )
       body = @client.response_handler(response)
       self
     end
