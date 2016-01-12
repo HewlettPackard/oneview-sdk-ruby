@@ -224,3 +224,5 @@ First run `$ bundle` (requires the bundler gem), then...
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
  - Henrique Diomede - [@hdiomede](https://github.com/hdiomede)
  - Thiago Miotto - [@tmiotto](https://github.com/tmiotto)
+ - Ricardo Piantola - [@piantola](https://github.com/piantola)
+ 
