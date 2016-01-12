@@ -130,9 +130,19 @@ module OneviewSDK
         log_int.retrieve! unless log_int['uri']
         request['uris'].push(log_int['uri'])
       end
-      response = client.rest_put(BASE_URI+"/compliance", request)
+      response = client.rest_put(BASE_URI+'/compliance', request)
       body = client.response_handler(response)
       true
+    end
+
+    # Returns logical interconnects to a consistent state.
+    # The current logical interconnect state is compared to the associated logical interconnect group.
+    # @return returns the updated object
+    def compliance
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
+      response = @client.rest_put(@data['uri']+'/compliance', {}, @api_version )
+      body = client.response_handler(response)
+      self
     end
 
   end

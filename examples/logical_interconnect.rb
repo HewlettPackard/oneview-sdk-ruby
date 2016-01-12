@@ -88,8 +88,13 @@ puts "Logical interconnect #{log_int['name']} was retrieved sucessfully"
 # puts 'Settings updated successfully'
 
 ### Static compliance ###
-puts 'Updating compliance of the Logical Interconnects'
-OneviewSDK::LogicalInterconnect.compliance(@client, log_int)
+# puts 'Putting in compliance the Logical Interconnects'
+# OneviewSDK::LogicalInterconnect.compliance(@client, log_int)
+# puts 'Compliance update successful'
+
+### Instance compliance ###
+puts "Putting in compliance of the Logical Interconnect #{log_int['name']}"
+log_int.compliance
 puts 'Compliance update successful'
 
 
