@@ -27,13 +27,6 @@ module OneviewSDK
       @data['fabricType'] ||= 'FabricAttach'
     end
 
-    # Get fc networks schema
-    def get_schema
-      ensure_client && ensure_uri
-      response = @client.rest_get("#{@data['uri']}/schema", @api_version)
-      response.body
-    end
-
     def validate_fabricType(value)
       fail 'Invalid fabric type' unless %w(DirectAttach FabricAttach).include?(value)
     end

@@ -36,9 +36,6 @@ OneviewSDK::FCNetwork.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
 
-# Get the fc networks schema
-puts "\nSuccessfully retrieved fc-networks schema: #{fc2.get_schema}"
-
 # Delete this network
 fc3.delete
 puts "\nSucessfully deleted fc-network '#{fc3[:name]}'."
