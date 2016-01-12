@@ -1,11 +1,11 @@
 require_relative '_client' # Gives access to @client
 
-# Example: Create an bulk ethernet network
-# NOTE: This will create a bulk ethernet network with prefix name 'TestNetwork'.
+# Example: Bulk-Create ethernet networks
+# NOTE: This will create 25 ethernet network with prefix name 'OneViewSDK_Bulk_Network'.
 options = {
-  vlanIdRange: '1-500',
+  vlanIdRange: '26-50',
   purpose: 'General',
-  namePrefix: 'TestNetwork',
+  namePrefix: 'OneViewSDK_Bulk_Network',
   smartLink: false,
   privateNetwork: false,
   bandwidth: {
@@ -18,4 +18,12 @@ options = {
 # Creating a bulk ethernet network
 bulk_ethernet = OneviewSDK::BulkEthernetNetwork.new(@client, options)
 bulk_ethernet.create
-puts "\nCreated bulk-ethernet-network '#{bulk_ethernet[:namePrefix]}' sucessfully.\n"
+puts "Bulk-created ethernet networks '#{bulk_ethernet[:namePrefix]}_<x>' sucessfully."
+
+list = OneviewSDK::EthernetNetwork.get_all(@client).select { |e| e['name'].match(/^OneViewSDK_Bulk_Network_\d*/) }
+list.sort_by! { |e| e['name'] }
+list.each { |e| puts "  #{e['name']}" }
+
+# Clean up
+list.map(&:delete)
+puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"

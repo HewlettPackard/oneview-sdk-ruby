@@ -17,19 +17,23 @@ module OneviewSDK
       @data['type'] ||= 'bulk-ethernet-network'
     end
 
+    def create
+      ensure_client
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+      @client.response_handler(response)
+    end
+
     def update
       fail 'Method not available for this resource!'
     end
 
-    def delete
-      fail 'Method not available for this resource!'
-    end
-
     def save
-      fail 'Method not available for this resource!'
+      update
     end
 
-
+    def delete
+      update
+    end
 
   end
 end
