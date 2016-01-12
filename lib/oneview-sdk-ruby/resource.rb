@@ -194,6 +194,23 @@ module OneviewSDK
       true
     end
 
+    # Get resource schema
+    # @return [Hash] Schema
+    def schema
+      self.class.schema(@client)
+    end
+
+    # Get resource schema
+    # @param [Client] client
+    # @return [Hash] Schema
+    def self.schema(client)
+      response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
+      client.response_handler(response)
+    rescue StandardError => e
+      client.logger.error('This resource does not implement the schema endpoint!') if e.message.match(/404 NOT FOUND/)
+      raise e
+    end
+
     # Load resource from .json or .yaml file
     # @param [Client] client The client object to associate this resource with
     # @param [String] file_path The full path to the file
