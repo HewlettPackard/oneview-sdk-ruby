@@ -97,6 +97,10 @@ puts "Putting in compliance of the Logical Interconnect #{log_int['name']}"
 log_int.compliance
 puts 'Compliance update successful'
 
+### Configure log_int ###
+puts "Configuring the Logical Interconnect #{log_int['name']}"
+log_int.configure
+puts 'Configuration successful'
 
 # This method is too dangerous to be used, it may misconfigure your appliance.
 # Be wise...

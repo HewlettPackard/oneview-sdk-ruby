@@ -145,5 +145,28 @@ module OneviewSDK
       self
     end
 
+    # Asynchronously applies or re-applies the logical interconnect configuration to all managed interconnects
+    # @return returns the updated object
+    def configure
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
+      response = @client.rest_put(@data['uri']+'/configure', {}, @api_version )
+      body = client.response_handler(response)
+      self
+    end
+
+    # Updates port monitor settings of the Logical Interconnect
+    # @note The attribute is defined inside the instance of the Logical Interconnect
+    # @return Updated instance of the Logical Interconnect
+    def update_port_monitor
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['portMonitor']
+      update_options = {
+        'If-Match' =>  @data['portMonitor'].delete('eTag'),
+        'Body' => @data['portMonitor']
+      }
+      response = @client.rest_put(@data['portMonitor']['uri'], update_options, @api_version )
+      body = @client.response_handler(response)
+      self
+    end
+
   end
 end
