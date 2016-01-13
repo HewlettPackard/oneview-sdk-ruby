@@ -150,6 +150,9 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
   OneviewSDK::EthernetNetwork.find_by(client, { purpose: 'General' }).each do |network|
     puts "  #{network[:name]}"
   end
+  
+  # Get all resources:
+  networks = client.get_all(:EthernetNetwork)
   ```
 
 ### Save/Load Resources with files
