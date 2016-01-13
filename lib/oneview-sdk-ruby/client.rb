@@ -17,6 +17,7 @@ module OneviewSDK
     # @option options [Logger] :logger (Logger.new(STDOUT)) Logger object to use.
     #   Must implement debug(String), info(String), warn(String), error(String), & level=
     # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
+    # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on tasks to complete.
     # @option options [String] :url URL of OneView appliance
     # @option options [String] :user ('Administrator') Username to use for authentication with OneView appliance
     # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) Password to use for authentication with OneView appliance
