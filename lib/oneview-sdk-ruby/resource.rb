@@ -276,7 +276,7 @@ module OneviewSDK
       classes[name.downcase.delete('_').delete('-')] = c
       classes["#{name.downcase.delete('_').delete('-')}s"] = c
     end
-    new_type = type.to_s.downcase.delete('_').delete('-')
+    new_type = type.to_s.downcase.delete('_').delete('-').delete(' ')
     return classes[new_type] if classes.keys.include?(new_type)
   end
 end
