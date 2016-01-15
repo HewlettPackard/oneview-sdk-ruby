@@ -29,7 +29,7 @@ module OneviewSDK
       [:debug, :info, :warn, :error, :level=].each { |m| fail "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
       @log_level = options[:log_level] || :info
       @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
-      @print_wait_dots = options.key?(:print_wait_dots) ? options.key?(:print_wait_dots) : false
+      @print_wait_dots = options.fetch(:print_wait_dots, false)
       @url = options[:url] || ENV['ONEVIEWSDK_URL']
       fail 'Must set the url option' unless @url
       @max_api_version = appliance_api_version
