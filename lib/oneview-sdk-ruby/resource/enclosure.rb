@@ -1,3 +1,5 @@
+require 'time'
+
 module OneviewSDK
   # Resource for enclosure groups
   # Common Data Attributes:
@@ -91,6 +93,80 @@ module OneviewSDK
         @client.response_handler(response)
       end
       self
+    end
+
+    # Reapply enclosure configuration
+    def configuration
+      response = @client.rest_put(@data['uri'] + '/configuration')
+      new_data = @client.response_handler(response)
+      set_all(new_data)
+    end
+
+    # Refresh enclosure along with all of its components
+    # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing
+    # @param [Hash] options  Optional force fields for refreshing the enclosure
+    def refreshState(state, options = {})
+      fail 'Invalid refreshState' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(state)
+      requestBody = {
+        'body' => {
+          refreshState: state,
+          refreshForceOptions: options
+        }
+      }
+      response = @client.rest_put(@data['uri'] + '/refreshState', requestBody)
+      new_data = @client.response_handler(response)
+      set_all(new_data)
+    end
+
+    # Enclosure script
+    def script
+      response = @client.rest_get(@data['uri'] + '/script')
+      @client.response_handler(response)
+    end
+
+    # Gets settings that describe the environmental configuration
+    def environmentalConfiguration
+      response = @client.rest_get(@data['uri'] + '/environmentalConfiguration')
+      @client.response_handler(response)
+    end
+
+    # Retrieves historical utilization
+    # @param [Hash] value
+    def utilization(queryParameters = {})
+      uri = "#{@data['uri']}/utilization?"
+
+      endDate = Time.iso8601(queryParameters[:endDate]) if queryParameters[:endDate]
+      startDate = queryParameters[:startDate]
+
+      # If the user provided an endDate and no startDate, then the startDate should be
+      # automatically calculated
+      if endDate && startDate.nil?
+        queryParameters[:startDate] = (endDate - 60*60*24).iso8601(3)
+      end
+
+      queryParameters.each do |key, value|
+        if key.to_sym == :fields
+          uri += "fields=#{value.join(',')}"
+        elsif key.to_sym == :startDate || key.to_sym == :endDate
+          uri += "filter=#{key}=#{value}"
+        else
+          uri += "#{key}=#{value}"
+        end
+        uri += '&'
+      end
+      uri.chop!
+      puts uri
+      response = @client.rest_get(uri)
+      @client.response_handler(response)
+    end
+
+    # Update specific attributes of a given enclosure resource
+    # @param [String] operation
+    # @param [String] path
+    # @param [String] value
+    def updateAttribute(operation, path, value)
+      response = @client.rest_patch(@data['uri'], { 'body' => [{ op: operation, path: path, value: value }]})
+      @client.response_handler(response)
     end
 
     def validate_licensingIntent(value)
