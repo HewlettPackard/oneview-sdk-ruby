@@ -31,7 +31,7 @@ li_et01_options = {
   type:  'ethernet-networkV3'
 }
 et01 = OneviewSDK::EthernetNetwork.new(@client, li_et01_options)
-et01.create
+et01.create!
 
 li_et02_options = {
   vlanId:  '2002',
@@ -43,7 +43,7 @@ li_et02_options = {
   type:  'ethernet-networkV3'
 }
 et02 = OneviewSDK::EthernetNetwork.new(@client, li_et02_options)
-et02.create
+et02.create!
 
 puts "\nUpdating internal networks"
 log_int.update_internal_networks(et01, et02)
@@ -102,12 +102,8 @@ log_int.retrieve! # Retrieving to guarantee the remote is updated
 puts "igmpIdleTimeoutInterval: #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
 puts "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}"
 
-### Update Settings ###
-puts 'Updating Logical Interconnect settings'
-log_int.update_settings
-puts 'Settings updated successfully'
-
 ### Instance compliance ###
+puts "\n#### Compliance ####"
 puts "Putting #{log_int['name']} in compliance with the LIG"
 log_int.compliance
 puts 'Compliance update successful'
