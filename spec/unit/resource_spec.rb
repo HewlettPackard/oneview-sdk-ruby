@@ -30,6 +30,16 @@ RSpec.describe OneviewSDK::Resource do
       expect(res[:name]).to eq('Test')
       expect(res['description']).to eq('None')
     end
+
+    it 'allows setting the base_uri for undefined classes' do
+      base_uri = '/rest/my-resource'
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(uri: "#{base_uri}/1")
+      res = OneviewSDK::Resource.new(@client)
+      res.base_uri = base_uri
+      expect(@client).to receive(:rest_post).with(base_uri, { 'body' => res.data }, res.api_version)
+      res.create
+      expect(res[:uri]).to eq("#{base_uri}/1")
+    end
   end
 
   describe '#like?' do
