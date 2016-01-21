@@ -24,6 +24,14 @@ fcoe3 = OneviewSDK::FCoENetwork.new(@client, name: fcoe[:name])
 fcoe3.retrieve!
 puts "\nRetrieved ethernet-network data by name: '#{fcoe3[:name]}'.\n  uri = '#{fcoe3[:uri]}'"
 
+# Update the name of recently created network
+attributes = {
+  name: 'OneViewSDK Test F Net',
+}
+fcoe2.update(attributes)
+puts "\nUpdated fcoe-network: '#{fcoe[:name]}'.\n  uri = '#{fcoe2[:uri]}'"
+puts "with attributes: #{attributes}"
+
 # Example: List all fcoe networks with certain attributes
 attributes = { status: 'OK' }
 puts "\n\nFCoE networks with #{attributes}"
