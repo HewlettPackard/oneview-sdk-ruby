@@ -26,7 +26,7 @@ puts "\nRetrieved ethernet-network data by name: '#{fcoe3[:name]}'.\n  uri = '#{
 
 # Update the name of recently created network
 attributes = {
-  name: 'OneViewSDK Test F Net',
+  name: 'OneViewSDK Test F Net'
 }
 fcoe2.update(attributes)
 puts "\nUpdated fcoe-network: '#{fcoe[:name]}'.\n  uri = '#{fcoe2[:uri]}'"
