@@ -61,6 +61,7 @@ module OneviewSDK
       end
     end
 
+    # Claim/configure the enclosure and its components to the appliance
     def create
       ensure_client
       required_attributes = %w(enclosureGroupUri hostname username password licensingIntent)
@@ -124,14 +125,14 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Gets settings that describe the environmental configuration
+    # Get settings that describe the environmental configuration
     def environmentalConfiguration
       response = @client.rest_get(@data['uri'] + '/environmentalConfiguration')
       @client.response_handler(response)
     end
 
     # Retrieves historical utilization
-    # @param [Hash] value
+    # @param [Hash] queryParameters query parameters
     def utilization(queryParameters = {})
       uri = "#{@data['uri']}/utilization?"
 
@@ -141,7 +142,7 @@ module OneviewSDK
       # If the user provided an endDate and no startDate, then the startDate should be
       # automatically calculated
       if endDate && startDate.nil?
-        queryParameters[:startDate] = (endDate - 60*60*24).iso8601(3)
+        queryParameters[:startDate] = (endDate - 86_400).iso8601(3)
       end
 
       queryParameters.each do |key, value|
@@ -161,11 +162,11 @@ module OneviewSDK
     end
 
     # Update specific attributes of a given enclosure resource
-    # @param [String] operation
-    # @param [String] path
-    # @param [String] value
+    # @param [String] operation operation to be performed
+    # @param [String] path path
+    # @param [String] value value
     def updateAttribute(operation, path, value)
-      response = @client.rest_patch(@data['uri'], { 'body' => [{ op: operation, path: path, value: value }]})
+      response = @client.rest_patch(@data['uri'], 'body' => [{ op: operation, path: path, value: value }])
       @client.response_handler(response)
     end
 

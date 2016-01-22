@@ -62,4 +62,13 @@ RSpec.describe OneviewSDK::Enclosure do
       end
     end
   end
+
+  describe '#refreshState' do
+    context 'with invalid data' do
+      it 'fails when invalid refreshState' do
+        enclosure = OneviewSDK::Enclosure.new(@client, {})
+        expect { enclosure.refreshState('None') }.to raise_error(/Invalid refreshState/)
+      end
+    end
+  end
 end
