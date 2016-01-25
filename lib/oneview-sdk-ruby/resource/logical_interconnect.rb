@@ -24,10 +24,12 @@ module OneviewSDK
     # @param [OneviewSDK::Resource] Enclosure to insert the interconnect
     def create(bay_number, enclosure)
       entry =
-      {'locationEntries' => [
-        { 'value' => bay_number, 'type' => 'Bay' },
-        { 'value' => enclosure['uri'], 'type' => 'Enclosure' }
-      ]}
+      {
+        'locationEntries' => [
+          { 'value' => bay_number, 'type' => 'Bay' },
+          { 'value' => enclosure['uri'], 'type' => 'Enclosure' }
+        ]
+      }
       # ensure_client
       response = @client.rest_post(self.class::LOCATION_URI, { 'body' => entry }, @api_version)
       body = @client.response_handler(response)
@@ -48,9 +50,9 @@ module OneviewSDK
         enclosure_uri = entry['value'] if entry['type'] == 'Enclosure'
         bay_number = entry['value'] if entry['type'] == 'Bay'
       end
-      query_uri = self.class::LOCATION_URI+"?location=Enclosure:#{enclosure_uri},Bay:#{bay_number}"
+      query_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure_uri},Bay:#{bay_number}"
       response = @client.rest_delete(query_uri, {}, @api_version)
-      body = @client.response_handler(response)
+      @client.response_handler(response)
       self
     end
 
@@ -58,28 +60,30 @@ module OneviewSDK
     # @param [OneviewSDK::EthernetNetworks] List of networks to update the Logical Interconnect
     def update_internal_networks(*networks)
       uris = []
-      return @client.response_handler(@client.rest_put(@data['uri']+"/internalNetworks", 'body' => [])) unless networks
+      return @client.response_handler(@client.rest_put(@data['uri'] + '/internalNetworks', 'body' => [])) unless networks
       networks.each do |net|
         net.retrieve! unless net['uri']
         uris.push(net['uri'])
       end
-      response = @client.rest_put(@data['uri']+"/internalNetworks", 'body' => uris)
-      @client.response_handler(response)
+      response = @client.rest_put(@data['uri'] + '/internalNetworks', 'body' => uris)
+      body = @client.response_handler(response)
+      set_all(body)
+      self
     end
 
     # Lists internal networks on the logical interconnect
     # @return [OneviewSDK::Resource] List of networks
     def list_vlan_networks
-      results = OneviewSDK::Resource.find_by(@client, {}, @data['uri']+'/internalVlans')
+      results = OneviewSDK::Resource.find_by(@client, {}, @data['uri'] + '/internalVlans')
       internal_networks = []
       results.each do |vlan|
-        net = if vlan['generalNetworkUri'].include? "ethernet-network"
-          OneviewSDK::EthernetNetwork.new(@client, {uri: vlan['generalNetworkUri']})
-        elsif vlan['generalNetworkUri'].include? "fc-network"
-          OneviewSDK::FCNetwork.new(@client, {uri: vlan['generalNetworkUri']})
-        else
-          OneviewSDK::FCoENetwork.new(@client, {uri: vlan['generalNetworkUri']})
-        end
+        net = if vlan['generalNetworkUri'].include? 'ethernet-network'
+                OneviewSDK::EthernetNetwork.new(@client, uri: vlan['generalNetworkUri'])
+              elsif vlan['generalNetworkUri'].include? 'fc-network'
+                OneviewSDK::FCNetwork.new(@client, uri: vlan['generalNetworkUri'])
+              else
+                OneviewSDK::FCoENetwork.new(@client, uri: vlan['generalNetworkUri'])
+              end
         net.retrieve!
         internal_networks.push(net)
       end
@@ -95,8 +99,9 @@ module OneviewSDK
         'If-Match' =>  @data['ethernetSettings'].delete('eTag'),
         'Body' => @data['ethernetSettings']
       }
-      response = @client.rest_put(@data['uri']+"/ethernetSettings", update_options, @api_version)
+      response = @client.rest_put(@data['uri'] + '/ethernetSettings', update_options, @api_version)
       body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -112,8 +117,9 @@ module OneviewSDK
         'If-Match' =>  @data['eTag'],
         'Body' => options
       }
-      response = @client.rest_put(@data['uri']+"/settings", update_options, @api_version)
+      response = @client.rest_put(@data['uri'] + '/settings', update_options, @api_version)
       body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -122,8 +128,9 @@ module OneviewSDK
     # @return returns the updated object
     def compliance
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
-      response = @client.rest_put(@data['uri']+'/compliance', {}, @api_version)
+      response = @client.rest_put(@data['uri'] + '/compliance', {}, @api_version)
       body = client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -131,8 +138,9 @@ module OneviewSDK
     # @return returns the updated object
     def configure
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
-      response = @client.rest_put(@data['uri']+'/configure', {}, @api_version)
+      response = @client.rest_put(@data['uri'] + '/configure', {}, @api_version)
       body = client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -147,6 +155,7 @@ module OneviewSDK
       }
       response = @client.rest_put(@data['portMonitor']['uri'], update_options, @api_version)
       body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -159,8 +168,9 @@ module OneviewSDK
         'If-Match' =>  @data['qosConfiguration'].delete('eTag'),
         'Body' => @data['qosConfiguration']
       }
-      response = @client.rest_put(@data['uri']+'/qos-aggregated-configuration', update_options, @api_version)
+      response = @client.rest_put(@data['uri'] + '/qos-aggregated-configuration', update_options, @api_version)
       body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
@@ -175,6 +185,7 @@ module OneviewSDK
       }
       response = @client.rest_put(@data['telemetryConfiguration']['uri'], update_options, @api_version)
       body = @client.response_handler(response)
+      set_all(body)
       self
     end
 

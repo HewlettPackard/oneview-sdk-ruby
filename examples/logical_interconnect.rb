@@ -13,7 +13,7 @@ enclosure = OneviewSDK::Enclosure.new(@client, name: 'Encl1')
 enclosure.retrieve!
 pretty "Sucessfully retrieved the enclosure #{enclosure[:name]}"
 
-log_int = OneviewSDK::LogicalInterconnect.new(@client, {name: 'Encl1-Simple'})
+log_int = OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl1-Simple')
 log_int.retrieve!
 pretty "Logical interconnect #{log_int['name']} was retrieved sucessfully"
 
@@ -80,7 +80,7 @@ pretty "igmpIdleTimeoutInterval: #{log_int['ethernetSettings']['igmpIdleTimeoutI
 pretty "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}"
 
 
-#Backing up
+# Backing up
 eth_set_backup = {}
 eth_set_backup['igmpIdleTimeoutInterval'] = log_int['ethernetSettings']['igmpIdleTimeoutInterval']
 eth_set_backup['macRefreshInterval'] = log_int['ethernetSettings']['macRefreshInterval']
@@ -102,7 +102,7 @@ pretty "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}
 
 
 pretty "\nRolling back..."
-eth_set_backup.each do |k,v|
+eth_set_backup.each do |k, v|
   log_int['ethernetSettings'][k] = v
 end
 log_int.update_ethernet_settings

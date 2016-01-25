@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalInterconnect, integration: false do
+RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
   include_context 'integration context'
 
   let(:enclosure) { OneviewSDK::Enclosure.new(@client, name: 'Encl2') }
@@ -159,7 +159,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: false do
     end
 
     it 'finds networks by multiple attributes' do
-      attrs = { status: 'OK'}
+      attrs = { status: 'OK' }
       lis = OneviewSDK::EthernetNetwork.find_by(@client, attrs)
       expect(lis).to_not eq(nil)
     end
