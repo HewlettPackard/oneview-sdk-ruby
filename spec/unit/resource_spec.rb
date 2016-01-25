@@ -90,8 +90,8 @@ RSpec.describe OneviewSDK do
       expect(OneviewSDK.resource_named('SERVERProfilE')).to eq(OneviewSDK::ServerProfile)
     end
 
-    it 'ignores dashes and underscores' do
-      expect(OneviewSDK.resource_named('server-prof_ile')).to eq(OneviewSDK::ServerProfile)
+    it 'ignores dashes, underscores & spaces' do
+      expect(OneviewSDK.resource_named('s erver-prof_ile')).to eq(OneviewSDK::ServerProfile)
     end
 
     it 'supports symbols' do
