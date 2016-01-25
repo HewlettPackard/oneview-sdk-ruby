@@ -36,6 +36,18 @@ module OneviewSDK
       end
     end
 
+    # Get or change the script executed by enclosures in this enclosure group
+    # @param [String] body script to be executed
+    def script(body = nil)
+      if body.nil?
+        response = @client.rest_get(@data['uri'] + '/script')
+        response.body
+      else
+        response = @client.rest_put(@data['uri'] + '/script', { 'body' => body }, @api_version)
+        response.body
+      end
+    end
+
     def validate_interconnectBayMappingCount(value)
       fail 'Interconnect Bay Mapping Count out of range 1..8' unless value.between?(1, 8)
     end

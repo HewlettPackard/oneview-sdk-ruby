@@ -29,12 +29,12 @@ module OneviewSDK
     end
 
     # Retrieve resource details based on this resource's name.
-    # @note Name must be unique
-    # @param [String] name Resource name
+    # @note Name or URI must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
-    def retrieve!(name = @data['name'])
-      fail 'Must set resource name before trying to retrieve!' unless name
-      results = self.class.find_by(@client, name: name)
+    def retrieve!
+      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      results = self.class.find_by(@client, name: @data['name']) if @data['name']
+      results = self.class.find_by(@client, uri: @data['uri']) if @data['uri']
       return false unless results.size == 1
       set_all(results[0].data)
       true
@@ -194,6 +194,23 @@ module OneviewSDK
       true
     end
 
+    # Get resource schema
+    # @return [Hash] Schema
+    def schema
+      self.class.schema(@client)
+    end
+
+    # Get resource schema
+    # @param [Client] client
+    # @return [Hash] Schema
+    def self.schema(client)
+      response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
+      client.response_handler(response)
+    rescue StandardError => e
+      client.logger.error('This resource does not implement the schema endpoint!') if e.message.match(/404 NOT FOUND/)
+      raise e
+    end
+
     # Load resource from .json or .yaml file
     # @param [Client] client The client object to associate this resource with
     # @param [String] file_path The full path to the file
@@ -207,14 +224,15 @@ module OneviewSDK
     # Make a GET request to the resource uri and return an array with results matching the search
     # @param [Client] client
     # @param [Hash] attributes Hash containing the attributes name and value
+    # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
-    def self.find_by(client, attributes)
+    def self.find_by(client, attributes, uri = self::BASE_URI)
       results = []
-      uri = self::BASE_URI
       loop do
         response = client.rest_get(uri)
         body = client.response_handler(response)
         members = body['members']
+        break unless members
         members.each do |member|
           temp = new(client, member)
           results.push(temp) if temp.like?(attributes)
