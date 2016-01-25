@@ -95,7 +95,7 @@ module OneviewSDK
         'If-Match' =>  @data['ethernetSettings'].delete('eTag'),
         'Body' => @data['ethernetSettings']
       }
-      response = @client.rest_put(@data['uri']+"/ethernetSettings", update_options, @api_version )
+      response = @client.rest_put(@data['uri']+"/ethernetSettings", update_options, @api_version)
       body = @client.response_handler(response)
       self
     end
@@ -112,27 +112,9 @@ module OneviewSDK
         'If-Match' =>  @data['eTag'],
         'Body' => options
       }
-      response = @client.rest_put(@data['uri']+"/settings", update_options, @api_version )
+      response = @client.rest_put(@data['uri']+"/settings", update_options, @api_version)
       body = @client.response_handler(response)
       self
-    end
-
-    # Returns logical interconnects to a consistent state.
-    # The current logical interconnect state is compared to the associated logical interconnect group.
-    # @param [OneviewSDK:Resource] logical Interconnects to update compliance
-    # @return returns if the operation was successful
-    def self.compliance(client, *logical_interconnects)
-      fail 'Specify at least one Logical Interconnect' unless logical_interconnects
-      request = {
-        'uris' => []
-      }
-      logical_interconnects.each do |log_int|
-        log_int.retrieve! unless log_int['uri']
-        request['uris'].push(log_int['uri'])
-      end
-      response = client.rest_put(BASE_URI+'/compliance', request)
-      body = client.response_handler(response)
-      true
     end
 
     # Returns logical interconnects to a consistent state.
@@ -140,7 +122,7 @@ module OneviewSDK
     # @return returns the updated object
     def compliance
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
-      response = @client.rest_put(@data['uri']+'/compliance', {}, @api_version )
+      response = @client.rest_put(@data['uri']+'/compliance', {}, @api_version)
       body = client.response_handler(response)
       self
     end
@@ -149,7 +131,7 @@ module OneviewSDK
     # @return returns the updated object
     def configure
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
-      response = @client.rest_put(@data['uri']+'/configure', {}, @api_version )
+      response = @client.rest_put(@data['uri']+'/configure', {}, @api_version)
       body = client.response_handler(response)
       self
     end
@@ -163,7 +145,35 @@ module OneviewSDK
         'If-Match' =>  @data['portMonitor'].delete('eTag'),
         'Body' => @data['portMonitor']
       }
-      response = @client.rest_put(@data['portMonitor']['uri'], update_options, @api_version )
+      response = @client.rest_put(@data['portMonitor']['uri'], update_options, @api_version)
+      body = @client.response_handler(response)
+      self
+    end
+
+    # Updates QoS aggregated configuration of the Logical Interconnect
+    # @note The attribute is defined inside the instance of the Logical Interconnect
+    # @return Updated instance of the Logical Interconnect
+    def update_qos_configuration
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['qosConfiguration']
+      update_options = {
+        'If-Match' =>  @data['qosConfiguration'].delete('eTag'),
+        'Body' => @data['qosConfiguration']
+      }
+      response = @client.rest_put(@data['uri']+'/qos-aggregated-configuration', update_options, @api_version)
+      body = @client.response_handler(response)
+      self
+    end
+
+    # Updates telemetry configuration of the Logical Interconnect
+    # @note The attribute is defined inside the instance of the Logical Interconnect
+    # @return Updated instance of the Logical Interconnect
+    def update_telemetry_configuration
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['telemetryConfiguration']
+      update_options = {
+        'If-Match' =>  @data['telemetryConfiguration'].delete('eTag'),
+        'Body' => @data['telemetryConfiguration']
+      }
+      response = @client.rest_put(@data['telemetryConfiguration']['uri'], update_options, @api_version)
       body = @client.response_handler(response)
       self
     end
