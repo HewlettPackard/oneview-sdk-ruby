@@ -1,8 +1,0 @@
-{
-  "data": {
-    "name": "OneViewSDK Test FCoE Network",
-    "connectionTemplateUri": nil,
-    "type": "fcoe-network",
-    "vlanId": 300
-  }
-}
