@@ -1,8 +1,0 @@
-{
-  "data": {
-    "name": "OneViewSDK Test FC Network",
-    "connectionTemplateUri": nil,
-    "autoLoginRedistribution": true,
-    "fabricType": "FabricAttach"
-  }
-}
