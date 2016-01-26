@@ -11,6 +11,7 @@ RSpec.describe OneviewSDK::FCNetwork, integration: true do
       item.create
       expect(item[:name]).to eq('OneViewSDK Test FC Network')
       expect(item[:autoLoginRedistribution]).to eq(true)
+      expect(item[:connectionTemplateUri]).not_to eq(nil)
       expect(item[:fabricType]).to eq('FabricAttach')
     end
   end
@@ -21,6 +22,7 @@ RSpec.describe OneviewSDK::FCNetwork, integration: true do
       item.retrieve!
       expect(item[:name]).to eq('OneViewSDK Test FC Network')
       expect(item[:autoLoginRedistribution]).to eq(true)
+      expect(item[:connectionTemplateUri]).not_to eq(nil)
       expect(item[:fabricType]).to eq('FabricAttach')
     end
   end
@@ -52,7 +54,7 @@ RSpec.describe OneviewSDK::FCNetwork, integration: true do
     it 'deletes the resource' do
       item = OneviewSDK::FCNetwork.new(@client, name: 'OneViewSDK Test F Net')
       item.retrieve!
-      item.delete
+      expect { item.delete }.not_to raise_error
     end
   end
 

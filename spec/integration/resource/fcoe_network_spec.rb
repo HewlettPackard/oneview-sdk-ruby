@@ -10,6 +10,7 @@ RSpec.describe OneviewSDK::FCoENetwork, integration: true do
       item = OneviewSDK::FCoENetwork.from_file(@client, file_path)
       item.create
       expect(item[:name]).to eq('OneViewSDK Test FCoE Network')
+      expect(item[:connectionTemplateUri]).not_to eq(nil)
       expect(item[:vlanId]).to eq(300)
       expect(item[:type]).to eq('fcoe-network')
     end
@@ -20,6 +21,7 @@ RSpec.describe OneviewSDK::FCoENetwork, integration: true do
       item = OneviewSDK::FCoENetwork.new(@client, name: 'OneViewSDK Test FCoE Network')
       item.retrieve!
       expect(item[:name]).to eq('OneViewSDK Test FCoE Network')
+      expect(item[:connectionTemplateUri]).not_to eq(nil)
       expect(item[:vlanId]).to eq(300)
       expect(item[:type]).to eq('fcoe-network')
     end
@@ -52,7 +54,7 @@ RSpec.describe OneviewSDK::FCoENetwork, integration: true do
     it 'deletes the resource' do
       item = OneviewSDK::FCoENetwork.new(@client, name: 'OneViewSDK Test F Net')
       item.retrieve!
-      item.delete
+      expect { item.delete }.not_to raise_error
     end
   end
 
