@@ -55,17 +55,15 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
   end
 
   describe '#script' do
-    it 'Retrieve script' do
+    it 'can retrieve the script' do
       item = OneviewSDK::EnclosureGroup.find_by(@client, {}).first
       item.script
     end
-    it 'Change script' do
+
+    it 'can set the script' do
       item = OneviewSDK::EnclosureGroup.find_by(@client, {}).first
-      old_script = item.script.tr('"', '')
-      item.script('#TEST COMMAND')
+      item.set_script('#TEST COMMAND')
       expect(item.script.tr('"', '')).to eq('#TEST COMMAND')
-      item.script(old_script)
-      expect(item.script.tr('"', '')).to eq(old_script)
     end
   end
 

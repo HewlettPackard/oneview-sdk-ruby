@@ -36,7 +36,7 @@ module OneviewSDK
       end
     end
 
-    # Get or change the script executed by enclosures in this enclosure group
+    # Get the script executed by enclosures in this enclosure group
     # @return [String] script for this enclosure group
     def script
       @client.rest_get(@data['uri'] + '/script').body
@@ -45,7 +45,7 @@ module OneviewSDK
     # Change the script executed by enclosures in this enclosure group
     # @param [String] body script to be executed
     # @return true if set successfully
-    def script=(body)
+    def set_script(body)
       response = @client.rest_put(@data['uri'] + '/script', { 'body' => body }, @api_version)
       @client.response_handler(response)
       true
