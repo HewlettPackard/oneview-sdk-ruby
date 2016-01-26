@@ -21,43 +21,11 @@ module OneviewSDK
       fail 'Must specify path' unless path
 
       uri = URI.parse(URI.escape(@url + path))
-      options['X-API-Version'] ||= api_ver
-      options['auth'] ||= @token
-
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE unless @ssl_enabled
 
-      case type.downcase
-      when 'get', :get
-        request = Net::HTTP::Get.new(uri.request_uri)
-      when 'post', :post
-        request = Net::HTTP::Post.new(uri.request_uri)
-      when 'put', :put
-        request = Net::HTTP::Put.new(uri.request_uri)
-      when 'patch', :patch
-        request = Net::HTTP::Patch.new(uri.request_uri)
-      when 'delete', :delete
-        request = Net::HTTP::Delete.new(uri.request_uri)
-      else
-        fail "Invalid rest call: #{type}"
-      end
-      options['Content-Type'] ||= 'application/json'
-      options.delete('Content-Type')  if [:none, 'none', nil].include?(options['Content-Type'])
-      options.delete('X-API-Version') if [:none, 'none', nil].include?(options['X-API-Version'])
-      options.delete('auth')          if [:none, 'none', nil].include?(options['auth'])
-      options.each do |key, val|
-        if key.to_s.downcase == 'body'
-          request.body = val.to_json rescue val
-        else
-          request[key] = val
-        end
-      end
-      filtered_options = options.to_s
-      filtered_options.gsub!(@password, 'filtered') if @password
-      filtered_options.gsub!(@token, 'filtered') if @token
-      @logger.debug "  Options: #{filtered_options}"
-
+      request = build_request(type, uri, options, api_ver)
       response = http.request(request)
       @logger.debug "  Response: Code=#{response.code}. Headers=#{response.to_hash}\n  Body=#{response.body}"
       response
@@ -136,6 +104,48 @@ module OneviewSDK
       else
         fail "#{response.code} #{response.body}"
       end
+    end
+
+
+    private
+
+    # Build a request object using the data given
+    def build_request(type, uri, options, api_ver)
+      case type.downcase.to_sym
+      when :get
+        request = Net::HTTP::Get.new(uri.request_uri)
+      when :post
+        request = Net::HTTP::Post.new(uri.request_uri)
+      when :put
+        request = Net::HTTP::Put.new(uri.request_uri)
+      when :patch
+        request = Net::HTTP::Patch.new(uri.request_uri)
+      when :delete
+        request = Net::HTTP::Delete.new(uri.request_uri)
+      else
+        fail "Invalid rest call: #{type}"
+      end
+
+      options['X-API-Version'] ||= api_ver
+      options['auth'] ||= @token
+      options['Content-Type'] ||= 'application/json'
+      options.delete('Content-Type')  if [:none, 'none', nil].include?(options['Content-Type'])
+      options.delete('X-API-Version') if [:none, 'none', nil].include?(options['X-API-Version'])
+      options.delete('auth')          if [:none, 'none', nil].include?(options['auth'])
+      options.each do |key, val|
+        if key.to_s.downcase == 'body'
+          request.body = val.to_json rescue val
+        else
+          request[key] = val
+        end
+      end
+
+      filtered_options = options.to_s
+      filtered_options.gsub!(@password, 'filtered') if @password
+      filtered_options.gsub!(@token, 'filtered') if @token
+      @logger.debug "  Options: #{filtered_options}"
+
+      request
     end
   end
 end
