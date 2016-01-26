@@ -20,7 +20,7 @@ module OneviewSDK
   #   type
   #   uri
   class VolumeTemplate < Resource
-    BASE_URI = '/rest/storage-volume-templates'
+    BASE_URI = '/rest/storage-volume-templates'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

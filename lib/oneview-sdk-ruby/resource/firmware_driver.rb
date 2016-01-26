@@ -25,7 +25,7 @@ module OneviewSDK
   #   version
   #   xmlKeyName
   class FirmwareDriver < Resource
-    BASE_URI = '/rest/firmware-drivers'
+    BASE_URI = '/rest/firmware-drivers'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

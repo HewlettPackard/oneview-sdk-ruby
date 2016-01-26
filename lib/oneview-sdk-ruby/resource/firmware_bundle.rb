@@ -2,8 +2,8 @@
 module OneviewSDK
   # Resource for firmware bundles
   class FirmwareBundle
-    BASE_URI = '/rest/firmware-bundles'
-    BOUNDARY = '---OneView-SDK-RubyFormBoundaryWzS4H31b7UMbKMCx'
+    BASE_URI = '/rest/firmware-bundles'.freeze
+    BOUNDARY = '---OneView-SDK-RubyFormBoundaryWzS4H31b7UMbKMCx'.freeze
 
     # Upload a firmware bundle file
     # @param [OneviewSDK::Client] client

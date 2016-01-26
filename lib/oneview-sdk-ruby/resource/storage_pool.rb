@@ -25,7 +25,7 @@ module OneviewSDK
   #  type
   #  uri
   class StoragePool < Resource
-    BASE_URI = '/rest/storage-pools'
+    BASE_URI = '/rest/storage-pools'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

@@ -10,7 +10,7 @@ options = {
   type: 'logical-interconnect-groupV3'
 }
 
-HP_VC_FF_24_MODEL = 'HP VC FlexFabric 10Gb/24-Port Module'
+HP_VC_FF_24_MODEL = 'HP VC FlexFabric 10Gb/24-Port Module'.freeze
 
 lig = OneviewSDK::LogicalInterconnectGroup.new(@client, options)
 

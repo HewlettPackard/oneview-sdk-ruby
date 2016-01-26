@@ -14,8 +14,8 @@ module OneviewSDK
   #   uplinkSets (Required) (default = [])
   #   uri
   class LogicalInterconnect < Resource
-    BASE_URI = '/rest/logical-interconnects'
-    LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'
+    BASE_URI = '/rest/logical-interconnects'.freeze
+    LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 
     # Creates a logical interconnect in the desired Bay in a specified enclosure
     # WARN: It does not creates the interconnect itself.
@@ -23,8 +23,7 @@ module OneviewSDK
     # @param [Fixnum] Number of the bay to put the interconnect
     # @param [OneviewSDK::Resource] Enclosure to insert the interconnect
     def create(bay_number, enclosure)
-      entry =
-      {
+      entry = {
         'locationEntries' => [
           { 'value' => bay_number, 'type' => 'Bay' },
           { 'value' => enclosure['uri'], 'type' => 'Enclosure' }

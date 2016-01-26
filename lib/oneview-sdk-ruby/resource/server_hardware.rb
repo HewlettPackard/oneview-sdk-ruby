@@ -50,7 +50,7 @@ module OneviewSDK
   #   licensingIntent (Required)
   #   configurationState
   class ServerHardware < Resource
-    BASE_URI = '/rest/server-hardware'
+    BASE_URI = '/rest/server-hardware'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

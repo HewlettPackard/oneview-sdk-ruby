@@ -61,11 +61,11 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
     end
     it 'Change script' do
       item = OneviewSDK::EnclosureGroup.find_by(@client, {}).first
-      old_script = item.script.tr("\"", '')
+      old_script = item.script.tr('"', '')
       item.script('#TEST COMMAND')
-      expect(item.script.tr("\"", '')).to eq('#TEST COMMAND')
+      expect(item.script.tr('"', '')).to eq('#TEST COMMAND')
       item.script(old_script)
-      expect(item.script.tr("\"", '')).to eq(old_script)
+      expect(item.script.tr('"', '')).to eq(old_script)
     end
   end
 
