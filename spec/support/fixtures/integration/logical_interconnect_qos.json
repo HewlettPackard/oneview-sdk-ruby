@@ -1,0 +1,308 @@
+{
+  "data" : {
+    "type": "logical-interconnectV3",
+    "enclosureType": "C7000",
+    "enclosureUris": [
+      "/rest/enclosures/09SGH102X6J1"
+    ],
+    "interconnects": [
+      "/rest/interconnects/5b88f292-07c8-4f78-a10f-35cbc3062892",
+      "/rest/interconnects/c1449d5f-d515-40d5-a904-839ca0ce4f26"
+    ],
+    "stackingHealth": "BiConnected",
+    "telemetryConfiguration": {
+      "type": "telemetry-configuration",
+      "enableTelemetry": true,
+      "sampleCount": 12,
+      "sampleInterval": 300,
+      "description": null,
+      "status": null,
+      "name": "name1259534626-1453745579998",
+      "state": null,
+      "eTag": null,
+      "modified": null,
+      "created": null,
+      "category": "telemetry-configurations",
+      "uri": "/rest/logical-interconnects/92028e83-7e19-4fa6-960e-23b18b7838ab/telemetry-configurations/652bf29a-e916-4e04-ab0c-e814a5db3b56"
+    },
+    "snmpConfiguration": {
+      "type": "snmp-configuration",
+      "readCommunity": "public",
+      "systemContact": "",
+      "trapDestinations": [],
+      "snmpAccess": [],
+      "enabled": true,
+      "description": null,
+      "status": null,
+      "name": null,
+      "state": null,
+      "eTag": null,
+      "modified": "2016-01-25T18:13:00.004Z",
+      "created": "2016-01-25T18:13:00.004Z",
+      "category": "snmp-configuration",
+      "uri": null
+    },
+    "qosConfiguration": {
+      "type": "qos-aggregated-configuration",
+      "activeQosConfig": {
+        "type": "QosConfiguration",
+        "configType": "CustomWithFCoE",
+        "uplinkClassificationType": "DOT1P",
+        "downlinkClassificationType": "DOT1P_AND_DSCP",
+        "qosTrafficClassifiers": [
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "65",
+              "egressDot1pValue": 0,
+              "maxBandwidth": 100,
+              "realTime": false,
+              "enabled": true,
+              "className": "Best effort"
+            },
+            "qosClassificationMapping": {
+              "dot1pClassMapping": [
+                1,
+                0
+              ],
+              "dscpClassMapping": [
+                "DSCP 10, AF11",
+                "DSCP 12, AF12",
+                "DSCP 14, AF13",
+                "DSCP 8, CS1",
+                "DSCP 0, CS0"
+              ]
+            }
+          },
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "0",
+              "egressDot1pValue": 0,
+              "maxBandwidth": 100,
+              "realTime": false,
+              "enabled": false,
+              "className": "Class2"
+            },
+            "qosClassificationMapping": null
+          },
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "25",
+              "egressDot1pValue": 2,
+              "maxBandwidth": 100,
+              "realTime": false,
+              "enabled": true,
+              "className": "Medium"
+            },
+            "qosClassificationMapping": {
+              "dot1pClassMapping": [
+                4,
+                3,
+                2
+              ],
+              "dscpClassMapping": [
+                "DSCP 18, AF21",
+                "DSCP 20, AF22",
+                "DSCP 22, AF23",
+                "DSCP 26, AF31",
+                "DSCP 28, AF32",
+                "DSCP 30, AF33",
+                "DSCP 34, AF41",
+                "DSCP 36, AF42",
+                "DSCP 38, AF43",
+                "DSCP 16, CS2",
+                "DSCP 24, CS3",
+                "DSCP 32, CS4"
+              ]
+            }
+          },
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "10",
+              "egressDot1pValue": 5,
+              "maxBandwidth": 10,
+              "realTime": true,
+              "enabled": true,
+              "className": "Real time"
+            },
+            "qosClassificationMapping": {
+              "dot1pClassMapping": [
+                5,
+                6,
+                7
+              ],
+              "dscpClassMapping": [
+                "DSCP 46, EF",
+                "DSCP 40, CS5",
+                "DSCP 48, CS6",
+                "DSCP 56, CS7"
+              ]
+            }
+          },
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "0",
+              "egressDot1pValue": 0,
+              "maxBandwidth": 100,
+              "realTime": false,
+              "enabled": false,
+              "className": "Class4"
+            },
+            "qosClassificationMapping": null
+          },
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "0",
+              "egressDot1pValue": 0,
+              "maxBandwidth": 100,
+              "realTime": false,
+              "enabled": false,
+              "className": "Class3"
+            },
+            "qosClassificationMapping": null
+          },
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "0",
+              "egressDot1pValue": 0,
+              "maxBandwidth": 100,
+              "realTime": false,
+              "enabled": false,
+              "className": "Class1"
+            },
+            "qosClassificationMapping": null
+          },
+          {
+            "qosTrafficClass": {
+              "bandwidthShare": "fcoe",
+              "egressDot1pValue": 3,
+              "maxBandwidth": 100,
+              "realTime": false,
+              "enabled": true,
+              "className": "FCoE lossless"
+            },
+            "qosClassificationMapping": {
+              "dot1pClassMapping": [
+                3
+              ],
+              "dscpClassMapping": []
+            }
+          }
+        ],
+        "description": null,
+        "status": null,
+        "name": null,
+        "state": null,
+        "eTag": null,
+        "modified": null,
+        "created": null,
+        "category": "qos-aggregated-configuration",
+        "uri": null
+      },
+      "inactiveFCoEQosConfig": null,
+      "inactiveNonFCoEQosConfig": null,
+      "description": null,
+      "status": null,
+      "name": null,
+      "state": null,
+      "eTag": null,
+      "modified": "2016-01-25T18:13:00.008Z",
+      "created": "2016-01-25T18:13:00.008Z",
+      "category": "qos-aggregated-configuration",
+      "uri": null
+    },
+    "logicalInterconnectGroupUri": "/rest/logical-interconnect-groups/c2e648fd-eee6-46a8-8c15-19f78f05be35",
+    "fabricUri": "/rest/fabrics/6746b777-6b9f-4d26-870f-6c0a3fdae911",
+    "consistencyStatus": "NOT_CONSISTENT",
+    "portMonitor": {
+      "type": "port-monitor",
+      "monitoredPorts": [],
+      "analyzerPort": null,
+      "enablePortMonitor": false,
+      "description": null,
+      "status": null,
+      "name": "name1188511430-1453745571628",
+      "state": null,
+      "eTag": "a4d73458-af64-40cc-8f1d-b17dd7ed7efd",
+      "modified": null,
+      "created": null,
+      "category": "port-monitor",
+      "uri": "/rest/logical-interconnects/92028e83-7e19-4fa6-960e-23b18b7838ab/port-monitor"
+    },
+    "fcoeSettings": {
+      "fcoeMode": "NotApplicable"
+    },
+    "ethernetSettings": {
+      "type": "EthernetInterconnectSettingsV3",
+      "interconnectType": "Ethernet",
+      "enableIgmpSnooping": false,
+      "igmpIdleTimeoutInterval": 260,
+      "enableFastMacCacheFailover": true,
+      "macRefreshInterval": 5,
+      "enableNetworkLoopProtection": true,
+      "enablePauseFloodProtection": true,
+      "enableRichTLV": false,
+      "dependentResourceUri": "/rest/logical-interconnects/92028e83-7e19-4fa6-960e-23b18b7838ab",
+      "name": "name263505515-1453927667809",
+      "id": "71bc38ea-585c-424a-a092-ff3f013b2a75",
+      "description": null,
+      "status": null,
+      "state": null,
+      "eTag": null,
+      "modified": "2016-01-27T20:49:37.041Z",
+      "created": "2016-01-27T20:47:47.809Z",
+      "category": null,
+      "uri": "/rest/logical-interconnects/92028e83-7e19-4fa6-960e-23b18b7838ab/ethernetSettings"
+    },
+    "internalNetworkUris": [],
+    "interconnectMap": {
+      "interconnectMapEntries": [
+        {
+          "interconnectUri": "/rest/interconnects/c1449d5f-d515-40d5-a904-839ca0ce4f26",
+          "permittedInterconnectTypeUri": "/rest/interconnect-types/1ea5f87b-bf1a-4c04-abeb-b664440927b5",
+          "enclosureIndex": 1,
+          "logicalDownlinkUri": "/rest/logical-downlinks/a2bb8396-3099-430c-a1f1-0af3fa2b5c45",
+          "location": {
+            "locationEntries": [
+              {
+                "value": "/rest/enclosures/09SGH102X6J1",
+                "type": "Enclosure"
+              },
+              {
+                "value": "2",
+                "type": "Bay"
+              }
+            ]
+          }
+        },
+        {
+          "interconnectUri": "/rest/interconnects/5b88f292-07c8-4f78-a10f-35cbc3062892",
+          "permittedInterconnectTypeUri": "/rest/interconnect-types/1ea5f87b-bf1a-4c04-abeb-b664440927b5",
+          "enclosureIndex": 1,
+          "logicalDownlinkUri": "/rest/logical-downlinks/9bdc55ef-b2c7-43cd-9131-241f23b98987",
+          "location": {
+            "locationEntries": [
+              {
+                "value": "/rest/enclosures/09SGH102X6J1",
+                "type": "Enclosure"
+              },
+              {
+                "value": "1",
+                "type": "Bay"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "domainUri": "/rest/domains/8fd0f549-ac68-4613-934a-532b514bd825",
+    "description": null,
+    "status": "Warning",
+    "name": "Encl2-EXAMPLE_LIG",
+    "state": "Unknown",
+    "eTag": "68f31484-a8b8-4aa4-a65e-ecd63cb853cf",
+    "modified": "2016-01-27T21:08:49.336Z",
+    "created": "2016-01-25T18:12:51.627Z",
+    "category": "logical-interconnects",
+    "uri": "/rest/logical-interconnects/92028e83-7e19-4fa6-960e-23b18b7838ab"
+  }
+}

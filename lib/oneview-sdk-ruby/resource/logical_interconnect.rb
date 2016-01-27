@@ -135,9 +135,9 @@ module OneviewSDK
 
     # Asynchronously applies or re-applies the logical interconnect configuration to all managed interconnects
     # @return returns the updated object
-    def configure
+    def configuration
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
-      response = @client.rest_put(@data['uri'] + '/configure', {}, @api_version)
+      response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
       body = client.response_handler(response)
       set_all(body)
       self
@@ -245,36 +245,36 @@ module OneviewSDK
     # Validate ethernet trap categories
     def validate_enet_trap_categories(enet_trap_categories)
       allowed_values = %w(Other PortStatus PortThresholds)
+      enet_trap_categories.uniq!
       enet_trap_categories.each do |cat|
         fail "Ethernet Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
-        fail "Ethernet Trap Category #{cat} is duplicated" unless enet_trap_categories.uniq(cat)
       end
     end
 
     # Validate fc trap categories
     def validate_fc_trap_categories(fc_trap_categories)
       allowed_values = %w(Other PortStatus)
+      fc_trap_categories.uniq!
       fc_trap_categories.each do |cat|
         fail "FC Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
-        fail "FC Trap Category #{cat} is duplicated" unless fc_trap_categories.uniq(cat)
       end
     end
 
     # Validate vcm trap categories
     def validate_vcm_trap_categories(vcm_trap_categories)
       allowed_values = %w(Legacy)
+      vcm_trap_categories.uniq!
       vcm_trap_categories.each do |cat|
         fail "VCM Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
-        fail "VCM Trap Category #{cat} is duplicated" unless vcm_trap_categories.uniq(cat)
       end
     end
 
     # Validate trap severities
     def validate_trap_severities(trap_severities)
       allowed_values = %w(Critical Info Major Minor Normal Unknown Warning)
+      trap_severities.uniq!
       trap_severities.each do |cat|
         fail "Trap Severities #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
-        fail "Trap Severities #{cat} is duplicated" unless trap_severities.uniq(cat)
       end
     end
 

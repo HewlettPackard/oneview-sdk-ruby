@@ -217,8 +217,7 @@ module OneviewSDK
     # @return [Resource] New resource created from the file contents
     def self.from_file(client, file_path)
       resource = OneviewSDK::Config.load(file_path)
-      class_name = resource['type'] ? Object.const_get(resource['type']) : self
-      class_name.new(client, resource['data'], resource['api_version'])
+      self.new(client, resource['data'], resource['api_version'])
     end
 
     # Make a GET request to the resource uri and return an array with results matching the search
