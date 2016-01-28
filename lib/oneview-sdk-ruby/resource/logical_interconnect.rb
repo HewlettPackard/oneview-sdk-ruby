@@ -30,7 +30,7 @@ module OneviewSDK
         ]
       }
       response = @client.rest_post(self.class::LOCATION_URI, { 'body' => entry }, @api_version)
-      body = @client.response_handler(response)
+      @client.response_handler(response)
       # CREATE ONE INTERCONNECT RESOURCE HERE
     end
 
