@@ -7,7 +7,7 @@ puts "Ethernet uri = '#{ethernet[:uri]}'"
 options = {
   nativeNetworkUri: nil,
   reachability: 'Reachable',
-  logicalInterconnectUri: '/rest/logical-interconnects/a01359e7-4cde-4e88-9d58-acda9fdfdd15',
+  logicalInterconnectUri: '/rest/logical-interconnects/a577f08e-4de6-41f4-8570-729290a24e37',
   manualLoginRedistributionState: 'NotSupported',
   connectionMode: 'Auto',
   lacpTimer: 'Short',
@@ -17,7 +17,7 @@ options = {
   name: 'Teste Uplink'
 }
 
-uplink = OneviewSDK::Uplink.new(@client, options)
+uplink = OneviewSDK::UplinkSet.new(@client, options)
 uplink.add_portConfig(
   '/rest/interconnects/f5b3790b-242f-4fed-8a6c-6ca2334e52aa',
   'Auto',

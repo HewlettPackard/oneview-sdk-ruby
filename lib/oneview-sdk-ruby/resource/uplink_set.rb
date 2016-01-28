@@ -24,7 +24,7 @@ module OneviewSDK
   #   status
   #   type
   #   uri
-  class Uplink < Resource
+  class UplinkSet < Resource
     BASE_URI = '/rest/uplink-sets'
 
     def initialize(client, params = {}, api_ver = nil)
