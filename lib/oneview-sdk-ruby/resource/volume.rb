@@ -15,7 +15,7 @@ module OneviewSDK
   #   templateUri
   #   wwn
   class Volume < Resource
-    BASE_URI = '/rest/storage-volumes'
+    BASE_URI = '/rest/storage-volumes'.freeze
 
     # It's possible to create the volume in 6 different ways:
     # 1) Common = Storage System + Storage Pool

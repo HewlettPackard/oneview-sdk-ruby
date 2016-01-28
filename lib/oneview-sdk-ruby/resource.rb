@@ -4,7 +4,7 @@ require_relative 'client'
 module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
-    BASE_URI = '/rest'
+    BASE_URI = '/rest'.freeze
 
     attr_accessor \
       :client,
@@ -57,7 +57,7 @@ module OneviewSDK
     # @note Keys will be converted to strings
     def set(key, value)
       method_name = "validate_#{key}"
-      send(method_name.to_sym, value) if self.respond_to?(method_name.to_sym)
+      send(method_name.to_sym, value) if respond_to?(method_name.to_sym)
       @data[key.to_s] = value
     end
 
@@ -207,7 +207,7 @@ module OneviewSDK
       response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
       client.response_handler(response)
     rescue StandardError => e
-      client.logger.error('This resource does not implement the schema endpoint!') if e.message.match(/404 NOT FOUND/)
+      client.logger.error('This resource does not implement the schema endpoint!') if e.message =~ /404 NOT FOUND/
       raise e
     end
 
@@ -273,8 +273,8 @@ module OneviewSDK
         return false unless data && data.respond_to?(:[])
         if val.is_a?(Hash)
           return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
-        else
-          return false if val != data[key.to_s]
+        elsif val != data[key.to_s]
+          return false
         end
       end
       true

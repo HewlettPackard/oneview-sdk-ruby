@@ -30,7 +30,7 @@ module OneviewSDK
   #   uuid
   #   wwnType
   class ServerProfile < Resource
-    BASE_URI = '/rest/server-profiles'
+    BASE_URI = '/rest/server-profiles'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

@@ -16,7 +16,7 @@ module OneviewSDK
   #   status
   #   type (Required)
   class FCNetwork < Resource
-    BASE_URI = '/rest/fc-networks'
+    BASE_URI = '/rest/fc-networks'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

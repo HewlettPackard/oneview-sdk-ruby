@@ -34,13 +34,13 @@ RSpec.describe OneviewSDK::Cli do
       it 'deletes valid profiles' do
         expect_any_instance_of(HighLine).to receive(:agree)
         expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1)) }
-            .to output(/Deleted Successfully!/).to_stdout_from_any_process
+          .to output(/Deleted Successfully!/).to_stdout_from_any_process
       end
 
       it 'respects the force option' do
         expect_any_instance_of(HighLine).to_not receive(:agree)
         expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1 -f)) }
-            .to output(/Deleted Successfully!/).to_stdout_from_any_process
+          .to output(/Deleted Successfully!/).to_stdout_from_any_process
       end
     end
 
