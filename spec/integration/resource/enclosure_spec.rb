@@ -33,28 +33,26 @@ RSpec.describe OneviewSDK::Enclosure, integration: true do
 
   describe '#configuration' do
     it 'update OneViewSDK_Int_Ethernet_Network name' do
-      OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first.configuration
+      expect { OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first.configuration }.not_to raise_error
     end
   end
 
 
   describe '#refreshState' do
     it 'returns all resources when the hash is empty' do
-      OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first.refreshState('RefreshPending')
+      expect { OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first.refreshState('RefreshPending') }.not_to raise_error
     end
   end
 
   describe '#environmentalConfiguration' do
     it 'Gets the script' do
-      item = OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first
-      item.environmentalConfiguration
+      expect { OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first.environmentalConfiguration }.not_to raise_error
     end
   end
 
   describe '#utilization' do
     it 'Gets utilization data' do
-      item = OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first
-      item.utilization
+      expect { OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first.utilization }.not_to raise_error
     end
   end
 
@@ -63,7 +61,7 @@ RSpec.describe OneviewSDK::Enclosure, integration: true do
       item = OneviewSDK::Enclosure.find_by(@client, name: 'Enclosure_QA').first
       item[:name] = 'Encl1'
       item.save
-      item.delete
+      expect { item.delete }.not_to raise_error
     end
   end
 end
