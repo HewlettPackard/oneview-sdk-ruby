@@ -1,5 +1,6 @@
 require 'json'
 
+# Mock response helper
 class FakeResponse
   attr_reader :body, :code, :header
 
