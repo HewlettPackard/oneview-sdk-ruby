@@ -1,7 +1,7 @@
 module OneviewSDK
   # Resource for interconnect types
   class InterconnectType < Resource
-    BASE_URI = '/rest/interconnect-types'
+    BASE_URI = '/rest/interconnect-types'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

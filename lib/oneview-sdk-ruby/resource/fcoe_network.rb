@@ -17,7 +17,7 @@ module OneviewSDK
   #   uri
   #   vlanId (Required)
   class FCoENetwork < Resource
-    BASE_URI = '/rest/fcoe-networks'
+    BASE_URI = '/rest/fcoe-networks'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

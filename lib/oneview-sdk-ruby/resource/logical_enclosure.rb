@@ -21,7 +21,7 @@ module OneviewSDK
   #   type
   #   uri
   class LogicalEnclosure < Resource
-    BASE_URI = '/rest/logical-enclosures'
+    BASE_URI = '/rest/logical-enclosures'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super
