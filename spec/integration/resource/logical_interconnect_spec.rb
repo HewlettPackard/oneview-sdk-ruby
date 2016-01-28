@@ -16,12 +16,41 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
     end
   end
 
-  describe '#create' do
-    it 'defines the position of the Logical Interconnect' do
-      enclosure.retrieve!
-      expect { log_int.create(1, enclosure) }.to_not raise_error
-    end
-  end
+  # describe 'Manipulating interconnects' do
+  #
+  #   def interconnect_find(bay_number, enclosure)
+  #     log_int.retrieve!
+  #     enclosure_match = true
+  #     bay_match = false
+  #     log_int['interconnectMap']['interconnectMapEntries'].each do |interconnect|
+  #       interconnect['location']['locationEntries'].each do |entry|
+  #         enclosure_match = true if ((enclosure['uri'] == entry['value']) && (entry['type'] == 'Enclosure'))
+  #         bay_match = true if ((bay_number.to_s == entry['value']) && (entry['type'] == 'Bay'))
+  #       end
+  #       return true if (enclosure_match && bay_match)
+  #     end
+  #     false
+  #   end
+  #
+  #   it '#create the Interconnect in bay 2' do
+  #     enclosure.retrieve!
+  #     expect { log_int.create(2, enclosure) }.to_not raise_error
+  #     expect(interconnect_find(2, enclosure)).to eq(true)
+  #   end
+  #
+  #   # This example will fail if the interconnect is associated with the LIG
+  #   it '#create, #delete and #create the Interconnect in bay 2' do
+  #     enclosure.retrieve!
+  #     expect { log_int.create(2, enclosure) }.to_not raise_error
+  #     expect(interconnect_find(2, enclosure)).to eq(true)
+  #
+  #     expect { log_int.delete(2, enclosure) }.to_not raise_error
+  #     expect(interconnect_find(2, enclosure)).to eq(false)
+  #
+  #     expect { log_int.create(2, enclosure) }.to_not raise_error
+  #     expect(interconnect_find(2, enclosure)).to eq(true)
+  #   end
+  # end
 
   describe '#compliance' do
     it 'defines the position of the Logical Interconnect' do
@@ -108,8 +137,8 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
       eth_set_backup = {}
       eth_set_backup['igmpIdleTimeoutInterval'] = log_int['ethernetSettings']['igmpIdleTimeoutInterval']
       eth_set_backup['macRefreshInterval'] = log_int['ethernetSettings']['macRefreshInterval']
-      new_igmp = (eth_set_backup['igmpIdleTimeoutInterval']+237)%501 + 1
-      new_mac = (eth_set_backup['macRefreshInterval']+9)%31 + 1
+      new_igmp = (eth_set_backup['igmpIdleTimeoutInterval'] + 237) % 501 + 1
+      new_mac = (eth_set_backup['macRefreshInterval'] + 9) % 31 + 1
 
       log_int['ethernetSettings']['igmpIdleTimeoutInterval'] = new_igmp
       log_int['ethernetSettings']['macRefreshInterval'] = new_mac
@@ -140,8 +169,8 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
       eth_set_backup = {}
       eth_set_backup['igmpIdleTimeoutInterval'] = log_int['ethernetSettings']['igmpIdleTimeoutInterval']
       eth_set_backup['macRefreshInterval'] = log_int['ethernetSettings']['macRefreshInterval']
-      new_igmp = (eth_set_backup['igmpIdleTimeoutInterval']+237)%501 + 1
-      new_mac = (eth_set_backup['macRefreshInterval']+9)%31 + 1
+      new_igmp = (eth_set_backup['igmpIdleTimeoutInterval'] + 237) % 501 + 1
+      new_mac = (eth_set_backup['macRefreshInterval'] + 9) % 31 + 1
 
       log_int['ethernetSettings']['igmpIdleTimeoutInterval'] = new_igmp
       log_int['ethernetSettings']['macRefreshInterval'] = new_mac
@@ -178,8 +207,8 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
 
       sample_count_bkp = log_int['telemetryConfiguration']['sampleCount']
       sample_interval_bkp = log_int['telemetryConfiguration']['sampleInterval']
-      sample_count_new = (sample_count_bkp+137)%301 + 1
-      sample_interval_new = (sample_interval_bkp+123)%301 + 1
+      sample_count_new = (sample_count_bkp + 137) % 301 + 1
+      sample_interval_new = (sample_interval_bkp + 123) % 301 + 1
 
       log_int['telemetryConfiguration']['sampleCount'] = sample_count_new
       log_int['telemetryConfiguration']['sampleInterval'] = sample_interval_new

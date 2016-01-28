@@ -17,8 +17,8 @@ module OneviewSDK
     BASE_URI = '/rest/logical-interconnects'.freeze
     LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 
-    # "Creates" a logical interconnect in the desired Bay in a specified enclosure
-    # WARN: It does not creates the interconnect itself.
+    # Creates an Interconnect in the desired Bay in a specified enclosure
+    # WARN: It does not creates the LOGICAL INTERCONNECT itself.
     # It will fail if no interconnect is already present on the specified position
     # @param [Fixnum] Number of the bay to put the interconnect
     # @param [OneviewSDK::Resource] Enclosure to insert the interconnect
@@ -29,28 +29,18 @@ module OneviewSDK
           { 'value' => enclosure['uri'], 'type' => 'Enclosure' }
         ]
       }
-      # ensure_client
       response = @client.rest_post(self.class::LOCATION_URI, { 'body' => entry }, @api_version)
       body = @client.response_handler(response)
-      set_all(body)
-      self
+      # CREATE ONE INTERCONNECT RESOURCE HERE
     end
 
-    # Deletes a logical interconnect
-    # WARN: This won't delete the interconnect itself
+    # Deletes an INTERCONNECT
+    # WARN: This won't delete the LOGICAL INTERCONNECT itself, and may cause inconsistency between the enclosure and LIG
     # @param [Fixnum] Number of the bay to locate the logical interconnect
     # @param [OneviewSDK::Resource] Enclosure to remove the logical interconnect
-    def delete
-      # ensure_client
-      int_location = @data['interconnectLocation']['locationEntries']
-      enclosure_uri = nil
-      bay_number = 0
-      int_location.each do |entry|
-        enclosure_uri = entry['value'] if entry['type'] == 'Enclosure'
-        bay_number = entry['value'] if entry['type'] == 'Bay'
-      end
-      query_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure_uri},Bay:#{bay_number}"
-      response = @client.rest_delete(query_uri, {}, @api_version)
+    def delete(bay_number, enclosure)
+      delete_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure['uri']},Bay:#{bay_number}"
+      response = @client.rest_delete(delete_uri, {}, @api_version)
       @client.response_handler(response)
       self
     end
