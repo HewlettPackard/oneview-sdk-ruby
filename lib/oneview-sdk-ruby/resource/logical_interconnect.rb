@@ -17,8 +17,8 @@ module OneviewSDK
     BASE_URI = '/rest/logical-interconnects'.freeze
     LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 
-    # Creates a logical interconnect in the desired Bay in a specified enclosure
-    # WARN: It does not creates the interconnect itself.
+    # Creates an Interconnect in the desired Bay in a specified enclosure
+    # WARN: It does not creates the LOGICAL INTERCONNECT itself.
     # It will fail if no interconnect is already present on the specified position
     # @param [Fixnum] Number of the bay to put the interconnect
     # @param [OneviewSDK::Resource] Enclosure to insert the interconnect
@@ -29,28 +29,18 @@ module OneviewSDK
           { 'value' => enclosure['uri'], 'type' => 'Enclosure' }
         ]
       }
-      # ensure_client
       response = @client.rest_post(self.class::LOCATION_URI, { 'body' => entry }, @api_version)
-      body = @client.response_handler(response)
-      set_all(body)
-      self
+      @client.response_handler(response)
+      # CREATE ONE INTERCONNECT RESOURCE HERE
     end
 
-    # Deletes a logical interconnect
-    # WARN: This won't delete the interconnect itself
+    # Deletes an INTERCONNECT
+    # WARN: This won't delete the LOGICAL INTERCONNECT itself, and may cause inconsistency between the enclosure and LIG
     # @param [Fixnum] Number of the bay to locate the logical interconnect
     # @param [OneviewSDK::Resource] Enclosure to remove the logical interconnect
-    def delete
-      # ensure_client
-      int_location = @data['interconnectLocation']['locationEntries']
-      enclosure_uri = nil
-      bay_number = 0
-      int_location.each do |entry|
-        enclosure_uri = entry['value'] if entry['type'] == 'Enclosure'
-        bay_number = entry['value'] if entry['type'] == 'Bay'
-      end
-      query_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure_uri},Bay:#{bay_number}"
-      response = @client.rest_delete(query_uri, {}, @api_version)
+    def delete(bay_number, enclosure)
+      delete_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure['uri']},Bay:#{bay_number}"
+      response = @client.rest_delete(delete_uri, {}, @api_version)
       @client.response_handler(response)
       self
     end
@@ -135,9 +125,9 @@ module OneviewSDK
 
     # Asynchronously applies or re-applies the logical interconnect configuration to all managed interconnects
     # @return returns the updated object
-    def configure
+    def configuration
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
-      response = @client.rest_put(@data['uri'] + '/configure', {}, @api_version)
+      response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
       body = client.response_handler(response)
       set_all(body)
       self
@@ -186,6 +176,102 @@ module OneviewSDK
       body = @client.response_handler(response)
       set_all(body)
       self
+    end
+
+    # Updates snmp configuration of the Logical Interconnect
+    # @note The attribute is defined inside the instance of the Logical Interconnect.
+    #   Use helper methods to add the trap destination values: #add_snmp_trap_destination and #generate_trap_options
+    # @return Updated instance of the Logical Interconnect
+    def update_snmp_configuration
+      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['snmpConfiguration']
+      update_options = {
+        'If-Match' =>  @data['snmpConfiguration'].delete('eTag'),
+        'Body' => @data['snmpConfiguration']
+      }
+      response = @client.rest_put(@data['uri'] + '/snmp-configuration', update_options, @api_version)
+      body = @client.response_handler(response)
+      set_all(body)
+      self
+    end
+
+    # It will add one trap destination to the Logical Interconnect SNMP configuration
+    # @param trap_format [String] SNMP version for this trap destination, `'SNMPv1'` or `'SNMPv2'` or `'SNMPv3'`
+    # @param trap_destination [String] The trap destination IP address or host name
+    # @param community_string [String] Authentication string for the trap destination
+    # @param trap_options [Hash] Hash with the options of the trap. Create it using generate_trap_options method
+    def add_snmp_trap_destination(trap_destination, trap_format = 'SNMPv1', community_string = 'public', trap_options = {})
+      validate_trap_format(trap_format)
+      trap_options['communityString'] = community_string
+      trap_options['trapDestination'] = trap_destination
+      trap_options['trapFormat'] = trap_format
+      @data['snmpConfiguration']['trapDestinations'].push(trap_options)
+    end
+
+    # Generates trap options to be used in add_snmp_trap_destination method
+    # @param enet_trap_categories [Array]  Filter the traps for this trap destination by the list of configured Ethernet traps
+    #   can contain, `'Other'` or `'PortStatus'` or `'PortThresholds'`
+    # @param fc_trap_categories [Array]  Filter the traps for this trap destination by the list of configured Fibre Channel traps
+    #   can contain, `'Other'` or `'PortStatus'`
+    # @param vcm_trap_categories [Array]  Filter the traps for this trap destination by the list of configured VCM trap, `'Legacy'`
+    # @param trap_severities [Array]  Filter the traps for this trap destination by the list of configured severities
+    #   can contain, `'Critical'` or `'Info'` or `'Major'` or `'Minor'` or `'Normal'` or `'Unknown'` or `'Warning'`
+    # @return [Hash] Contains all trap options for one SNMP destination
+    def generate_trap_options(enet_trap_categories = [], fc_trap_categories = [], vcm_trap_categories = [], trap_severities = [])
+      validate_enet_trap_categories(enet_trap_categories)
+      validate_fc_trap_categories(fc_trap_categories)
+      validate_vcm_trap_categories(vcm_trap_categories)
+      validate_trap_severities(trap_severities)
+      options = {
+        'enetTrapCategories' => enet_trap_categories,
+        'vcmTrapCategories' => vcm_trap_categories,
+        'fcTrapCategories' => fc_trap_categories,
+        'trapSeverities' => trap_severities
+      }
+      options
+    end
+
+    private
+
+    # Validate ethernet trap categories
+    def validate_enet_trap_categories(enet_trap_categories)
+      allowed_values = %w(Other PortStatus PortThresholds)
+      enet_trap_categories.uniq!
+      enet_trap_categories.each do |cat|
+        fail "Ethernet Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+      end
+    end
+
+    # Validate fc trap categories
+    def validate_fc_trap_categories(fc_trap_categories)
+      allowed_values = %w(Other PortStatus)
+      fc_trap_categories.uniq!
+      fc_trap_categories.each do |cat|
+        fail "FC Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+      end
+    end
+
+    # Validate vcm trap categories
+    def validate_vcm_trap_categories(vcm_trap_categories)
+      allowed_values = %w(Legacy)
+      vcm_trap_categories.uniq!
+      vcm_trap_categories.each do |cat|
+        fail "VCM Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+      end
+    end
+
+    # Validate trap severities
+    def validate_trap_severities(trap_severities)
+      allowed_values = %w(Critical Info Major Minor Normal Unknown Warning)
+      trap_severities.uniq!
+      trap_severities.each do |cat|
+        fail "Trap Severities #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+      end
+    end
+
+    # Validate snmp trap format
+    def validate_trap_format(trap_format)
+      allowed_values = %w(SNMPv1 SNMPv2 SNMPv3)
+      fail "Trap Format #{trap_format} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(trap_format)
     end
 
   end

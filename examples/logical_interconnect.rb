@@ -9,11 +9,11 @@ end
 # Explores functionalities of Logical Interconnects
 
 # Retrieves test enclosure to put the interconnects
-enclosure = OneviewSDK::Enclosure.new(@client, name: 'Encl1')
-enclosure.retrieve!
-pretty "Sucessfully retrieved the enclosure #{enclosure[:name]}"
+# enclosure = OneviewSDK::Enclosure.new(@client, name: 'Encl1')
+# enclosure.retrieve!
+# pretty "Sucessfully retrieved the enclosure #{enclosure[:name]}"
 
-log_int = OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl1-Simple')
+log_int = OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl2-EXAMPLE_LIG')
 log_int.retrieve!
 pretty "Logical interconnect #{log_int['name']} was retrieved sucessfully"
 
@@ -110,20 +110,20 @@ log_int.retrieve! # Retrieving to guarantee the remote is updated
 pretty "igmpIdleTimeoutInterval: #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
 pretty "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}"
 
-# pretty '### Port Monitor ###'
-# pretty log_int['portMonitor']
-# log_int.update_port_monitor
-#
-# enabled_bkp = log_int['portMonitor']['enablePortMonitor']
-# log_int['portMonitor']['enablePortMonitor'] = true
-# log_int.update_port_monitor
-# log_int.retrieve!
-# pretty log_int['portMonitor']
-#
-# log_int['portMonitor']['enablePortMonitor'] = enabled_bkp
-# log_int.update_port_monitor
-# log_int.retrieve!
-# pretty log_int['portMonitor']
+pretty '### Port Monitor ###'
+pretty log_int['portMonitor']
+log_int.update_port_monitor
+
+enabled_bkp = log_int['portMonitor']['enablePortMonitor']
+log_int['portMonitor']['enablePortMonitor'] = true
+log_int.update_port_monitor
+log_int.retrieve!
+pretty log_int['portMonitor']
+
+log_int['portMonitor']['enablePortMonitor'] = enabled_bkp
+log_int.update_port_monitor
+log_int.retrieve!
+pretty log_int['portMonitor']
 
 
 # pretty '### QoS Configuration ###'
@@ -145,7 +145,6 @@ pretty "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}
 
 pretty '### Telemetry Configuration ###'
 pretty log_int['telemetryConfiguration']
-log_int.update_telemetry_configuration
 
 sample_count_bkp = log_int['telemetryConfiguration']['sampleCount']
 sample_interval_bkp = log_int['telemetryConfiguration']['sampleInterval']
@@ -160,3 +159,25 @@ log_int['telemetryConfiguration']['sampleInterval'] = sample_interval_bkp
 log_int.update_telemetry_configuration
 log_int.retrieve!
 pretty log_int['telemetryConfiguration']
+
+pretty '### SNMP Configuration ###'
+pretty log_int['snmpConfiguration']
+
+# Adding configuration
+log_int['snmpConfiguration']['snmpAccess'].push('172.18.6.15/24')
+enet_trap = %w(PortStatus)
+fc_trap = %w(PortStatus)
+vcm_trap = %w(Legacy)
+trap_sev = %w(Normal Warning Critical)
+trap_options = log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev)
+log_int.add_snmp_trap_destination('172.18.6.16', 'SNMPv2', 'public', trap_options)
+
+# Updating snmpConfiguration
+log_int.update_snmp_configuration
+pretty "\nUpdate Complete!\n"
+pretty log_int['snmpConfiguration']
+
+# Rolling back
+log_int.compliance
+pretty "\nRoll back..."
+pretty log_int['snmpConfiguration']
