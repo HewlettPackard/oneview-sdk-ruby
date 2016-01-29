@@ -25,7 +25,7 @@ module OneviewSDK
   #   type
   #   uri
   class UplinkSet < Resource
-    BASE_URI = '/rest/uplink-sets'
+    BASE_URI = '/rest/uplink-sets'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super
