@@ -146,17 +146,16 @@ module OneviewSDK
       end
 
       queryParameters.each do |key, value|
-        if key.to_sym == :fields
-          uri += "fields=#{value.join(',')}"
-        elsif key.to_sym == :startDate || key.to_sym == :endDate
-          uri += "filter=#{key}=#{value}"
-        else
-          uri += "#{key}=#{value}"
-        end
+        uri += if key.to_sym == :fields
+                 "fields=#{value.join(',')}"
+               elsif key.to_sym == :startDate || key.to_sym == :endDate
+                 "filter=#{key}=#{value}"
+               else
+                 "#{key}=#{value}"
+               end
         uri += '&'
       end
       uri.chop!
-      puts uri
       response = @client.rest_get(uri)
       @client.response_handler(response)
     end
