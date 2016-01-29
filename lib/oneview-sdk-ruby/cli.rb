@@ -295,7 +295,7 @@ module OneviewSDK
           v = false if v == 'false'
           v = nil if v == 'nil'
         end
-        if k.match(/\./)
+        if k =~ /\./
           sub_hash = new_hash
           split = k.split('.')
           split.each do |sub_key|

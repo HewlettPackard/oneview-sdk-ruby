@@ -9,7 +9,7 @@ module OneviewSDK
   #   type (Required)
   #   vlanIdRange (Required)
   class BulkEthernetNetwork < Resource
-    BASE_URI = '/rest/ethernet-networks/bulk'
+    BASE_URI = '/rest/ethernet-networks/bulk'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

@@ -115,11 +115,7 @@ module OneviewSDK
           return body
         when 'error', 'killed', 'terminated'
           msg = "Task ended with bad state: '#{body['taskState']}'.\nResponse: "
-          if body['taskErrors']
-            msg += JSON.pretty_generate(body['taskErrors'])
-          else
-            msg += JSON.pretty_generate(body)
-          end
+          msg += body['taskErrors'] ? JSON.pretty_generate(body['taskErrors']) : JSON.pretty_generate(body)
           fail(msg)
         else
           print '.' if print_dots

@@ -24,7 +24,7 @@ module OneviewSDK
   #   type (Required)
   #   wwnType
   class ServerProfileTemplate < Resource
-    BASE_URI = '/rest/server-profile-templates'
+    BASE_URI = '/rest/server-profile-templates'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

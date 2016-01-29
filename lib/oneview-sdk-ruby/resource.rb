@@ -4,7 +4,7 @@ require_relative 'client'
 module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
-    BASE_URI = '/rest'
+    BASE_URI = '/rest'.freeze
 
     attr_accessor \
       :client,
@@ -29,12 +29,12 @@ module OneviewSDK
     end
 
     # Retrieve resource details based on this resource's name.
-    # @note Name must be unique
-    # @param [String] name Resource name
+    # @note Name or URI must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
-    def retrieve!(name = @data['name'])
-      fail 'Must set resource name before trying to retrieve!' unless name
-      results = self.class.find_by(@client, name: name)
+    def retrieve!
+      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      results = self.class.find_by(@client, name: @data['name']) if @data['name']
+      results = self.class.find_by(@client, uri: @data['uri']) if @data['uri']
       return false unless results.size == 1
       set_all(results[0].data)
       true
@@ -57,7 +57,7 @@ module OneviewSDK
     # @note Keys will be converted to strings
     def set(key, value)
       method_name = "validate_#{key}"
-      send(method_name.to_sym, value) if self.respond_to?(method_name.to_sym)
+      send(method_name.to_sym, value) if respond_to?(method_name.to_sym)
       @data[key.to_s] = value
     end
 
@@ -207,7 +207,7 @@ module OneviewSDK
       response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
       client.response_handler(response)
     rescue StandardError => e
-      client.logger.error('This resource does not implement the schema endpoint!') if e.message.match(/404 NOT FOUND/)
+      client.logger.error('This resource does not implement the schema endpoint!') if e.message =~ /404 NOT FOUND/
       raise e
     end
 
@@ -224,14 +224,15 @@ module OneviewSDK
     # Make a GET request to the resource uri and return an array with results matching the search
     # @param [Client] client
     # @param [Hash] attributes Hash containing the attributes name and value
+    # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
-    def self.find_by(client, attributes)
+    def self.find_by(client, attributes, uri = self::BASE_URI)
       results = []
-      uri = self::BASE_URI
       loop do
         response = client.rest_get(uri)
         body = client.response_handler(response)
         members = body['members']
+        break unless members
         members.each do |member|
           temp = new(client, member)
           results.push(temp) if temp.like?(attributes)
@@ -272,8 +273,8 @@ module OneviewSDK
         return false unless data && data.respond_to?(:[])
         if val.is_a?(Hash)
           return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
-        else
-          return false if val != data[key.to_s]
+        elsif val != data[key.to_s]
+          return false
         end
       end
       true

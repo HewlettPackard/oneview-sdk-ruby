@@ -18,7 +18,7 @@ module OneviewSDK
   #   type (Required)
   #   vlanId (Required)
   class EthernetNetwork < Resource
-    BASE_URI = '/rest/ethernet-networks'
+    BASE_URI = '/rest/ethernet-networks'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

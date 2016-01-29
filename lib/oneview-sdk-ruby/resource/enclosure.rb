@@ -48,7 +48,7 @@ module OneviewSDK
   #   username (Required)
   #   password (Required)
   class Enclosure < Resource
-    BASE_URI = '/rest/enclosures'
+    BASE_URI = '/rest/enclosures'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super
