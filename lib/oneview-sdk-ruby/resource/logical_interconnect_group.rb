@@ -14,7 +14,7 @@ module OneviewSDK
   #   uplinkSets (Required) (default = [])
   #   uri
   class LogicalInterconnectGroup < Resource
-    BASE_URI = '/rest/logical-interconnect-groups'
+    BASE_URI = '/rest/logical-interconnect-groups'.freeze
     attr_reader :bay_count
 
     def initialize(client, params = {}, api_ver = nil)

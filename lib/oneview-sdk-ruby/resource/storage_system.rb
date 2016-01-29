@@ -28,7 +28,7 @@ module OneviewSDK
   #   uri
   #   wwn
   class StorageSystem < Resource
-    BASE_URI = '/rest/storage-systems'
+    BASE_URI = '/rest/storage-systems'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

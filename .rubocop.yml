@@ -36,6 +36,9 @@ Style/AccessorMethodName:
 Style/EmptyLines:
   Enabled: false
 
+Style/IndentArray:
+  Enabled: false
+
 Style/MultilineOperationIndentation:
   Enabled: false
 
@@ -58,4 +61,7 @@ Metrics/MethodLength:
   Enabled: false
 
 Metrics/PerceivedComplexity:
+  Enabled: false
+
+Performance/Casecmp:
   Enabled: false

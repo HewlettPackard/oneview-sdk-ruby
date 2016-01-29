@@ -1,9 +1,10 @@
 require_relative 'client'
 
+# OneviewSDK Resources
 module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
-    BASE_URI = '/rest'
+    BASE_URI = '/rest'.freeze
 
     attr_accessor \
       :client,
@@ -23,17 +24,17 @@ module OneviewSDK
       if @api_version > @client.max_api_version
         fail "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
       end
-      @data = {}
+      @data ||= {}
       set_all(params)
     end
 
     # Retrieve resource details based on this resource's name.
-    # @note Name must be unique
-    # @param [String] name Resource name
+    # @note Name or URI must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
-    def retrieve!(name = @data['name'])
-      fail 'Must set resource name before trying to retrieve!' unless name
-      results = self.class.find_by(@client, name: name)
+    def retrieve!
+      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      results = self.class.find_by(@client, name: @data['name']) if @data['name']
+      results = self.class.find_by(@client, uri: @data['uri']) if @data['uri']
       return false unless results.size == 1
       set_all(results[0].data)
       true
@@ -56,7 +57,7 @@ module OneviewSDK
     # @note Keys will be converted to strings
     def set(key, value)
       method_name = "validate_#{key}"
-      send(method_name.to_sym, value) if self.respond_to?(method_name.to_sym)
+      send(method_name.to_sym, value) if respond_to?(method_name.to_sym)
       @data[key.to_s] = value
     end
 
@@ -169,7 +170,7 @@ module OneviewSDK
     # @return [true] if resource was deleted successfully
     def delete
       ensure_client && ensure_uri
-      response = @client.rest_delete(@data['uri'], @api_version)
+      response = @client.rest_delete(@data['uri'], {}, @api_version)
       @client.response_handler(response)
       true
     end
@@ -193,6 +194,23 @@ module OneviewSDK
       true
     end
 
+    # Get resource schema
+    # @return [Hash] Schema
+    def schema
+      self.class.schema(@client)
+    end
+
+    # Get resource schema
+    # @param [Client] client
+    # @return [Hash] Schema
+    def self.schema(client)
+      response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
+      client.response_handler(response)
+    rescue StandardError => e
+      client.logger.error('This resource does not implement the schema endpoint!') if e.message =~ /404 NOT FOUND/
+      raise e
+    end
+
     # Load resource from .json or .yaml file
     # @param [Client] client The client object to associate this resource with
     # @param [String] file_path The full path to the file
@@ -206,40 +224,32 @@ module OneviewSDK
     # Make a GET request to the resource uri and return an array with results matching the search
     # @param [Client] client
     # @param [Hash] attributes Hash containing the attributes name and value
+    # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
-    def self.find_by(client, attributes)
+    def self.find_by(client, attributes, uri = self::BASE_URI)
       results = []
-      uri = self::BASE_URI
       loop do
-        response = JSON.parse(client.rest_get(uri).body)
-        members = response['members']
+        response = client.rest_get(uri)
+        body = client.response_handler(response)
+        members = body['members']
+        break unless members
         members.each do |member|
           temp = new(client, member)
           results.push(temp) if temp.like?(attributes)
         end
-        break unless response['nextPageUri']
-        uri = response['nextPageUri']
+        break unless body['nextPageUri']
+        uri = body['nextPageUri']
       end
       results
     end
 
-
-    private
-
-    # Recursive helper method for like?
-    # Allows comparison of nested hash structures
-    def recursive_like?(other, data = @data)
-      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
-      other.each do |key, val|
-        return false unless data && data.respond_to?(:[])
-        if val.is_a?(Hash)
-          return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
-        else
-          return false if val != data[key.to_s]
-        end
-      end
-      true
+    # Make a GET request to the resource uri and return an array with all objects of this type
+    # @return [Array<Resource>] Results
+    def self.get_all(client)
+      find_by(client, {})
     end
+
+    protected
 
     # Fail unless @client is set for this resource.
     def ensure_client
@@ -252,6 +262,40 @@ module OneviewSDK
       fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
       true
     end
+
+    private
+
+    # Recursive helper method for like?
+    # Allows comparison of nested hash structures
+    def recursive_like?(other, data = @data)
+      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
+      other.each do |key, val|
+        return false unless data && data.respond_to?(:[])
+        if val.is_a?(Hash)
+          return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
+        elsif val != data[key.to_s]
+          return false
+        end
+      end
+      true
+    end
+
+  end
+
+  # Get resource class that matches the type given
+  # @param [String] type Name of the desired class type
+  # @return [Class] Resource class or nil if not found
+  def self.resource_named(type)
+    classes = {}
+    orig_classes = []
+    ObjectSpace.each_object(Class).select { |klass| klass < OneviewSDK::Resource }.each do |c|
+      name = c.name.split('::').last
+      orig_classes.push(name)
+      classes[name.downcase.delete('_').delete('-')] = c
+      classes["#{name.downcase.delete('_').delete('-')}s"] = c
+    end
+    new_type = type.to_s.downcase.delete('_').delete('-')
+    return classes[new_type] if classes.keys.include?(new_type)
   end
 end
 

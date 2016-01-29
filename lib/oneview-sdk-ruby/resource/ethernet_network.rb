@@ -18,7 +18,7 @@ module OneviewSDK
   #   type (Required)
   #   vlanId (Required)
   class EthernetNetwork < Resource
-    BASE_URI = '/rest/ethernet-networks'
+    BASE_URI = '/rest/ethernet-networks'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super
@@ -30,6 +30,20 @@ module OneviewSDK
       when 200
         @data['type'] ||= 'ethernet-networkV3'
       end
+    end
+
+    # Get associatedProfiles
+    def get_associated_profiles
+      ensure_client && ensure_uri
+      response = @client.rest_get("#{@data['uri']}/associatedProfiles", @api_version)
+      response.body
+    end
+
+    # Get associatedUplinkGroups
+    def get_associated_uplink_groups
+      ensure_client && ensure_uri
+      response = @client.rest_get("#{@data['uri']}/associatedUplinkGroups", @api_version)
+      response.body
     end
 
     # Validate ethernetNetworkType

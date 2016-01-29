@@ -1,6 +1,13 @@
 require 'pry'
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'spec/'
+  add_group 'Client', %w(client.rb rest.rb config_loader.rb)
+  add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
+  add_group 'CLI', 'cli.rb'
+  # minimum_coverage 85
+  # minimum_coverage_by_file 70
+end
 
 require 'oneview-sdk-ruby'
 require_relative 'shared_context'

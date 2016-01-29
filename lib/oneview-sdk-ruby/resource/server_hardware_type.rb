@@ -18,7 +18,7 @@ module OneviewSDK
   #   type
   #   uri
   class ServerHardwareType < Resource
-    BASE_URI = '/rest/server-hardware-types'
+    BASE_URI = '/rest/server-hardware-types'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

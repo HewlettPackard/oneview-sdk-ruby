@@ -150,6 +150,9 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
   OneviewSDK::EthernetNetwork.find_by(client, { purpose: 'General' }).each do |network|
     puts "  #{network[:name]}"
   end
+  
+  # Get all resources:
+  networks = client.get_all(:EthernetNetwork)
   ```
 
 ### Save/Load Resources with files
@@ -210,7 +213,9 @@ The CLI doesn't expose everything in the sdk, but it is great for doing simple t
 You know the drill. Fork it, branch it, change it, commit it, and pull-request it. We're passionate about improving this project, and glad to accept help to make it better.
 
 ### Building the Gem
-To build and install the gem, run `$ rake install`. To build only, run `$ rake build`
+First run `$ bundle` (requires the bundler gem), then...
+ - To build only, run `$ rake build`.
+ - To build and install the gem, run `$ rake install`.
 
 ### Testing
  - RuboCop: `$ rake rubocop` or `$ rubocop .`
@@ -222,3 +227,5 @@ To build and install the gem, run `$ rake install`. To build only, run `$ rake b
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
  - Henrique Diomede - [@hdiomede](https://github.com/hdiomede)
  - Thiago Miotto - [@tmiotto](https://github.com/tmiotto)
+ - Ricardo Piantola - [@piantola](https://github.com/piantola)
+ 

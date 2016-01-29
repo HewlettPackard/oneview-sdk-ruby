@@ -8,7 +8,7 @@ module OneviewSDK
   #   networkType ['Ethernet', 'FibreChannel' ]
   #   networkUris
   class LIGUplinkSet < Resource
-    BASE_URI = '/rest/logical-interconnect-groups'
+    BASE_URI = '/rest/logical-interconnect-groups'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super

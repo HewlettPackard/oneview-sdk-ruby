@@ -23,7 +23,7 @@ module OneviewSDK
   #   type (Required)
   #   uri
   class EnclosureGroup < Resource
-    BASE_URI = '/rest/enclosure-groups'
+    BASE_URI = '/rest/enclosure-groups'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super
@@ -34,6 +34,21 @@ module OneviewSDK
       when 200
         @data['type'] ||= 'EnclosureGroupV200'
       end
+    end
+
+    # Get the script executed by enclosures in this enclosure group
+    # @return [String] script for this enclosure group
+    def script
+      @client.rest_get(@data['uri'] + '/script').body
+    end
+
+    # Change the script executed by enclosures in this enclosure group
+    # @param [String] body script to be executed
+    # @return true if set successfully
+    def set_script(body)
+      response = @client.rest_put(@data['uri'] + '/script', { 'body' => body }, @api_version)
+      @client.response_handler(response)
+      true
     end
 
     def validate_interconnectBayMappingCount(value)

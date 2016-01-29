@@ -45,6 +45,18 @@ RSpec.describe OneviewSDK::Client do
       expect(client.token).to eq('secret456')
     end
 
+    it 'respects the ssl environment variable' do
+      ENV['ONEVIEWSDK_SSL_ENABLED'] = 'false'
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'secret123')
+      expect(client.ssl_enabled).to eq(false)
+    end
+
+    it 'requires a valid ssl environment variable value' do
+      ENV['ONEVIEWSDK_SSL_ENABLED'] = 'bad'
+      options = { url: 'https://oneview.example.com', token: 'secret123' }
+      expect { OneviewSDK::Client.new(options) }.to output(/Unrecognized ssl_enabled value/).to_stdout_from_any_process
+    end
+
     it 'sets the log level' do
       options = { url: 'https://oneview.example.com', password: 'secret123', log_level: :error }
       client = OneviewSDK::Client.new(options)
@@ -109,6 +121,91 @@ RSpec.describe OneviewSDK::Client do
       expect { OneviewSDK::Client.new(options) rescue nil }.to output(/Retrying.../).to_stdout_from_any_process
       options.delete(:log_level)
       expect { OneviewSDK::Client.new(options) }.to raise_error(/Couldn't log into OneView server/)
+    end
+  end
+
+  describe 'resource action methods' do
+    include_context 'shared context'
+
+    before :each do
+      @resource = OneviewSDK::Resource.new(@client)
+    end
+
+    it 'implements the #create method' do
+      expect(@resource).to receive(:create)
+      @client.create(@resource)
+    end
+
+    it 'implements the #save method' do
+      expect(@resource).to receive(:save)
+      @client.save(@resource)
+    end
+
+    it 'implements the #update method' do
+      expect(@resource).to receive(:update)
+      @client.update(@resource, name: 'NewName')
+    end
+
+    it 'implements the #refresh method' do
+      expect(@resource).to receive(:refresh)
+      @client.refresh(@resource)
+    end
+
+    it 'implements the #delete method' do
+      expect(@resource).to receive(:delete)
+      @client.delete(@resource)
+    end
+  end
+
+  describe '#get_all' do
+    include_context 'shared context'
+
+    it "calls the correct resource's get_all method" do
+      expect(OneviewSDK::ServerProfile).to receive(:get_all).with(@client)
+      @client.get_all('ServerProfiles')
+    end
+
+    it 'fails when a bogus resource type is given' do
+      expect { @client.get_all('BogusResources') }.to raise_error(/Invalid resource type/)
+    end
+  end
+
+  describe '#wait_for' do
+    include_context 'shared context'
+
+    it 'requires a task_uri' do
+      expect { @client.wait_for('') }.to raise_error(/Must specify a task_uri/)
+    end
+
+    it 'returns the response body for completed tasks' do
+      fake_response = FakeResponse.new(taskState: 'Completed', name: 'NewName')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
+      ret = @client.wait_for('/rest/tasks/1')
+      expect(ret).to eq('taskState' => 'Completed', 'name' => 'NewName')
+    end
+
+    it 'shows warnings' do
+      fake_response = FakeResponse.new(taskState: 'Warning', taskErrors: 'Blah')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
+      ret = nil
+      expect { ret = @client.wait_for('/rest/tasks/1') }.to output(/ended with warning.*Blah/).to_stdout_from_any_process
+      expect(ret).to eq('taskState' => 'Warning', 'taskErrors' => 'Blah')
+    end
+
+    it 'raises an error if the task fails' do
+      %w(Error Killed Terminated).each do |state|
+        fake_response = FakeResponse.new(taskState: state, message: 'Blah')
+        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
+        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(/ended with bad state[\S\s]*Blah/)
+      end
+    end
+
+    it 'raises an error with the error details if the task fails' do
+      %w(Error Killed Terminated).each do |state|
+        fake_response = FakeResponse.new(taskState: state, taskErrors: { message: 'Blah' })
+        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
+        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(/ended with bad state[\S\s]*Blah/)
+      end
     end
   end
 end
