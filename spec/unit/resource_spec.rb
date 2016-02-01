@@ -295,6 +295,27 @@ RSpec.describe OneviewSDK::Resource do
     end
   end
 
+  describe '#schema' do
+    it 'forwards the instance method call to the class method' do
+      expect(OneviewSDK::Resource).to receive(:schema).with(@client)
+      OneviewSDK::Resource.new(@client).schema
+    end
+
+    it 'tries to get BASE_URI/schema' do
+      expect(@client).to receive(:rest_get).with("#{OneviewSDK::Resource::BASE_URI}/schema", @client.api_version)
+        .and_return(FakeResponse.new(key: 'val1', other_key: 'val2'))
+      schema = OneviewSDK::Resource.schema(@client)
+      expect(schema['key']).to eq('val1')
+      expect(schema['other_key']).to eq('val2')
+    end
+
+    it 'displays a nice error if the schema endpoint returns a 404 response' do
+      allow(@client).to receive(:rest_get).and_raise('ERROR: 404 NOT FOUND /schema')
+      expect(@client.logger).to receive(:error).with(/does not implement the schema endpoint/)
+      expect { OneviewSDK::Resource.schema(@client) }.to raise_error(/404 NOT FOUND/)
+    end
+  end
+
   describe '#find_by' do
     it 'returns an empty array if no results are found' do
       fake_response = FakeResponse.new(members: [])
@@ -339,8 +360,8 @@ RSpec.describe OneviewSDK do
       expect(OneviewSDK.resource_named('SERVERProfilE')).to eq(OneviewSDK::ServerProfile)
     end
 
-    it 'ignores dashes and underscores' do
-      expect(OneviewSDK.resource_named('server-prof_ile')).to eq(OneviewSDK::ServerProfile)
+    it 'ignores dashes, underscores & spaces' do
+      expect(OneviewSDK.resource_named('se rver-prof_ile')).to eq(OneviewSDK::ServerProfile)
     end
 
     it 'supports symbols' do

@@ -13,7 +13,7 @@ module OneviewSDK
       fail "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
       type = case File.extname(file_path)
              when '.zip' then 'application/x-zip-compressed'
-             when 'exe' then 'application/x-msdownload'
+             when '.exe' then 'application/x-msdownload'
              else 'application/octet-stream'
              end
 
