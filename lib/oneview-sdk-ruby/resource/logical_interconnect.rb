@@ -230,6 +230,27 @@ module OneviewSDK
       options
     end
 
+    # Gets the installed firmware for a logical interconnect.
+    # @return [Hash] Contains all firmware information
+    def get_firmware
+      fail 'Please retrieve the Logical Interconnect before trying to get firmware information' unless @data['uri']
+      response = @client.rest_get(@data['uri'] + '/firmware')
+      @client.response_handler(response)
+    end
+
+    def firmware_update (command, firmware_driver, firmware_options)
+      firmware_options['command'] = command
+      firmware_options['sppUri'] =  firmware_driver['uri']
+      firmware_options['sppName'] = firmware_driver['name']
+      update_json = {
+        'If-Match' => '*',
+        'Body' => firmware_options
+      }
+      puts update_json
+      response = @client.rest_put(@data['uri'] + '/firmware', update_json)
+      @client.response_handler(response)
+    end
+
     private
 
     # Validate ethernet trap categories
