@@ -59,6 +59,31 @@ RSpec.describe OneviewSDK::Resource do
     end
   end
 
+  describe '#exists?' do
+    it 'requires the name attribute to be set' do
+      res = OneviewSDK::Resource.new(@client)
+      expect { res.exists? }.to raise_error(/Must set resource name or uri/)
+    end
+
+    it 'uses the uri attribute when the name is not set' do
+      res = OneviewSDK::Resource.new(@client, uri: '/rest/fake')
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, uri: res['uri']).and_return([])
+      expect(res.exists?).to eq(false)
+    end
+
+    it 'returns true when the resource is found' do
+      res = OneviewSDK::Resource.new(@client, name: 'ResourceName')
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, name: res['name']).and_return([res])
+      expect(res.exists?).to eq(true)
+    end
+
+    it 'returns false when the resource is not found' do
+      res = OneviewSDK::Resource.new(@client, uri: '/rest/fake')
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, uri: res['uri']).and_return([])
+      expect(res.exists?).to eq(false)
+    end
+  end
+
   describe '#==' do
     context 'class equality' do
       it 'returns true when the classes are the same' do

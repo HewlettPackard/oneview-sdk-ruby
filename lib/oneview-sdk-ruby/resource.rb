@@ -34,10 +34,20 @@ module OneviewSDK
     def retrieve!
       fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
       results = self.class.find_by(@client, name: @data['name']) if @data['name']
-      results = self.class.find_by(@client, uri: @data['uri']) if @data['uri']
+      results = self.class.find_by(@client, uri:  @data['uri'])  if @data['uri'] && (!defined?(results) || results.empty?)
       return false unless results.size == 1
       set_all(results[0].data)
       true
+    end
+
+    # Check if a resource exists
+    # @note name or uri must be specified inside resource
+    # @return [Boolean] Whether or not resource exists
+    def exists?
+      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      return true if @data['name'] && self.class.find_by(@client, name: @data['name']).size == 1
+      return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri']).size == 1
+      false
     end
 
     # Set the given hash of key-value pairs as resource data attributes
