@@ -238,7 +238,7 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    def firmware_update (command, firmware_driver, firmware_options)
+    def firmware_update(command, firmware_driver, firmware_options)
       firmware_options['command'] = command
       firmware_options['sppUri'] =  firmware_driver['uri']
       firmware_options['sppName'] = firmware_driver['name']
