@@ -6,6 +6,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
   let(:enclosure) { OneviewSDK::Enclosure.new(@client, name: 'EXAMPLE_ENCLOSURE') }
   let(:log_int) { OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl2-EXAMPLE_LIG') }
   let(:qos_fixture) { 'spec/support/fixtures/integration/logical_interconnect_qos.json' }
+  let(:firmware_path) { 'spec/support/Service Pack for ProLiant' }
 
   describe '#retrieve!' do
     it 'retrieves the already created necessary objects' do
@@ -284,4 +285,54 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
     end
   end
 
+  describe 'Firmware Updates' do
+    it 'will assure the firmware is present' do
+      firmware_name = firmware_path.split('/').last
+      firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+      firmware.retrieve!
+    end
+
+    it 'will retrieve the firmware options' do
+      firmware_name = firmware_path.split('/').last
+      firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+      firmware.retrieve!
+      log_int.retrieve!
+      firmware_opt = log_int.get_firmware
+      expect(firmware_opt).to be
+      expect(firmware_opt['ethernetActivationDelay']).to be
+      expect(firmware_opt['ethernetActivationType']).to be
+      expect(firmware_opt['fcActivationDelay']).to be
+      expect(firmware_opt['fcActivationType']).to be
+    end
+
+    context 'perform the actions' do
+      it 'Stage' do
+        log_int.retrieve!
+        firmware_name = firmware_path.split('/').last
+        firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+        firmware.retrieve!
+        firmware_opt = log_int.get_firmware
+        firmware_opt['ethernetActivationDelay'] = 7
+        firmware_opt['ethernetActivationType'] = 'OddEven'
+        firmware_opt['fcActivationDelay'] = 7
+        firmware_opt['fcActivationType'] = 'Serial'
+        firmware_opt['force'] = true
+        expect { log_int.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
+      end
+
+      it 'Update' do
+        log_int.retrieve!
+        firmware_name = firmware_path.split('/').last
+        firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+        firmware.retrieve!
+        firmware_opt = log_int.get_firmware
+        firmware_opt['ethernetActivationDelay'] = 15
+        firmware_opt['ethernetActivationType'] = 'None'
+        firmware_opt['fcActivationDelay'] = 15
+        firmware_opt['fcActivationType'] = 'None'
+        firmware_opt['force'] = true
+        expect { log_int.firmware_update('Update', firmware, firmware_opt) }.to_not raise_error
+      end
+    end
+  end
 end

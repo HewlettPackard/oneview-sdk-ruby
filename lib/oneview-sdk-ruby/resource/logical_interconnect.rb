@@ -246,7 +246,6 @@ module OneviewSDK
         'If-Match' => '*',
         'Body' => firmware_options
       }
-      puts update_json
       response = @client.rest_put(@data['uri'] + '/firmware', update_json)
       @client.response_handler(response)
     end

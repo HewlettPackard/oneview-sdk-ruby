@@ -188,22 +188,35 @@ pretty '### Firmware Update ###'
 firmware_opt = log_int.get_firmware
 pretty firmware_opt
 
-firmware_name = 'Online ROM Flash for Linux - Power Management Controller'
+firmware_name = 'Service Pack for ProLiant'
 firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
 firmware.retrieve!
 
 pretty '# Updating firmware options #'
+
+pretty "\nStaging..."
 firmware_opt['ethernetActivationDelay'] = 7
 firmware_opt['ethernetActivationType'] = 'OddEven'
 firmware_opt['fcActivationDelay'] = 7
 firmware_opt['fcActivationType'] = 'Serial'
 firmware_opt['force'] = true
-opt = {
-  'ethernetActivationDelay' => 7,
-  'ethernetActivationType' => 'None',
-  'fcActivationDelay' => 7,
-  'fcActivationType' => 'None',
-  'force' => true
-}
-firmware_opt = log_int.firmware_update('Update', firmware, firmware_opt)
+log_int.firmware_update('Stage', firmware, firmware_opt)
+pretty firmware_opt
+
+pretty "\nActivating..."
+firmware_opt['ethernetActivationDelay'] = 7
+firmware_opt['ethernetActivationType'] = 'OddEven'
+firmware_opt['fcActivationDelay'] = 7
+firmware_opt['fcActivationType'] = 'Serial'
+firmware_opt['force'] = true
+log_int.firmware_update('Activate', firmware, firmware_opt)
+pretty firmware_opt
+
+pretty "\nUpdating..."
+firmware_opt['ethernetActivationDelay'] = 15
+firmware_opt['ethernetActivationType'] = 'None'
+firmware_opt['fcActivationDelay'] = 15
+firmware_opt['fcActivationType'] = 'None'
+firmware_opt['force'] = true
+log_int.firmware_update('Update', firmware, firmware_opt)
 pretty firmware_opt
