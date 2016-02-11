@@ -8,7 +8,7 @@ module OneviewSDK
     DEFAULT_API_VERSION = 200
 
     attr_reader :url, :user, :token, :password, :max_api_version
-    attr_accessor :ssl_enabled, :api_version, :logger, :log_level
+    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :print_wait_dots
 
     include Rest
 
@@ -17,6 +17,7 @@ module OneviewSDK
     # @option options [Logger] :logger (Logger.new(STDOUT)) Logger object to use.
     #   Must implement debug(String), info(String), warn(String), error(String), & level=
     # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
+    # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on tasks to complete.
     # @option options [String] :url URL of OneView appliance
     # @option options [String] :user ('Administrator') Username to use for authentication with OneView appliance
     # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) Password to use for authentication with OneView appliance
@@ -28,6 +29,7 @@ module OneviewSDK
       [:debug, :info, :warn, :error, :level=].each { |m| fail "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
       @log_level = options[:log_level] || :info
       @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
+      @print_wait_dots = options.fetch(:print_wait_dots, false)
       @url = options[:url] || ENV['ONEVIEWSDK_URL']
       fail 'Must set the url option' unless @url
       @max_api_version = appliance_api_version
@@ -99,10 +101,9 @@ module OneviewSDK
 
     # Wait for a task to complete
     # @param [String] task_uri
-    # @param [Boolean] print_dots Whether or not to print a dot after each wait iteration
     # @raise [RuntimeError] if the task resulted in an error or early termination.
     # @return [Hash] if the task completed sucessfully, return the task details
-    def wait_for(task_uri, print_dots = false)
+    def wait_for(task_uri)
       fail 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
       loop do
         task = rest_get(task_uri)
@@ -118,7 +119,7 @@ module OneviewSDK
           msg += body['taskErrors'] ? JSON.pretty_generate(body['taskErrors']) : JSON.pretty_generate(body)
           fail(msg)
         else
-          print '.' if print_dots
+          print '.' if @print_wait_dots
           sleep 10
         end
       end
