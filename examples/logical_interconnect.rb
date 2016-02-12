@@ -17,13 +17,13 @@ log_int = OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl2-EXAMPLE_LIG'
 log_int.retrieve!
 pretty "Logical interconnect #{log_int['name']} was retrieved sucessfully"
 
-# pretty '#### Update of Internal networks ####'
-#
-# internal_networks = log_int.list_vlan_networks
-# pretty 'Listing all the internal networks'
-# internal_networks.each do |net|
-#   pretty "Network #{net[:name]} with uri #{net[:uri]}"
-# end
+pretty '#### Update of Internal networks ####'
+
+internal_networks = log_int.list_vlan_networks
+pretty 'Listing all the internal networks'
+internal_networks.each do |net|
+  pretty "Network #{net[:name]} with uri #{net[:uri]}"
+end
 #
 # li_et01_options = {
 #   vlanId:  '2001',
@@ -184,39 +184,39 @@ pretty "Logical interconnect #{log_int['name']} was retrieved sucessfully"
 # pretty "\nRemoving configuration..."
 # pretty log_int['snmpConfiguration']
 
-pretty '### Firmware Update ###'
-firmware_opt = log_int.get_firmware
-pretty firmware_opt
-
-firmware_name = 'Service Pack for ProLiant'
-firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
-firmware.retrieve!
-
-pretty '# Updating firmware options #'
-
-pretty "\nStaging..."
-firmware_opt['ethernetActivationDelay'] = 7
-firmware_opt['ethernetActivationType'] = 'OddEven'
-firmware_opt['fcActivationDelay'] = 7
-firmware_opt['fcActivationType'] = 'Serial'
-firmware_opt['force'] = true
-log_int.firmware_update('Stage', firmware, firmware_opt)
-pretty firmware_opt
-
-pretty "\nActivating..."
-firmware_opt['ethernetActivationDelay'] = 7
-firmware_opt['ethernetActivationType'] = 'OddEven'
-firmware_opt['fcActivationDelay'] = 7
-firmware_opt['fcActivationType'] = 'Serial'
-firmware_opt['force'] = true
-log_int.firmware_update('Activate', firmware, firmware_opt)
-pretty firmware_opt
-
-pretty "\nUpdating..."
-firmware_opt['ethernetActivationDelay'] = 15
-firmware_opt['ethernetActivationType'] = 'None'
-firmware_opt['fcActivationDelay'] = 15
-firmware_opt['fcActivationType'] = 'None'
-firmware_opt['force'] = true
-log_int.firmware_update('Update', firmware, firmware_opt)
-pretty firmware_opt
+# pretty '### Firmware Update ###'
+# firmware_opt = log_int.get_firmware
+# pretty firmware_opt
+#
+# firmware_name = 'Service Pack for ProLiant'
+# firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+# firmware.retrieve!
+#
+# pretty '# Updating firmware options #'
+#
+# pretty "\nStaging..."
+# firmware_opt['ethernetActivationDelay'] = 7
+# firmware_opt['ethernetActivationType'] = 'OddEven'
+# firmware_opt['fcActivationDelay'] = 7
+# firmware_opt['fcActivationType'] = 'Serial'
+# firmware_opt['force'] = true
+# log_int.firmware_update('Stage', firmware, firmware_opt)
+# pretty firmware_opt
+#
+# pretty "\nActivating..."
+# firmware_opt['ethernetActivationDelay'] = 7
+# firmware_opt['ethernetActivationType'] = 'OddEven'
+# firmware_opt['fcActivationDelay'] = 7
+# firmware_opt['fcActivationType'] = 'Serial'
+# firmware_opt['force'] = true
+# log_int.firmware_update('Activate', firmware, firmware_opt)
+# pretty firmware_opt
+#
+# pretty "\nUpdating..."
+# firmware_opt['ethernetActivationDelay'] = 15
+# firmware_opt['ethernetActivationType'] = 'None'
+# firmware_opt['fcActivationDelay'] = 15
+# firmware_opt['fcActivationType'] = 'None'
+# firmware_opt['force'] = true
+# log_int.firmware_update('Update', firmware, firmware_opt)
+# pretty firmware_opt

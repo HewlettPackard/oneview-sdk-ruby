@@ -53,12 +53,12 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
   #   end
   # end
 
-  describe '#compliance' do
-    it 'defines the position of the Logical Interconnect' do
-      log_int.retrieve!
-      expect { log_int.compliance }.to_not raise_error
-    end
-  end
+  # describe '#compliance' do
+  #   it 'defines the position of the Logical Interconnect' do
+  #     log_int.retrieve!
+  #     expect { log_int.compliance }.to_not raise_error
+  #   end
+  # end
 
   describe 'Internal Networks Test' do
     before(:each) do
@@ -66,6 +66,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
     end
 
     it 'will list the internal networks' do
+      log_int.retrieve!
       vlans = log_int.list_vlan_networks
       expect(vlans).not_to eq(nil)
       expect(vlans.any?).to eq(true)
@@ -320,19 +321,6 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
         expect { log_int.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
       end
 
-      it 'Update' do
-        log_int.retrieve!
-        firmware_name = firmware_path.split('/').last
-        firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
-        firmware.retrieve!
-        firmware_opt = log_int.get_firmware
-        firmware_opt['ethernetActivationDelay'] = 15
-        firmware_opt['ethernetActivationType'] = 'None'
-        firmware_opt['fcActivationDelay'] = 15
-        firmware_opt['fcActivationType'] = 'None'
-        firmware_opt['force'] = true
-        expect { log_int.firmware_update('Update', firmware, firmware_opt) }.to_not raise_error
-      end
     end
   end
 end
