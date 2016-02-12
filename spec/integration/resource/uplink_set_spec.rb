@@ -14,7 +14,7 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true do
       networkType: 'Ethernet',
       ethernetNetworkType: 'Tagged',
       description: nil,
-      name: 'Teste Uplink'
+      name: 'Test Uplink'
     }
   end
 
@@ -28,7 +28,7 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true do
 
   describe '#update' do
     it 'update portConfigInfos' do
-      uplink = OneviewSDK::UplinkSet.new(@client, name: 'Teste Uplink')
+      uplink = OneviewSDK::UplinkSet.new(@client, name: 'Test Uplink')
       expect { uplink.retrieve! }.not_to raise_error
       uplink.add_portConfig(
         '/rest/interconnects/14be5eee-4b3d-4400-b343-f9cf323ce998',
@@ -41,7 +41,7 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true do
 
   describe '#delete' do
     it 'delete resource' do
-      item = OneviewSDK::UplinkSet.new(@client, name: 'Teste Uplink')
+      item = OneviewSDK::UplinkSet.new(@client, name: 'Test Uplink')
       expect { item.retrieve! }.not_to raise_error
       expect { item.delete }.not_to raise_error
     end
