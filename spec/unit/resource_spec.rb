@@ -4,6 +4,11 @@ RSpec.describe OneviewSDK::Resource do
   include_context 'shared context'
 
   describe '#initialize' do
+    it 'requires a valid client to be passed' do
+      expect { OneviewSDK::Resource.new(nil) }.to raise_error(/Must specify a valid client/)
+      expect { OneviewSDK::Resource.new('client') }.to raise_error(/Must specify a valid client/)
+    end
+
     it 'uses the client\'s logger' do
       res = OneviewSDK::Resource.new(@client)
       expect(res.logger).to eq(@client.logger)

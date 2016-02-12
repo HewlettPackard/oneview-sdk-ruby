@@ -18,6 +18,7 @@ module OneviewSDK
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
+      fail 'Must specify a valid client' unless client.class == OneviewSDK::Client
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
