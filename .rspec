@@ -1,2 +1,2 @@
 # Skip integration tests by default
---tag integration
+--tag ~integration
