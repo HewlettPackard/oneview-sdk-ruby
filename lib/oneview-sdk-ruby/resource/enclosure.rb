@@ -98,7 +98,8 @@ module OneviewSDK
 
     # Reapply enclosure configuration
     def configuration
-      response = @client.rest_put(@data['uri'] + '/configuration')
+      ensure_client && ensure_uri
+      response = @client.rest_put(@data['uri'] + '/configuration', @api_version)
       new_data = @client.response_handler(response)
       set_all(new_data)
     end
@@ -107,6 +108,7 @@ module OneviewSDK
     # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     # @param [Hash] options  Optional force fields for refreshing the enclosure
     def refreshState(state, options = {})
+      ensure_client && ensure_uri
       fail 'Invalid refreshState' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(state)
       requestBody = {
         'body' => {
@@ -114,26 +116,29 @@ module OneviewSDK
           refreshForceOptions: options
         }
       }
-      response = @client.rest_put(@data['uri'] + '/refreshState', requestBody)
+      response = @client.rest_put(@data['uri'] + '/refreshState', requestBody, @api_version)
       new_data = @client.response_handler(response)
       set_all(new_data)
     end
 
     # Enclosure script
     def script
-      response = @client.rest_get(@data['uri'] + '/script')
+      ensure_client && ensure_uri
+      response = @client.rest_get(@data['uri'] + '/script', @api_version)
       @client.response_handler(response)
     end
 
     # Get settings that describe the environmental configuration
     def environmentalConfiguration
-      response = @client.rest_get(@data['uri'] + '/environmentalConfiguration')
+      ensure_client && ensure_uri
+      response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
       @client.response_handler(response)
     end
 
     # Retrieves historical utilization
     # @param [Hash] queryParameters query parameters
     def utilization(queryParameters = {})
+      ensure_client && ensure_uri
       uri = "#{@data['uri']}/utilization?"
 
       endDate = Time.iso8601(queryParameters[:endDate]) if queryParameters[:endDate]
@@ -156,7 +161,7 @@ module OneviewSDK
         uri += '&'
       end
       uri.chop!
-      response = @client.rest_get(uri)
+      response = @client.rest_get(uri, @api_version)
       @client.response_handler(response)
     end
 
@@ -165,7 +170,8 @@ module OneviewSDK
     # @param [String] path path
     # @param [String] value value
     def updateAttribute(operation, path, value)
-      response = @client.rest_patch(@data['uri'], 'body' => [{ op: operation, path: path, value: value }])
+      ensure_client && ensure_uri
+      response = @client.rest_patch(@data['uri'], { 'body' => [{ op: operation, path: path, value: value }] }, @api_version)
       @client.response_handler(response)
     end
 

@@ -66,7 +66,7 @@ RSpec.describe OneviewSDK::EnclosureGroup do
 
     it 'gets uri/script' do
       item = OneviewSDK::EnclosureGroup.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_get).with("/rest/fake/script", item.api_version).and_return(FakeResponse.new('Blah'))
+      expect(@client).to receive(:rest_get).with('/rest/fake/script', item.api_version).and_return(FakeResponse.new('Blah'))
       expect(@client.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
       expect(item.script).to eq('Blah')
     end
@@ -79,7 +79,7 @@ RSpec.describe OneviewSDK::EnclosureGroup do
 
     it 'does a PUT to uri/script' do
       item = OneviewSDK::EnclosureGroup.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_put).with('/rest/fake/script', { 'body' => 'Blah'}, item.api_version).and_return(FakeResponse.new('Blah'))
+      expect(@client).to receive(:rest_put).with('/rest/fake/script', { 'body' => 'Blah' }, item.api_version).and_return(FakeResponse.new('Blah'))
       expect(@client.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
       expect(item.set_script('Blah')).to eq(true)
     end
