@@ -31,7 +31,6 @@ module OneviewSDK
       }
       response = @client.rest_post(self.class::LOCATION_URI, { 'body' => entry }, @api_version)
       @client.response_handler(response)
-      # CREATE ONE INTERCONNECT RESOURCE HERE
     end
 
     # Deletes an INTERCONNECT
@@ -57,7 +56,6 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/internalNetworks', 'body' => uris)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Lists internal networks on the logical interconnect
@@ -91,7 +89,6 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/ethernetSettings', update_options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Updates settings of the Logical Interconnect
@@ -109,7 +106,6 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/settings', update_options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Returns logical interconnects to a consistent state.
@@ -120,7 +116,6 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/compliance', {}, @api_version)
       body = client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Asynchronously applies or re-applies the logical interconnect configuration to all managed interconnects
@@ -130,7 +125,6 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
       body = client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Updates port monitor settings of the Logical Interconnect
@@ -145,7 +139,6 @@ module OneviewSDK
       response = @client.rest_put(@data['portMonitor']['uri'], update_options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Updates QoS aggregated configuration of the Logical Interconnect
@@ -160,7 +153,6 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/qos-aggregated-configuration', update_options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Updates telemetry configuration of the Logical Interconnect
@@ -175,7 +167,6 @@ module OneviewSDK
       response = @client.rest_put(@data['telemetryConfiguration']['uri'], update_options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Updates snmp configuration of the Logical Interconnect
@@ -191,7 +182,6 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/snmp-configuration', update_options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # It will add one trap destination to the Logical Interconnect SNMP configuration
@@ -228,6 +218,26 @@ module OneviewSDK
         'trapSeverities' => trap_severities
       }
       options
+    end
+
+    # Gets the installed firmware for a logical interconnect.
+    # @return [Hash] Contains all firmware information
+    def get_firmware
+      fail 'Please retrieve the Logical Interconnect before trying to get firmware information' unless @data['uri']
+      response = @client.rest_get(@data['uri'] + '/firmware')
+      @client.response_handler(response)
+    end
+
+    def firmware_update(command, firmware_driver, firmware_options)
+      firmware_options['command'] = command
+      firmware_options['sppUri'] =  firmware_driver['uri']
+      firmware_options['sppName'] = firmware_driver['name']
+      update_json = {
+        'If-Match' => '*',
+        'Body' => firmware_options
+      }
+      response = @client.rest_put(@data['uri'] + '/firmware', update_json)
+      @client.response_handler(response)
     end
 
     private
