@@ -35,7 +35,7 @@ module OneviewSDK
     def retrieve!
       fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
       results = self.class.find_by(@client, name: @data['name']) if @data['name']
-      results = self.class.find_by(@client, uri:  @data['uri'])  if @data['uri'] && (!defined?(results) || results.empty?)
+      results = self.class.find_by(@client, uri:  @data['uri'])  if @data['uri'] && (!results || results.empty?)
       return false unless results.size == 1
       set_all(results[0].data)
       true
