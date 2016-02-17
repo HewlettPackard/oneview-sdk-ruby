@@ -112,6 +112,25 @@ RSpec.describe OneviewSDK::UplinkSet do
         expect { uplink[:status] = 'None' }.to raise_error(/Invalid status/)
       end
     end
+
+    it 'only allows certain locationEntriesType values' do
+      %w(Bay Enclosure Ip Password Port StackingDomainId StackingMemberId UserId).each do |v|
+        expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: v) }.to_not raise_error
+      end
+      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: '') }.to raise_error(/Invalid location entry type/)
+      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: 'invalid') }.to raise_error(/Invalid location entry type/)
+    end
+  end
+
+  describe '#add_portConfig' do
+    it 'updates the portConfigInfos value' do
+      item = OneviewSDK::UplinkSet.new(@client)
+      item.add_portConfig('/rest/fake', 1000, [{ 'value' => '1', 'type' => 'Bay' }, { 'value' => '/rest/fake2', 'type' => 'Enclosure' }])
+      expect(item['portConfigInfos'].size).to eq(1)
+      expect(item['portConfigInfos'].first['portUri']).to eq('/rest/fake')
+      expect(item['portConfigInfos'].first['desiredSpeed']).to eq(1000)
+      expect(item['portConfigInfos'].first['location']['locationEntries'].size).to eq(2)
+    end
   end
 
   describe 'add elements' do

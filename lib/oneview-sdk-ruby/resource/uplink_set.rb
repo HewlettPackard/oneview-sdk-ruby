@@ -90,10 +90,10 @@ module OneviewSDK
     # @param [Hash] locationEntries
     def add_portConfig(portUri, speed, locationEntries)
       entry = {
-        portUri: portUri,
-        desiredSpeed: speed,
-        location: {
-          locationEntries: locationEntries
+        'portUri' => portUri,
+        'desiredSpeed' => speed,
+        'location' => {
+          'locationEntries' => locationEntries
         }
       }
       @data['portConfigInfos'] << entry
