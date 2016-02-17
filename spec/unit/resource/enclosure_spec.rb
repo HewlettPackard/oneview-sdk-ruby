@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'time'
 
 RSpec.describe OneviewSDK::Enclosure do
   include_context 'shared context'
@@ -64,11 +65,37 @@ RSpec.describe OneviewSDK::Enclosure do
   end
 
   describe '#save' do
+    before :each do
+      @item  = OneviewSDK::Enclosure.new(@client, name: 'E1', rackName: 'R1', uri: '/rest/fake')
+      @item2 = OneviewSDK::Enclosure.new(@client, name: 'E2', rackName: 'R1', uri: '/rest/fake2')
+      @item3 = OneviewSDK::Enclosure.new(@client, name: 'E1', rackName: 'R2', uri: '/rest/fake2')
+    end
+
     it 'requires a uri' do
       expect { OneviewSDK::Enclosure.new(@client).save }.to raise_error(/Please set uri/)
     end
 
-    it 'is a pending example' # TODO
+    it 'does not send a PATCH request if the name and rackName are the same' do
+      expect(OneviewSDK::Enclosure).to receive(:find_by).with(@client, uri: @item['uri']).and_return([@item])
+      expect(@client).to_not receive(:rest_patch)
+      @item.save
+    end
+
+    it 'updates the server name with the local name' do
+      expect(OneviewSDK::Enclosure).to receive(:find_by).with(@client, uri: @item['uri']).and_return([@item2])
+      expect(@client).to receive(:rest_patch)
+        .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/name', value: @item['name'] }] }, @item.api_version)
+        .and_return(FakeResponse.new)
+      @item.save
+    end
+
+    it 'updates the server rackName with the local rackName' do
+      expect(OneviewSDK::Enclosure).to receive(:find_by).with(@client, uri: @item['uri']).and_return([@item3])
+      expect(@client).to receive(:rest_patch)
+        .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/rackName', value: @item['rackName'] }] }, @item.api_version)
+        .and_return(FakeResponse.new)
+      @item.save
+    end
   end
 
   describe '#configuration' do
@@ -85,7 +112,35 @@ RSpec.describe OneviewSDK::Enclosure do
   end
 
   describe '#refreshState' do
-    it 'is a pending example' # TODO
+    it 'requires a uri' do
+      expect { OneviewSDK::Enclosure.new(@client).refreshState(:state) }.to raise_error(/Please set uri/)
+    end
+
+    it 'only permits certain states' do
+      allow(@client).to receive(:rest_put).and_return(FakeResponse.new)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState('') }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState('state') }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState(nil) }.to raise_error(/Invalid refreshState/)
+      %w(NotRefreshing RefreshFailed RefreshPending Refreshing).each do |state|
+        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState(state) }.to_not raise_error
+      end
+    end
+
+    it 'does a PUT to /refreshState' do
+      item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake', refreshState: 'NotRefreshing')
+      expect(@client).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
+        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+      item.refreshState('Refreshing')
+      expect(item['refreshState']).to eq('Refreshing')
+    end
+
+    it 'allows string or symbol refreshState values' do
+      item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake', refreshState: 'NotRefreshing')
+      expect(@client).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
+        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+      item.refreshState(:Refreshing)
+      expect(item['refreshState']).to eq('Refreshing')
+    end
   end
 
   describe '#script' do
@@ -118,7 +173,33 @@ RSpec.describe OneviewSDK::Enclosure do
       expect { OneviewSDK::Enclosure.new(@client).utilization }.to raise_error(/Please set uri/)
     end
 
-    it 'is a pending example' # TODO
+    it 'gets uri/utilization' do
+      item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/utilization', item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization).to eq('key' => 'val')
+    end
+
+    it 'takes query parameters' do
+      item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/utilization?key=val', item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization(key: :val)).to eq('key' => 'val')
+    end
+
+    it 'takes an array for the :fields query parameter' do
+      item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization(fields: %w(one two three))).to eq('key' => 'val')
+    end
+
+    it 'converts Time query parameters' do
+      t = Time.now
+      item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization(startDate: t)).to eq('key' => 'val')
+    end
   end
 
   describe '#updateAttribute' do
@@ -151,6 +232,42 @@ RSpec.describe OneviewSDK::Enclosure do
       expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'OneViewStandard') }.to_not raise_error
       expect { OneviewSDK::Enclosure.new(@client, licensingIntent: '') }.to raise_error(/Invalid licensingIntent/)
       expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'invalid') }.to raise_error(/Invalid licensingIntent/)
+    end
+  end
+
+  describe '#convert_time' do
+    before :each do
+      @item = OneviewSDK::Enclosure.new(@client)
+      @t = Time.now
+      @d = Date.today
+    end
+
+    it 'does not convert nil objects' do
+      expect(@item.send(:convert_time, nil)).to eq(nil)
+    end
+
+    it 'converts Time strings to Time' do
+      expect(@item.send(:convert_time, @t.to_s)).to match(@t.utc.iso8601.chop!)
+    end
+
+    it 'converts Date strings to Time' do
+      expect(@item.send(:convert_time, @d.to_s)).to match(@d.to_time.utc.iso8601.chop!)
+    end
+
+    it 'accepts Date objects' do
+      expect(@item.send(:convert_time, @d)).to match(@d.to_time.utc.iso8601.chop!)
+    end
+
+    it 'accepts Time objects' do
+      expect(@item.send(:convert_time, @t)).to match(@t.utc.iso8601.chop!)
+    end
+
+    it 'does not accepts other types' do
+      expect { @item.send(:convert_time, []) }.to raise_error(/Invalid time format/)
+    end
+
+    it 'raises an error for invalid strings' do
+      expect { @item.send(:convert_time, 'badtime') }.to raise_error(/Failed to parse time/)
     end
   end
 end

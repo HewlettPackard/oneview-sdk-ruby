@@ -5,8 +5,8 @@ SimpleCov.start do
   add_group 'Client', %w(client.rb rest.rb config_loader.rb)
   add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
   add_group 'CLI', 'cli.rb'
-  minimum_coverage 86 # TODO: bump up as we increase coverage. Goal: 90%
-  minimum_coverage_by_file 41 # TODO: bump up as we increase coverage. Goal: 70%
+  minimum_coverage 93 # TODO: bump up as we increase coverage.
+  minimum_coverage_by_file 70 # TODO: bump up as we increase coverage.
 end
 
 require 'oneview-sdk-ruby'

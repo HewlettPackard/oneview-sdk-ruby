@@ -17,12 +17,13 @@ module OneviewSDK
     BASE_URI = '/rest/logical-interconnects'.freeze
     LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 
-    # Creates an Interconnect in the desired Bay in a specified enclosure
-    # WARN: It does not creates the LOGICAL INTERCONNECT itself.
+    # Create an Interconnect in the desired Bay in a specified enclosure
+    # WARN: It does not create the LOGICAL INTERCONNECT itself.
     # It will fail if no interconnect is already present on the specified position
     # @param [Fixnum] Number of the bay to put the interconnect
     # @param [OneviewSDK::Resource] Enclosure to insert the interconnect
     def create(bay_number, enclosure)
+      enclosure.ensure_uri
       entry = {
         'locationEntries' => [
           { 'value' => bay_number, 'type' => 'Bay' },
@@ -38,6 +39,7 @@ module OneviewSDK
     # @param [Fixnum] Number of the bay to locate the logical interconnect
     # @param [OneviewSDK::Resource] Enclosure to remove the logical interconnect
     def delete(bay_number, enclosure)
+      enclosure.ensure_uri
       delete_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure['uri']},Bay:#{bay_number}"
       response = @client.rest_delete(delete_uri, {}, @api_version)
       @client.response_handler(response)
@@ -61,6 +63,7 @@ module OneviewSDK
     # Lists internal networks on the logical interconnect
     # @return [OneviewSDK::Resource] List of networks
     def list_vlan_networks
+      ensure_client && ensure_uri
       results = OneviewSDK::Resource.find_by(@client, {}, @data['uri'] + '/internalVlans')
       internal_networks = []
       results.each do |vlan|
@@ -81,10 +84,11 @@ module OneviewSDK
     # @note The attribute is defined inside the instance of the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_ethernet_settings
+      ensure_client && ensure_uri
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['ethernetSettings']
       update_options = {
         'If-Match' =>  @data['ethernetSettings'].delete('eTag'),
-        'Body' => @data['ethernetSettings']
+        'body' => @data['ethernetSettings']
       }
       response = @client.rest_put(@data['uri'] + '/ethernetSettings', update_options, @api_version)
       body = @client.response_handler(response)
@@ -95,13 +99,13 @@ module OneviewSDK
     # @param Options to update the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_settings(options = {})
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
+      ensure_client && ensure_uri
       options['type'] ||= 'InterconnectSettingsV3'
       options['ethernetSettings'] ||= {}
       options['ethernetSettings']['type'] ||= 'EthernetInterconnectSettingsV3'
       update_options = {
         'If-Match' =>  @data['eTag'],
-        'Body' => options
+        'body' => options
       }
       response = @client.rest_put(@data['uri'] + '/settings', update_options, @api_version)
       body = @client.response_handler(response)
@@ -112,7 +116,7 @@ module OneviewSDK
     # The current logical interconnect state is compared to the associated logical interconnect group.
     # @return returns the updated object
     def compliance
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
+      ensure_client && ensure_uri
       response = @client.rest_put(@data['uri'] + '/compliance', {}, @api_version)
       body = client.response_handler(response)
       set_all(body)
@@ -121,7 +125,7 @@ module OneviewSDK
     # Asynchronously applies or re-applies the logical interconnect configuration to all managed interconnects
     # @return returns the updated object
     def configuration
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['uri']
+      ensure_client && ensure_uri
       response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
       body = client.response_handler(response)
       set_all(body)
@@ -134,7 +138,7 @@ module OneviewSDK
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['portMonitor']
       update_options = {
         'If-Match' =>  @data['portMonitor'].delete('eTag'),
-        'Body' => @data['portMonitor']
+        'body' => @data['portMonitor']
       }
       response = @client.rest_put(@data['portMonitor']['uri'], update_options, @api_version)
       body = @client.response_handler(response)
@@ -148,7 +152,7 @@ module OneviewSDK
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['qosConfiguration']
       update_options = {
         'If-Match' =>  @data['qosConfiguration'].delete('eTag'),
-        'Body' => @data['qosConfiguration']
+        'body' => @data['qosConfiguration']
       }
       response = @client.rest_put(@data['uri'] + '/qos-aggregated-configuration', update_options, @api_version)
       body = @client.response_handler(response)
@@ -162,7 +166,7 @@ module OneviewSDK
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['telemetryConfiguration']
       update_options = {
         'If-Match' =>  @data['telemetryConfiguration'].delete('eTag'),
-        'Body' => @data['telemetryConfiguration']
+        'body' => @data['telemetryConfiguration']
       }
       response = @client.rest_put(@data['telemetryConfiguration']['uri'], update_options, @api_version)
       body = @client.response_handler(response)
@@ -177,7 +181,7 @@ module OneviewSDK
       fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['snmpConfiguration']
       update_options = {
         'If-Match' =>  @data['snmpConfiguration'].delete('eTag'),
-        'Body' => @data['snmpConfiguration']
+        'body' => @data['snmpConfiguration']
       }
       response = @client.rest_put(@data['uri'] + '/snmp-configuration', update_options, @api_version)
       body = @client.response_handler(response)
@@ -223,18 +227,19 @@ module OneviewSDK
     # Gets the installed firmware for a logical interconnect.
     # @return [Hash] Contains all firmware information
     def get_firmware
-      fail 'Please retrieve the Logical Interconnect before trying to get firmware information' unless @data['uri']
+      ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/firmware')
       @client.response_handler(response)
     end
 
     def firmware_update(command, firmware_driver, firmware_options)
+      ensure_client && ensure_uri
       firmware_options['command'] = command
       firmware_options['sppUri'] =  firmware_driver['uri']
       firmware_options['sppName'] = firmware_driver['name']
       update_json = {
         'If-Match' => '*',
-        'Body' => firmware_options
+        'body' => firmware_options
       }
       response = @client.rest_put(@data['uri'] + '/firmware', update_json)
       @client.response_handler(response)

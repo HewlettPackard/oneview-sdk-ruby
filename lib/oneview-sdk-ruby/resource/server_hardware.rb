@@ -86,14 +86,6 @@ module OneviewSDK
       save
     end
 
-    def validate_licensingIntent(value)
-      fail 'Invalid licensingIntent' unless %w(OneView OneViewNoiLO OneViewStandard).include?(value) || value.nil?
-    end
-
-    def validate_configurationState(value)
-      fail 'Invalid configurationState' unless %w(Managed Monitored).include?(value) || value.nil?
-    end
-
     # Power on the server hardware
     # @param [String] force Use 'PressAndHold' action
     # @return [Boolean] Whether or not server was powered on
@@ -106,6 +98,14 @@ module OneviewSDK
     # @return [Boolean] Whether or not server was powered off
     def power_off(force = false)
       set_power_state('off', force)
+    end
+
+    def validate_licensingIntent(value)
+      fail 'Invalid licensingIntent' unless %w(OneView OneViewNoiLO OneViewStandard).include?(value) || value.nil?
+    end
+
+    def validate_configurationState(value)
+      fail 'Invalid configurationState' unless %w(Managed Monitored).include?(value) || value.nil?
     end
 
     private

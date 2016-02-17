@@ -1,4 +1,5 @@
 require 'time'
+require 'date'
 
 module OneviewSDK
   # Resource for enclosure groups
@@ -109,10 +110,11 @@ module OneviewSDK
     # @param [Hash] options  Optional force fields for refreshing the enclosure
     def refreshState(state, options = {})
       ensure_client && ensure_uri
-      fail 'Invalid refreshState' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(state)
+      s = state.to_s rescue state
+      fail 'Invalid refreshState' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(s)
       requestBody = {
         'body' => {
-          refreshState: state,
+          refreshState: s,
           refreshForceOptions: options
         }
       }
@@ -136,31 +138,30 @@ module OneviewSDK
     end
 
     # Retrieves historical utilization
-    # @param [Hash] queryParameters query parameters
+    # @param [Hash] queryParameters query parameters (ie :startDate, :endDate, :fields, :view, etc.)
+    # @option queryParameters [Array] :fields
+    # @option queryParameters [Time, Date, String] :startDate
+    # @option queryParameters [Time, Date, String] :endDate
     def utilization(queryParameters = {})
       ensure_client && ensure_uri
       uri = "#{@data['uri']}/utilization?"
 
-      endDate = Time.iso8601(queryParameters[:endDate]) if queryParameters[:endDate]
-      startDate = queryParameters[:startDate]
-
-      # If the user provided an endDate and no startDate, then the startDate should be
-      # automatically calculated
-      if endDate && startDate.nil?
-        queryParameters[:startDate] = (endDate - 86_400).iso8601(3)
-      end
+      queryParameters[:endDate]   = convert_time(queryParameters[:endDate])
+      queryParameters[:startDate] = convert_time(queryParameters[:startDate])
 
       queryParameters.each do |key, value|
-        uri += if key.to_sym == :fields
+        next if value.nil?
+        uri += case key.to_sym
+               when :fields
                  "fields=#{value.join(',')}"
-               elsif key.to_sym == :startDate || key.to_sym == :endDate
+               when :startDate, :endDate
                  "filter=#{key}=#{value}"
                else
                  "#{key}=#{value}"
                end
         uri += '&'
       end
-      uri.chop!
+      uri.chop! # Get rid of trailing '&' or '?'
       response = @client.rest_get(uri, @api_version)
       @client.response_handler(response)
     end
@@ -179,5 +180,19 @@ module OneviewSDK
       fail 'Invalid licensingIntent' unless %w(NotApplicable OneView OneViewNoiLO OneViewStandard).include?(value) || value.nil?
     end
 
+    private
+
+    # Convert Date, Time, or String objects to iso8601 string
+    def convert_time(t)
+      case t
+      when nil then nil
+      when Date then t.to_time.utc.iso8601(3)
+      when Time then t.utc.iso8601(3)
+      when String then Time.parse(t).utc.iso8601(3)
+      else fail "Invalid time format '#{t.class}'. Valid options are Time, Date, or String"
+      end
+    rescue StandardError => e
+      raise "Failed to parse time value '#{t}'. #{e.message}"
+    end
   end
 end
