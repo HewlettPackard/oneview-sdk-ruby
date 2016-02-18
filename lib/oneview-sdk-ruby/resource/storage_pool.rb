@@ -41,7 +41,7 @@ module OneviewSDK
     # Set storage system
     # @param [StorageSystem] storage_system
     def set_storage_system(storage_system)
-      set('storageSystemUri', storage_system[:uri])
+      set('storageSystemUri', storage_system['uri'])
     end
 
     # Validate refreshState
