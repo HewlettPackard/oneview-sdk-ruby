@@ -146,7 +146,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
   ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
   
   OneviewSDK::EthernetNetwork.find_by(client, { purpose: 'General' }).each do |network|
-    puts "  #{network[:name]}"
+    puts "  #{network['name']}"
   end
   
   # Get all resources:
