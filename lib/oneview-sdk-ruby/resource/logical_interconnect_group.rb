@@ -56,15 +56,18 @@ module OneviewSDK
       @data['uplinkSets'] << uplink_set.data
     end
 
+    # Get the default settings for the spe
+    # @param [Fixnum] bay Bay number
+    # @param [String] type InterconnectType
     def get_default_settings
-      get_uri = self.class::LOCATION_URI + '/defaultSettings'
-      response = @client.rest_get(get_uri, {}, @api_version)
+      get_uri = self.class::BASE_URI + '/defaultSettings'
+      response = @client.rest_get(get_uri, @api_version)
       @client.response_handler(response)
     end
 
     def get_settings
       get_uri = @data['uri'] + '/settings'
-      response = @client.rest_get(get_uri, {}, @api_version)
+      response = @client.rest_get(get_uri, @api_version)
       @client.response_handler(response)
     end
 
@@ -76,7 +79,7 @@ module OneviewSDK
         'If-Match' =>  @data.delete('eTag'),
         'Body' => @data
       }
-      response = @client.rest_put(@data['uri'] , update_options, @api_version)
+      response = @client.rest_put(@data['uri'], update_options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
     end
