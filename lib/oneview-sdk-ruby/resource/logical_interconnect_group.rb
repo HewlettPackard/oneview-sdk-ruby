@@ -56,6 +56,34 @@ module OneviewSDK
       @data['uplinkSets'] << uplink_set.data
     end
 
+    # Get the default settings for the spe
+    # @param [Fixnum] bay Bay number
+    # @param [String] type InterconnectType
+    def get_default_settings
+      get_uri = self.class::BASE_URI + '/defaultSettings'
+      response = @client.rest_get(get_uri, @api_version)
+      @client.response_handler(response)
+    end
+
+    def get_settings
+      get_uri = @data['uri'] + '/settings'
+      response = @client.rest_get(get_uri, @api_version)
+      @client.response_handler(response)
+    end
+
+    # Updates ethernet settings of the Logical Interconnect
+    # @note The attribute is defined inside the instance of the Logical Interconnect
+    # @return Updated instance of the Logical Interconnect Group
+    def update
+      update_options = {
+        'If-Match' =>  @data.delete('eTag'),
+        'Body' => @data
+      }
+      response = @client.rest_put(@data['uri'], update_options, @api_version)
+      body = @client.response_handler(response)
+      set_all(body)
+    end
+
     private
 
     def parse_interconnect_map_template
