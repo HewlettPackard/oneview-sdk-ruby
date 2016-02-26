@@ -64,5 +64,31 @@ module OneviewSDK
       end
     end
 
+    # Get host types for storage system resource
+    # @param [Client] client client handle REST calls to OV instance
+    # @return [String] response body
+    def self.host_types(client)
+      response = client.rest_get(BASE_URI + '/host-types')
+      response.body
+    end
+
+    # List of storage pools
+    def storage_pools
+      response = @client.rest_get(@data['uri'] + '/storage-pools')
+      response.body
+    end
+
+    # List of all managed target ports for the specified storage system
+    # or only the one specified
+    # @param [String] port Target port
+    def managedPorts(port = nil)
+      response = if port.nil?
+                   @client.rest_get(@data['uri'] + '/managedPorts')
+                 else
+                   @client.rest_get(@data['uri'] + 'managedPorts/' + port)
+                 end
+      response.body
+    end
+
   end
 end
