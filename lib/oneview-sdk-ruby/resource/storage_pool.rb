@@ -38,6 +38,10 @@ module OneviewSDK
       end
     end
 
+    def update
+      fail 'Method not available for this resource!'
+    end
+
     # Validate refreshState
     # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     def validate_refreshState(value)
