@@ -59,5 +59,12 @@ RSpec.describe OneviewSDK::StoragePool do
         expect { storage_pool[:status] = 'Complete' }.to raise_error.with_message(/Invalid status/)
       end
     end
+
+    describe 'undefined methods' do
+      it 'does not allow the update action' do
+        storage_pool = OneviewSDK::StoragePool.new(@client)
+        expect { storage_pool.update }.to raise_error(/Method not available for this resource!/)
+      end
+    end
   end
 end
