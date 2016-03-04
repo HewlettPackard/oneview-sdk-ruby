@@ -42,8 +42,8 @@ eth2_options = {
 eth01 = OneviewSDK::EthernetNetwork.new(@client, eth1_options)
 eth02 = OneviewSDK::EthernetNetwork.new(@client, eth2_options)
 
-eth01.create
-eth02.create
+eth01.create!
+eth02.create!
 
 upset01_options = {
   name: 'ETH_UP_01',
@@ -72,7 +72,7 @@ fc1_options = {
 
 fc01 = OneviewSDK::FCNetwork.new(@client, fc1_options)
 
-fc01.create
+fc01.create!
 
 upset02_options = {
   name: 'FC_UP_01',
@@ -88,11 +88,9 @@ upset02.add_uplink(1, 'X3')
 
 lig.add_uplink_set(upset02)
 
-
 # Create the fully configured LIG
-lig.create
+lig.create!
 puts "\n#{type} #{lig[:name]} created!"
-
 
 # List the LIGs
 # Example: List all the logical interconnect groups
@@ -101,6 +99,16 @@ OneviewSDK::LogicalInterconnectGroup.find_by(@client, {}).each do |r|
   puts "  #{r[:name]}"
 end
 
+puts '## Listing default settings ##'
+puts lig.get_default_settings
+
+puts '## Listing this LIG settings ##'
+puts lig.get_settings
+
+puts '## Updating the lig (Removing the uplink set)##'
+lig['uplinkSets'] = []
+lig.update
+puts lig.data
 
 # Clean up after ourselves
 lig.delete
