@@ -23,7 +23,6 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     end
 
     it 'adds a valid interconnect' do
-
       expect(OneviewSDK::InterconnectType).to receive(:find_by).with(@client, name: @type)
         .and_return([OneviewSDK::Resource.new(@client, uri: '/rest/fake')])
       @item.add_interconnect(3, @type)
