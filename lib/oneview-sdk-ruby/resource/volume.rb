@@ -25,22 +25,36 @@ module OneviewSDK
     # 5) Management by name = Storage System + Storage System Volume Name
     # 6) Snapshot = Snapshot Pool + Storage Pool + Snapshot
 
-    def create
-      @data['provisioningParameters'] ||= {}
-      %w(storagePoolUri requestedCapacity provisionType shareable).each do |k|
-        @data['provisioningParameters'][k] ||= @data.delete(k) if @data.key?(k)
-      end
-      super
-      @data.delete('provisioningParameters')
+    # Create the volume
+    # @param [Hash] provisioningParameters parameters
+    # @raise [RuntimeError] if the client is not set
+    # @raise [RuntimeError] if the resource creation fails
+    # @return [Resource] self
+    def create(provisioningParameters = {})
+      ensure_client
+      requestBody = @data
+      requestBody[:provisioningParameters] = provisioningParameters
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => requestBody }, @api_version)
+      body = @client.response_handler(response)
+      set_all(body)
       self
     end
 
-    # Delete resource from OneView only (not from storage system)
+    # Delete resource from OneView or from Oneview and storage system
+    # @param [Symbol] system Oneview or from Oneview and storage system
     # @return [true] if resource was deleted successfully
-    def delete_from_oneview
+    def delete(flag = :all)
       ensure_client && ensure_uri
-      response = @client.rest_api(:delete, @data['uri'], { 'exportOnly' => true }, @api_version)
-      @client.response_handler(response)
+      case flag
+      when :oneview
+        response = @client.rest_api(:delete, @data['uri'], { 'exportOnly' => true }, @api_version)
+        @client.response_handler(response)
+      when :all
+        response = @client.rest_api(:delete, @data['uri'], {}, @api_version)
+        @client.response_handler(response)
+      else
+        fail 'Invalid flag value, use :oneview or :all'
+      end
       true
     end
 
@@ -59,7 +73,7 @@ module OneviewSDK
     end
 
     # Adds storage volume template to the volume
-    # @param [OneviewSDK::Resource] Storage Volume Template
+    # @param [OneviewSDK::VolumeTemplate] Storage Volume Template
     def set_storage_volume_template(storage_volume_template)
       assure_uri(storage_volume_template)
       set('templateUri', storage_volume_template['uri'])
@@ -73,22 +87,45 @@ module OneviewSDK
     end
 
     # Create a snapshot of the volume
-    # @param [Hash, OneviewSDK::VolumeSnapshot] Hash or OneviewSDK::VolumeSnapshot object
+    # @param [String] name or OneviewSDK::VolumeSnapshot object
+    # @param [String] description Provide a description
     # @return [true] if snapshot was created successfully
-    def create_snapshot(options)
-      ensure_uri
-      ensure_client
-      options = options.data if options.class == VolumeSnapshot
-      response = @client.rest_post("#{@data['uri']}/snapshots", { 'body' => options }, @api_version)
+    def create_snapshot(name, description = nil)
+      ensure_uri && ensure_client
+      data = {
+        type: 'Snapshot',
+        description: description,
+        name: name
+      }
+      response = @client.rest_post("#{@data['uri']}/snapshots", { 'body' => data }, @api_version)
       @client.response_handler(response)
       true
     end
 
+    # Delete a snapshot of the volume
+    # @param [String] name snapshot name
+    # @return [true] if snapshot was created successfully
+    def delete_snapshot(name)
+      result = snapshot(name)
+      response = @client.rest_api(:delete, result['uri'], {}, @api_version)
+      @client.response_handler(response)
+      true
+    end
+
+    # Retrieve snapshot by name
+    # @param [String] name
+    # @param [Hash] snapshot data
+    def snapshot(name)
+      results = snapshots
+      results.each do |snapshot|
+        return snapshot if snapshot['name'] == name
+      end
+    end
+
     # Get snapshots of this volume
-    # @return [Array<OneviewSDK::VolumeSnapshot>] Array of snapshots
+    # @return [Array] Array of snapshots
     def snapshots
-      ensure_uri
-      ensure_client
+      ensure_uri && ensure_client
       results = []
       uri = "#{@data['uri']}/snapshots"
       loop do
@@ -96,9 +133,7 @@ module OneviewSDK
         body = @client.response_handler(response)
         members = body['members']
         members.each do |member|
-          temp = OneviewSDK::VolumeSnapshot.new(@client, member)
-          temp.set_volume(self)
-          results.push(temp)
+          results.push(member)
         end
         break unless body['nextPageUri']
         uri = body['nextPageUri']
@@ -127,6 +162,18 @@ module OneviewSDK
         uri = body['nextPageUri']
       end
       results
+    end
+
+    # Gets the list of extra managed storage volume paths
+    def self.repair(client, resource = nil, type = nil)
+      uri = BASE_URI + '/repair?alertFixType=ExtraManagedStorageVolumePaths'
+      if resource && type
+        assure_uri(resource)
+        response = client.rest_post(uri, 'body' => { resourceUri: resource['uri'], type: type })
+      else
+        response = client.rest_get(uri)
+      end
+      client.response_handler(response)
     end
 
 
