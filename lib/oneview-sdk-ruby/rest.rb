@@ -84,7 +84,12 @@ module OneviewSDK
     def response_handler(response)
       case response.code.to_i
       when RESPONSE_CODE_OK # Synchronous read/query
-        return JSON.parse(response.body)
+        begin
+          return JSON.parse(response.body)
+        rescue JSON::ParserError => e
+          @logger.warn "Failed to parse JSON response. #{e}"
+          return response.body
+        end
       when RESPONSE_CODE_CREATED # Synchronous add
         return JSON.parse(response.body)
       when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete

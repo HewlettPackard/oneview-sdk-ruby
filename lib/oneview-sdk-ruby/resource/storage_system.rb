@@ -53,14 +53,14 @@ module OneviewSDK
       self
     end
 
-    def retrieve!(name = @data['name'], credentials = @data['credentials'])
-      if name.nil?
-        results = self.class.find_by(@client, credentials: { ip_hostname: credentials[:ip_hostname] })
+    def retrieve!
+      if @data['name']
+        super
+      else
+        results = self.class.find_by(@client, credentials: { ip_hostname: @data['credentials'][:ip_hostname] })
         return false unless results.size == 1
         set_all(results[0].data)
         true
-      else
-        super.retrieve!
       end
     end
 

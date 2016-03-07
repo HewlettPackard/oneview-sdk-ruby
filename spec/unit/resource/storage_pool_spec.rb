@@ -19,6 +19,14 @@ RSpec.describe OneviewSDK::StoragePool do
     end
   end
 
+  describe '#set_storage_system' do
+    it 'sets the storageSystemUri value' do
+      item = OneviewSDK::StoragePool.new(@client)
+      item.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
+      expect(item['storageSystemUri']).to eq('/rest/fake')
+    end
+  end
+
   describe '#validate' do
     context 'refreshState' do
       it 'allows valid refresh states' do
@@ -59,5 +67,4 @@ RSpec.describe OneviewSDK::StoragePool do
       end
     end
   end
-
 end

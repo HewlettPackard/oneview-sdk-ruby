@@ -39,13 +39,16 @@ module OneviewSDK
     # Get the script executed by enclosures in this enclosure group
     # @return [String] script for this enclosure group
     def script
-      @client.rest_get(@data['uri'] + '/script').body
+      ensure_client && ensure_uri
+      response = @client.rest_get(@data['uri'] + '/script', @api_version)
+      @client.response_handler(response)
     end
 
     # Change the script executed by enclosures in this enclosure group
     # @param [String] body script to be executed
     # @return true if set successfully
     def set_script(body)
+      ensure_client && ensure_uri
       response = @client.rest_put(@data['uri'] + '/script', { 'body' => body }, @api_version)
       @client.response_handler(response)
       true
@@ -68,7 +71,7 @@ module OneviewSDK
     end
 
     def validate_stackingMode(value)
-      fail 'Invalid network type' unless %w(Enclosure MultiEnclosure None SwitchPairs).include?(value)
+      fail 'Invalid stackingMode' unless %w(Enclosure MultiEnclosure None SwitchPairs).include?(value)
     end
 
   end

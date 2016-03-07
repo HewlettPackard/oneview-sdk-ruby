@@ -38,6 +38,12 @@ module OneviewSDK
       end
     end
 
+    # Set storage system
+    # @param [StorageSystem] storage_system
+    def set_storage_system(storage_system)
+      set('storageSystemUri', storage_system['uri'])
+    end
+
     def update
       fail 'Method not available for this resource!'
     end
@@ -53,12 +59,5 @@ module OneviewSDK
     def validate_status(value)
       fail 'Invalid status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
     end
-
-    # Set storage system
-    # @param [StorageSystem] storage_system
-    def set_storage_system(storage_system)
-      @data[:storageSystemUri] = storage_system[:uri]
-    end
-
   end
 end

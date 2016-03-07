@@ -65,7 +65,7 @@ module OneviewSDK
       }
       OneviewSDK::ServerHardware.find_by(@client, params)
     rescue StandardError => e
-      @logger.error "Failed to get available hardware. Message: #{e.message}"
+      raise "Failed to get available hardware. Message: #{e.message}"
     end
 
   end
