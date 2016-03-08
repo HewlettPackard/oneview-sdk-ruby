@@ -1,6 +1,6 @@
 {
   "data": {
-    "name": "OneViewSDK Test FCoE Network",
+    "name": "FCoENetwork_01",
     "connectionTemplateUri": null,
     "type": "fcoe-network",
     "vlanId": 300
