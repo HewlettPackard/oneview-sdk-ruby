@@ -100,7 +100,7 @@ module OneviewSDK
     # Reapply enclosure configuration
     def configuration
       ensure_client && ensure_uri
-      response = @client.rest_put(@data['uri'] + '/configuration', @api_version)
+      response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
       new_data = @client.response_handler(response)
       set_all(new_data)
     end
@@ -174,6 +174,13 @@ module OneviewSDK
       ensure_client && ensure_uri
       response = @client.rest_patch(@data['uri'], { 'body' => [{ op: operation, path: path, value: value }] }, @api_version)
       @client.response_handler(response)
+    end
+
+    # Associates one Enclosure Group to the enclosure to be added
+    # @param [OneviewSDK<Resource>] eg Enclosure Group associated
+    def set_enclosure_group(eg)
+      eg.retrieve! unless eg['uri']
+      @data['enclosureGroupUri'] = eg['uri']
     end
 
     def validate_licensingIntent(value)

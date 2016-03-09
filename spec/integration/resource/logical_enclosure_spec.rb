@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalEnclosure, integration: true do
   include_context 'integration context'
 
-  describe '#configuraiton' do
+  describe '#configuration' do
     it 'Reconfigure logical enclosure' do
       item = OneviewSDK::LogicalEnclosure.find_by(@client, {}).first
       expect { item.reconfigure }.to_not raise_error

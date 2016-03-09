@@ -3,54 +3,43 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
   include_context 'integration context'
 
-  let(:enclosure_group) do
+  let(:resource_name) { 'EnclosureGroup_01' }
+  let(:resource_name_02) { 'EnclosureGroup_02' }
+  let(:enclosure_group_options) do
     {
-      name: 'OneViewSDK Test Enclosure Group',
-      stackingMode: 'Enclosure',
-      interconnectBayMappingCount: 8,
-      interconnectBayMappings: [
-        {
-          interconnectBay: 1,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 2,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 3,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 4,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 5,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 6,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 7,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 8,
-          logicalInterconnectGroupUri: nil
-        }
-      ],
-      type: 'EnclosureGroupV200'
+      'name' => resource_name,
+      'stackingMode' => 'Enclosure',
+      'interconnectBayMappingCount' => 8,
+      'type' => 'EnclosureGroupV200'
+    }
+  end
+  let(:enclosure_group_options_02) do
+    {
+      'name' => resource_name_02,
+      'stackingMode' => 'Enclosure',
+      'interconnectBayMappingCount' => 8,
+      'type' => 'EnclosureGroupV200'
     }
   end
 
   describe '#create' do
-    it 'can create resources' do
-      item = OneviewSDK::EnclosureGroup.new(@client, enclosure_group)
+    it 'can create simple Enclosure Group' do
+      item = OneviewSDK::EnclosureGroup.new(@client, enclosure_group_options)
       item.create
-      expect(item[:name]).to eq('OneViewSDK Test Enclosure Group')
+      expect(item['name']).to eq(resource_name)
+    end
+
+    it 'can create EnclosureGroup with LIG' do
+      item = OneviewSDK::EnclosureGroup.new(@client, enclosure_group_options_02)
+      lig = OneviewSDK::LogicalInterconnectGroup.new(@client, 'name' => 'LogicalInterconnectGroup_01')
+      lig.retrieve!
+      item.add_logical_interconnect_group(lig)
+      item.create
+      expect(item['name']).to eq(resource_name_02)
+      item['interconnectBayMappings'].each do |bay|
+        expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if bay['interconnectBay'] == 1
+        expect(bay['logicalInterconnectGroupUri']).to_not be if bay['interconnectBay'] != 1
+      end
     end
   end
 
@@ -67,12 +56,18 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
     end
   end
 
-  describe '#delete' do
-    it 'deletes the resource' do
-      item = OneviewSDK::EnclosureGroup.new(@client, name: 'OneViewSDK Test Enclosure Group')
-      item.retrieve!
-      item.delete
-    end
-  end
+  # describe '#delete' do
+  #   it 'deletes the simple enclosure group' do
+  #     item = OneviewSDK::EnclosureGroup.new(@client, 'name' => resource_name)
+  #     item.retrieve!
+  #     item.delete
+  #   end
+  #
+  #   it 'deletes the enclosure group with LIG' do
+  #     item = OneviewSDK::EnclosureGroup.new(@client, 'name' => resource_name_02)
+  #     item.retrieve!
+  #     item.delete
+  #   end
+  # end
 
 end
