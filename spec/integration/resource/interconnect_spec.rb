@@ -25,7 +25,7 @@ RSpec.describe OneviewSDK::Interconnect, integration: true do
 
     it 'Updating valid attribute' do
       port = interconnect[:ports].first
-      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error
+      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error { /BAD REQUEST/ }
     end
   end
 

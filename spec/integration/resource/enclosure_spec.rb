@@ -17,7 +17,7 @@ RSpec.describe OneviewSDK::Enclosure, integration: true do
   describe '#create' do
     it 'can create resources' do
       item = OneviewSDK::Enclosure.new(@client, enclosure_options)
-      item.set_enclosure_group(OneviewSDK::EnclosureGroup.new(@client, 'name' => 'EnclosureGroup_02'))
+      item.set_enclosure_group(OneviewSDK::EnclosureGroup.new(@client, 'name' => 'EnclosureGroup_2'))
       item.create
       expect(item['uri']).not_to be_empty
     end

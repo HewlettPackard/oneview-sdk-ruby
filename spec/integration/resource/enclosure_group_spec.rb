@@ -3,8 +3,8 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
   include_context 'integration context'
 
-  let(:resource_name) { 'EnclosureGroup_01' }
-  let(:resource_name_02) { 'EnclosureGroup_02' }
+  let(:resource_name) { 'EnclosureGroup_1' }
+  let(:resource_name_2) { 'EnclosureGroup_2' }
   let(:enclosure_group_options) do
     {
       'name' => resource_name,
@@ -13,9 +13,9 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
       'type' => 'EnclosureGroupV200'
     }
   end
-  let(:enclosure_group_options_02) do
+  let(:enclosure_group_options_2) do
     {
-      'name' => resource_name_02,
+      'name' => resource_name_2,
       'stackingMode' => 'Enclosure',
       'interconnectBayMappingCount' => 8,
       'type' => 'EnclosureGroupV200'
@@ -30,12 +30,12 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
     end
 
     it 'can create EnclosureGroup with LIG' do
-      item = OneviewSDK::EnclosureGroup.new(@client, enclosure_group_options_02)
-      lig = OneviewSDK::LogicalInterconnectGroup.new(@client, 'name' => 'LogicalInterconnectGroup_01')
+      item = OneviewSDK::EnclosureGroup.new(@client, enclosure_group_options_2)
+      lig = OneviewSDK::LogicalInterconnectGroup.new(@client, 'name' => 'LogicalInterconnectGroup_1')
       lig.retrieve!
       item.add_logical_interconnect_group(lig)
       item.create
-      expect(item['name']).to eq(resource_name_02)
+      expect(item['name']).to eq(resource_name_2)
       item['interconnectBayMappings'].each do |bay|
         expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if bay['interconnectBay'] == 1
         expect(bay['logicalInterconnectGroupUri']).to_not be if bay['interconnectBay'] != 1
@@ -64,7 +64,7 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
   #   end
   #
   #   it 'deletes the enclosure group with LIG' do
-  #     item = OneviewSDK::EnclosureGroup.new(@client, 'name' => resource_name_02)
+  #     item = OneviewSDK::EnclosureGroup.new(@client, 'name' => resource_name_2)
   #     item.retrieve!
   #     item.delete
   #   end

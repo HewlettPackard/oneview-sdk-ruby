@@ -39,12 +39,12 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true do
     end
   end
 
-  describe '#delete' do
-    it 'delete resource' do
-      item = OneviewSDK::UplinkSet.new(@client, name: 'Test Uplink')
-      expect { item.retrieve! }.not_to raise_error
-      expect { item.delete }.not_to raise_error
-    end
-  end
+  # describe '#delete' do
+  #   it 'delete resource' do
+  #     item = OneviewSDK::UplinkSet.new(@client, name: 'Test Uplink')
+  #     expect { item.retrieve! }.not_to raise_error
+  #     expect { item.delete }.not_to raise_error
+  #   end
+  # end
 
 end

@@ -1,6 +1,6 @@
 {
   "data": {
-    "name": "FCoENetwork_01",
+    "name": "FCoENetwork_1",
     "connectionTemplateUri": null,
     "type": "fcoe-network",
     "vlanId": 300

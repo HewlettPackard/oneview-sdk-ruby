@@ -4,8 +4,8 @@ RSpec.describe OneviewSDK::FCNetwork, integration: true do
   include_context 'integration context'
 
   let(:file_path) { 'spec/support/fixtures/integration/fc_network.json' }
-  let(:resource_name) { 'FCNetwork_01' }
-  let(:updated_resource_name) { 'FCNetwork_01_UPDATED' }
+  let(:resource_name) { 'FCNetwork_1' }
+  let(:updated_resource_name) { 'FCNetwork_1_UPDATED' }
 
   describe '#create' do
     it 'can create resources' do
@@ -36,28 +36,31 @@ RSpec.describe OneviewSDK::FCNetwork, integration: true do
       item.update(name: updated_resource_name)
       item.refresh
       expect(item[:name]).to eq(updated_resource_name)
+      item.update(name: resource_name)
+      item.refresh
+      expect(item[:name]).to eq(resource_name)
     end
   end
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
       names = OneviewSDK::FCNetwork.find_by(@client, {}).map { |item| item[:name] }
-      expect(names).to include(updated_resource_name)
+      expect(names).to include(resource_name)
     end
 
     it 'finds networks by multiple attributes' do
-      attrs = { name: updated_resource_name, fabricType: 'FabricAttach' }
+      attrs = { name: resource_name, fabricType: 'FabricAttach' }
       names = OneviewSDK::FCNetwork.find_by(@client, attrs).map { |item| item[:name] }
-      expect(names).to include(updated_resource_name)
+      expect(names).to include(resource_name)
     end
   end
 
-  describe '#delete' do
-    it 'deletes the resource' do
-      item = OneviewSDK::FCNetwork.new(@client, name: updated_resource_name)
-      item.retrieve!
-      expect { item.delete }.not_to raise_error
-    end
-  end
+  # describe '#delete' do
+  #   it 'deletes the resource' do
+  #     item = OneviewSDK::FCNetwork.new(@client, name: resource_name)
+  #     item.retrieve!
+  #     expect { item.delete }.not_to raise_error
+  #   end
+  # end
 
 end

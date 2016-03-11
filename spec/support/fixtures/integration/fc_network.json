@@ -1,6 +1,6 @@
 {
   "data": {
-    "name": "FCNetwork_01",
+    "name": "FCNetwork_1",
     "connectionTemplateUri": null,
     "autoLoginRedistribution": true,
     "fabricType": "FabricAttach"

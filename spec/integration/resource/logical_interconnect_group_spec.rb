@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true do
   include_context 'integration context'
 
-  let(:resource_name) { 'LogicalInterconnectGroup_01' }
+  let(:resource_name) { 'LogicalInterconnectGroup_1' }
   let(:lig_default_options) do
     {
       'name' => resource_name,
@@ -71,12 +71,12 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true do
     it 'adding and removing uplink set' do
       lig.add_interconnect(1, interconnect_type)
       uplink_options = {
-        name: 'EthernetUplinkSet_01',
+        name: 'EthernetUplinkSet_1',
         networkType: 'Ethernet',
         ethernetNetworkType: 'Tagged'
       }
       uplink = OneviewSDK::LIGUplinkSet.new(@client, uplink_options)
-      eth = OneviewSDK::EthernetNetwork.new(@client, name: 'EthernetNetwork_01')
+      eth = OneviewSDK::EthernetNetwork.new(@client, name: 'EthernetNetwork_1')
       eth.retrieve!
       uplink.add_network(eth)
       uplink.add_uplink(1, 'X1')

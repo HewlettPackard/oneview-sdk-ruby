@@ -3,8 +3,8 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
   include_context 'integration context'
 
-  let(:enclosure) { OneviewSDK::Enclosure.new(@client, name: 'EXAMPLE_ENCLOSURE') }
-  let(:log_int) { OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl2-EXAMPLE_LIG') }
+  let(:enclosure) { OneviewSDK::Enclosure.new(@client, name: 'Encl1') }
+  let(:log_int) { OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl1-LogicalInterconnectGroup_1') }
   let(:qos_fixture) { 'spec/support/fixtures/integration/logical_interconnect_qos.json' }
   let(:firmware_path) { 'spec/support/Service Pack for ProLiant' }
 
@@ -65,11 +65,11 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
       log_int.retrieve!
     end
 
-    it 'will list the internal networks' do
+    it 'will list the internal networks and verify they dont exist yet' do
       log_int.retrieve!
       vlans = log_int.list_vlan_networks
       expect(vlans).not_to eq(nil)
-      expect(vlans.any?).to eq(true)
+      expect(vlans.any?).to_not be
       vlans.each do |vlan|
         expect(vlan[:name]).to_not eq(nil)
         expect(vlan[:uri]).to_not eq(nil)
@@ -78,57 +78,31 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
 
     it 'will add and remove new networks' do
       vlans_1 = log_int.list_vlan_networks
-
-      li_et01_options = {
-        vlanId:  '2001',
-        purpose:  'General',
-        name:  'li_et01',
-        smartLink:  false,
-        privateNetwork:  false,
-        connectionTemplateUri: nil,
-        type:  'ethernet-networkV3'
-      }
-
-      et01 = OneviewSDK::EthernetNetwork.new(@client, li_et01_options)
-      et01.create!
-
-      li_et02_options = {
-        vlanId:  '2002',
-        purpose:  'General',
-        name:  'li_et02',
-        smartLink:  false,
-        privateNetwork:  false,
-        connectionTemplateUri: nil,
-        type:  'ethernet-networkV3'
-      }
-      et02 = OneviewSDK::EthernetNetwork.new(@client, li_et02_options)
-      et02.create!
+      et01 = OneviewSDK::EthernetNetwork.new(@client, 'name' => 'BulkEthernetNetwork_1')
+      et02 = OneviewSDK::EthernetNetwork.new(@client, 'name' => 'BulkEthernetNetwork_2')
+      et01.retrieve!
+      et02.retrieve!
 
       log_int.update_internal_networks(et01, et02)
-
       vlans_2 = log_int.list_vlan_networks
 
       log_int.update_internal_networks
-
       vlans_3 = log_int.list_vlan_networks
 
       vlans_1.each do |v1|
-        expect(vlans_3.include?(v1)).to eq(true)
-        expect(vlans_2.include?(v1)).to eq(true)
+        expect(vlans_3.include?(v1)).to be
+        expect(vlans_2.include?(v1)).to be
       end
 
       vlans_3.each do |v3|
-        expect(vlans_1.include?(v3)).to eq(true)
+        expect(vlans_1.include?(v3)).to be
       end
 
-      expect(vlans_3.include?(et01)).to eq(false)
-      expect(vlans_3.include?(et02)).to eq(false)
+      expect(vlans_3.include?(et01)).to_not be
+      expect(vlans_3.include?(et02)).to_not be
 
-      expect(vlans_2.include?(et01)).to eq(true)
-      expect(vlans_2.include?(et02)).to eq(true)
-
-      et01.delete
-      et02.delete
+      expect(vlans_2.include?(et01)).to be
+      expect(vlans_2.include?(et02)).to be
     end
   end
 
@@ -265,10 +239,10 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
       # Updating snmpConfiguration
       log_int.update_snmp_configuration
       entry = log_int['snmpConfiguration']['trapDestinations'].first
-      expect((enet_trap.map { |x| entry['enetTrapCategories'].include?(x) }).include?(false)).to eq(false)
-      expect((fc_trap.map { |x| entry['fcTrapCategories'].include?(x) }).include?(false)).to eq(false)
-      expect((vcm_trap.map { |x| entry['vcmTrapCategories'].include?(x) }).include?(false)).to eq(false)
-      expect((trap_sev.map { |x| entry['trapSeverities'].include?(x) }).include?(false)).to eq(false)
+      expect((enet_trap.map { |x| entry['enetTrapCategories'].include?(x) }).include?(false)).to_not be
+      expect((fc_trap.map { |x| entry['fcTrapCategories'].include?(x) }).include?(false)).to_not be
+      expect((vcm_trap.map { |x| entry['vcmTrapCategories'].include?(x) }).include?(false)).to_not be
+      expect((trap_sev.map { |x| entry['trapSeverities'].include?(x) }).include?(false)).to_not be
       expect(entry['trapDestination']).to eq('172.18.6.16')
       expect(entry['trapFormat']).to eq('SNMPv2')
       expect(entry['communityString']).to eq('public')

@@ -4,8 +4,8 @@ RSpec.describe OneviewSDK::EthernetNetwork, integration: true do
   include_context 'integration context'
 
   let(:file_path) { 'spec/support/fixtures/integration/ethernet_network.json' }
-  let(:resource_name) { 'EthernetNetwork_01' }
-  let(:updated_resource_name) { 'EthernetNetwork_01_UPDATED' }
+  let(:resource_name) { 'EthernetNetwork_1' }
+  let(:updated_resource_name) { 'EthernetNetwork_1_UPDATED' }
 
   describe '#create' do
     it 'can create resources' do

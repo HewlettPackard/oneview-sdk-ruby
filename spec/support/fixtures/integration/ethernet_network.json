@@ -1,6 +1,6 @@
 {
   "data": {
-    "name" : "EthernetNetwork_01",
+    "name" : "EthernetNetwork_1",
     "description": "Short Description",
     "ethernetNetworkType": "Tagged",
     "vlanId": 1001,
