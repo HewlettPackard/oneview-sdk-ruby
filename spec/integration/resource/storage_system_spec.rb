@@ -37,7 +37,7 @@ RSpec.describe OneviewSDK::StorageSystem, integration: true do
   end
 
   describe '#managedPorts' do
-    it '' do
+    it 'lists all the ports' do
       storage = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: storage_system_data[:credentials][:ip_hostname] })
       storage.retrieve!
       expect { storage.managedPorts }.not_to raise_error

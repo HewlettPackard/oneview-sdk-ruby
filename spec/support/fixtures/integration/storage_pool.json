@@ -1,6 +1,6 @@
 {
   "data": {
     "storageSystemUri" : "/rest/storage-systems/TXQ1000307",
-    "poolName": "cpg-growth-limit-1TiB",
+    "poolName": "CPG-SSD-AO",
   }
 }

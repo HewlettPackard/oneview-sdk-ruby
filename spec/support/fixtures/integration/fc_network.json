@@ -1,6 +1,6 @@
 {
   "data": {
-    "name": "OneViewSDK Test FC Network",
+    "name": "FCNetwork_1",
     "connectionTemplateUri": null,
     "autoLoginRedistribution": true,
     "fabricType": "FabricAttach"

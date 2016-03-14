@@ -3,9 +3,10 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true do
   include_context 'integration context'
 
+  let(:resource_name) { 'LogicalInterconnectGroup_1' }
   let(:lig_default_options) do
     {
-      'name' => 'ONEVIEW_SDK_TEST_LIG',
+      'name' => resource_name,
       'enclosureType' => 'C7000',
       'type' => 'logical-interconnect-groupV3'
     }
@@ -14,7 +15,6 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true do
   let(:interconnect_type) { 'HP VC FlexFabric 10Gb/24-Port Module' }
 
   describe '#create' do
-
     before(:each) do
       lig.delete if lig.retrieve!
     end
@@ -71,22 +71,13 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true do
     it 'adding and removing uplink set' do
       lig.add_interconnect(1, interconnect_type)
       uplink_options = {
-        name: 'TEST_LIG_UP',
+        name: 'EthernetUplinkSet_1',
         networkType: 'Ethernet',
         ethernetNetworkType: 'Tagged'
       }
       uplink = OneviewSDK::LIGUplinkSet.new(@client, uplink_options)
-      eth_options = {
-        vlanId:  1201,
-        purpose:  'General',
-        name:  'ONEVIEW_SDK_TEST_LIG',
-        smartLink:  false,
-        privateNetwork:  false,
-        connectionTemplateUri:  nil,
-        type:  'ethernet-networkV3'
-      }
-      eth = OneviewSDK::EthernetNetwork.new(@client, eth_options)
-      eth.create!
+      eth = OneviewSDK::EthernetNetwork.new(@client, name: 'EthernetNetwork_1')
+      eth.retrieve!
       uplink.add_network(eth)
       uplink.add_uplink(1, 'X1')
       lig.add_uplink_set(uplink)
