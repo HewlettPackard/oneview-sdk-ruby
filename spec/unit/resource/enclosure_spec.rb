@@ -105,7 +105,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
     it 'does a PUT to /uri/configuration and updates the attributes' do
       item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_put).with('/rest/fake/configuration', item.api_version).and_return(FakeResponse.new(name: 'NewName'))
+      expect(@client).to receive(:rest_put).with('/rest/fake/configuration', {}, item.api_version).and_return(FakeResponse.new(name: 'NewName'))
       item.configuration
       expect(item['name']).to eq('NewName')
     end
