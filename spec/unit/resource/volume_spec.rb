@@ -23,12 +23,12 @@ RSpec.describe OneviewSDK::Volume do
     end
   end
 
-  describe '#delete_from_oneview' do
+  describe '#delete' do
     it 'passes an extra header' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
       item = OneviewSDK::Volume.new(@client, options.merge(uri: '/rest/fake'))
       expect(@client).to receive(:rest_api).with(:delete, '/rest/fake', { 'exportOnly' => true }, item.api_version)
-      item.delete_from_oneview
+      item.delete(:oneview)
     end
   end
 
