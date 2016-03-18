@@ -57,7 +57,8 @@ module OneviewSDK
       if @data['name']
         super
       else
-        results = self.class.find_by(@client, credentials: { ip_hostname: @data['credentials'][:ip_hostname] })
+        ip_hostname = @data['credentials'][:ip_hostname] || @data['credentials']['ip_hostname']
+        results = self.class.find_by(@client, credentials: { ip_hostname: ip_hostname })
         return false unless results.size == 1
         set_all(results[0].data)
         true

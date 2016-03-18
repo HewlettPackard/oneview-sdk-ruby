@@ -100,31 +100,35 @@ module OneviewSDK
     end
 
     # Set logical interconnect uri
-    # @param [Hash] logical_interconnect must accept hash syntax
+    # @param [OneviewSDK::LogicalInterconnect, Hash] logical_interconnect
     def set_logical_interconnect(logical_interconnect)
-      fail 'Invalid object' unless logical_interconnect[:uri]
-      @data['logicalInterconnectUri'] = logical_interconnect[:uri]
+      uri = logical_interconnect[:uri] || logical_interconnect['uri']
+      fail 'Invalid object' unless uri
+      @data['logicalInterconnectUri'] = uri
     end
 
     # Add an uri to networkUris array
-    # @param [Hash] network must accept hash syntax
+    # @param [OneviewSDK::EthernetNetwork, Hash] network
     def add_network(network)
-      fail 'Invalid object' unless network[:uri]
-      @data['networkUris'].push(network[:uri])
+      uri = network[:uri] || network['uri']
+      fail 'Invalid object' unless uri
+      @data['networkUris'].push(uri)
     end
 
     # Add an uri to fcnetworkUris array
-    # @param [Hash] network must accept hash syntax
+    # @param [OneviewSDK::FCNetwork, Hash] network must accept hash syntax
     def add_fcnetwork(network)
-      fail 'Invalid object' unless network[:uri]
-      @data['fcNetworkUris'].push(network[:uri])
+      uri = network[:uri] || network['uri']
+      fail 'Invalid object' unless uri
+      @data['fcNetworkUris'].push(uri)
     end
 
     # Add an uri to fcoenetworkUris array
-    # @param [Hash] network must accept hash syntax
+    # @param [OneviewSDK::FCoENetwork, Hash] network must accept hash syntax
     def add_fcoenetwork(network)
-      fail 'Invalid object' unless network[:uri]
-      @data['fcoeNetworkUris'].push(network[:uri])
+      uri = network[:uri] || network['uri']
+      fail 'Invalid object' unless uri
+      @data['fcoeNetworkUris'].push(uri)
     end
 
   end
