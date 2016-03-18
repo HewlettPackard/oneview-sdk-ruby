@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::Enclosure, integration: true do
   include_context 'integration context'
-
+=begin
   let(:resource_name) { 'Encl1' }
   let(:updated_resource_name) { 'Encl1_UPDATED' }
   let(:enclosure_options) do
@@ -68,4 +68,5 @@ RSpec.describe OneviewSDK::Enclosure, integration: true do
   #     expect { item.delete }.not_to raise_error
   #   end
   # end
+=end
 end

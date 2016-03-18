@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::UplinkSet, integration: true do
   include_context 'integration context'
-
+=begin
   let(:uplink_data) do
     {
       nativeNetworkUri: nil,
@@ -46,5 +46,5 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true do
   #     expect { item.delete }.not_to raise_error
   #   end
   # end
-
+=end
 end

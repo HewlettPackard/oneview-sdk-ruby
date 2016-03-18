@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::StorageSystem, integration: true do
   include_context 'integration context'
-
+=begin
   let(:storage_system_data) do
     {
       credentials: {
@@ -43,5 +43,5 @@ RSpec.describe OneviewSDK::StorageSystem, integration: true do
       expect { storage.managedPorts }.not_to raise_error
     end
   end
-
+=end
 end

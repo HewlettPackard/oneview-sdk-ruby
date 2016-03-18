@@ -31,6 +31,13 @@ First, there's some setup you'll need to do. Do EITHER of the following:
    spec/integration/one_view_secrets.json
    ```
 
+
+These config files get loaded and create the following global variables:
+ - `$secrets`: 
+ - `$config`: Config for connecting to OneView appliance
+ - `$client_120`: Client object pinned to API v120
+ - `$client`: Client object using latest API version supported by the appliance
+
 ## Running the tests
 The following command must run in your Ruby SDK root directory.
 Run `$ rake spec:integration`

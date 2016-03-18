@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::StoragePool, integration: true do
   include_context 'integration context'
-
+=begin
   let(:file_path) { 'spec/support/fixtures/integration/storage_pool.json' }
   let(:storage_system_data) do
     {
@@ -56,5 +56,5 @@ RSpec.describe OneviewSDK::StoragePool, integration: true do
   #     item.delete
   #   end
   # end
-
+=end
 end

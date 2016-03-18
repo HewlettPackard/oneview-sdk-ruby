@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::Volume, integration: true do
   include_context 'integration context'
-
+=begin
   describe '#create' do
     after(:each) do
       volume = OneviewSDK::Volume.new(@client, name: 'volume_integration_tests')
@@ -169,5 +169,5 @@ RSpec.describe OneviewSDK::Volume, integration: true do
       volume.delete
     end
   end
-
+=end
 end

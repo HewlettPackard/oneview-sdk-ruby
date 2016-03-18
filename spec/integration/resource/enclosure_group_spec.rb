@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
   include_context 'integration context'
-
+=begin
   let(:resource_name) { 'EnclosureGroup_1' }
   let(:resource_name_2) { 'EnclosureGroup_2' }
   let(:enclosure_group_options) do
@@ -69,5 +69,5 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true do
   #     item.delete
   #   end
   # end
-
+=end
 end

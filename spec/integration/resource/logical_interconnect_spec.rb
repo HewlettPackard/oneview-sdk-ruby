@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
   include_context 'integration context'
-
+=begin
   let(:enclosure) { OneviewSDK::Enclosure.new(@client, name: 'Encl1') }
   let(:log_int) { OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl1-LogicalInterconnectGroup_1') }
   let(:qos_fixture) { 'spec/support/fixtures/integration/logical_interconnect_qos.json' }
@@ -297,4 +297,5 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
 
     end
   end
+=end
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::Interconnect, integration: true do
   include_context 'integration context'
-
+=begin
   let(:interconnect) { OneviewSDK::Interconnect.find_by(@client, {}).last }
 
   describe '#nameServers' do
@@ -49,5 +49,5 @@ RSpec.describe OneviewSDK::Interconnect, integration: true do
 
   describe '#updateAttribute' do
   end
-
+=end
 end
