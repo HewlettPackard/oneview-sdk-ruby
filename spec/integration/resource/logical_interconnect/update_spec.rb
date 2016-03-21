@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
+RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE do
   include_context 'integration context'
-=begin
-  let(:enclosure) { OneviewSDK::Enclosure.new(@client, name: 'Encl1') }
-  let(:log_int) { OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl1-LogicalInterconnectGroup_1') }
+
+  let(:enclosure) { OneviewSDK::Enclosure.new($client, name: ENCL_NAME) }
+  let(:log_int) { OneviewSDK::LogicalInterconnect.new($client, name: LOG_INT_NAME) }
   let(:qos_fixture) { 'spec/support/fixtures/integration/logical_interconnect_qos.json' }
   let(:firmware_path) { 'spec/support/Service Pack for ProLiant' }
 
@@ -78,8 +78,8 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
 
     it 'will add and remove new networks' do
       vlans_1 = log_int.list_vlan_networks
-      et01 = OneviewSDK::EthernetNetwork.new(@client, 'name' => 'BulkEthernetNetwork_1')
-      et02 = OneviewSDK::EthernetNetwork.new(@client, 'name' => 'BulkEthernetNetwork_2')
+      et01 = OneviewSDK::EthernetNetwork.new($client, name: "#{BULK_ETH_NET_PREFIX}_1")
+      et02 = OneviewSDK::EthernetNetwork.new($client, name: "#{BULK_ETH_NET_PREFIX}_2")
       et01.retrieve!
       et02.retrieve!
 
@@ -171,7 +171,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
     it 'will be updated from a fixture' do
       log_int.retrieve!
 
-      log_int['qosConfiguration'] = OneviewSDK::LogicalInterconnect.from_file(@client, qos_fixture)['qosConfiguration']
+      log_int['qosConfiguration'] = OneviewSDK::LogicalInterconnect.from_file($client, qos_fixture)['qosConfiguration']
       expect { log_int.update_qos_configuration }.to_not raise_error
       log_int.compliance
     end
@@ -212,13 +212,13 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = OneviewSDK::LogicalInterconnect.find_by(@client, {}).map { |item| item[:name] }
+      names = OneviewSDK::LogicalInterconnect.find_by($client, {}).map { |item| item[:name] }
       expect(names).to include(log_int[:name])
     end
 
     it 'finds networks by multiple attributes' do
       attrs = { status: 'OK' }
-      lis = OneviewSDK::EthernetNetwork.find_by(@client, attrs)
+      lis = OneviewSDK::EthernetNetwork.find_by($client, attrs)
       expect(lis).to_not eq(nil)
     end
   end
@@ -263,13 +263,13 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
   describe 'Firmware Updates' do
     it 'will assure the firmware is present' do
       firmware_name = firmware_path.split('/').last
-      firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+      firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
       firmware.retrieve!
     end
 
     it 'will retrieve the firmware options' do
       firmware_name = firmware_path.split('/').last
-      firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+      firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
       firmware.retrieve!
       log_int.retrieve!
       firmware_opt = log_int.get_firmware
@@ -284,7 +284,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
       it 'Stage' do
         log_int.retrieve!
         firmware_name = firmware_path.split('/').last
-        firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
+        firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
         firmware.retrieve!
         firmware_opt = log_int.get_firmware
         firmware_opt['ethernetActivationDelay'] = 7
@@ -297,5 +297,4 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true do
 
     end
   end
-=end
 end

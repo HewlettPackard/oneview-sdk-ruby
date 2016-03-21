@@ -21,6 +21,27 @@ RSpec::Core::RakeTask.new('spec:integration') do |spec|
   spec.rspec_opts << '--tag integration'
 end
 
+desc 'Run integration creation tests only'
+RSpec::Core::RakeTask.new('spec:integration:create') do |spec|
+  spec.pattern = 'spec/**/*create_spec.rb'
+  spec.rspec_opts = def_spec_options
+  spec.rspec_opts << '--tag integration'
+end
+
+desc 'Run integration update tests only'
+RSpec::Core::RakeTask.new('spec:integration:update') do |spec|
+  spec.pattern = 'spec/**/*update_spec.rb'
+  spec.rspec_opts = def_spec_options
+  spec.rspec_opts << '--tag integration'
+end
+
+desc 'Run integration deletion tests only'
+RSpec::Core::RakeTask.new('spec:integration:delete') do |spec|
+  spec.pattern = 'spec/**/*delete_spec.rb'
+  spec.rspec_opts = def_spec_options
+  spec.rspec_opts << '--tag integration'
+end
+
 desc 'Run unit and integration tests'
 RSpec::Core::RakeTask.new('spec:all') do |spec|
   spec.pattern = spec_pattern

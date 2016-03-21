@@ -25,5 +25,31 @@ FCOE_NET_NAME_UPDATED = 'FCoENetwork_1_UPDATED'.freeze
 LOG_INT_GROUP_NAME = 'LogicalInterconnectGroup_1'.freeze
 LOG_INT_GROUP_NAME_UPDATED = 'LogicalInterconnectGroup_1_UPDATED'.freeze
 
+# EnclosureGroup
+ENC_GROUP_NAME = 'EnclosureGroup_1'.freeze
+ENC_GROUP2_NAME = 'EnclosureGroup_2'.freeze
+
+# Enclosure
+ENCL_NAME = 'Encl1'.freeze
+ENCL_NAME_UPDATED = 'Encl1_UPDATED'.freeze
+
+# LogicalInterconnect
+LOG_INT_NAME = 'Encl1-LogicalInterconnectGroup_1'.freeze
+
+# UplinkSet
+UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
+UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
+
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
+
+# StoragePool
+STORAGE_POOL_NAME = 'CPG-SSD-AO'.freeze
+
+# VolumeTemplate
+VOL_TEMP_NAME = 'VolumeTemplate_1'.freeze
+
+# Volume
+VOLUME_NAME = 'Volume_1'.freeze
+VOLUME2_NAME = 'Volume_2'.freeze
+VOL_SNAPSHOT_NAME = 'snapshot_qa'.freeze
