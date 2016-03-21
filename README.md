@@ -176,6 +176,25 @@ Resources can be saved to files and loaded again very easily using the built-in 
 
 For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation.
 
+## Custom Requests
+In most cases, interracting with Resource objects is enough, but sometimes you need to make your own custom requests to OneView. 
+This project makes it extremely easy to do with some built-in methods for the Client object. Here are some examples:
+
+```ruby
+# Get the appliance startup progress:
+response = client.rest_api(:get, '/rest/appliance/progress')
+# or even more simple:
+response = client.rest_get('/rest/appliance/progress')
+
+# Then we can validate the response and convert the response body into a hash...
+data = client.response_handler(response)
+```
+
+This example is about as basic as it gets, but you can make any type of OneView request. 
+If a resource doesn't do what you need, this will allow you to do it. 
+Please refer to the documentation and [code](lib/oneview-sdk-ruby/rest.rb) for complete list of methods and information about how to use them.
+
+
 ## CLI
 This gem also comes with a command-line interface to make interracting with OneView possible without the need to create a Ruby program or script.
 
