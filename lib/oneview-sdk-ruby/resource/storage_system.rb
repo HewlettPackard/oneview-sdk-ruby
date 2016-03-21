@@ -43,7 +43,7 @@ module OneviewSDK
 
     def create
       ensure_client
-      task = @client.rest_post(self.class::BASE_URI, { 'body' => @data['credentials'] }, @api_version)
+      task = @client.rest_post(self.class::BASE_URI, { 'body' => self['credentials'] }, @api_version)
       temp = @data.clone
       task = @client.wait_for(task['uri'] || task['location'])
       @data['uri'] = task['associatedResource']['resourceUri']
@@ -57,7 +57,8 @@ module OneviewSDK
       if @data['name']
         super
       else
-        results = self.class.find_by(@client, credentials: { ip_hostname: @data['credentials'][:ip_hostname] })
+        ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname']
+        results = self.class.find_by(@client, credentials: { ip_hostname: ip_hostname })
         return false unless results.size == 1
         set_all(results[0].data)
         true
