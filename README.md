@@ -86,7 +86,7 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ## Resources
 Each OneView resource is exposed for usage with REST-like functionality.
 
-For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
+For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.update` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
 Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here's a few examples to get you started:
 
@@ -222,11 +222,13 @@ First run `$ bundle` (requires the bundler gem), then...
  - To build and install the gem, run `$ rake install`.
 
 ### Testing
- - RuboCop: `$ rake rubocop` or `$ rubocop .`
- - Rspec: `$ rake spec` or `$ rspec`
- - Both: Run `$ rake test` to run both RuboCop and Rspec tests.
+ - RuboCop: `$ bundle exec rake rubocop`
+ - Unit: `$ bundle exec rake spec`
  - Integration: See the [spec/integration](spec/integration/) README
+ - All: Run `$ bundle exec rake test:all` to run RuboCop, unit, & integration tests.
  - Examples: See the [examples](examples/) README
+
+Note: run `$rake -T` to get a list of all the available rake tasks.
 
 ## Authors
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
