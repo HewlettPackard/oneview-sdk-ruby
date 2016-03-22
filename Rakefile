@@ -5,7 +5,7 @@ require 'rubocop/rake_task'
 
 task default: :spec
 spec_pattern = 'spec/**/*_spec.rb'
-def_spec_options = '--color '
+def_spec_options = '-f d --color '
 
 desc 'Run unit tests only'
 RSpec::Core::RakeTask.new(:spec) do |spec|

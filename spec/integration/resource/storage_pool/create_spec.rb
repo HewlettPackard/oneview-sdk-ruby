@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::StoragePool, integration: true, type: CREATE, sequence: 10 do
+RSpec.describe OneviewSDK::StoragePool, integration: true, type: CREATE, sequence: 11 do
   include_context 'integration context'
 
   let(:file_path) { 'spec/support/fixtures/integration/storage_pool.json' }

@@ -73,7 +73,8 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
       wwn = volume[:wwn]
 
       # Delete only from oneview
-      # volume.delete(:oneview)
+      volume.delete(:oneview)
+      
       options = {
         name: VOLUME_NAME,
         description: 'Integration test volume',
@@ -85,35 +86,35 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
       volume.create
     end
 
-    it 'add volume for management using volume name in storage system' do
-      options = {
-        name: VOLUME_NAME,
-        description: 'Integration test volume',
-        storageSystemUri: @storage_system[:uri],
-        snapshotPoolUri: @storage_pool[:uri]
-      }
-      volume = OneviewSDK::Volume.new($client, options)
-      volume.create(
-        provisionType: 'Full',
-        storagePoolUri: @storage_pool[:uri],
-        requestedCapacity: 512 * 1024 * 1024
-      )
-
-      storage_system_volume_name = volume[:deviceVolumeName]
-
-      # Delete only from oneview
-      volume.delete(:oneview)
-
-      options = {
-        name: VOLUME_NAME,
-        description: 'Integration test volume',
-        storageSystemUri: @storage_system[:uri],
-        storageSystemVolumeName: storage_system_volume_name,
-        type: 'AddStorageVolumeV3'
-      }
-      volume = OneviewSDK::Volume.new($client, options)
-      volume.create
-    end
+    # it 'add volume for management using volume name in storage system' do
+    #   options = {
+    #     name: VOLUME_NAME,
+    #     description: 'Integration test volume',
+    #     storageSystemUri: @storage_system[:uri],
+    #     snapshotPoolUri: @storage_pool[:uri]
+    #   }
+    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume.create(
+    #     provisionType: 'Full',
+    #     storagePoolUri: @storage_pool[:uri],
+    #     requestedCapacity: 512 * 1024 * 1024
+    #   )
+    #
+    #   storage_system_volume_name = volume[:deviceVolumeName]
+    #
+    #   # Delete only from oneview
+    #   volume.delete(:oneview)
+    #
+    #   options = {
+    #     name: VOLUME_NAME,
+    #     description: 'Integration test volume',
+    #     storageSystemUri: @storage_system[:uri],
+    #     storageSystemVolumeName: storage_system_volume_name,
+    #     type: 'AddStorageVolumeV3'
+    #   }
+    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume.create
+    # end
 
     it 'create from volume snapshot' do
       options = {

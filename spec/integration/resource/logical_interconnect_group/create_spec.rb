@@ -18,8 +18,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CR
       lig.delete if lig.retrieve!
     end
 
-    it 'LIG with interconnect' do
-      lig.add_interconnect(1, interconnect_type)
+    it 'simple LIG' do
       expect { lig.create }.not_to raise_error
       expect(lig['uri']).to be
     end
@@ -28,7 +27,8 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CR
       expect { lig.add_interconnect(1, 'invalid_type') }.to raise_error(/Interconnect type invalid_type/)
     end
 
-    it 'simple LIG' do
+    it 'LIG with interconnect' do
+      lig.add_interconnect(1, interconnect_type)
       expect { lig.create }.not_to raise_error
       expect(lig['uri']).to be
     end

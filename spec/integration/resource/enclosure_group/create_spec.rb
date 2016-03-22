@@ -33,7 +33,7 @@ RSpec.describe OneviewSDK::EnclosureGroup, integration: true, type: CREATE, sequ
       lig.retrieve!
       item.add_logical_interconnect_group(lig)
       item.create
-      expect(item['name']).to eq(resource_name_2)
+      expect(item['name']).to eq(ENC_GROUP2_NAME)
       item['interconnectBayMappings'].each do |bay|
         expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if bay['interconnectBay'] == 1
         expect(bay['logicalInterconnectGroupUri']).to_not be if bay['interconnectBay'] != 1
