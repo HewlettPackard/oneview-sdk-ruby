@@ -2,7 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/oneview-sdk-ruby.svg)](https://badge.fury.io/rb/oneview-sdk-ruby)
 
 
-The OneView SDK provides a Ruby library to easily interract with HPE OneView API. The Ruby SDK enables developers to easily build integration and scalable solutions with HPE OneView.
+The OneView SDK provides a Ruby library to easily interact with HPE OneView API. The Ruby SDK enables developers to easily build integration and scalable solutions with HPE OneView.
 
 ## Installation
 - Require the gem in your Gemfile:
@@ -73,7 +73,7 @@ client = OneviewSDK::Client.new(config)
 ```
 
 ### Custom Logging
-The default logger is a standard logger to STDOUT, but if you want to specify your own logger, you can.  However, your logger must implement the following methods:
+The default logger is a standard logger to STDOUT, but if you want to specify your own, you can.  However, your logger must implement the following methods:
 
 ```ruby
 debug(String)
@@ -86,9 +86,9 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ## Resources
 Each OneView resource is exposed for usage with REST-like functionality.
 
-For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.update` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
+For example, once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
-Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here's a few examples to get you started:
+Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here are a few examples to get you started:
 
 - **Create a resource**
 
@@ -176,14 +176,33 @@ Resources can be saved to files and loaded again very easily using the built-in 
 
 For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation.
 
+## Custom Requests
+In most cases, interacting with Resource objects is enough, but sometimes you need to make your own custom requests to OneView. 
+This project makes it extremely easy to do with some built-in methods for the Client object. Here are some examples:
+
+```ruby
+# Get the appliance startup progress:
+response = client.rest_api(:get, '/rest/appliance/progress')
+# or even more simple:
+response = client.rest_get('/rest/appliance/progress')
+
+# Then we can validate the response and convert the response body into a hash...
+data = client.response_handler(response)
+```
+
+This example is about as basic as it gets, but you can make any type of OneView request. 
+If a resource doesn't do what you need, this will allow you to do it. 
+Please refer to the documentation and [code](lib/oneview-sdk-ruby/rest.rb) for complete list of methods and information about how to use them.
+
+
 ## CLI
-This gem also comes with a command-line interface to make interracting with OneView possible without the need to create a Ruby program or script.
+This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
 To get started, run `$ ruby-sdk-ruby --help`.
 
-To communicate with an appliace, you'll need to set up a few environment variables so it knows how to communicate. Run `$ ruby-sdk-ruby env` to see the available environment variables.
+To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ ruby-sdk-ruby env` to see the available environment variables.
 
-The CLI doesn't expose everything in the sdk, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here's a few examples:
+The CLI doesn't expose everything in the SDK, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here are a few examples:
 
  - List ServerProfiles:
  ```bash
@@ -213,8 +232,14 @@ The CLI doesn't expose everything in the sdk, but it is great for doing simple t
  oneview-sdk-ruby delete_from_file /my-server-profile.json
  ```
 
-## Contributing
-You know the drill. Fork it, branch it, change it, commit it, and pull-request it. We're passionate about improving this project, and glad to accept help to make it better.
+## Contributing & Feature Requests
+**Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it. 
+We're passionate about improving this project, and glad to accept help to make it better. 
+
+NOTE: We reserve the right to reject changes that we feel don't fit the scope of this project, so for feature additions, please open an issue to discuss your ideas before doing the work.
+
+**Feature Requests:** If you have a need that is not met by the current implementation, please let us know (via a new issue). 
+This feedback is crucial for us to deliver a useful product. Don't just assume we've already thought of everything, because we assure you that's not the case.
 
 ### Building the Gem
 First run `$ bundle` (requires the bundler gem), then...
