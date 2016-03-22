@@ -2,7 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/oneview-sdk-ruby.svg)](https://badge.fury.io/rb/oneview-sdk-ruby)
 
 
-The OneView SDK provides a Ruby library to easily interract with HPE OneView API. The Ruby SDK enables developers to easily build integration and scalable solutions with HPE OneView.
+The OneView SDK provides a Ruby library to easily interact with HPE OneView API. The Ruby SDK enables developers to easily build integration and scalable solutions with HPE OneView.
 
 ## Installation
 - Require the gem in your Gemfile:
@@ -177,7 +177,7 @@ Resources can be saved to files and loaded again very easily using the built-in 
 For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation.
 
 ## Custom Requests
-In most cases, interracting with Resource objects is enough, but sometimes you need to make your own custom requests to OneView. 
+In most cases, interacting with Resource objects is enough, but sometimes you need to make your own custom requests to OneView. 
 This project makes it extremely easy to do with some built-in methods for the Client object. Here are some examples:
 
 ```ruby
