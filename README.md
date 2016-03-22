@@ -73,7 +73,7 @@ client = OneviewSDK::Client.new(config)
 ```
 
 ### Custom Logging
-The default logger is a standard logger to STDOUT, but if you want to specify your own logger, you can.  However, your logger must implement the following methods:
+The default logger is a standard logger to STDOUT, but if you want to specify your own, you can.  However, your logger must implement the following methods:
 
 ```ruby
 debug(String)
@@ -86,9 +86,9 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ## Resources
 Each OneView resource is exposed for usage with REST-like functionality.
 
-For example, once you instanciate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpfull methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
+For example, once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
-Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here's a few examples to get you started:
+Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here are a few examples to get you started:
 
 - **Create a resource**
 
@@ -196,13 +196,13 @@ Please refer to the documentation and [code](lib/oneview-sdk-ruby/rest.rb) for c
 
 
 ## CLI
-This gem also comes with a command-line interface to make interracting with OneView possible without the need to create a Ruby program or script.
+This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
 To get started, run `$ ruby-sdk-ruby --help`.
 
-To communicate with an appliace, you'll need to set up a few environment variables so it knows how to communicate. Run `$ ruby-sdk-ruby env` to see the available environment variables.
+To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ ruby-sdk-ruby env` to see the available environment variables.
 
-The CLI doesn't expose everything in the sdk, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here's a few examples:
+The CLI doesn't expose everything in the SDK, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here are a few examples:
 
  - List ServerProfiles:
  ```bash
@@ -239,7 +239,7 @@ We're passionate about improving this project, and glad to accept help to make i
 NOTE: We reserve the right to reject changes that we feel don't fit the scope of this project, so for feature additions, please open an issue to discuss your ideas before doing the work.
 
 **Feature Requests:** If you have a need that is not met by the current implementation, please let us know (via a new issue). 
-This feedback is crutial for us to deliver a useful product. Don't just assume we've already thought of everything, because we assure you that's not the case.
+This feedback is crucial for us to deliver a useful product. Don't just assume we've already thought of everything, because we assure you that's not the case.
 
 ### Building the Gem
 First run `$ bundle` (requires the bundler gem), then...
