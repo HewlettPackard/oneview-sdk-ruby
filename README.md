@@ -232,8 +232,14 @@ The CLI doesn't expose everything in the sdk, but it is great for doing simple t
  oneview-sdk-ruby delete_from_file /my-server-profile.json
  ```
 
-## Contributing
-You know the drill. Fork it, branch it, change it, commit it, and pull-request it. We're passionate about improving this project, and glad to accept help to make it better.
+## Contributing & Feature Requests
+**Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it. 
+We're passionate about improving this project, and glad to accept help to make it better. 
+
+NOTE: We reserve the right to reject changes that we feel don't fit the scope of this project, so for feature additions, please open an issue to discuss your ideas before doing the work.
+
+**Feature Requests:** If you have a need that is not met by the current implementation, please let us know (via a new issue). 
+This feedback is crutial for us to deliver a useful product. Don't just assume we've already thought of everything, because we assure you that's not the case.
 
 ### Building the Gem
 First run `$ bundle` (requires the bundler gem), then...
