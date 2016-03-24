@@ -47,6 +47,7 @@ module OneviewSDK
     # Validate lacpTimer
     # @param [String] value Short, Long
     def validate_lacpTimer(value)
+      return if value.to_s.empty?
       fail 'Invalid lacp timer' unless %w(Short Long).include?(value)
     end
 
