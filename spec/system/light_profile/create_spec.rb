@@ -2,14 +2,14 @@
 # Light Profie
 
 require_relative '../../spec_helper'
-require_relative 'resource'
+require_relative 'resource_names'
 
 RSpec.describe 'Spin up fluid resource pool' do
   include_context 'system test'
 
   it 'Ethernet Networks' do
     options = {
-      name: RSpec::Resource.ethernet_network[0],
+      name: ResourceNames.ethernet_network[0],
       description: 'Ethernet network',
       ethernetNetworkType: 'Tagged',
       vlanId: 1001,
@@ -26,7 +26,7 @@ RSpec.describe 'Spin up fluid resource pool' do
     options = {
       vlanIdRange: '10-14',
       purpose: 'General',
-      namePrefix: RSpec::Resource.bulk_ethernet_network[0],
+      namePrefix: ResourceNames.bulk_ethernet_network[0],
       smartLink: false,
       privateNetwork: false,
       bandwidth: {
@@ -41,7 +41,7 @@ RSpec.describe 'Spin up fluid resource pool' do
 
   it 'FC Network' do
     options = {
-      name: RSpec::Resource.fc_network[0],
+      name: ResourceNames.fc_network[0],
       connectionTemplateUri: nil,
       autoLoginRedistribution: true,
       fabricType: 'FabricAttach'
@@ -53,7 +53,7 @@ RSpec.describe 'Spin up fluid resource pool' do
 
   it 'FCoE Network' do
     options = {
-      name: RSpec::Resource.fcoe_network[0],
+      name: ResourceNames.fcoe_network[0],
       connectionTemplateUri: nil,
       vlanId: 100
     }
@@ -64,66 +64,39 @@ RSpec.describe 'Spin up fluid resource pool' do
 
   it 'Logical interconnect group' do
     options = {
-      name: RSpec::Resource.logical_interconnect_group[0],
+      name: ResourceNames.logical_interconnect_group[0],
       enclosureType: 'C7000'
     }
     lig1 = OneviewSDK::LogicalInterconnectGroup.new(@client, options)
+    lig1.add_interconnect(1, 'HP VC FlexFabric 10Gb/24-Port Module')
+    lig1.add_interconnect(2, 'HP VC FlexFabric 10Gb/24-Port Module')
     lig1.create
     expect(lig1['uri']).not_to be_empty
   end
 
   it 'Enclosure Group' do
+    lig = OneviewSDK::LogicalInterconnectGroup.new(@client, name: ResourceNames.logical_interconnect_group[0])
+    lig.retrieve!
+
     options = {
-      name: RSpec::Resource.enclosure_group[0],
+      name: ResourceNames.enclosure_group[0],
       stackingMode: 'Enclosure',
-      interconnectBayMappingCount: 8,
-      interconnectBayMappings: [
-        {
-          interconnectBay: 1,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 2,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 3,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 4,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 5,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 6,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 7,
-          logicalInterconnectGroupUri: nil
-        },
-        {
-          interconnectBay: 8,
-          logicalInterconnectGroupUri: nil
-        }
-      ]
+      interconnectBayMappingCount: 8
     }
+
     eg1 = OneviewSDK::EnclosureGroup.new(@client, options)
+    eg1.add_logical_interconnect_group(lig)
     eg1.create
     expect(eg1['uri']).not_to be_empty
 
-    options[:name] = RSpec::Resource.enclosure_group[1]
+    options[:name] = ResourceNames.enclosure_group[1]
     eg2 = OneviewSDK::EnclosureGroup.new(@client, options)
     eg2.create
     expect(eg2['uri']).not_to be_empty
   end
 
   it 'Enclosure' do
-    eg1 = OneviewSDK::EnclosureGroup.new(@client, name: RSpec::Resource.enclosure_group[0])
+    eg1 = OneviewSDK::EnclosureGroup.new(@client, name: ResourceNames.enclosure_group[0])
     eg1.retrieve!
     options = {
       enclosureGroupUri: eg1['uri'],
@@ -152,7 +125,7 @@ RSpec.describe 'Spin up fluid resource pool' do
   end
 
   it 'Storage Pool' do
-    storage_system = OneviewSDK::StorageSystem.new(@client, name: RSpec::Resource.storage_system[0])
+    storage_system = OneviewSDK::StorageSystem.new(@client, name: ResourceNames.storage_system[0])
     storage_system.retrieve!
     expect(storage_system['uri']).not_to be_empty
     options = {
@@ -166,28 +139,28 @@ RSpec.describe 'Spin up fluid resource pool' do
 
   it 'Volume' do
     options = {
-      name: RSpec::Resource.volume[0],
-      description: 'Test volume with common creation: Storage System + Storage Pool',
-      provisionType: 'Full',
-      shareable: true
+      name: ResourceNames.volume[0],
+      description: 'Test volume with common creation: Storage System + Storage Pool'
     }
     volume = OneviewSDK::Volume.new(@client, options)
-    volume.set_requested_capacity(512 * 1024 * 1024) # 512MB
-
-    storage_system = OneviewSDK::StorageSystem.new(@client, name: RSpec::Resource.storage_system[0])
+    storage_system = OneviewSDK::StorageSystem.new(@client, name: ResourceNames.storage_system[0])
     storage_system.retrieve!
     expect(storage_system['uri']).not_to be_empty
-    volume.set_storage_system(storage_system)
     pools = OneviewSDK::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
     storage_pool = pools.first
-    volume.set_storage_pool(storage_pool)
-    volume.create
+    provisioningParameters = {
+      provisionType: 'Full',
+      shareable: true,
+      storagePoolUri: storage_pool['uri'],
+      requestedCapacity: 512 * 1024 * 1024
+    }
+    volume.create(provisioningParameters)
     expect(volume['uri']).not_to be_empty
   end
 
   it 'Volume Template' do
     options = {
-      name: RSpec::Resource.volume_template[0],
+      name: ResourceNames.volume_template[0],
       description: 'Volume Template',
       stateReason: 'None'
     }
@@ -202,16 +175,16 @@ RSpec.describe 'Spin up fluid resource pool' do
   end
 
   it 'Uplink set Ethernet' do
-    ethernet = OneviewSDK::EthernetNetwork.new(@client, name: RSpec::Resource.ethernet_network[0])
+    ethernet = OneviewSDK::EthernetNetwork.new(@client, name: ResourceNames.ethernet_network[0])
     ethernet.retrieve!
 
-    enclosure = OneviewSDK::Enclosure.new(@client, name: RSpec::Resource.enclosure[0])
+    enclosure = OneviewSDK::Enclosure.new(@client, name: ResourceNames.enclosure[0])
     enclosure.retrieve!
 
-    li = OneviewSDK::LogicalInterconnect.new(@client, name: RSpec::Resource.logical_interconnect[0])
+    li = OneviewSDK::LogicalInterconnect.new(@client, name: ResourceNames.logical_interconnect[0])
     li.retrieve!
 
-    interconnect = OneviewSDK::Interconnect.new(@client, name: RSpec::Resource.interconnect[0])
+    interconnect = OneviewSDK::Interconnect.new(@client, name: ResourceNames.interconnect[0])
 
     options = {
       connectionMode: 'Auto',
@@ -219,7 +192,7 @@ RSpec.describe 'Spin up fluid resource pool' do
       logicalInterconnectUri: li['uri'],
       manualLoginRedistributionState: 'NotSupported',
       networkType: 'Ethernet',
-      name: RSpec::Resource.uplink_set[0]
+      name: ResourceNames.uplink_set[0]
     }
     uplink = OneviewSDK::UplinkSet.new(@client, options)
     uplink.add_portConfig(
@@ -232,17 +205,17 @@ RSpec.describe 'Spin up fluid resource pool' do
   end
 
   it 'Uplink set FC' do
-    fc = OneviewSDK::FCNetwork.new(@client, name: RSpec::Resource.fc_network[0])
+    fc = OneviewSDK::FCNetwork.new(@client, name: ResourceNames.fc_network[0])
     fc.retrieve!
 
-    enclosure = OneviewSDK::Enclosure.new(@client, name: RSpec::Resource.enclosure[0])
+    enclosure = OneviewSDK::Enclosure.new(@client, name: ResourceNames.enclosure[0])
     enclosure.retrieve!
 
 
-    li = OneviewSDK::LogicalInterconnect.new(@client, name: RSpec::Resource.logical_interconnect[0])
+    li = OneviewSDK::LogicalInterconnect.new(@client, name: ResourceNames.logical_interconnect[0])
     li.retrieve!
 
-    interconnect = OneviewSDK::Interconnect.new(@client, name: RSpec::Resource.interconnect[0])
+    interconnect = OneviewSDK::Interconnect.new(@client, name: ResourceNames.interconnect[0])
 
     options = {
       connectionMode: 'Auto',
@@ -250,7 +223,7 @@ RSpec.describe 'Spin up fluid resource pool' do
       logicalInterconnectUri: li['uri'],
       manualLoginRedistributionState: 'Supported',
       networkType: 'FibreChannel',
-      name: RSpec::Resource.uplink_set[1]
+      name: ResourceNames.uplink_set[1]
     }
     uplink = OneviewSDK::UplinkSet.new(@client, options)
     uplink.add_portConfig(
