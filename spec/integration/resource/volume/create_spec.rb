@@ -74,7 +74,7 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
 
       # Delete only from oneview
       volume.delete(:oneview)
-      
+
       options = {
         name: VOLUME_NAME,
         description: 'Integration test volume',

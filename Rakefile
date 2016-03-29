@@ -5,7 +5,8 @@ require 'rubocop/rake_task'
 
 task default: :spec
 spec_pattern = 'spec/**/*_spec.rb'
-def_spec_options = '-f d --color '
+def_spec_options = '--color '
+def_int_spec_options = '-f d --color '
 
 desc 'Run unit tests only'
 RSpec::Core::RakeTask.new(:spec) do |spec|
@@ -17,28 +18,28 @@ end
 desc 'Run integration tests only'
 RSpec::Core::RakeTask.new('spec:integration') do |spec|
   spec.pattern = spec_pattern
-  spec.rspec_opts = def_spec_options
+  spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
 end
 
 desc 'Run integration creation tests only'
 RSpec::Core::RakeTask.new('spec:integration:create') do |spec|
   spec.pattern = 'spec/**/*create_spec.rb'
-  spec.rspec_opts = def_spec_options
+  spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
 end
 
 desc 'Run integration update tests only'
 RSpec::Core::RakeTask.new('spec:integration:update') do |spec|
   spec.pattern = 'spec/**/*update_spec.rb'
-  spec.rspec_opts = def_spec_options
+  spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
 end
 
 desc 'Run integration deletion tests only'
 RSpec::Core::RakeTask.new('spec:integration:delete') do |spec|
   spec.pattern = 'spec/**/*delete_spec.rb'
-  spec.rspec_opts = def_spec_options
+  spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
 end
 
