@@ -148,13 +148,13 @@ RSpec.describe 'Spin up fluid resource pool' do
     expect(storage_system['uri']).not_to be_empty
     pools = OneviewSDK::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
     storage_pool = pools.first
-    provisioningParameters = {
+    provisioning_parameters = {
       provisionType: 'Full',
       shareable: true,
       storagePoolUri: storage_pool['uri'],
       requestedCapacity: 512 * 1024 * 1024
     }
-    volume.create(provisioningParameters)
+    volume.create(provisioning_parameters)
     expect(volume['uri']).not_to be_empty
   end
 

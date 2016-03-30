@@ -1,5 +1,4 @@
-
-
+# Resources names shared among system test scenarios
 class ResourceNames
   class << self
     attr_accessor :ethernet_network
@@ -24,8 +23,8 @@ class ResourceNames
   self.fc_network = ['FCNetwork_01']
   self.fcoe_network = ['FCoENetwork_01']
   self.logical_interconnect_group = ['LogicalInterconnectGroup_01']
-  self.uplink_set = ['EthernetUplinkSet_01', 'FCUplinkSet_01']
-  self.enclosure_group = ['EcnlosureGroup_01', 'EnclosureGroup_02']
+  self.uplink_set = %w(EthernetUplinkSet_01 FCUplinkSet_01)
+  self.enclosure_group = %w(EnclosureGroup_01 EnclosureGroup_02)
   self.enclosure = ['Encl1']
   self.logical_enclosure = ['Encl1']
   self.logical_interconnect = ['Encl1-LogicalInterconnectGroup_01']
