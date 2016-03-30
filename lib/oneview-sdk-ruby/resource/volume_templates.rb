@@ -50,7 +50,6 @@ module OneviewSDK
       response = @client.rest_post(self.class::BASE_URI, { 'Accept-Language' => 'en_US', 'body' => @data }, @api_version)
       body = @client.response_handler(response)
       set_all(body)
-      self
     end
 
     # Delete volume template from OneView
@@ -72,26 +71,31 @@ module OneviewSDK
       @data['provisioning']['shareable'] = shareable
       @data['provisioning']['provisionType'] = provisionType
       @data['provisioning']['capacity'] = capacity
-      @data['provisioning']['storagePoolUri'] = storage_pool[:uri]
+      storage_pool.retrieve! unless storage_pool['uri']
+      @data['provisioning']['storagePoolUri'] = storage_pool['uri']
     end
 
     # Set storage system
     # @param [OneviewSDK::StorageSystem] storage_system Storage System to be used to create the template
     def set_storage_system(storage_system)
-      @data['storageSystemUri'] = storage_system[:uri]
+      storage_pool.retrieve! unless storage_pool['uri']
+      @data['storageSystemUri'] = storage_system['uri']
     end
 
     # Set snapshot pool
     # @param [OneviewSDK::StoragePool] storage_pool Storage Pool to generate the template
     def set_snapshot_pool(storage_pool)
-      @data['snapshotPoolUri'] = storage_pool[:uri]
+      storage_pool.retrieve! unless storage_pool['uri']
+      @data['snapshotPoolUri'] = storage_pool['uri']
     end
 
     # Get connectable volume templates by its attributes
     # @param [Hash] attributes Hash containing the attributes name and value
     def get_connectable_volume_templates(attributes = {})
-        results = OneviewSDK::Resource.find_by(@client, attributes, BASE_URI + '/connectable-volume-templates')
+      OneviewSDK::Resource.find_by(@client, attributes, BASE_URI + '/connectable-volume-templates')
     end
+
+    private
 
     # Validate refreshState
     # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
