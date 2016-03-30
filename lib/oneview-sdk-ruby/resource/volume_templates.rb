@@ -78,6 +78,10 @@ module OneviewSDK
       @data['snapshotPoolUri'] = storage_pool[:uri]
     end
 
+    # Get connectable-volume-templates
+    def get_connectable_volume_templates(params = {})
+        results = OneviewSDK::Resource.find_by(@client, params, BASE_URI + '/connectable-volume-templates')
+    end
 
     # Validate refreshState
     # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
