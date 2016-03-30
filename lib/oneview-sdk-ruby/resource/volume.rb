@@ -87,11 +87,17 @@ module OneviewSDK
     end
 
     # Create a snapshot of the volume
-    # @param [String] name or OneviewSDK::VolumeSnapshot object
+    # @param [String, OneviewSDK::VolumeSnapshot] name String or OneviewSDK::VolumeSnapshot object
     # @param [String] description Provide a description
     # @return [true] if snapshot was created successfully
-    def create_snapshot(name, description = nil)
+    def create_snapshot(snapshot, description = nil)
       ensure_uri && ensure_client
+      if snapshot.is_a?(OneviewSDK::Resource) || snapshot.is_a?(Hash)
+        name = snapshot[:name] || snapshot['name']
+        description ||= snapshot[:description] || snapshot['description']
+      else
+        name = snapshot
+      end
       data = {
         type: 'Snapshot',
         description: description,

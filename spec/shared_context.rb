@@ -29,30 +29,36 @@ end
 RSpec.shared_context 'integration context', a: :b do
   # Ensure config & secrets files exist
   before :all do
-    default_config = 'spec/integration/one_view_config.json'
+    default_config  = 'spec/integration/one_view_config.json'
     default_secrets = 'spec/integration/one_view_secrets.json'
 
-    @config_path = ENV['ONEVIEWSDK_INTEGRATION_CONFIG'] || default_config
-    @secrets_path = ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] || default_secrets
+    @config_path  ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG']  || default_config
+    @secrets_path ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] || default_secrets
 
     unless File.file?(@config_path) && File.file?(@secrets_path)
-      STDERR.puts "\nERROR: Integration config file not found\n\n" unless File.file?(@config_path)
-      STDERR.puts "\nERROR: Integration secrets file not found\n\n" unless File.file?(@secrets_path)
+      STDERR.puts "\n\n"
+      STDERR.puts 'ERROR: Integration config file not found' unless File.file?(@config_path)
+      STDERR.puts 'ERROR: Integration secrets file not found' unless File.file?(@secrets_path)
+      STDERR.puts "\n\n"
       exit!
     end
+
+    $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
+
+    # Create client objects:
+    $config  ||= OneviewSDK::Config.load(@config_path)
+    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
+    $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
   end
 
-  before :each do
-    allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
-    allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
-
-    @secrets = OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
-
-    config = OneviewSDK::Config.load(@config_path)
-    options_120 = config.merge(api_version: 120)
-    options_200 = config.merge(api_version: 200)
-
-    @client_120 = OneviewSDK::Client.new(options_120)
-    @client = OneviewSDK::Client.new(options_200)
+  before :each do |e| # For debugging only: Shows test metadata
+    action = case e.metadata[:type]
+             when CREATE then 'CREATE'
+             when UPDATE then 'UPDATE'
+             when DELETE then 'DELETE'
+             else '_____'
+             end
+    puts "#{action} #{e.metadata[:sequence] || '_'}: #{described_class}: #{e.metadata[:description]}"
+    # fail 'Skipped' # Un-comment to skip running the tests
   end
 end
