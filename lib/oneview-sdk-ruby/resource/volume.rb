@@ -34,7 +34,7 @@ module OneviewSDK
       ensure_client
       requestBody = @data
       requestBody[:provisioningParameters] = provisioningParameters
-      response = @client.rest_post(self.class::BASE_URI, { 'body' => requestBody }, @api_version)
+      response = @client.rest_api(:post, self.class::BASE_URI, { 'body' => requestBody }, @api_version)
       body = @client.response_handler(response)
       set_all(body)
       self

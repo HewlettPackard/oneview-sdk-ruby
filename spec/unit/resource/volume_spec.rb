@@ -3,9 +3,9 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::Volume do
   include_context 'shared context'
 
-  let(:options) do
+  let(:volume_name) { 'volume_name' }
+  let(:provisioning_parameters) do
     {
-      name: 'FakeVol',
       provisionType: 'Full',
       shareable: true,
       storagePoolUri: '/rest/fake',
@@ -15,18 +15,29 @@ RSpec.describe OneviewSDK::Volume do
 
   describe '#create' do
     it 'rearranges the provisioningParameters' do
-      # In this case with the calls stubbed, it will remove them
       allow_any_instance_of(OneviewSDK::Resource).to receive(:create).and_return(true)
-      item = OneviewSDK::Volume.new(@client, options)
-      item.create
-      expect(item.data).to eq('name' => 'FakeVol')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(
+        name: volume_name,
+        provisionType: provisioning_parameters[:provisionType],
+        shareable: provisioning_parameters[:shareable],
+        allocatedCapacity: provisioning_parameters[:requestedCapacity],
+        storagePoolUri: provisioning_parameters[:storagePoolUri],
+        uri: '/rest/fake'
+      )
+      item = OneviewSDK::Volume.new(@client, name: volume_name)
+      item.create(provisioning_parameters)
+      expect(item['provisionType']).to eq(provisioning_parameters[:provisionType])
+      expect(item['shareable']).to eq(provisioning_parameters[:shareable])
+      expect(item['allocatedCapacity']).to eq(provisioning_parameters[:requestedCapacity])
+      expect(item['storagePoolUri']).to eq(provisioning_parameters[:storagePoolUri])
     end
   end
 
   describe '#delete' do
     it 'passes an extra header' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
-      item = OneviewSDK::Volume.new(@client, options.merge(uri: '/rest/fake'))
+      item = OneviewSDK::Volume.new(@client, uri: '/rest/fake')
       expect(@client).to receive(:rest_api).with(:delete, '/rest/fake', { 'exportOnly' => true }, item.api_version)
       item.delete(:oneview)
     end
@@ -34,7 +45,7 @@ RSpec.describe OneviewSDK::Volume do
 
   describe 'helpers' do
     before :each do
-      @item = OneviewSDK::Volume.new(@client, options)
+      @item = OneviewSDK::Volume.new(@client, name: volume_name)
     end
 
     describe '#set_storage_system' do
@@ -68,21 +79,17 @@ RSpec.describe OneviewSDK::Volume do
     describe '#create_snapshot' do
       before :each do
         @snapshot_options = {
-          'type' => 'Snapshot',
-          'name' => 'Vol1_Snapshot1',
-          'description' => 'New Snapshot'
+          type: 'Snapshot',
+          name: 'Vol1_Snapshot1',
+          description: 'New Snapshot'
         }
         @item['uri'] = '/rest/storage-volumes/fake'
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
         expect(@client).to receive(:rest_post).with("#{@item['uri']}/snapshots", { 'body' => @snapshot_options }, @item.api_version)
       end
 
-      it 'creates the snapshot from a hash' do
-        @item.create_snapshot(@snapshot_options)
-      end
-
-      it 'creates the snapshot from a VolumeSnapshot object' do
-        @item.create_snapshot(OneviewSDK::VolumeSnapshot.new(@client, @snapshot_options))
+      it 'creates the snapshot' do
+        @item.create_snapshot(@snapshot_options[:name], @snapshot_options[:description])
       end
     end
 
@@ -115,7 +122,7 @@ RSpec.describe OneviewSDK::Volume do
         items = OneviewSDK::Volume.attachable_volumes(@client)
         expect(items.class).to eq(Array)
         expect(items.size).to eq(1)
-        expect(items.first['name']).to eq('FakeVol')
+        expect(items.first['name']).to eq('volume_name')
       end
     end
   end
