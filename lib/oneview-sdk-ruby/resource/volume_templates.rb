@@ -78,7 +78,7 @@ module OneviewSDK
     # Set storage system
     # @param [OneviewSDK::StorageSystem] storage_system Storage System to be used to create the template
     def set_storage_system(storage_system)
-      storage_pool.retrieve! unless storage_pool['uri']
+      storage_system.retrieve! unless storage_system['uri']
       @data['storageSystemUri'] = storage_system['uri']
     end
 
@@ -94,8 +94,6 @@ module OneviewSDK
     def get_connectable_volume_templates(attributes = {})
       OneviewSDK::Resource.find_by(@client, attributes, BASE_URI + '/connectable-volume-templates')
     end
-
-    private
 
     # Validate refreshState
     # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing

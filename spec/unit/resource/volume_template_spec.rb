@@ -3,6 +3,28 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::VolumeTemplate do
   include_context 'shared context'
 
+  let(:fake_storage_pool) do
+    {
+      'name' => 'fake_storage_pool',
+      'uri' => '/rest/storage-pools/fake_uri'
+    }
+  end
+
+  let(:fake_storage_system) do
+    {
+      'name' => 'fake_storage_system',
+      'uri' => '/rest/storage-systems/fake_uri'
+    }
+  end
+
+  let(:fake_snapshot_pool) do
+    {
+      'name' => 'fake_snapshot_pool',
+      'uri' => '/rest/storage-systems/snapshot-pools/fake_uri'
+    }
+  end
+
+
   describe '#initialize' do
     context 'OneView 1.2' do
       it 'sets the defaults correctly' do
@@ -52,25 +74,25 @@ RSpec.describe OneviewSDK::VolumeTemplate do
     context 'provisioning' do
       it 'Attributes' do
         volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        volume_template.set_provisioning(true, 'Thin', '10737418240', uri: '')
+        volume_template.set_provisioning(true, 'Thin', '10737418240', fake_storage_pool)
         expect(volume_template['provisioning']['shareable']).to eq(true)
         expect(volume_template['provisioning']['provisionType']).to eq('Thin')
         expect(volume_template['provisioning']['capacity']).to eq('10737418240')
-        expect(volume_template['provisioning']['storagePoolUri']).to eq('')
+        expect(volume_template['provisioning']['storagePoolUri']).to eq('/rest/storage-pools/fake_uri')
       end
     end
 
     context 'data' do
       it 'storage system' do
         volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        volume_template.set_storage_system(uri: '/rest/storage-systems/abc123')
-        expect(volume_template['storageSystemUri']).to eq('/rest/storage-systems/abc123')
+        volume_template.set_storage_system(fake_storage_system)
+        expect(volume_template['storageSystemUri']).to eq('/rest/storage-systems/fake_uri')
       end
 
       it 'snapshot pool' do
         volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        volume_template.set_snapshot_pool(uri: '/rest/storage-pools/abc123')
-        expect(volume_template['snapshotPoolUri']).to eq('/rest/storage-pools/abc123')
+        volume_template.set_snapshot_pool(fake_snapshot_pool)
+        expect(volume_template['snapshotPoolUri']).to eq('/rest/storage-systems/snapshot-pools/fake_uri')
       end
     end
   end
