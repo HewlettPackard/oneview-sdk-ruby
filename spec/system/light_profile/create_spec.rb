@@ -4,7 +4,7 @@
 require_relative '../../spec_helper'
 require_relative 'resource_names'
 
-RSpec.describe 'Spin up fluid resource pool' do
+RSpec.describe 'Spin up fluid resource pool', system: true do
   include_context 'system test'
 
   it 'Ethernet Networks' do
