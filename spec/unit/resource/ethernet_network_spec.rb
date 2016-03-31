@@ -53,5 +53,16 @@ RSpec.describe OneviewSDK::EthernetNetwork do
       expect { OneviewSDK::EthernetNetwork.new(@client, options) }.to raise_error(/Invalid ethernet purpose/)
     end
 
+    it 'should make network types available externally' do 
+      purposes = OneviewSDK::EthernetNetwork::VALID_NETWORK_TYPES
+      expect(purposes).to include("NotApplicable") 
+    end  
+
+    it 'should make validation purposes available externally' do 
+      purposes = OneviewSDK::EthernetNetwork::VALID_PURPOSES
+      expect(purposes).to include("FaultTolerance") 
+    end  
+      
+
   end
 end
