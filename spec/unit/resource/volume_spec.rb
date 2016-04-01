@@ -16,7 +16,7 @@ RSpec.describe OneviewSDK::Volume do
   describe '#create' do
     it 'rearranges the provisioningParameters' do
       allow_any_instance_of(OneviewSDK::Resource).to receive(:create).and_return(true)
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(
         name: volume_name,
         provisionType: provisioning_parameters[:provisionType],
