@@ -38,50 +38,53 @@ module OneviewSDK
       @data['type'] ||= 'uplink-setV3'
     end
 
+    VALID_ETHERNET_NETWORK_TYPES = %w(NotApplicable Tagged Tunnel Unknown Untagged).freeze
     # Validate ethernetNetworkType
     # @param [String] value NotApplicable, Tagged, Tunnel, Unknown, Untagged
     def validate_ethernetNetworkType(value)
-      fail 'Invalid ethernet network type' unless %w(NotApplicable Tagged Tunnel Unknown Untagged).include?(value)
+      fail 'Invalid ethernet network type' unless VALID_ETHERNET_NETWORK_TYPES.include?(value)
     end
 
+    VALID_LACP_TIMERS = %w(Short Long).freeze
     # Validate lacpTimer
     # @param [String] value Short, Long
     def validate_lacpTimer(value)
-      fail 'Invalid lacp timer' unless %w(Short Long).include?(value)
+      fail 'Invalid lacp timer' unless VALID_LACP_TIMERS.include?(value)
     end
 
+    VALID_MANUAL_LOGIN_REDISTRIBUTION_STATES = %w(Distributed Distributing DistributionFailed NotSupported Supported).freeze
     # Validate manualLoginRedistributionState
     # @param [String] value Distributed, Distributing, DistributionFailed, NotSupported, Supported
     def validate_manualLoginRedistributionState(value)
-      values = %w(Distributed Distributing DistributionFailed NotSupported Supported)
-      fail 'Invalid manual login redistribution state' unless values.include?(value)
+      fail 'Invalid manual login redistribution state' unless VALID_MANUAL_LOGIN_REDISTRIBUTION_STATES.include?(value)
     end
 
+    VALID_NETWORK_TYPES = %w(Ethernet FibreChannel).freeze
     # Validate networkType
     # @param [String] value Ethernet, FibreChannel
     def validate_networkType(value)
-      fail 'Invalid network type' unless %w(Ethernet FibreChannel).include?(value)
+      fail 'Invalid network type' unless VALID_NETWORK_TYPES.include?(value)
     end
 
+    VALID_LOCATION_ENTRIES_TYPES = %w(Bay Enclosure Ip Password Port StackingDomainId StackingMemberId UserId).freeze
     # Validate locationEntriesType
-    # @param [String] value FibreChannel, Ethernet
+    # @param [String] value Bay Enclosure Ip Password Port StackingDomainId StackingMemberId UserId
     def validate_locationEntriesType(value)
-      values = %w(Bay Enclosure Ip Password Port StackingDomainId StackingMemberId UserId)
-      fail 'Invalid location entry type' unless values.include?(value)
+      fail 'Invalid location entry type' unless VALID_LOCATION_ENTRIES_TYPES.include?(value)
     end
 
+    VALID_REACHABILITIES = ['NotReachable', 'Reachable', 'RedundantlyReachable', 'Unknown', nil].freeze
     # Validate ethernetNetworkType request
-    # @param [String] value FibreChannel, Ethernet
+    # @param [String] value NotReachable Reachable RedundantlyReachable Unknown
     def validate_reachability(value)
-      values = %w(NotReachable Reachable RedundantlyReachable Unknown)
-      return unless value
-      fail 'Invalid reachability' unless values.include?(value)
+      fail 'Invalid reachability' unless VALID_REACHABILITIES.include?(value)
     end
 
+    VALID_STATUSES = %w(OK Disabled Warning Critical Unknown).freeze
     # Validate ethernetNetworkType request
-    # @param [String] value FibreChannel, Ethernet
+    # @param [String] value OK Disabled Warning Critical Unknown
     def validate_status(value)
-      fail 'Invalid status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
+      fail 'Invalid status' unless VALID_STATUSES.include?(value)
     end
 
     # Add portConfigInfos to the array

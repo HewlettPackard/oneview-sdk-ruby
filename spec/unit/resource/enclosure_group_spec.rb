@@ -21,39 +21,41 @@ RSpec.describe OneviewSDK::EnclosureGroup do
 
   describe 'validations' do
     it 'only allows an interconnectBayMappingCount between 1 and 8' do
+      OneviewSDK::EnclosureGroup::VALID_INTERCONNECT_BAY_MAPPING_COUNTS.each do |i|
+        expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: i) }.to_not raise_error
+      end
       expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 0) }.to raise_error(/out of range/)
-      expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 1) }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 8) }.to_not raise_error
       expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 9) }.to raise_error(/out of range/)
     end
 
     it 'only allows certain ipAddressingMode values' do
-      expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: 'DHCP') }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: 'External') }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: 'IpPool') }.to_not raise_error
+      OneviewSDK::EnclosureGroup::VALID_IP_ADDRESSING_MODES.each do |i|
+        expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: i) }.to_not raise_error
+      end
       expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: '') }.to raise_error(/Invalid ip AddressingMode/)
       expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: 'invalid') }.to raise_error(/Invalid ip AddressingMode/)
     end
 
     it 'only allows an portMappingCount between 0 and 8' do
+      OneviewSDK::EnclosureGroup::VALID_PORT_MAPPING_COUNTS.each do |i|
+        expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: i) }.to_not raise_error
+      end
       expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: -1) }.to raise_error(/out of range/)
-      expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: 0) }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: 8) }.to_not raise_error
       expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: 9) }.to raise_error(/out of range/)
     end
 
     it 'only allows certain powerMode values' do
-      expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: 'RedundantPowerFeed') }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: 'RedundantPowerSupply') }.to_not raise_error
+      OneviewSDK::EnclosureGroup::VALID_POWER_MODES.each do |i|
+        expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: i) }.to_not raise_error
+      end
       expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: '') }.to raise_error(/Invalid powerMode/)
       expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: 'invalid') }.to raise_error(/Invalid powerMode/)
     end
 
     it 'only allows certain stackingMode values' do
-      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: 'Enclosure') }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: 'MultiEnclosure') }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: 'None') }.to_not raise_error
-      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: 'SwitchPairs') }.to_not raise_error
+      OneviewSDK::EnclosureGroup::VALID_STACKING_MODES.each do |i|
+        expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: i) }.to_not raise_error
+      end
       expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: '') }.to raise_error(/Invalid stackingMode/)
       expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: 'invalid') }.to raise_error(/Invalid stackingMode/)
     end

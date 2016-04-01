@@ -14,6 +14,12 @@ RSpec.describe OneviewSDK::LIGUplinkSet do
   end
 
   describe 'validations' do
+    it 'validates ethernetNetworkType' do
+      described_class::VALID_ETHERNET_NETWORK_TYPES.each do |i|
+        expect { described_class.new(@client, ethernetNetworkType: i) }.not_to raise_error
+      end
+      expect { described_class.new(@client, ethernetNetworkType: 'Auto') }.to raise_error(/Invalid ethernetNetworkType/)
+    end
     it 'Invalid network type' do
       options = { networkType: 'N/A' }
       expect { OneviewSDK::LIGUplinkSet.new(@client, options) }.to raise_error(/Invalid network type/)
@@ -21,10 +27,6 @@ RSpec.describe OneviewSDK::LIGUplinkSet do
     it 'Ethernet without type' do
       options = { networkType: 'Ethernet' }
       expect { OneviewSDK::LIGUplinkSet.new(@client, options) }.to raise_error(/Attribute missing/)
-    end
-    it 'Ethernet with invalid type' do
-      options = { networkType: 'Ethernet', ethernetNetworkType: 'Auto' }
-      expect { OneviewSDK::LIGUplinkSet.new(@client, options) }.to raise_error(/Invalid ethernet type/)
     end
     it 'Valid Ethernet' do
       options = { networkType: 'Ethernet', ethernetNetworkType: 'Tagged' }

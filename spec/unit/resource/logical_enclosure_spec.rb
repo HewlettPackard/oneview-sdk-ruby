@@ -16,8 +16,7 @@ RSpec.describe OneviewSDK::LogicalEnclosure do
     context 'valid values' do
       it 'allows valids fabricTypes' do
         logical_enclosure = OneviewSDK::LogicalEnclosure.new(@client)
-        valid_values = %w(DirectAttach FabricAttach)
-        valid_values.each do |value|
+        described_class::VALID_FABRIC_TYPES.each do |value|
           logical_enclosure[:fabricType] = value
           expect(logical_enclosure[:fabricType]).to eq(value)
         end

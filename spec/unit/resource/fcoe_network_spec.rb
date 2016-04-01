@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::FCoENetwork do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = OneviewSDK::FCoENetwork.new(@client)
+      item = described_class.new(@client)
       expect(item[:type]).to eq('fcoe-network')
       expect(item[:connectionTemplateUri]).to eq(nil)
     end
@@ -13,8 +13,10 @@ RSpec.describe OneviewSDK::FCoENetwork do
 
   describe 'validations' do
     it 'validates vlanId' do
-      options = { vlanId: 0 }
-      expect { OneviewSDK::FCoENetwork.new(@client, options) }.to raise_error(/vlanId out of range/)
+      described_class::VALID_VLAN_IDS.each do |i|
+        expect { described_class.new(@client, vlanId: i) }.to_not raise_error
+      end
+      expect { described_class.new(@client, vlanId: 0) }.to raise_error(/vlanId out of range/)
     end
   end
 end
