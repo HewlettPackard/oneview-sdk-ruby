@@ -48,16 +48,18 @@ module OneviewSDK
       fail 'Method not available for this resource!'
     end
 
+    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
     # Validate refreshState
     # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     def validate_refreshState(value)
-      fail 'Invalid refresh state' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(value)
+      fail 'Invalid refresh state' unless VALID_REFRESH_STATES.include?(value)
     end
 
+    VALID_STATUSES = %w(OK Disabled Warning Critical Unknown).freeze
     # Validate status
     # @param [String] value OK, Disabled, Warning, Critical, Unknown
     def validate_status(value)
-      fail 'Invalid status' unless %w(OK Disabled Warning Critical Unknown).include?(value)
+      fail 'Invalid status' unless VALID_STATUSES.include?(value)
     end
   end
 end

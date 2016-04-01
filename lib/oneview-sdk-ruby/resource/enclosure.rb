@@ -105,13 +105,14 @@ module OneviewSDK
       set_all(new_data)
     end
 
+    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
     # Refresh enclosure along with all of its components
     # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     # @param [Hash] options  Optional force fields for refreshing the enclosure
     def refreshState(state, options = {})
       ensure_client && ensure_uri
       s = state.to_s rescue state
-      fail 'Invalid refreshState' unless %w(NotRefreshing RefreshFailed RefreshPending Refreshing).include?(s)
+      fail 'Invalid refreshState' unless VALID_REFRESH_STATES.include?(s)
       requestBody = {
         'body' => {
           refreshState: s,
@@ -183,8 +184,9 @@ module OneviewSDK
       @data['enclosureGroupUri'] = eg['uri']
     end
 
+    VALID_LICENSING_INTENTS = %w(NotApplicable OneView OneViewNoiLO OneViewStandard).freeze
     def validate_licensingIntent(value)
-      fail 'Invalid licensingIntent' unless %w(NotApplicable OneView OneViewNoiLO OneViewStandard).include?(value) || value.nil?
+      fail 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value) || value.nil?
     end
 
     private
