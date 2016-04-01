@@ -12,7 +12,8 @@ desc 'Run unit tests only'
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = spec_pattern
   spec.rspec_opts = def_spec_options
-  spec.rspec_opts = '--tag ~integration --tag ~system'
+  spec.rspec_opts << '--tag ~integration'
+  spec.rspec_opts << '--tag ~system'
 end
 
 desc 'Run integration tests only'
@@ -20,6 +21,7 @@ RSpec::Core::RakeTask.new('spec:integration') do |spec|
   spec.pattern = spec_pattern
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
+  spec.rspec_opts << '--tag ~system'
 end
 
 desc 'Run integration creation tests only'
@@ -27,6 +29,7 @@ RSpec::Core::RakeTask.new('spec:integration:create') do |spec|
   spec.pattern = 'spec/**/*create_spec.rb'
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
+  spec.rspec_opts << '--tag ~system'
 end
 
 desc 'Run integration update tests only'
@@ -34,6 +37,7 @@ RSpec::Core::RakeTask.new('spec:integration:update') do |spec|
   spec.pattern = 'spec/**/*update_spec.rb'
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
+  spec.rspec_opts << '--tag ~system'
 end
 
 desc 'Run integration deletion tests only'
@@ -41,9 +45,10 @@ RSpec::Core::RakeTask.new('spec:integration:delete') do |spec|
   spec.pattern = 'spec/**/*delete_spec.rb'
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << '--tag integration'
+  spec.rspec_opts << '--tag ~system'
 end
 
-desc 'Run unit and integration tests'
+desc 'Run unit, integration and system tests'
 RSpec::Core::RakeTask.new('spec:all') do |spec|
   spec.pattern = spec_pattern
   spec.rspec_opts = def_spec_options
@@ -66,11 +71,6 @@ end
 desc 'Run rubocop, unit & integration tests'
 task 'test:all' do
   Rake::Task[:rubocop].invoke
-<<<<<<< HEAD
-  Rake::Task['spec:all'].invoke
-=======
   Rake::Task[:spec].invoke
-  Rake::Task['spec:integration'].invoke
-  Rake::Task['spec:system'].invoke
->>>>>>> 85a1b83ef52661c25ba2ac5d92967acdad3cc961
+  Rake::Task['spec:all'].invoke
 end
