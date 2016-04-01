@@ -62,3 +62,19 @@ RSpec.shared_context 'integration context', a: :b do
     # fail 'Skipped' # Un-comment to skip running the tests
   end
 end
+
+RSpec.shared_context 'system test', a: :b do
+
+  before(:each) do
+    allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
+    allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
+
+    @client = OneviewSDK::Client.new(
+      url: 'https://172.16.101.48',
+      user: 'Administrator',
+      password: 'rainforest',
+      ssl_enabled: false
+    )
+  end
+
+end
