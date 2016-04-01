@@ -1,0 +1,17 @@
+{
+  "data": {
+   "name": "ONEVIEW_SDK_TEST VT1",
+   "state": "Normal",
+   "description": "Volume Template",
+   "provisioning": {
+     "shareable": true,
+     "provisionType": "Thin",
+     "capacity": "235834383322",
+     "storagePoolUri": "/rest/storage-pools/7E29C54C-82CC-4ECA-8587-BD2DD1CAA4E7"
+   },
+   "stateReason": "None",
+   "storageSystemUri": "/rest/storage-systems/TXQ1000307",
+   "snapshotPoolUri": "/rest/storage-pools/7E29C54C-82CC-4ECA-8587-BD2DD1CAA4E7",
+   "type": "StorageVolumeTemplateV3"
+  }
+}

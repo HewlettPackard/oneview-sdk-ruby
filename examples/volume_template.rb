@@ -36,6 +36,9 @@ matches = OneviewSDK::VolumeTemplate.find_by(@client, name: options[:name])
 volume_template_3 = matches.first
 puts "\nFound Volume Template by name: '#{volume_template_3[:name]}'.\n  uri = '#{volume_template_3[:uri]}'"
 
+# Get connectable volume templates
+puts "\nSuccessfully retrieved connectable volume templates: #{volume_template_3.get_connectable_volume_templates}"
+
 # Delete Volume Template
 volume_template.delete
 puts "\nDeleted Volume Template '#{volume_template[:name]}' successfully.\n"

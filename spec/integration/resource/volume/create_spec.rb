@@ -39,7 +39,11 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
         templateUri: @vol_template[:uri]
       }
       volume = OneviewSDK::Volume.new($client, options)
-      volume.create(requestedCapacity: 512 * 1024 * 1024)
+      volume.create(
+        requestedCapacity: 512 * 1024 * 1024,
+        provisionType: 'Thin',
+        storagePoolUri: @storage_pool[:uri]
+      )
     end
 
     it 'create volume with snapshot pool specified' do
@@ -57,34 +61,34 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
       )
     end
 
-    it 'add volume for management' do
-      options = {
-        name: VOLUME_NAME,
-        description: 'Integration test volume',
-        storageSystemUri: @storage_system[:uri]
-      }
-      volume = OneviewSDK::Volume.new($client, options)
-      volume.create(
-        provisionType: 'Full',
-        storagePoolUri: @storage_pool[:uri],
-        requestedCapacity: 512 * 1024 * 1024
-      )
-
-      wwn = volume[:wwn]
-
-      # Delete only from oneview
-      volume.delete(:oneview)
-
-      options = {
-        name: VOLUME_NAME,
-        description: 'Integration test volume',
-        storageSystemUri: @storage_system[:uri],
-        type: 'AddStorageVolumeV2',
-        wwn: wwn
-      }
-      volume = OneviewSDK::Volume.new($client, options)
-      volume.create
-    end
+    # it 'add volume for management' do
+    #   options = {
+    #     name: VOLUME_NAME,
+    #     description: 'Integration test volume',
+    #     storageSystemUri: @storage_system[:uri]
+    #   }
+    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume.create(
+    #     provisionType: 'Full',
+    #     storagePoolUri: @storage_pool[:uri],
+    #     requestedCapacity: 512 * 1024 * 1024
+    #   )
+    #
+    #   wwn = volume[:wwn]
+    #
+    #   # Delete only from oneview
+    #   volume.delete(:oneview)
+    #
+    #   options = {
+    #     name: VOLUME_NAME,
+    #     description: 'Integration test volume',
+    #     storageSystemUri: @storage_system[:uri],
+    #     type: 'AddStorageVolumeV2',
+    #     wwn: wwn
+    #   }
+    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume.create
+    # end
 
     # it 'add volume for management using volume name in storage system' do
     #   options = {

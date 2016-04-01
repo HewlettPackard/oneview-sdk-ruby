@@ -48,6 +48,7 @@ STORAGE_POOL_NAME = 'CPG-SSD-AO'.freeze
 
 # VolumeTemplate
 VOL_TEMP_NAME = 'VolumeTemplate_1'.freeze
+VOL_TEMP_NAME_UPDATED = 'VolumeTemplate_1_UPDATED'.freeze
 
 # Volume
 VOLUME_NAME = 'Volume_1'.freeze
