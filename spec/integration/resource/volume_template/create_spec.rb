@@ -14,10 +14,10 @@ RSpec.describe OneviewSDK::VolumeTemplate, integration: true, type: CREATE, sequ
   describe '#create' do
     it 'can create resources' do
       options = {
-         name: VOL_TEMP_NAME,
-         state: 'Normal',
-         description: 'Volume Template',
-         type: 'StorageVolumeTemplateV3'
+        name: VOL_TEMP_NAME,
+        state: 'Normal',
+        description: 'Volume Template',
+        type: 'StorageVolumeTemplateV3'
       }
 
       item = OneviewSDK::VolumeTemplate.new($client, options)
