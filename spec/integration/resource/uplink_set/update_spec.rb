@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true, type: UPDATE do
 
   describe '#update' do
     before :each do
-      @interconnect = OneviewSDK::Interconnect.get_all(@client).last # TODO: Find a more specific one?
+      @interconnect = OneviewSDK::Interconnect.get_all($client).last # TODO: Find a more specific one?
       @enclosure = OneviewSDK::Enclosure.find_by($client, name: ENCL_NAME).first
     end
 
