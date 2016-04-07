@@ -25,3 +25,5 @@ mkmf.log
 examples/_client.rb
 spec/integration/one_view_config.json
 spec/integration/one_view_secrets.json
+spec/system/one_view_config.json
+spec/system/one_view_secrets.json
