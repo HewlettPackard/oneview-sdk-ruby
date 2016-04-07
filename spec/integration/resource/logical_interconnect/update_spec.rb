@@ -17,6 +17,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
     end
   end
 
+  # ATTENTION: REAL HARDWARE ONLY 
   # describe 'Manipulating interconnects' do
   #
   #   def interconnect_find(bay_number, enclosure)
@@ -53,12 +54,12 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
   #   end
   # end
 
-  # describe '#compliance' do
-  #   it 'defines the position of the Logical Interconnect' do
-  #     log_int.retrieve!
-  #     expect { log_int.compliance }.to_not raise_error
-  #   end
-  # end
+  describe '#compliance' do
+    it 'defines the position of the Logical Interconnect' do
+      log_int.retrieve!
+      expect { log_int.compliance }.to_not raise_error
+    end
+  end
 
   describe 'Internal Networks Test' do
     before(:each) do
