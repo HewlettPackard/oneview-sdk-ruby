@@ -41,7 +41,7 @@ if RSpec.configuration.filter_manager.inclusions.rules[:integration] # Run Integ
   SimpleCov.start 'integration'
 elsif RSpec.configuration.filter_manager.inclusions.rules[:system_test] # Run System only
   SimpleCov.start 'system_test'
-elsif RSpec.configuration.filter_manager.exclusions.rules[:integration] && RSpec.configuration.filter_manager.exclusions.rules[:system_test] # Run Unit only
+elsif RSpec.configuration.filter_manager.exclusions.rules[:integration] && RSpec.configuration.filter_manager.exclusions.rules[:system_test]
   SimpleCov.start 'unit'
 else # Run both
   SimpleCov.start 'all'

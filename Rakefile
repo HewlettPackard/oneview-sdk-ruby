@@ -13,7 +13,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = spec_pattern
   spec.rspec_opts = def_spec_options
   spec.rspec_opts << '--tag ~integration'
-  spec.rspec_opts << '--tag ~system_test'
+  spec.rspec_opts << ' --tag ~system_test'
 end
 
 desc 'Run integration tests only'
