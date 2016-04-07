@@ -17,7 +17,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
     end
   end
 
-  # ATTENTION: REAL HARDWARE ONLY 
+  # ATTENTION: REAL HARDWARE ONLY
   # describe 'Manipulating interconnects' do
   #
   #   def interconnect_find(bay_number, enclosure)
@@ -66,14 +66,12 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
       log_int.retrieve!
     end
 
-    it 'will list the internal networks and verify they dont exist yet' do
+    it 'will list the internal networks and verify it only lists the uplink network' do
       log_int.retrieve!
       vlans = log_int.list_vlan_networks
-      expect(vlans).not_to eq(nil)
-      expect(vlans.any?).to_not be
-      vlans.each do |vlan|
-        expect(vlan[:name]).to_not eq(nil)
-        expect(vlan[:uri]).to_not eq(nil)
+      expect(vlans.any?).to be
+      vlans.each do |net|
+        expect(net[:name]).to eq(ETH_NET_NAME)
       end
     end
 

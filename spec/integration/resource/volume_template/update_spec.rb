@@ -36,7 +36,7 @@ RSpec.describe OneviewSDK::VolumeTemplate, integration: true, type: UPDATE do
     end
 
     it 'finds networks by multiple attributes' do
-      attrs = { name: VOL_TEMP_NAME, type: 'StorageVolumeTemplateV3' }
+      attrs = { name: VOL_TEMP_NAME }
       names = OneviewSDK::VolumeTemplate.find_by($client, attrs).map { |item| item[:name] }
       expect(names).to include(VOL_TEMP_NAME)
     end

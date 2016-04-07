@@ -61,6 +61,7 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
       )
     end
 
+    # REAL HARDWARE ONLY
     # it 'add volume for management' do
     #   options = {
     #     name: VOLUME_NAME,
@@ -120,7 +121,7 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
     #   volume.create
     # end
 
-    it 'create from volume snapshot' do
+    it 'create new volume from previous volume snapshot' do
       options = {
         name: VOLUME_NAME,
         description: 'Integration test volume',
