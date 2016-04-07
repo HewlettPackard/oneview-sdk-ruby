@@ -62,3 +62,33 @@ RSpec.shared_context 'integration context', a: :b do
     # fail 'Skipped' # Un-comment to skip running the tests
   end
 end
+
+RSpec.shared_context 'system context', a: :b do
+
+  before(:each) do
+    default_config  = 'spec/system/one_view_config.json'
+    default_secrets = 'spec/system/one_view_secrets.json'
+
+    @config_path  ||= ENV['ONEVIEWSDK_SYSTEM_CONFIG']  || default_config
+    @secrets_path ||= ENV['ONEVIEWSDK_SYSTEM_SECRETS'] || default_secrets
+
+    unless File.file?(@config_path) && File.file?(@secrets_path)
+      STDERR.puts "\n\n"
+      STDERR.puts 'ERROR: System config file not found' unless File.file?(@config_path)
+      STDERR.puts 'ERROR: System secrets file not found' unless File.file?(@secrets_path)
+      STDERR.puts "\n\n"
+      exit!
+    end
+
+    $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
+
+    # Create client objects:
+    $config  ||= OneviewSDK::Config.load(@config_path)
+    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
+    $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
+
+    allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
+    allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
+  end
+
+end
