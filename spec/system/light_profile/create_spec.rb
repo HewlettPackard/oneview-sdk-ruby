@@ -16,10 +16,6 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
       smartLink: true,
       privateNetwork: false
     }
-    puts $client.user
-    puts $client.password
-    puts $client.url
-    puts $client.token
     eth1 = OneviewSDK::EthernetNetwork.new($client, options)
     eth1.create
     expect(eth1['uri']).not_to be_empty
@@ -213,7 +209,6 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
 
     enclosure = OneviewSDK::Enclosure.new($client, name: ResourceNames.enclosure[0])
     enclosure.retrieve!
-
 
     li = OneviewSDK::LogicalInterconnect.new($client, name: ResourceNames.logical_interconnect[0])
     li.retrieve!
