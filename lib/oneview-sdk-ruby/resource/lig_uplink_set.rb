@@ -51,21 +51,23 @@ module OneviewSDK
       params = Hash[params.map { |(k, v)| [k.to_s, v] }]
       network_type = params.delete('networkType')
       params.each { |key, value| set(key.to_s, value) }
-      set('networkType', network_type)
+      set('networkType', network_type) if network_type
     end
 
+    VALID_NETWORK_TYPES = %w(FibreChannel Ethernet).freeze
     # Validate ethernetNetworkType request
     # @param [String] value FibreChannel, Ethernet
     def validate_networkType(value)
-      fail 'Invalid network type' unless %w(FibreChannel Ethernet).include?(value)
+      fail 'Invalid network type' unless VALID_NETWORK_TYPES.include?(value)
       fail 'Attribute missing' if value == 'Ethernet' && !@data['ethernetNetworkType']
       fail 'Attribute not supported' if value == 'FibreChannel' && @data['ethernetNetworkType']
     end
 
+    VALID_ETHERNET_NETWORK_TYPES = %w(NotApplicable Tagged Tunnel Unknown Untagged).freeze
     # Validate ethernetNetworkType request
     # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged. Must exist if networkType is 'Ethernet', otherwise shouldn't.
     def validate_ethernetNetworkType(value)
-      fail 'Invalid ethernet type' unless %w(NotApplicable Tagged Tunnel Unknown Untagged).include?(value)
+      fail 'Invalid ethernetNetworkType' unless VALID_ETHERNET_NETWORK_TYPES.include?(value)
     end
 
     private

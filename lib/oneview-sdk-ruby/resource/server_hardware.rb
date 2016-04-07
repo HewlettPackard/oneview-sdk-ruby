@@ -100,12 +100,14 @@ module OneviewSDK
       set_power_state('off', force)
     end
 
+    VALID_LICENSING_INTENTS = ['OneView', 'OneViewNoiLO', 'OneViewStandard', nil].freeze
     def validate_licensingIntent(value)
-      fail 'Invalid licensingIntent' unless %w(OneView OneViewNoiLO OneViewStandard).include?(value) || value.nil?
+      fail 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value)
     end
 
+    VALID_CONFIGURATION_STATES = ['Managed', 'Monitored', nil].freeze
     def validate_configurationState(value)
-      fail 'Invalid configurationState' unless %w(Managed Monitored).include?(value) || value.nil?
+      fail 'Invalid configurationState' unless VALID_CONFIGURATION_STATES.include?(value)
     end
 
     private

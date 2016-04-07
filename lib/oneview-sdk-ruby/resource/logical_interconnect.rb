@@ -248,46 +248,46 @@ module OneviewSDK
     private
 
     # Validate ethernet trap categories
+    VALID_ENET_TRAP_CATEGORIES = %w(Other PortStatus PortThresholds).freeze
     def validate_enet_trap_categories(enet_trap_categories)
-      allowed_values = %w(Other PortStatus PortThresholds)
       enet_trap_categories.uniq!
       enet_trap_categories.each do |cat|
-        fail "Ethernet Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+        fail "Ethernet Trap Category #{cat} is not one of the allowed values: #{VALID_ENET_TRAP_CATEGORIES}" unless
+          VALID_ENET_TRAP_CATEGORIES.include?(cat)
       end
     end
 
     # Validate fc trap categories
+    VALID_FC_TRAP_CATEGORIES = %w(Other PortStatus).freeze
     def validate_fc_trap_categories(fc_trap_categories)
-      allowed_values = %w(Other PortStatus)
       fc_trap_categories.uniq!
       fc_trap_categories.each do |cat|
-        fail "FC Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+        fail "FC Trap Category #{cat} is not one of the allowed values: #{VALID_FC_TRAP_CATEGORIES}" unless VALID_FC_TRAP_CATEGORIES.include?(cat)
       end
     end
 
     # Validate vcm trap categories
+    VALID_VCM_TRAP_CATEGORIES = %w(Legacy).freeze
     def validate_vcm_trap_categories(vcm_trap_categories)
-      allowed_values = %w(Legacy)
       vcm_trap_categories.uniq!
       vcm_trap_categories.each do |cat|
-        fail "VCM Trap Category #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+        fail "VCM Trap Category #{cat} is not one of the allowed values: #{VALID_VCM_TRAP_CATEGORIES}" unless VALID_VCM_TRAP_CATEGORIES.include?(cat)
       end
     end
 
     # Validate trap severities
+    VALID_TRAP_SEVERITIES = %w(Critical Info Major Minor Normal Unknown Warning).freeze
     def validate_trap_severities(trap_severities)
-      allowed_values = %w(Critical Info Major Minor Normal Unknown Warning)
       trap_severities.uniq!
       trap_severities.each do |cat|
-        fail "Trap Severities #{cat} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(cat)
+        fail "Trap Severities #{cat} is not one of the allowed values: #{VALID_TRAP_SEVERITIES}" unless VALID_TRAP_SEVERITIES.include?(cat)
       end
     end
 
     # Validate snmp trap format
+    VALID_TRAP_FORMATS = %w(SNMPv1 SNMPv2 SNMPv3).freeze
     def validate_trap_format(trap_format)
-      allowed_values = %w(SNMPv1 SNMPv2 SNMPv3)
-      fail "Trap Format #{trap_format} is not one of the allowed values: #{allowed_values}" unless allowed_values.include?(trap_format)
+      fail "Trap Format #{trap_format} is not one of the allowed values: #{VALID_TRAP_FORMATS}" unless VALID_TRAP_FORMATS.include?(trap_format)
     end
-
   end
 end

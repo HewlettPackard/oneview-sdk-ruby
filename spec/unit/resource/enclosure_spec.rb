@@ -118,12 +118,13 @@ RSpec.describe OneviewSDK::Enclosure do
 
     it 'only permits certain states' do
       allow(@client).to receive(:rest_put).and_return(FakeResponse.new)
+
+      OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
+        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState(i) }.to_not raise_error
+      end
       expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState('') }.to raise_error(/Invalid refreshState/)
       expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState('state') }.to raise_error(/Invalid refreshState/)
       expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState(nil) }.to raise_error(/Invalid refreshState/)
-      %w(NotRefreshing RefreshFailed RefreshPending Refreshing).each do |state|
-        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').refreshState(state) }.to_not raise_error
-      end
     end
 
     it 'does a PUT to /refreshState' do
@@ -215,21 +216,12 @@ RSpec.describe OneviewSDK::Enclosure do
     end
   end
 
-  describe '#refreshState' do
-    context 'with invalid data' do
-      it 'fails when invalid refreshState' do
-        enclosure = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
-        expect { enclosure.refreshState('None') }.to raise_error(/Invalid refreshState/)
-      end
-    end
-  end
 
   describe 'validations' do
     it 'only allows certain licensingIntent values' do
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'NotApplicable') }.to_not raise_error
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'OneView') }.to_not raise_error
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'OneViewNoiLO') }.to_not raise_error
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'OneViewStandard') }.to_not raise_error
+      OneviewSDK::Enclosure::VALID_LICENSING_INTENTS.each do |intent|
+        expect { OneviewSDK::Enclosure.new(@client, licensingIntent: intent) }.to_not raise_error
+      end
       expect { OneviewSDK::Enclosure.new(@client, licensingIntent: '') }.to raise_error(/Invalid licensingIntent/)
       expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'invalid') }.to raise_error(/Invalid licensingIntent/)
     end

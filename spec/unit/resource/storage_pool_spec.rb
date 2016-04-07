@@ -31,8 +31,7 @@ RSpec.describe OneviewSDK::StoragePool do
     context 'refreshState' do
       it 'allows valid refresh states' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
-        valid_states = %w(NotRefreshing RefreshFailed RefreshPending Refreshing)
-        valid_states.each do |state|
+        described_class::VALID_REFRESH_STATES.each do |state|
           storage_pool[:refreshState] = state
           expect(storage_pool[:refreshState]).to eq(state)
         end
@@ -47,8 +46,7 @@ RSpec.describe OneviewSDK::StoragePool do
     context 'status' do
       it 'allows valid statuses' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
-        valid_statuses = %w(OK Disabled Warning Critical Unknown)
-        valid_statuses.each do |state|
+        described_class::VALID_STATUSES.each do |state|
           storage_pool[:status] = state
           expect(storage_pool[:status]).to eq(state)
         end

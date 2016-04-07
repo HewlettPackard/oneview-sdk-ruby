@@ -97,7 +97,7 @@ RSpec.describe OneviewSDK::ServerHardware do
 
   describe 'validations' do
     it 'only allows certain licensingIntent values' do
-      %w(OneView OneViewNoiLO OneViewStandard).each do |v|
+      described_class::VALID_LICENSING_INTENTS.each do |v|
         expect { OneviewSDK::ServerHardware.new(@client, licensingIntent: v) }.to_not raise_error
       end
       expect { OneviewSDK::ServerHardware.new(@client, licensingIntent: '') }.to raise_error(/Invalid licensingIntent/)
@@ -105,7 +105,7 @@ RSpec.describe OneviewSDK::ServerHardware do
     end
 
     it 'only allows certain configurationState values' do
-      %w(Managed Monitored).each do |v|
+      described_class::VALID_CONFIGURATION_STATES.each do |v|
         expect { OneviewSDK::ServerHardware.new(@client, configurationState: v) }.to_not raise_error
       end
       expect { OneviewSDK::ServerHardware.new(@client, configurationState: '') }.to raise_error(/Invalid configurationState/)

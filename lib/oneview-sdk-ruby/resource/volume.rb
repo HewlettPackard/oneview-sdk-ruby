@@ -185,10 +185,11 @@ module OneviewSDK
 
     # Validation methods:
 
+    VALID_PROVISION_TYPES = %w(Thin Full).freeze
     # Validate the type of provisioning
     # @param [String] Must be Thin or Full
     def validate_provisionType(value)
-      fail 'Invalid provision type' unless %w(Thin Full).include?(value)
+      fail 'Invalid provision type' unless VALID_PROVISION_TYPES.include?(value)
     end
 
     private

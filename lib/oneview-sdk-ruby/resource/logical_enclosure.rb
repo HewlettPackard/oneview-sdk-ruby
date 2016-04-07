@@ -88,11 +88,12 @@ module OneviewSDK
       self
     end
 
+    VALID_FABRIC_TYPES = %w(DirectAttach FabricAttach).freeze
     # Validate fabricType
     # @param [String] value DirectAttach, FabricAttach
     # @raise [RuntimeError] if value is not 'DirectAttach' or 'FabricAttach'
     def validate_fabricType(value)
-      fail 'Invalid fabric type' unless %w(DirectAttach FabricAttach).include?(value)
+      fail 'Invalid fabric type' unless VALID_FABRIC_TYPES.include?(value)
     end
 
   end

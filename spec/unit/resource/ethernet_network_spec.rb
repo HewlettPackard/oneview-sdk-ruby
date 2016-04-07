@@ -44,14 +44,17 @@ RSpec.describe OneviewSDK::EthernetNetwork do
 
   describe 'validations' do
     it 'validates ethernetNetworkType' do
-      options = { ethernetNetworkType: 'FakeType' }
-      expect { OneviewSDK::EthernetNetwork.new(@client, options) }.to raise_error(/Invalid network type/)
+      OneviewSDK::EthernetNetwork::VALID_ETHERNET_NETWORK_TYPES.each do |i|
+        expect { OneviewSDK::EthernetNetwork.new(@client, ethernetNetworkType: i) }.to_not raise_error
+      end
+      expect { OneviewSDK::EthernetNetwork.new(@client, ethernetNetworkType: 'FakeType') }.to raise_error(/Invalid network type/)
     end
 
-    it 'validates purpose' do
-      options = { purpose: 'Fake' }
-      expect { OneviewSDK::EthernetNetwork.new(@client, options) }.to raise_error(/Invalid ethernet purpose/)
+    it 'validates the purpose' do
+      OneviewSDK::EthernetNetwork::VALID_PURPOSES.each do |i|
+        expect { OneviewSDK::EthernetNetwork.new(@client, purpose: i) }.to_not raise_error
+      end
+      expect { OneviewSDK::EthernetNetwork.new(@client, purpose: 'Fake') }.to raise_error(/Invalid ethernet purpose/)
     end
-
   end
 end
