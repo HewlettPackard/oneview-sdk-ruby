@@ -19,7 +19,7 @@ SimpleCov.profiles.define 'integration' do
   minimum_coverage_by_file 30 # TODO: bump up as we increase coverage. Goal: 70%
 end
 
-SimpleCov.profiles.define 'system_test' do
+SimpleCov.profiles.define 'system' do
   add_filter 'spec/'
   add_filter 'cli.rb'
   add_group 'Client', %w(client.rb rest.rb config_loader.rb)
@@ -39,9 +39,9 @@ end
 
 if RSpec.configuration.filter_manager.inclusions.rules[:integration] # Run Integration only
   SimpleCov.start 'integration'
-elsif RSpec.configuration.filter_manager.inclusions.rules[:system_test] # Run System only
-  SimpleCov.start 'system_test'
-elsif RSpec.configuration.filter_manager.exclusions.rules[:integration] && RSpec.configuration.filter_manager.exclusions.rules[:system_test]
+elsif RSpec.configuration.filter_manager.inclusions.rules[:system] # Run System only
+  SimpleCov.start 'system'
+elsif RSpec.configuration.filter_manager.exclusions.rules[:integration] && RSpec.configuration.filter_manager.exclusions.rules[:system]
   SimpleCov.start 'unit'
 else # Run both
   SimpleCov.start 'all'
@@ -62,14 +62,14 @@ RSpec.configure do |config|
     end
   end
 
-  unless config.filter_manager.exclusions.rules[:system_test]
+  unless config.filter_manager.exclusions.rules[:system]
     config.register_ordering(:global) do |items|
       items.sort_by { |i| [(i.metadata[:sequence] || 100)] }
     end
   end
 
   config.before(:each) do
-    unless config.filter_manager.inclusions.rules[:integration] || config.filter_manager.inclusions.rules[:system_test]
+    unless config.filter_manager.inclusions.rules[:integration] || config.filter_manager.inclusions.rules[:system]
       # Mock appliance version and login api requests
       allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(200)
       allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_return('secretToken')

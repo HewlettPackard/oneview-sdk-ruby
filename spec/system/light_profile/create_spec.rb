@@ -3,8 +3,8 @@
 
 require_relative '../../spec_helper'
 
-RSpec.describe 'Spin up fluid resource pool', system_test: true, sequence: 1 do
-  include_context 'system_test context'
+RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
+  include_context 'system context'
 
   it 'Ethernet Networks' do
     options = {

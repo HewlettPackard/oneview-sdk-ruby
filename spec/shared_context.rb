@@ -63,7 +63,7 @@ RSpec.shared_context 'integration context', a: :b do
   end
 end
 
-RSpec.shared_context 'system_test context', a: :b do
+RSpec.shared_context 'system context', a: :b do
 
   before(:each) do
     default_config  = 'spec/system/one_view_config.json'

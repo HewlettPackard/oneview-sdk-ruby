@@ -13,7 +13,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = spec_pattern
   spec.rspec_opts = def_spec_options
   spec.rspec_opts << '--tag ~integration'
-  spec.rspec_opts << ' --tag ~system_test'
+  spec.rspec_opts << ' --tag ~system'
 end
 
 desc 'Run integration tests only'
@@ -51,31 +51,31 @@ RSpec::Core::RakeTask.new('spec:all') do |spec|
 end
 
 desc 'Run System tests'
-RSpec::Core::RakeTask.new('spec:system_test') do |spec|
+RSpec::Core::RakeTask.new('spec:system') do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rspec_opts = def_int_spec_options
-  spec.rspec_opts = '--tag system_test'
+  spec.rspec_opts = '--tag system'
 end
 
 desc 'Run System tests Light Profile'
-RSpec::Core::RakeTask.new('spec:system_test:light') do |spec|
+RSpec::Core::RakeTask.new('spec:system:light') do |spec|
   spec.pattern = 'spec/system/light_profile/*_spec.rb'
   spec.rspec_opts = def_int_spec_options
-  spec.rspec_opts = '--tag system_test'
+  spec.rspec_opts = '--tag system'
 end
 
 desc 'Run System tests Medium Profile'
-RSpec::Core::RakeTask.new('spec:system_test:medium') do |spec|
+RSpec::Core::RakeTask.new('spec:system:medium') do |spec|
   spec.pattern = 'spec/system/medium_profile/*_spec.rb'
   spec.rspec_opts = def_int_spec_options
-  spec.rspec_opts = '--tag system_test'
+  spec.rspec_opts = '--tag system'
 end
 
 desc 'Run System tests Heavy Profile'
-RSpec::Core::RakeTask.new('spec:system_test:heavy') do |spec|
+RSpec::Core::RakeTask.new('spec:system:heavy') do |spec|
   spec.pattern = 'spec/system/heavy_profile/*_spec.rb'
   spec.rspec_opts = def_int_spec_options
-  spec.rspec_opts = '--tag system_test'
+  spec.rspec_opts = '--tag system'
 end
 
 RuboCop::RakeTask.new
