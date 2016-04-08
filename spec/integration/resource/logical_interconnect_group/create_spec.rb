@@ -3,38 +3,6 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CREATE, sequence: 2 do
   include_context 'integration context'
 
-  # let(:item) do
-  #   lig_default_options = {
-  #     'name' => LOG_INT_GROUP_NAME,
-  #     'enclosureType' => 'C7000',
-  #     'type' => 'logical-interconnect-groupV3'
-  #   }
-  #   OneviewSDK::LogicalInterconnectGroup.new($client, lig_default_options)
-  # end
-  #
-  # let(:item_2) do
-  #   lig_default_options_2 = {
-  #     'name' => LOG_INT_GROUP2_NAME,
-  #     'enclosureType' => 'C7000',
-  #     'type' => 'logical-interconnect-groupV3'
-  #   }
-  #   OneviewSDK::LogicalInterconnectGroup.new($client, lig_default_options_2)
-  # end
-  #
-  # let(:@lig_uplink_set) do
-  #   uplink_options = {
-  #     name: LIG_UPLINK_SET_NAME,
-  #     networkType: 'Ethernet',
-  #     ethernetNetworkType: 'Tagged'
-  #   }
-  #   OneviewSDK::LIGUplinkSet.new(@client, uplink_options)
-  # end
-  #
-  # let(:@ethernet_network) do
-  #   net = OneviewSDK::EthernetNetwork.new(@client, name: ETH_NET_NAME)
-  #   net.retrieve!
-  #   net
-  # end
   before :all do
     lig_default_options = {
       'name' => LOG_INT_GROUP_NAME,
