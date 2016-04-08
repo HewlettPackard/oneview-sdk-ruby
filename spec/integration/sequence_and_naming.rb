@@ -46,6 +46,9 @@ UPLINK_SET3_NAME = 'EthernetUplinkSet_2'.freeze
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
 LIG_UPLINK_SET2_NAME = 'EthernetUplinkSet_2'.freeze
 
+# storageSystem
+STORAGE_SYSTEM_NAME = 'ThreePAR7200-2027'.freeze
+
 # StoragePool
 STORAGE_POOL_NAME = 'CPG-SSD-AO'.freeze
 
@@ -56,4 +59,6 @@ VOL_TEMP_NAME_UPDATED = 'VolumeTemplate_1_UPDATED'.freeze
 # Volume
 VOLUME_NAME = 'Volume_1'.freeze
 VOLUME2_NAME = 'Volume_2'.freeze
+VOLUME3_NAME = 'Volume_3'.freeze
 VOL_SNAPSHOT_NAME = 'snapshot_qa'.freeze
+VOL_SNAPSHOT2_NAME = 'snapshot_qa_2'.freeze
