@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'thor'
   spec.add_runtime_dependency 'highline'
+  spec.add_runtime_dependency 'pry'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rspec'
