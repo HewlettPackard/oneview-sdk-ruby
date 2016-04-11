@@ -247,10 +247,10 @@ First run `$ bundle` (requires the bundler gem), then...
  - To build and install the gem, run `$ rake install`.
 
 ### Testing
- - RuboCop: `$ bundle exec rake rubocop`
- - Unit: `$ bundle exec rake spec`
+ - RuboCop: `$ rake rubocop`
+ - Unit: `$ rake spec`
  - Integration: See the [spec/integration](spec/integration/) README
- - All: Run `$ bundle exec rake test:all` to run RuboCop, unit, & integration tests.
+ - All: Run `$ rake test:all` to run RuboCop, unit, & integration tests.
  - Examples: See the [examples](examples/) README
 
 Note: run `$rake -T` to get a list of all the available rake tasks.
