@@ -232,6 +232,14 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
  oneview-sdk-ruby delete_from_file /my-server-profile.json
  ```
 
+ - Open a Console window with a OneView connection:
+ ```bash
+ $ oneview-sdk-ruby console
+ Console Connected to https://oneview.example.com
+ HINT: The @client object is available to you
+ >
+ ```
+
 ## Contributing & Feature Requests
 **Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it. 
 We're passionate about improving this project, and glad to accept help to make it better. 
