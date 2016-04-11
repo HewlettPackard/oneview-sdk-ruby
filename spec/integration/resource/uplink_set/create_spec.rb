@@ -13,7 +13,7 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true, type: CREATE, sequence:
       networkType: 'Ethernet',
       ethernetNetworkType: 'Tagged',
       description: nil,
-      name: UPLINK_SET_NAME
+      name: UPLINK_SET3_NAME
     }
   end
 
@@ -23,7 +23,7 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true, type: CREATE, sequence:
       @log_int.retrieve!
     end
 
-    it 'can create resources' do
+    it 'can create the uplink and attach to a Logical Interconnect' do
       item = OneviewSDK::UplinkSet.new($client, uplink_data)
       item[:logicalInterconnectUri] = @log_int[:uri]
       expect { item.create }.not_to raise_error

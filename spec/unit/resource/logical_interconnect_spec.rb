@@ -36,18 +36,6 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
     end
   end
 
-  describe '#update_internal_networks' do
-    it 'is a pending example' do
-      # TODO
-    end
-  end
-
-  describe '#list_vlan_networks' do
-    it 'is a pending example' do
-      # TODO
-    end
-  end
-
   describe '#update_ethernet_settings' do
     it 'requires the uri to be set' do
       expect { OneviewSDK::LogicalInterconnect.new(@client).update_ethernet_settings }.to raise_error(/Please set uri/)
@@ -105,30 +93,6 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
         .and_return(FakeResponse.new(key: 'val'))
       item.configuration
       expect(item['key']).to eq('val')
-    end
-  end
-
-  describe '#update_port_monitor' do
-    it 'is a pending example' do
-      # TODO
-    end
-  end
-
-  describe '#update_qos_configuration' do
-    it 'is a pending example' do
-      # TODO
-    end
-  end
-
-  describe '#update_telemetry_configuration' do
-    it 'is a pending example' do
-      # TODO
-    end
-  end
-
-  describe '#update_snmp_configuration' do
-    it 'is a pending example' do
-      # TODO
     end
   end
 
