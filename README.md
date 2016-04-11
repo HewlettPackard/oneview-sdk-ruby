@@ -253,7 +253,7 @@ First run `$ bundle` (requires the bundler gem), then...
  - All: Run `$ rake test:all` to run RuboCop, unit, & integration tests.
  - Examples: See the [examples](examples/) README
 
-Note: run `$rake -T` to get a list of all the available rake tasks.
+Note: run `$ rake -T` to get a list of all the available rake tasks.
 
 ## Authors
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
