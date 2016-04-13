@@ -198,9 +198,9 @@ Please refer to the documentation and [code](lib/oneview-sdk-ruby/rest.rb) for c
 ## CLI
 This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
-To get started, run `$ ruby-sdk-ruby --help`.
+To get started, run `$ oneview-sdk-ruby --help`.
 
-To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ ruby-sdk-ruby env` to see the available environment variables.
+To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ oneview-sdk-ruby env` to see the available environment variables.
 
 The CLI doesn't expose everything in the SDK, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here are a few examples:
 

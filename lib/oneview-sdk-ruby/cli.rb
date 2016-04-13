@@ -6,7 +6,7 @@ require 'highline/import'
 module OneviewSDK
   # cli for oneview-sdk-ruby
   class Cli < Thor
-    # Runner class to enable testing with Aruba
+    # Runner class to enable testing
     class Runner
       def initialize(argv, stdin = STDIN, stdout = STDOUT, stderr = STDERR, kernel = Kernel)
         @argv = argv
