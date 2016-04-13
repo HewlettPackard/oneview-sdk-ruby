@@ -35,13 +35,16 @@ client = OneviewSDK::Client.new(
   token: 'xxxx...'                    # Set EITHER this or the user & password
 )
 ```
-:warning: **WARNING**
-**Security risk: Check the file permissions because the password is stored in cleartext.**
 
-You can also set the credentials or an authentication token using environment variables. For bash:
+:warning: **Check the file permissions because the password is stored in cleartext.**
+
+**Environment Variables**
+
+You can also set the url and credentials or an authentication token using environment variables. For bash:
 
 ```bash
 export ONEVIEWSDK_URL='https://oneview.example.com'
+export ONEVIEWSDK_SSL_ENABLED=false
 
 # Credentials
 export ONEVIEWSDK_USER='Administrator'
@@ -49,10 +52,20 @@ export ONEVIEWSDK_PASSWORD='secret123'
 # or auth token
 export ONEVIEWSDK_TOKEN='xxxx...'
 ```
-:warning: **WARNING**
-**Security risk: Be sure nobody has access to your environment variables or terminal**
 
-Configuration files can also be used to define client data (json or yaml formats):
+Then you can leave out these options from your config, enabling you to just do:
+
+```ruby
+require 'oneview-sdk-ruby'
+client = OneviewSDK::Client.new
+```
+NOTE: Run `$ oneview-sdk-ruby env` to see a list of available environment variables and their current values.
+
+:warning: **Be sure nobody has access to your environment variables or terminal**
+
+**Configuration Files**
+
+Configuration files can also be used to define client configuration (json or yaml formats). Here's an example json file:
 
 ```json
 {
@@ -62,8 +75,6 @@ Configuration files can also be used to define client data (json or yaml formats
   "ssl_enabled": false
 }
 ```
-:warning: **WARNING**
-**Security risk: Check the file permissions because the password is stored in cleartext.**
 
 and load via:
 
@@ -71,6 +82,8 @@ and load via:
 config = OneviewSDK::Config.load("full_file_path.json")
 client = OneviewSDK::Client.new(config)
 ```
+
+:warning: **Check the file permissions because the password is stored in cleartext.**
 
 ### Custom Logging
 The default logger is a standard logger to STDOUT, but if you want to specify your own, you can.  However, your logger must implement the following methods:
@@ -93,7 +106,9 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
 - **Create a resource**
 
   ```ruby
-  ethernet = OneviewSDK::EthernetNetwork.new(client, { name: 'TestVlan', vlanId:  1001, purpose:  'General' })
+  ethernet = OneviewSDK::EthernetNetwork.new(
+    client, { name: 'TestVlan', vlanId:  1001, purpose:  'General', smartLink: false, privateNetwork: false }
+  )
   ethernet.create # Tells OneView to create this resource
   ```
 
@@ -129,7 +144,9 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
 
   You can use the `==`  or `.eql?` method to compare resource equality, or `.like` to compare just a subset of attributes.
   ```ruby
-  ethernet2 = OneviewSDK::EthernetNetwork.new(client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General' })
+  ethernet2 = OneviewSDK::EthernetNetwork.new(
+    client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General', smartLink: false, privateNetwork: false }
+  )
   ethernet == ethernet2    # Returns false
   ethernet.eql?(ethernet2) # Returns false
 
@@ -157,6 +174,13 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
 
   # Get all resources:
   networks = client.get_all(:EthernetNetwork)
+  ```
+
+- **Delete a resource**
+
+  ```ruby
+  ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
+  ethernet.delete # Tells OneView to delete this resource
   ```
 
 ### Save/Load Resources with files
@@ -198,6 +222,9 @@ Please refer to the documentation and [code](lib/oneview-sdk-ruby/rest.rb) for c
 ## CLI
 This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
+Note: In order to use this, you'll need to make sure your ruby `bin` directory is in your path. 
+Run `$ gem environment` to see where the executable paths are for your Ruby installation.
+
 To get started, run `$ oneview-sdk-ruby --help`.
 
 To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ oneview-sdk-ruby env` to see the available environment variables.
@@ -221,7 +248,8 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
  - Search by an attribute:
  ```bash
  oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
- # Again, you can show only certain attributes by using the -a option
+ # By default, it will just show a list of names of matching resources,
+ #   but again, you can show only certain attributes by using the -a option
  # You can also chain keys together to search in nested hashes:
  oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
  ```

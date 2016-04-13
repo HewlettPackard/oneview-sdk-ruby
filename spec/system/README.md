@@ -1,7 +1,7 @@
-# Integration Testing
+# System Testing
 :warning: **WARNING**
 
-**The integration tests are going to communicate with and modify a real OneView appliance.**
+**The system tests are going to communicate with and modify a real OneView appliance.**
 
 **The tests do their best cleanup after themselves, but know what they do before running them!**
 
@@ -17,8 +17,8 @@ First, there's some setup you'll need to do. Do EITHER of the following:
   2. Then set the following environment variables with the paths to the files you just created:
 
    ```bash
-   export ONEVIEWSDK_INTEGRATION_CONFIG='/path/to/one_view_config.json'
-   export ONEVIEWSDK_INTEGRATION_SECRETS='/path/to/one_view_secrets.json'
+   export ONEVIEWSDK_SYSTEM_CONFIG='/path/to/one_view_config.json'
+   export ONEVIEWSDK_SYSTEM_SECRETS='/path/to/one_view_secrets.json'
    ```
 
 2. **Use default config file locations**
@@ -27,8 +27,8 @@ First, there's some setup you'll need to do. Do EITHER of the following:
    [one_view_secrets.json.example](one_view_secrets.json.example) files into the same directory (spec/integration) and drop the `.example` part of the filename on the new coppies. You should now have the following files:
 
    ```bash
-   spec/integration/one_view_config.json
-   spec/integration/one_view_secrets.json
+   spec/system/one_view_config.json
+   spec/system/one_view_secrets.json
    ```
 
 
@@ -43,11 +43,11 @@ The following command must run in your Ruby SDK root directory:
 
 Run `$ rake -T` to show all the available rake tasks.
 
-Then run any number of integration tests:
+Then run any number of system tests:
 
 ```ruby
-$ rake spec:integration
-$ rake spec:integration:create
-$ rake spec:integration:update
-$ rake spec:integration:delete
+$ rake spec:system
+$ rake spec:system:light
+$ rake spec:system:medium
+$ rake spec:system:heavy
 ```
