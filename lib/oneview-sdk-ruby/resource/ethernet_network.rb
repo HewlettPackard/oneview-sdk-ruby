@@ -32,6 +32,20 @@ module OneviewSDK
       end
     end
 
+    # Bulk create ethernet networks
+    # @param [Client] client client to connect with OneView
+    # @param [Hash] options information necessary to create networks
+    # @return [Array] list of ethernet networks created
+    def self.bulk_create(client, options)
+      range = options[:vlanIdRange].split('-').map { |x| x.to_i }
+      options[:type] = 'bulk-ethernet-network'
+      response = client.rest_post(BASE_URI + '/bulk', { 'body' => options }, client.api_version)
+      client.response_handler(response)
+      network_names = []
+      range[0].upto(range[1]) { |i| network_names << "#{options[:namePrefix]}_#{i}" }
+      OneviewSDK::EthernetNetwork.get_all(client).select { |network| network_names.include?(network['name']) }
+    end
+
     # Get associatedProfiles
     def get_associated_profiles
       ensure_client && ensure_uri

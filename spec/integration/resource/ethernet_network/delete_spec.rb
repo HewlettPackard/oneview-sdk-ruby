@@ -9,5 +9,16 @@ RSpec.describe OneviewSDK::EthernetNetwork, integration: true, type: DELETE, seq
       item.retrieve!
       item.delete
     end
+
+    it 'deletes bulk created networks' do
+      range = BULK_ETH_NET_RANGE.split('-').map { |x| x.to_i }
+      network_names = []
+      range[0].upto(range[1]) { |i| network_names << "#{BULK_ETH_NET_PREFIX}_#{i}" }
+      network_names.each do |name|
+        network = OneviewSDK::EthernetNetwork.new($client, name: name)
+        network.retrieve!
+        network.delete
+      end
+    end
   end
 end
