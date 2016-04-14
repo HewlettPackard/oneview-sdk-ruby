@@ -67,7 +67,7 @@ options = {
   }
 }
 
-list = OneviewSDK::EthernetNetwork.bulk_create(@client, options).each { |network| puts network['uri']}
+list = OneviewSDK::EthernetNetwork.bulk_create(@client, options).each { |network| puts network['uri'] }
 
 puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully."
 

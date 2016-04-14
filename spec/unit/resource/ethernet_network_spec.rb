@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::EthernetNetwork do
   include_context 'shared context'
-=begin
+
   describe '#initialize' do
     it 'sets the defaults correctly api_ver 120' do
       item = OneviewSDK::EthernetNetwork.new(@client, {}, 120)
@@ -41,7 +41,7 @@ RSpec.describe OneviewSDK::EthernetNetwork do
       expect(item.get_associated_uplink_groups).to eq('[]')
     end
   end
-=end
+
   describe '#bulk_create' do
     let(:options) do
       {

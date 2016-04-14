@@ -37,7 +37,7 @@ module OneviewSDK
     # @param [Hash] options information necessary to create networks
     # @return [Array] list of ethernet networks created
     def self.bulk_create(client, options)
-      range = options[:vlanIdRange].split('-').map { |x| x.to_i }
+      range = options[:vlanIdRange].split('-').map(&:to_i)
       options[:type] = 'bulk-ethernet-network'
       response = client.rest_post(BASE_URI + '/bulk', { 'body' => options }, client.api_version)
       client.response_handler(response)
