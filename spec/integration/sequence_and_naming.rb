@@ -25,10 +25,12 @@ FCOE_NET_NAME_UPDATED = 'FCoENetwork_1_UPDATED'.freeze
 LOG_INT_GROUP_NAME = 'LogicalInterconnectGroup_1'.freeze
 LOG_INT_GROUP_NAME_UPDATED = 'LogicalInterconnectGroup_1_UPDATED'.freeze
 LOG_INT_GROUP2_NAME = 'LogicalInterconnectGroup_2'.freeze
+LOG_INT_GROUP3_NAME = 'LogicalInterconnectGroup_3'.freeze
 
 # EnclosureGroup
 ENC_GROUP_NAME = 'EnclosureGroup_1'.freeze
 ENC_GROUP2_NAME = 'EnclosureGroup_2'.freeze
+ENC_GROUP3_NAME = 'EnclosureGroup_3'.freeze
 
 # Enclosure
 ENCL_NAME = 'Encl1'.freeze

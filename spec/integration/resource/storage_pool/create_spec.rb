@@ -20,6 +20,7 @@ RSpec.describe OneviewSDK::StoragePool, integration: true, type: CREATE, sequenc
       storage_system.retrieve!
       expect(item[:storageSystemUri]).to eq(storage_system['uri'])
       expect(item[:poolName]).to eq(STORAGE_POOL_NAME)
+      expect(item[:uri]).to be
     end
   end
 
@@ -31,6 +32,7 @@ RSpec.describe OneviewSDK::StoragePool, integration: true, type: CREATE, sequenc
       storage_system.retrieve!
       expect(item[:storageSystemUri]).to eq(storage_system['uri'])
       expect(item[:name]).to eq(STORAGE_POOL_NAME)
+      expect(item[:uri]).to be
     end
   end
 
