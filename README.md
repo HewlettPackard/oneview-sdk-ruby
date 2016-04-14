@@ -36,7 +36,7 @@ client = OneviewSDK::Client.new(
 )
 ```
 
-:warning: **Check the file permissions because the password is stored in cleartext.**
+:lock: Tip: Check the file permissions because the password is stored in clear-text.
 
 **Environment Variables**
 
@@ -53,6 +53,8 @@ export ONEVIEWSDK_PASSWORD='secret123'
 export ONEVIEWSDK_TOKEN='xxxx...'
 ```
 
+:lock: Tip: Be sure nobody has access to your environment variables, as the password or token is stored in clear-text.
+
 Then you can leave out these options from your config, enabling you to just do:
 
 ```ruby
@@ -60,8 +62,6 @@ require 'oneview-sdk-ruby'
 client = OneviewSDK::Client.new
 ```
 NOTE: Run `$ oneview-sdk-ruby env` to see a list of available environment variables and their current values.
-
-:warning: **Be sure nobody has access to your environment variables or terminal**
 
 **Configuration Files**
 
@@ -83,7 +83,7 @@ config = OneviewSDK::Config.load("full_file_path.json")
 client = OneviewSDK::Client.new(config)
 ```
 
-:warning: **Check the file permissions because the password is stored in cleartext.**
+:lock: Tip: Check the file permissions because the password is stored in clear-text.
 
 ### Custom Logging
 The default logger is a standard logger to STDOUT, but if you want to specify your own, you can.  However, your logger must implement the following methods:
