@@ -87,10 +87,11 @@ module OneviewSDK
       fail 'Interconnect Bay Mapping Count out of range 1..8' unless VALID_INTERCONNECT_BAY_MAPPING_COUNTS.include?(value)
     end
 
-    VALID_IP_ADDRESSING_MODES = %w(DHCP External IpPool).freeze
-    def validate_ipAddressingMode(value)
-      fail 'Invalid ip AddressingMode' unless VALID_IP_ADDRESSING_MODES.include?(value)
-    end
+    # This should be only validated if the Enclosure is a Synergy, otherwise should be ignored
+    # VALID_IP_ADDRESSING_MODES = %w(DHCP External IpPool).freeze
+    # def validate_ipAddressingMode(value)
+    #   fail 'Invalid ip AddressingMode' unless VALID_IP_ADDRESSING_MODES.include?(value)
+    # end
 
     VALID_PORT_MAPPING_COUNTS = (0..8).freeze
     def validate_portMappingCount(value)
