@@ -4,11 +4,6 @@ RSpec.describe OneviewSDK::EthernetNetwork do
   include_context 'shared context'
 
   describe '#initialize' do
-    it 'sets the defaults correctly api_ver 120' do
-      item = OneviewSDK::EthernetNetwork.new(@client, {}, 120)
-      expect(item[:ethernetNetworkType]).to eq('Tagged')
-      expect(item[:type]).to eq('ethernet-networkV2')
-    end
     it 'sets the defaults correctly api_ver 200' do
       item = OneviewSDK::EthernetNetwork.new(@client, {}, 200)
       expect(item[:ethernetNetworkType]).to eq('Tagged')
