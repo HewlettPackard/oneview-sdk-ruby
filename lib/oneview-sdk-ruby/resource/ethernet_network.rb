@@ -42,7 +42,7 @@ module OneviewSDK
     def validate_purpose(value)
       fail 'Invalid ethernet purpose' unless VALID_PURPOSES.include?(value)
     end
-    
+
     # @!endgroup
 
     # Bulk create ethernet networks
