@@ -30,10 +30,39 @@ RSpec.describe OneviewSDK::EnclosureGroup do
 
     it 'only allows certain ipAddressingMode values' do
       OneviewSDK::EnclosureGroup::VALID_IP_ADDRESSING_MODES.each do |i|
-        expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: i) }.to_not raise_error
+        synergy_with_valid_types = {
+          enclosureTypeUri: 'rest/enclosure-types/synergy',
+          ipAddressingMode: i
+        }
+        expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_valid_types) }.to_not raise_error
       end
-      expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: '') }.to raise_error(/Invalid ip AddressingMode/)
-      expect { OneviewSDK::EnclosureGroup.new(@client, ipAddressingMode: 'invalid') }.to raise_error(/Invalid ip AddressingMode/)
+      synergy_with_invalid_type = {
+        enclosureTypeUri: 'rest/enclosure-types/synergy',
+        ipAddressingMode: 'invalid'
+      }
+      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_invalid_type) }.to raise_error(/Invalid ip AddressingMode/)
+
+      # The invalid param should be ignored if the Enclosure Type is not specified or is C7000
+      synergy_with_null_addressing_mode = {
+        enclosureTypeUri: 'rest/enclosure-types/synergy',
+        ipAddressingMode: nil
+      }
+      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_null_addressing_mode) }.to raise_error(/Invalid ip AddressingMode/)
+      with_nothing_specified = {
+        enclosureTypeUri: nil,
+        ipAddressingMode: nil
+      }
+      expect { OneviewSDK::EnclosureGroup.new(@client, with_nothing_specified) }.to_not raise_error
+      without_enclosure_type_specified = {
+        enclosureTypeUri: nil,
+        ipAddressingMode: 'invalid'
+      }
+      expect { OneviewSDK::EnclosureGroup.new(@client, without_enclosure_type_specified) }.to_not raise_error
+      with_enclosure_c7000 = {
+        enclosureTypeUri: nil,
+        ipAddressingMode: 'invalid'
+      }
+      expect { OneviewSDK::EnclosureGroup.new(@client, with_enclosure_c7000) }.to_not raise_error
     end
 
     it 'only allows an portMappingCount between 0 and 8' do
