@@ -7,40 +7,6 @@ options = {
   name: 'OneViewSDK Test Enclosure Group',
   stackingMode: 'Enclosure',
   interconnectBayMappingCount: 8,
-  interconnectBayMappings: [
-    {
-      interconnectBay: 1,
-      logicalInterconnectGroupUri: nil
-    },
-    {
-      interconnectBay: 2,
-      logicalInterconnectGroupUri: nil
-    },
-    {
-      interconnectBay: 3,
-      logicalInterconnectGroupUri: nil
-    },
-    {
-      interconnectBay: 4,
-      logicalInterconnectGroupUri: nil
-    },
-    {
-      interconnectBay: 5,
-      logicalInterconnectGroupUri: nil
-    },
-    {
-      interconnectBay: 6,
-      logicalInterconnectGroupUri: nil
-    },
-    {
-      interconnectBay: 7,
-      logicalInterconnectGroupUri: nil
-    },
-    {
-      interconnectBay: 8,
-      logicalInterconnectGroupUri: nil
-    }
-  ],
   type: 'EnclosureGroupV200'
 }
 
