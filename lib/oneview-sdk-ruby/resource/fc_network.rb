@@ -27,6 +27,8 @@ module OneviewSDK
       @data['fabricType'] ||= 'FabricAttach'
     end
 
+    # @!group Validates
+
     VALID_FABRIC_TYPES = %w(DirectAttach FabricAttach).freeze
     def validate_fabricType(value)
       fail 'Invalid fabric type' unless VALID_FABRIC_TYPES.include?(value)
@@ -37,6 +39,8 @@ module OneviewSDK
       return unless @data['fabricType'] && @data['fabricType'] == 'FabricAttach'
       fail 'Link stability time out of range 1..1800' unless VALID_LINK_STABILITY_TIMES.include?(value)
     end
+
+    # @!endgroup
 
   end
 end
