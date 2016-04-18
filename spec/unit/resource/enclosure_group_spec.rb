@@ -4,13 +4,6 @@ RSpec.describe OneviewSDK::EnclosureGroup do
   include_context 'shared context'
 
   describe '#initialize' do
-    context 'OneView 1.2' do
-      it 'sets the defaults correctly' do
-        item = OneviewSDK::EnclosureGroup.new(@client_120)
-        expect(item[:type]).to eq('EnclosureGroupV2')
-      end
-    end
-
     context 'OneView 2.0' do
       it 'sets the defaults correctly' do
         item = OneviewSDK::EnclosureGroup.new(@client)
