@@ -105,6 +105,11 @@ RSpec.describe OneviewSDK::Client do
       expect(@client.response_handler(initial_response)).to eq(data)
     end
 
+    it 'allows you to set wait_for_task to false' do
+      response = FakeResponse.new(data, 202, 'location' => '/rest/task/fake')
+      expect(@client.response_handler(response, false)).to eq(data)
+    end
+
     it 'returns an empty hash for 204 status' do
       expect(@client.response_handler(FakeResponse.new({}, 204))).to eq({})
     end

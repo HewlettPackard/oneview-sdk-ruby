@@ -77,11 +77,12 @@ module OneviewSDK
 
     # Handle the response for rest call.
     #   If an asynchronous task was started, this waits for it to complete.
-    # @param [HTTPResponse] HTTP response
+    # @param [HTTPResponse] response HTTP response
+    # @param [Boolean] wait_on_task Wait on task (or just return task details)
     # @raise [RuntimeError] if the request failed
     # @raise [RuntimeError] if a task was returned that did not complete successfully
     # @return [Hash] The parsed JSON body
-    def response_handler(response)
+    def response_handler(response, wait_on_task = true)
       case response.code.to_i
       when RESPONSE_CODE_OK # Synchronous read/query
         begin
@@ -93,6 +94,7 @@ module OneviewSDK
       when RESPONSE_CODE_CREATED # Synchronous add
         return JSON.parse(response.body)
       when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete
+        return JSON.parse(response.body) unless wait_on_task
         @logger.debug "Waiting for task: response.header['location']"
         task = wait_for(response.header['location'])
         return true unless task['associatedResource'] && task['associatedResource']['resourceUri']
