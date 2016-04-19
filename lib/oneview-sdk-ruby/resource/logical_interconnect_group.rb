@@ -36,17 +36,17 @@ module OneviewSDK
 
     # Add an interconnect
     # @param [Fixnum] bay Bay number
-    # @param [String] type InterconnectType
+    # @param [String] type Interconnect type
     def add_interconnect(bay, type)
       @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
         entry['logicalLocation']['locationEntries'].each do |location|
           if location['type'] == 'Bay' && location['relativeValue'] == bay
-            entry['permittedInterconnectTypeUri'] = OneviewSDK::InterconnectType.find_by(@client, name: type).first['uri']
+            entry['permittedInterconnectTypeUri'] = OneviewSDK::Interconnect.get_type(@client, type)[:uri]
           end
         end
       end
     rescue StandardError
-      list = OneviewSDK::InterconnectType.get_all(@client).map { |t| t['name'] }
+      list = OneviewSDK::Interconnect.get_types(@client).map { |t| t['name'] }
       raise "Interconnect type #{type} not found! Supported types: #{list}"
     end
 
@@ -58,7 +58,7 @@ module OneviewSDK
 
     # Get the default settings for the spe
     # @param [Fixnum] bay Bay number
-    # @param [String] type InterconnectType
+    # @param [String] type Interconnect type
     def get_default_settings
       get_uri = self.class::BASE_URI + '/defaultSettings'
       response = @client.rest_get(get_uri, @api_version)

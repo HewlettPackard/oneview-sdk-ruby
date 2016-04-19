@@ -3,17 +3,17 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::Interconnect, integration: true, type: UPDATE do
   include_context 'integration context'
 
-  let(:interconnect) { OneviewSDK::Interconnect.find_by(@client, {}).last }
+  let(:interconnect) { OneviewSDK::Interconnect.find_by($client, {}).last }
 
-  describe '#nameServers' do
+  describe '#name_servers' do
     it 'retrieves name servers' do
-      expect { interconnect.nameServers }.not_to raise_error
+      expect { interconnect.name_servers }.not_to raise_error
     end
   end
 
   describe '#resetportprotection' do
     it 'triggers a reset of port protection' do
-      expect { interconnect.resetportprotection }.not_to raise_error
+      expect { interconnect.reset_port_protection }.not_to raise_error
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe OneviewSDK::Interconnect, integration: true, type: UPDATE do
     end
   end
 
-  describe '#updateAttribute' do
+  describe '#update_attribute' do
     it 'is a pending example'
   end
 end

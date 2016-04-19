@@ -2,29 +2,47 @@ module OneviewSDK
   # Resource for interconnect types
   class Interconnect < Resource
     BASE_URI = '/rest/interconnects'.freeze
+    TYPE_URI = '/rest/interconnect-types'.freeze
 
     def initialize(client, params = {}, api_ver = nil)
       super
     end
 
     def create
-      fail 'Method not available for this resource!'
+      unavailable_method
     end
 
     def update
-      fail 'Method not available for this resource!'
+      unavailable_method
     end
 
     def save
-      fail 'Method not available for this resource!'
+      unavailable_method
     end
 
     def delete
-      fail 'Method not available for this resource!'
+      unavailable_method
+    end
+
+    # Retrieve interconnect types
+    # @param [Client] client http client
+    def self.get_types(client)
+      response = client.rest_get(TYPE_URI)
+      response = client.response_handler(response)
+      response['members']
+    end
+
+    # Retrieve interconnect ype with name
+    # @param [Client] client http client
+    # @param [String] name Interconnect type name
+    # @return [Array] Interconnect type
+    def self.get_type(client, name)
+      results = types(client)
+      results.find { |interconnect_type| interconnect_type['name'] == name }
     end
 
     # Retrieve named servers for this interconnect
-    def nameServers
+    def name_servers
       response = @client.rest_get(@data['uri'] + '/nameServers')
       response.body
     end
@@ -55,7 +73,7 @@ module OneviewSDK
     end
 
     # Triggers a reset of port protection
-    def resetportprotection
+    def reset_port_protection
       response = @client.rest_put(@data['uri'] + '/resetportprotection')
       @client.response_handler(response)
     end
@@ -64,7 +82,7 @@ module OneviewSDK
     # @param [String] operation operation to be performed
     # @param [String] path path
     # @param [String] value value
-    def updateAttribute(operation, path, value)
+    def update_attribute(operation, path, value)
       response = @client.rest_patch(@data['uri'], 'body' => [{ op: operation, path: path, value: value }])
       @client.response_handler(response)
     end
