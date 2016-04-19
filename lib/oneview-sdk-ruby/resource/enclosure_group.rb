@@ -60,7 +60,7 @@ module OneviewSDK
       lig.retrieve! unless lig['uri']
       lig['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
         entry['logicalLocation']['locationEntries'].each do |location|
-          add_lig_to_bay(location['relativeValue'], lig['uri']) if location['type'] == 'Bay'
+          add_lig_to_bay(location['relativeValue'], lig['uri']) if location['type'] == 'Bay' && entry['permittedInterconnectTypeUri']
         end
       end
     end
