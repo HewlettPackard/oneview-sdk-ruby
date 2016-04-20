@@ -40,4 +40,4 @@ These config files get loaded and create the following global variables:
 
 ## Running the tests
 The following command must run in your Ruby SDK root directory.
-Run `$ bundle exec rake spec:integration`
+Run `$ rake spec:integration`

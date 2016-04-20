@@ -232,6 +232,14 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
  oneview-sdk-ruby delete_from_file /my-server-profile.json
  ```
 
+ - Start an interactive console session with a OneView connection:
+ ```bash
+ $ oneview-sdk-ruby console
+ Console Connected to https://oneview.example.com
+ HINT: The @client object is available to you
+ >
+ ```
+
 ## Contributing & Feature Requests
 **Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it. 
 We're passionate about improving this project, and glad to accept help to make it better. 
@@ -247,13 +255,13 @@ First run `$ bundle` (requires the bundler gem), then...
  - To build and install the gem, run `$ rake install`.
 
 ### Testing
- - RuboCop: `$ bundle exec rake rubocop`
- - Unit: `$ bundle exec rake spec`
+ - RuboCop: `$ rake rubocop`
+ - Unit: `$ rake spec`
  - Integration: See the [spec/integration](spec/integration/) README
- - All: Run `$ bundle exec rake test:all` to run RuboCop, unit, & integration tests.
+ - All: Run `$ rake test:all` to run RuboCop, unit, & integration tests.
  - Examples: See the [examples](examples/) README
 
-Note: run `$rake -T` to get a list of all the available rake tasks.
+Note: run `$ rake -T` to get a list of all the available rake tasks.
 
 ## Authors
  - Jared Smartt - [@jsmartt](https://github.com/jsmartt)

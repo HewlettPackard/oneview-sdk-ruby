@@ -35,5 +35,9 @@ RSpec.describe OneviewSDK::Interconnect do
       expect(@client).to receive(:rest_get).with('/statistics/p1/subport/sp1').and_return(FakeResponse.new)
       @item.statistics('p1', 'sp1')
     end
+
+    it 'does not allow the delete action' do
+      expect { @item.delete }.to raise_error(/not available for this resource/)
+    end
   end
 end

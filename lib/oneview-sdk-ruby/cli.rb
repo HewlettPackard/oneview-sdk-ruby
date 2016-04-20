@@ -61,6 +61,21 @@ module OneviewSDK
     map ['-v', '--version'] => :version
 
 
+    desc 'console', 'Open a Ruby console with a connection to OneView'
+    def console
+      client_setup({}, true, true)
+      puts "Console Connected to #{@client.url}"
+      puts "HINT: The @client object is available to you\n\n"
+    rescue
+      puts "WARNING: Couldn't connect to #{@options['url'] || ENV['ONEVIEWSDK_URL']}\n\n"
+    ensure
+      require 'pry'
+      Pry.config.prompt = proc { '> ' }
+      Pry.plugins['stack_explorer'] && Pry.plugins['stack_explorer'].disable!
+      Pry.plugins['byebug'] && Pry.plugins['byebug'].disable!
+      Pry.start(OneviewSDK::Console.new(@client))
+    end
+
     desc 'version', 'Print gem and OneView appliance versions'
     def version
       puts "Gem Version: #{OneviewSDK::VERSION}"
@@ -264,13 +279,14 @@ module OneviewSDK
       exit 1
     end
 
-    def client_setup(client_params = {}, quiet = false)
+    def client_setup(client_params = {}, quiet = false, throw_errors = false)
       client_params['ssl_enabled'] = true if @options['ssl_verify'] == true
       client_params['ssl_enabled'] = false if @options['ssl_verify'] == false
       client_params['url'] ||= @options['url'] if @options['url']
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
       @client = OneviewSDK::Client.new(client_params)
     rescue StandardError => e
+      raise e if throw_errors
       fail_nice if quiet
       fail_nice "Failed to login to OneView appliance at '#{client_params['url']}'. Message: #{e}"
     end
@@ -351,6 +367,13 @@ module OneviewSDK
           puts "#{' ' * indent}#{data}"
         end
       end
+    end
+  end
+
+  # Console class
+  class Console
+    def initialize(client)
+      @client = client
     end
   end
 end

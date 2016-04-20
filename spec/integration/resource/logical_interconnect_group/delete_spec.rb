@@ -3,20 +3,20 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: DELETE, sequence: 11 do
   include_context 'integration context'
 
-  let(:lig_default_options) do
-    {
-      'name' => LOG_INT_GROUP_NAME,
-      'enclosureType' => 'C7000',
-      'type' => 'logical-interconnect-groupV3'
-    }
+  before :all do
+    @item = OneviewSDK::LogicalInterconnectGroup.new($client, name: LOG_INT_GROUP_NAME)
+    @item.retrieve!
+    @item_2 = OneviewSDK::LogicalInterconnectGroup.new($client, name: LOG_INT_GROUP2_NAME)
+    @item_2.retrieve!
+    @item_3 = OneviewSDK::LogicalInterconnectGroup.new($client, name: LOG_INT_GROUP3_NAME)
+    @item_3.retrieve!
   end
-  let(:lig) { OneviewSDK::LogicalInterconnectGroup.new($client, lig_default_options) }
-  let(:interconnect_type) { 'HP VC FlexFabric 10Gb/24-Port Module' }
 
   describe '#delete' do
-    it 'deletes the lig' do
-      lig.retrieve!
-      lig.delete
+    it 'removes all the Logical Interconnect groups' do
+      expect { @item.delete }.to_not raise_error
+      expect { @item_2.delete }.to_not raise_error
+      expect { @item_3.delete }.to_not raise_error
     end
   end
 end

@@ -4,7 +4,7 @@ RSpec.describe OneviewSDK::EthernetNetwork, integration: true, type: UPDATE do
   include_context 'integration context'
 
   describe '#update' do
-    it 'update OneViewSDK_Int_Ethernet_Network name' do
+    it 'update name' do
       item = OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME)
       item.retrieve!
       item.update(name: ETH_NET_NAME_UPDATED)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12 do
+RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13 do
   include_context 'integration context'
 
   before :all do
@@ -61,6 +61,7 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
       )
     end
 
+    # REAL HARDWARE ONLY
     # it 'add volume for management' do
     #   options = {
     #     name: VOLUME_NAME,
@@ -120,7 +121,7 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
     #   volume.create
     # end
 
-    it 'create from volume snapshot' do
+    it 'create volume from snapshot created only with name' do
       options = {
         name: VOLUME_NAME,
         description: 'Integration test volume',
@@ -146,8 +147,42 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12
         snapshotUri: "#{volume[:uri]}/snapshots/#{snap['uri']}"
       }
       volume_2 = OneviewSDK::Volume.new($client, options)
-      volume_2.create(storagePoolUri: @storage_pool[:uri])
-      volume_2.delete
+      expect { volume_2.create(storagePoolUri: @storage_pool[:uri]) }.to_not raise_error
+    end
+
+    it 'create volume from snapshot created from hash' do
+      options = {
+        name: VOLUME_NAME,
+        description: 'Integration test volume',
+        storageSystemUri: @storage_system[:uri],
+        snapshotPoolUri: @storage_pool[:uri]
+      }
+      volume = OneviewSDK::Volume.new($client, options)
+      volume.create(
+        provisionType: 'Full',
+        storagePoolUri: @storage_pool[:uri],
+        requestedCapacity: 512 * 1024 * 1024
+      )
+
+      snapshot_data = {
+        name: VOL_SNAPSHOT2_NAME,
+        description: 'Snapshot created from hash',
+        type: 'Snapshot'
+      }
+
+      volume.create_snapshot(snapshot_data)
+      snap = volume.snapshot(VOL_SNAPSHOT2_NAME)
+
+      options = {
+        type: 'AddStorageVolumeV3',
+        name: VOLUME3_NAME,
+        description: 'Integration test volume 2',
+        snapshotPoolUri: @storage_pool[:uri],
+        storageSystemUri: @storage_system[:uri],
+        snapshotUri: "#{volume[:uri]}/snapshots/#{snap['uri']}"
+      }
+      volume_3 = OneviewSDK::Volume.new($client, options)
+      expect { volume_3.create(storagePoolUri: @storage_pool[:uri]) }.to_not raise_error
     end
   end
 end

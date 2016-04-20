@@ -3,38 +3,36 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: UPDATE do
   include_context 'integration context'
 
-  let(:lig_default_options) do
+  let(:item_2) { OneviewSDK::LogicalInterconnectGroup.new($client, name: LOG_INT_GROUP2_NAME) }
+  let(:eth) { OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME) }
+  let(:uplink_options_2) do
     {
-      'name' => LOG_INT_GROUP_NAME,
-      'enclosureType' => 'C7000',
-      'type' => 'logical-interconnect-groupV3'
+      name: LIG_UPLINK_SET2_NAME,
+      networkType: 'Ethernet',
+      ethernetNetworkType: 'Tagged'
     }
   end
-  let(:lig) { OneviewSDK::LogicalInterconnectGroup.new($client, lig_default_options) }
-  let(:interconnect_type) { 'HP VC FlexFabric 10Gb/24-Port Module' }
+  let(:uplink_2) { OneviewSDK::LIGUplinkSet.new($client, uplink_options_2) }
 
   describe '#update' do
     it 'adding and removing uplink set' do
-      lig.add_interconnect(1, interconnect_type)
-      uplink_options = {
-        name: LIG_UPLINK_SET_NAME,
-        networkType: 'Ethernet',
-        ethernetNetworkType: 'Tagged'
-      }
-      uplink = OneviewSDK::LIGUplinkSet.new($client, uplink_options)
-      eth = OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME)
+      item_2.retrieve!
       eth.retrieve!
-      uplink.add_network(eth)
-      uplink.add_uplink(1, 'X1')
-      lig.add_uplink_set(uplink)
-      expect { lig.create! }.not_to raise_error
-      expect(lig['uri']).to be
-      expect(lig['uplinkSets']).to_not be_empty
 
-      lig['uplinkSets'] = []
-      expect { lig.update }.to_not raise_error
-      expect(lig['uri']).to be
-      expect(lig['uplinkSets']).to be_empty
+      uplink_2.add_network(eth)
+      uplink_2.add_uplink(1, 'X1')
+
+      item_2.add_uplink_set(uplink_2)
+
+      expect { item_2.update }.not_to raise_error
+
+      expect(item_2['uri']).to be
+      expect(item_2['uplinkSets']).to_not be_empty
+
+      item_2['uplinkSets'] = []
+      expect { item_2.update }.to_not raise_error
+      expect(item_2['uri']).to be
+      expect(item_2['uplinkSets']).to be_empty
     end
   end
 end

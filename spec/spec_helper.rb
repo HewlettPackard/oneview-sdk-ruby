@@ -55,16 +55,10 @@ require_relative 'system/light_profile/resource_names'
 
 
 RSpec.configure do |config|
-  # Sort integration tests
-  unless config.filter_manager.exclusions.rules[:integration]
+  # Sort integration and system tests
+  if config.filter_manager.inclusions.rules[:integration] || config.filter_manager.inclusions.rules[:system]
     config.register_ordering(:global) do |items|
       items.sort_by { |i| [(i.metadata[:type] || 0), (i.metadata[:sequence] || 100)] }
-    end
-  end
-
-  unless config.filter_manager.exclusions.rules[:system]
-    config.register_ordering(:global) do |items|
-      items.sort_by { |i| [(i.metadata[:sequence] || 100)] }
     end
   end
 
