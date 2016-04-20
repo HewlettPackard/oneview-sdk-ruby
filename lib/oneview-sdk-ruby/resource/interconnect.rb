@@ -64,9 +64,9 @@ module OneviewSDK
     # @param [String] subportNumber subport to retrieve statistics
     def statistics(portName = nil, subportNumber = nil)
       uri = if subportNumber.nil?
-              @data['uri'] + '/statistics' + "/#{portName}"
+              "#{@data['uri']}/statistics/#{portName}"
             else
-              @data['uri'] + '/statistics' + "/#{portName}" + "/subport/#{subportNumber}"
+              "#{@data['uri']}/statistics/#{portName}/subport/#{subportNumber}"
             end
       response = @client.rest_get(uri)
       response.body

@@ -20,4 +20,20 @@ RSpec.describe OneviewSDK::Interconnect do
       expect { @item.save }.to raise_error(/The method #save is unavailable for this resource/)
     end
   end
+
+  describe 'statistics' do
+    before :each do
+      @item = OneviewSDK::Interconnect.new(@client, {})
+    end
+
+    it 'port' do
+      expect(@client).to receive(:rest_get).with('/statistics/p1').and_return(FakeResponse.new())
+      @item.statistics('p1')
+    end
+
+    it 'port and subport' do
+      expect(@client).to receive(:rest_get).with('/statistics/p1/subport/sp1').and_return(FakeResponse.new())
+      @item.statistics('p1', 'sp1')
+    end
+  end
 end
