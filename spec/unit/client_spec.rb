@@ -89,6 +89,20 @@ RSpec.describe OneviewSDK::Client do
       client = OneviewSDK::Client.new(options)
       expect(client.print_wait_dots).to be true
     end
+
+    it 'sets the @cert_store variable' do
+      expect(OneviewSDK::SSLHelper).to receive(:load_trusted_certs).and_return :fake
+      options = { url: 'https://oneview.example.com', token: 'token123', ssl_enabled: true }
+      client = OneviewSDK::Client.new(options)
+      expect(client.cert_store).to eq(:fake)
+    end
+
+    it 'does not set the @cert_store variable when ssl is disabled' do
+      expect(OneviewSDK::SSLHelper).to_not receive(:load_trusted_certs)
+      options = { url: 'https://oneview.example.com', token: 'token123', ssl_enabled: false }
+      client = OneviewSDK::Client.new(options)
+      expect(client.cert_store).to eq(nil)
+    end
   end
 
   describe '#appliance_api_version' do

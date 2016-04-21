@@ -27,7 +27,8 @@ RSpec.describe OneviewSDK::Client do
 
     it 'raises an error when the ssl validation fails' do
       allow_any_instance_of(Net::HTTP).to receive(:request).and_raise(OpenSSL::SSL::SSLError, 'Msg')
-      expect { @client.rest_api(:get, path) }.to raise_error(/Msg[\s\S]*SSL verification failed/)
+      expect(@client.logger).to receive(:error).with(/SSL verification failed/)
+      expect { @client.rest_api(:get, path) }.to raise_error(OpenSSL::SSL::SSLError)
     end
   end
 

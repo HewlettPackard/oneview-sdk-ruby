@@ -1,0 +1,76 @@
+require_relative './../spec_helper'
+
+# Tests for the SSLHelper module
+RSpec.describe OneviewSDK::SSLHelper do
+  include_context 'shared context'
+
+  let(:valid_url) { 'https://ov.example.com' }
+
+  before :each do
+    allow(OneviewSDK::SSLHelper).to receive(:load_trusted_certs).and_call_original
+  end
+
+  it 'sets the CERT_STORE constant' do
+    expect(described_class::CERT_STORE).to include('/.oneview-sdk-ruby/trusted_certs.cer')
+  end
+
+  describe '#load_trusted_certs' do
+    it 'returns a OpenSSL::X509::Store' do
+      expect(File).to receive(:file?).with(described_class::CERT_STORE).and_return false
+      ret = described_class.load_trusted_certs
+      expect(ret).to be_a(OpenSSL::X509::Store)
+    end
+
+    it 'attempts to add the CERT_STORE file if found' do
+      expect(File).to receive(:file?).with(described_class::CERT_STORE).and_return true
+      expect_any_instance_of(OpenSSL::X509::Store).to receive(:add_file).with(described_class::CERT_STORE).and_return true
+      described_class.load_trusted_certs
+    end
+
+    it 'handles file load failures' do
+      expect(File).to receive(:file?).with(described_class::CERT_STORE).and_return true
+      expect_any_instance_of(OpenSSL::X509::Store).to receive(:add_file).with(described_class::CERT_STORE).and_raise 'Error'
+      expect(STDOUT).to receive(:puts).with(/WARNING: Failed to load certificate store file/)
+      ret = described_class.load_trusted_certs
+      expect(ret).to be_a(OpenSSL::X509::Store)
+    end
+
+    it 'returns nil if an unexpected failure occurs' do
+      expect_any_instance_of(OpenSSL::X509::Store).to receive(:set_default_paths).and_raise 'Error'
+      expect(STDOUT).to receive(:puts).with(/WARNING: Failure/)
+      ret = described_class.load_trusted_certs
+      expect(ret).to be_nil
+    end
+  end
+
+  describe '#check_cert' do
+    context 'with invalid options' do
+      it 'requires a url' do
+        expect { described_class.check_cert }.to raise_error ArgumentError
+      end
+
+      it 'requires a valid url' do
+        expect { described_class.check_cert('blah') }.to raise_error(/Invalid url/)
+        expect { described_class.check_cert('http://') }.to raise_error URI::InvalidURIError
+        expect { described_class.check_cert('10.0.0.1') }.to raise_error(/Invalid url/)
+      end
+    end
+
+    it 'loads the trusted certs' do
+      expect(described_class).to receive(:load_trusted_certs).and_return(true)
+      allow_any_instance_of(Net::HTTP).to receive(:cert_store=).and_return(true)
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_return(nil)
+      expect(described_class.check_cert(valid_url)).to be true
+    end
+
+    it 'returns false if ssl validation fails' do
+      expect(described_class).to receive(:load_trusted_certs).and_return(nil)
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_raise OpenSSL::SSL::SSLError
+      expect(described_class.check_cert(valid_url)).to be false
+    end
+  end
+
+  describe '#install_cert' do
+    # TODO
+  end
+end

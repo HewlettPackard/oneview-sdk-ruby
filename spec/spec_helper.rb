@@ -3,7 +3,7 @@ require 'simplecov'
 
 SimpleCov.profiles.define 'unit' do
   add_filter 'spec/'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb)
+  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
   add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
   add_group 'CLI', 'cli.rb'
   minimum_coverage 89 # TODO: bump up as we increase coverage. Goal: 90%
@@ -13,7 +13,7 @@ end
 SimpleCov.profiles.define 'integration' do
   add_filter 'spec/'
   add_filter 'cli.rb'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb)
+  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
   add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
   minimum_coverage 50 # TODO: bump up as we increase coverage. Goal: 85%
   minimum_coverage_by_file 30 # TODO: bump up as we increase coverage. Goal: 70%
@@ -22,7 +22,7 @@ end
 SimpleCov.profiles.define 'system' do
   add_filter 'spec/'
   add_filter 'cli.rb'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb)
+  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
   add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
   minimum_coverage 50 # TODO: bump up as we increase coverage. Goal: 85%
   minimum_coverage_by_file 30 # TODO: bump up as we increase coverage. Goal: 70%
@@ -30,7 +30,7 @@ end
 
 SimpleCov.profiles.define 'all' do
   add_filter 'spec/'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb)
+  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
   add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
   add_group 'CLI', 'cli.rb'
   minimum_coverage 10 # TODO: bump up as we increase coverage. Goal: 95%
@@ -64,9 +64,10 @@ RSpec.configure do |config|
 
   config.before(:each) do
     unless config.filter_manager.inclusions.rules[:integration] || config.filter_manager.inclusions.rules[:system]
-      # Mock appliance version and login api requests
+      # Mock appliance version and login api requests, as well as loading trusted certs
       allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(200)
       allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_return('secretToken')
+      allow(OneviewSDK::SSLHelper).to receive(:load_trusted_certs).and_return(nil)
     end
 
     # Clear environment variables
