@@ -6,7 +6,7 @@ require 'highline/import'
 module OneviewSDK
   # cli for oneview-sdk-ruby
   class Cli < Thor
-    # Runner class to enable testing with Aruba
+    # Runner class to enable testing
     class Runner
       def initialize(argv, stdin = STDIN, stdout = STDOUT, stderr = STDERR, kernel = Kernel)
         @argv = argv
@@ -163,7 +163,7 @@ module OneviewSDK
       type: :hash,
       desc: 'Hash of key/value pairs to filter on',
       required: true
-    desc 'search TYPE NAME', 'Search for resource by key/value pair(s)'
+    desc 'search TYPE', 'Search for resource by key/value pair(s)'
     def search(type)
       resource_class = parse_type(type)
       client_setup
@@ -173,20 +173,21 @@ module OneviewSDK
         filter = parse_hash(options['filter'], true)
         matches = resource_class.find_by(@client, filter) unless filter == options['filter']
       end
-      data = []
-      matches.each { |m| data.push(m.data) }
       if options['attribute']
-        new_data = []
-        data.each do |d|
+        data = []
+        matches.each do |d|
           temp = {}
           options['attribute'].split(',').each do |attr|
             temp[attr] = d[attr]
           end
-          new_data.push temp
+          data.push temp
         end
-        data = new_data
+        output data
+      else # List names only by default
+        names = []
+        matches.each { |m| names.push(m['name']) }
+        output names
       end
-      output data
     end
 
     method_option :force,

@@ -1,4 +1,3 @@
-
 module OneviewSDK
   # Resource for firmware bundles
   class FirmwareBundle

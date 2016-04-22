@@ -1,4 +1,3 @@
-
 module OneviewSDK
   # Resource for server profiles
   # Common Data Attributes:

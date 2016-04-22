@@ -6,7 +6,7 @@ module OneviewSDK
   class Config
 
     # Load config from .yaml or .json file
-    # @param [String] path the full path to the configuration file
+    # @param [String] path The full path to the configuration file
     # @return [Hash] hash of the configuration
     def self.load(path)
       path = File.join(Dir.pwd, path) unless Pathname.new(path).absolute?
