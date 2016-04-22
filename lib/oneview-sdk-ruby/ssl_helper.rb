@@ -47,7 +47,7 @@ module OneviewSDK
     # @param [String] url URL of the OneView Instance to be added
     # @raise [RuntimeError] if the url is invalid
     def self.install_cert(url)
-      uri = URI.parse(url)
+      uri = URI.parse(URI.escape(url))
       fail "Invalid url '#{url}'" unless uri.host
       options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
       pem = Net::HTTP.start(uri.host, uri.port, options) do |http|
@@ -64,9 +64,11 @@ module OneviewSDK
       Dir.mkdir(cert_dir) unless File.directory?(cert_dir)
       if File.file?(CERT_STORE) && File.read(CERT_STORE).include?(pem)
         puts 'Cert store already contains this certificate. Skipped!'
+        false
       else
         File.open(CERT_STORE, 'a') { |f| f.write content }
         puts "Cert added to '#{CERT_STORE}'. Cert Info: #{content}"
+        true
       end
     end
   end

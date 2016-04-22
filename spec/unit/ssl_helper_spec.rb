@@ -1,4 +1,5 @@
 require_relative './../spec_helper'
+require 'uri'
 
 # Tests for the SSLHelper module
 RSpec.describe OneviewSDK::SSLHelper do
@@ -71,6 +72,52 @@ RSpec.describe OneviewSDK::SSLHelper do
   end
 
   describe '#install_cert' do
-    # TODO
+    context 'with invalid options' do
+      it 'requires a url' do
+        expect { described_class.install_cert }.to raise_error ArgumentError
+      end
+
+      it 'requires a valid url' do
+        expect { described_class.install_cert('blah') }.to raise_error(/Invalid url/)
+        expect { described_class.install_cert('http://') }.to raise_error URI::InvalidURIError
+        expect { described_class.install_cert('10.0.0.1') }.to raise_error(/Invalid url/)
+      end
+    end
+
+    before :each do
+      @uri = URI.parse(URI.escape(valid_url))
+      @cert_dir = File.dirname(described_class::CERT_STORE)
+    end
+
+    it 'attempts to downloads the cert from the server' do
+      expect(Net::HTTP).to receive(:start).with(@uri.host, @uri.port, Hash) { nil }
+      expect { described_class.install_cert(valid_url) }.to raise_error(/Could not download cert/)
+    end
+
+    it 'attempts to create the .oneview-sdk-ruby dir' do
+      expect(Net::HTTP).to receive(:start).with(@uri.host, @uri.port, Hash) { 'fake_cert' }
+      expect(File).to receive(:directory?).with(@cert_dir).and_return false
+      expect(Dir).to receive(:mkdir).with(@cert_dir).and_raise 'Create dir'
+      expect { described_class.install_cert(valid_url) }.to raise_error(/Create dir/)
+    end
+
+    it 'skips adding the cert if it is already present' do
+      expect(Net::HTTP).to receive(:start).with(@uri.host, @uri.port, Hash) { 'fake_cert' }
+      allow(Dir).to receive(:mkdir).with(@cert_dir).and_return true
+      expect(File).to receive(:file?).with(described_class::CERT_STORE).and_return true
+      expect(File).to receive(:read).with(described_class::CERT_STORE).and_return "f\nfake_cert\n"
+      expect(STDOUT).to receive(:puts).with(/Cert store already contains this certificate/)
+      expect(described_class.install_cert(valid_url)).to be false
+    end
+
+    it 'adds the cert if it is not present' do
+      expect(Net::HTTP).to receive(:start).with(@uri.host, @uri.port, Hash) { 'fake_cert' }
+      allow(Dir).to receive(:mkdir).with(@cert_dir).and_return true
+      expect(File).to receive(:file?).with(described_class::CERT_STORE).and_return true
+      expect(File).to receive(:read).with(described_class::CERT_STORE).and_return "f\nother_cert\n"
+      expect(File).to receive(:open).with(described_class::CERT_STORE, 'a') { true }
+      expect(STDOUT).to receive(:puts).with(/Cert added/)
+      expect(described_class.install_cert(valid_url)).to be true
+    end
   end
 end

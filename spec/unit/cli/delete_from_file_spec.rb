@@ -73,6 +73,13 @@ RSpec.describe OneviewSDK::Cli do
         expect(STDOUT).to receive(:puts).with(/OK, exiting./)
         OneviewSDK::Cli.start(['delete_from_file', yaml_file])
       end
+
+      it 'fails if deletion fails' do
+        allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_raise 'Failure'
+        expect(STDOUT).to receive(:puts).with(/Failed to delete/)
+        expect { OneviewSDK::Cli.start(['delete_from_file', yaml_file, '-f']) }
+          .to raise_error SystemExit
+      end
     end
 
   end
