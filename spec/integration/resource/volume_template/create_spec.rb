@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::VolumeTemplate, integration: true, type: CREATE, sequence: 11 do
+RSpec.describe OneviewSDK::VolumeTemplate, integration: true, type: CREATE, sequence: 12 do
   include_context 'integration context'
 
   before :all do
@@ -21,7 +21,7 @@ RSpec.describe OneviewSDK::VolumeTemplate, integration: true, type: CREATE, sequ
       }
 
       item = OneviewSDK::VolumeTemplate.new($client, options)
-      item.set_provisioning(true, 'Thin', 500 * 1024 * 1024, @storage_pool)
+      item.set_provisioning(true, 'Thin', 2 * 1024 * 1024 * 1024, @storage_pool)
       item.set_storage_system(@storage_system)
       item.set_snapshot_pool(@storage_pool)
 

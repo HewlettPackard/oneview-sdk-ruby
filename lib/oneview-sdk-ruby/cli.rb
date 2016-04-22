@@ -6,7 +6,7 @@ require 'highline/import'
 module OneviewSDK
   # cli for oneview-sdk-ruby
   class Cli < Thor
-    # Runner class to enable testing with Aruba
+    # Runner class to enable testing
     class Runner
       def initialize(argv, stdin = STDIN, stdout = STDOUT, stderr = STDERR, kernel = Kernel)
         @argv = argv
@@ -60,6 +60,21 @@ module OneviewSDK
 
     map ['-v', '--version'] => :version
 
+
+    desc 'console', 'Open a Ruby console with a connection to OneView'
+    def console
+      client_setup({}, true, true)
+      puts "Console Connected to #{@client.url}"
+      puts "HINT: The @client object is available to you\n\n"
+    rescue
+      puts "WARNING: Couldn't connect to #{@options['url'] || ENV['ONEVIEWSDK_URL']}\n\n"
+    ensure
+      require 'pry'
+      Pry.config.prompt = proc { '> ' }
+      Pry.plugins['stack_explorer'] && Pry.plugins['stack_explorer'].disable!
+      Pry.plugins['byebug'] && Pry.plugins['byebug'].disable!
+      Pry.start(OneviewSDK::Console.new(@client))
+    end
 
     desc 'version', 'Print gem and OneView appliance versions'
     def version
@@ -148,7 +163,7 @@ module OneviewSDK
       type: :hash,
       desc: 'Hash of key/value pairs to filter on',
       required: true
-    desc 'search TYPE NAME', 'Search for resource by key/value pair(s)'
+    desc 'search TYPE', 'Search for resource by key/value pair(s)'
     def search(type)
       resource_class = parse_type(type)
       client_setup
@@ -158,20 +173,21 @@ module OneviewSDK
         filter = parse_hash(options['filter'], true)
         matches = resource_class.find_by(@client, filter) unless filter == options['filter']
       end
-      data = []
-      matches.each { |m| data.push(m.data) }
       if options['attribute']
-        new_data = []
-        data.each do |d|
+        data = []
+        matches.each do |d|
           temp = {}
           options['attribute'].split(',').each do |attr|
             temp[attr] = d[attr]
           end
-          new_data.push temp
+          data.push temp
         end
-        data = new_data
+        output data
+      else # List names only by default
+        names = []
+        matches.each { |m| names.push(m['name']) }
+        output names
       end
-      output data
     end
 
     method_option :force,
@@ -264,13 +280,14 @@ module OneviewSDK
       exit 1
     end
 
-    def client_setup(client_params = {}, quiet = false)
+    def client_setup(client_params = {}, quiet = false, throw_errors = false)
       client_params['ssl_enabled'] = true if @options['ssl_verify'] == true
       client_params['ssl_enabled'] = false if @options['ssl_verify'] == false
       client_params['url'] ||= @options['url'] if @options['url']
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
       @client = OneviewSDK::Client.new(client_params)
     rescue StandardError => e
+      raise e if throw_errors
       fail_nice if quiet
       fail_nice "Failed to login to OneView appliance at '#{client_params['url']}'. Message: #{e}"
     end
@@ -351,6 +368,13 @@ module OneviewSDK
           puts "#{' ' * indent}#{data}"
         end
       end
+    end
+  end
+
+  # Console class
+  class Console
+    def initialize(client)
+      @client = client
     end
   end
 end

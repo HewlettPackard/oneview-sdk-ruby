@@ -5,7 +5,8 @@ RSpec.describe OneviewSDK::StorageSystem, integration: true, type: DELETE, seque
 
   describe '#delete' do
     it 'removes the storage system' do
-      storage_system = OneviewSDK::StorageSystem.new($client, name: STORAGE_SYSTEM_NAME)
+      storage_system = OneviewSDK::StorageSystem.new($client, 'credentials' => {})
+      storage_system['credentials']['ip_hostname'] = $secrets['storage_system1_ip']
       storage_system.retrieve!
       expect { storage_system.delete }.to_not raise_error
     end

@@ -7,15 +7,15 @@ module OneviewSDK
   # Contains all the methods for making API REST calls
   module Rest
     # Make a restful API request to OneView
-    # @param [Symbol] type the rest method/type Options are :get, :post, :delete, :patch and :put
-    # @param [String] path the path for the request. Usually starts with "/rest/"
-    # @param [Hash] options the options for the request
+    # @param [Symbol] type The rest method/type Options: [:get, :post, :delete, :patch, :put]
+    # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Hash] options The options for the request
     # @option options [String] :body Hash to be converted into json and set as the request body
     # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
-    # @option options [Integer] :X-API-Version (200) API version to use for this request.
-    # @option options [Integer] :auth Authentication token to use for this request. Defaults to client.token
-    # @return [Hash] if request is successful. Hash is of response body
-    # @return [NetHTTPResponse] if request is unsuccessful
+    # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
+    # @option options [Integer] :auth (client.token) Authentication token to use for this request
+    # @raise [RuntimeError] if SSL validation of OneView instance's certificate failed
+    # @return [NetHTTPResponse] Response object
     def rest_api(type, path, options = {}, api_ver = @api_version)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
       fail 'Must specify path' unless path
@@ -75,7 +75,7 @@ module OneviewSDK
     RESPONSE_CODE_UNAUTHORIZED = 401
     RESPONSE_CODE_NOT_FOUND    = 404
 
-    # Handle the response for rest call.
+    # Handle the response from a rest call.
     #   If an asynchronous task was started, this waits for it to complete.
     # @param [HTTPResponse] response HTTP response
     # @param [Boolean] wait_on_task Wait on task (or just return task details)

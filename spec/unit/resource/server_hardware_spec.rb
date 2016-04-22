@@ -55,14 +55,14 @@ RSpec.describe OneviewSDK::ServerHardware do
   describe '#save' do
     it 'does not allow it' do
       server_hardware = OneviewSDK::ServerHardware.new(@client, {})
-      expect { server_hardware.save }.to output(/cannot be updated/).to_stdout_from_any_process
+      expect { server_hardware.save }.to raise_error(/Method not available/)
     end
   end
 
   describe '#update' do
     it 'does not allow it' do
       server_hardware = OneviewSDK::ServerHardware.new(@client, {})
-      expect { server_hardware.update(name: 'new') }.to output(/cannot be updated/).to_stdout_from_any_process
+      expect { server_hardware.update(name: 'new') }.to raise_error(/Method not available/)
       expect(server_hardware[:name]).to be_nil
     end
   end

@@ -12,7 +12,7 @@ module OneviewSDK
       :api_version,
       :logger
 
-    # Create client object, establish connection, and set up logging and api version.
+    # Create a resource object, associate it with a client, and set its properties.
     # @param [Client] client The Client object with a connection to the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
@@ -29,7 +29,7 @@ module OneviewSDK
       set_all(params)
     end
 
-    # Retrieve resource details based on this resource's name.
+    # Retrieve resource details based on this resource's name or URI.
     # @note Name or URI must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
     def retrieve!
@@ -80,6 +80,7 @@ module OneviewSDK
     # Access data using hash syntax
     # @param [String, Symbol] key Name of key to get value for
     # @return The value of the given key. If not found, returns nil
+    # @note The key will be converted to a string
     def [](key)
       @data[key.to_s]
     end
@@ -114,15 +115,16 @@ module OneviewSDK
     # @note Doesn't check the client, logger, or api_version if another Resource is passed in
     # @param [Hash, Resource] other Resource or hash to compare key-value pairs with
     # @example Compare to hash
-    #   myResource = OneviewSDK::Resource.new({ name: 'res1', description: 'example'}, client, 200)
-    #   myResource.like?(name: '', api_version: 200) # returns true
+    #   myResource = OneviewSDK::Resource.new(client, { name: 'res1', description: 'example'}, 200)
+    #   myResource.like?(description: '') # returns false
+    #   myResource.like?(name: 'res1') # returns true
     # @return [Boolean] Whether or not the two objects are alike
     def like?(other)
       recursive_like?(other, @data)
     end
 
     # Create the resource on OneView using the current data
-    # @note Calls refresh method to set additional data
+    # @note Calls the refresh method to set additional data
     # @raise [RuntimeError] if the client is not set
     # @raise [RuntimeError] if the resource creation fails
     # @return [Resource] self
@@ -134,7 +136,7 @@ module OneviewSDK
       self
     end
 
-    # Create the resource on OneView using the current data even if it exists
+    # Delete the resource from OneView if it exists, then create it using the current data
     # @note Calls refresh method to set additional data
     # @raise [RuntimeError] if the client is not set
     # @raise [RuntimeError] if the resource creation fails
@@ -146,6 +148,7 @@ module OneviewSDK
     end
 
     # Updates this object using the data that exists on OneView
+    # @note Will overwrite any data that differs from OneView
     # @return [Resource] self
     def refresh
       ensure_client && ensure_uri
@@ -156,8 +159,7 @@ module OneviewSDK
     end
 
     # Save current data to OneView
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the uri is not set
+    # @raise [RuntimeError] if the client or uri is not set
     # @raise [RuntimeError] if the resource save fails
     # @return [Resource] self
     def save
@@ -169,7 +171,7 @@ module OneviewSDK
 
     # Set data and save to OneView
     # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
-    # @raise [RuntimeError] if the uri is not set
+    # @raise [RuntimeError] if the client or uri is not set
     # @raise [RuntimeError] if the resource save fails
     # @return [Resource] self
     def update(attributes = {})
@@ -186,10 +188,10 @@ module OneviewSDK
       true
     end
 
-    # Save resource to .json or .yaml file
+    # Save resource to json or yaml file
     # @param [String] file_path The full path to the file
-    # @param [Symbol] format The format. Options: [:json, :yml]
-    # @note If a .yml or .yaml file extension is given, the format will be set automatically
+    # @param [Symbol] format The format. Options: [:json, :yml, :yaml]. Defaults to .json
+    # @note If a .yml or .yaml file extension is given in the file_path, the format will be set automatically
     # @return [True] The Resource was saved successfully
     def to_file(file_path, format = :json)
       format = :yml if %w(.yml .yaml).include? File.extname(file_path)
@@ -206,6 +208,7 @@ module OneviewSDK
     end
 
     # Get resource schema
+    # @note This may not be implemented in the API for every resource. Check the API docs
     # @return [Hash] Schema
     def schema
       self.class.schema(@client)
@@ -222,7 +225,7 @@ module OneviewSDK
       raise e
     end
 
-    # Load resource from .json or .yaml file
+    # Load resource from a .json or .yaml file
     # @param [Client] client The client object to associate this resource with
     # @param [String] file_path The full path to the file
     # @return [Resource] New resource created from the file contents
@@ -253,7 +256,7 @@ module OneviewSDK
       results
     end
 
-    # Make a GET request to the resource uri and return an array with all objects of this type
+    # Make a GET request to the resource base uri and return an array with all objects of this type
     # @return [Array<Resource>] Results
     def self.get_all(client)
       find_by(client, {})

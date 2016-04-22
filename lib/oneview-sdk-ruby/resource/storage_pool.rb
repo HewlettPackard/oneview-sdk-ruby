@@ -1,4 +1,3 @@
-
 module OneviewSDK
   # Resource for Storage Pools
   # Common Data Attributes:

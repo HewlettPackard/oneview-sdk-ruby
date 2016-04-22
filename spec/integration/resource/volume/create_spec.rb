@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 12 do
+RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13 do
   include_context 'integration context'
 
   before :all do
