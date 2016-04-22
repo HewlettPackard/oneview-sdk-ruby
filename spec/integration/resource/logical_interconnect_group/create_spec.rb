@@ -97,7 +97,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CR
       expect(default_settings).to be
       expect(default_settings['type']).to eq('InterconnectSettingsV3')
       expect(default_settings['uri']).to_not be
-      expect(default_settings['ethernetSettings']['uri']).to eq('/ethernetSettings')
+      expect(default_settings['ethernetSettings']['uri']).to match(/ethernetSettings/)
     end
 
     it 'current settings' do
@@ -105,7 +105,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CR
       expect(default_settings).to be
       expect(default_settings['type']).to eq('InterconnectSettingsV3')
       expect(default_settings['uri']).to_not be
-      expect(default_settings['ethernetSettings']['uri']).to_not eq('/ethernetSettings')
+      expect(default_settings['ethernetSettings']['uri']).to match(/ethernetSettings/)
     end
   end
 end

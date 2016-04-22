@@ -4,7 +4,7 @@ require_relative 'rest'
 require_relative 'ssl_helper'
 
 module OneviewSDK
-  # The client defines the connection to the OneView server and handles the communication with it.
+  # The client defines the connection to the OneView server and handles communication with it.
   class Client
     DEFAULT_API_VERSION = 200
 
@@ -22,6 +22,8 @@ module OneviewSDK
     # @option options [String] :url URL of OneView appliance
     # @option options [String] :user ('Administrator') Username to use for authentication with OneView appliance
     # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) Password to use for authentication with OneView appliance
+    # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) Token to use for authentication with OneView appliance
+    #   Use this OR the username and password (not both). Token has precedence.
     # @option options [Integer] :api_version (200) API Version to use by default for requests
     # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['ONEVIEWSDK_SSL_ENABLED']
     def initialize(options = {})
@@ -95,6 +97,8 @@ module OneviewSDK
     # Get array of all resources of a specified type
     # @param [String] type Resource type
     # @return [Array<Resource>] Results
+    # @example Get all Ethernet Networks
+    #   networks = @client.get_all('EthernetNetworks')
     def get_all(type)
       OneviewSDK.resource_named(type).get_all(self)
     rescue StandardError

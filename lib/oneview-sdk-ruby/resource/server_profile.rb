@@ -1,4 +1,3 @@
-
 module OneviewSDK
   # Resource for server profiles
   # Common Data Attributes:
@@ -43,14 +42,6 @@ module OneviewSDK
       end
     end
 
-    def validate_serverProfileTemplateUri(*)
-      fail "Templates only exist on api version >= 200. Resource version: #{@api_version}" if @api_version < 200
-    end
-
-    def validate_templateCompliance(*)
-      fail "Templates only exist on api version >= 200. Resource version: #{@api_version}" if @api_version < 200
-    end
-
     # Get available server hardware for this template
     # @return [Array<OneviewSDK::ServerHardware>] Array of ServerHardware resources that matches this
     #   profile's server hardware type and enclosure group and who's state is 'NoProfileApplied'
@@ -68,5 +59,12 @@ module OneviewSDK
       raise "Failed to get available hardware. Message: #{e.message}"
     end
 
+    def validate_serverProfileTemplateUri(*)
+      fail "Templates only exist on api version >= 200. Resource version: #{@api_version}" if @api_version < 200
+    end
+
+    def validate_templateCompliance(*)
+      fail "Templates only exist on api version >= 200. Resource version: #{@api_version}" if @api_version < 200
+    end
   end
 end
