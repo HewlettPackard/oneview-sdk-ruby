@@ -275,13 +275,13 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
  ```bash
  # Check the certificate first:
  $ oneview-sdk-ruby cert check https://oneview.example.com
- Checking certificate for 'https://15.244.150.163' ...
- ERROR: Certificate Validation Failed!
+   Checking certificate for 'https://oneview.example.com' ...
+   ERROR: Certificate Validation Failed!
  
  # Import the certificate:
  $ oneview-sdk-ruby cert import https://oneview.example.com
- Importing certificate for 'https://oneview.example.com' into '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'...
- Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
+   Importing certificate for 'https://oneview.example.com' into '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'...
+   Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
  ```
  
 ## Contributing & Feature Requests
