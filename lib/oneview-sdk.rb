@@ -1,7 +1,7 @@
-require_relative 'oneview-sdk-ruby/version'
-require_relative 'oneview-sdk-ruby/client'
-require_relative 'oneview-sdk-ruby/resource'
-require_relative 'oneview-sdk-ruby/cli'
+require_relative 'oneview-sdk/version'
+require_relative 'oneview-sdk/client'
+require_relative 'oneview-sdk/resource'
+require_relative 'oneview-sdk/cli'
 
 # Module for interracting with the HPE OneView API
 module OneviewSDK
