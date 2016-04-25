@@ -1,10 +1,10 @@
 # coding: utf-8
 # http://guides.rubygems.org/specification-reference
 
-require_relative './lib/oneview-sdk-ruby/version'
+require_relative './lib/oneview-sdk/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'oneview-sdk-ruby'
+  spec.name          = 'oneview-sdk'
   spec.version       = OneviewSDK::VERSION
   spec.authors       = ['Henrique', 'Thiago', 'Jared Smartt']
   spec.email         = ['henrique.diomede@hpe.com', 'thiago.mio.amaral@hpe.com', 'jared.smartt@hpe.com']
