@@ -1,4 +1,4 @@
-require_relative './../lib/oneview-sdk-ruby'
+require_relative './../lib/oneview-sdk'
 require 'pry'
 
 @client = OneviewSDK::Client.new(

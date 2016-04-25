@@ -1,5 +1,5 @@
-# oneview-sdk-ruby
-[![Gem Version](https://badge.fury.io/rb/oneview-sdk-ruby.svg)](https://badge.fury.io/rb/oneview-sdk-ruby)
+# oneview-sdk for Ruby
+[![Gem Version](https://badge.fury.io/rb/oneview-sdk.svg)](https://badge.fury.io/rb/oneview-sdk)
 
 
 The OneView SDK provides a Ruby library to easily interact with HPE OneView API. The Ruby SDK enables developers to easily build integration and scalable solutions with HPE OneView.
@@ -8,14 +8,14 @@ The OneView SDK provides a Ruby library to easily interact with HPE OneView API.
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk-ruby'
+  gem 'oneview-sdk'
   ```
 
   Then run `$ bundle install`
 - Or run the command:
 
   ```bash
-  $ gem install oneview-sdk-ruby
+  $ gem install oneview-sdk
   ```
 
 
@@ -23,7 +23,7 @@ The OneView SDK provides a Ruby library to easily interact with HPE OneView API.
 The client has a few configuration options, which you can pass in during creation:
 
 ```ruby
-require 'oneview-sdk-ruby'
+require 'oneview-sdk'
 client = OneviewSDK::Client.new(
   url: 'https://oneview.example.com',
   user: 'Administrator',              # This is the default
@@ -59,7 +59,7 @@ export ONEVIEWSDK_TOKEN='xxxx...'
 Then you can leave out these options from your config, enabling you to just do:
 
 ```ruby
-require 'oneview-sdk-ruby'
+require 'oneview-sdk'
 client = OneviewSDK::Client.new
 ```
 NOTE: Run `$ oneview-sdk-ruby env` to see a list of available environment variables and their current values.
@@ -101,7 +101,7 @@ Each OneView resource is exposed for usage with REST-like functionality.
 
 For example, once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
-Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here are a few examples to get you started:
+Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation for the complete list and usage details, but here are a few examples to get you started:
 
 - **Create a resource**
 
@@ -198,7 +198,7 @@ Resources can be saved to files and loaded again very easily using the built-in 
    ```
 
 
-For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation.
+For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation.
 
 ## Custom Requests
 In most cases, interacting with Resource objects is enough, but sometimes you need to make your own custom requests to OneView. 
@@ -216,7 +216,7 @@ data = client.response_handler(response)
 
 This example is about as basic as it gets, but you can make any type of OneView request. 
 If a resource doesn't do what you need, this will allow you to do it. 
-Please refer to the documentation and [code](lib/oneview-sdk-ruby/rest.rb) for complete list of methods and information about how to use them.
+Please refer to the documentation and [code](lib/oneview-sdk/rest.rb) for complete list of methods and information about how to use them.
 
 
 ## CLI

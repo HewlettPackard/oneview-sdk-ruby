@@ -1,10 +1,13 @@
 require 'pry'
 require 'simplecov'
 
+client_files = %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
+resource_path = 'lib/oneview-sdk/resource'
+
 SimpleCov.profiles.define 'unit' do
   add_filter 'spec/'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
-  add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
+  add_group 'Client', client_files
+  add_group 'Resources', resource_path
   add_group 'CLI', 'cli.rb'
   minimum_coverage 90 # TODO: bump up as we increase coverage. Goal: 95%
   minimum_coverage_by_file 50 # TODO: bump up as we increase coverage. Goal: 70%
@@ -13,8 +16,8 @@ end
 SimpleCov.profiles.define 'integration' do
   add_filter 'spec/'
   add_filter 'cli.rb'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
-  add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
+  add_group 'Client', client_files
+  add_group 'Resources', resource_path
   minimum_coverage 50 # TODO: bump up as we increase coverage. Goal: 85%
   minimum_coverage_by_file 30 # TODO: bump up as we increase coverage. Goal: 70%
 end
@@ -22,16 +25,16 @@ end
 SimpleCov.profiles.define 'system' do
   add_filter 'spec/'
   add_filter 'cli.rb'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
-  add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
+  add_group 'Client', client_files
+  add_group 'Resources', resource_path
   minimum_coverage 50 # TODO: bump up as we increase coverage. Goal: 85%
   minimum_coverage_by_file 30 # TODO: bump up as we increase coverage. Goal: 70%
 end
 
 SimpleCov.profiles.define 'all' do
   add_filter 'spec/'
-  add_group 'Client', %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
-  add_group 'Resources', 'lib/oneview-sdk-ruby/resource'
+  add_group 'Client', client_files
+  add_group 'Resources', resource_path
   add_group 'CLI', 'cli.rb'
   minimum_coverage 10 # TODO: bump up as we increase coverage. Goal: 95%
   minimum_coverage_by_file 10 # TODO: bump up as we increase coverage. Goal: 90%
@@ -47,7 +50,7 @@ else # Run both
   SimpleCov.start 'all'
 end
 
-require 'oneview-sdk-ruby'
+require 'oneview-sdk'
 require_relative 'shared_context'
 require_relative 'support/fake_response'
 require_relative 'integration/sequence_and_naming'
