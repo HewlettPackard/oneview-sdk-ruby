@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-require 'oneview-sdk-ruby'
+require 'oneview-sdk'
 
 OneviewSDK::Cli::Runner.new(ARGV.dup).execute!

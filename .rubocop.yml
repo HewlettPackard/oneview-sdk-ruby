@@ -3,7 +3,7 @@
 Metrics/ClassLength:
   Max: 200
   Exclude:
-    - 'lib/oneview-sdk-ruby/cli.rb'
+    - 'lib/oneview-sdk/cli.rb'
 
 Metrics/LineLength:
   Max: 150
@@ -20,20 +20,20 @@ Style/IndentationWidth:
 Style/VariableName:
   EnforcedStyle: snake_case
   Exclude:
-    - 'lib/oneview-sdk-ruby/resource/*'
+    - 'lib/oneview-sdk/resource/*'
 
 Style/MethodName:
   Exclude:
-    - 'lib/oneview-sdk-ruby/resource/*'
+    - 'lib/oneview-sdk/resource/*'
 
 Style/FileName:
   Exclude:
-    - 'lib/oneview-sdk-ruby.rb'
-    - 'bin/oneview-sdk-ruby'
+    - 'lib/oneview-sdk.rb'
+    - 'bin/oneview-sdk'
 
 Style/AlignParameters:
   Exclude:
-    - 'lib/oneview-sdk-ruby/cli.rb'
+    - 'lib/oneview-sdk/cli.rb'
 
 
 Style/AccessorMethodName:
