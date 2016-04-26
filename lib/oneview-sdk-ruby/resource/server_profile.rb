@@ -35,20 +35,7 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
-      case @api_version
-      when 120
-        @data['type'] ||= 'ServerProfileV4'
-      when 200
-        @data['type'] ||= 'ServerProfileV5'
-      end
-    end
-
-    def validate_serverProfileTemplateUri(*)
-      fail "Templates only exist on api version >= 200. Resource version: #{@api_version}" if @api_version < 200
-    end
-
-    def validate_templateCompliance(*)
-      fail "Templates only exist on api version >= 200. Resource version: #{@api_version}" if @api_version < 200
+      @data['type'] ||= 'ServerProfileV5'
     end
 
     # Get available server hardware for this template
