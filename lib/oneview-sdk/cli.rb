@@ -273,6 +273,33 @@ module OneviewSDK
       end
     end
 
+    desc 'cert check|import|list URL', 'Check, import, or list OneView certs'
+    def cert(type, url = ENV['ONEVIEWSDK_URL'])
+      case type.downcase
+      when 'check'
+        fail_nice 'Must specify a url' unless url
+        puts "Checking certificate for '#{url}' ..."
+        if OneviewSDK::SSLHelper.check_cert(url)
+          puts 'Certificate is valid!'
+        else
+          fail_nice 'Certificate Validation Failed!'
+        end
+      when 'import'
+        fail_nice 'Must specify a url' unless url
+        puts "Importing certificate for '#{url}' into '#{OneviewSDK::SSLHelper::CERT_STORE}'..."
+        OneviewSDK::SSLHelper.install_cert(url)
+      when 'list'
+        if File.file?(OneviewSDK::SSLHelper::CERT_STORE)
+          puts File.read(OneviewSDK::SSLHelper::CERT_STORE)
+        else
+          puts 'No certs imported!'
+        end
+      else fail_nice "Invalid action '#{type}'. Valid actions are [check, import, list]"
+      end
+    rescue StandardError => e
+      fail_nice e.message
+    end
+
     private
 
     def fail_nice(msg = nil)

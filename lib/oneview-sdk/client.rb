@@ -1,6 +1,7 @@
 require 'logger'
 require_relative 'config_loader'
 require_relative 'rest'
+require_relative 'ssl_helper'
 
 module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
@@ -8,7 +9,7 @@ module OneviewSDK
     DEFAULT_API_VERSION = 200
 
     attr_reader :url, :user, :token, :password, :max_api_version
-    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :print_wait_dots
+    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots
 
     include Rest
 
@@ -48,6 +49,7 @@ module OneviewSDK
         end
       end
       @ssl_enabled = options[:ssl_enabled] unless options[:ssl_enabled].nil?
+      @cert_store = OneviewSDK::SSLHelper.load_trusted_certs if @ssl_enabled
       @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
       return if @token
       @logger.warn 'User option not set. Using default (Administrator)' unless options[:user] || ENV['ONEVIEWSDK_USER']

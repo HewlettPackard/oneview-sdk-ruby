@@ -28,7 +28,7 @@ client = OneviewSDK::Client.new(
   url: 'https://oneview.example.com',
   user: 'Administrator',              # This is the default
   password: 'secret123',
-  ssl_enabled: true,                  # This is the default
+  ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   api_version: 200,                   # Defaults to minimum of (200 and appliance API version)
@@ -45,6 +45,7 @@ You can also set the url and credentials or an authentication token using enviro
 ```bash
 export ONEVIEWSDK_URL='https://oneview.example.com'
 export ONEVIEWSDK_SSL_ENABLED=false
+# NOTE: Disabling SSL is strongly discouraged. Please see the CLI section for import instructions.
 
 # Credentials
 export ONEVIEWSDK_USER='Administrator'
@@ -71,8 +72,7 @@ Configuration files can also be used to define client configuration (json or yam
 {
   "url": "https://oneview.example.com",
   "user": "Administrator",
-  "password": "secret123",
-  "ssl_enabled": false
+  "password": "secret123"
 }
 ```
 
@@ -233,31 +233,31 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
 
  - List ServerProfiles:
  ```bash
- oneview-sdk-ruby list ServerProfiles
+ $ oneview-sdk-ruby list ServerProfiles
  # Or to show in yaml format (json is also supported):
- oneview-sdk-ruby list ServerProfiles -f yaml
+ $ oneview-sdk-ruby list ServerProfiles -f yaml
  ```
 
  - Show details for a specific resource:
  ```bash
- oneview-sdk-ruby show ServerProfile profile-1
+ $ oneview-sdk-ruby show ServerProfile profile-1
  # Or to show specific attributes only:
- oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
+ $ oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
  ```
 
  - Search by an attribute:
  ```bash
- oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
+ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
  # By default, it will just show a list of names of matching resources,
  #   but again, you can show only certain attributes by using the -a option
  # You can also chain keys together to search in nested hashes:
- oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
+ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
  ```
 
  - Create or delete resource by file:
  ```bash
- oneview-sdk-ruby create_from_file /my-server-profile.json
- oneview-sdk-ruby delete_from_file /my-server-profile.json
+ $ oneview-sdk-ruby create_from_file /my-server-profile.json
+ $ oneview-sdk-ruby delete_from_file /my-server-profile.json
  ```
 
  - Start an interactive console session with a OneView connection:
@@ -268,6 +268,22 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
  >
  ```
 
+ - Import a self-signed SSL certificate from your OneView instance:
+ 
+ Although you can disable ssl validation altogether for the client, this is strongly discouraged.
+ Instead, please import the certificate using the built-in cli cert command:
+ ```bash
+ # Check the certificate first:
+ $ oneview-sdk-ruby cert check https://oneview.example.com
+   Checking certificate for 'https://oneview.example.com' ...
+   ERROR: Certificate Validation Failed!
+ 
+ # Import the certificate:
+ $ oneview-sdk-ruby cert import https://oneview.example.com
+   Importing certificate for 'https://oneview.example.com' into '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'...
+   Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
+ ```
+ 
 ## Contributing & Feature Requests
 **Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it. 
 We're passionate about improving this project, and glad to accept help to make it better. 

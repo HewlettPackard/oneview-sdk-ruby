@@ -42,6 +42,13 @@ RSpec.describe OneviewSDK::Cli do
         expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1 -f)) }
           .to output(/Deleted Successfully!/).to_stdout_from_any_process
       end
+
+      it 'fails if deletion fails' do
+        allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_raise 'Failure'
+        expect(STDOUT).to receive(:puts).with(/Failed to delete/)
+        expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1 -f)) }
+          .to raise_error SystemExit
+      end
     end
 
     context 'when the resource does not exist' do

@@ -23,7 +23,10 @@ module OneviewSDK
       uri = URI.parse(URI.escape(@url + path))
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE unless @ssl_enabled
+      if @ssl_enabled
+        http.cert_store = @cert_store if @cert_store
+      else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
 
       request = build_request(type, uri, options, api_ver)
       response = http.request(request)
@@ -31,10 +34,12 @@ module OneviewSDK
       response
     rescue OpenSSL::SSL::SSLError => e
       msg = 'SSL verification failed for request. Please either:'
-      msg += "\n  1. Install the certificate into your cert store"
+      msg += "\n  1. Install the certificate into your system's cert store"
       msg += ". Using cert store: #{ENV['SSL_CERT_FILE']}" if ENV['SSL_CERT_FILE']
-      msg += "\n  2. Set the :ssl_enabled option to false for your client"
-      raise "#{e.message}\n\n#{msg}\n\n"
+      msg += "\n  2. Run oneview-sdk-ruby cert import #{@url}"
+      msg += "\n  3. Set the :ssl_enabled option to false for your client (NOT RECOMMENDED)"
+      @logger.error msg
+      raise e
     end
 
     # Make a restful GET request to OneView
