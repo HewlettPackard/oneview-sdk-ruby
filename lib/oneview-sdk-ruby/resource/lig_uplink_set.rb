@@ -19,6 +19,26 @@ module OneviewSDK
       @data['networkUris'] ||= []
     end
 
+    # @!group Validates
+
+    VALID_NETWORK_TYPES = %w(FibreChannel Ethernet).freeze
+    # Validate ethernetNetworkType request
+    # @param [String] value FibreChannel, Ethernet
+    def validate_networkType(value)
+      fail 'Invalid network type' unless VALID_NETWORK_TYPES.include?(value)
+      fail 'Attribute missing' if value == 'Ethernet' && !@data['ethernetNetworkType']
+      fail 'Attribute not supported' if value == 'FibreChannel' && @data['ethernetNetworkType']
+    end
+
+    VALID_ETHERNET_NETWORK_TYPES = %w(NotApplicable Tagged Tunnel Unknown Untagged).freeze
+    # Validate ethernetNetworkType request
+    # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged. Must exist if networkType is 'Ethernet', otherwise shouldn't.
+    def validate_ethernetNetworkType(value)
+      fail 'Invalid ethernetNetworkType' unless VALID_ETHERNET_NETWORK_TYPES.include?(value)
+    end
+
+    # @!endgroup
+
     # Add existing network to the network list.
     # Ethernet and FibreChannel networks are allowed.
     # @param [OneviewSDK::Resource] network resource to be added to the list
@@ -52,22 +72,6 @@ module OneviewSDK
       network_type = params.delete('networkType')
       params.each { |key, value| set(key.to_s, value) }
       set('networkType', network_type) if network_type
-    end
-
-    VALID_NETWORK_TYPES = %w(FibreChannel Ethernet).freeze
-    # Validate ethernetNetworkType request
-    # @param [String] value FibreChannel, Ethernet
-    def validate_networkType(value)
-      fail 'Invalid network type' unless VALID_NETWORK_TYPES.include?(value)
-      fail 'Attribute missing' if value == 'Ethernet' && !@data['ethernetNetworkType']
-      fail 'Attribute not supported' if value == 'FibreChannel' && @data['ethernetNetworkType']
-    end
-
-    VALID_ETHERNET_NETWORK_TYPES = %w(NotApplicable Tagged Tunnel Unknown Untagged).freeze
-    # Validate ethernetNetworkType request
-    # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged. Must exist if networkType is 'Ethernet', otherwise shouldn't.
-    def validate_ethernetNetworkType(value)
-      fail 'Invalid ethernetNetworkType' unless VALID_ETHERNET_NETWORK_TYPES.include?(value)
     end
 
     private
