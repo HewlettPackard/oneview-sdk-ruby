@@ -4,18 +4,9 @@ RSpec.describe OneviewSDK::StoragePool do
   include_context 'shared context'
 
   describe '#initialize' do
-    context 'OneView 1.2' do
-      it 'sets the defaults correctly' do
-        profile = OneviewSDK::StoragePool.new(@client_120)
-        expect(profile[:type]).to eq('StoragePool')
-      end
-    end
-
-    context 'OneView 2.0' do
-      it 'sets the defaults correctly' do
-        profile = OneviewSDK::StoragePool.new(@client)
-        expect(profile[:type]).to eq('StoragePoolV2')
-      end
+    it 'sets the defaults correctly' do
+      profile = OneviewSDK::StoragePool.new(@client)
+      expect(profile[:type]).to eq('StoragePoolV2')
     end
   end
 
@@ -61,7 +52,7 @@ RSpec.describe OneviewSDK::StoragePool do
     describe 'undefined methods' do
       it 'does not allow the update action' do
         storage_pool = OneviewSDK::StoragePool.new(@client)
-        expect { storage_pool.update }.to raise_error(/Method not available for this resource!/)
+        expect { storage_pool.update }.to raise_error(/The method #update is unavailable for this resource/)
       end
     end
   end

@@ -30,23 +30,10 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      case @api_version
-      when 120
-        @data['type'] ||= 'StoragePool'
-      when 200
-        @data['type'] ||= 'StoragePoolV2'
-      end
+      @data['type'] ||= 'StoragePoolV2'
     end
 
-    # Set storage system
-    # @param [StorageSystem] storage_system
-    def set_storage_system(storage_system)
-      set('storageSystemUri', storage_system['uri'])
-    end
-
-    def update
-      fail 'Method not available for this resource!'
-    end
+    # @!group Validates
 
     VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
     # Validate refreshState
@@ -61,5 +48,18 @@ module OneviewSDK
     def validate_status(value)
       fail 'Invalid status' unless VALID_STATUSES.include?(value)
     end
+
+    # @!endgroup
+
+    # Set storage system
+    # @param [StorageSystem] storage_system
+    def set_storage_system(storage_system)
+      set('storageSystemUri', storage_system['uri'])
+    end
+
+    def update
+      unavailable_method
+    end
+
   end
 end
