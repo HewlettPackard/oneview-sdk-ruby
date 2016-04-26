@@ -29,6 +29,18 @@ module OneviewSDK
       @data['type'] ||= 'LogicalEnclosure'
     end
 
+    # @!group Validates
+
+    VALID_FABRIC_TYPES = %w(DirectAttach FabricAttach).freeze
+    # Validate fabricType
+    # @param [String] value DirectAttach, FabricAttach
+    # @raise [RuntimeError] if value is not 'DirectAttach' or 'FabricAttach'
+    def validate_fabricType(value)
+      fail 'Invalid fabric type' unless VALID_FABRIC_TYPES.include?(value)
+    end
+
+    # @!endgroup
+
     # Reapplies the appliance's configuration on enclosures
     # @raise [RuntimeError] if the client is not set
     # @raise [RuntimeError] if the uri is not set
@@ -86,14 +98,6 @@ module OneviewSDK
       response = @client.rest_post("#{@data['uri']}/support-dumps", { 'body' => options }, @api_version)
       @client.wait_for(response.header['location'])
       self
-    end
-
-    VALID_FABRIC_TYPES = %w(DirectAttach FabricAttach).freeze
-    # Validate fabricType
-    # @param [String] value DirectAttach, FabricAttach
-    # @raise [RuntimeError] if value is not 'DirectAttach' or 'FabricAttach'
-    def validate_fabricType(value)
-      fail 'Invalid fabric type' unless VALID_FABRIC_TYPES.include?(value)
     end
 
   end
