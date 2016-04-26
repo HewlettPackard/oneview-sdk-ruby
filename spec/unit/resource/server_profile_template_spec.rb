@@ -4,17 +4,9 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
   include_context 'shared context'
 
   describe '#initialize' do
-    context 'OneView 1.2' do
-      it 'does not exist for OV < 200' do
-        expect { OneviewSDK::ServerProfileTemplate.new(@client_120) }.to raise_error(/Templates only exist on api version >= 200/)
-      end
-    end
-
-    context 'OneView 2.0' do
-      it 'sets the type correctly' do
-        template = OneviewSDK::ServerProfileTemplate.new(@client)
-        expect(template[:type]).to eq('ServerProfileTemplateV1')
-      end
+    it 'sets the type correctly' do
+      template = OneviewSDK::ServerProfileTemplate.new(@client)
+      expect(template[:type]).to eq('ServerProfileTemplateV1')
     end
   end
 

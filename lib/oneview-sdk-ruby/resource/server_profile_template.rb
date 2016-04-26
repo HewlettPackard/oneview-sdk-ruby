@@ -29,9 +29,6 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
-      if @api_version < 200 || client.max_api_version < 200
-        fail "Templates only exist on api version >= 200. Resource version: #{@api_version}"
-      end
       @data['type'] ||= 'ServerProfileTemplateV1'
     end
 
