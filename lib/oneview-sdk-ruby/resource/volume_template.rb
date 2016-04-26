@@ -33,11 +33,26 @@ module OneviewSDK
       super
       # Default values:
       @data['provisioning'] ||= {}
-      case @api_version
-      when 120 then @data['type'] ||= 'StorageVolumeTemplate'
-      when 200 then @data['type'] ||= 'StorageVolumeTemplateV3'
-      end
+      @data['type'] ||= 'StorageVolumeTemplateV3'
     end
+
+    # @!group Validates
+
+    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
+    # Validate refreshState
+    # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
+    def validate_refreshState(value)
+      fail 'Invalid refresh state' unless VALID_REFRESH_STATES.include?(value)
+    end
+
+    VALID_STATUSES = %w(OK Disabled Warning Critical Unknown).freeze
+    # Validate status
+    # @param [String] value OK, Disabled, Warning, Critical, Unknown
+    def validate_status(value)
+      fail 'Invalid status' unless VALID_STATUSES.include?(value)
+    end
+
+    # @!endgroup
 
     # Create the resource on OneView using the current data
     # Adds Accept-Language attribute in the Header equal to "en_US"
@@ -105,18 +120,5 @@ module OneviewSDK
       OneviewSDK::Resource.find_by(@client, attributes, BASE_URI + '/connectable-volume-templates')
     end
 
-    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
-    # Validate refreshState
-    # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
-    def validate_refreshState(value)
-      fail 'Invalid refresh state' unless VALID_REFRESH_STATES.include?(value)
-    end
-
-    VALID_STATUSES = %w(OK Disabled Warning Critical Unknown).freeze
-    # Validate status
-    # @param [String] value OK, Disabled, Warning, Critical, Unknown
-    def validate_status(value)
-      fail 'Invalid status' unless VALID_STATUSES.include?(value)
-    end
   end
 end
