@@ -85,14 +85,14 @@ RSpec.describe OneviewSDK::EnclosureGroup do
 
   describe '#script' do
     it 'requires a uri' do
-      expect { OneviewSDK::EnclosureGroup.new(@client).script }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::EnclosureGroup.new(@client).get_script }.to raise_error(/Please set uri/)
     end
 
     it 'gets uri/script' do
       item = OneviewSDK::EnclosureGroup.new(@client, uri: '/rest/fake')
       expect(@client).to receive(:rest_get).with('/rest/fake/script', item.api_version).and_return(FakeResponse.new('Blah'))
       expect(@client.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
-      expect(item.script).to eq('Blah')
+      expect(item.get_script).to eq('Blah')
     end
   end
 

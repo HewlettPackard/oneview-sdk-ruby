@@ -66,7 +66,7 @@ module OneviewSDK
 
     # Get the script executed by enclosures in this enclosure group
     # @return [String] script for this enclosure group
-    def script
+    def get_script
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/script', @api_version)
       @client.response_handler(response)
