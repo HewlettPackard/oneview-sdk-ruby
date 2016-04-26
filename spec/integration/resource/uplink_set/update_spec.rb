@@ -12,7 +12,7 @@ RSpec.describe OneviewSDK::UplinkSet, integration: true, type: UPDATE do
     it 'update portConfigInfos' do
       uplink = OneviewSDK::UplinkSet.new($client, name: UPLINK_SET_NAME)
       expect { uplink.retrieve! }.not_to raise_error
-      uplink.add_portConfig(
+      uplink.add_port_config(
         @interconnect[:uri],
         'Auto',
         [{ value: 1, type: 'Bay' }, { value: @enclosure[:uri], type: 'Enclosure' }, { value: 'X7', type: 'Port' }]

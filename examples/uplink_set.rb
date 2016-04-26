@@ -18,7 +18,7 @@ options = {
 }
 
 uplink = OneviewSDK::UplinkSet.new(@client, options)
-uplink.add_portConfig(
+uplink.add_port_config(
   '/rest/interconnects/f5b3790b-242f-4fed-8a6c-6ca2334e52aa',
   'Auto',
   [{ value: 1, type: 'Bay' }, { value: '/rest/enclosures/09SGH102X6J1', type: 'Enclosure' }, { value: 'X1', type: 'Port' }]
