@@ -1,5 +1,5 @@
-# oneview-sdk-ruby
-[![Gem Version](https://badge.fury.io/rb/oneview-sdk-ruby.svg)](https://badge.fury.io/rb/oneview-sdk-ruby)
+# oneview-sdk for Ruby
+[![Gem Version](https://badge.fury.io/rb/oneview-sdk.svg)](https://badge.fury.io/rb/oneview-sdk)
 
 
 The OneView SDK provides a Ruby library to easily interact with HPE OneView API. The Ruby SDK enables developers to easily build integration and scalable solutions with HPE OneView.
@@ -8,14 +8,14 @@ The OneView SDK provides a Ruby library to easily interact with HPE OneView API.
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk-ruby'
+  gem 'oneview-sdk'
   ```
 
   Then run `$ bundle install`
 - Or run the command:
 
   ```bash
-  $ gem install oneview-sdk-ruby
+  $ gem install oneview-sdk
   ```
 
 
@@ -23,25 +23,29 @@ The OneView SDK provides a Ruby library to easily interact with HPE OneView API.
 The client has a few configuration options, which you can pass in during creation:
 
 ```ruby
-require 'oneview-sdk-ruby'
+require 'oneview-sdk'
 client = OneviewSDK::Client.new(
   url: 'https://oneview.example.com',
   user: 'Administrator',              # This is the default
   password: 'secret123',
-  ssl_enabled: true,                  # This is the default
+  ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   api_version: 200,                   # Defaults to minimum of (200 and appliance API version)
   token: 'xxxx...'                    # Set EITHER this or the user & password
 )
 ```
-:warning: **WARNING**
-**Security risk: Check the file permissions because the password is stored in cleartext.**
 
-You can also set the credentials or an authentication token using environment variables. For bash:
+:lock: Tip: Check the file permissions because the password is stored in clear-text.
+
+**Environment Variables**
+
+You can also set the url and credentials or an authentication token using environment variables. For bash:
 
 ```bash
 export ONEVIEWSDK_URL='https://oneview.example.com'
+export ONEVIEWSDK_SSL_ENABLED=false
+# NOTE: Disabling SSL is strongly discouraged. Please see the CLI section for import instructions.
 
 # Credentials
 export ONEVIEWSDK_USER='Administrator'
@@ -49,21 +53,28 @@ export ONEVIEWSDK_PASSWORD='secret123'
 # or auth token
 export ONEVIEWSDK_TOKEN='xxxx...'
 ```
-:warning: **WARNING**
-**Security risk: Be sure nobody has access to your environment variables or terminal**
 
-Configuration files can also be used to define client data (json or yaml formats):
+:lock: Tip: Be sure nobody has access to your environment variables, as the password or token is stored in clear-text.
+
+Then you can leave out these options from your config, enabling you to just do:
+
+```ruby
+require 'oneview-sdk'
+client = OneviewSDK::Client.new
+```
+NOTE: Run `$ oneview-sdk-ruby env` to see a list of available environment variables and their current values.
+
+**Configuration Files**
+
+Configuration files can also be used to define client configuration (json or yaml formats). Here's an example json file:
 
 ```json
 {
   "url": "https://oneview.example.com",
   "user": "Administrator",
-  "password": "secret123",
-  "ssl_enabled": false
+  "password": "secret123"
 }
 ```
-:warning: **WARNING**
-**Security risk: Check the file permissions because the password is stored in cleartext.**
 
 and load via:
 
@@ -71,6 +82,8 @@ and load via:
 config = OneviewSDK::Config.load("full_file_path.json")
 client = OneviewSDK::Client.new(config)
 ```
+
+:lock: Tip: Check the file permissions because the password is stored in clear-text.
 
 ### Custom Logging
 The default logger is a standard logger to STDOUT, but if you want to specify your own, you can.  However, your logger must implement the following methods:
@@ -88,12 +101,14 @@ Each OneView resource is exposed for usage with REST-like functionality.
 
 For example, once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
-Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation for the complete list and usage details, but here are a few examples to get you started:
+Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation for the complete list and usage details, but here are a few examples to get you started:
 
 - **Create a resource**
 
   ```ruby
-  ethernet = OneviewSDK::EthernetNetwork.new(client, { name: 'TestVlan', vlanId:  1001, purpose:  'General' })
+  ethernet = OneviewSDK::EthernetNetwork.new(
+    client, { name: 'TestVlan', vlanId:  1001, purpose:  'General', smartLink: false, privateNetwork: false }
+  )
   ethernet.create # Tells OneView to create this resource
   ```
 
@@ -129,7 +144,9 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
 
   You can use the `==`  or `.eql?` method to compare resource equality, or `.like` to compare just a subset of attributes.
   ```ruby
-  ethernet2 = OneviewSDK::EthernetNetwork.new(client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General' })
+  ethernet2 = OneviewSDK::EthernetNetwork.new(
+    client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General', smartLink: false, privateNetwork: false }
+  )
   ethernet == ethernet2    # Returns false
   ethernet.eql?(ethernet2) # Returns false
 
@@ -159,6 +176,13 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) doc
   networks = client.get_all(:EthernetNetwork)
   ```
 
+- **Delete a resource**
+
+  ```ruby
+  ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
+  ethernet.delete # Tells OneView to delete this resource
+  ```
+
 ### Save/Load Resources with files
 Resources can be saved to files and loaded again very easily using the built-in `.to_file` & `.from_file` methods.
 
@@ -174,7 +198,7 @@ Resources can be saved to files and loaded again very easily using the built-in 
    ```
 
 
-For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk-ruby) documentation.
+For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation.
 
 ## Custom Requests
 In most cases, interacting with Resource objects is enough, but sometimes you need to make your own custom requests to OneView. 
@@ -192,44 +216,48 @@ data = client.response_handler(response)
 
 This example is about as basic as it gets, but you can make any type of OneView request. 
 If a resource doesn't do what you need, this will allow you to do it. 
-Please refer to the documentation and [code](lib/oneview-sdk-ruby/rest.rb) for complete list of methods and information about how to use them.
+Please refer to the documentation and [code](lib/oneview-sdk/rest.rb) for complete list of methods and information about how to use them.
 
 
 ## CLI
 This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
-To get started, run `$ ruby-sdk-ruby --help`.
+Note: In order to use this, you'll need to make sure your ruby `bin` directory is in your path. 
+Run `$ gem environment` to see where the executable paths are for your Ruby installation.
 
-To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ ruby-sdk-ruby env` to see the available environment variables.
+To get started, run `$ oneview-sdk-ruby --help`.
+
+To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ oneview-sdk-ruby env` to see the available environment variables.
 
 The CLI doesn't expose everything in the SDK, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here are a few examples:
 
  - List ServerProfiles:
  ```bash
- oneview-sdk-ruby list ServerProfiles
+ $ oneview-sdk-ruby list ServerProfiles
  # Or to show in yaml format (json is also supported):
- oneview-sdk-ruby list ServerProfiles -f yaml
+ $ oneview-sdk-ruby list ServerProfiles -f yaml
  ```
 
  - Show details for a specific resource:
  ```bash
- oneview-sdk-ruby show ServerProfile profile-1
+ $ oneview-sdk-ruby show ServerProfile profile-1
  # Or to show specific attributes only:
- oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
+ $ oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
  ```
 
  - Search by an attribute:
  ```bash
- oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
- # Again, you can show only certain attributes by using the -a option
+ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
+ # By default, it will just show a list of names of matching resources,
+ #   but again, you can show only certain attributes by using the -a option
  # You can also chain keys together to search in nested hashes:
- oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
+ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
  ```
 
  - Create or delete resource by file:
  ```bash
- oneview-sdk-ruby create_from_file /my-server-profile.json
- oneview-sdk-ruby delete_from_file /my-server-profile.json
+ $ oneview-sdk-ruby create_from_file /my-server-profile.json
+ $ oneview-sdk-ruby delete_from_file /my-server-profile.json
  ```
 
  - Start an interactive console session with a OneView connection:
@@ -240,6 +268,22 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
  >
  ```
 
+ - Import a self-signed SSL certificate from your OneView instance:
+ 
+ Although you can disable ssl validation altogether for the client, this is strongly discouraged.
+ Instead, please import the certificate using the built-in cli cert command:
+ ```bash
+ # Check the certificate first:
+ $ oneview-sdk-ruby cert check https://oneview.example.com
+   Checking certificate for 'https://oneview.example.com' ...
+   ERROR: Certificate Validation Failed!
+ 
+ # Import the certificate:
+ $ oneview-sdk-ruby cert import https://oneview.example.com
+   Importing certificate for 'https://oneview.example.com' into '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'...
+   Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
+ ```
+ 
 ## Contributing & Feature Requests
 **Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it. 
 We're passionate about improving this project, and glad to accept help to make it better. 

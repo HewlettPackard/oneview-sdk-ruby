@@ -1,4 +1,3 @@
-
 module OneviewSDK
   # Resource for server hardware types
   # Common Data Attributes:

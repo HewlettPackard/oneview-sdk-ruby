@@ -1,4 +1,3 @@
-
 module OneviewSDK
   # Resource for server hardware
   # Common Data Attributes:
@@ -87,8 +86,7 @@ module OneviewSDK
     end
 
     def save
-      @logger.error 'ServerHardware resources cannot be updated!'
-      false
+      fail 'Method not available for this resource!'
     end
 
     def update(*)

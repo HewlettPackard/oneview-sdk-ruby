@@ -27,7 +27,8 @@ RSpec.describe OneviewSDK::Client do
 
     it 'raises an error when the ssl validation fails' do
       allow_any_instance_of(Net::HTTP).to receive(:request).and_raise(OpenSSL::SSL::SSLError, 'Msg')
-      expect { @client.rest_api(:get, path) }.to raise_error(/Msg[\s\S]*SSL verification failed/)
+      expect(@client.logger).to receive(:error).with(/SSL verification failed/)
+      expect { @client.rest_api(:get, path) }.to raise_error(OpenSSL::SSL::SSLError)
     end
   end
 
@@ -103,6 +104,11 @@ RSpec.describe OneviewSDK::Client do
 
       expect(@client).to receive(:rest_get).with(data['uri']).and_return(FakeResponse.new(data))
       expect(@client.response_handler(initial_response)).to eq(data)
+    end
+
+    it 'allows you to set wait_for_task to false' do
+      response = FakeResponse.new(data, 202, 'location' => '/rest/task/fake')
+      expect(@client.response_handler(response, false)).to eq(data)
     end
 
     it 'returns an empty hash for 204 status' do

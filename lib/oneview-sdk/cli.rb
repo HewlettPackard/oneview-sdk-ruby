@@ -4,9 +4,9 @@ require 'yaml'
 require 'highline/import'
 
 module OneviewSDK
-  # cli for oneview-sdk-ruby
+  # cli for oneview-sdk
   class Cli < Thor
-    # Runner class to enable testing with Aruba
+    # Runner class to enable testing
     class Runner
       def initialize(argv, stdin = STDIN, stdout = STDOUT, stderr = STDERR, kernel = Kernel)
         @argv = argv
@@ -163,7 +163,7 @@ module OneviewSDK
       type: :hash,
       desc: 'Hash of key/value pairs to filter on',
       required: true
-    desc 'search TYPE NAME', 'Search for resource by key/value pair(s)'
+    desc 'search TYPE', 'Search for resource by key/value pair(s)'
     def search(type)
       resource_class = parse_type(type)
       client_setup
@@ -173,20 +173,21 @@ module OneviewSDK
         filter = parse_hash(options['filter'], true)
         matches = resource_class.find_by(@client, filter) unless filter == options['filter']
       end
-      data = []
-      matches.each { |m| data.push(m.data) }
       if options['attribute']
-        new_data = []
-        data.each do |d|
+        data = []
+        matches.each do |d|
           temp = {}
           options['attribute'].split(',').each do |attr|
             temp[attr] = d[attr]
           end
-          new_data.push temp
+          data.push temp
         end
-        data = new_data
+        output data
+      else # List names only by default
+        names = []
+        matches.each { |m| names.push(m['name']) }
+        output names
       end
-      output data
     end
 
     method_option :force,
@@ -270,6 +271,33 @@ module OneviewSDK
           fail_nice "Failed to create #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
         end
       end
+    end
+
+    desc 'cert check|import|list URL', 'Check, import, or list OneView certs'
+    def cert(type, url = ENV['ONEVIEWSDK_URL'])
+      case type.downcase
+      when 'check'
+        fail_nice 'Must specify a url' unless url
+        puts "Checking certificate for '#{url}' ..."
+        if OneviewSDK::SSLHelper.check_cert(url)
+          puts 'Certificate is valid!'
+        else
+          fail_nice 'Certificate Validation Failed!'
+        end
+      when 'import'
+        fail_nice 'Must specify a url' unless url
+        puts "Importing certificate for '#{url}' into '#{OneviewSDK::SSLHelper::CERT_STORE}'..."
+        OneviewSDK::SSLHelper.install_cert(url)
+      when 'list'
+        if File.file?(OneviewSDK::SSLHelper::CERT_STORE)
+          puts File.read(OneviewSDK::SSLHelper::CERT_STORE)
+        else
+          puts 'No certs imported!'
+        end
+      else fail_nice "Invalid action '#{type}'. Valid actions are [check, import, list]"
+      end
+    rescue StandardError => e
+      fail_nice e.message
     end
 
     private

@@ -7,15 +7,15 @@ module OneviewSDK
   # Contains all the methods for making API REST calls
   module Rest
     # Make a restful API request to OneView
-    # @param [Symbol] type the rest method/type Options are :get, :post, :delete, :patch and :put
-    # @param [String] path the path for the request. Usually starts with "/rest/"
-    # @param [Hash] options the options for the request
+    # @param [Symbol] type The rest method/type Options: [:get, :post, :delete, :patch, :put]
+    # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Hash] options The options for the request
     # @option options [String] :body Hash to be converted into json and set as the request body
     # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
-    # @option options [Integer] :X-API-Version (200) API version to use for this request.
-    # @option options [Integer] :auth Authentication token to use for this request. Defaults to client.token
-    # @return [Hash] if request is successful. Hash is of response body
-    # @return [NetHTTPResponse] if request is unsuccessful
+    # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
+    # @option options [Integer] :auth (client.token) Authentication token to use for this request
+    # @raise [RuntimeError] if SSL validation of OneView instance's certificate failed
+    # @return [NetHTTPResponse] Response object
     def rest_api(type, path, options = {}, api_ver = @api_version)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
       fail 'Must specify path' unless path
@@ -23,7 +23,10 @@ module OneviewSDK
       uri = URI.parse(URI.escape(@url + path))
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE unless @ssl_enabled
+      if @ssl_enabled
+        http.cert_store = @cert_store if @cert_store
+      else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
 
       request = build_request(type, uri, options, api_ver)
       response = http.request(request)
@@ -31,10 +34,12 @@ module OneviewSDK
       response
     rescue OpenSSL::SSL::SSLError => e
       msg = 'SSL verification failed for request. Please either:'
-      msg += "\n  1. Install the certificate into your cert store"
+      msg += "\n  1. Install the certificate into your system's cert store"
       msg += ". Using cert store: #{ENV['SSL_CERT_FILE']}" if ENV['SSL_CERT_FILE']
-      msg += "\n  2. Set the :ssl_enabled option to false for your client"
-      raise "#{e.message}\n\n#{msg}\n\n"
+      msg += "\n  2. Run oneview-sdk-ruby cert import #{@url}"
+      msg += "\n  3. Set the :ssl_enabled option to false for your client (NOT RECOMMENDED)"
+      @logger.error msg
+      raise e
     end
 
     # Make a restful GET request to OneView
@@ -75,13 +80,14 @@ module OneviewSDK
     RESPONSE_CODE_UNAUTHORIZED = 401
     RESPONSE_CODE_NOT_FOUND    = 404
 
-    # Handle the response for rest call.
+    # Handle the response from a rest call.
     #   If an asynchronous task was started, this waits for it to complete.
-    # @param [HTTPResponse] HTTP response
+    # @param [HTTPResponse] response HTTP response
+    # @param [Boolean] wait_on_task Wait on task (or just return task details)
     # @raise [RuntimeError] if the request failed
     # @raise [RuntimeError] if a task was returned that did not complete successfully
     # @return [Hash] The parsed JSON body
-    def response_handler(response)
+    def response_handler(response, wait_on_task = true)
       case response.code.to_i
       when RESPONSE_CODE_OK # Synchronous read/query
         begin
@@ -93,6 +99,7 @@ module OneviewSDK
       when RESPONSE_CODE_CREATED # Synchronous add
         return JSON.parse(response.body)
       when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete
+        return JSON.parse(response.body) unless wait_on_task
         @logger.debug "Waiting for task: response.header['location']"
         task = wait_for(response.header['location'])
         return true unless task['associatedResource'] && task['associatedResource']['resourceUri']

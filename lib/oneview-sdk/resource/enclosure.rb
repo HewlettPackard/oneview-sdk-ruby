@@ -133,7 +133,8 @@ module OneviewSDK
       set_all(new_data)
     end
 
-    # Enclosure script
+    # Get enclosure script content
+    # @return [String] Script content
     def script
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/script', @api_version)
