@@ -24,7 +24,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
     it 'adds a valid interconnect' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client, @type)
-        .and_return(uri: '/rest/fake')
+        .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
       expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][2]['permittedInterconnectTypeUri'])
         .to eq('/rest/fake')
