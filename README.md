@@ -97,7 +97,7 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ```
 
 ## Resources
-Each OneView resource is exposed for usage with REST-like functionality.
+Each OneView resource is exposed for usage with CRUD-like functionality.
 
 For example, once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
