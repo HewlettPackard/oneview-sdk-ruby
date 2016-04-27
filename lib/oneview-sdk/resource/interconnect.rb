@@ -37,7 +37,7 @@ module OneviewSDK
     # @param [String] name Interconnect type name
     # @return [Array] Interconnect type
     def self.get_type(client, name)
-      results = types(client)
+      results = get_types(client)
       results.find { |interconnect_type| interconnect_type['name'] == name }
     end
 

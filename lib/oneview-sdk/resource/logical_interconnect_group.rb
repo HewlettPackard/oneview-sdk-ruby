@@ -41,7 +41,7 @@ module OneviewSDK
       @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
         entry['logicalLocation']['locationEntries'].each do |location|
           if location['type'] == 'Bay' && location['relativeValue'] == bay
-            entry['permittedInterconnectTypeUri'] = OneviewSDK::Interconnect.get_type(@client, type)[:uri]
+            entry['permittedInterconnectTypeUri'] = OneviewSDK::Interconnect.get_type(@client, type)['uri']
           end
         end
       end
