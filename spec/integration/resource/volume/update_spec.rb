@@ -10,11 +10,11 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: UPDATE do
 
   describe '#snapshot' do
     it 'retrieve list' do
-      expect(@volume.snapshots).not_to be_empty
+      expect(@volume.get_snapshots).not_to be_empty
     end
 
     it 'retrieve by name' do
-      expect(@volume.snapshot(VOL_SNAPSHOT_NAME)).not_to be_empty
+      expect(@volume.get_snapshot(VOL_SNAPSHOT_NAME)).not_to be_empty
     end
   end
 end
