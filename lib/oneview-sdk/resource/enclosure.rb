@@ -76,11 +76,11 @@ module OneviewSDK
       %w(username password hostname).each { |k| @data.delete(k) } # These are no longer needed
       set_all(new_data)
       set_all(old_name)
-      save
+      update
       self
     end
 
-    # Override save operation because only the name and rackName can be updated (& it uses PATCH).
+    # Override update operation because only the name and rackName can be updated (& it uses PATCH).
     def update(attributes = {})
       set_all(attributes)
       ensure_client && ensure_uri
