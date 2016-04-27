@@ -81,7 +81,8 @@ module OneviewSDK
     end
 
     # Override save operation because only the name and rackName can be updated (& it uses PATCH).
-    def save
+    def update(attributes = {})
+      set_all(attributes)
       ensure_client && ensure_uri
       cur_state = self.class.find_by(@client, uri: @data['uri']).first
       unless cur_state[:name] == @data['name']

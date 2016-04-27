@@ -66,13 +66,6 @@ module OneviewSDK
       resource.create
     end
 
-    # Save current attribute data to OneView
-    # @param [Resource] resource the object to save
-    def save(resource)
-      resource.client = self
-      resource.save
-    end
-
     # Set attribute data and save to OneView
     # @param [Resource] resource the object to update
     def update(resource, attributes = {})

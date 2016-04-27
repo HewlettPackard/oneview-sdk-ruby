@@ -35,10 +35,6 @@ module OneviewSDK
       create
     end
 
-    def save
-      create
-    end
-
     # Sets the volume
     # @param [OneviewSDK::Volume] Volume
     def set_volume(volume)

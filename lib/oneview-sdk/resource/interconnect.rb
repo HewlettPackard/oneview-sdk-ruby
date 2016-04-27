@@ -15,10 +15,6 @@ module OneviewSDK
       fail 'Method not available for this resource!'
     end
 
-    def save
-      fail 'Method not available for this resource!'
-    end
-
     def delete
       fail 'Method not available for this resource!'
     end

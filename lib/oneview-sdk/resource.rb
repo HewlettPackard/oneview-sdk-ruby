@@ -158,17 +158,6 @@ module OneviewSDK
       self
     end
 
-    # Save current data to OneView
-    # @raise [RuntimeError] if the client or uri is not set
-    # @raise [RuntimeError] if the resource save fails
-    # @return [Resource] self
-    def save
-      ensure_client && ensure_uri
-      response = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
-      @client.response_handler(response)
-      self
-    end
-
     # Set data and save to OneView
     # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
     # @raise [RuntimeError] if the client or uri is not set
@@ -176,7 +165,10 @@ module OneviewSDK
     # @return [Resource] self
     def update(attributes = {})
       set_all(attributes)
-      save
+      ensure_client && ensure_uri
+      response = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
+      @client.response_handler(response)
+      self
     end
 
     # Delete resource from OneView

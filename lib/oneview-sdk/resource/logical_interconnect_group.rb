@@ -73,7 +73,8 @@ module OneviewSDK
 
     # Saves the current data attributes to the Logical Interconnect Group
     # @return Updated instance of the Logical Interconnect Group
-    def save
+    def update(attributes = {})
+      set_all(attributes)
       update_options = {
         'If-Match' =>  @data.delete('eTag'),
         'Body' => @data

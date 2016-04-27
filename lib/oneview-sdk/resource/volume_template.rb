@@ -65,7 +65,8 @@ module OneviewSDK
     # Update volume template from OneView
     # Adds Accept-Language attribute in the Header equal to "en_US"
     # @return [Resource] self
-    def save
+    def update(attributes = {})
+      set_all(attributes)
       ensure_client && ensure_uri
       response = @client.rest_put(@data['uri'], { 'Accept-Language' => 'en_US', 'body' => @data }, @api_version)
       @client.response_handler(response)
