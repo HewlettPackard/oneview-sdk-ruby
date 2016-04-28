@@ -71,10 +71,10 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Updates ethernet settings of the Logical Interconnect
-    # @note The attribute is defined inside the instance of the Logical Interconnect
+    # Saves the current data attributes to the Logical Interconnect Group
     # @return Updated instance of the Logical Interconnect Group
-    def update
+    def update(attributes = {})
+      set_all(attributes)
       update_options = {
         'If-Match' =>  @data.delete('eTag'),
         'Body' => @data

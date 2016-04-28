@@ -32,10 +32,6 @@ module OneviewSDK
       unavailable_method
     end
 
-    def save
-      unavailable_method
-    end
-
     # Sets the volume
     # @param [OneviewSDK::Volume] Volume
     def set_volume(volume)

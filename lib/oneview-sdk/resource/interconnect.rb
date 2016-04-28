@@ -16,10 +16,6 @@ module OneviewSDK
       unavailable_method
     end
 
-    def save
-      unavailable_method
-    end
-
     def delete
       unavailable_method
     end

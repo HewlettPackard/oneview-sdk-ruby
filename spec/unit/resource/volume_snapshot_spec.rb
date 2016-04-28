@@ -31,9 +31,6 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
       expect { @item.update }.to raise_error(/The method #update is unavailable for this resource/)
     end
 
-    it 'does not allow the save action' do
-      expect { @item.save }.to raise_error(/The method #save is unavailable for this resource/)
-    end
   end
 
   describe 'helpers' do

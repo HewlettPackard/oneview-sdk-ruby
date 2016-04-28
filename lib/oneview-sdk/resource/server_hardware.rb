@@ -85,12 +85,8 @@ module OneviewSDK
       self
     end
 
-    def save
-      fail 'Method not available for this resource!'
-    end
-
     def update(*)
-      save
+      fail 'Method not available for this resource!'
     end
 
     # Power on the server hardware

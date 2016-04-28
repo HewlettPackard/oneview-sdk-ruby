@@ -232,40 +232,31 @@ RSpec.describe OneviewSDK::Resource do
     end
   end
 
-  describe '#save' do
+  describe '#update' do
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client)
       res.client = nil
-      expect { res.save }.to raise_error(/Please set client attribute/)
+      expect { res.update }.to raise_error(/Please set client attribute/)
     end
 
     it 'requires the uri to be set' do
       res = OneviewSDK::Resource.new(@client)
-      expect { res.save }.to raise_error(/Please set uri attribute/)
+      expect { res.update }.to raise_error(/Please set uri attribute/)
     end
 
-    it 'uses the rest_put method to save the data' do
+    it 'uses the rest_put method to update the data' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       expect(@client).to receive(:rest_put).with(
         res['uri'], { 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
-      res.save
+      res.update
     end
 
-    it 'raises an error if the save fails' do
+    it 'raises an error if the update fails' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
       expect(@client).to receive(:rest_put).with(
         res['uri'], { 'body' => res.data }, res.api_version).and_return(fake_response)
-      expect { res.save }.to raise_error(/400 BAD REQUEST {"message":"Invalid"}/)
-    end
-  end
-
-  describe '#update' do
-    it 'sets the data then calls the save method' do
-      res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
-      expect(res).to receive(:save)
-      res.update(name: 'NewName')
-      expect(res['name']).to eq('NewName')
+      expect { res.update }.to raise_error(/400 BAD REQUEST {"message":"Invalid"}/)
     end
   end
 

@@ -29,7 +29,8 @@ module OneviewSDK
       unavailable_method
     end
 
-    def save
+    def update(attributes = {})
+      set_all(attributes)
       ensure_client && ensure_uri
       data = @data.select { |k, _v| %w(name description).include?(k) }
       data['description'] ||= ''

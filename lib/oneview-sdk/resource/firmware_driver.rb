@@ -40,9 +40,5 @@ module OneviewSDK
       create
     end
 
-    def save
-      create
-    end
-
   end
 end
