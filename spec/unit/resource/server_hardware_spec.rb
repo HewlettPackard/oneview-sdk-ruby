@@ -4,18 +4,9 @@ RSpec.describe OneviewSDK::ServerHardware do
   include_context 'shared context'
 
   describe '#initialize' do
-    context 'with OneView 1.2' do
-      it 'sets the defaults correctly' do
-        server_hardware = OneviewSDK::ServerHardware.new(@client_120)
-        expect(server_hardware[:type]).to eq('server-hardware-3')
-      end
-    end
-
-    context 'with OneView 2.0' do
-      it 'sets the defaults correctly' do
-        server_hardware = OneviewSDK::ServerHardware.new(@client)
-        expect(server_hardware[:type]).to eq('server-hardware-4')
-      end
+    it 'sets the defaults correctly' do
+      server_hardware = OneviewSDK::ServerHardware.new(@client)
+      expect(server_hardware[:type]).to eq('server-hardware-4')
     end
   end
 

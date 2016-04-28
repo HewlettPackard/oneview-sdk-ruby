@@ -25,7 +25,7 @@ RSpec.describe OneviewSDK::Enclosure, integration: true, type: CREATE, sequence:
   describe '#environmentalConfiguration' do
     it 'Gets the script' do
       item = OneviewSDK::Enclosure.find_by($client, name: ENCL_NAME).first
-      expect { item.environmentalConfiguration }.not_to raise_error
+      expect { item.environmental_configuration }.not_to raise_error
     end
   end
 

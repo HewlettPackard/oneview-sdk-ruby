@@ -16,6 +16,22 @@ RSpec.describe OneviewSDK::EthernetNetwork, integration: true, type: CREATE, seq
       expect(item[:smartLink]).to eq(false)
       expect(item[:privateNetwork]).to eq(false)
     end
+
+    it 'bulk create ethernet resources' do
+      bulk_options = {
+        vlanIdRange: BULK_ETH_NET_RANGE,
+        purpose: 'General',
+        namePrefix: BULK_ETH_NET_PREFIX,
+        smartLink: false,
+        privateNetwork: false,
+        bandwidth: {
+          maximumBandwidth: 10_000,
+          typicalBandwidth: 2_000
+        }
+      }
+      bulk_networks = OneviewSDK::EthernetNetwork.bulk_create($client, bulk_options)
+      expect(bulk_networks.length).to eq(5)
+    end
   end
 
   describe '#retrieve!' do

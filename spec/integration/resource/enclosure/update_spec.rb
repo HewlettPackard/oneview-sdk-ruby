@@ -24,7 +24,7 @@ RSpec.describe OneviewSDK::Enclosure, integration: true, type: UPDATE do
 
   describe '#refreshState' do
     it 'returns all resources when the hash is empty' do
-      expect { @item.refreshState('RefreshPending') }.not_to raise_error
+      expect { @item.set_refresh_state('RefreshPending') }.not_to raise_error
     end
   end
 end

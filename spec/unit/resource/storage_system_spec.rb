@@ -4,18 +4,9 @@ RSpec.describe OneviewSDK::StorageSystem do
   include_context 'shared context'
 
   describe '#initialize' do
-    context 'OneView 1.2' do
-      it 'sets the defaults correctly' do
-        item = OneviewSDK::StorageSystem.new(@client_120)
-        expect(item[:type]).to eq('StorageSystemV2')
-      end
-    end
-
-    context 'OneView 2.0' do
-      it 'sets the defaults correctly' do
-        item = OneviewSDK::StorageSystem.new(@client)
-        expect(item[:type]).to eq('StorageSystemV3')
-      end
+    it 'sets the defaults correctly' do
+      item = OneviewSDK::StorageSystem.new(@client)
+      expect(item[:type]).to eq('StorageSystemV3')
     end
   end
 
@@ -43,6 +34,19 @@ RSpec.describe OneviewSDK::StorageSystem do
       expect(OneviewSDK::Resource).to receive(:find_by).with(@client, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
         .and_return([item])
       expect(item.retrieve!).to eq(true)
+    end
+  end
+
+  describe '#get_managed_ports' do
+    it 'No port given' do
+      item = OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/managedPorts').and_return(FakeResponse.new({}))
+      item.get_managed_ports
+    end
+    it 'With port given' do
+      item = OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/managedPorts/100').and_return(FakeResponse.new({}))
+      item.get_managed_ports(100)
     end
   end
 end

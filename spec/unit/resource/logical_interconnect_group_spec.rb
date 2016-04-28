@@ -23,17 +23,17 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     end
 
     it 'adds a valid interconnect' do
-      expect(OneviewSDK::InterconnectType).to receive(:find_by).with(@client, name: @type)
-        .and_return([OneviewSDK::Resource.new(@client, uri: '/rest/fake')])
+      expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client, @type)
+        .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
       expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][2]['permittedInterconnectTypeUri'])
         .to eq('/rest/fake')
     end
 
     it 'raises an error if the interconnect is not found' do
-      expect(OneviewSDK::InterconnectType).to receive(:find_by).with(@client, name: @type)
+      expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client, @type)
         .and_return([])
-      expect(OneviewSDK::InterconnectType).to receive(:get_all).and_return([{ 'name' => '1' }, { 'name' => '2' }])
+      expect(OneviewSDK::Interconnect).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.add_interconnect(3, @type) }.to raise_error(/not found!/)
     end
   end

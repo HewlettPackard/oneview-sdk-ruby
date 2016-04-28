@@ -38,6 +38,8 @@ module OneviewSDK
       @data['type'] ||= 'uplink-setV3'
     end
 
+    # @!group Validates
+
     VALID_ETHERNET_NETWORK_TYPES = %w(NotApplicable Tagged Tunnel Unknown Untagged).freeze
     # Validate ethernetNetworkType
     # @param [String] value NotApplicable, Tagged, Tunnel, Unknown, Untagged
@@ -88,11 +90,13 @@ module OneviewSDK
       fail 'Invalid status' unless VALID_STATUSES.include?(value)
     end
 
+    # @!endgroup
+
     # Add portConfigInfos to the array
     # @param [String] portUri
     # @param [String] desiredSpeed
     # @param [Hash] locationEntries
-    def add_portConfig(portUri, speed, locationEntries)
+    def add_port_config(portUri, speed, locationEntries)
       entry = {
         'portUri' => portUri,
         'desiredSpeed' => speed,

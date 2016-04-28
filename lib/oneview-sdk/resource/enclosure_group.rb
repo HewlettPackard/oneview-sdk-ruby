@@ -28,66 +28,18 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      case @api_version
-      when 120
-        @data['type'] ||= 'EnclosureGroupV2'
-      when 200
-        @data['type'] ||= 'EnclosureGroupV200'
-      end
+      @data['type'] ||= 'EnclosureGroupV200'
       @data['interconnectBayMappingCount'] ||= 8
       create_interconnect_bay_mapping unless @data['interconnectBayMappings']
     end
 
-    # Get the script executed by enclosures in this enclosure group
-    # @return [String] script for this enclosure group
-    def script
-      ensure_client && ensure_uri
-      response = @client.rest_get(@data['uri'] + '/script', @api_version)
-      @client.response_handler(response)
-    end
-
-    # Change the script executed by enclosures in this enclosure group
-    # @param [String] body script to be executed
-    # @return true if set successfully
-    def set_script(body)
-      ensure_client && ensure_uri
-      response = @client.rest_put(@data['uri'] + '/script', { 'body' => body }, @api_version)
-      @client.response_handler(response)
-      true
-    end
-
-    def add_logical_interconnect_group(lig)
-      lig.retrieve! unless lig['uri']
-      lig['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
-        entry['logicalLocation']['locationEntries'].each do |location|
-          add_lig_to_bay(location['relativeValue'], lig['uri']) if location['type'] == 'Bay' && entry['permittedInterconnectTypeUri']
-        end
-      end
-    end
-
-    def add_lig_to_bay(bay, url)
-      @data['interconnectBayMappings'].each do |location|
-        return location['logicalInterconnectGroupUri'] = url if location['interconnectBay'] == bay
-      end
-    end
-
-    def create_interconnect_bay_mapping
-      @data['interconnectBayMappings'] = []
-      1.upto(@data['interconnectBayMappingCount']) do |bay_number|
-        entry = {
-          'interconnectBay' => bay_number,
-          'logicalInterconnectGroupUri' => nil
-        }
-        @data['interconnectBayMappings'] << entry
-      end
-    end
+    # @!group Validates
 
     VALID_INTERCONNECT_BAY_MAPPING_COUNTS = (1..8).freeze
     def validate_interconnectBayMappingCount(value)
       fail 'Interconnect Bay Mapping Count out of range 1..8' unless VALID_INTERCONNECT_BAY_MAPPING_COUNTS.include?(value)
     end
 
-    # This should be only validated if the Enclosure is not a C700
     VALID_IP_ADDRESSING_MODES = %w(DHCP External IpPool).freeze
     def validate_ipAddressingMode(value)
       return if !@data['enclosureTypeUri'] || /c7000/ =~ @data['enclosureTypeUri']
@@ -108,6 +60,60 @@ module OneviewSDK
     VALID_STACKING_MODES = %w(Enclosure MultiEnclosure None SwitchPairs).freeze
     def validate_stackingMode(value)
       fail 'Invalid stackingMode' unless VALID_STACKING_MODES.include?(value)
+    end
+
+    # @!endgroup
+
+    # Get the script executed by enclosures in this enclosure group
+    # @return [String] script for this enclosure group
+    def get_script
+      ensure_client && ensure_uri
+      response = @client.rest_get(@data['uri'] + '/script', @api_version)
+      @client.response_handler(response)
+    end
+
+    # Change the script executed by enclosures in this enclosure group
+    # @param [String] body script to be executed
+    # @return true if set successfully
+    def set_script(body)
+      ensure_client && ensure_uri
+      response = @client.rest_put(@data['uri'] + '/script', { 'body' => body }, @api_version)
+      @client.response_handler(response)
+      true
+    end
+
+    # Add logical interconnect group
+    # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
+    def add_logical_interconnect_group(lig)
+      lig.retrieve! unless lig['uri']
+      lig['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
+        entry['logicalLocation']['locationEntries'].each do |location|
+          add_lig_to_bay(location['relativeValue'], lig) if location['type'] == 'Bay' && entry['permittedInterconnectTypeUri']
+        end
+      end
+    end
+
+    # Create interconnect bay mapping
+    def create_interconnect_bay_mapping
+      @data['interconnectBayMappings'] = []
+      1.upto(@data['interconnectBayMappingCount']) do |bay_number|
+        entry = {
+          'interconnectBay' => bay_number,
+          'logicalInterconnectGroupUri' => nil
+        }
+        @data['interconnectBayMappings'] << entry
+      end
+    end
+
+    private
+
+    # Add logical interconnect group to bay
+    # @param [Integer] bay Bay number
+    # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
+    def add_lig_to_bay(bay, lig)
+      @data['interconnectBayMappings'].each do |location|
+        return location['logicalInterconnectGroupUri'] = lig['uri'] if location['interconnectBay'] == bay
+      end
     end
 
   end

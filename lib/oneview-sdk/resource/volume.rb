@@ -17,6 +17,17 @@ module OneviewSDK
   class Volume < Resource
     BASE_URI = '/rest/storage-volumes'.freeze
 
+    # @!group Validates
+
+    VALID_PROVISION_TYPES = %w(Thin Full).freeze
+    # Validate the type of provisioning
+    # @param [String] Must be Thin or Full
+    def validate_provisionType(value)
+      fail 'Invalid provision type' unless VALID_PROVISION_TYPES.include?(value)
+    end
+
+    # @!endgroup
+
     # It's possible to create the volume in 6 different ways:
     # 1) Common = Storage System + Storage Pool
     # 2) Template = Storage Volume Template
@@ -112,7 +123,7 @@ module OneviewSDK
     # @param [String] name snapshot name
     # @return [true] if snapshot was created successfully
     def delete_snapshot(name)
-      result = snapshot(name)
+      result = get_snapshot(name)
       response = @client.rest_api(:delete, result['uri'], {}, @api_version)
       @client.response_handler(response)
       true
@@ -121,8 +132,8 @@ module OneviewSDK
     # Retrieve snapshot by name
     # @param [String] name
     # @param [Hash] snapshot data
-    def snapshot(name)
-      results = snapshots
+    def get_snapshot(name)
+      results = get_snapshots
       results.each do |snapshot|
         return snapshot if snapshot['name'] == name
       end
@@ -130,7 +141,7 @@ module OneviewSDK
 
     # Get snapshots of this volume
     # @return [Array] Array of snapshots
-    def snapshots
+    def get_snapshots
       ensure_uri && ensure_client
       results = []
       uri = "#{@data['uri']}/snapshots"
@@ -156,7 +167,7 @@ module OneviewSDK
     # Get all the attachable volumes managed by the appliance
     # @param [Client] client The client object for the appliance
     # @return [Array<OneviewSDK::Volume>] Array of volumes
-    def self.attachable_volumes(client)
+    def self.get_attachable_volumes(client)
       results = []
       uri = "#{BASE_URI}/attachable-volumes"
       loop do
@@ -171,25 +182,18 @@ module OneviewSDK
     end
 
     # Gets the list of extra managed storage volume paths
-    def self.repair(client, resource = nil, type = nil)
-      uri = BASE_URI + '/repair?alertFixType=ExtraManagedStorageVolumePaths'
-      if resource && type
-        assure_uri(resource)
-        response = client.rest_post(uri, 'body' => { resourceUri: resource['uri'], type: type })
-      else
-        response = client.rest_get(uri)
-      end
+    # @param [OneviewSDK::Client] client
+    # @return response
+    def self.get_extra_managed_volume_paths(client)
+      response = client.rest_get(BASE_URI + '/repair?alertFixType=ExtraManagedStorageVolumePaths')
       client.response_handler(response)
     end
 
-
-    # Validation methods:
-
-    VALID_PROVISION_TYPES = %w(Thin Full).freeze
-    # Validate the type of provisioning
-    # @param [String] Must be Thin or Full
-    def validate_provisionType(value)
-      fail 'Invalid provision type' unless VALID_PROVISION_TYPES.include?(value)
+    # Removes extra presentation from volume
+    # @return response
+    def repair
+      response = client.rest_post(BASE_URI + '/repair', 'body' => { resourceUri: @data['uri'], type: 'ExtraManagedStorageVolumePaths' })
+      client.response_handler(response)
     end
 
     private

@@ -54,13 +54,22 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
-      case @api_version
-      when 120
-        @data['type'] ||= 'server-hardware-3'
-      when 200
-        @data['type'] ||= 'server-hardware-4'
-      end
+      @data['type'] ||= 'server-hardware-4'
     end
+
+    # @!group Validates
+
+    VALID_LICENSING_INTENTS = ['OneView', 'OneViewNoiLO', 'OneViewStandard', nil].freeze
+    def validate_licensingIntent(value)
+      fail 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value)
+    end
+
+    VALID_CONFIGURATION_STATES = ['Managed', 'Monitored', nil].freeze
+    def validate_configurationState(value)
+      fail 'Invalid configurationState' unless VALID_CONFIGURATION_STATES.include?(value)
+    end
+
+    # @!endgroup
 
     def create
       ensure_client
@@ -92,16 +101,6 @@ module OneviewSDK
     # @return [Boolean] Whether or not server was powered off
     def power_off(force = false)
       set_power_state('off', force)
-    end
-
-    VALID_LICENSING_INTENTS = ['OneView', 'OneViewNoiLO', 'OneViewStandard', nil].freeze
-    def validate_licensingIntent(value)
-      fail 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value)
-    end
-
-    VALID_CONFIGURATION_STATES = ['Managed', 'Monitored', nil].freeze
-    def validate_configurationState(value)
-      fail 'Invalid configurationState' unless VALID_CONFIGURATION_STATES.include?(value)
     end
 
     private

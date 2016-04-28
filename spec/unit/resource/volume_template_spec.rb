@@ -26,18 +26,9 @@ RSpec.describe OneviewSDK::VolumeTemplate do
 
 
   describe '#initialize' do
-    context 'OneView 1.2' do
-      it 'sets the defaults correctly' do
-        profile = OneviewSDK::VolumeTemplate.new(@client_120)
-        expect(profile[:type]).to eq('StorageVolumeTemplate')
-      end
-    end
-
-    context 'OneView 2.0' do
-      it 'sets the defaults correctly' do
-        profile = OneviewSDK::VolumeTemplate.new(@client)
-        expect(profile[:type]).to eq('StorageVolumeTemplateV3')
-      end
+    it 'sets the defaults correctly' do
+      profile = OneviewSDK::VolumeTemplate.new(@client)
+      expect(profile[:type]).to eq('StorageVolumeTemplateV3')
     end
   end
 

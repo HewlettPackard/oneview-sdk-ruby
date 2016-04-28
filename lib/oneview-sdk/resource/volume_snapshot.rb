@@ -21,18 +21,15 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
-      if @api_version < 200 || client.max_api_version < 200
-        fail "Snapshots only exist on api version >= 200. Resource version: #{@api_version}"
-      end
       @data['type'] ||= 'Snapshot'
     end
 
     def create
-      fail 'Method not available for this resource!'
+      unavailable_method
     end
 
     def update
-      create
+      unavailable_method
     end
 
     # Sets the volume

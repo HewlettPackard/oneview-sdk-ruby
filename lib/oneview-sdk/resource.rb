@@ -268,6 +268,11 @@ module OneviewSDK
       true
     end
 
+    # Fail for methods that are not available for one resource
+    def unavailable_method
+      fail "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
+    end
+
     private
 
     # Recursive helper method for like?

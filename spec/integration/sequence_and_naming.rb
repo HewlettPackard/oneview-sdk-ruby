@@ -9,6 +9,7 @@ DELETE = 3
 
 # BulkEthernetNetwork
 BULK_ETH_NET_PREFIX = 'BulkEthernetNetwork'.freeze
+BULK_ETH_NET_RANGE = '1-5'.freeze
 
 # EthernetNetwork
 ETH_NET_NAME = 'EthernetNetwork_1'.freeze

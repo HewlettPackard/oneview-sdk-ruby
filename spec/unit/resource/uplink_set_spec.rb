@@ -122,10 +122,10 @@ RSpec.describe OneviewSDK::UplinkSet do
     end
   end
 
-  describe '#add_portConfig' do
+  describe '#add_port_config' do
     it 'updates the portConfigInfos value' do
       item = OneviewSDK::UplinkSet.new(@client)
-      item.add_portConfig('/rest/fake', 1000, [{ 'value' => '1', 'type' => 'Bay' }, { 'value' => '/rest/fake2', 'type' => 'Enclosure' }])
+      item.add_port_config('/rest/fake', 1000, [{ 'value' => '1', 'type' => 'Bay' }, { 'value' => '/rest/fake2', 'type' => 'Enclosure' }])
       expect(item['portConfigInfos'].size).to eq(1)
       expect(item['portConfigInfos'].first['portUri']).to eq('/rest/fake')
       expect(item['portConfigInfos'].first['desiredSpeed']).to eq(1000)

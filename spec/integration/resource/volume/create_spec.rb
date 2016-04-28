@@ -136,7 +136,7 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
       )
 
       volume.create_snapshot(VOL_SNAPSHOT_NAME)
-      snap = volume.snapshot(VOL_SNAPSHOT_NAME)
+      snap = volume.get_snapshot(VOL_SNAPSHOT_NAME)
 
       options = {
         type: 'AddStorageVolumeV3',
@@ -171,7 +171,7 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
       }
 
       volume.create_snapshot(snapshot_data)
-      snap = volume.snapshot(VOL_SNAPSHOT2_NAME)
+      snap = volume.get_snapshot(VOL_SNAPSHOT2_NAME)
 
       options = {
         type: 'AddStorageVolumeV3',

@@ -52,3 +52,28 @@ end
 # Delete this network
 ethernet2.delete
 puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
+
+
+# Bulk create ethernet networks
+options = {
+  vlanIdRange: '26-28',
+  purpose: 'General',
+  namePrefix: 'OneViewSDK_Bulk_Network',
+  smartLink: false,
+  privateNetwork: false,
+  bandwidth: {
+    maximumBandwidth: 10_000,
+    typicalBandwidth: 2000
+  }
+}
+
+list = OneviewSDK::EthernetNetwork.bulk_create(@client, options).each { |network| puts network['uri'] }
+
+puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully."
+
+list.sort_by! { |e| e['name'] }
+list.each { |e| puts "  #{e['name']}" }
+
+# Clean up
+list.map(&:delete)
+puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"

@@ -24,7 +24,7 @@ RSpec.describe OneviewSDK::StorageSystem, integration: true, type: CREATE, seque
 
   describe '#host-types' do
     it 'List Host Types' do
-      expect { OneviewSDK::StorageSystem.host_types($client) }.not_to raise_error
+      expect { OneviewSDK::StorageSystem.get_host_types($client) }.not_to raise_error
     end
   end
 
@@ -32,15 +32,15 @@ RSpec.describe OneviewSDK::StorageSystem, integration: true, type: CREATE, seque
     it 'List Storage Pools' do
       storage = OneviewSDK::StorageSystem.new($client, credentials: { ip_hostname: storage_system_data[:credentials][:ip_hostname] })
       storage.retrieve!
-      expect { storage.storage_pools }.not_to raise_error
+      expect { storage.get_storage_pools }.not_to raise_error
     end
   end
 
-  describe '#managedPorts' do
+  describe '#get_managed_ports' do
     it 'lists all the ports' do
       storage = OneviewSDK::StorageSystem.new($client, credentials: { ip_hostname: storage_system_data[:credentials][:ip_hostname] })
       storage.retrieve!
-      expect { storage.managedPorts }.not_to raise_error
+      expect { storage.get_managed_ports }.not_to raise_error
     end
   end
 end

@@ -26,12 +26,16 @@ module OneviewSDK
       @data['type'] ||= 'fcoe-network'
     end
 
+    # @!group Validates
+
     VALID_VLAN_IDS = (1..4094).freeze
     # Validate vlanId
     # @param [Fixnum] value 1..4094
     def validate_vlanId(value)
       fail 'vlanId out of range 1..4094' unless VALID_VLAN_IDS.include?(value)
     end
+
+    # @!endgroup
 
   end
 end

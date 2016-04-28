@@ -33,12 +33,7 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      case @api_version
-      when 120
-        @data['type'] ||= 'StorageSystemV2'
-      when 200
-        @data['type'] ||= 'StorageSystemV3'
-      end
+      @data['type'] ||= 'StorageSystemV3'
     end
 
     def create
@@ -68,13 +63,13 @@ module OneviewSDK
     # Get host types for storage system resource
     # @param [Client] client client handle REST calls to OV instance
     # @return [String] response body
-    def self.host_types(client)
+    def self.get_host_types(client)
       response = client.rest_get(BASE_URI + '/host-types')
       response.body
     end
 
     # List of storage pools
-    def storage_pools
+    def get_storage_pools
       response = @client.rest_get(@data['uri'] + '/storage-pools')
       response.body
     end
@@ -82,11 +77,11 @@ module OneviewSDK
     # List of all managed target ports for the specified storage system
     # or only the one specified
     # @param [String] port Target port
-    def managedPorts(port = nil)
+    def get_managed_ports(port = nil)
       response = if port.nil?
-                   @client.rest_get(@data['uri'] + '/managedPorts')
+                   @client.rest_get("#{@data['uri']}/managedPorts")
                  else
-                   @client.rest_get(@data['uri'] + 'managedPorts/' + port)
+                   @client.rest_get("#{@data['uri']}/managedPorts/#{port}")
                  end
       response.body
     end

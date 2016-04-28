@@ -194,7 +194,7 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
       name: ResourceNames.uplink_set[0]
     }
     uplink = OneviewSDK::UplinkSet.new($client, options)
-    uplink.add_portConfig(
+    uplink.add_port_config(
       interconnect['uri'],
       'Auto',
       [{ value: 1, type: 'Bay' }, { value: enclosure['uri'], type: 'Enclosure' }, { value: 'X3', type: 'Port' }]
@@ -224,7 +224,7 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
       name: ResourceNames.uplink_set[1]
     }
     uplink = OneviewSDK::UplinkSet.new($client, options)
-    uplink.add_portConfig(
+    uplink.add_port_config(
       interconnect['uri'],
       'Auto',
       [{ value: 1, type: 'Bay' }, { value: enclosure['uri'], type: 'Enclosure' }, { value: 'X4', type: 'Port' }]

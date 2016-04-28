@@ -34,12 +34,7 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
-      case @api_version
-      when 120
-        @data['type'] ||= 'ServerProfileV4'
-      when 200
-        @data['type'] ||= 'ServerProfileV5'
-      end
+      @data['type'] ||= 'ServerProfileV5'
     end
 
     # Get available server hardware for this template

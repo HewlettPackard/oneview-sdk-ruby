@@ -22,16 +22,11 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
-      case @api_version
-      when 120
-        @data['type'] ||= 'server-hardware-type-3'
-      when 200
-        @data['type'] ||= 'server-hardware-type-4'
-      end
+      @data['type'] ||= 'server-hardware-type-4'
     end
 
     def create
-      fail 'Method not available for this resource!'
+      unavailable_method
     end
 
     def update(attributes = {})

@@ -12,17 +12,9 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
   end
 
   describe '#initialize' do
-    context 'OneView 1.2' do
-      it 'does not exist for OV < 200' do
-        expect { OneviewSDK::VolumeSnapshot.new(@client_120) }.to raise_error(/only exist on api version >= 200/)
-      end
-    end
-
-    context 'OneView 2.0' do
-      it 'sets the type correctly' do
-        template = OneviewSDK::VolumeSnapshot.new(@client)
-        expect(template[:type]).to eq('Snapshot')
-      end
+    it 'sets the type correctly' do
+      template = OneviewSDK::VolumeSnapshot.new(@client)
+      expect(template[:type]).to eq('Snapshot')
     end
   end
 
@@ -32,12 +24,13 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
     end
 
     it 'does not allow the create action' do
-      expect { @item.create }.to raise_error(/not available for this resource/)
+      expect { @item.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
 
     it 'does not allow the update action' do
-      expect { @item.update }.to raise_error(/not available for this resource/)
+      expect { @item.update }.to raise_error(/The method #update is unavailable for this resource/)
     end
+
   end
 
   describe 'helpers' do

@@ -54,13 +54,22 @@ module OneviewSDK
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
-      case @api_version
-      when 120
-        @data['type'] ||= 'EnclosureV2'
-      when 200
-        @data['type'] ||= 'EnclosureV200'
-      end
+      @data['type'] ||= 'EnclosureV200'
     end
+
+    # @!group Validates
+
+    VALID_LICENSING_INTENTS = %w(NotApplicable OneView OneViewNoiLO OneViewStandard).freeze
+    def validate_licensingIntent(value)
+      fail 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value) || value.nil?
+    end
+
+    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
+    def validate_refreshState(value)
+      fail 'Invalid refreshState' unless VALID_REFRESH_STATES.include?(value)
+    end
+
+    # @!endgroup
 
     # Claim/configure the enclosure and its components to the appliance
     def create
@@ -106,14 +115,14 @@ module OneviewSDK
       set_all(new_data)
     end
 
-    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
+
     # Refresh enclosure along with all of its components
     # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     # @param [Hash] options  Optional force fields for refreshing the enclosure
-    def refreshState(state, options = {})
+    def set_refresh_state(state, options = {})
       ensure_client && ensure_uri
       s = state.to_s rescue state
-      fail 'Invalid refreshState' unless VALID_REFRESH_STATES.include?(s)
+      validate_refreshState(s) # Validate refreshState
       requestBody = {
         'body' => {
           refreshState: s,
@@ -134,7 +143,7 @@ module OneviewSDK
     end
 
     # Get settings that describe the environmental configuration
-    def environmentalConfiguration
+    def environmental_configuration
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
       @client.response_handler(response)
@@ -173,7 +182,7 @@ module OneviewSDK
     # @param [String] operation operation to be performed
     # @param [String] path path
     # @param [String] value value
-    def updateAttribute(operation, path, value)
+    def update_attribute(operation, path, value)
       ensure_client && ensure_uri
       response = @client.rest_patch(@data['uri'], { 'body' => [{ op: operation, path: path, value: value }] }, @api_version)
       @client.response_handler(response)
@@ -186,10 +195,6 @@ module OneviewSDK
       @data['enclosureGroupUri'] = eg['uri']
     end
 
-    VALID_LICENSING_INTENTS = %w(NotApplicable OneView OneViewNoiLO OneViewStandard).freeze
-    def validate_licensingIntent(value)
-      fail 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value) || value.nil?
-    end
 
     private
 
