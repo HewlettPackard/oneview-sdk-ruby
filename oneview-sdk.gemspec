@@ -6,8 +6,8 @@ require_relative './lib/oneview-sdk/version'
 Gem::Specification.new do |spec|
   spec.name          = 'oneview-sdk'
   spec.version       = OneviewSDK::VERSION
-  spec.authors       = ['Henrique', 'Thiago', 'Jared Smartt']
-  spec.email         = ['henrique.diomede@hpe.com', 'thiago.mio.amaral@hpe.com', 'jared.smartt@hpe.com']
+  spec.authors       = ['Henrique Diomede', 'Thiago Miotto', 'Jared Smartt', 'Ricardo Piantola']
+  spec.email         = ['henrique.diomede@hpe.com', 'tmiotto@hpe.com', 'jared.smartt@hpe.com', 'piantola@hpe.com']
   spec.summary       = 'Gem to interact with oneview API'
   spec.description   = 'Gem to interact with oneview API'
   spec.license       = 'Apache-2.0'
