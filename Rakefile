@@ -45,12 +45,6 @@ RSpec::Core::RakeTask.new('spec:integration:delete') do |spec|
   spec.rspec_opts << ' --tag integration'
 end
 
-desc 'Run unit, integration and system tests'
-RSpec::Core::RakeTask.new('spec:all') do |spec|
-  spec.pattern = spec_pattern
-  spec.rspec_opts = def_spec_options
-end
-
 desc 'Run System tests'
 RSpec::Core::RakeTask.new('spec:system') do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
@@ -91,5 +85,6 @@ desc 'Run rubocop, unit & integration tests'
 task 'test:all' do
   Rake::Task[:rubocop].invoke
   Rake::Task[:spec].invoke
-  Rake::Task['spec:all'].invoke
+  Rake::Task['spec:integration'].invoke
+  Rake::Task['spec:system'].invoke
 end
