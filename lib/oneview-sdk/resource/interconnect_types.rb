@@ -15,10 +15,6 @@ module OneviewSDK
       create
     end
 
-    def save
-      create
-    end
-
     def delete
       create
     end

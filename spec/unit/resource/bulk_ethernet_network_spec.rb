@@ -39,9 +39,5 @@ RSpec.describe OneviewSDK::BulkEthernetNetwork do
       expect { @item.delete }.to raise_error(/Method not available for this resource!/)
     end
 
-    it 'does not allow the save action' do
-      expect { @item.save }.to raise_error(/Method not available for this resource!/)
-    end
-
   end
 end

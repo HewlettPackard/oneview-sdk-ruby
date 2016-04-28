@@ -23,7 +23,7 @@ RSpec.describe OneviewSDK::Enclosure do
   describe '#create' do
     context 'with valid data' do
       before :each do
-        allow_any_instance_of(OneviewSDK::Enclosure).to receive(:save).and_return(true)
+        allow_any_instance_of(OneviewSDK::Enclosure).to receive(:update).and_return(true)
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(name: 'Encl1', serialNumber: 'Fake', uri: '/rest/fake')
 
@@ -64,7 +64,7 @@ RSpec.describe OneviewSDK::Enclosure do
     end
   end
 
-  describe '#save' do
+  describe '#update' do
     before :each do
       @item  = OneviewSDK::Enclosure.new(@client, name: 'E1', rackName: 'R1', uri: '/rest/fake')
       @item2 = OneviewSDK::Enclosure.new(@client, name: 'E2', rackName: 'R1', uri: '/rest/fake2')
@@ -72,13 +72,13 @@ RSpec.describe OneviewSDK::Enclosure do
     end
 
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).save }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).update }.to raise_error(/Please set uri/)
     end
 
     it 'does not send a PATCH request if the name and rackName are the same' do
       expect(OneviewSDK::Enclosure).to receive(:find_by).with(@client, uri: @item['uri']).and_return([@item])
       expect(@client).to_not receive(:rest_patch)
-      @item.save
+      @item.update
     end
 
     it 'updates the server name with the local name' do
@@ -86,7 +86,7 @@ RSpec.describe OneviewSDK::Enclosure do
       expect(@client).to receive(:rest_patch)
         .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/name', value: @item['name'] }] }, @item.api_version)
         .and_return(FakeResponse.new)
-      @item.save
+      @item.update
     end
 
     it 'updates the server rackName with the local rackName' do
@@ -94,7 +94,7 @@ RSpec.describe OneviewSDK::Enclosure do
       expect(@client).to receive(:rest_patch)
         .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/rackName', value: @item['rackName'] }] }, @item.api_version)
         .and_return(FakeResponse.new)
-      @item.save
+      @item.update
     end
   end
 

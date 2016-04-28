@@ -38,10 +38,6 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
     it 'does not allow the update action' do
       expect { @item.update }.to raise_error(/not available for this resource/)
     end
-
-    it 'does not allow the save action' do
-      expect { @item.save }.to raise_error(/not available for this resource/)
-    end
   end
 
   describe 'helpers' do

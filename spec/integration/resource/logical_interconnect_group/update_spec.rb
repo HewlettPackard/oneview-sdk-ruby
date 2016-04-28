@@ -14,7 +14,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: UP
   end
   let(:uplink_2) { OneviewSDK::LIGUplinkSet.new($client, uplink_options_2) }
 
-  describe '#save' do
+  describe '#update' do
     it 'adding and removing uplink set' do
       item_2.retrieve!
       eth.retrieve!
@@ -24,13 +24,13 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: UP
 
       item_2.add_uplink_set(uplink_2)
 
-      expect { item_2.save }.not_to raise_error
+      expect { item_2.update }.not_to raise_error
 
       expect(item_2['uri']).to be
       expect(item_2['uplinkSets']).to_not be_empty
 
       item_2['uplinkSets'] = []
-      expect { item_2.save }.to_not raise_error
+      expect { item_2.update }.to_not raise_error
       expect(item_2['uri']).to be
       expect(item_2['uplinkSets']).to be_empty
     end

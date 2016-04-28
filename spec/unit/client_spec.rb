@@ -162,11 +162,6 @@ RSpec.describe OneviewSDK::Client do
       @client.create(@resource)
     end
 
-    it 'implements the #save method' do
-      expect(@resource).to receive(:save)
-      @client.save(@resource)
-    end
-
     it 'implements the #update method' do
       expect(@resource).to receive(:update)
       @client.update(@resource, name: 'NewName')
