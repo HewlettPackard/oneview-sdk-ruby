@@ -20,7 +20,7 @@ options1 = {
   provisioningParameters: {
     provisionType: 'Full',
     shareable: true,
-    requestedCapacity: 512 * 1024 * 1024 # 512MB
+    requestedCapacity: 1024 * 1024 * 1024 # 1GB
   }
 }
 
@@ -40,13 +40,6 @@ volume1['provisioningParameters']['storagePoolUri'] = storage_pool['uri']
 
 volume1.create!
 puts "  Created #{volume1['name']}"
-
-
-# 2) Template = Storage Volume Template
-# CANNOT IMPLEMENT: Missing StorageVolumeTemplate resource
-puts '2) Template = Storage Volume Template'
-puts '  TODO: StorageVolumeTemplate resource not implemented'
-
 
 # 3) Common with snapshots = Storage System + Storage Pool + Snapshot Pool
 puts '3) Common with snapshots = Storage System + Storage Pool + Snapshot Pool'
@@ -97,7 +90,6 @@ end
 
 puts 'Cleaning up...'
 volume1.delete
-# volume2.delete
 volume3.delete_snapshot(volume3.get_snapshots.first['name'])
 volume3.delete
 volume4.delete if @unmanaged_volume_wwn
