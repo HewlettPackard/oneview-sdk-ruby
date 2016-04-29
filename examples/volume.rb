@@ -17,11 +17,13 @@ options1 = {
   description: 'Test volume with common creation: Storage System + Storage Pool',
   provisionType: 'Full',
   shareable: true,
-  provisioningParameters: {
-    provisionType: 'Full',
-    shareable: true,
-    requestedCapacity: 512 * 1024 * 1024 # 512MB
-  }
+
+}
+
+provisioning_parameters1 = {
+  provisionType: 'Full',
+  shareable: true,
+  requestedCapacity: 512 * 1024 * 1024 # 512MB
 }
 
 volume1 = OneviewSDK::Volume.new(@client, options1)
@@ -36,9 +38,9 @@ volume1.set_storage_system(storage_system)
 pools = OneviewSDK::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
 fail 'ERROR: No storage pools found attached to the provided storage system' if pools.empty?
 storage_pool = pools.first
-volume1['provisioningParameters']['storagePoolUri'] = storage_pool['uri']
+provisioning_parameters1['storagePoolUri'] = storage_pool['uri']
 
-volume1.create!
+volume1.create(provisioning_parameters1)
 puts "  Created #{volume1['name']}"
 
 
@@ -55,13 +57,13 @@ options3 = {
   name: 'ONEVIEW_SDK_TEST_VOLUME_3',
   description: 'Test volume - common creation with snapshot pool: Storage System + Storage Pool + Snapshot Pool',
   provisionType: 'Thin',
-  shareable: false,
-  provisioningParameters: {
-    storagePoolUri: storage_pool['uri'],
-    provisionType: 'Full',
-    shareable: true,
-    requestedCapacity: 1024 * 1024 * 1024 # 1GB
-  }
+}
+
+provisioning_parameters3 = {
+  storagePoolUri: storage_pool['uri'],
+  provisionType: 'Full',
+  shareable: true,
+  requestedCapacity: 1024 * 1024 * 1024 # 1GB
 }
 
 volume3 = OneviewSDK::Volume.new(@client, options3)
@@ -69,7 +71,7 @@ volume3 = OneviewSDK::Volume.new(@client, options3)
 volume3.set_storage_system(storage_system)
 volume3.set_snapshot_pool(storage_pool) # The same snapshot pool of the storage pool
 
-volume3.create!
+volume3.create(provisioning_parameters3)
 puts "  Created #{volume3['name']}"
 
 # Create volume snapshot:

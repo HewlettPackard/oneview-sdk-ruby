@@ -30,10 +30,10 @@ module OneviewSDK
     # @return [Resource] self
     def create(provisioningParameters = {})
       ensure_client
-      @data['provisioningParameters'] ||= provisioningParameters
-      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+      requestBody = @data
+      requestBody['provisioningParameters'] = provisioningParameters
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => requestBody }, @api_version)
       body = @client.response_handler(response)
-      @data.delete('provisioningParameters')
       set_all(body)
       self
     end
