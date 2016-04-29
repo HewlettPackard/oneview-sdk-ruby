@@ -1,32 +1,5 @@
 module OneviewSDK
-  # Resource for storage system
-  # Common Data Attributes:
-  #   allocatedCapacity
-  #   category
-  #   created
-  #   credentials
-  #   description
-  #   eTag
-  #   firmware
-  #   freeCapacity
-  #   managedDomain
-  #   managedPools
-  #   managedPorts
-  #   model
-  #   modified
-  #   name
-  #   refreshState
-  #   serialNumber
-  #   state
-  #   stateReason
-  #   status
-  #   totalCapacity
-  #   type
-  #   unmanagedDomains
-  #   unmanagedPools
-  #   unmanagedPorts
-  #   uri
-  #   wwn
+  # Storage system resource implementation
   class StorageSystem < Resource
     BASE_URI = '/rest/storage-systems'.freeze
 

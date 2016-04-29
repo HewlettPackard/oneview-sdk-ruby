@@ -1,28 +1,5 @@
 module OneviewSDK
-  # Resource for server profiles
-  # Common Data Attributes:
-  #   baselineShortName
-  #   bundleSize
-  #   category
-  #   description
-  #   eTag
-  #   fwComponents
-  #   isoFileName
-  #   lastTaskUri
-  #   name
-  #   releaseDate
-  #   resourceId
-  #   resourceState
-  #   state
-  #   status
-  #   supportedLanguages
-  #   supportedOSList
-  #   swPackagesFullPath
-  #   type (Required)
-  #   uri
-  #   uuid
-  #   version
-  #   xmlKeyName
+  # Firmware driver resource implementation
   class FirmwareDriver < Resource
     BASE_URI = '/rest/firmware-drivers'.freeze
 

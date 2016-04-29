@@ -1,29 +1,5 @@
 module OneviewSDK
-  # Resource for uplink sets
-  # Common Data Attributes:
-  #   category
-  #   connectionMode
-  #   created
-  #   description
-  #   eTag
-  #   ethernetNetworkType
-  #   fcNetworkUris
-  #   fcoeNetworkUris
-  #   lacpTimer
-  #   logicalInterconnectUri
-  #   manualLoginRedistributionState
-  #   modified
-  #   name
-  #   nativeNetworkUri
-  #   networkType
-  #   networkUris
-  #   portConfigInfos
-  #   primaryPortLocation
-  #   reachability
-  #   state
-  #   status
-  #   type
-  #   uri
+  # Uplink set resource implementation
   class UplinkSet < Resource
     BASE_URI = '/rest/uplink-sets'.freeze
 
@@ -94,7 +70,7 @@ module OneviewSDK
 
     # Add portConfigInfos to the array
     # @param [String] portUri
-    # @param [String] desiredSpeed
+    # @param [String] speed
     # @param [Hash] locationEntries
     def add_port_config(portUri, speed, locationEntries)
       entry = {

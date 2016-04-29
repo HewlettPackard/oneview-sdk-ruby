@@ -1,33 +1,5 @@
 module OneviewSDK
-  # Resource for server profiles
-  # Common Data Attributes:
-  #   affinity
-  #   bios
-  #   boot
-  #   category
-  #   connections
-  #   description
-  #   enclosureBay
-  #   enclosureGroupUri (Required)
-  #   enclosureUri
-  #   eTag
-  #   firmware
-  #   hideUnusedFlexNics
-  #   inProgress
-  #   localStorage
-  #   macType
-  #   name (Required)
-  #   sanStorage
-  #   serialNumber
-  #   serialNumberType
-  #   serverHardwareTypeUri (Required)
-  #   serverHardwareUri
-  #   state
-  #   status
-  #   taskUri
-  #   type (Required)
-  #   uuid
-  #   wwnType
+  # Server profile resource implementation
   class ServerProfile < Resource
     BASE_URI = '/rest/server-profiles'.freeze
 

@@ -1,19 +1,5 @@
 module OneviewSDK
-  # Resource for storage volumes
-  # Common Data Attributes:
-  #   description
-  #   isPermanent
-  #   name
-  #   requestedCapacity (for creation only)
-  #   provisionType
-  #   shareable
-  #   storagePoolUri
-  #   snapshotPoolUri1
-  #   snapshotUri
-  #   storageSystemUri
-  #   storageSystemVolumeName
-  #   templateUri
-  #   wwn
+  # Volume resource implementation
   class Volume < Resource
     BASE_URI = '/rest/storage-volumes'.freeze
 
@@ -21,7 +7,7 @@ module OneviewSDK
 
     VALID_PROVISION_TYPES = %w(Thin Full).freeze
     # Validate the type of provisioning
-    # @param [String] Must be Thin or Full
+    # @param [String] value Must be Thin or Full
     def validate_provisionType(value)
       fail 'Invalid provision type' unless VALID_PROVISION_TYPES.include?(value)
     end
@@ -52,7 +38,7 @@ module OneviewSDK
     end
 
     # Delete resource from OneView or from Oneview and storage system
-    # @param [Symbol] system Oneview or from Oneview and storage system
+    # @param [Symbol] flag Delete storage system from Oneview only or in storage system as well
     # @return [true] if resource was deleted successfully
     def delete(flag = :all)
       ensure_client && ensure_uri
@@ -70,35 +56,35 @@ module OneviewSDK
     end
 
     # Sets the storage system to the volume
-    # @param [OneviewSDK::StorageSystem] Storage System
+    # @param [OneviewSDK::StorageSystem] storage_system Storage System
     def set_storage_system(storage_system)
       assure_uri(storage_system)
       @data['storageSystemUri'] = storage_system['uri']
     end
 
     # Sets the storage pool to the volume
-    # @param [OneviewSDK::StoragePool] Storage pool
+    # @param [OneviewSDK::StoragePool] storage_pool Storage pool
     def set_storage_pool(storage_pool)
       assure_uri(storage_pool)
       set('storagePoolUri', storage_pool['uri'])
     end
 
     # Adds storage volume template to the volume
-    # @param [OneviewSDK::VolumeTemplate] Storage Volume Template
+    # @param [OneviewSDK::VolumeTemplate] storage_volume_template Storage Volume Template
     def set_storage_volume_template(storage_volume_template)
       assure_uri(storage_volume_template)
       set('templateUri', storage_volume_template['uri'])
     end
 
     # Sets the snapshot pool to the volume
-    # @param [OneviewSDK::StoragePool] Storage Pool to use for snapshots
+    # @param [OneviewSDK::StoragePool] storage_pool Storage Pool to use for snapshots
     def set_snapshot_pool(storage_pool)
       assure_uri(storage_pool)
       set('snapshotPoolUri', storage_pool['uri'])
     end
 
     # Create a snapshot of the volume
-    # @param [String, OneviewSDK::VolumeSnapshot] name String or OneviewSDK::VolumeSnapshot object
+    # @param [String, OneviewSDK::VolumeSnapshot] snapshot String or OneviewSDK::VolumeSnapshot object
     # @param [String] description Provide a description
     # @return [true] if snapshot was created successfully
     def create_snapshot(snapshot, description = nil)
@@ -131,7 +117,7 @@ module OneviewSDK
 
     # Retrieve snapshot by name
     # @param [String] name
-    # @param [Hash] snapshot data
+    # @return [Hash] snapshot data
     def get_snapshot(name)
       results = get_snapshots
       results.each do |snapshot|
@@ -159,7 +145,7 @@ module OneviewSDK
     end
 
     # Defines the volume capacity
-    # @param [Fixnum] The required capacity in Bytes.
+    # @param [Fixnum] capacity The required capacity in Bytes.
     def set_requested_capacity(capacity)
       set('requestedCapacity', capacity)
     end

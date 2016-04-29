@@ -87,7 +87,7 @@ module OneviewSDK
 
     # Set data using hash syntax
     # @param [String, Symbol] key Name of key to set the value for
-    # @param [Object] key Value to set for the given key
+    # @param [Object] value to set for the given key
     # @note The key will be converted to a string
     # @return The value set for the given key
     def []=(key, value)

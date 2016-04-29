@@ -2,52 +2,7 @@ require 'time'
 require 'date'
 
 module OneviewSDK
-  # Resource for enclosure groups
-  # Common Data Attributes:
-  #   activeOaPreferredIP
-  #   category
-  #   created
-  #   description
-  #   deviceBayCount
-  #   deviceBays
-  #   eTag
-  #   enclosureGroupUri (Required)
-  #   enclosureModel
-  #   enclosureTypeUri
-  #   fanBayCount
-  #   fanBays
-  #   forceInstallFirmware
-  #   fwBaselineName
-  #   fwBaselineUri
-  #   interconnectBayCount
-  #   interconnectBays
-  #   isFwManaged
-  #   licensingIntent (Required)
-  #   logicalEnclosureUri
-  #   modified
-  #   name
-  #   oaBays
-  #   partNumber
-  #   powerSupplyBayCount
-  #   powerSupplyBays
-  #   rackName
-  #   reconfigurationState
-  #   refreshState
-  #   serialNumber
-  #   standbyOaPreferredIP
-  #   state
-  #   status
-  #   type
-  #   uidState
-  #   uri
-  #   vcmDomainId
-  #   vcmDomainName
-  #   vcmMode
-  #   vcmUrl
-  # Additional data attributes for adding an enclosure:
-  #   hostname (Required)
-  #   username (Required)
-  #   password (Required)
+  # Enclosure resource implementation
   class Enclosure < Resource
     BASE_URI = '/rest/enclosures'.freeze
 
