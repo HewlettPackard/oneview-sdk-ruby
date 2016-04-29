@@ -1,27 +1,5 @@
 module OneviewSDK
-  # Resource for enclosure groups
-  # Common Data Attributes:
-  #   associatedLogicalInterconnectGroups
-  #   category
-  #   created
-  #   description
-  #   eTag
-  #   enclosureCount
-  #   enclosureTypeUri
-  #   interconnectBayMappingCount (Required)
-  #   interconnectBayMappings (Required)
-  #   ipAddressingMode
-  #   ipRangeUris (not used in C7000 enclosure)
-  #   modified
-  #   name
-  #   portMappingCount
-  #   portMappings
-  #   powerMode
-  #   stackingMode (Required)
-  #   state
-  #   status
-  #   type (Required)
-  #   uri
+  # Enclosure group resource implementation
   class EnclosureGroup < Resource
     BASE_URI = '/rest/enclosure-groups'.freeze
 

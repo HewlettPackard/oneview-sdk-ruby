@@ -85,7 +85,7 @@ client = OneviewSDK::Client.new(config)
 
 :lock: Tip: Check the file permissions because the password is stored in clear-text.
 
-### Custom Logging
+### Custom logging
 The default logger is a standard logger to STDOUT, but if you want to specify your own, you can.  However, your logger must implement the following methods:
 
 ```ruby
@@ -183,7 +183,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) document
   ethernet.delete # Tells OneView to delete this resource
   ```
 
-### Save/Load Resources with files
+### Save/Load resources with files
 Resources can be saved to files and loaded again very easily using the built-in `.to_file` & `.from_file` methods.
 
  - To save a Resource to a file:
@@ -200,7 +200,7 @@ Resources can be saved to files and loaded again very easily using the built-in 
 
 For more examples and test-scripts, see the [examples](examples/) directory and [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation.
 
-## Custom Requests
+## Custom requests
 In most cases, interacting with Resource objects is enough, but sometimes you need to make your own custom requests to OneView.
 This project makes it extremely easy to do with some built-in methods for the Client object. Here are some examples:
 
@@ -215,21 +215,21 @@ data = client.response_handler(response)
 ```
 
 This example is about as basic as it gets, but you can make any type of OneView request.
-If a resource doesn't do what you need, this will allow you to do it.
+If a resource does not do what you need, this will allow you to do it.
 Please refer to the documentation and [code](lib/oneview-sdk/rest.rb) for complete list of methods and information about how to use them.
 
 
 ## CLI
 This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
-Note: In order to use this, you'll need to make sure your ruby `bin` directory is in your path.
+Note: In order to use this, you will need to make sure your ruby `bin` directory is in your path.
 Run `$ gem environment` to see where the executable paths are for your Ruby installation.
 
 To get started, run `$ oneview-sdk-ruby --help`.
 
-To communicate with an appliance, you'll need to set up a few environment variables so it knows how to communicate. Run `$ oneview-sdk-ruby env` to see the available environment variables.
+To communicate with an appliance, you will need to set up a few environment variables so it knows how to communicate. Run `$ oneview-sdk-ruby env` to see the available environment variables.
 
-The CLI doesn't expose everything in the SDK, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here are a few examples:
+The CLI does not expose everything in the SDK, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here are a few examples:
 
  - List ServerProfiles:
  ```bash
@@ -284,14 +284,14 @@ The CLI doesn't expose everything in the SDK, but it is great for doing simple t
    Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
  ```
 
-## Contributing & Feature Requests
+## Contributing and feature requests
 **Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it.
-We're passionate about improving this project, and glad to accept help to make it better.
+We are passionate about improving this project, and glad to accept help to make it better.
 
-NOTE: We reserve the right to reject changes that we feel don't fit the scope of this project, so for feature additions, please open an issue to discuss your ideas before doing the work.
+NOTE: We reserve the right to reject changes that we feel do not fit the scope of this project, so for feature additions, please open an issue to discuss your ideas before doing the work.
 
 **Feature Requests:** If you have a need that is not met by the current implementation, please let us know (via a new issue).
-This feedback is crucial for us to deliver a useful product. Don't just assume we've already thought of everything, because we assure you that's not the case.
+This feedback is crucial for us to deliver a useful product. Do not assume we have already thought of everything, because we assure you that is not the case.
 
 ### Building the Gem
 First run `$ bundle` (requires the bundler gem), then...

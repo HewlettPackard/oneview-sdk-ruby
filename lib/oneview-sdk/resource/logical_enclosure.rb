@@ -1,25 +1,5 @@
 module OneviewSDK
-  # Resource for ethernet networks
-  # Common Data Attributes:
-  #   category
-  #   created
-  #   deleteFailed
-  #   description
-  #   eTag
-  #   enclosureGroupUri
-  #   enclosureUris
-  #   enclosures
-  #   firmware
-  #   ipAddressingMode
-  #   ipv4Ranges
-  #   logicalInterconnectUris
-  #   modified
-  #   name
-  #   powerMode
-  #   state
-  #   status
-  #   type
-  #   uri
+  # Logical enclosure resource implementation
   class LogicalEnclosure < Resource
     BASE_URI = '/rest/logical-enclosures'.freeze
 

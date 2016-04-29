@@ -1,5 +1,5 @@
 module OneviewSDK
-  # Resource for firmware bundles
+  # Firmware bundle resource implementation
   class FirmwareBundle
     BASE_URI = '/rest/firmware-bundles'.freeze
     BOUNDARY = '---OneView-SDK-RubyFormBoundaryWzS4H31b7UMbKMCx'.freeze

@@ -1,18 +1,5 @@
 module OneviewSDK
-  # Resource for logical interconnect groups
-  # Common Data Attributes:
-  #   category
-  #   created
-  #   description
-  #   enclosureType (Required)
-  #   eTag
-  #   interconnectMapTemplate (Required)
-  #   modified
-  #   name (Required)
-  #   state
-  #   status
-  #   uplinkSets (Required) (default = [])
-  #   uri
+  # Logical enclosure group resource implementation
   class LogicalInterconnectGroup < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
     attr_reader :bay_count
@@ -56,15 +43,14 @@ module OneviewSDK
       @data['uplinkSets'] << uplink_set.data
     end
 
-    # Get the default settings for the spe
-    # @param [Fixnum] bay Bay number
-    # @param [String] type Interconnect type
+    # Get the default settings
     def get_default_settings
       get_uri = self.class::BASE_URI + '/defaultSettings'
       response = @client.rest_get(get_uri, @api_version)
       @client.response_handler(response)
     end
 
+    # Get settings
     def get_settings
       get_uri = @data['uri'] + '/settings'
       response = @client.rest_get(get_uri, @api_version)

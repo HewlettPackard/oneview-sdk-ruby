@@ -1,21 +1,5 @@
 module OneviewSDK
-  # Resource for fcoe networks
-  # Common Data Attributes:
-  #   category
-  #   connectionTemplateUri (Required. nil on creation)
-  #   created
-  #   description
-  #   eTag
-  #   ethernetNetworkType
-  #   fabricUri
-  #   managedSanUri
-  #   modified
-  #   name (Required)
-  #   state
-  #   status
-  #   type (Required)
-  #   uri
-  #   vlanId (Required)
+  # FCoE network resource implementation
   class FCoENetwork < Resource
     BASE_URI = '/rest/fcoe-networks'.freeze
 

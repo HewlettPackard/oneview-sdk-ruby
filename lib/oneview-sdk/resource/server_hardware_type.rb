@@ -1,21 +1,5 @@
 module OneviewSDK
-  # Resource for server hardware types
-  # Common Data Attributes:
-  #   adapters
-  #   biosSettings
-  #   bootCapabilities
-  #   bootModes
-  #   capabilities
-  #   category
-  #   description
-  #   eTag
-  #   formFactor
-  #   model
-  #   name
-  #   pxeBootPolicies
-  #   storageCapabilities
-  #   type
-  #   uri
+  # Server hardware type resource implementation
   class ServerHardwareType < Resource
     BASE_URI = '/rest/server-hardware-types'.freeze
 

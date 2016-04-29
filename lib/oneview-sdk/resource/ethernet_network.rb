@@ -1,22 +1,5 @@
 module OneviewSDK
-  # Resource for ethernet networks
-  # Common Data Attributes:
-  #   category
-  #   connectionTemplateUri
-  #   created
-  #   description
-  #   eTag
-  #   ethernetNetworkType
-  #   fabricUri
-  #   modified
-  #   name (Required)
-  #   privateNetwork (Required)
-  #   purpose (Required)
-  #   smartLink (Required)
-  #   state
-  #   status
-  #   type (Required)
-  #   vlanId (Required)
+  # Ethernet network resource implementation
   class EthernetNetwork < Resource
     BASE_URI = '/rest/ethernet-networks'.freeze
 

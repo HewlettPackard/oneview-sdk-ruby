@@ -1,28 +1,5 @@
 module OneviewSDK
-  # Resource for Storage Pools
-  # Common Data Attributes:
-  #  allocatedCapacity
-  #  capacityLimit
-  #  capacityWarningLimit
-  #  category
-  #  created
-  #  description
-  #  deviceSpeed
-  #  deviceType
-  #  domain
-  #  eTag
-  #  freeCapacity
-  #  modified
-  #  name
-  #  refreshState
-  #  state
-  #  stateReason
-  #  status
-  #  storageSystemUri
-  #  supportedRAIDLevel
-  #  totalCapacity
-  #  type
-  #  uri
+  # Storage pool resource implementation
   class StoragePool < Resource
     BASE_URI = '/rest/storage-pools'.freeze
 
