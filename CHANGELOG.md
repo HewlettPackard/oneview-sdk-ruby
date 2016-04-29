@@ -1,6 +1,6 @@
 ## Notes
  This is the prerelease of the OneView SDK in Ruby and it adds full support to some core features listed bellow, with some execptions that are explicit.
- The current version of this SDK (v0.1.0) only supports OneView appliances version 2.00.00 or higher, using the OneView Rest API version 200.
+ The current version of this SDK (v1.0.0) only supports OneView appliances version 2.00.00 or higher, using the OneView Rest API version 200.
  For now it only supports C7000 enclosure types.
 
 
@@ -27,6 +27,7 @@
 
 ## Know Issues
 The integration tests may warn about 3 issues:
+
 1. OneviewSDK::LogicalInterconnect Firmware Updates perform the actions Stage
 > The SDK cannot provide Firmware files for your OneView appliance. Please set a valid SPP in your appliance prior to running this test.
 
