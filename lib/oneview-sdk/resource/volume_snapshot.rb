@@ -1,20 +1,5 @@
 module OneviewSDK
-  # Resource for storage volume snapshots
-  # Common Data Attributes:
-  #   capacity
-  #   category
-  #   description
-  #   deviceSnapshotName
-  #   name
-  #   readOnly
-  #   refreshState
-  #   snapshotType
-  #   state
-  #   status
-  #   storageVolumeUri
-  #   type
-  #   uri
-  #   wwn
+  # Volume snapshot resource implementation
   class VolumeSnapshot < Resource
     BASE_URI = nil
 
@@ -33,7 +18,7 @@ module OneviewSDK
     end
 
     # Sets the volume
-    # @param [OneviewSDK::Volume] Volume
+    # @param [OneviewSDK::Volume] volume Volume
     def set_volume(volume)
       fail 'Please set the volume\'s uri attribute!' unless volume['uri']
       @data['storageVolumeUri'] = volume['uri']

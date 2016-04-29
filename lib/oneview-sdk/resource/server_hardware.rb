@@ -1,53 +1,5 @@
 module OneviewSDK
-  # Resource for server hardware
-  # Common Data Attributes:
-  #   activeOaPreferredIP
-  #   assetTag
-  #   category
-  #   description
-  #   deviceBayCount
-  #   deviceBays
-  #   eTag
-  #   enclosureGroupUri
-  #   enclosureModel
-  #   enclosureTypeUri
-  #   fanBayCount
-  #   fanBays
-  #   forceInstallFirmware
-  #   fwBaselineName
-  #   fwBaselineUri
-  #   interconnectBayCount
-  #   interconnectBays
-  #   isFwManaged
-  #   licensingIntent
-  #   logicalEnclosureUri
-  #   name
-  #   oaBays
-  #   partNumber
-  #   powerSupplyBayCount
-  #   powerSupplyBays
-  #   rackName
-  #   reconfigurationState
-  #   refreshState
-  #   serialNumber
-  #   standbyOaPreferredIP
-  #   state
-  #   stateReason
-  #   status
-  #   type
-  #   uidState
-  #   uri
-  #   uuid
-  #   vcmDomainId
-  #   vcmDomainName
-  #   vcmMode
-  #   vcmUrl
-  # Additional data attributes for adding an enclosure:
-  #   hostname (Required)
-  #   username (Required)
-  #   password (Required)
-  #   licensingIntent (Required)
-  #   configurationState
+  # Server hardware resource implementation
   class ServerHardware < Resource
     BASE_URI = '/rest/server-hardware'.freeze
 

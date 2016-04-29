@@ -1,20 +1,5 @@
 module OneviewSDK
-  # Resource for ethernet networks
-  # Common Data Attributes:
-  #   autoLoginRedistribution (Required)
-  #   category
-  #   connectionTemplateUri
-  #   created
-  #   description
-  #   eTag
-  #   fabricType (Required)
-  #   linkStabilityTime (Required for FabricAttach)
-  #   managedSunUri
-  #   modified
-  #   name (Required)
-  #   state
-  #   status
-  #   type (Required)
+  # FC network resource implementation
   class FCNetwork < Resource
     BASE_URI = '/rest/fc-networks'.freeze
 

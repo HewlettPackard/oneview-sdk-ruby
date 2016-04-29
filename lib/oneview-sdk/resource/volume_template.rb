@@ -1,24 +1,5 @@
 module OneviewSDK
-  # Resource for ethernet networks
-  # Common Data Attributes:
-  #   category
-  #   created
-  #   description
-  #   eTag
-  #   modified
-  #   name
-  #   provisioning
-  #     capacity
-  #     provisionType
-  #     shareable
-  #     storagePoolUri
-  #   refreshState
-  #   state
-  #   stateReason
-  #   status
-  #   storageSystemUri
-  #   type
-  #   uri
+  # Volume template resource implementation
   class VolumeTemplate < Resource
     BASE_URI = '/rest/storage-volume-templates'.freeze
 
@@ -90,7 +71,7 @@ module OneviewSDK
 
     # Set storage pool
     # @param [Boolean] shareable
-    # @param [String] provisionType. Options: ['Thin', 'Full']
+    # @param [String] provisionType 'Thin' or 'Full'
     # @param [String] capacity (in bytes)
     # @param [OneviewSDK::StoragePool] storage_pool
     def set_provisioning(shareable, provisionType, capacity, storage_pool)

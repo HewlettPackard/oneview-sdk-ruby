@@ -1,12 +1,5 @@
 module OneviewSDK
-  # Resource for Uplink Sets used in Logical interconnect groups
-  # Common Data Attributes:
-  #   ethernetNetworkType (Required if networkType == 'Ethernet')
-  #   lacpTimer
-  #   mode
-  #   name
-  #   networkType ['Ethernet', 'FibreChannel' ]
-  #   networkUris
+  # Uplink Sets  resource implementation to be used in Logical interconnect groups
   class LIGUplinkSet < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
 
@@ -65,7 +58,7 @@ module OneviewSDK
     end
 
     # Set all params
-    # @override sets networkType first
+    # @overload sets networkType first
     def set_all(params = {})
       params = params.data if params.class <= Resource
       params = Hash[params.map { |(k, v)| [k.to_s, v] }]

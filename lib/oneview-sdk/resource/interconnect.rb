@@ -1,5 +1,5 @@
 module OneviewSDK
-  # Resource for interconnect types
+  # Interconnect resource implementation
   class Interconnect < Resource
     BASE_URI = '/rest/interconnects'.freeze
     TYPE_URI = '/rest/interconnect-types'.freeze

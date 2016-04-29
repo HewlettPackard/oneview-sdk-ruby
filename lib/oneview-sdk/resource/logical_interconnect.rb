@@ -1,18 +1,5 @@
 module OneviewSDK
-  # Resource for logical interconnect groups
-  # Common Data Attributes:
-  #   category
-  #   created
-  #   description
-  #   enclosureType (Required)
-  #   eTag
-  #   interconnectMapTemplate (Required)
-  #   modified
-  #   name (Required)
-  #   state
-  #   status
-  #   uplinkSets (Required) (default = [])
-  #   uri
+  # Logical interconnect resource implementation
   class LogicalInterconnect < Resource
     BASE_URI = '/rest/logical-interconnects'.freeze
     LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
@@ -67,8 +54,8 @@ module OneviewSDK
     # Create an Interconnect in the desired Bay in a specified enclosure
     # WARN: It does not create the LOGICAL INTERCONNECT itself.
     # It will fail if no interconnect is already present on the specified position
-    # @param [Fixnum] Number of the bay to put the interconnect
-    # @param [OneviewSDK::Resource] Enclosure to insert the interconnect
+    # @param [Fixnum] bay_number Number of the bay to put the interconnect
+    # @param [OneviewSDK::Resource] enclosure Enclosure to insert the interconnect
     def create(bay_number, enclosure)
       enclosure.ensure_uri
       entry = {
@@ -83,8 +70,8 @@ module OneviewSDK
 
     # Deletes an INTERCONNECT
     # WARN: This won't delete the LOGICAL INTERCONNECT itself, and may cause inconsistency between the enclosure and LIG
-    # @param [Fixnum] Number of the bay to locate the logical interconnect
-    # @param [OneviewSDK::Resource] Enclosure to remove the logical interconnect
+    # @param [Fixnum] bay_number Number of the bay to locate the logical interconnect
+    # @param [OneviewSDK::Resource] enclosure Enclosure to remove the logical interconnect
     def delete(bay_number, enclosure)
       enclosure.ensure_uri
       delete_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure['uri']},Bay:#{bay_number}"
@@ -94,7 +81,7 @@ module OneviewSDK
     end
 
     # Updates internal networks on the logical interconnect
-    # @param [OneviewSDK::EthernetNetworks] List of networks to update the Logical Interconnect
+    # @param [OneviewSDK::EthernetNetworks] networks List of networks to update the Logical Interconnect
     def update_internal_networks(*networks)
       uris = []
       return @client.response_handler(@client.rest_put(@data['uri'] + '/internalNetworks', 'body' => [])) unless networks
@@ -143,7 +130,7 @@ module OneviewSDK
     end
 
     # Updates settings of the Logical Interconnect
-    # @param Options to update the Logical Interconnect
+    # @param options Options to update the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_settings(options = {})
       ensure_client && ensure_uri
