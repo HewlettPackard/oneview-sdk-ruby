@@ -107,13 +107,6 @@ RSpec.describe OneviewSDK::Volume do
       end
     end
 
-    describe '#set_requested_capacity' do
-      it 'sets the requestedCapacity' do
-        @item.set_requested_capacity(1000)
-        expect(@item['requestedCapacity']).to eq(1000)
-      end
-    end
-
     describe '#get_attachable_volumes' do
       it 'returns an array of available volumes' do
         volumes = [@item]
