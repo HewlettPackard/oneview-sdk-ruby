@@ -11,30 +11,28 @@ fail 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 # 1) Common = Storage System + Storage Pool
 puts '1) Common = Storage System + Storage Pool'
 
-options1 = {
-  name: 'ONEVIEW_SDK_TEST_VOLUME_1',
-  description: 'Test volume with common creation: Storage System + Storage Pool',
-  provisionType: 'Full',
-  shareable: true,
-  provisioningParameters: {
-    provisionType: 'Full',
-    shareable: true,
-    requestedCapacity: 1024 * 1024 * 1024 # 1GB
-  }
-}
-
-volume1 = OneviewSDK::Volume.new(@client, options1)
-
 # Set Storage System
 storage_system = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
 storage_system.retrieve!
-volume1.set_storage_system(storage_system)
 
 # Retrieve a Storage Pool
 pools = OneviewSDK::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
 fail 'ERROR: No storage pools found attached to the provided storage system' if pools.empty?
 storage_pool = pools.first
-volume1['provisioningParameters']['storagePoolUri'] = storage_pool['uri']
+
+options1 = {
+  name: 'ONEVIEW_SDK_TEST_VOLUME_1',
+  description: 'Test volume with common creation: Storage System + Storage Pool',
+  provisioningParameters: {
+    provisionType: 'Full',
+    shareable: true,
+    requestedCapacity: 1024 * 1024 * 1024,
+    storagePoolUri: storage_pool['uri']
+  }
+}
+
+volume1 = OneviewSDK::Volume.new(@client, options1)
+volume1.set_storage_system(storage_system)
 
 volume1.create!
 puts "  Created #{volume1['name']}"
@@ -45,8 +43,6 @@ puts '3) Common with snapshots = Storage System + Storage Pool + Snapshot Pool'
 options3 = {
   name: 'ONEVIEW_SDK_TEST_VOLUME_3',
   description: 'Test volume - common creation with snapshot pool: Storage System + Storage Pool + Snapshot Pool',
-  provisionType: 'Thin',
-  shareable: false,
   provisioningParameters: {
     storagePoolUri: storage_pool['uri'],
     provisionType: 'Full',
