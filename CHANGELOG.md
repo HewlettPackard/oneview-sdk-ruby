@@ -1,10 +1,11 @@
-## Notes
- This is the prerelease of the OneView SDK in Ruby and it adds full support to some core features listed bellow, with some execptions that are explicit.
- The current version of this SDK (v1.0.0) only supports OneView appliances version 2.00.00 or higher, using the OneView Rest API version 200.
+# v1.0.0
+### Notes
+ This is the first release of the OneView SDK in Ruby and it adds full support to some core features listed bellow, with some execptions that are explicit.
+ This version of this SDK supports OneView appliances version 2.00.00 or higher, using the OneView Rest API version 200.
  For now it only supports C7000 enclosure types.
 
 
-## Features supported
+### Features supported
 - Ethernet Network
 - FC Network
 - FCoE Network
@@ -25,7 +26,7 @@
 - Server Profile Template (CRUD supported)
 - Server Hardware (CRUD Supported)
 
-## Know Issues
+### Know Issues
 The integration tests may warn about 3 issues:
 
 1. OneviewSDK::LogicalInterconnect Firmware Updates perform the actions Stage
