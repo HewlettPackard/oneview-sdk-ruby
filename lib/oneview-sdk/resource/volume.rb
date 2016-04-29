@@ -24,15 +24,12 @@ module OneviewSDK
 
     # Create the volume
     # @note provisioningParameters are required for creation, but not afterwards; after creation, they will be removed.
-    # @param [Hash] provisioningParameters Provisioning parameters
     # @raise [RuntimeError] if the client is not set
     # @raise [RuntimeError] if the resource creation fails
     # @return [Resource] self
-    def create(provisioningParameters = {})
+    def create
       ensure_client
-      requestBody = @data.clone
-      requestBody['provisioningParameters'] = provisioningParameters
-      response = @client.rest_post(self.class::BASE_URI, { 'body' => requestBody }, @api_version)
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
       body = @client.response_handler(response)
       set_all(body)
       self
