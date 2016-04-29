@@ -26,7 +26,8 @@ RSpec.describe OneviewSDK::Volume do
         uri: '/rest/fake'
       )
       item = OneviewSDK::Volume.new(@client, name: volume_name)
-      item.create(provisioning_parameters)
+      item['provisioningParameters'] = provisioning_parameters
+      item.create
       expect(item['provisionType']).to eq(provisioning_parameters[:provisionType])
       expect(item['shareable']).to eq(provisioning_parameters[:shareable])
       expect(item['allocatedCapacity']).to eq(provisioning_parameters[:requestedCapacity])
@@ -104,13 +105,6 @@ RSpec.describe OneviewSDK::Volume do
         expect(snapshots.class).to eq(Array)
         expect(snapshots.size).to eq(1)
         expect(snapshots.first['name']).to eq('Vol1_Snapshot1')
-      end
-    end
-
-    describe '#set_requested_capacity' do
-      it 'sets the requestedCapacity' do
-        @item.set_requested_capacity(1000)
-        expect(@item['requestedCapacity']).to eq(1000)
       end
     end
 

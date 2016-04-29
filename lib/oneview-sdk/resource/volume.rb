@@ -23,17 +23,16 @@ module OneviewSDK
     # 6) Snapshot = Snapshot Pool + Storage Pool + Snapshot
 
     # Create the volume
-    # @param [Hash] provisioningParameters parameters
+    # @note provisioningParameters are required for creation, but not afterwards; after creation, they will be removed.
     # @raise [RuntimeError] if the client is not set
     # @raise [RuntimeError] if the resource creation fails
     # @return [Resource] self
-    def create(provisioningParameters = {})
+    def create
       ensure_client
-      requestBody = @data
-      requestBody[:provisioningParameters] = provisioningParameters
-      response = @client.rest_post(self.class::BASE_URI, { 'body' => requestBody }, @api_version)
+      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
       body = @client.response_handler(response)
       set_all(body)
+      @data.delete('provisioningParameters')
       self
     end
 
@@ -59,7 +58,7 @@ module OneviewSDK
     # @param [OneviewSDK::StorageSystem] storage_system Storage System
     def set_storage_system(storage_system)
       assure_uri(storage_system)
-      @data['storageSystemUri'] = storage_system['uri']
+      set('storageSystemUri', storage_system['uri'])
     end
 
     # Sets the storage pool to the volume
@@ -142,12 +141,6 @@ module OneviewSDK
         uri = body['nextPageUri']
       end
       results
-    end
-
-    # Defines the volume capacity
-    # @param [Fixnum] capacity The required capacity in Bytes.
-    def set_requested_capacity(capacity)
-      set('requestedCapacity', capacity)
     end
 
     # Get all the attachable volumes managed by the appliance

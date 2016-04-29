@@ -22,28 +22,30 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
       options = {
         name: VOLUME_NAME,
         description: 'Integration test volume',
-        storageSystemUri: @storage_system[:uri]
+        storageSystemUri: @storage_system[:uri],
+        provisioningParameters: {
+          provisionType: 'Full',
+          storagePoolUri: @storage_pool[:uri],
+          requestedCapacity: 1024 * 1024 * 1024
+        }
       }
       volume = OneviewSDK::Volume.new($client, options)
-      volume.create(
-        provisionType: 'Full',
-        storagePoolUri: @storage_pool[:uri],
-        requestedCapacity: 512 * 1024 * 1024
-      )
+      volume.create
     end
 
     it 'create volume from a volume template' do
       options = {
         name: VOLUME_NAME,
         description: 'Integration test volume',
-        templateUri: @vol_template[:uri]
+        templateUri: @vol_template[:uri],
+        provisioningParameters: {
+          provisionType: 'Thin',
+          storagePoolUri: @storage_pool[:uri],
+          requestedCapacity: 1024 * 1024 * 1024
+        }
       }
       volume = OneviewSDK::Volume.new($client, options)
-      volume.create(
-        requestedCapacity: 512 * 1024 * 1024,
-        provisionType: 'Thin',
-        storagePoolUri: @storage_pool[:uri]
-      )
+      volume.create
     end
 
     it 'create volume with snapshot pool specified' do
@@ -51,14 +53,15 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
         name: VOLUME_NAME,
         description: 'Integration test volume',
         storageSystemUri: @storage_system[:uri],
-        snapshotPoolUri: @storage_pool[:uri]
+        snapshotPoolUri: @storage_pool[:uri],
+        provisioningParameters: {
+          provisionType: 'Full',
+          storagePoolUri: @storage_pool[:uri],
+          requestedCapacity: 1024 * 1024 * 1024
+        }
       }
       volume = OneviewSDK::Volume.new($client, options)
-      volume.create(
-        provisionType: 'Full',
-        storagePoolUri: @storage_pool[:uri],
-        requestedCapacity: 512 * 1024 * 1024
-      )
+      volume.create
     end
 
     # REAL HARDWARE ONLY
@@ -66,15 +69,15 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
     #   options = {
     #     name: VOLUME_NAME,
     #     description: 'Integration test volume',
-    #     storageSystemUri: @storage_system[:uri]
+    #     storageSystemUri: @storage_system[:uri],
+    #     provisioningParameters: {
+    #       provisionType: 'Full',
+    #       storagePoolUri: @storage_pool[:uri],
+    #       requestedCapacity: 1024 * 1024 * 1024
+    #     }
     #   }
     #   volume = OneviewSDK::Volume.new($client, options)
-    #   volume.create(
-    #     provisionType: 'Full',
-    #     storagePoolUri: @storage_pool[:uri],
-    #     requestedCapacity: 512 * 1024 * 1024
-    #   )
-    #
+    #   volume.create
     #   wwn = volume[:wwn]
     #
     #   # Delete only from oneview
@@ -90,19 +93,21 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
     #   volume = OneviewSDK::Volume.new($client, options)
     #   volume.create
     # end
-
+    #
     # it 'add volume for management using volume name in storage system' do
     #   options = {
     #     name: VOLUME_NAME,
     #     description: 'Integration test volume',
     #     storageSystemUri: @storage_system[:uri],
-    #     snapshotPoolUri: @storage_pool[:uri]
+    #     snapshotPoolUri: @storage_pool[:uri],
+    #     provisioningParameters: {
+    #       provisionType: 'Full',
+    #       storagePoolUri: @storage_pool[:uri],
+    #       requestedCapacity: 1024 * 1024 * 1024
+    #     }
     #   }
     #   volume = OneviewSDK::Volume.new($client, options)
     #   volume.create(
-    #     provisionType: 'Full',
-    #     storagePoolUri: @storage_pool[:uri],
-    #     requestedCapacity: 512 * 1024 * 1024
     #   )
     #
     #   storage_system_volume_name = volume[:deviceVolumeName]
@@ -126,14 +131,15 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
         name: VOLUME_NAME,
         description: 'Integration test volume',
         storageSystemUri: @storage_system[:uri],
-        snapshotPoolUri: @storage_pool[:uri]
+        snapshotPoolUri: @storage_pool[:uri],
+        provisioningParameters: {
+          provisionType: 'Full',
+          storagePoolUri: @storage_pool[:uri],
+          requestedCapacity: 1024 * 1024 * 1024
+        }
       }
       volume = OneviewSDK::Volume.new($client, options)
-      volume.create(
-        provisionType: 'Full',
-        storagePoolUri: @storage_pool[:uri],
-        requestedCapacity: 512 * 1024 * 1024
-      )
+      volume.create
 
       volume.create_snapshot(VOL_SNAPSHOT_NAME)
       snap = volume.get_snapshot(VOL_SNAPSHOT_NAME)
@@ -144,10 +150,13 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
         description: 'Integration test volume 2',
         snapshotPoolUri: @storage_pool[:uri],
         storageSystemUri: @storage_system[:uri],
-        snapshotUri: "#{volume[:uri]}/snapshots/#{snap['uri']}"
+        snapshotUri: "#{volume[:uri]}/snapshots/#{snap['uri']}",
+        provisioningParameters: {
+          storagePoolUri: @storage_pool[:uri]
+        }
       }
       volume_2 = OneviewSDK::Volume.new($client, options)
-      expect { volume_2.create(storagePoolUri: @storage_pool[:uri]) }.to_not raise_error
+      expect { volume_2.create }.to_not raise_error
     end
 
     it 'create volume from snapshot created from hash' do
@@ -155,14 +164,15 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
         name: VOLUME_NAME,
         description: 'Integration test volume',
         storageSystemUri: @storage_system[:uri],
-        snapshotPoolUri: @storage_pool[:uri]
+        snapshotPoolUri: @storage_pool[:uri],
+        provisioningParameters: {
+          provisionType: 'Full',
+          storagePoolUri: @storage_pool[:uri],
+          requestedCapacity: 1024 * 1024 * 1024
+        }
       }
       volume = OneviewSDK::Volume.new($client, options)
-      volume.create(
-        provisionType: 'Full',
-        storagePoolUri: @storage_pool[:uri],
-        requestedCapacity: 512 * 1024 * 1024
-      )
+      volume.create
 
       snapshot_data = {
         name: VOL_SNAPSHOT2_NAME,
@@ -179,10 +189,13 @@ RSpec.describe OneviewSDK::Volume, integration: true, type: CREATE, sequence: 13
         description: 'Integration test volume 2',
         snapshotPoolUri: @storage_pool[:uri],
         storageSystemUri: @storage_system[:uri],
-        snapshotUri: "#{volume[:uri]}/snapshots/#{snap['uri']}"
+        snapshotUri: "#{volume[:uri]}/snapshots/#{snap['uri']}",
+        provisioningParameters: {
+          storagePoolUri: @storage_pool[:uri]
+        }
       }
       volume_3 = OneviewSDK::Volume.new($client, options)
-      expect { volume_3.create(storagePoolUri: @storage_pool[:uri]) }.to_not raise_error
+      expect { volume_3.create }.to_not raise_error
     end
   end
 end
