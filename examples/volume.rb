@@ -16,8 +16,7 @@ options1 = {
   name: 'ONEVIEW_SDK_TEST_VOLUME_1',
   description: 'Test volume with common creation: Storage System + Storage Pool',
   provisionType: 'Full',
-  shareable: true,
-
+  shareable: true
 }
 
 provisioning_parameters1 = {
@@ -56,7 +55,7 @@ puts '3) Common with snapshots = Storage System + Storage Pool + Snapshot Pool'
 options3 = {
   name: 'ONEVIEW_SDK_TEST_VOLUME_3',
   description: 'Test volume - common creation with snapshot pool: Storage System + Storage Pool + Snapshot Pool',
-  provisionType: 'Thin',
+  provisionType: 'Thin'
 }
 
 provisioning_parameters3 = {
