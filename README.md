@@ -284,6 +284,9 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
    Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
  ```
 
+## License
+This project is licensed under the Apache 2.0 license. Please see [LICENSE](LICENSE) for more info.
+
 ## Contributing and feature requests
 **Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it.
 We are passionate about improving this project, and glad to accept help to make it better.
