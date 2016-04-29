@@ -8,18 +8,12 @@ require_relative '_client'
 
 fail 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
-
 # 1) Common = Storage System + Storage Pool
 puts '1) Common = Storage System + Storage Pool'
 
 options1 = {
   name: 'ONEVIEW_SDK_TEST_VOLUME_1',
   description: 'Test volume with common creation: Storage System + Storage Pool',
-  provisionType: 'Full',
-  shareable: true
-}
-
-provisioning_parameters1 = {
   provisionType: 'Full',
   shareable: true,
   provisioningParameters: {
@@ -36,14 +30,13 @@ storage_system = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostna
 storage_system.retrieve!
 volume1.set_storage_system(storage_system)
 
-
 # Retrieve a Storage Pool
 pools = OneviewSDK::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
 fail 'ERROR: No storage pools found attached to the provided storage system' if pools.empty?
 storage_pool = pools.first
-provisioning_parameters1['storagePoolUri'] = storage_pool['uri']
+volume1['provisioningParameters']['storagePoolUri'] = storage_pool['uri']
 
-volume1.create(provisioning_parameters1)
+volume1.create!
 puts "  Created #{volume1['name']}"
 
 # 3) Common with snapshots = Storage System + Storage Pool + Snapshot Pool
@@ -52,14 +45,14 @@ puts '3) Common with snapshots = Storage System + Storage Pool + Snapshot Pool'
 options3 = {
   name: 'ONEVIEW_SDK_TEST_VOLUME_3',
   description: 'Test volume - common creation with snapshot pool: Storage System + Storage Pool + Snapshot Pool',
-  provisionType: 'Thin'
-}
-
-provisioning_parameters3 = {
-  storagePoolUri: storage_pool['uri'],
-  provisionType: 'Full',
-  shareable: true,
-  requestedCapacity: 1024 * 1024 * 1024 # 1GB
+  provisionType: 'Thin',
+  shareable: false,
+  provisioningParameters: {
+    storagePoolUri: storage_pool['uri'],
+    provisionType: 'Full',
+    shareable: true,
+    requestedCapacity: 1024 * 1024 * 1024 # 1GB
+  }
 }
 
 volume3 = OneviewSDK::Volume.new(@client, options3)
@@ -67,7 +60,7 @@ volume3 = OneviewSDK::Volume.new(@client, options3)
 volume3.set_storage_system(storage_system)
 volume3.set_snapshot_pool(storage_pool) # The same snapshot pool of the storage pool
 
-volume3.create(provisioning_parameters3)
+volume3.create!
 puts "  Created #{volume3['name']}"
 
 # Create volume snapshot:
@@ -91,7 +84,6 @@ if @unmanaged_volume_wwn
   volume4.create!
   puts "Created #{volume4['name']}"
 end
-
 
 puts 'Cleaning up...'
 volume1.delete

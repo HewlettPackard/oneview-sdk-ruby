@@ -32,6 +32,7 @@ module OneviewSDK
       response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
       body = @client.response_handler(response)
       set_all(body)
+      @data.delete('provisioningParameters')
       self
     end
 
