@@ -16,18 +16,25 @@ RSpec.describe OneviewSDK::EnclosureGroup do
     end
   end
 
+  describe '#refresh' do
+    it 'cannot be refreshed' do
+      @item = OneviewSDK::Switch.new(@client)
+      expect { @item.refresh }.to raise_error(/unavailable for this resource/)
+    end
+  end
+
   describe '#get_type' do
     it 'finds the specified switch' do
       switch_type_list = FakeResponse.new(
         'members' => [
-          {'name' => 'SwitchA', 'uri' => 'rest/fake/A'},
-          {'name' => 'TheSwitch', 'uri' => 'rest/fake/switch'},
-          {'name' => 'SwitchC', 'uri' => 'rest/fake/C'}
+          { 'name' => 'SwitchA', 'uri' => 'rest/fake/A' },
+          { 'name' => 'TheSwitch', 'uri' => 'rest/fake/switch' },
+          { 'name' => 'SwitchC', 'uri' => 'rest/fake/C' }
         ]
       )
       expect(@client).to receive(:rest_get).with('/rest/switch-types').and_return(switch_type_list)
       @item = OneviewSDK::Switch.get_type(@client, 'TheSwitch')
-      expect( @item['uri'] ).to eq('rest/fake/switch')
+      expect(@item['uri']).to eq('rest/fake/switch')
     end
   end
 

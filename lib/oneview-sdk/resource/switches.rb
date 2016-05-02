@@ -12,6 +12,10 @@ module OneviewSDK
       unavailable_method
     end
 
+    def refresh
+      unavailable_method
+    end
+
     # Retrieve switch types
     # @param [Client] client http client
     def self.get_types(client)
@@ -29,7 +33,7 @@ module OneviewSDK
       results.find { |switch_type| switch_type['name'] == name }
     end
 
-      # Get statistics for an interconnect, for the specified port or subport
+    # Get statistics for an interconnect, for the specified port or subport
     # @param [String] portName port to retrieve statistics
     # @param [String] subportNumber subport to retrieve statistics
     def statistics(port_name = nil, subport_number = nil)
