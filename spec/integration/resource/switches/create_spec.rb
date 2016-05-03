@@ -7,7 +7,7 @@ RSpec.describe OneviewSDK::Switch, integration: true, type: CREATE, sequence: 15
     @item = OneviewSDK::Switch.find_by($client, {}).first
   end
 
-  describe 'Unavailable  methods' do
+  describe 'Unavailable methods' do
     it '#create' do
       expect { @item.create }.to raise_error(/unavailable for this resource/)
     end
