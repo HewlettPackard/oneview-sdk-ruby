@@ -242,7 +242,7 @@ module OneviewSDK
           temp = new(client, member)
           results.push(temp) if temp.like?(attributes)
         end
-        break unless body['nextPageUri']
+        break unless body['nextPageUri'] && (body['nextPageUri'] != uri)
         uri = body['nextPageUri']
       end
       results
