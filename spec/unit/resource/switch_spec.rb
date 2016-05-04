@@ -1,5 +1,5 @@
 
-RSpec.describe OneviewSDK::EnclosureGroup do
+RSpec.describe OneviewSDK::Switch do
   include_context 'shared context'
 
   describe '#create' do

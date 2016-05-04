@@ -18,6 +18,7 @@ module OneviewSDK
 
     # Retrieve switch types
     # @param [Client] client http client
+    # @return [Array] All the Switch types
     def self.get_types(client)
       response = client.rest_get(TYPE_URI)
       response = client.response_handler(response)
@@ -36,6 +37,7 @@ module OneviewSDK
     # Get statistics for an interconnect, for the specified port or subport
     # @param [String] portName port to retrieve statistics
     # @param [String] subportNumber subport to retrieve statistics
+    # @return [Hash] Switch statistics
     def statistics(port_name = nil, subport_number = nil)
       uri = if subport_number
               "#{@data['uri']}/statistics/#{port_name}/subport/#{subport_number}"
@@ -47,7 +49,7 @@ module OneviewSDK
     end
 
     # Get settings that describe the environmental configuration
-    # @return [Hash] Configurations parameters
+    # @return [Hash] Configuration parameters
     def environmental_configuration
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
