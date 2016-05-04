@@ -1,5 +1,5 @@
 module OneviewSDK
-  # Interconnect resource implementation
+  # Switch resource implementation
   class Switch < Resource
     BASE_URI = '/rest/switches'.freeze
     TYPE_URI = '/rest/switch-types'.freeze
