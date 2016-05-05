@@ -16,7 +16,7 @@ module OneviewSDK
       @data['switchMapTemplate'] ||= {}
     end
 
-    # Define how the switches willl be grouped setting the number and the type of the switches
+    # Define how the switches will be grouped setting the number and the type of the switches
     # @param [Fixnum] number_of_switches Number of the switch inside the group [1,2]
     # @param [String] type Switch type name
     def set_grouping_parameters(number_of_switches, type)
