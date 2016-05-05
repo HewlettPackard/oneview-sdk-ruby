@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: UPDATE do
+RSpec.describe OneviewSDK::LogicalSwitchGroup, integration: true, type: UPDATE do
   include_context 'integration context'
 
   describe '#update' do
