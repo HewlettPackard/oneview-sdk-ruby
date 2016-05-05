@@ -40,7 +40,7 @@ module OneviewSDK
         entry = {
           'logicalLocation' => {
             'locationEntries' => [
-              { 'relativeValue' => stacking_member_id, 'type' => 'StackingMemberId' },
+              { 'relativeValue' => stacking_member_id, 'type' => 'StackingMemberId' }
             ]
           },
           'permittedSwitchTypeUri' => nil
