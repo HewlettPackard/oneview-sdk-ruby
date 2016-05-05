@@ -1,8 +1,12 @@
 module OneviewSDK
   # Logical Switch Group resource implementation
   class LogicalSwitchGroup < Resource
-    BASE_URI = '/rest/logical-switch-group'.freeze
+    BASE_URI = '/rest/logical-switch-groups'.freeze
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
@@ -10,22 +14,18 @@ module OneviewSDK
       @data['state'] ||= 'Active'
       @data['type'] ||= 'logical-switch-group'
       @data['switchMapTemplate'] ||= {}
-      @data['switchMapTemplate']['switchMapEntryTemplates'] ||= []
-      @bay_count = 2
-
-      # Create all entries if empty
-      parse_switch_map_template if @data['switchMapTemplate']['switchMapEntryTemplates'] == []
     end
 
-    # Add a switch
-    # @param [Fixnum] stacking_member_id Number of the switch inside the group [1,2]
-    # @param [String] type Interconnect type
-    def add_switch(stacking_member_id, type)
+    # Define how the switches willl be grouped setting the number and the type of the switches
+    # @param [Fixnum] number_of_switches Number of the switch inside the group [1,2]
+    # @param [String] type Switch type name
+    def set_grouping_parameters(number_of_switches, type)
+      @data['switchMapTemplate']['switchMapEntryTemplates'] = []
+      parse_switch_map_template(number_of_switches)
+      switch_type_uri = OneviewSDK::Switch.get_type(@client, type)['uri']
       @data['switchMapTemplate']['switchMapEntryTemplates'].each do |entry|
         entry['logicalLocation']['locationEntries'].each do |location|
-          if location['type'] == 'StackingMemberId' && location['relativeValue'] == stacking_member_id
-            entry['permittedSwitchTypeUri'] = OneviewSDK::Switch.get_type(@client, type)['uri']
-          end
+          entry['permittedSwitchTypeUri'] = switch_type_uri if location['type'] == 'StackingMemberId'
         end
       end
     rescue StandardError
@@ -35,12 +35,12 @@ module OneviewSDK
 
     private
 
-    def parse_switch_map_template
-      1.upto(@bay_count) do |bay_number|
+    def parse_switch_map_template(number_of_switches)
+      1.upto(number_of_switches) do |stacking_member_id|
         entry = {
           'logicalLocation' => {
             'locationEntries' => [
-              { 'relativeValue' => bay_number, 'type' => 'StackingMemberId' },
+              { 'relativeValue' => stacking_member_id, 'type' => 'StackingMemberId' },
             ]
           },
           'permittedSwitchTypeUri' => nil

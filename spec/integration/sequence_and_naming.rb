@@ -68,3 +68,4 @@ VOL_SNAPSHOT2_NAME = 'snapshot_qa_2'.freeze
 
 # Logical Switch Group
 LOG_SWI_GROUP_NAME = 'LogicalSwitchGroup_1'.freeze
+LOG_SWI_GROUP_NAME_UPDATED = 'LogicalSwitchGroup_1_UPDATED'.freeze

@@ -10,12 +10,11 @@ RSpec.describe OneviewSDK::LogicalSwitchGroup, integration: true, type: CREATE, 
 
   describe '#create' do
     it 'LSG with unrecognized interconnect' do
-      expect { @item.add_switch(1, 'invalid_type') }.to raise_error(/Switch type invalid_type/)
+      expect { @item.set_grouping_parameters(1, 'invalid_type') }.to raise_error(/Switch type invalid_type/)
     end
 
     it 'LSG with two switches' do
-      @item.add_switch(1, @type)
-      @item.add_switch(2, @type)
+      @item.set_grouping_parameters(2, @type)
       expect { @item.create }.to_not raise_error
     end
   end
