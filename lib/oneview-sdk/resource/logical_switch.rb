@@ -53,13 +53,8 @@ module OneviewSDK
     # @param [CredentialsSNMP] snmp_credentials SNMP credentials
     def set_switch_credentials(host, ssh_credentials, snmp_credentials)
       fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSSH>' if ssh_credentials.class.to_s != 'OneviewSDK::LogicalSwitch::CredentialsSSH'
-      if snmp_credentials.respond_to?('version')
-        if snmp_credentials.version != 'SNMPv1' && snmp_credentials.version != 'SNMPv3'
-          fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>'
-        end
-      else
-        fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>'
-      end
+      fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>' unless snmp_credentials.respond_to?('version')
+      fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>' if snmp_credentials.version != 'SNMPv1' && snmp_credentials.version != 'SNMPv3'
       @logical_switch_credentials[host] = [ssh_credentials.clone, snmp_credentials.clone]
     end
 
