@@ -17,7 +17,7 @@ sleep(10)
 # List all the available Switch Types
 switch_type_list = OneviewSDK::Switch.get_types(@client)
 puts "\nThe switch types available are: "
-switch_type_list.each { |type| puts type['name']}
+switch_type_list.each { |type| puts type['name'] }
 
 # List Switch environmental configuration
 pretty "\nThe switch #{switch[:name]} environmental_configuration are:"
