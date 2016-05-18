@@ -14,8 +14,8 @@ RSpec.describe OneviewSDK::LogicalSwitch, integration: true, type: CREATE, seque
       logical_switch_group = OneviewSDK::LogicalSwitchGroup.new($client, name: 'Teste')
       logical_switch_group.retrieve!
       @item.set_logical_switch_group(logical_switch_group)
-      @item.set_switch_credentials('172.18.20.1', ssh_credentials, snmp_v1)
-      @item.set_switch_credentials('172.18.20.2', ssh_credentials, snmp_v1)
+      @item.set_switch_credentials($secrets['logical_switch1_ip'], ssh_credentials, snmp_v1)
+      @item.set_switch_credentials($secrets['logical_switch2_ip'], ssh_credentials, snmp_v1)
       @item.create
       expect(@item['uri']).to be
     end

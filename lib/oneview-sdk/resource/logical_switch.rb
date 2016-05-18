@@ -13,6 +13,9 @@ module OneviewSDK
     end
 
     # Create method
+    # @raise [RuntimeError] if the client is not set
+    # @raise [RuntimeError] if the resource creation fails
+    # @return [Resource] self
     def create
       ensure_client
       request_body = {}
@@ -36,12 +39,14 @@ module OneviewSDK
     CredentialsSSH = Struct.new(:user, :password)
 
     CredentialsSNMPV1 = Struct.new(:port, :community_string, :version) do
+      # @return [String] Returns SNMPv1
       def version
         'SNMPv1'
       end
     end
 
     CredentialsSNMPV3 = Struct.new(:port, :user, :auth_protocol, :auth_password, :privacy_protocol, :privacy_password, :version) do
+      # @return [String] Returns SNMPv3
       def version
         'SNMPv3'
       end
@@ -51,17 +56,20 @@ module OneviewSDK
     # @param [String] host IP address or host name
     # @param [CredentialsSSH] ssh_credentials SSH credentials
     # @param [CredentialsSNMP] snmp_credentials SNMP credentials
+    # @return [Array] Array containing SSH and SNMP credentials
     def set_switch_credentials(host, ssh_credentials, snmp_credentials)
       fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSSH>' if ssh_credentials.class.to_s != 'OneviewSDK::LogicalSwitch::CredentialsSSH'
       fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>' unless snmp_credentials.respond_to?('version')
       fail 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>' if snmp_credentials.version != 'SNMPv1' && snmp_credentials.version != 'SNMPv3'
       @logical_switch_credentials[host] = [ssh_credentials.clone, snmp_credentials.clone]
+      @logical_switch_credentials[host]
     end
 
     # @!endgroup
 
 
     # Set logical switch group
+    # @param [OneviewSDK::logicalSwitchGroup] logical_switch_group Logical switch group
     def set_logical_switch_group(logical_switch_group)
       @data['logicalSwitchGroupUri'] = logical_switch_group['uri']
     end
