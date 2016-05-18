@@ -28,7 +28,9 @@ module OneviewSDK
       self
     end
 
-    # Reclaims the top-of-rack switches in a logical switch
+    # Updates this object using the data that exists on OneView
+    # @note Will overwrite any data that differs from OneView
+    # @return [Resource] self
     def refresh
       response = @client.rest_put(@data['uri'] + '/refresh')
       @client.response_handler(response)
