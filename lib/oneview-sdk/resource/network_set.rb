@@ -13,10 +13,6 @@ module OneviewSDK
       @data['type'] ||= 'network-set'
     end
 
-    # @!group Validates
-
-    # @!endgroup
-
     # Set native network for the network set
     # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
     def set_native_network(ethernet_network)
