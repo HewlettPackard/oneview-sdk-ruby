@@ -17,7 +17,7 @@ module OneviewSDK
     # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
     def set_native_network(ethernet_network)
       @data['nativeNetworkUri'] = ethernet_network['uri']
-      @data['networkUris'] << ethernet_network['uri']
+      @data['networkUris'] << ethernet_network['uri'] unless @data['networkUris'].include?(ethernet_network['uri'])
     end
 
     # Add an ethernet network to Network Set
