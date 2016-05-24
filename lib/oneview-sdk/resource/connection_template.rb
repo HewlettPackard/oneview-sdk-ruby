@@ -10,10 +10,12 @@ module OneviewSDK
       @data['type'] ||= 'connection-template'
     end
 
+    # unavailable method
     def create
       unavailable_method
     end
 
+    # unavailable method
     def delete
       unavailable_method
     end
