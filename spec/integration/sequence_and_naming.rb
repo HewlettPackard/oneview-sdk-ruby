@@ -74,4 +74,4 @@ LOG_SWI_GROUP_NAME_UPDATED = 'LogicalSwitchGroup_1_UPDATED'.freeze
 LOG_SWI_NAME = 'LogicalSwitch_1'.freeze
 
 # VolumeAttachment
-VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'
+VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
