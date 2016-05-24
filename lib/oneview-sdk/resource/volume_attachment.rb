@@ -9,14 +9,17 @@ module OneviewSDK
       @data['type'] ||= 'StorageVolumeAttachment'
     end
 
+    # unavailable method
     def create
       unavailable_method
     end
 
+    # unavailable method
     def update
       unavailable_method
     end
 
+    # unavailable method
     def delete
       unavailable_method
     end
