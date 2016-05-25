@@ -22,6 +22,12 @@ FC_NET_NAME_UPDATED = 'FCNetwork_1_UPDATED'.freeze
 FCOE_NET_NAME = 'FCoENetwork_1'.freeze
 FCOE_NET_NAME_UPDATED = 'FCoENetwork_1_UPDATED'.freeze
 
+# Network Set
+NETWORK_SET1_NAME = 'NetworkSet_1'.freeze
+NETWORK_SET2_NAME = 'NetworkSet_2'.freeze
+NETWORK_SET3_NAME = 'NetworkSet_3'.freeze
+NETWORK_SET4_NAME = 'NetworkSet_4'.freeze
+
 # LogicalInterconnectGroup
 LOG_INT_GROUP_NAME = 'LogicalInterconnectGroup_1'.freeze
 LOG_INT_GROUP_NAME_UPDATED = 'LogicalInterconnectGroup_1_UPDATED'.freeze
