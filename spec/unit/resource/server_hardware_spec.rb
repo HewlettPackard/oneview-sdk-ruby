@@ -10,6 +10,130 @@ RSpec.describe OneviewSDK::ServerHardware do
     end
   end
 
+  describe '#update_ilo_firmware' do
+    it '' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_put).with(item['uri'] + '/mpFirmwareVersion')
+        .and_return(FakeResponse.new({}))
+      item.update_ilo_firmware
+    end
+  end
+
+  describe '#get_bios' do
+    it '' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with(item['uri'] + '/bios')
+        .and_return(FakeResponse.new({}))
+      item.get_bios
+    end
+  end
+
+  describe '#get_remote_console_url' do
+    it '' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with(item['uri'] + '/remoteConsoleUrl')
+        .and_return(FakeResponse.new({}))
+      item.get_remote_console_url
+    end
+  end
+
+  describe '#get_ilo_sso_url' do
+    it '' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with(item['uri'] + '/iloSsoUrl')
+        .and_return(FakeResponse.new({}))
+      item.get_ilo_sso_url
+    end
+  end
+
+  describe '#get_java_remote_sso_url' do
+    it '' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with(item['uri'] + '/javaRemoteConsoleUrl')
+        .and_return(FakeResponse.new({}))
+      item.get_java_remote_sso_url
+    end
+  end
+
+  describe '#set_refresh_state' do
+    it 'requires a uri' do
+      expect { OneviewSDK::ServerHardware.new(@client).set_refresh_state(:state) }.to raise_error(/Please set uri/)
+    end
+
+    it 'only permits certain states' do
+      allow(@client).to receive(:rest_put).and_return(FakeResponse.new)
+
+      OneviewSDK::ServerHardware::VALID_REFRESH_STATES.each do |i|
+        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(i) }.to_not raise_error
+      end
+      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state('') }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state('state') }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state(nil) }.to raise_error(/Invalid refreshState/)
+    end
+
+    it 'does a PUT to /refreshState' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake', refreshState: 'NotRefreshing')
+      expect(@client).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
+        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+      item.set_refresh_state('Refreshing')
+      expect(item['refreshState']).to eq('Refreshing')
+    end
+
+    it 'allows string or symbol refreshState values' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake', refreshState: 'NotRefreshing')
+      expect(@client).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
+        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+      item.set_refresh_state(:Refreshing)
+      expect(item['refreshState']).to eq('Refreshing')
+    end
+  end
+
+  describe '#environmentalConfiguration' do
+    it 'requires a uri' do
+      expect { OneviewSDK::ServerHardware.new(@client).environmental_configuration }.to raise_error(/Please set uri/)
+    end
+
+    it 'gets uri/environmentalConfiguration' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(item.environmental_configuration).to eq('key' => 'val')
+    end
+  end
+
+  describe '#utilization' do
+    it 'requires a uri' do
+      expect { OneviewSDK::ServerHardware.new(@client).utilization }.to raise_error(/Please set uri/)
+    end
+
+    it 'gets uri/utilization' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/utilization', item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization).to eq('key' => 'val')
+    end
+
+    it 'takes query parameters' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/utilization?key=val', item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization(key: :val)).to eq('key' => 'val')
+    end
+
+    it 'takes an array for the :fields query parameter' do
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization(fields: %w(one two three))).to eq('key' => 'val')
+    end
+
+    it 'converts Time query parameters' do
+      t = Time.now
+      item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization(startDate: t)).to eq('key' => 'val')
+    end
+  end
+
   describe '#create' do
     context 'with valid data' do
       before :each do
@@ -46,7 +170,7 @@ RSpec.describe OneviewSDK::ServerHardware do
   describe '#update' do
     it 'does not allow it' do
       server_hardware = OneviewSDK::ServerHardware.new(@client, {})
-      expect { server_hardware.update(name: 'new') }.to raise_error(/Method not available/)
+      expect { server_hardware.update(name: 'new') }.to raise_error(/The method #update is unavailable for this resource/)
       expect(server_hardware[:name]).to be_nil
     end
   end
