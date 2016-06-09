@@ -70,21 +70,21 @@ module OneviewSDK
 
 
     # Get a url to the iLO web interface
-    # @return [String] url
+    # @return [Hash] url
     def get_ilo_sso_url
       response = @client.rest_get(@data['uri'] + '/iloSsoUrl')
       @client.response_handler(response)
     end
 
     # Get a Single Sign-On session for the Java Applet console
-    # @return [String] url
+    # @return [Hash] url
     def get_java_remote_sso_url
       response = @client.rest_get(@data['uri'] + '/javaRemoteConsoleUrl')
       @client.response_handler(response)
     end
 
     # Get a url to the iLO web interface
-    # @return [String] url
+    # @return [Hash] url
     def get_remote_console_url
       response = @client.rest_get(@data['uri'] + '/remoteConsoleUrl')
       @client.response_handler(response)
