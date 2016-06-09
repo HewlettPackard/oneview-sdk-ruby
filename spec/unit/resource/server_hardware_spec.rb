@@ -13,7 +13,7 @@ RSpec.describe OneviewSDK::ServerHardware do
   describe '#update_ilo_firmware' do
     it '' do
       item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_put).with(item['uri'] + '/mpFirwareVersion')
+      expect(@client).to receive(:rest_put).with(item['uri'] + '/mpFirmwareVersion')
         .and_return(FakeResponse.new({}))
       item.update_ilo_firmware
     end
@@ -49,7 +49,7 @@ RSpec.describe OneviewSDK::ServerHardware do
   describe '#get_java_remote_sso_url' do
     it '' do
       item = OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_get).with(item['uri'] + '/javaRemoteSsoUrl')
+      expect(@client).to receive(:rest_get).with(item['uri'] + '/javaRemoteConsoleUrl')
         .and_return(FakeResponse.new({}))
       item.get_java_remote_sso_url
     end
