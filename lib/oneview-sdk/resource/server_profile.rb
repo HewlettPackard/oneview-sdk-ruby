@@ -64,6 +64,7 @@ module OneviewSDK
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerProfile] 'server_profile' The server profile associated with the resource
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
+    # @return [Hash] Hash containing all the available server information
     def self.get_available_servers(client, query = nil)
       query_uri = build_query(query) if query
       # profileUri attribute is not following the standards in OneView
@@ -131,18 +132,21 @@ module OneviewSDK
     end
 
     def get_compliance_preview
+      ensure_client & ensure_uri
       response = @client.rest_get("#{self['uri']}/compliance-preview")
-      client.response_handler(response)
+      @client.response_handler(response)
     end
 
     def get_messages
+      ensure_client & ensure_uri
       response = @client.rest_get("#{self['uri']}/messages")
-      client.response_handler(response)
+      @client.response_handler(response)
     end
 
     def get_transformation
+      ensure_client & ensure_uri
       response = @client.rest_get("#{self['uri']}/messages")
-      client.response_handler(response)
+      @client.response_handler(response)
     end
 
     def compliance
