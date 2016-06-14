@@ -12,7 +12,7 @@ RSpec.describe OneviewSDK::ServerHardwareType, integration: true, type: UPDATE d
   describe '#update' do
     it 'Update name and description' do
       old_name = @item['name']
-      expect { @item.update(name: 'Teste', description: 'Server hardware type description') }.not_to raise_error
+      expect { @item.update(name: 'Test', description: 'Server hardware type description') }.not_to raise_error
       @item.update(name: old_name)
     end
   end

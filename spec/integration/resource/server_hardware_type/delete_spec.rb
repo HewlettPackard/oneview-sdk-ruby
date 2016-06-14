@@ -8,7 +8,7 @@ RSpec.describe OneviewSDK::ServerHardwareType, integration: true, type: DELETE, 
       server_hardware = OneviewSDK::ServerHardware.find_by($client, name: $secrets['server_hardware_ip']).first
       item = OneviewSDK::ServerHardwareType.find_by($client, name: server_hardware['model'])
       item.retrieve!
-      item.delete
+      expect { item.delete }.not_to raise_error
     end
   end
 end
