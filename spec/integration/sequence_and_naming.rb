@@ -81,3 +81,9 @@ LOG_SWI_NAME = 'LogicalSwitch_1'.freeze
 
 # VolumeAttachment
 VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
+
+# Datacenter
+DATACENTER1_NAME = 'Datacenter_1'.freeze
+DATACENTER2_NAME = 'Datacenter_2'.freeze
+DATACENTER3_NAME = 'Datacenter_3'.freeze
+DATACENTER1_NAME_UPDATED = 'Datacenter_1_UPDATED'.freeze
