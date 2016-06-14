@@ -1,0 +1,92 @@
+require 'spec_helper'
+
+RSpec.describe OneviewSDK::Datacenter do
+  include_context 'shared context'
+
+  describe '#initialize' do
+    it 'sets the defaults correctly' do
+      datacenter = OneviewSDK::Datacenter.new(@client)
+      expect(datacenter['contents']).to eq([])
+    end
+  end
+
+  describe '#add_rack' do
+    before :each do
+      @datacenter = OneviewSDK::Datacenter.new(@client)
+    end
+
+    it 'Add one rack without rotation' do
+      rack1 = Hash.new('uri' => '/rest/fake/rack1')
+      @datacenter.add_rack(rack1, 5000, 5000)
+      expect(@datacenter['contents'][0]['resourceUri']).to eq(rack1['uri'])
+    end
+
+    it 'Add one rack with rotation included' do
+      rack1 = Hash.new('uri' => '/rest/fake/rack1')
+      @datacenter.add_rack(rack1, 5000, 5000, 100)
+      expect(@datacenter['contents'][0]['resourceUri']).to eq(rack1['uri'])
+    end
+
+    it 'Add multiple racks' do
+      rack1 = Hash.new('uri' => '/rest/fake/rack1')
+      rack2 = Hash.new('uri' => '/rest/fake/rack2')
+      @datacenter.add_rack(rack1, 500, 1000)
+      @datacenter.add_rack(rack2, 100, 1000)
+      expect(@datacenter['contents'][0]['resourceUri']).to eq(rack1['uri'])
+      expect(@datacenter['contents'][1]['resourceUri']).to eq(rack2['uri'])
+    end
+  end
+
+  describe '#remove_rack' do
+    before :each do
+      @datacenter = OneviewSDK::Datacenter.new(@client)
+    end
+
+    it 'Remove rack from empty list' do
+      rack1 = Hash.new('uri' => '/rest/fake/rack1')
+      expect { @datacenter.remove_rack(rack1) }.not_to raise_error
+    end
+
+    it 'Remove only one rack' do
+      rack1 = Hash.new('uri' => '/rest/fake/rack1')
+      rack2 = Hash.new('uri' => '/rest/fake/rack2')
+      @datacenter.add_rack(rack1, 100, 100)
+      @datacenter.add_rack(rack2, 200, 200)
+      @datacenter.remove_rack(rack1)
+      results = @datacenter['contents'].map { |rack| rack['resourceUri'] }
+      expect(results).not_to include(rack1['uri'])
+      expect(results).to include(rack2['uri'])
+    end
+  end
+
+  describe '#validate_depth' do
+    before :each do
+      @datacenter = OneviewSDK::Datacenter.new(@client)
+    end
+
+    it 'Invalid depth' do
+      expect { @datacenter['depth'] = 1 }.to raise_error(/Invalid depth, value must be between 1000 and 50000/)
+    end
+
+    it 'Valid depth' do
+      expect { @datacenter['depth'] = 2000 }.not_to raise_error
+      expect(@datacenter['depth']).to eq(2000)
+    end
+  end
+
+  describe '#validate_width' do
+    before :each do
+      @datacenter = OneviewSDK::Datacenter.new(@client)
+    end
+
+    it 'Invalid width' do
+      expect { @datacenter['width'] = 1 }.to raise_error(/Invalid width, value must be between 1000 and 50000/)
+    end
+
+    it 'Valid width' do
+      expect { @datacenter['width'] = 2000 }.not_to raise_error
+      expect(@datacenter['width']).to eq(2000)
+    end
+  end
+
+end
