@@ -18,13 +18,13 @@ RSpec.describe OneviewSDK::Rack, integration: true, type: DELETE, sequence: 11 d
     it 'Rack_1' do
       item = OneviewSDK::Rack.new($client, name: RACK1_NAME)
       item.retrieve!
-      item.remove
+      expect { item.remove }.not_to raise_error
     end
 
     it 'Rack_2' do
       item = OneviewSDK::Rack.new($client, name: RACK2_NAME)
       item.retrieve!
-      item.remove
+      expect { item.remove }.not_to raise_error
     end
   end
 end
