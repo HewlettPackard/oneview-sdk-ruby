@@ -254,6 +254,39 @@ module OneviewSDK
       find_by(client, {})
     end
 
+    # Builds a Query string corresponding to the parameters passed
+    # @param [Hash{String=>String,OneviewSDK::Resource}] query Query parameters and values
+    #   to be applied to the query url.
+    #   All key values should be Strings in snake case, the values could be Strings or Resources.
+    # @option query [String] String Values that are Strings can be associated as usual
+    # @option query [String] Resources Values that are Resources can be associated as usual,
+    #   with keys representing only the resource names (like 'ethernet_network'). This method
+    #   translates the SDK and Ruby standards to OneView request standard.
+    def self.build_query(query)
+      return '' if query.empty?
+      path = '?'
+      query.each do |k, v|
+        new_key = snake_to_lower_camel(k)
+        v.retrieve! if !v['uri'] && v.respond_to?(:retrieve!)
+        if v.class <= OneviewSDK::Resource
+          new_key = new_key.concat('Uri')
+          v = v['uri']
+        end
+        path.concat("&#{new_key}=#{v}")
+      end
+      path.sub('?&', '?')
+    end
+
+    # Changes the case of a String from snake_case to lowerCamelCase
+    # @param [String] str String in snake_case to be changed
+    # @return [String] the String in lowerCamelCase
+    def self.snake_to_lower_camel(str)
+      words = str.split('_')
+      words.map!(&:capitalize!)
+      words[0] = words.first.downcase
+      words.join
+    end
+
     protected
 
     # Fail unless @client is set for this resource.
@@ -271,26 +304,6 @@ module OneviewSDK
     # Fail for methods that are not available for one resource
     def unavailable_method
       fail "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
-    end
-
-    # Builds a Query string corresponding to the parameters passed
-    # @param [Hash{String=>String,OneviewSDK::Resource}] query Query parameters and values
-    #   to be applied to the query url.
-    #   All key values should be Strings in snake case, the values could be Strings or Resources.
-    # @option query [String] String Values that are Strings can be associated as usual
-    # @option query [String] Resources Values that are Resources can be associated as usual,
-    #   with keys representing only the resource names (like 'ethernet_network'). This method
-    #   translates the SDK and Ruby standards to OneView request standard.
-    def build_query(query)
-      return '' if query.empty?
-      path = '?'
-      query.each do |k,v|
-        new_key = snake_to_lower_camel(k)
-        v.retrieve! if !v['uri'] && v.responds_to(:retrieve!)
-        new_key, v = new_key.concat('Uri'), v['uri'] if v.class <= OneviewSDK::Resource
-        path.concat("&#{new_key}=#{v}")
-      end
-      path.sub('?&', '?')
     end
 
     private
@@ -326,13 +339,6 @@ module OneviewSDK
     end
     new_type = type.to_s.downcase.gsub(/[ -_]/, '')
     return classes[new_type] if classes.keys.include?(new_type)
-  end
-
-  def snake_to_lower_camel(str)
-    words = str.split('_')
-    words.map! { |w| w.capitalize! }
-    words[0] = words.first.downcase
-    words.join
   end
 end
 
