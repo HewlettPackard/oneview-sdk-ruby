@@ -278,7 +278,7 @@ module OneviewSDK
       path = '?'
       query.each do |k, v|
         new_key = snake_to_lower_camel(k)
-        v.retrieve! if !v['uri'] && v.respond_to?(:retrieve!)
+        v.retrieve! if v.respond_to?(:retrieve!) && !v['uri']
         if v.class <= OneviewSDK::Resource
           new_key = new_key.concat('Uri')
           v = v['uri']

@@ -81,9 +81,11 @@ module OneviewSDK
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
     # @return [Hash] Hash containing all the available server information
     def self.get_available_servers(client, query = nil)
-      query_uri = build_query(query) if query
-      # profileUri attribute is not following the standards in OneView
-      query_uri.sub!('serverProfileUri', 'profileUri')
+      if query
+        query_uri = build_query(query)
+        # profileUri attribute is not following the standards in OneView
+        query_uri.sub!('serverProfileUri', 'profileUri')
+      end
       response = client.rest_get("#{BASE_URI}/available-servers#{query_uri}")
       client.response_handler(response)
     end
@@ -186,8 +188,12 @@ module OneviewSDK
     # Update the server profile from the server profile template.
     def compliance
       ensure_client & ensure_uri
-      patch_opt = { 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant' }
-      response = @client.rest_patch(self['uri'], patch_opt)
+      patch_operation = { 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant' }
+      patch_options = {
+        'If-Match' => self['eTag'],
+        'body' => [patch_operation]
+      }
+      response = @client.rest_patch(self['uri'], patch_options)
       @client.response_handler(response)
     end
 

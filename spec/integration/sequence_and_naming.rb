@@ -79,5 +79,13 @@ LOG_SWI_GROUP_NAME_UPDATED = 'LogicalSwitchGroup_1_UPDATED'.freeze
 # Logical Switch
 LOG_SWI_NAME = 'LogicalSwitch_1'.freeze
 
-# VolumeAttachment
+# Volume Attachment
 VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
+
+# Server Profile
+SERVER_PROFILE_NAME = 'ServerProfile_1'.freeze
+SERVER_PROFILE2_NAME = 'ServerProfile_2'.freeze
+SERVER_PROFILE3_NAME = 'ServerProfile_3'.freeze
+SERVER_PROFILE4_NAME = 'ServerProfile_4'.freeze
+SERVER_PROFILE5_NAME = 'ServerProfile_5'.freeze
+SERVER_PROFILE6_NAME = 'ServerProfile_6'.freeze

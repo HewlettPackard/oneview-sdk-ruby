@@ -2,20 +2,19 @@ require_relative '_client' # Gives access to @client
 
 # Example: Create a server profile
 # NOTE: This will create a server profile named 'OneViewSDK Test ServerProfile', then delete it.
-# NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
-#   @server_hardware_type_uri
-#   @enclosure_group_uri
 
-fail 'Must set @server_hardware_type_uri in _client.rb' unless @server_hardware_type_uri
-fail 'Must set @enclosure_group_uri in _client.rb' unless @enclosure_group_uri
+profile = OneviewSDK::ServerProfile.new(@client, 'name' => 'OneViewSDK Test ServerProfile')
 
-options = {
-  name:  'OneViewSDK Test ServerProfile',
-  serverHardwareTypeUri: @server_hardware_type_uri,
-  enclosureGroupUri: @enclosure_group_uri
-}
+target = OneviewSDK::ServerProfile.get_available_targets(@client)['targets'].first
 
-profile = OneviewSDK::ServerProfile.new(@client, options)
+server_hardware = OneviewSDK::ServerHardware.new(@client, uri: target['serverHardwareUri'])
+server_hardware_type = OneviewSDK::ServerHardwareType.new(@client, uri: target['serverHardwareTypeUri'])
+enclosure_group = OneviewSDK::EnclosureGroup.new(@client, uri: target['enclosureGroupUri'])
+
+profile.set_server_hardware(server_hardware)
+profile.set_server_hardware_type(server_hardware_type)
+profile.set_enclosure_group(enclosure_group)
+
 profile.create
 puts "\nCreated server profile '#{profile[:name]}' sucessfully.\n  uri = '#{profile[:uri]}'"
 

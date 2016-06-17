@@ -256,8 +256,13 @@ RSpec.describe OneviewSDK::ServerProfile do
 
   describe '#compliance' do
     it 'transforms an existing profile' do
+      patch_ops = [{ 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant' }]
+      request = {
+        'If-Match' => @item['eTag'],
+        'body' => patch_ops
+      }
       expect(@client).to receive(:rest_patch)
-        .with(@item['uri'], 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant')
+        .with(@item['uri'], request)
         .and_return(FakeResponse.new)
       expect { @item.compliance }.to_not raise_error
     end
