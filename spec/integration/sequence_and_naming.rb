@@ -87,3 +87,7 @@ DATACENTER1_NAME = 'Datacenter_1'.freeze
 DATACENTER2_NAME = 'Datacenter_2'.freeze
 DATACENTER3_NAME = 'Datacenter_3'.freeze
 DATACENTER1_NAME_UPDATED = 'Datacenter_1_UPDATED'.freeze
+
+# Rack
+RACK1_NAME = 'Rack_1'.freeze
+RACK2_NAME = 'Rack_2'.freeze
