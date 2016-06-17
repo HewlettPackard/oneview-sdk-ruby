@@ -91,3 +91,6 @@ DATACENTER1_NAME_UPDATED = 'Datacenter_1_UPDATED'.freeze
 # Rack
 RACK1_NAME = 'Rack_1'.freeze
 RACK2_NAME = 'Rack_2'.freeze
+
+# Fabric
+DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
