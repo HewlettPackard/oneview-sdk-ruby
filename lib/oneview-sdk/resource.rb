@@ -34,7 +34,8 @@ module OneviewSDK
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
       if @api_version > @client.max_api_version
-        fail UnsupportedVersion, "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
+        fail UnsupportedVersion,
+             "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
       end
       @data ||= {}
       set_all(params)

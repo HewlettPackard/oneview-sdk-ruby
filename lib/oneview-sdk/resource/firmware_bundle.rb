@@ -20,7 +20,7 @@ module OneviewSDK
     # @param [String] file_path
     # @return [OneviewSDK::FirmwareDriver] if the upload was sucessful, return a FirmwareDriver object
     def self.upload(client, file_path)
-      fail NotFound,"ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
+      fail NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
       type = case File.extname(file_path)
              when '.zip' then 'application/x-zip-compressed'
              when '.exe' then 'application/x-msdownload'

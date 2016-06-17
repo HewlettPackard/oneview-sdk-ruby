@@ -32,7 +32,8 @@ module OneviewSDK
     def validate_fc_trap_categories(fc_trap_categories)
       fc_trap_categories.uniq!
       fc_trap_categories.each do |cat|
-        fail InvalidResource, "FC Trap Category #{cat} is not one of the allowed values: #{VALID_FC_TRAP_CATEGORIES}" unless VALID_FC_TRAP_CATEGORIES.include?(cat)
+        fail InvalidResource, "FC Trap Category #{cat} is not one of the allowed values: #{VALID_FC_TRAP_CATEGORIES}" unless
+          VALID_FC_TRAP_CATEGORIES.include?(cat)
       end
     end
 
@@ -41,7 +42,8 @@ module OneviewSDK
     def validate_vcm_trap_categories(vcm_trap_categories)
       vcm_trap_categories.uniq!
       vcm_trap_categories.each do |cat|
-        fail InvalidResource, "VCM Trap Category #{cat} is not one of the allowed values: #{VALID_VCM_TRAP_CATEGORIES}" unless VALID_VCM_TRAP_CATEGORIES.include?(cat)
+        fail InvalidResource, "VCM Trap Category #{cat} is not one of the allowed values: #{VALID_VCM_TRAP_CATEGORIES}" unless
+          VALID_VCM_TRAP_CATEGORIES.include?(cat)
       end
     end
 
@@ -50,14 +52,16 @@ module OneviewSDK
     def validate_trap_severities(trap_severities)
       trap_severities.uniq!
       trap_severities.each do |cat|
-        fail InvalidResource, "Trap Severities #{cat} is not one of the allowed values: #{VALID_TRAP_SEVERITIES}" unless VALID_TRAP_SEVERITIES.include?(cat)
+        fail InvalidResource, "Trap Severities #{cat} is not one of the allowed values: #{VALID_TRAP_SEVERITIES}" unless
+          VALID_TRAP_SEVERITIES.include?(cat)
       end
     end
 
     # Validate snmp trap format
     VALID_TRAP_FORMATS = %w(SNMPv1 SNMPv2 SNMPv3).freeze
     def validate_trap_format(trap_format)
-      fail InvalidResource, "Trap Format #{trap_format} is not one of the allowed values: #{VALID_TRAP_FORMATS}" unless VALID_TRAP_FORMATS.include?(trap_format)
+      fail InvalidResource, "Trap Format #{trap_format} is not one of the allowed values: #{VALID_TRAP_FORMATS}" unless
+        VALID_TRAP_FORMATS.include?(trap_format)
     end
 
     # @!endgroup

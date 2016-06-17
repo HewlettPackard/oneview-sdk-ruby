@@ -115,9 +115,12 @@ RSpec.describe OneviewSDK::Enclosure do
       OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
         expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(i) }.to_not raise_error
       end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('state') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(nil) }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('state') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(nil) }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
     end
 
     it 'does a PUT to /refreshState' do
@@ -198,7 +201,8 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#updateAttribute' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).update_attribute(:op, :path, :val) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).update_attribute(:op, :path, :val) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PATCH to the enclusre uri' do
@@ -223,9 +227,12 @@ RSpec.describe OneviewSDK::Enclosure do
       OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
         expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(i) }.to_not raise_error
       end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('state') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(nil) }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('state') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(nil) }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
     end
   end
 

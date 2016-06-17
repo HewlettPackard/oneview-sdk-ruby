@@ -33,14 +33,16 @@ RSpec.describe OneviewSDK::EnclosureGroup do
         enclosureTypeUri: 'rest/enclosure-types/synergy',
         ipAddressingMode: 'invalid'
       }
-      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_invalid_type) }.to raise_error(OneviewSDK::InvalidResource, /Invalid ip AddressingMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_invalid_type) }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid ip AddressingMode/)
 
       # The invalid param should be ignored if the Enclosure Type is not specified or is C7000
       synergy_with_null_addressing_mode = {
         enclosureTypeUri: 'rest/enclosure-types/synergy',
         ipAddressingMode: nil
       }
-      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_null_addressing_mode) }.to raise_error(OneviewSDK::InvalidResource, /Invalid ip AddressingMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_null_addressing_mode) }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid ip AddressingMode/)
       with_nothing_specified = {
         enclosureTypeUri: nil,
         ipAddressingMode: nil

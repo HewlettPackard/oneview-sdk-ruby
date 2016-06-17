@@ -33,7 +33,8 @@ module OneviewSDK
     def validate_ipAddressingMode(value)
       return if !@data['enclosureTypeUri'] || /c7000/ =~ @data['enclosureTypeUri']
       is_not_a_c7000_without_ip_addressing_mode = !(/c7000/ =~ @data['enclosureTypeUri']) && !value
-      fail InvalidResource, "Invalid ip AddressingMode: #{value}" if !VALID_IP_ADDRESSING_MODES.include?(value) || is_not_a_c7000_without_ip_addressing_mode
+      fail InvalidResource, "Invalid ip AddressingMode: #{value}" if !VALID_IP_ADDRESSING_MODES.include?(value) ||
+        is_not_a_c7000_without_ip_addressing_mode
     end
 
     VALID_PORT_MAPPING_COUNTS = (0..8).freeze

@@ -38,11 +38,13 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
 
   describe '#update_ethernet_settings' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::LogicalInterconnect.new(@client).update_ethernet_settings }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::LogicalInterconnect.new(@client).update_ethernet_settings }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'requires the ethernetSettings attribute to be set' do
-      expect { OneviewSDK::LogicalInterconnect.new(@client, uri: '/rest/fake').update_ethernet_settings }.to raise_error(OneviewSDK::IncompleteResource, /Please retrieve/)
+      expect { OneviewSDK::LogicalInterconnect.new(@client, uri: '/rest/fake').update_ethernet_settings }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve/)
     end
 
     it 'does a PUT to uri/ethernetSettings & updates @data' do
@@ -56,7 +58,8 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
 
   describe '#update_settings' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::LogicalInterconnect.new(@client).update_ethernet_settings }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::LogicalInterconnect.new(@client).update_ethernet_settings }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to uri/settings & updates @data' do
@@ -129,22 +132,26 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
     describe 'will not let weird values in the fields' do
       it 'enetTrapCategories' do
         enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }.to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
+        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
+          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
       end
 
       it 'fcTrapCategories' do
         enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }.to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
+        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
+          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
       end
 
       it 'vcmTrapCategories' do
         enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }.to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
+        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
+          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
       end
 
       it 'trapSeverities' do
         enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }.to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
+        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
+          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
       end
 
       it 'trapFormat' do
@@ -166,7 +173,8 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
 
   describe '#firmware_update' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::LogicalInterconnect.new(@client).firmware_update(:cmd, nil, {}) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::LogicalInterconnect.new(@client).firmware_update(:cmd, nil, {}) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to uri/firmware & returns the result' do

@@ -28,7 +28,7 @@ module OneviewSDK
 
   class MethodUnavailable < StandardError # Resource doesn't support this method
   end
-  
+
   class UnsupportedVersion < StandardError # Resource not supported on this API version
   end
 

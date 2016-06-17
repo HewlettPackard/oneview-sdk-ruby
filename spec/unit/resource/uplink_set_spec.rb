@@ -117,8 +117,10 @@ RSpec.describe OneviewSDK::UplinkSet do
       %w(Bay Enclosure Ip Password Port StackingDomainId StackingMemberId UserId).each do |v|
         expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: v) }.to_not raise_error
       end
-      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: '') }.to raise_error(OneviewSDK::InvalidResource, /Invalid location entry type/)
-      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: 'invalid') }.to raise_error(OneviewSDK::InvalidResource, /Invalid location entry type/)
+      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: '') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid location entry type/)
+      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: 'invalid') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid location entry type/)
     end
   end
 
