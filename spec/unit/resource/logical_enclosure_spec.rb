@@ -26,7 +26,7 @@ RSpec.describe OneviewSDK::LogicalEnclosure do
     context 'with invalid values' do
       it 'rejects an invalid fabricType' do
         logical_enclosure = OneviewSDK::LogicalEnclosure.new(@client)
-        expect { logical_enclosure[:fabricType] = 'None' }.to raise_error.with_message(/Invalid fabric type/)
+        expect { logical_enclosure[:fabricType] = 'None' }.to raise_error(OneviewSDK::InvalidResource, /Invalid fabric type/)
       end
     end
   end

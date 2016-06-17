@@ -52,7 +52,7 @@ RSpec.describe OneviewSDK::Enclosure do
     context 'with invalid data' do
       it 'fails when certain attributes are not set' do
         enclosure = OneviewSDK::Enclosure.new(@client, {})
-        expect { enclosure.create }.to raise_error(/Missing required attribute/)
+        expect { enclosure.create }.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute/)
       end
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe OneviewSDK::Enclosure do
     end
 
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).update }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).update }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does not send a PATCH request if the name and rackName are the same' do
@@ -93,7 +93,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#configuration' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).configuration }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to /uri/configuration and updates the attributes' do
@@ -106,7 +106,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#set_refresh_state' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).set_refresh_state(:state) }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'only permits certain states' do
@@ -115,9 +115,9 @@ RSpec.describe OneviewSDK::Enclosure do
       OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
         expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(i) }.to_not raise_error
       end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('state') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(nil) }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('state') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(nil) }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
     end
 
     it 'does a PUT to /refreshState' do
@@ -139,7 +139,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#script' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).script }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).script }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/script' do
@@ -152,7 +152,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).environmental_configuration }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).environmental_configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/environmentalConfiguration' do
@@ -164,7 +164,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).utilization }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do
@@ -198,7 +198,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#updateAttribute' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).update_attribute(:op, :path, :val) }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).update_attribute(:op, :path, :val) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PATCH to the enclusre uri' do
@@ -215,17 +215,17 @@ RSpec.describe OneviewSDK::Enclosure do
       OneviewSDK::Enclosure::VALID_LICENSING_INTENTS.each do |intent|
         expect { OneviewSDK::Enclosure.new(@client, licensingIntent: intent) }.to_not raise_error
       end
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: '') }.to raise_error(/Invalid licensingIntent/)
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'invalid') }.to raise_error(/Invalid licensingIntent/)
+      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: '') }.to raise_error(OneviewSDK::InvalidResource, /Invalid licensingIntent/)
+      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'invalid') }.to raise_error(OneviewSDK::InvalidResource, /Invalid licensingIntent/)
     end
 
     it 'only allows certain refreshState values' do
       OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
         expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(i) }.to_not raise_error
       end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('state') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(nil) }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('state') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(nil) }.to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
     end
   end
 
@@ -257,11 +257,11 @@ RSpec.describe OneviewSDK::Enclosure do
     end
 
     it 'does not accepts other types' do
-      expect { @item.send(:convert_time, []) }.to raise_error(/Invalid time format/)
+      expect { @item.send(:convert_time, []) }.to raise_error(OneviewSDK::InvalidResource, /Invalid time format/)
     end
 
     it 'raises an error for invalid strings' do
-      expect { @item.send(:convert_time, 'badtime') }.to raise_error(/Failed to parse time/)
+      expect { @item.send(:convert_time, 'badtime') }.to raise_error(OneviewSDK::InvalidResource, /Failed to parse time/)
     end
   end
 end

@@ -17,8 +17,8 @@ RSpec.describe OneviewSDK::EnclosureGroup do
       OneviewSDK::EnclosureGroup::VALID_INTERCONNECT_BAY_MAPPING_COUNTS.each do |i|
         expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: i) }.to_not raise_error
       end
-      expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 0) }.to raise_error(/out of range/)
-      expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 9) }.to raise_error(/out of range/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 0) }.to raise_error(OneviewSDK::InvalidResource, /out of range/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, interconnectBayMappingCount: 9) }.to raise_error(OneviewSDK::InvalidResource, /out of range/)
     end
 
     it 'only allows certain ipAddressingMode values' do
@@ -33,14 +33,14 @@ RSpec.describe OneviewSDK::EnclosureGroup do
         enclosureTypeUri: 'rest/enclosure-types/synergy',
         ipAddressingMode: 'invalid'
       }
-      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_invalid_type) }.to raise_error(/Invalid ip AddressingMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_invalid_type) }.to raise_error(OneviewSDK::InvalidResource, /Invalid ip AddressingMode/)
 
       # The invalid param should be ignored if the Enclosure Type is not specified or is C7000
       synergy_with_null_addressing_mode = {
         enclosureTypeUri: 'rest/enclosure-types/synergy',
         ipAddressingMode: nil
       }
-      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_null_addressing_mode) }.to raise_error(/Invalid ip AddressingMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, synergy_with_null_addressing_mode) }.to raise_error(OneviewSDK::InvalidResource, /Invalid ip AddressingMode/)
       with_nothing_specified = {
         enclosureTypeUri: nil,
         ipAddressingMode: nil
@@ -62,30 +62,30 @@ RSpec.describe OneviewSDK::EnclosureGroup do
       OneviewSDK::EnclosureGroup::VALID_PORT_MAPPING_COUNTS.each do |i|
         expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: i) }.to_not raise_error
       end
-      expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: -1) }.to raise_error(/out of range/)
-      expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: 9) }.to raise_error(/out of range/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: -1) }.to raise_error(OneviewSDK::InvalidResource, /out of range/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, portMappingCount: 9) }.to raise_error(OneviewSDK::InvalidResource, /out of range/)
     end
 
     it 'only allows certain powerMode values' do
       OneviewSDK::EnclosureGroup::VALID_POWER_MODES.each do |i|
         expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: i) }.to_not raise_error
       end
-      expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: '') }.to raise_error(/Invalid powerMode/)
-      expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: 'invalid') }.to raise_error(/Invalid powerMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: '') }.to raise_error(OneviewSDK::InvalidResource, /Invalid powerMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, powerMode: 'invalid') }.to raise_error(OneviewSDK::InvalidResource, /Invalid powerMode/)
     end
 
     it 'only allows certain stackingMode values' do
       OneviewSDK::EnclosureGroup::VALID_STACKING_MODES.each do |i|
         expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: i) }.to_not raise_error
       end
-      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: '') }.to raise_error(/Invalid stackingMode/)
-      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: 'invalid') }.to raise_error(/Invalid stackingMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: '') }.to raise_error(OneviewSDK::InvalidResource, /Invalid stackingMode/)
+      expect { OneviewSDK::EnclosureGroup.new(@client, stackingMode: 'invalid') }.to raise_error(OneviewSDK::InvalidResource, /Invalid stackingMode/)
     end
   end
 
   describe '#script' do
     it 'requires a uri' do
-      expect { OneviewSDK::EnclosureGroup.new(@client).get_script }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::EnclosureGroup.new(@client).get_script }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/script' do
@@ -98,7 +98,7 @@ RSpec.describe OneviewSDK::EnclosureGroup do
 
   describe '#set_script' do
     it 'requires a uri' do
-      expect { OneviewSDK::EnclosureGroup.new(@client).set_script('Blah') }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::EnclosureGroup.new(@client).set_script('Blah') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to uri/script' do

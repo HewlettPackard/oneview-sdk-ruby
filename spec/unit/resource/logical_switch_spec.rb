@@ -80,7 +80,7 @@ RSpec.describe OneviewSDK::LogicalSwitch do
       ssh_credentials = SSHFake.new('ssh_user', 'ssh_password')
       snmp_v1 = OneviewSDK::LogicalSwitch::CredentialsSNMPV1.new(161, 'public')
       expect { item.set_switch_credentials('127.0.0.1', ssh_credentials, snmp_v1) }.to raise_error(
-        /Use struct<OneviewSDK::LogicalSwitch::CredentialsSSH>/
+        TypeError, /Use struct<OneviewSDK::LogicalSwitch::CredentialsSSH>/
       )
     end
 
@@ -94,7 +94,7 @@ RSpec.describe OneviewSDK::LogicalSwitch do
       end
       snmp_v1 = SNMPFake.new(161, 'public')
       expect { item.set_switch_credentials('127.0.0.1', ssh_credentials, snmp_v1) }.to raise_error(
-        /Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>/
+        TypeError, /Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>/
       )
     end
   end

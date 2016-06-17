@@ -34,14 +34,14 @@ module OneviewSDK
     # Validate refreshState
     # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     def validate_refreshState(value)
-      fail 'Invalid refresh state' unless VALID_REFRESH_STATES.include?(value)
+      fail InvalidResource, 'Invalid refresh state' unless VALID_REFRESH_STATES.include?(value)
     end
 
     VALID_STATUSES = %w(OK Disabled Warning Critical Unknown).freeze
     # Validate status
     # @param [String] value OK, Disabled, Warning, Critical, Unknown
     def validate_status(value)
-      fail 'Invalid status' unless VALID_STATUSES.include?(value)
+      fail InvalidResource, 'Invalid status' unless VALID_STATUSES.include?(value)
     end
 
     # @!endgroup
@@ -49,8 +49,8 @@ module OneviewSDK
     # Create the resource on OneView using the current data
     # Adds Accept-Language attribute in the Header equal to "en_US"
     # @note Calls refresh method to set additional data
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the resource creation fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
     def create
       ensure_client

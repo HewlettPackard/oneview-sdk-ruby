@@ -22,7 +22,7 @@ module OneviewSDK
     def validate_enet_trap_categories(enet_trap_categories)
       enet_trap_categories.uniq!
       enet_trap_categories.each do |cat|
-        fail "Ethernet Trap Category #{cat} is not one of the allowed values: #{VALID_ENET_TRAP_CATEGORIES}" unless
+        fail InvalidResource, "Ethernet Trap Category #{cat} is not one of the allowed values: #{VALID_ENET_TRAP_CATEGORIES}" unless
         VALID_ENET_TRAP_CATEGORIES.include?(cat)
       end
     end
@@ -32,7 +32,7 @@ module OneviewSDK
     def validate_fc_trap_categories(fc_trap_categories)
       fc_trap_categories.uniq!
       fc_trap_categories.each do |cat|
-        fail "FC Trap Category #{cat} is not one of the allowed values: #{VALID_FC_TRAP_CATEGORIES}" unless VALID_FC_TRAP_CATEGORIES.include?(cat)
+        fail InvalidResource, "FC Trap Category #{cat} is not one of the allowed values: #{VALID_FC_TRAP_CATEGORIES}" unless VALID_FC_TRAP_CATEGORIES.include?(cat)
       end
     end
 
@@ -41,7 +41,7 @@ module OneviewSDK
     def validate_vcm_trap_categories(vcm_trap_categories)
       vcm_trap_categories.uniq!
       vcm_trap_categories.each do |cat|
-        fail "VCM Trap Category #{cat} is not one of the allowed values: #{VALID_VCM_TRAP_CATEGORIES}" unless VALID_VCM_TRAP_CATEGORIES.include?(cat)
+        fail InvalidResource, "VCM Trap Category #{cat} is not one of the allowed values: #{VALID_VCM_TRAP_CATEGORIES}" unless VALID_VCM_TRAP_CATEGORIES.include?(cat)
       end
     end
 
@@ -50,14 +50,14 @@ module OneviewSDK
     def validate_trap_severities(trap_severities)
       trap_severities.uniq!
       trap_severities.each do |cat|
-        fail "Trap Severities #{cat} is not one of the allowed values: #{VALID_TRAP_SEVERITIES}" unless VALID_TRAP_SEVERITIES.include?(cat)
+        fail InvalidResource, "Trap Severities #{cat} is not one of the allowed values: #{VALID_TRAP_SEVERITIES}" unless VALID_TRAP_SEVERITIES.include?(cat)
       end
     end
 
     # Validate snmp trap format
     VALID_TRAP_FORMATS = %w(SNMPv1 SNMPv2 SNMPv3).freeze
     def validate_trap_format(trap_format)
-      fail "Trap Format #{trap_format} is not one of the allowed values: #{VALID_TRAP_FORMATS}" unless VALID_TRAP_FORMATS.include?(trap_format)
+      fail InvalidResource, "Trap Format #{trap_format} is not one of the allowed values: #{VALID_TRAP_FORMATS}" unless VALID_TRAP_FORMATS.include?(trap_format)
     end
 
     # @!endgroup
@@ -130,7 +130,7 @@ module OneviewSDK
     # @return Updated instance of the Logical Interconnect
     def update_ethernet_settings
       ensure_client && ensure_uri
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['ethernetSettings']
+      fail IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['ethernetSettings']
       update_options = {
         'If-Match' =>  @data['ethernetSettings'].delete('eTag'),
         'body' => @data['ethernetSettings']
@@ -180,7 +180,7 @@ module OneviewSDK
     # @note The attribute is defined inside the instance of the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_port_monitor
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['portMonitor']
+      fail IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['portMonitor']
       update_options = {
         'If-Match' =>  @data['portMonitor'].delete('eTag'),
         'body' => @data['portMonitor']
@@ -194,7 +194,7 @@ module OneviewSDK
     # @note The attribute is defined inside the instance of the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_qos_configuration
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['qosConfiguration']
+      fail IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['qosConfiguration']
       update_options = {
         'If-Match' =>  @data['qosConfiguration'].delete('eTag'),
         'body' => @data['qosConfiguration']
@@ -208,7 +208,7 @@ module OneviewSDK
     # @note The attribute is defined inside the instance of the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_telemetry_configuration
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['telemetryConfiguration']
+      fail IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['telemetryConfiguration']
       update_options = {
         'If-Match' =>  @data['telemetryConfiguration'].delete('eTag'),
         'body' => @data['telemetryConfiguration']
@@ -223,7 +223,7 @@ module OneviewSDK
     #   Use helper methods to add the trap destination values: #add_snmp_trap_destination and #generate_trap_options
     # @return Updated instance of the Logical Interconnect
     def update_snmp_configuration
-      fail 'Please retrieve the Logical Interconnect before trying to update' unless @data['snmpConfiguration']
+      fail IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['snmpConfiguration']
       update_options = {
         'If-Match' =>  @data['snmpConfiguration'].delete('eTag'),
         'body' => @data['snmpConfiguration']

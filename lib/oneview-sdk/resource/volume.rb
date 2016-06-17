@@ -20,7 +20,7 @@ module OneviewSDK
     # Validate the type of provisioning
     # @param [String] value Must be Thin or Full
     def validate_provisionType(value)
-      fail 'Invalid provision type' unless VALID_PROVISION_TYPES.include?(value)
+      fail InvalidResource, 'Invalid provision type' unless VALID_PROVISION_TYPES.include?(value)
     end
 
     # @!endgroup
@@ -35,8 +35,8 @@ module OneviewSDK
 
     # Create the volume
     # @note provisioningParameters are required for creation, but not afterwards; after creation, they will be removed.
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the resource creation fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
     def create
       ensure_client
@@ -60,7 +60,7 @@ module OneviewSDK
         response = @client.rest_api(:delete, @data['uri'], {}, @api_version)
         @client.response_handler(response)
       else
-        fail 'Invalid flag value, use :oneview or :all'
+        fail InvalidResource, 'Invalid flag value, use :oneview or :all'
       end
       true
     end
@@ -192,7 +192,7 @@ module OneviewSDK
     # If not, first it tries to retrieve, and then verify for its existence
     def assure_uri(resource)
       resource.retrieve! unless resource['uri']
-      fail "#{resource.class}: #{resource['name']} not found" unless resource['uri']
+      fail IncompleteResource, "#{resource.class}: #{resource['name']} not found" unless resource['uri']
     end
 
   end

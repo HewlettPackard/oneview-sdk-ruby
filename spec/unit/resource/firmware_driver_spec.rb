@@ -16,11 +16,11 @@ RSpec.describe OneviewSDK::FirmwareDriver do
     end
 
     it 'does not allow the create action' do
-      expect { @item.create }.to raise_error(/not available for this resource/)
+      expect { @item.create }.to raise_error(OneviewSDK::MethodUnavailable)
     end
 
     it 'does not allow the update action' do
-      expect { @item.update }.to raise_error(/not available for this resource/)
+      expect { @item.update }.to raise_error(OneviewSDK::MethodUnavailable)
     end
 
   end
