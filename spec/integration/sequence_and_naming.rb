@@ -81,3 +81,7 @@ LOG_SWI_NAME = 'LogicalSwitch_1'.freeze
 
 # VolumeAttachment
 VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
+
+# Rack
+RACK1_NAME = 'Rack_1'.freeze
+RACK2_NAME = 'Rack_2'.freeze
