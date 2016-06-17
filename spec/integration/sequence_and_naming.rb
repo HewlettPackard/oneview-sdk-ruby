@@ -4,7 +4,6 @@ UPDATE = 2
 DELETE = 3
 
 
-# ==================================================
 # Resource Names:
 
 # BulkEthernetNetwork
@@ -89,3 +88,13 @@ SERVER_PROFILE3_NAME = 'ServerProfile_3'.freeze
 SERVER_PROFILE4_NAME = 'ServerProfile_4'.freeze
 SERVER_PROFILE5_NAME = 'ServerProfile_5'.freeze
 SERVER_PROFILE6_NAME = 'ServerProfile_6'.freeze
+
+# Datacenter
+DATACENTER1_NAME = 'Datacenter_1'.freeze
+DATACENTER2_NAME = 'Datacenter_2'.freeze
+DATACENTER3_NAME = 'Datacenter_3'.freeze
+DATACENTER1_NAME_UPDATED = 'Datacenter_1_UPDATED'.freeze
+
+# Rack
+RACK1_NAME = 'Rack_1'.freeze
+RACK2_NAME = 'Rack_2'.freeze
