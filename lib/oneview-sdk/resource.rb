@@ -266,36 +266,26 @@ module OneviewSDK
     end
 
     # Builds a Query string corresponding to the parameters passed
-    # @param [Hash{String=>String,OneviewSDK::Resource}] query Query parameters and values
+    # @param [Hash{String=>String,OneviewSDK::Resource}] query_options Query parameters and values
     #   to be applied to the query url.
     #   All key values should be Strings in snake case, the values could be Strings or Resources.
-    # @option query [String] String Values that are Strings can be associated as usual
-    # @option query [String] Resources Values that are Resources can be associated as usual,
+    # @option query_options [String] String Values that are Strings can be associated as usual
+    # @option query_options [String] Resources Values that are Resources can be associated as usual,
     #   with keys representing only the resource names (like 'ethernet_network'). This method
     #   translates the SDK and Ruby standards to OneView request standard.
-    def self.build_query(query)
-      return '' if query.empty?
-      path = '?'
-      query.each do |k, v|
+    def self.build_query(query_options)
+      return '' if !query_options || query_options.empty?
+      query_path = '?'
+      query_options.each do |k, v|
         new_key = snake_to_lower_camel(k)
         v.retrieve! if v.respond_to?(:retrieve!) && !v['uri']
         if v.class <= OneviewSDK::Resource
           new_key = new_key.concat('Uri')
           v = v['uri']
         end
-        path.concat("&#{new_key}=#{v}")
+        query_path.concat("&#{new_key}=#{v}")
       end
-      path.sub('?&', '?')
-    end
-
-    # Changes the case of a String from snake_case to lowerCamelCase
-    # @param [String] str String in snake_case to be changed
-    # @return [String] the String in lowerCamelCase
-    def self.snake_to_lower_camel(str)
-      words = str.split('_')
-      words.map!(&:capitalize!)
-      words[0] = words.first.downcase
-      words.join
+      query_path.sub('?&', '?')
     end
 
     protected
@@ -318,6 +308,16 @@ module OneviewSDK
     end
 
     private
+
+    # Changes the case of a String from snake_case to lowerCamelCase
+    # @param [String] str String in snake_case to be changed
+    # @return [String] the String in lowerCamelCase
+    def self.snake_to_lower_camel(str)
+      words = str.split('_')
+      words.map!(&:capitalize!)
+      words[0] = words.first.downcase
+      words.join
+    end
 
     # Recursive helper method for like?
     # Allows comparison of nested hash structures
