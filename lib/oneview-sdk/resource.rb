@@ -277,7 +277,10 @@ module OneviewSDK
       return '' if !query_options || query_options.empty?
       query_path = '?'
       query_options.each do |k, v|
-        new_key = snake_to_lower_camel(k)
+        words = k.split('_')
+        words.map!(&:capitalize!)
+        words[0] = words.first.downcase
+        new_key = words.join
         v.retrieve! if v.respond_to?(:retrieve!) && !v['uri']
         if v.class <= OneviewSDK::Resource
           new_key = new_key.concat('Uri')
@@ -308,16 +311,6 @@ module OneviewSDK
     end
 
     private
-
-    # Changes the case of a String from snake_case to lowerCamelCase
-    # @param [String] str String in snake_case to be changed
-    # @return [String] the String in lowerCamelCase
-    def self.snake_to_lower_camel(str)
-      words = str.split('_')
-      words.map!(&:capitalize!)
-      words[0] = words.first.downcase
-      words.join
-    end
 
     # Recursive helper method for like?
     # Allows comparison of nested hash structures
