@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Interconnect, integration: true, type: CREATE, sequence: 6 do
-  include_context 'integration context'
-
+klass = OneviewSDK::Interconnect
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   # Cannot create individually
 end

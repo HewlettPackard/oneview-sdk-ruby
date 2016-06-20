@@ -51,15 +51,18 @@ RSpec.shared_context 'integration context', a: :b do
     $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
   end
 
-  before :each do |e| # For debugging only: Shows test metadata
-    action = case e.metadata[:type]
-             when CREATE then 'CREATE'
-             when UPDATE then 'UPDATE'
-             when DELETE then 'DELETE'
-             else '_____'
-             end
-    puts "#{action} #{e.metadata[:sequence] || '_'}: #{described_class}: #{e.metadata[:description]}"
-    # fail 'Skipped' # Un-comment to skip running the tests
+  before :each do |e|
+    if ENV['PRINT_METADATA_ONLY']
+    # For debugging only: Shows test metadata without actually running the tests
+      action = case e.metadata[:type]
+               when CREATE then 'CREATE'
+               when UPDATE then 'UPDATE'
+               when DELETE then 'DELETE'
+               else '_____'
+               end
+      puts "#{action} #{e.metadata[:sequence] || '_'}: #{described_class}: #{e.metadata[:description]}"
+      fail 'Skipped'
+    end
   end
 end
 

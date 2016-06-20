@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::UplinkSet, integration: true, type: CREATE, sequence: 8 do
+klass = OneviewSDK::UplinkSet
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   let(:uplink_data) do

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::FCoENetwork, integration: true, type: CREATE, sequence: 1 do
+klass = OneviewSDK::FCoENetwork
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   let(:file_path) { 'spec/support/fixtures/integration/fcoe_network.json' }

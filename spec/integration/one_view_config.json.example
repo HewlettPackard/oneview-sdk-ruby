@@ -1,6 +1,5 @@
 {
   "url"         : "https://oneview.example.com",
   "user"        : "Administrator",
-  "password"    : "secret123",
-  "ssl_enabled" : false
+  "password"    : "secret123"
 }
