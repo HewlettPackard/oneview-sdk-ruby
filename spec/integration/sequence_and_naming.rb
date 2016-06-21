@@ -33,6 +33,7 @@ DEPENDENCIES = {
   Rack: [:ServerHardware],
   ServerHardware: [],
   ServerHardwareType: [:ServerHardware],
+  ServerProfile: [:ServerHardware, :EnclosureGroup],
   StoragePool: [:StorageSystem],
   StorageSystem: [],
   Switch: [],
