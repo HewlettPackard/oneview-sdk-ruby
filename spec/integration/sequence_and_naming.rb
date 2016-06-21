@@ -4,7 +4,6 @@ UPDATE = 2
 DELETE = 3
 
 
-# ==================================================
 # Resource Names:
 
 # BulkEthernetNetwork
@@ -79,9 +78,32 @@ LOG_SWI_GROUP_NAME_UPDATED = 'LogicalSwitchGroup_1_UPDATED'.freeze
 # Logical Switch
 LOG_SWI_NAME = 'LogicalSwitch_1'.freeze
 
-# VolumeAttachment
+# Volume Attachment
 VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
+
 
 # Power Device
 POW_DEVICE1_NAME = 'PowerDevice_1'.freeze
 POW_DEVICE2_NAME = 'PowerDevice_2'.freeze
+
+# Server Profile
+SERVER_PROFILE_NAME = 'ServerProfile_1'.freeze
+SERVER_PROFILE2_NAME = 'ServerProfile_2'.freeze
+SERVER_PROFILE3_NAME = 'ServerProfile_3'.freeze
+SERVER_PROFILE4_NAME = 'ServerProfile_4'.freeze
+SERVER_PROFILE5_NAME = 'ServerProfile_5'.freeze
+SERVER_PROFILE6_NAME = 'ServerProfile_6'.freeze
+
+# Datacenter
+DATACENTER1_NAME = 'Datacenter_1'.freeze
+DATACENTER2_NAME = 'Datacenter_2'.freeze
+DATACENTER3_NAME = 'Datacenter_3'.freeze
+DATACENTER1_NAME_UPDATED = 'Datacenter_1_UPDATED'.freeze
+
+# Rack
+RACK1_NAME = 'Rack_1'.freeze
+RACK2_NAME = 'Rack_2'.freeze
+
+# Fabric
+DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
+

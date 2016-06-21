@@ -10,21 +10,23 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Firmware driver resource implementation
-  class FirmwareDriver < Resource
-    BASE_URI = '/rest/firmware-drivers'.freeze
-
-    def initialize(client, params = {}, api_ver = nil)
-      super
-      # Default values
-      @data['type'] ||= 'firmware-baselines'
-    end
+  # FC network resource implementation
+  class Fabric < Resource
+    BASE_URI = '/rest/fabrics'.freeze
 
     def create
       unavailable_method
     end
 
     def update
+      unavailable_method
+    end
+
+    def delete
+      unavailable_method
+    end
+
+    def refresh
       unavailable_method
     end
 
