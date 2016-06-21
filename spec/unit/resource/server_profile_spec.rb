@@ -270,26 +270,61 @@ RSpec.describe OneviewSDK::ServerProfile do
 
   describe '#add_connection' do
     before :each do
+      @item['connections'] = []
       @network = OneviewSDK::EthernetNetwork.new(@client, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
     end
 
     it 'adds simple connection' do
       expect { @item.add_connection(@network, 'name' => 'unit_net') }.to_not raise_error
       expect(@item['connections']).to be
-      expect(@item['connections'].first['id']).to eq(1)
+      expect(@item['connections'].first['id']).to eq(0)
       expect(@item['connections'].first['networkUri']).to eq('rest/fake/ethernet-networks/unit')
     end
 
     it 'adds multiple connections' do
+      base_uri = @network['uri']
       1.upto(4) do |count|
         @network['uri'] = "#{@network['uri']}_#{count}"
         expect { @item.add_connection(@network, 'name' => "unit_net_#{count}") }.to_not raise_error
+        @network['uri'] = base_uri
       end
-      list_of_ids = []
       @item['connections'].each do |connection|
-        expect(list_of_ids).not_to include(connection['id'])
-        expect(connection['name']).to match(/#{connection['id']}/)
-        list_of_ids << connection['id']
+        expect(connection['id']).to eq(0)
+        expect(connection['name']).to match(/unit_net_/)
+      end
+    end
+
+    describe '#remove_connection' do
+      before :each do
+        @item['connections'] = []
+        @network = OneviewSDK::EthernetNetwork.new(@client, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
+        base_uri = @network['uri']
+        1.upto(5) do |count|
+          @network['uri'] = "#{@network['uri']}_#{count}"
+          @item.add_connection(@network, 'name' => "unit_con_#{count}")
+          @network['uri'] = base_uri
+        end
+      end
+
+      it 'removes a connection' do
+        removed_connection = @item.remove_connection('unit_con_2')
+        expect(removed_connection['name']).to eq('unit_con_2')
+        expect(removed_connection['networkUri']).to eq("#{@network['uri']}_2")
+        @item['connections'].each do |connection|
+          expect(connection['name']).to_not eq(removed_connection['name'])
+        end
+      end
+
+      it 'removes all connections' do
+        1.upto(5) do |count|
+          removed_connection = @item.remove_connection("unit_con_#{count}")
+          expect(removed_connection['name']).to eq("unit_con_#{count}")
+          expect(removed_connection['networkUri']).to eq("#{@network['uri']}_#{count}")
+          @item['connections'].each do |connection|
+            expect(connection['name']).to_not eq(removed_connection['name'])
+          end
+        end
+        expect(@item['connections']).to be_empty
       end
     end
   end

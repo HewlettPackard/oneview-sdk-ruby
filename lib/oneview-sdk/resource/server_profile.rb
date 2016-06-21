@@ -18,6 +18,7 @@ module OneviewSDK
       super
       # Default values
       @data['type'] ||= 'ServerProfileV5'
+      @connection_count = 0
     end
 
     # Sets the Server Hardware for the resource
@@ -246,13 +247,20 @@ module OneviewSDK
     #   The value can be 'Virtual', 'Physical' or 'UserDefined'.
     def add_connection(network, connection_options = {})
       self['connections'] = [] unless self['connections']
-      connection_options['id'] = if self['connections'].empty?
-                                   1
-                                 else
-                                   self['connections'].last['id'] + 1
-                                 end
+      connection_options['id'] = 0 # Letting OneView treat the ID registering
       connection_options['networkUri'] = network['uri'] if network['uri'] || network.retrieve!
       self['connections'] << connection_options
+    end
+
+    # Remove connection entry in Server profile template
+    # @param [String] connection_name Name of the connection
+    # @return Returns the connection hash if found, otherwise returns nil
+    def remove_connection(connection_name)
+      desired_connection = nil
+      self['connections'].each do |con|
+        desired_connection = self['connections'].delete(con) if con['name'] == connection_name
+      end
+      desired_connection
     end
 
     # Sets the Firmware Driver for the current Server Profile

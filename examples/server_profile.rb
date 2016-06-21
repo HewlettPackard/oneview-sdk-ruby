@@ -47,7 +47,6 @@ puts "\nRetrieved server profile data by name: '#{profile[:name]}'.\n  uri = '#{
 profile.delete
 puts "\nSucessfully deleted profile '#{profile[:name]}'."
 
-
 # Example: List all server profiles with certain attributes
 attributes = { affinity: 'Bay' }
 puts "\n\nprofile profiles with #{attributes}"
