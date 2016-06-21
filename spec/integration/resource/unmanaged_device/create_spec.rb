@@ -18,4 +18,11 @@ RSpec.describe OneviewSDK::UnmanagedDevice, integration: true, type: CREATE, seq
     end
   end
 
+  describe '#self.get_devices' do
+    it 'Check if created device is present' do
+      devices = OneviewSDK::UnmanagedDevice.get_devices($client)
+      devices = devices.map { |device| device['name'] }
+      expect(devices).to include(UNMANAGED_DEVICE1_NAME)
+    end
+  end
 end
