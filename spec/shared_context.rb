@@ -53,7 +53,7 @@ RSpec.shared_context 'integration context', a: :b do
 
   before :each do |e|
     if ENV['PRINT_METADATA_ONLY']
-    # For debugging only: Shows test metadata without actually running the tests
+      # For debugging only: Shows test metadata without actually running the tests
       action = case e.metadata[:type]
                when CREATE then 'CREATE'
                when UPDATE then 'UPDATE'
