@@ -106,4 +106,3 @@ RACK2_NAME = 'Rack_2'.freeze
 
 # Fabric
 DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
-
