@@ -21,11 +21,11 @@ module OneviewSDK
     end
 
     def create
-      fail 'Method not available for this resource!'
+      unavailable_method
     end
 
     def update
-      create
+      unavailable_method
     end
 
   end
