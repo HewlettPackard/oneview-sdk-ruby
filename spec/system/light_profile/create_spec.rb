@@ -1,7 +1,7 @@
 # System test script
 # Light Profie
 
-require_relative '../../spec_helper'
+require 'spec_helper'
 
 RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
   include_context 'system context'

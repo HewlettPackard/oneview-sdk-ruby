@@ -369,6 +369,27 @@ RSpec.describe OneviewSDK::Resource do
       OneviewSDK::Resource.get_all(@client)
     end
   end
+
+  describe '#build_query' do
+    it 'builds basic query' do
+      expect(OneviewSDK::Resource.build_query('test' => 'TEST')).to eq('?test=TEST')
+    end
+
+    it 'builds resource query' do
+      fake_resource = OneviewSDK::Resource.new(@client, 'uri' => 'URI')
+      expect(OneviewSDK::Resource.build_query('this_resource' => fake_resource)).to eq('?thisResourceUri=URI')
+    end
+
+    it 'builds composed query' do
+      fake_resource = OneviewSDK::Resource.new(@client, 'uri' => 'URI')
+      expect(OneviewSDK::Resource.build_query('test' => 'TEST', 'this_resource' => fake_resource)).to eq('?test=TEST&thisResourceUri=URI')
+    end
+
+    it 'returns empty String for invalid values' do
+      expect(OneviewSDK::Resource.build_query('')).to eq('')
+      expect(OneviewSDK::Resource.build_query(nil)).to eq('')
+    end
+  end
 end
 
 RSpec.describe OneviewSDK do
