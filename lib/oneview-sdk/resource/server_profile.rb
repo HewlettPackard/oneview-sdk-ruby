@@ -18,7 +18,6 @@ module OneviewSDK
       super
       # Default values
       @data['type'] ||= 'ServerProfileV5'
-      @connection_count = 0
     end
 
     # Sets the Server Hardware for the resource
