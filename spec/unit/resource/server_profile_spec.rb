@@ -326,6 +326,15 @@ RSpec.describe OneviewSDK::ServerProfile do
         end
         expect(@item['connections']).to be_empty
       end
+
+      it 'returns nil if no connection set' do
+        @item.data.delete('connections')
+        expect(@item.remove_connection('fake')).not_to be
+      end
+
+      it 'returns nil if connection does not exists' do
+        expect(@item.remove_connection('fake')).not_to be
+      end
     end
   end
 

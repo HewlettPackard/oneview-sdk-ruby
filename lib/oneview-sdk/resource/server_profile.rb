@@ -256,6 +256,7 @@ module OneviewSDK
     # @return Returns the connection hash if found, otherwise returns nil
     def remove_connection(connection_name)
       desired_connection = nil
+      return desired_connection unless self['connections']
       self['connections'].each do |con|
         desired_connection = self['connections'].delete(con) if con['name'] == connection_name
       end
