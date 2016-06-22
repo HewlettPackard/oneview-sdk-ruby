@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::UnmanagedDevice, integration: true, type: UPDATE, sequence: 15 do
+RSpec.describe OneviewSDK::UnmanagedDevice, integration: true, type: UPDATE do
   include_context 'integration context'
 
   before :each do
