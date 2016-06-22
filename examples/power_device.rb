@@ -11,20 +11,18 @@
 
 require_relative '_client' # Gives access to @client
 
-# HP iPDU information
+# iPDU information
 options = {
-  username: @hp_ipdu_username,
-  password: @hp_ipdu_password,
-  hostname: '172.18.8.12'
+  username: @ipdu_username,
+  password: @ipdu_password,
+  hostname: @ipdu_hostname
 }
 
-# HP iPDU Discover
-teste = OneviewSDK::PowerDevice.discover(@client, options)
-puts teste.class
-puts teste['name']
+# iPDU Discover
+ipdu = OneviewSDK::PowerDevice.discover(@client, options)
+puts "IPDU #{ipdu['name']} was sucessfully discovered!"
 
-
-# List HP iPDU power connections
+# List iPDU power connections
 puts "\nPower connections for #{ipdu1['name']}:"
 ipdu1['powerConnections'].each do |connection|
   puts "- Power connection uri='#{connection['connectionUri']}'"

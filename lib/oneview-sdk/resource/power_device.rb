@@ -63,15 +63,14 @@ module OneviewSDK
     # @param [String] hostname iPDU hostname
     # @return [Array] array of OneviewSDK::PowerDevice
     def self.get_ipdu_devices(client, hostname)
-      devices = find_by(client, managedBy: { hostName: hostname })
-      devices
+      find_by(client, managedBy: { hostName: hostname })
     end
 
     # Gets the power state of a power device
     # @return [String] Power state
     def get_power_state
       response = @client.rest_get(@data['uri'] + '/powerState')
-      @client.response_handler(response)
+      response.body
     end
 
     # Add power connection
@@ -104,6 +103,9 @@ module OneviewSDK
 
     # Refreshes a power delivery device
     # @param [Hash] options
+    # @option options [String] :refreshState
+    # @option options [String] :username
+    # @option options [String] :password
     def set_refresh_state(options)
       state = options[:refreshState] || options['refreshState']
       validate_refreshState(state)
@@ -112,10 +114,10 @@ module OneviewSDK
     end
 
     # Retrieves the unit identification state of the specified power outlet
-    # @return [String] Power state
+    # @return [String] Uid state
     def get_uid_state
       response = @client.rest_get(@data['uri'] + '/uidState')
-      @client.response_handler(response)
+      response.body
     end
 
     # Sets the unit identification light state of the power delivery device
@@ -130,6 +132,7 @@ module OneviewSDK
     # @option queryParameters [Array] :fields
     # @option queryParameters [Time, Date, String] :startDate
     # @option queryParameters [Time, Date, String] :endDate
+    # @return [Hash] Utilization data
     def utilization(queryParameters = {})
       ensure_client && ensure_uri
       uri = "#{@data['uri']}/utilization?"
