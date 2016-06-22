@@ -30,6 +30,7 @@ DEPENDENCIES = {
   LogicalSwitch: [:LogicalSwitchGroup],
   LogicalSwitchGroup: [],
   NetworkSet: [:EthernetNetwork],
+  PowerDevice: [],
   Rack: [:ServerHardware],
   ServerHardware: [],
   ServerHardwareType: [:ServerHardware],
@@ -37,6 +38,7 @@ DEPENDENCIES = {
   StoragePool: [:StorageSystem],
   StorageSystem: [],
   Switch: [],
+  UnmanagedDevice: []
   UplinkSet: [:LogicalInterconnect],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [],
