@@ -101,3 +101,6 @@ RACK2_NAME = 'Rack_2'.freeze
 
 # Fabric
 DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
+
+# Unmanaged Device
+UNMANAGED_DEVICE1_NAME = 'UnmanagedDevice_1'.freeze
