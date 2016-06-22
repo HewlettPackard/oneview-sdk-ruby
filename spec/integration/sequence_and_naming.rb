@@ -38,7 +38,7 @@ DEPENDENCIES = {
   StoragePool: [:StorageSystem],
   StorageSystem: [],
   Switch: [],
-  UnmanagedDevice: []
+  UnmanagedDevice: [],
   UplinkSet: [:LogicalInterconnect],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [],
