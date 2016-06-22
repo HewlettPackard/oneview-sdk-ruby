@@ -81,6 +81,11 @@ LOG_SWI_NAME = 'LogicalSwitch_1'.freeze
 # Volume Attachment
 VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
 
+
+# Power Device
+POW_DEVICE1_NAME = 'PowerDevice_1'.freeze
+POW_DEVICE2_NAME = 'PowerDevice_2'.freeze
+
 # Server Profile
 SERVER_PROFILE_NAME = 'ServerProfile_1'.freeze
 SERVER_PROFILE2_NAME = 'ServerProfile_2'.freeze
@@ -101,3 +106,6 @@ RACK2_NAME = 'Rack_2'.freeze
 
 # Fabric
 DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
+
+# Unmanaged Device
+UNMANAGED_DEVICE1_NAME = 'UnmanagedDevice_1'.freeze

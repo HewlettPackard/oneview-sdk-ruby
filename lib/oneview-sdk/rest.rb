@@ -112,7 +112,8 @@ module OneviewSDK
       when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete
         return JSON.parse(response.body) unless wait_on_task
         @logger.debug "Waiting for task: response.header['location']"
-        task = wait_for(response.header['location'])
+        uri = response.header['location'] || JSON.parse(response.body)['uri'] # If task uri is not returned in header
+        task = wait_for(uri)
         return true unless task['associatedResource'] && task['associatedResource']['resourceUri']
         resource_data = rest_get(task['associatedResource']['resourceUri'])
         return JSON.parse(resource_data.body)
