@@ -11,7 +11,8 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Datacenter, integration: true, type: CREATE, sequence: 4 do
+klass = OneviewSDK::Datacenter
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   describe '#create' do

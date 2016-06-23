@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::StorageSystem, integration: true, type: CREATE, sequence: 10 do
+klass = OneviewSDK::StorageSystem
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   let(:storage_system_data) do

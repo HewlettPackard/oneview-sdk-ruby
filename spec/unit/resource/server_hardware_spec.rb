@@ -57,7 +57,7 @@ RSpec.describe OneviewSDK::ServerHardware do
 
   describe '#set_refresh_state' do
     it 'requires a uri' do
-      expect { OneviewSDK::ServerHardware.new(@client).set_refresh_state(:state) }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::ServerHardware.new(@client).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'only permits certain states' do
@@ -66,9 +66,12 @@ RSpec.describe OneviewSDK::ServerHardware do
       OneviewSDK::ServerHardware::VALID_REFRESH_STATES.each do |i|
         expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(i) }.to_not raise_error
       end
-      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state('') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state('state') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state(nil) }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state('') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state('state') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
+      expect { OneviewSDK::ServerHardware.new(@client, uri: '/rest/fake').set_refresh_state(nil) }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
     end
 
     it 'does a PUT to /refreshState' do
@@ -90,7 +93,7 @@ RSpec.describe OneviewSDK::ServerHardware do
 
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
-      expect { OneviewSDK::ServerHardware.new(@client).environmental_configuration }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::ServerHardware.new(@client).environmental_configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/environmentalConfiguration' do
@@ -102,7 +105,7 @@ RSpec.describe OneviewSDK::ServerHardware do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::ServerHardware.new(@client).utilization }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::ServerHardware.new(@client).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do
@@ -162,7 +165,7 @@ RSpec.describe OneviewSDK::ServerHardware do
     context 'with invalid data' do
       it 'fails when certain attributes are not set' do
         server_hardware = OneviewSDK::ServerHardware.new(@client, {})
-        expect { server_hardware.create }.to raise_error(/Missing required attribute/)
+        expect { server_hardware.create }.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute/)
       end
     end
   end
@@ -170,7 +173,8 @@ RSpec.describe OneviewSDK::ServerHardware do
   describe '#update' do
     it 'does not allow it' do
       server_hardware = OneviewSDK::ServerHardware.new(@client, {})
-      expect { server_hardware.update(name: 'new') }.to raise_error(/The method #update is unavailable for this resource/)
+      expect { server_hardware.update(name: 'new') }
+        .to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
       expect(server_hardware[:name]).to be_nil
     end
   end
@@ -208,16 +212,19 @@ RSpec.describe OneviewSDK::ServerHardware do
       described_class::VALID_LICENSING_INTENTS.each do |v|
         expect { OneviewSDK::ServerHardware.new(@client, licensingIntent: v) }.to_not raise_error
       end
-      expect { OneviewSDK::ServerHardware.new(@client, licensingIntent: '') }.to raise_error(/Invalid licensingIntent/)
-      expect { OneviewSDK::ServerHardware.new(@client, licensingIntent: 'Invalid') }.to raise_error(/Invalid licensingIntent/)
+      expect { OneviewSDK::ServerHardware.new(@client, licensingIntent: '') }.to raise_error(OneviewSDK::InvalidResource, /Invalid licensingIntent/)
+      expect { OneviewSDK::ServerHardware.new(@client, licensingIntent: 'Invalid') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid licensingIntent/)
     end
 
     it 'only allows certain configurationState values' do
       described_class::VALID_CONFIGURATION_STATES.each do |v|
         expect { OneviewSDK::ServerHardware.new(@client, configurationState: v) }.to_not raise_error
       end
-      expect { OneviewSDK::ServerHardware.new(@client, configurationState: '') }.to raise_error(/Invalid configurationState/)
-      expect { OneviewSDK::ServerHardware.new(@client, configurationState: 'Invalid') }.to raise_error(/Invalid configurationState/)
+      expect { OneviewSDK::ServerHardware.new(@client, configurationState: '') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid configurationState/)
+      expect { OneviewSDK::ServerHardware.new(@client, configurationState: 'Invalid') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid configurationState/)
     end
   end
 

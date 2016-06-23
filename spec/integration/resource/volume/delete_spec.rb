@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Volume, integration: true, type: DELETE, sequence: 1 do
+klass = OneviewSDK::Volume
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
   before :all do

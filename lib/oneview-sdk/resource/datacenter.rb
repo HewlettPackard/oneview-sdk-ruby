@@ -23,11 +23,11 @@ module OneviewSDK
     # @!group Validates
 
     def validate_width(value)
-      fail 'Invalid width, value must be between 1000 and 50000' unless value.between?(1000, 50_000)
+      fail InvalidResource, 'Invalid width, value must be between 1000 and 50000' unless value.between?(1000, 50_000)
     end
 
     def validate_depth(value)
-      fail 'Invalid depth, value must be between 1000 and 50000' unless value.between?(1000, 50_000)
+      fail InvalidResource, 'Invalid depth, value must be between 1000 and 50000' unless value.between?(1000, 50_000)
     end
 
     # @!endgroup

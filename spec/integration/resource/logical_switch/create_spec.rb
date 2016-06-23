@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalSwitch, integration: true, type: CREATE, sequence: 14 do
+klass = OneviewSDK::LogicalSwitch
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   before :all do

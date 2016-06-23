@@ -27,12 +27,12 @@ module OneviewSDK
 
     VALID_LICENSING_INTENTS = %w(NotApplicable OneView OneViewNoiLO OneViewStandard).freeze
     def validate_licensingIntent(value)
-      fail 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value) || value.nil?
+      fail InvalidResource, 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value) || value.nil?
     end
 
     VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
     def validate_refreshState(value)
-      fail 'Invalid refreshState' unless VALID_REFRESH_STATES.include?(value)
+      fail InvalidResource, 'Invalid refreshState' unless VALID_REFRESH_STATES.include?(value)
     end
 
     # @!endgroup
@@ -41,7 +41,7 @@ module OneviewSDK
     def create
       ensure_client
       required_attributes = %w(enclosureGroupUri hostname username password licensingIntent)
-      required_attributes.each { |k| fail "Missing required attribute: '#{k}'" unless @data.key?(k) }
+      required_attributes.each { |k| fail IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) }
 
       optional_attrs = %w(enclosureUri firmwareBaselineUri force forceInstallFirmware state unmanagedEnclosure updateFirmwareOn)
       temp_data = @data.select { |k, _v| required_attributes.include?(k) || optional_attrs.include?(k) }
@@ -171,10 +171,10 @@ module OneviewSDK
       when Date then t.to_time.utc.iso8601(3)
       when Time then t.utc.iso8601(3)
       when String then Time.parse(t).utc.iso8601(3)
-      else fail "Invalid time format '#{t.class}'. Valid options are Time, Date, or String"
+      else fail InvalidResource, "Invalid time format '#{t.class}'. Valid options are Time, Date, or String"
       end
     rescue StandardError => e
-      raise "Failed to parse time value '#{t}'. #{e.message}"
+      raise InvalidResource, "Failed to parse time value '#{t}'. #{e.message}"
     end
   end
 end

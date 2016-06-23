@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::StoragePool, integration: true, type: DELETE, sequence: 2 do
+klass = OneviewSDK::StoragePool
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
   describe '#delete' do

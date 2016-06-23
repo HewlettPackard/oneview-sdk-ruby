@@ -39,10 +39,10 @@ module OneviewSDK
     # Check to see if a OneView instance's certificate is trusted
     # @param [String] url URL of the OneView Instance to be added
     # @return [Boolean] Whether or not certificate is trusted
-    # @raise [RuntimeError] if the url is invalid
+    # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.check_cert(url)
       uri = URI.parse(URI.escape(url))
-      fail "Invalid url '#{url}'" unless uri.host
+      fail InvalidURL, "Invalid url '#{url}'" unless uri.host
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
       trusted_certs = load_trusted_certs
@@ -56,10 +56,10 @@ module OneviewSDK
     # Fetch and add the ssl certificate of a OneView instance to the trusted certs store.
     #   Creates/modifies file at ~/.oneview-sdk-ruby/trusted_certs.cer
     # @param [String] url URL of the OneView Instance to be added
-    # @raise [RuntimeError] if the url is invalid
+    # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.install_cert(url)
       uri = URI.parse(URI.escape(url))
-      fail "Invalid url '#{url}'" unless uri.host
+      fail InvalidURL, "Invalid url '#{url}'" unless uri.host
       options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
       pem = Net::HTTP.start(uri.host, uri.port, options) do |http|
         http.peer_cert.to_pem

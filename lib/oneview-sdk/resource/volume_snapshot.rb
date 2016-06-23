@@ -31,7 +31,7 @@ module OneviewSDK
     # Sets the volume
     # @param [OneviewSDK::Volume] volume Volume
     def set_volume(volume)
-      fail 'Please set the volume\'s uri attribute!' unless volume['uri']
+      volume.retrieve! unless volume['uri']
       @data['storageVolumeUri'] = volume['uri']
     end
   end

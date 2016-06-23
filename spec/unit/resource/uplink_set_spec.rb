@@ -28,7 +28,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
       it 'Incorrect ethernetNetworkType' do
         uplink = OneviewSDK::UplinkSet.new(@client)
-        expect { uplink[:ethernetNetworkType] = 'None' }.to raise_error(/Invalid ethernet network type/)
+        expect { uplink[:ethernetNetworkType] = 'None' }.to raise_error(OneviewSDK::InvalidResource, /Invalid ethernet network type/)
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
       it 'Incorrect lacpTimer' do
         uplink = OneviewSDK::UplinkSet.new(@client)
-        expect { uplink[:lacpTimer] = 'None' }.to raise_error(/Invalid lacp timer/)
+        expect { uplink[:lacpTimer] = 'None' }.to raise_error(OneviewSDK::InvalidResource, /Invalid lacp timer/)
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
       it 'Incorrect ethernetNetworkType' do
         uplink = OneviewSDK::UplinkSet.new(@client)
-        expect { uplink[:networkType] = 'None' }.to raise_error(/Invalid network type/)
+        expect { uplink[:networkType] = 'None' }.to raise_error(OneviewSDK::InvalidResource, /Invalid network type/)
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
       it 'Incorrect reachability' do
         uplink = OneviewSDK::UplinkSet.new(@client)
-        expect { uplink[:reachability] = 'None' }.to raise_error(/Invalid reachability/)
+        expect { uplink[:reachability] = 'None' }.to raise_error(OneviewSDK::InvalidResource, /Invalid reachability/)
       end
     end
 
@@ -109,7 +109,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
       it 'Incorrect status' do
         uplink = OneviewSDK::UplinkSet.new(@client)
-        expect { uplink[:status] = 'None' }.to raise_error(/Invalid status/)
+        expect { uplink[:status] = 'None' }.to raise_error(OneviewSDK::InvalidResource, /Invalid status/)
       end
     end
 
@@ -117,8 +117,10 @@ RSpec.describe OneviewSDK::UplinkSet do
       %w(Bay Enclosure Ip Password Port StackingDomainId StackingMemberId UserId).each do |v|
         expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: v) }.to_not raise_error
       end
-      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: '') }.to raise_error(/Invalid location entry type/)
-      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: 'invalid') }.to raise_error(/Invalid location entry type/)
+      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: '') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid location entry type/)
+      expect { OneviewSDK::UplinkSet.new(@client, locationEntriesType: 'invalid') }
+        .to raise_error(OneviewSDK::InvalidResource, /Invalid location entry type/)
     end
   end
 
@@ -147,9 +149,9 @@ RSpec.describe OneviewSDK::UplinkSet do
 
       it 'Incorrect' do
         uplink = OneviewSDK::UplinkSet.new(@client)
-        expect { uplink.add_network({}) }.to raise_error(/Invalid object/)
-        expect { uplink.add_fcnetwork({}) }.to raise_error(/Invalid object/)
-        expect { uplink.add_fcoenetwork({}) }.to raise_error(/Invalid object/)
+        expect { uplink.add_network({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
+        expect { uplink.add_fcnetwork({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
+        expect { uplink.add_fcoenetwork({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
       end
     end
 
@@ -162,7 +164,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
       it 'Incorrect' do
         uplink = OneviewSDK::UplinkSet.new(@client)
-        expect { uplink.set_logical_interconnect({}) }.to raise_error(/Invalid object/)
+        expect { uplink.set_logical_interconnect({}) }.to raise_error(OneviewSDK::IncompleteResource, /Invalid object/)
       end
     end
   end

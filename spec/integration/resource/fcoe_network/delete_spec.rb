@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::FCoENetwork, integration: true, type: DELETE, sequence: 12 do
+klass = OneviewSDK::FCoENetwork
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
   describe '#delete' do

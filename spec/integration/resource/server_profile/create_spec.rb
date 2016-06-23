@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::ServerProfile, integration: true, type: CREATE, sequence: 16 do
+klass = OneviewSDK::ServerProfile
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   describe '#create' do
