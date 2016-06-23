@@ -11,7 +11,8 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Rack, integration: true, type: DELETE, sequence: 11 do
+klass = OneviewSDK::Rack
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
   describe '#remove' do

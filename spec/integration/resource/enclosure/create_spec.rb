@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Enclosure, integration: true, type: CREATE, sequence: 4 do
+klass = OneviewSDK::Enclosure
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   let(:enclosure_options) do

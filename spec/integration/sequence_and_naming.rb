@@ -1,7 +1,68 @@
+require 'tsort'
+
 # For Ordering Integration Tests:
 CREATE = 1
 UPDATE = 2
 DELETE = 3
+
+# Add the necessary methods to make Hash sortable by tsort
+class Hash
+  include TSort
+  alias tsort_each_node each_key
+  def tsort_each_child(node, &block)
+    fetch(node).each(&block)
+  end
+end
+
+DEPENDENCIES = {
+  Datacenter: [],
+  Enclosure: [:EnclosureGroup],
+  EnclosureGroup: [:LogicalInterconnectGroup],
+  EthernetNetwork: [],
+  Fabric: [],
+  FCNetwork: [],
+  FCoENetwork: [],
+  Interconnect: [],
+  LIGUplinkSet: [],
+  LogicalEnclosure: [],
+  LogicalInterconnect: [],
+  LogicalInterconnectGroup: [:EthernetNetwork, :LIGUplinkSet],
+  LogicalSwitch: [:LogicalSwitchGroup],
+  LogicalSwitchGroup: [],
+  NetworkSet: [:EthernetNetwork],
+  PowerDevice: [],
+  Rack: [:ServerHardware],
+  ServerHardware: [],
+  ServerHardwareType: [:ServerHardware],
+  ServerProfile: [:ServerHardware, :EnclosureGroup],
+  StoragePool: [:StorageSystem],
+  StorageSystem: [],
+  Switch: [],
+  UnmanagedDevice: [],
+  UplinkSet: [:LogicalInterconnect],
+  Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
+  VolumeAttachment: [],
+  VolumeTemplate: [:StorageSystem, :StoragePool]
+}.freeze
+
+SEQ = DEPENDENCIES.tsort
+RSEQ = SEQ.reverse
+
+# Get sequence number for the given class (Create sequence)
+# @param [Class] klass
+# @return [Integer] sequence number
+def seq(klass)
+  k = klass.to_s.split('::').last.to_sym
+  (SEQ.index(k) || -1) + 1
+end
+
+# Get inverse sequence number for the given class (Delete sequence)
+# @param [Class] klass
+# @return [Integer] sequence number
+def rseq(klass)
+  k = klass.to_s.split('::').last.to_sym
+  (RSEQ.index(k) || -1) + 1
+end
 
 
 # Resource Names:

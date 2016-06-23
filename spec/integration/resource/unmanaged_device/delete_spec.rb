@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::UnmanagedDevice, integration: true, type: DELETE, sequence: 15 do
+klass = OneviewSDK::UnmanagedDevice
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
   describe '#remove' do

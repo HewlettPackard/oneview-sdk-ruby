@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::UnmanagedDevice, integration: true, type: CREATE, sequence: 15 do
+klass = OneviewSDK::UnmanagedDevice
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   describe '#add' do

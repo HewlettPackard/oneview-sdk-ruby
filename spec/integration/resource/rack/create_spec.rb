@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Rack, integration: true, type: CREATE, sequence: 1 do
+klass = OneviewSDK::Rack
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
-
 
   describe '#add' do
     it 'Add empty rack' do
@@ -51,7 +51,6 @@ RSpec.describe OneviewSDK::Rack, integration: true, type: CREATE, sequence: 1 do
     it 'Retrieve device topology' do
       item = OneviewSDK::Rack.new($client, name: RACK2_NAME)
       item.retrieve!
-
       expect { item.get_device_topology }.not_to raise_error
     end
   end

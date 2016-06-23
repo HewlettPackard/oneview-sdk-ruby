@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: DELETE, sequence: 6 do
-  include_context 'integration context'
-
+klass = OneviewSDK::LogicalInterconnect
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   # Cannot delete individually
 end

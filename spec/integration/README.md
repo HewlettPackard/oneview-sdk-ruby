@@ -6,7 +6,7 @@
 **The tests do their best cleanup after themselves, but know what they do before running them!**
 
 ## Setup
-First, there's some setup you'll need to do. Do EITHER of the following:
+First, there's some setup you'll need to do. Do **EITHER** of the following:
 
 1. **Use environment variables to specify config file locations:**
 
