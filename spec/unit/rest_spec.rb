@@ -30,6 +30,13 @@ RSpec.describe OneviewSDK::Client do
       expect(@client.logger).to receive(:error).with(/SSL verification failed/)
       expect { @client.rest_api(:get, path) }.to raise_error(OpenSSL::SSL::SSLError)
     end
+
+    it 'respects the client.timeout value' do
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'secret123', timeout: 5)
+      expect_any_instance_of(Net::HTTP).to receive(:read_timeout=).with(5).and_call_original
+      expect_any_instance_of(Net::HTTP).to receive(:open_timeout=).with(5).and_call_original
+      client.rest_api(:get, path)
+    end
   end
 
   describe '#rest_get' do

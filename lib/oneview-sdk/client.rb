@@ -20,7 +20,7 @@ module OneviewSDK
     DEFAULT_API_VERSION = 200
 
     attr_reader :url, :user, :token, :password, :max_api_version
-    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots
+    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
     include Rest
 
@@ -37,6 +37,7 @@ module OneviewSDK
     #   Use this OR the username and password (not both). Token has precedence.
     # @option options [Integer] :api_version (200) API Version to use by default for requests
     # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['ONEVIEWSDK_SSL_ENABLED']
+    # @option options [Integer] :timeout (nil) Override default request timeout value
     def initialize(options = {})
       options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
       @logger = options[:logger] || Logger.new(STDOUT)
@@ -60,6 +61,7 @@ module OneviewSDK
         end
       end
       @ssl_enabled = options[:ssl_enabled] unless options[:ssl_enabled].nil?
+      @timeout = options[:timeout] unless options[:timeout].nil?
       @cert_store = OneviewSDK::SSLHelper.load_trusted_certs if @ssl_enabled
       @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
       return if @token
