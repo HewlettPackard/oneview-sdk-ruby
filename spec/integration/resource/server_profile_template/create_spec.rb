@@ -22,7 +22,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       item.retrieve!
       profile = item.new_profile
       expect(profile.class).to eq(OneviewSDK::ServerProfile)
-      expect{ profile.create }.not_to raise_error
+      expect { profile.create }.not_to raise_error
       expect(profile['uri']).to be
     end
   end

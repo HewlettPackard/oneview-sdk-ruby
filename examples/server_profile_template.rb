@@ -6,10 +6,10 @@ type = 'Server Profile Template'
 puts "\n### Creating a new Server Profile Template based on a Server Hardware Type and Enclosure Group"
 item = OneviewSDK::ServerProfileTemplate.new(@client, name:  'OneViewSDK Test ServerProfileTemplate')
 server_hardware_type = OneviewSDK::ServerHardwareType.find_by(@client, {}).first
-fail "Failed to find Server Hardware Type" unless server_hardware_type || server_hardware_type['uri']
+fail 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
 item.set_server_hardware_type(server_hardware_type)
 enclosure_group = OneviewSDK::EnclosureGroup.find_by(@client, {}).first
-fail "Failed to find Enclosure Group" unless enclosure_group || enclosure_group['uri']
+fail 'Failed to find Enclosure Group' unless enclosure_group || enclosure_group['uri']
 item.set_enclosure_group(enclosure_group)
 item.create
 puts "\nCreated #{type} '#{item['name']}' sucessfully.\n  uri = '#{item['uri']}'"

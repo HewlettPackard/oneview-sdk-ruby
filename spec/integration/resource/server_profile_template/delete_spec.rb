@@ -4,7 +4,7 @@ klass = OneviewSDK::ServerProfileTemplate
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
-  let(:names) {[SERVER_PROFILE_TEMPLATE_NAME]}
+  let(:names) { [SERVER_PROFILE_TEMPLATE_NAME] }
 
   describe '#delete' do
     it 'deletes the associated Server profiles' do
