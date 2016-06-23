@@ -6,21 +6,21 @@ RSpec.describe OneviewSDK::LogicalDownlink do
   describe '#create' do
     it 'is unavailable' do
       logical_downlink = OneviewSDK::LogicalDownlink.new(@client)
-      expect { logical_downlink.create }.to raise_error(/The method #create is unavailable for this resource/)
+      expect { logical_downlink.create }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create is unavailable for this resource/)
     end
   end
 
   describe '#delete' do
     it 'is unavailable' do
       logical_downlink = OneviewSDK::LogicalDownlink.new(@client)
-      expect { logical_downlink.delete }.to raise_error(/The method #delete is unavailable for this resource/)
+      expect { logical_downlink.delete }.to raise_error(OneviewSDK::MethodUnavailable, /The method #delete is unavailable for this resource/)
     end
   end
 
   describe '#update' do
     it 'is unavailable' do
       logical_downlink = OneviewSDK::LogicalDownlink.new(@client)
-      expect { logical_downlink.update }.to raise_error(/The method #update is unavailable for this resource/)
+      expect { logical_downlink.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
   end
 
