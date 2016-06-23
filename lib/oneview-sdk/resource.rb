@@ -29,12 +29,13 @@ module OneviewSDK
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
-      fail 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
+      fail InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
       if @api_version > @client.max_api_version
-        fail "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
+        fail UnsupportedVersion,
+             "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
       end
       @data ||= {}
       set_all(params)
@@ -44,7 +45,7 @@ module OneviewSDK
     # @note Name or URI must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
     def retrieve!
-      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
       results = self.class.find_by(@client, name: @data['name']) if @data['name']
       results = self.class.find_by(@client, uri:  @data['uri'])  if @data['uri'] && (!results || results.empty?)
       return false unless results.size == 1
@@ -56,7 +57,7 @@ module OneviewSDK
     # @note name or uri must be specified inside resource
     # @return [Boolean] Whether or not resource exists
     def exists?
-      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
       return true if @data['name'] && self.class.find_by(@client, name: @data['name']).size == 1
       return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri']).size == 1
       false
@@ -136,8 +137,8 @@ module OneviewSDK
 
     # Create the resource on OneView using the current data
     # @note Calls the refresh method to set additional data
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the resource creation fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
     def create
       ensure_client
@@ -149,8 +150,8 @@ module OneviewSDK
 
     # Delete the resource from OneView if it exists, then create it using the current data
     # @note Calls refresh method to set additional data
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the resource creation fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
     def create!
       temp = self.class.new(@client, @data)
@@ -171,8 +172,8 @@ module OneviewSDK
 
     # Set data and save to OneView
     # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
-    # @raise [RuntimeError] if the client or uri is not set
-    # @raise [RuntimeError] if the resource save fails
+    # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
+    # @raise [StandardError] if the resource save fails
     # @return [Resource] self
     def update(attributes = {})
       set_all(attributes)
@@ -205,7 +206,7 @@ module OneviewSDK
       when :yml, :yaml
         File.open(file_path, 'w') { |f| f.write(temp_data.to_yaml) }
       else
-        fail "Invalid format: #{format}"
+        fail InvalidFormat, "Invalid format: #{format}"
       end
       true
     end
@@ -295,19 +296,19 @@ module OneviewSDK
 
     # Fail unless @client is set for this resource.
     def ensure_client
-      fail 'Please set client attribute before interacting with this resource' unless @client
+      fail IncompleteResource, 'Please set client attribute before interacting with this resource' unless @client
       true
     end
 
     # Fail unless @data['uri'] is set for this resource.
     def ensure_uri
-      fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
+      fail IncompleteResource, 'Please set uri attribute before interacting with this resource' unless @data['uri']
       true
     end
 
     # Fail for methods that are not available for one resource
     def unavailable_method
-      fail "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
+      fail MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
     end
 
     private

@@ -41,20 +41,21 @@ RSpec.describe OneviewSDK::UnmanagedDevice do
   describe '#create' do
     it 'Should raise error if used' do
       device = OneviewSDK::UnmanagedDevice.new(@client)
-      expect { device.create }.to raise_error(/The method #create is unavailable for this resource/)
+      expect { device.create }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 
   describe '#delete' do
     it 'Should raise error if used' do
       device = OneviewSDK::UnmanagedDevice.new(@client)
-      expect { device.delete }.to raise_error(/The method #delete is unavailable for this resource/)
+      expect { device.delete }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
-      expect { OneviewSDK::UnmanagedDevice.new(@client).environmental_configuration }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::UnmanagedDevice.new(@client).environmental_configuration }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/environmentalConfiguration' do

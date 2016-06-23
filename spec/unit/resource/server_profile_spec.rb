@@ -341,12 +341,13 @@ RSpec.describe OneviewSDK::ServerProfile do
 
   describe '#available_hardware' do
     it 'requires the serverHardwareTypeUri value to be set' do
-      expect { OneviewSDK::ServerProfile.new(@client).available_hardware }.to raise_error(/Must set.*serverHardwareTypeUri/)
+      expect { OneviewSDK::ServerProfile.new(@client).available_hardware }
+        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'requires the enclosureGroupUri value to be set' do
       expect { OneviewSDK::ServerProfile.new(@client, serverHardwareTypeUri: '/rest/fake').available_hardware }
-        .to raise_error(/Must set.*enclosureGroupUri/)
+        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
     it 'calls #find_by with the serverHardwareTypeUri and enclosureGroupUri' do

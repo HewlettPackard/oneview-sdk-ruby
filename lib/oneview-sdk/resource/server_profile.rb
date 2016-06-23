@@ -204,8 +204,8 @@ module OneviewSDK
     #   profile's server hardware type and enclosure group and who's state is 'NoProfileApplied'
     def available_hardware
       ensure_client
-      fail 'Must set @data[\'serverHardwareTypeUri\']' unless @data['serverHardwareTypeUri']
-      fail 'Must set @data[\'enclosureGroupUri\']' unless @data['enclosureGroupUri']
+      fail IncompleteResource, 'Must set @data[\'serverHardwareTypeUri\']' unless @data['serverHardwareTypeUri']
+      fail IncompleteResource, 'Must set @data[\'enclosureGroupUri\']' unless @data['enclosureGroupUri']
       params = {
         state: 'NoProfileApplied',
         serverHardwareTypeUri: @data['serverHardwareTypeUri'],
@@ -213,7 +213,7 @@ module OneviewSDK
       }
       OneviewSDK::ServerHardware.find_by(@client, params)
     rescue StandardError => e
-      raise "Failed to get available hardware. Message: #{e.message}"
+      raise IncompleteResource, "Failed to get available hardware. Message: #{e.message}"
     end
 
     # Add connection entry to Server profile template

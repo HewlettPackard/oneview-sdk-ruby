@@ -16,7 +16,7 @@ RSpec.describe OneviewSDK::FCoENetwork do
       described_class::VALID_VLAN_IDS.each do |i|
         expect { described_class.new(@client, vlanId: i) }.to_not raise_error
       end
-      expect { described_class.new(@client, vlanId: 0) }.to raise_error(/vlanId out of range/)
+      expect { described_class.new(@client, vlanId: 0) }.to raise_error(OneviewSDK::InvalidResource, /vlanId out of range/)
     end
   end
 end

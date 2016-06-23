@@ -29,12 +29,12 @@ module OneviewSDK
 
     VALID_RATED_CAPACITY = (0..9999).freeze
     def validate_ratedCapacity(value)
-      fail 'Rated capacity out of range 0..9999' unless VALID_RATED_CAPACITY.include?(value)
+      fail InvalidResource, 'Rated capacity out of range 0..9999' unless VALID_RATED_CAPACITY.include?(value)
     end
 
     VALID_REFRESH_STATE = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
     def validate_refreshState(value)
-      fail 'Invalid refresh state' unless VALID_REFRESH_STATE.include?(value)
+      fail InvalidResource, 'Invalid refresh state' unless VALID_REFRESH_STATE.include?(value)
     end
 
     # @!endgroup
@@ -96,7 +96,7 @@ module OneviewSDK
     # Sets the power state of the power delivery device
     # @param [String] state On|Off
     def set_power_state(state)
-      fail 'Invalid power state' if state != 'On' && state != 'Off'
+      fail InvalidResource, 'Invalid power state' if state != 'On' && state != 'Off'
       response = @client.rest_put(@data['uri'] + '/powerState', 'body' => { powerState: state })
       @client.response_handler(response)
     end

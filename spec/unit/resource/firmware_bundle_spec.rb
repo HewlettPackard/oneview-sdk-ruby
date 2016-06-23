@@ -9,6 +9,9 @@ RSpec.describe OneviewSDK::FirmwareBundle do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(true)
     end
 
+    it 'fails if the file does not exist' do
+      expect { described_class.upload(@client, 'file.fake') }.to raise_error(OneviewSDK::NotFound, //)
+    end
     it 'returns a FirmwareDriver resource' do
       driver = OneviewSDK::FirmwareBundle.upload(@client, __FILE__)
       expect(driver.class).to eq(OneviewSDK::FirmwareDriver)

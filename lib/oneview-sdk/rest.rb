@@ -25,11 +25,11 @@ module OneviewSDK
     # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
     # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
     # @option options [Integer] :auth (client.token) Authentication token to use for this request
-    # @raise [RuntimeError] if SSL validation of OneView instance's certificate failed
+    # @raise [OpenSSL::SSL::SSLError] if SSL validation of OneView instance's certificate failed
     # @return [NetHTTPResponse] Response object
     def rest_api(type, path, options = {}, api_ver = @api_version)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
-      fail 'Must specify path' unless path
+      fail InvalidRequest, 'Must specify path' unless path
 
       uri = URI.parse(URI.escape(@url + path))
       http = Net::HTTP.new(uri.host, uri.port)
@@ -95,8 +95,8 @@ module OneviewSDK
     #   If an asynchronous task was started, this waits for it to complete.
     # @param [HTTPResponse] response HTTP response
     # @param [Boolean] wait_on_task Wait on task (or just return task details)
-    # @raise [RuntimeError] if the request failed
-    # @raise [RuntimeError] if a task was returned that did not complete successfully
+    # @raise [StandardError] if the request failed
+    # @raise [StandardError] if a task was returned that did not complete successfully
     # @return [Hash] The parsed JSON body
     def response_handler(response, wait_on_task = true)
       case response.code.to_i
@@ -120,13 +120,13 @@ module OneviewSDK
       when RESPONSE_CODE_NO_CONTENT # Synchronous delete
         return {}
       when RESPONSE_CODE_BAD_REQUEST
-        fail "400 BAD REQUEST #{response.body}"
+        fail BadRequest, "400 BAD REQUEST #{response.body}"
       when RESPONSE_CODE_UNAUTHORIZED
-        fail "401 UNAUTHORIZED #{response.body}"
+        fail Unauthorized, "401 UNAUTHORIZED #{response.body}"
       when RESPONSE_CODE_NOT_FOUND
-        fail "404 NOT FOUND #{response.body}"
+        fail NotFound, "404 NOT FOUND #{response.body}"
       else
-        fail "#{response.code} #{response.body}"
+        fail RequestError, "#{response.code} #{response.body}"
       end
     end
 
@@ -147,7 +147,7 @@ module OneviewSDK
       when :delete
         request = Net::HTTP::Delete.new(uri.request_uri)
       else
-        fail "Invalid rest call: #{type}"
+        fail InvalidRequest, "Invalid rest call: #{type}"
       end
 
       options['X-API-Version'] ||= api_ver
