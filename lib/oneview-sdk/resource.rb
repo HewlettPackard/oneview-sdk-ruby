@@ -278,7 +278,7 @@ module OneviewSDK
       return '' if !query_options || query_options.empty?
       query_path = '?'
       query_options.each do |k, v|
-        words = k.split('_')
+        words = k.to_s.split('_')
         words.map!(&:capitalize!)
         words[0] = words.first.downcase
         new_key = words.join
