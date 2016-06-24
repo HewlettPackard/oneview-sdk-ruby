@@ -97,20 +97,33 @@ module OneviewSDK
       desired_connection
     end
 
+    # Get available server hardware
+    # @return [Array<OneviewSDK::ServerHardware>] Array of ServerHardware resources that matches this
+    #   profile template's server hardware type and enclosure group and who's state is 'NoProfileApplied'
+    def available_hardware
+      ensure_client
+      fail IncompleteResource, 'Must set @data[\'serverHardwareTypeUri\']' unless @data['serverHardwareTypeUri']
+      fail IncompleteResource, 'Must set @data[\'enclosureGroupUri\']' unless @data['enclosureGroupUri']
+      params = {
+        state: 'NoProfileApplied',
+        serverHardwareTypeUri: @data['serverHardwareTypeUri'],
+        serverGroupUri: @data['enclosureGroupUri']
+      }
+      OneviewSDK::ServerHardware.find_by(@client, params)
+    rescue StandardError => e
+      raise IncompleteResource, "Failed to get available hardware. Message: #{e.message}"
+    end
+
     # Create ServerProfile using this template
     # @param [String] name Name of new server profile
     # @return [OneviewSDK::ServerProfile] New server profile from template.
     #   Temporary object only; call .create to actually create resource on OneView.
     def new_profile(name = nil)
       ensure_client && ensure_uri
-      options = @client.rest_get("#{@data['uri']}/new-profile")
-      body = @client.response_handler(options)
-      profile = OneviewSDK::ServerProfile.new(@client, body)
-      profile['name'] = if name && name.size > 0
-                          name
-                        else
-                          "Server_Profile_created_from_#{self['name']}"
-                        end
+      response = @client.rest_get("#{@data['uri']}/new-profile")
+      options = @client.response_handler(response)
+      profile = OneviewSDK::ServerProfile.new(@client, options)
+      profile['name'] = name ? name : "Server_Profile_created_from_#{@data['name']}"
       profile
     end
   end

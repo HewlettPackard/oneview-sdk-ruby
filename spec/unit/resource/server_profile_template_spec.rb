@@ -158,6 +158,25 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
   end
 
+  describe '#available_hardware' do
+    it 'requires the serverHardwareTypeUri value to be set' do
+      expect { OneviewSDK::ServerProfileTemplate.new(@client).available_hardware }
+        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
+    end
+
+    it 'requires the enclosureGroupUri value to be set' do
+      expect { OneviewSDK::ServerProfileTemplate.new(@client, serverHardwareTypeUri: '/rest/fake').available_hardware }
+        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
+    end
+
+    it 'calls #find_by with the serverHardwareTypeUri and enclosureGroupUri' do
+      @item = OneviewSDK::ServerProfileTemplate.new(@client, serverHardwareTypeUri: '/rest/fake', enclosureGroupUri: '/rest/fake2')
+      params = { state: 'NoProfileApplied', serverHardwareTypeUri: @item['serverHardwareTypeUri'], serverGroupUri: @item['enclosureGroupUri'] }
+      expect(OneviewSDK::ServerHardware).to receive(:find_by).with(@client, params).and_return([])
+      expect(@item.available_hardware).to eq([])
+    end
+  end
+
   describe '#new_profile' do
     it 'returns a profile' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new(name: 'NewProfile'))
@@ -166,7 +185,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
       template['uri'] = '/rest/server-profile-templates/fake'
       profile = template.new_profile
       expect(profile.class).to eq(OneviewSDK::ServerProfile)
-      expect(profile['name']).to eq("Server_profile_created_from_#{template['name']}")
+      expect(profile['name']).to eq("Server_Profile_created_from_#{template['name']}")
     end
 
     it 'can set the name of a new profile' do
