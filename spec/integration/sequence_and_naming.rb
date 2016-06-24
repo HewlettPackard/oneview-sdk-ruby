@@ -22,27 +22,28 @@ DEPENDENCIES = {
   Fabric: [],
   FCNetwork: [],
   FCoENetwork: [],
-  Interconnect: [],
+  Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
   LogicalDownlink: [],
   LogicalEnclosure: [],
-  LogicalInterconnect: [],
-  LogicalInterconnectGroup: [:EthernetNetwork, :LIGUplinkSet],
+  LogicalInterconnect: [:Enclosure],
+  LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
   LogicalSwitch: [:LogicalSwitchGroup],
   LogicalSwitchGroup: [],
-  NetworkSet: [:EthernetNetwork],
-  PowerDevice: [],
+  NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
+  PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
   Rack: [:ServerHardware],
   ServerHardware: [],
   ServerHardwareType: [:ServerHardware],
-  ServerProfile: [:ServerHardware, :EnclosureGroup],
+  ServerProfile: [:ServerHardwareType, :Enclosure, :ServerProfileTemplate],
+  ServerProfileTemplate: [:EnclosureGroup, :ServerHardwareType],
   StoragePool: [:StorageSystem],
   StorageSystem: [],
-  Switch: [],
+  Switch: [:LogicalSwitch],
   UnmanagedDevice: [],
-  UplinkSet: [:LogicalInterconnect],
+  UplinkSet: [:LogicalInterconnectGroup],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
-  VolumeAttachment: [],
+  VolumeAttachment: [:ServerProfile],
   VolumeTemplate: [:StorageSystem, :StoragePool]
 }.freeze
 
@@ -155,6 +156,10 @@ SERVER_PROFILE3_NAME = 'ServerProfile_3'.freeze
 SERVER_PROFILE4_NAME = 'ServerProfile_4'.freeze
 SERVER_PROFILE5_NAME = 'ServerProfile_5'.freeze
 SERVER_PROFILE6_NAME = 'ServerProfile_6'.freeze
+
+# Server Profile Template
+SERVER_PROFILE_TEMPLATE_NAME = 'ServerProfileTemplate_1'.freeze
+SERVER_PROFILE_TEMPLATE_NAME_UPDATED = 'ServerProfileTemplate_1_UPDATED'.freeze
 
 # Datacenter
 DATACENTER1_NAME = 'Datacenter_1'.freeze
