@@ -86,10 +86,10 @@ RSpec.describe OneviewSDK::ServerProfile, integration: true, type: UPDATE do
     # end
   end
 
-  describe '#compliance' do
+  describe '#update_from_template' do
     it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
     # it 'makes the Server Profile compliant with the template' do
-    #   expect { @item.compliance }.to_not raise_error
+    #   expect { @item.update_from_template }.to_not raise_error
     # end
   end
 
