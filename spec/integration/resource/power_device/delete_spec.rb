@@ -15,14 +15,15 @@ klass = OneviewSDK::PowerDevice
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
-  before :all do
-    @power_device_1 = OneviewSDK::PowerDevice.new($client, name: POW_DEVICE1_NAME)
-    @power_device_1.retrieve!
-    @power_device_2 = OneviewSDK::PowerDevice.new($client, name: POW_DEVICE2_NAME)
-    @power_device_2.retrieve!
-  end
 
   describe '#remove' do
+    before :all do
+      @power_device_1 = OneviewSDK::PowerDevice.new($client, name: POW_DEVICE1_NAME)
+      @power_device_1.retrieve!
+      @power_device_2 = OneviewSDK::PowerDevice.new($client, name: POW_DEVICE2_NAME)
+      @power_device_2.retrieve!
+    end
+    
     it 'remove Power device 1' do
       expect { @power_device_1.remove }.to_not raise_error
     end
