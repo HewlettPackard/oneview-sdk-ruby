@@ -25,7 +25,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       expect { item.create }.to_not raise_error
     end
   end
-  
+
   describe '#available_networks' do
     it 'Gets available networks' do
       item = OneviewSDK::ServerProfile.find_by($client, name: SERVER_PROFILE_NAME).first
