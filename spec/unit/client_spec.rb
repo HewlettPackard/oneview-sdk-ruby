@@ -103,6 +103,18 @@ RSpec.describe OneviewSDK::Client do
       client = OneviewSDK::Client.new(options)
       expect(client.cert_store).to eq(nil)
     end
+
+    it 'sets @timeout to nil by default' do
+      options = { url: 'https://oneview.example.com', token: 'token123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.timeout).to be_nil
+    end
+
+    it 'allows @timeout to be set to true' do
+      options = { url: 'https://oneview.example.com', token: 'token123', timeout: 5 }
+      client = OneviewSDK::Client.new(options)
+      expect(client.timeout).to eq(5)
+    end
   end
 
   describe '#appliance_api_version' do

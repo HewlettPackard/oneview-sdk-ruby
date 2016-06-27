@@ -38,6 +38,8 @@ module OneviewSDK
         http.cert_store = @cert_store if @cert_store
       else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
+      http.read_timeout = @timeout if @timeout # Timeout for a request
+      http.open_timeout = @timeout if @timeout # Timeout for a connection
 
       request = build_request(type, uri, options, api_ver)
       response = http.request(request)
