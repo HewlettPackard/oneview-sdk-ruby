@@ -38,7 +38,7 @@ client = OneviewSDK::Client.new(
 
 :lock: Tip: Check the file permissions because the password is stored in clear-text.
 
-#### Environment Variables
+##### Environment Variables
 
 You can also set the url and credentials or an authentication token using environment variables. For bash:
 
@@ -64,7 +64,7 @@ client = OneviewSDK::Client.new
 ```
 NOTE: Run `$ oneview-sdk-ruby env` to see a list of available environment variables and their current values.
 
-#### Configuration Files
+##### Configuration Files
 
 Configuration files can also be used to define client configuration (json or yaml formats). Here's an example json file:
 
@@ -103,7 +103,7 @@ For example, once you instantiate a resource object, you can call intuitive meth
 
 Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation for the complete list and usage details, but here are a few examples to get you started:
 
-#### Create a resource
+##### Create a resource
 
   ```ruby
   ethernet = OneviewSDK::EthernetNetwork.new(
@@ -112,7 +112,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) document
   ethernet.create # Tells OneView to create this resource
   ```
 
-#### Access resource attributes
+##### Access resource attributes
 
   ```ruby
   ethernet['name'] # Returns 'TestVlan'
@@ -127,7 +127,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) document
   The resource's data is stored in its @data attribute.  However, you can access the data directly using a hash-like syntax on the resource object (recommended). `resource['key']` functions a lot like `resource.data['key']`. The difference is that when using the data attribute, you must be cautious to use the correct key type (Hash vs Symbol).
   The direct hash accessor on the resource converts all keys to strings, so `resource[:key]` and `resource['key']` access the same thing: `resource.data['key']`.
 
-#### Update a resource
+##### Update a resource
 
   Notice that there's a few different ways to do things, so pick your poison!
   ```ruby
@@ -140,7 +140,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) document
   ethernet.update(name: 'newName', vlanId:  1002, purpose: 'General', ethernetNetworkType: 'Tagged')
   ```
 
-#### Check resource equality
+##### Check resource equality
 
   You can use the `==`  or `.eql?` method to compare resource equality, or `.like` to compare just a subset of attributes.
   ```ruby
@@ -158,7 +158,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) document
   ```
 
 
-#### Find resources
+##### Find resources
 
   ```ruby
   ethernet = OneviewSDK::EthernetNetwork.new(client, { name: 'OtherVlan' })
@@ -176,7 +176,7 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) document
   networks = client.get_all(:EthernetNetwork)
   ```
 
-#### Delete a resource
+##### Delete a resource
 
   ```ruby
   ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
@@ -231,7 +231,7 @@ To communicate with an appliance, you will need to set up a few environment vari
 
 The CLI does not expose everything in the SDK, but it is great for doing simple tasks such as creating or deleting resources from files, listing resources, and searching. Here are a few examples:
 
-#### List ServerProfiles:
+##### List ServerProfiles:
 
  ```bash
  $ oneview-sdk-ruby list ServerProfiles
@@ -239,7 +239,7 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
  $ oneview-sdk-ruby list ServerProfiles -f yaml
  ```
 
-#### Show details for a specific resource:
+##### Show details for a specific resource:
 
  ```bash
  $ oneview-sdk-ruby show ServerProfile profile-1
@@ -247,7 +247,7 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
  $ oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
  ```
 
-#### Search by an attribute:
+##### Search by an attribute:
 
  ```bash
  $ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
@@ -257,14 +257,14 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
  $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
  ```
 
-#### Create or delete resource by file:
+##### Create or delete resource by file:
 
  ```bash
  $ oneview-sdk-ruby create_from_file /my-server-profile.json
  $ oneview-sdk-ruby delete_from_file /my-server-profile.json
  ```
 
-#### Start an interactive console session with a OneView connection:
+##### Start an interactive console session with a OneView connection:
 
  ```bash
  $ oneview-sdk-ruby console
@@ -273,7 +273,7 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
  >
  ```
 
-#### Import a self-signed SSL certificate from your OneView instance:
+##### Import a self-signed SSL certificate from your OneView instance:
 
  Although you can disable ssl validation altogether for the client, this is strongly discouraged.
  Instead, please import the certificate using the built-in cli cert command:
