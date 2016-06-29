@@ -105,83 +105,83 @@ Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) document
 
 ##### Create a resource
 
-  ```ruby
-  ethernet = OneviewSDK::EthernetNetwork.new(
-    client, { name: 'TestVlan', vlanId:  1001, purpose:  'General', smartLink: false, privateNetwork: false }
-  )
-  ethernet.create # Tells OneView to create this resource
-  ```
+```ruby
+ethernet = OneviewSDK::EthernetNetwork.new(
+  client, { name: 'TestVlan', vlanId:  1001, purpose:  'General', smartLink: false, privateNetwork: false }
+)
+ethernet.create # Tells OneView to create this resource
+```
 
 ##### Access resource attributes
 
-  ```ruby
-  ethernet['name'] # Returns 'TestVlan'
+```ruby
+ethernet['name'] # Returns 'TestVlan'
 
-  ethernet.data # Returns hash of all data
+ethernet.data # Returns hash of all data
 
-  ethernet.each do |key, value|
-    puts "Attribute #{key} = #{value}"
-  end
-  ```
+ethernet.each do |key, value|
+  puts "Attribute #{key} = #{value}"
+end
+```
 
-  The resource's data is stored in its @data attribute.  However, you can access the data directly using a hash-like syntax on the resource object (recommended). `resource['key']` functions a lot like `resource.data['key']`. The difference is that when using the data attribute, you must be cautious to use the correct key type (Hash vs Symbol).
-  The direct hash accessor on the resource converts all keys to strings, so `resource[:key]` and `resource['key']` access the same thing: `resource.data['key']`.
+The resource's data is stored in its @data attribute.  However, you can access the data directly using a hash-like syntax on the resource object (recommended). `resource['key']` functions a lot like `resource.data['key']`. The difference is that when using the data attribute, you must be cautious to use the correct key type (Hash vs Symbol).
+The direct hash accessor on the resource converts all keys to strings, so `resource[:key]` and `resource['key']` access the same thing: `resource.data['key']`.
 
 ##### Update a resource
 
-  Notice that there's a few different ways to do things, so pick your poison!
-  ```ruby
-  ethernet.set_all(name: 'newName', vlanId:  1002)
-  ethernet['purpose'] = 'General'
-  ethernet['ethernetNetworkType'] = 'Tagged'
-  ethernet.update # Saves current state to OneView
+Notice that there's a few different ways to do things, so pick your poison!
+```ruby
+ethernet.set_all(name: 'newName', vlanId:  1002)
+ethernet['purpose'] = 'General'
+ethernet['ethernetNetworkType'] = 'Tagged'
+ethernet.update # Saves current state to OneView
 
-  # Alternatively, you could do this in 1 step with:
-  ethernet.update(name: 'newName', vlanId:  1002, purpose: 'General', ethernetNetworkType: 'Tagged')
-  ```
+# Alternatively, you could do this in 1 step with:
+ethernet.update(name: 'newName', vlanId:  1002, purpose: 'General', ethernetNetworkType: 'Tagged')
+```
 
 ##### Check resource equality
 
-  You can use the `==`  or `.eql?` method to compare resource equality, or `.like` to compare just a subset of attributes.
-  ```ruby
-  ethernet2 = OneviewSDK::EthernetNetwork.new(
-    client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General', smartLink: false, privateNetwork: false }
-  )
-  ethernet == ethernet2    # Returns false
-  ethernet.eql?(ethernet2) # Returns false
+You can use the `==`  or `.eql?` method to compare resource equality, or `.like` to compare just a subset of attributes.
+```ruby
+ethernet2 = OneviewSDK::EthernetNetwork.new(
+  client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General', smartLink: false, privateNetwork: false }
+)
+ethernet == ethernet2    # Returns false
+ethernet.eql?(ethernet2) # Returns false
 
 
-  # To compare a subset of attributes:
-  ethernet3 = OneviewSDK::EthernetNetwork.new(client, { purpose:  'General' })
-  ethernet.like?(ethernet3)  # Returns true
-  ethernet.like?(name: TestVlan, purpose: 'General')  # Returns true
-  ```
+# To compare a subset of attributes:
+ethernet3 = OneviewSDK::EthernetNetwork.new(client, { purpose:  'General' })
+ethernet.like?(ethernet3)  # Returns true
+ethernet.like?(name: TestVlan, purpose: 'General')  # Returns true
+```
 
 
 ##### Find resources
 
-  ```ruby
-  ethernet = OneviewSDK::EthernetNetwork.new(client, { name: 'OtherVlan' })
-  ethernet.retrieve! # Uses the name attribute to search for the resource on the server and update the data in this object.
+```ruby
+ethernet = OneviewSDK::EthernetNetwork.new(client, { name: 'OtherVlan' })
+ethernet.retrieve! # Uses the name attribute to search for the resource on the server and update the data in this object.
 
 
-  # Each resource class also has a searching method (NOTE: class method, not instance method)
-  ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
+# Each resource class also has a searching method (NOTE: class method, not instance method)
+ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
 
-  OneviewSDK::EthernetNetwork.find_by(client, { purpose: 'General' }).each do |network|
-    puts "  #{network['name']}"
-  end
+OneviewSDK::EthernetNetwork.find_by(client, { purpose: 'General' }).each do |network|
+  puts "  #{network['name']}"
+end
 
-  # Get all resources:
-  networks = client.get_all(:EthernetNetwork)
-  ```
+# Get all resources:
+networks = client.get_all(:EthernetNetwork)
+```
 
 ##### Delete a resource
 
-  ```ruby
-  ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
-  ethernet.delete # Tells OneView to delete this resource
-  ```
+```ruby
+ethernet = OneviewSDK::EthernetNetwork.find_by(client, { name: 'OtherVlan' }).first
+ethernet.delete # Tells OneView to delete this resource
+```
 
 ### Save/Load resources with files
 Resources can be saved to files and loaded again very easily using the built-in `.to_file` & `.from_file` methods.
@@ -233,61 +233,61 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
 
 ##### List ServerProfiles:
 
- ```bash
- $ oneview-sdk-ruby list ServerProfiles
- # Or to show in yaml format (json is also supported):
- $ oneview-sdk-ruby list ServerProfiles -f yaml
- ```
+```bash
+$ oneview-sdk-ruby list ServerProfiles
+# Or to show in yaml format (json is also supported):
+$ oneview-sdk-ruby list ServerProfiles -f yaml
+```
 
 ##### Show details for a specific resource:
 
- ```bash
- $ oneview-sdk-ruby show ServerProfile profile-1
- # Or to show specific attributes only:
- $ oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
- ```
+```bash
+$ oneview-sdk-ruby show ServerProfile profile-1
+# Or to show specific attributes only:
+$ oneview-sdk-ruby show ServerProfile profile-1 -a name,uri,enclosureBay
+```
 
 ##### Search by an attribute:
 
- ```bash
- $ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
- # By default, it will just show a list of names of matching resources,
- #   but again, you can show only certain attributes by using the -a option
- # You can also chain keys together to search in nested hashes:
- $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
- ```
+```bash
+$ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
+# By default, it will just show a list of names of matching resources,
+#   but again, you can show only certain attributes by using the -a option
+# You can also chain keys together to search in nested hashes:
+$ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
+```
 
 ##### Create or delete resource by file:
 
- ```bash
- $ oneview-sdk-ruby create_from_file /my-server-profile.json
- $ oneview-sdk-ruby delete_from_file /my-server-profile.json
- ```
+```bash
+$ oneview-sdk-ruby create_from_file /my-server-profile.json
+$ oneview-sdk-ruby delete_from_file /my-server-profile.json
+```
 
 ##### Start an interactive console session with a OneView connection:
 
- ```bash
- $ oneview-sdk-ruby console
- Console Connected to https://oneview.example.com
- HINT: The @client object is available to you
- >
- ```
+```bash
+$ oneview-sdk-ruby console
+Console Connected to https://oneview.example.com
+HINT: The @client object is available to you
+>
+```
 
 ##### Import a self-signed SSL certificate from your OneView instance:
 
- Although you can disable ssl validation altogether for the client, this is strongly discouraged.
- Instead, please import the certificate using the built-in cli cert command:
- ```bash
- # Check the certificate first:
- $ oneview-sdk-ruby cert check https://oneview.example.com
-   Checking certificate for 'https://oneview.example.com' ...
-   ERROR: Certificate Validation Failed!
+Although you can disable ssl validation altogether for the client, this is strongly discouraged.
+Instead, please import the certificate using the built-in cli cert command:
+```bash
+# Check the certificate first:
+$ oneview-sdk-ruby cert check https://oneview.example.com
+ Checking certificate for 'https://oneview.example.com' ...
+ ERROR: Certificate Validation Failed!
 
- # Import the certificate:
- $ oneview-sdk-ruby cert import https://oneview.example.com
-   Importing certificate for 'https://oneview.example.com' into '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'...
-   Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
- ```
+# Import the certificate:
+$ oneview-sdk-ruby cert import https://oneview.example.com
+ Importing certificate for 'https://oneview.example.com' into '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'...
+ Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
+```
 
 ## License
 This project is licensed under the Apache 2.0 license. Please see [LICENSE](LICENSE) for more info.
