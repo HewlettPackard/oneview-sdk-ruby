@@ -2,7 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/oneview-sdk.svg)](https://badge.fury.io/rb/oneview-sdk)
 
 
-The OneView SDK provides a Ruby library to easily interact with HPE OneView API. The Ruby SDK enables developers to easily build integration and scalable solutions with HPE OneView.
+The OneView SDK provides a Ruby library to easily interact with HPE OneView API. The Ruby SDK enables developers to easily build integrations and scalable solutions with HPE OneView.
 
 ## Installation
 - Require the gem in your Gemfile:
