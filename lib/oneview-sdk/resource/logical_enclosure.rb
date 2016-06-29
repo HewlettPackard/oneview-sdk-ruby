@@ -25,17 +25,17 @@ module OneviewSDK
     VALID_FABRIC_TYPES = %w(DirectAttach FabricAttach).freeze
     # Validate fabricType
     # @param [String] value DirectAttach, FabricAttach
-    # @raise [RuntimeError] if value is not 'DirectAttach' or 'FabricAttach'
+    # @raise [OneviewSDK::InvalidResource] if value is not 'DirectAttach' or 'FabricAttach'
     def validate_fabricType(value)
-      fail 'Invalid fabric type' unless VALID_FABRIC_TYPES.include?(value)
+      fail InvalidResource, 'Invalid fabric type' unless VALID_FABRIC_TYPES.include?(value)
     end
 
     # @!endgroup
 
     # Reapplies the appliance's configuration on enclosures
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the uri is not set
-    # @raise [RuntimeError] if the reapply fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+    # @raise [StandardError] if the reapply fails
     # @return [LogicalEnclosure] self
     def reconfigure
       ensure_client && ensure_uri
@@ -45,9 +45,9 @@ module OneviewSDK
     end
 
     # Makes this logical enclosure consistent with the enclosure group
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the uri is not set
-    # @raise [RuntimeError] if the process fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+    # @raise [StandardError] if the process fails
     # @return [Resource] self
     def update_from_group
       ensure_client && ensure_uri
@@ -57,9 +57,9 @@ module OneviewSDK
     end
 
     # Get the configuration script
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the uri is not set
-    # @raise [RuntimeError] if retrieving fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+    # @raise [StandardError] if retrieving fails
     # @return [String] script
     def get_script
       ensure_client && ensure_uri
@@ -68,9 +68,9 @@ module OneviewSDK
     end
 
     # Updates the configuration script for the logical enclosure
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the uri is not set
-    # @raise [RuntimeError] if the reapply fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+    # @raise [StandardError] if the reapply fails
     # @return [Resource] self
     def set_script(script)
       ensure_client && ensure_uri
@@ -80,9 +80,9 @@ module OneviewSDK
     end
 
     # Generates a support dump for the logical enclosure
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the uri is not set
-    # @raise [RuntimeError] if the process fails when generating the support dump
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+    # @raise [StandardError] if the process fails when generating the support dump
     # @return [Resource] self
     def support_dump(options)
       ensure_client && ensure_uri

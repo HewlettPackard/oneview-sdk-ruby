@@ -26,29 +26,30 @@ module OneviewSDK
 
     VALID_INTERCONNECT_BAY_MAPPING_COUNTS = (1..8).freeze
     def validate_interconnectBayMappingCount(value)
-      fail 'Interconnect Bay Mapping Count out of range 1..8' unless VALID_INTERCONNECT_BAY_MAPPING_COUNTS.include?(value)
+      fail InvalidResource, 'Interconnect Bay Mapping Count out of range 1..8' unless VALID_INTERCONNECT_BAY_MAPPING_COUNTS.include?(value)
     end
 
     VALID_IP_ADDRESSING_MODES = %w(DHCP External IpPool).freeze
     def validate_ipAddressingMode(value)
       return if !@data['enclosureTypeUri'] || /c7000/ =~ @data['enclosureTypeUri']
       is_not_a_c7000_without_ip_addressing_mode = !(/c7000/ =~ @data['enclosureTypeUri']) && !value
-      fail "Invalid ip AddressingMode: #{value}" if !VALID_IP_ADDRESSING_MODES.include?(value) || is_not_a_c7000_without_ip_addressing_mode
+      fail InvalidResource, "Invalid ip AddressingMode: #{value}" if !VALID_IP_ADDRESSING_MODES.include?(value) ||
+        is_not_a_c7000_without_ip_addressing_mode
     end
 
     VALID_PORT_MAPPING_COUNTS = (0..8).freeze
     def validate_portMappingCount(value)
-      fail 'Port Mapping Count out of range 0..8' unless VALID_PORT_MAPPING_COUNTS.include?(value)
+      fail InvalidResource, 'Port Mapping Count out of range 0..8' unless VALID_PORT_MAPPING_COUNTS.include?(value)
     end
 
     VALID_POWER_MODES = ['RedundantPowerFeed', 'RedundantPowerSupply', nil].freeze
     def validate_powerMode(value)
-      fail 'Invalid powerMode' unless VALID_POWER_MODES.include?(value)
+      fail InvalidResource, 'Invalid powerMode' unless VALID_POWER_MODES.include?(value)
     end
 
     VALID_STACKING_MODES = %w(Enclosure MultiEnclosure None SwitchPairs).freeze
     def validate_stackingMode(value)
-      fail 'Invalid stackingMode' unless VALID_STACKING_MODES.include?(value)
+      fail InvalidResource, 'Invalid stackingMode' unless VALID_STACKING_MODES.include?(value)
     end
 
     # @!endgroup

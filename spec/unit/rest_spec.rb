@@ -14,7 +14,7 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'requires a path' do
-      expect { @client.rest_api(:get, nil) }.to raise_error(/Must specify path/)
+      expect { @client.rest_api(:get, nil) }.to raise_error(OneviewSDK::InvalidRequest, /Must specify path/)
     end
 
     it 'logs the request type and path (debug level)' do
@@ -29,6 +29,13 @@ RSpec.describe OneviewSDK::Client do
       allow_any_instance_of(Net::HTTP).to receive(:request).and_raise(OpenSSL::SSL::SSLError, 'Msg')
       expect(@client.logger).to receive(:error).with(/SSL verification failed/)
       expect { @client.rest_api(:get, path) }.to raise_error(OpenSSL::SSL::SSLError)
+    end
+
+    it 'respects the client.timeout value' do
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'secret123', timeout: 5)
+      expect_any_instance_of(Net::HTTP).to receive(:read_timeout=).with(5).and_call_original
+      expect_any_instance_of(Net::HTTP).to receive(:open_timeout=).with(5).and_call_original
+      client.rest_api(:get, path)
     end
   end
 
@@ -117,23 +124,23 @@ RSpec.describe OneviewSDK::Client do
 
     it 'raises an error for 400 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 400)
-      expect { @client.response_handler(resp) }.to raise_error(/400 BAD REQUEST.*Blah/)
+      expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST.*Blah/)
     end
 
     it 'raises an error for 401 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 401)
-      expect { @client.response_handler(resp) }.to raise_error(/401 UNAUTHORIZED.*Blah/)
+      expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::Unauthorized, /401 UNAUTHORIZED.*Blah/)
     end
 
     it 'raises an error for 404 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 404)
-      expect { @client.response_handler(resp) }.to raise_error(/404 NOT FOUND.*Blah/)
+      expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::NotFound, /404 NOT FOUND.*Blah/)
     end
 
     it 'raises an error for undefined status codes' do
       [0, 19, 199, 203, 399, 402, 500].each do |status|
         resp = FakeResponse.new({ message: 'Blah' }, status)
-        expect { @client.response_handler(resp) }.to raise_error(/#{status}.*Blah/)
+        expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::RequestError, /#{status}.*Blah/)
       end
     end
   end
@@ -148,7 +155,7 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'fails when an invalid request type is given' do
-      expect { @client.send(:build_request, :fake, @uri, {}, @client.api_version) }.to raise_error(/Invalid rest call/)
+      expect { @client.send(:build_request, :fake, @uri, {}, @client.api_version) }.to raise_error(OneviewSDK::InvalidRequest, /Invalid rest call/)
     end
 
     context 'default header values' do

@@ -10,6 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'oneview-sdk/version'
+require_relative 'oneview-sdk/exceptions'
 require_relative 'oneview-sdk/client'
 require_relative 'oneview-sdk/resource'
 require_relative 'oneview-sdk/cli'

@@ -24,11 +24,11 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
     end
 
     it 'does not allow the create action' do
-      expect { @item.create }.to raise_error(/The method #create is unavailable for this resource/)
+      expect { @item.create }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create is unavailable for this resource/)
     end
 
     it 'does not allow the update action' do
-      expect { @item.update }.to raise_error(/The method #update is unavailable for this resource/)
+      expect { @item.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
 
   end
@@ -42,6 +42,11 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
       it 'sets the storageVolumeUri' do
         @item.set_volume(OneviewSDK::Volume.new(@client, uri: '/rest/storage-volumes/fake'))
         expect(@item['storageVolumeUri']).to eq('/rest/storage-volumes/fake')
+      end
+
+      it 'requires a storage_volume with a uri' do
+        vol = OneviewSDK::Volume.new(@client)
+        expect { @item.set_volume(vol) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
       end
     end
   end

@@ -9,30 +9,6 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-module OneviewSDK
-  # Volume snapshot resource implementation
-  class VolumeSnapshot < Resource
-    BASE_URI = nil
+require_relative '_client'
 
-    def initialize(client, params = {}, api_ver = nil)
-      super
-      # Default values
-      @data['type'] ||= 'Snapshot'
-    end
-
-    def create
-      unavailable_method
-    end
-
-    def update
-      unavailable_method
-    end
-
-    # Sets the volume
-    # @param [OneviewSDK::Volume] volume Volume
-    def set_volume(volume)
-      volume.retrieve! unless volume['uri']
-      @data['storageVolumeUri'] = volume['uri']
-    end
-  end
-end
+puts OneviewSDK::LogicalDownlink.find_by(@client, {}).first.get_without_ethernet

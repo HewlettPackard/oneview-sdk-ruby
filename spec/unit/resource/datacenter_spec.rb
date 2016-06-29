@@ -76,7 +76,7 @@ RSpec.describe OneviewSDK::Datacenter do
     end
 
     it 'Invalid depth' do
-      expect { @datacenter['depth'] = 1 }.to raise_error(/Invalid depth, value must be between 1000 and 50000/)
+      expect { @datacenter['depth'] = 1 }.to raise_error(OneviewSDK::InvalidResource, /Invalid depth, value must be between 1000 and 50000/)
     end
 
     it 'Valid depth' do
@@ -91,7 +91,7 @@ RSpec.describe OneviewSDK::Datacenter do
     end
 
     it 'Invalid width' do
-      expect { @datacenter['width'] = 1 }.to raise_error(/Invalid width, value must be between 1000 and 50000/)
+      expect { @datacenter['width'] = 1 }.to raise_error(OneviewSDK::InvalidResource, /Invalid width, value must be between 1000 and 50000/)
     end
 
     it 'Valid width' do

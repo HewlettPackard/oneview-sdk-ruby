@@ -20,7 +20,7 @@ module OneviewSDK
     DEFAULT_API_VERSION = 200
 
     attr_reader :url, :user, :token, :password, :max_api_version
-    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots
+    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
     include Rest
 
@@ -37,15 +37,16 @@ module OneviewSDK
     #   Use this OR the username and password (not both). Token has precedence.
     # @option options [Integer] :api_version (200) API Version to use by default for requests
     # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['ONEVIEWSDK_SSL_ENABLED']
+    # @option options [Integer] :timeout (nil) Override default request timeout value
     def initialize(options = {})
       options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
       @logger = options[:logger] || Logger.new(STDOUT)
-      [:debug, :info, :warn, :error, :level=].each { |m| fail "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
+      [:debug, :info, :warn, :error, :level=].each { |m| fail InvalidClient, "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
       @log_level = options[:log_level] || :info
       @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
       @print_wait_dots = options.fetch(:print_wait_dots, false)
       @url = options[:url] || ENV['ONEVIEWSDK_URL']
-      fail 'Must set the url option' unless @url
+      fail InvalidClient, 'Must set the url option' unless @url
       @max_api_version = appliance_api_version
       if options[:api_version] && options[:api_version].to_i > @max_api_version
         logger.warn "API version #{options[:api_version]} is greater than the appliance API version (#{@max_api_version})"
@@ -60,13 +61,14 @@ module OneviewSDK
         end
       end
       @ssl_enabled = options[:ssl_enabled] unless options[:ssl_enabled].nil?
+      @timeout = options[:timeout] unless options[:timeout].nil?
       @cert_store = OneviewSDK::SSLHelper.load_trusted_certs if @ssl_enabled
       @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
       return if @token
       @logger.warn 'User option not set. Using default (Administrator)' unless options[:user] || ENV['ONEVIEWSDK_USER']
       @user = options[:user] || ENV['ONEVIEWSDK_USER'] || 'Administrator'
       @password = options[:password] || ENV['ONEVIEWSDK_PASSWORD']
-      fail 'Must set user & password options or token option' unless @password
+      fail InvalidClient, 'Must set user & password options or token option' unless @password
       @token = login
     end
 
@@ -106,15 +108,15 @@ module OneviewSDK
     def get_all(type)
       OneviewSDK.resource_named(type).get_all(self)
     rescue StandardError
-      raise "Invalid resource type '#{type}'"
+      raise TypeError, "Invalid resource type '#{type}'"
     end
 
     # Wait for a task to complete
     # @param [String] task_uri
-    # @raise [RuntimeError] if the task resulted in an error or early termination.
+    # @raise [OneviewSDK::TaskError] if the task resulted in an error or early termination.
     # @return [Hash] if the task completed sucessfully, return the task details
     def wait_for(task_uri)
-      fail 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
+      fail ArgumentError, 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
       loop do
         task_uri.gsub!(%r{/https:(.*)\/rest/}, '/rest')
         task = rest_get(task_uri)
@@ -128,7 +130,7 @@ module OneviewSDK
         when 'error', 'killed', 'terminated'
           msg = "Task ended with bad state: '#{body['taskState']}'.\nResponse: "
           msg += body['taskErrors'] ? JSON.pretty_generate(body['taskErrors']) : JSON.pretty_generate(body)
-          fail(msg)
+          fail TaskError, msg
         else
           print '.' if @print_wait_dots
           sleep 10
@@ -144,10 +146,10 @@ module OneviewSDK
       options = { 'Content-Type' => :none, 'X-API-Version' => :none, 'auth' => :none }
       response = rest_api(:get, '/rest/version', options)
       version = response_handler(response)['currentVersion']
-      fail "Couldn't get API version" unless version
+      fail ConnectionError, "Couldn't get API version" unless version
       version = version.to_i if version.class != Fixnum
       version
-    rescue
+    rescue ConnectionError
       @logger.warn "Failed to get OneView max api version. Using default (#{DEFAULT_API_VERSION})"
       DEFAULT_API_VERSION
     end
@@ -164,7 +166,7 @@ module OneviewSDK
       response = rest_post('/rest/login-sessions', options)
       body = response_handler(response)
       return body['sessionID'] if body['sessionID']
-      fail "\nERROR! Couldn't log into OneView server at #{@url}. Response: #{response}\n#{response.body}"
+      fail ConnectionError, "\nERROR! Couldn't log into OneView server at #{@url}. Response: #{response}\n#{response.body}"
     rescue StandardError => e
       raise e unless retries > 0
       @logger.debug 'Failed to log in to OneView. Retrying...'

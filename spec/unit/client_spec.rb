@@ -17,11 +17,11 @@ RSpec.describe OneviewSDK::Client do
 
     it 'requires a token or user-password pair' do
       options = { url: 'https://oneview.example.com', user: 'Administrator' }
-      expect { OneviewSDK::Client.new(options) }.to raise_error(/Must set user & password options or token/)
+      expect { OneviewSDK::Client.new(options) }.to raise_error(OneviewSDK::InvalidClient, /Must set user & password options or token/)
     end
 
     it 'requires the url attribute to be set' do
-      expect { OneviewSDK::Client.new({}) }.to raise_error(/Must set the url option/)
+      expect { OneviewSDK::Client.new({}) }.to raise_error(OneviewSDK::InvalidClient, /Must set the url option/)
     end
 
     it 'sets the username to "Administrator" by default' do
@@ -103,6 +103,18 @@ RSpec.describe OneviewSDK::Client do
       client = OneviewSDK::Client.new(options)
       expect(client.cert_store).to eq(nil)
     end
+
+    it 'sets @timeout to nil by default' do
+      options = { url: 'https://oneview.example.com', token: 'token123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.timeout).to be_nil
+    end
+
+    it 'allows @timeout to be set to true' do
+      options = { url: 'https://oneview.example.com', token: 'token123', timeout: 5 }
+      client = OneviewSDK::Client.new(options)
+      expect(client.timeout).to eq(5)
+    end
   end
 
   describe '#appliance_api_version' do
@@ -146,7 +158,7 @@ RSpec.describe OneviewSDK::Client do
       options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', log_level: :debug }
       expect { OneviewSDK::Client.new(options) rescue nil }.to output(/Retrying.../).to_stdout_from_any_process
       options.delete(:log_level)
-      expect { OneviewSDK::Client.new(options) }.to raise_error(/Couldn't log into OneView server/)
+      expect { OneviewSDK::Client.new(options) }.to raise_error(OneviewSDK::ConnectionError, /Couldn't log into OneView server/)
     end
   end
 
@@ -187,7 +199,7 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'fails when a bogus resource type is given' do
-      expect { @client.get_all('BogusResources') }.to raise_error(/Invalid resource type/)
+      expect { @client.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
     end
   end
 
@@ -195,7 +207,7 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it 'requires a task_uri' do
-      expect { @client.wait_for('') }.to raise_error(/Must specify a task_uri/)
+      expect { @client.wait_for('') }.to raise_error(ArgumentError, /Must specify a task_uri/)
     end
 
     it 'returns the response body for completed tasks' do
@@ -217,7 +229,7 @@ RSpec.describe OneviewSDK::Client do
       %w(Error Killed Terminated).each do |state|
         fake_response = FakeResponse.new(taskState: state, message: 'Blah')
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(/ended with bad state[\S\s]*Blah/)
+        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
       end
     end
 
@@ -225,7 +237,7 @@ RSpec.describe OneviewSDK::Client do
       %w(Error Killed Terminated).each do |state|
         fake_response = FakeResponse.new(taskState: state, taskErrors: { message: 'Blah' })
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(/ended with bad state[\S\s]*Blah/)
+        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
       end
     end
   end

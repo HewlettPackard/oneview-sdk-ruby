@@ -254,7 +254,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
   end
 
-  describe '#compliance' do
+  describe '#update_from_template' do
     it 'transforms an existing profile' do
       patch_ops = [{ 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant' }]
       request = {
@@ -264,7 +264,7 @@ RSpec.describe OneviewSDK::ServerProfile do
       expect(@client).to receive(:rest_patch)
         .with(@item['uri'], request)
         .and_return(FakeResponse.new)
-      expect { @item.compliance }.to_not raise_error
+      expect { @item.update_from_template }.to_not raise_error
     end
   end
 
@@ -338,15 +338,37 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
   end
 
+  describe '#server_hardware' do
+    it 'returns nil if no hardware is assigned' do
+      hw = OneviewSDK::ServerProfile.new(@client).server_hardware
+      expect(hw).to be_nil
+    end
+
+    it 'retrieves and returns the hardware if it is assigned' do
+      expect_any_instance_of(OneviewSDK::ServerHardware).to receive(:retrieve!).and_return(true)
+      hw = OneviewSDK::ServerProfile.new(@client, serverHardwareUri: '/rest/fake').server_hardware
+      expect(hw).to be_a(OneviewSDK::ServerHardware)
+    end
+  end
+
+  describe '#available_networks' do
+    it 'calls the #get_available_networks class method' do
+      p = OneviewSDK::ServerProfile.new(@client, enclosureGroupUri: '/rest/fake', serverHardwareTypeUri: '/rest/fake2')
+      query = { enclosure_group_uri: p['enclosureGroupUri'], server_hardware_type_uri: p['serverHardwareTypeUri'] }
+      expect(OneviewSDK::ServerProfile).to receive(:get_available_networks).with(@client, query).and_return([])
+      expect(p.available_networks).to eq([])
+    end
+  end
 
   describe '#available_hardware' do
     it 'requires the serverHardwareTypeUri value to be set' do
-      expect { OneviewSDK::ServerProfile.new(@client).available_hardware }.to raise_error(/Must set.*serverHardwareTypeUri/)
+      expect { OneviewSDK::ServerProfile.new(@client).available_hardware }
+        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'requires the enclosureGroupUri value to be set' do
       expect { OneviewSDK::ServerProfile.new(@client, serverHardwareTypeUri: '/rest/fake').available_hardware }
-        .to raise_error(/Must set.*enclosureGroupUri/)
+        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
     it 'calls #find_by with the serverHardwareTypeUri and enclosureGroupUri' do

@@ -28,7 +28,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#validate_ratedCapacity' do
     it 'Capacity out of range' do
-      expect { @item['ratedCapacity'] = 10_000 }.to raise_error(/Rated capacity out of range 0..9999/)
+      expect { @item['ratedCapacity'] = 10_000 }.to raise_error(OneviewSDK::InvalidResource, /Rated capacity out of range 0..9999/)
     end
 
     it 'Valid capacity' do
@@ -110,14 +110,14 @@ RSpec.describe OneviewSDK::PowerDevice do
   describe '#create' do
     it 'Should raise error if used' do
       power_device = OneviewSDK::PowerDevice.new(@client)
-      expect { power_device.create }.to raise_error(/The method #create is unavailable for this resource/)
+      expect { power_device.create }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 
   describe '#delete' do
     it 'Should raise error if used' do
       power_device = OneviewSDK::PowerDevice.new(@client)
-      expect { power_device.delete }.to raise_error(/The method #delete is unavailable for this resource/)
+      expect { power_device.delete }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 
@@ -145,7 +145,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#set_power_state' do
     it 'Invalid state' do
-      expect { @item.set_power_state('unknown') }.to raise_error(/Invalid power state/)
+      expect { @item.set_power_state('unknown') }.to raise_error(OneviewSDK::InvalidResource, /Invalid power state/)
     end
 
     it 'On|Off state given' do
@@ -157,7 +157,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#set_refresh_state' do
     it 'Invalid state' do
-      expect { @item.set_refresh_state(refreshState: 'unknown') }.to raise_error(/Invalid refresh state/)
+      expect { @item.set_refresh_state(refreshState: 'unknown') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refresh state/)
     end
 
     it 'Refresh without changing username and password' do
@@ -192,7 +192,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::PowerDevice.new(@client).utilization }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::PowerDevice.new(@client).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do
