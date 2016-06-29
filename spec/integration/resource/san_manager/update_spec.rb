@@ -32,7 +32,7 @@ RSpec.describe OneviewSDK::SANManager, integration: true, type: UPDATE do
     end
 
     it 'Update invalid field' do
-      expect { @item.update(name: 'SANManager_01') }.to raise_error
+      expect { @item.update(name: 'SANManager_01') }.to raise_error(OneviewSDK::BadRequest)
     end
   end
 end
