@@ -18,8 +18,8 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   before :all do
     @power_device_1 = OneviewSDK::PowerDevice.new($client, name: POW_DEVICE1_NAME)
     @power_device_1.retrieve!
-    @power_device_2 = OneviewSDK::PowerDevice.new($client, name: POW_DEVICE2_NAME)
-    @power_device_2.retrieve!
+    ipdu_list = OneviewSDK::PowerDevice.find_by($client, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
+    @power_device_2 = ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
   end
 
   describe '#remove' do
