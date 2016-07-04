@@ -23,42 +23,10 @@ RSpec.describe OneviewSDK::StoragePool do
     end
   end
 
-  describe '#validate' do
-    context 'refreshState' do
-      it 'allows valid refresh states' do
-        storage_pool = OneviewSDK::StoragePool.new(@client)
-        described_class::VALID_REFRESH_STATES.each do |state|
-          storage_pool[:refreshState] = state
-          expect(storage_pool[:refreshState]).to eq(state)
-        end
-      end
-
-      it 'does not allow invalid refresh states' do
-        storage_pool = OneviewSDK::StoragePool.new(@client)
-        expect { storage_pool[:refreshState] = 'Complete' }.to raise_error(OneviewSDK::InvalidResource, /Invalid refresh state/)
-      end
-    end
-
-    context 'status' do
-      it 'allows valid statuses' do
-        storage_pool = OneviewSDK::StoragePool.new(@client)
-        described_class::VALID_STATUSES.each do |state|
-          storage_pool[:status] = state
-          expect(storage_pool[:status]).to eq(state)
-        end
-      end
-
-      it 'does not allow invalid statuses' do
-        storage_pool = OneviewSDK::StoragePool.new(@client)
-        expect { storage_pool[:status] = 'Complete' }.to raise_error(OneviewSDK::InvalidResource, /Invalid status/)
-      end
-    end
-
-    describe 'undefined methods' do
-      it 'does not allow the update action' do
-        storage_pool = OneviewSDK::StoragePool.new(@client)
-        expect { storage_pool.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
-      end
+  describe 'undefined methods' do
+    it 'does not allow the update action' do
+      storage_pool = OneviewSDK::StoragePool.new(@client)
+      expect { storage_pool.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
   end
 end

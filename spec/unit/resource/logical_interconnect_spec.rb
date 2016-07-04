@@ -128,36 +128,6 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
       expect(entry['trapFormat']).to eq('SNMPv1')
       expect(entry['communityString']).to eq('public')
     end
-
-    describe 'will not let weird values in the fields' do
-      it 'enetTrapCategories' do
-        enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
-          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
-      end
-
-      it 'fcTrapCategories' do
-        enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
-          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
-      end
-
-      it 'vcmTrapCategories' do
-        enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
-          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
-      end
-
-      it 'trapSeverities' do
-        enet_trap.push('WeirdValue')
-        expect { log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev) }
-          .to raise_error(OneviewSDK::InvalidResource, /not one of the allowed values/)
-      end
-
-      it 'trapFormat' do
-        expect { log_int.add_snmp_trap_destination('172.18.6.16', 'NO_VERSION', 'public') }
-      end
-    end
   end
 
   describe '#get_firmware' do
@@ -181,47 +151,6 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
       expect(@client).to receive(:rest_put).with(log_int['uri'] + '/firmware', Hash).and_return(FakeResponse.new(key: 'val'))
       driver = OneviewSDK::FirmwareDriver.new(@client, name: 'FW', uri: '/rest/fake')
       expect(log_int.firmware_update('cmd', driver, {})).to eq('key' => 'val')
-    end
-  end
-
-  describe 'validations' do
-    before :each do
-      @item = OneviewSDK::LogicalInterconnect.new(@client)
-    end
-
-    it 'only allows certain enet_trap_categories' do
-      %w(Other PortStatus PortThresholds).each do |v|
-        @item.send(:validate_enet_trap_categories, [v])
-      end
-      expect { @item.send(:validate_enet_trap_categories, ['fake']) }.to raise_error(OneviewSDK::InvalidResource, /not.*allowed/)
-    end
-
-    it 'only allows certain fc_trap_categories' do
-      %w(Other PortStatus).each do |v|
-        @item.send(:validate_fc_trap_categories, [v])
-      end
-      expect { @item.send(:validate_fc_trap_categories, ['fake']) }.to raise_error(OneviewSDK::InvalidResource, /not.*allowed/)
-    end
-
-    it 'only allows certain vcm_trap_categories' do
-      %w(Legacy).each do |v|
-        @item.send(:validate_vcm_trap_categories, [v])
-      end
-      expect { @item.send(:validate_vcm_trap_categories, ['fake']) }.to raise_error(OneviewSDK::InvalidResource, /not.*allowed/)
-    end
-
-    it 'only allows certain trap_severities' do
-      %w(Critical Info Major Minor Normal Unknown Warning).each do |v|
-        @item.send(:validate_trap_severities, [v])
-      end
-      expect { @item.send(:validate_trap_severities, ['fake']) }.to raise_error(OneviewSDK::InvalidResource, /not.*allowed/)
-    end
-
-    it 'only allows certain trap_format' do
-      %w(SNMPv1 SNMPv2 SNMPv3).each do |v|
-        @item.send(:validate_trap_format, v)
-      end
-      expect { @item.send(:validate_trap_format, 'fake') }.to raise_error(OneviewSDK::InvalidResource, /not.*allowed/)
     end
   end
 end

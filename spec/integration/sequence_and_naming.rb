@@ -24,7 +24,7 @@ DEPENDENCIES = {
   FCoENetwork: [],
   Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
-  LogicalDownlink: [],
+  LogicalDownlink: [:LogicalInterconnectGroup],
   LogicalEnclosure: [],
   LogicalInterconnect: [:Enclosure],
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],

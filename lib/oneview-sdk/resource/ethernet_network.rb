@@ -21,24 +21,6 @@ module OneviewSDK
       @data['type'] ||= 'ethernet-networkV3'
     end
 
-    # @!group Validates
-
-    VALID_ETHERNET_NETWORK_TYPES = %w(NotApplicable Tagged Tunnel Unknown Untagged).freeze
-    # Validate ethernetNetworkType
-    # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged
-    def validate_ethernetNetworkType(value)
-      fail InvalidResource, 'Invalid network type' unless VALID_ETHERNET_NETWORK_TYPES.include?(value)
-    end
-
-    VALID_PURPOSES = %w(FaultTolerance General Management VMMigration).freeze
-    # Validate purpose
-    # @param [String] value FaultTolerance, General, Management, VMMigration
-    def validate_purpose(value)
-      fail InvalidResource, 'Invalid ethernet purpose' unless VALID_PURPOSES.include?(value)
-    end
-
-    # @!endgroup
-
     # Bulk create ethernet networks
     # @param [Client] client client to connect with OneView
     # @param [Hash] options information necessary to create networks

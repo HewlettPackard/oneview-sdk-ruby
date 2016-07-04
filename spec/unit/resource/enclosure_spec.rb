@@ -109,20 +109,6 @@ RSpec.describe OneviewSDK::Enclosure do
       expect { OneviewSDK::Enclosure.new(@client).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
-    it 'only permits certain states' do
-      allow(@client).to receive(:rest_put).and_return(FakeResponse.new)
-
-      OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
-        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(i) }.to_not raise_error
-      end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('') }
-        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('state') }
-        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(nil) }
-        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-    end
-
     it 'does a PUT to /refreshState' do
       item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake', refreshState: 'NotRefreshing')
       expect(@client).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
@@ -210,29 +196,6 @@ RSpec.describe OneviewSDK::Enclosure do
       data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
       expect(@client).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
       expect(item.update_attribute('operation', '/path', 'val')).to eq('key' => 'Val')
-    end
-  end
-
-
-  describe 'validations' do
-    it 'only allows certain licensingIntent values' do
-      OneviewSDK::Enclosure::VALID_LICENSING_INTENTS.each do |intent|
-        expect { OneviewSDK::Enclosure.new(@client, licensingIntent: intent) }.to_not raise_error
-      end
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: '') }.to raise_error(OneviewSDK::InvalidResource, /Invalid licensingIntent/)
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'invalid') }.to raise_error(OneviewSDK::InvalidResource, /Invalid licensingIntent/)
-    end
-
-    it 'only allows certain refreshState values' do
-      OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
-        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(i) }.to_not raise_error
-      end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('') }
-        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('state') }
-        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(nil) }
-        .to raise_error(OneviewSDK::InvalidResource, /Invalid refreshState/)
     end
   end
 

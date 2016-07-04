@@ -26,17 +26,6 @@ RSpec.describe OneviewSDK::PowerDevice do
     end
   end
 
-  describe '#validate_ratedCapacity' do
-    it 'Capacity out of range' do
-      expect { @item['ratedCapacity'] = 10_000 }.to raise_error(OneviewSDK::InvalidResource, /Rated capacity out of range 0..9999/)
-    end
-
-    it 'Valid capacity' do
-      expect { @item['ratedCapacity'] = 100 }.not_to raise_error
-      expect(@item['ratedCapacity']).to eq(100)
-    end
-  end
-
   describe '#add_connection' do
     it 'add one connection' do
       resource = Hash.new(uri: '/rest/enclosure/fake-encl1')
@@ -144,10 +133,6 @@ RSpec.describe OneviewSDK::PowerDevice do
   end
 
   describe '#set_power_state' do
-    it 'Invalid state' do
-      expect { @item.set_power_state('unknown') }.to raise_error(OneviewSDK::InvalidResource, /Invalid power state/)
-    end
-
     it 'On|Off state given' do
       expect(@client).to receive(:rest_put).with('/rest/fake/powerState', 'body' => { powerState: 'On' })
         .and_return(FakeResponse.new({}))
@@ -156,10 +141,6 @@ RSpec.describe OneviewSDK::PowerDevice do
   end
 
   describe '#set_refresh_state' do
-    it 'Invalid state' do
-      expect { @item.set_refresh_state(refreshState: 'unknown') }.to raise_error(OneviewSDK::InvalidResource, /Invalid refresh state/)
-    end
-
     it 'Refresh without changing username and password' do
       expect(@client).to receive(:rest_put).with('/rest/fake/refreshState', 'body' => { refreshState: 'RefreshPending' })
         .and_return(FakeResponse.new({}))

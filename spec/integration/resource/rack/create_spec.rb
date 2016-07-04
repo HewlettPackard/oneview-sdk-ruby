@@ -24,7 +24,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'Add rack with custom size and mounted enclosure' do
-      server_hardware = OneviewSDK::ServerHardware.new($client, name: $secrets['server_hardware_ip'])
+      server_hardware = OneviewSDK::ServerHardware.new($client, name: $secrets['rack_server_hardware_ip'])
       server_hardware.retrieve!
 
       item = OneviewSDK::Rack.new($client, name: RACK2_NAME)

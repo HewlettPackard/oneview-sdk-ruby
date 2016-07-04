@@ -20,18 +20,6 @@ module OneviewSDK
       @data['contents'] ||= []
     end
 
-    # @!group Validates
-
-    def validate_width(value)
-      fail InvalidResource, 'Invalid width, value must be between 1000 and 50000' unless value.between?(1000, 50_000)
-    end
-
-    def validate_depth(value)
-      fail InvalidResource, 'Invalid depth, value must be between 1000 and 50000' unless value.between?(1000, 50_000)
-    end
-
-    # @!endgroup
-
     # Adds existing rack to datacenter
     # @param [OneviewSDK::Rack] rack rack
     # @param [Decimal] pos_x x position

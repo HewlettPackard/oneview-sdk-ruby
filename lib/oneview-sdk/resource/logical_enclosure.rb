@@ -20,18 +20,6 @@ module OneviewSDK
       @data['type'] ||= 'LogicalEnclosure'
     end
 
-    # @!group Validates
-
-    VALID_FABRIC_TYPES = %w(DirectAttach FabricAttach).freeze
-    # Validate fabricType
-    # @param [String] value DirectAttach, FabricAttach
-    # @raise [OneviewSDK::InvalidResource] if value is not 'DirectAttach' or 'FabricAttach'
-    def validate_fabricType(value)
-      fail InvalidResource, 'Invalid fabric type' unless VALID_FABRIC_TYPES.include?(value)
-    end
-
-    # @!endgroup
-
     # Reapplies the appliance's configuration on enclosures
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [OneviewSDK::IncompleteResource] if the uri is not set
