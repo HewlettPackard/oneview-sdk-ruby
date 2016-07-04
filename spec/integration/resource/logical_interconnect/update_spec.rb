@@ -71,7 +71,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
       vlans = log_int.list_vlan_networks
       expect(vlans.any?).to be
       vlans.each do |net|
-        expect(net[:name]).to eq(ETH_NET_NAME)
+        expect([ETH_NET_NAME, FC_NET_NAME]).to include(net[:name])
       end
     end
 

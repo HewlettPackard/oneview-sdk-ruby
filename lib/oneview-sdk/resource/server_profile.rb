@@ -178,6 +178,65 @@ module OneviewSDK
       desired_connection
     end
 
+    def add_volume_attachment(volume, attachment_options = {})
+      self['sanStorage'] ||= {}
+      self['sanStorage']['volumeAttachments'] ||= []
+      attachment_options['id'] = 0
+
+      volume.retrieve!
+      attachment_options['volumeUri'] = volume['uri']
+      attachment_options['volumeStoragePoolUri'] = volume['storagePoolUri']
+      attachment_options['volumeStorageSystemUri'] = volume['storageSystemUri']
+
+      self['sanStorage']['volumeAttachments'] << attachment_options
+    end
+
+    def create_volume_with_attachment(storage_pool, volume_options, attachment_options = {})
+      self['sanStorage'] ||= {}
+      self['sanStorage']['volumeAttachments'] ||= []
+      attachment_options['id'] ||= 0
+      # Removing provisioningParameters and adding them to the top level hash
+      provision_param = volume_options.delete('provisioningParameters') || volume_options.delete(:provisioningParameters)
+      provision_param.each do |k, v|
+        volume_options[k] = v
+      end
+      # Each provisioningParameter has the prefix 'volume' attached to its name in the original options
+      # Also, it needs to respect the lower camel case
+      volume_options.each do |k, v|
+        attachment_options["volume#{k.to_s[0].capitalize}#{k.to_s[1, k.to_s.length-1]}"] = v
+      end
+
+      attachment_options['volumeStoragePoolUri'] = storage_pool['uri'] if storage_pool['uri'] || storage_pool.retrieve!
+
+      # Since the volume is being created in this method, it needs to be nil
+      attachment_options['volumeUri'] = nil
+      attachment_options['volumeStorageSystemUri'] = nil
+
+      # volumeProvisionedCapacityBytes is not following the same pattern in Volume
+      attachment_options['volumeProvisionedCapacityBytes'] ||= attachment_options.delete('volumeRequestedCapacity')
+
+      # Defaults
+      attachment_options['permanent'] ||= true
+      attachment_options['lunType'] ||= 'Auto'
+      attachment_options['lun'] ||= nil
+      attachment_options['storagePaths'] ||= []
+
+      self['sanStorage']['volumeAttachments'] << attachment_options
+      puts JSON.pretty_generate(self['sanStorage'])
+    end
+
+    # Remove volume attachment entry in Server profile template
+    # @param [Fixnum] id ID number of the attachment entry
+    # @return Returns the volume hash if found, otherwise returns nil
+    def remove_volume_attachment(id)
+      desired_connection = nil
+      return desired_connection unless self['connections']
+      self['connections'].each do |con|
+        desired_connection = self['connections'].delete(con) if con['name'] == connection_name
+      end
+      desired_connection
+    end
+
     # Sets the Firmware Driver for the current Server Profile
     # @param [OneviewSDK::FirmwareDriver] firmware Firmware Driver to be associated with the resource
     # @param [Hash<String,Object>] firmware_options Firmware Driver options

@@ -9,8 +9,8 @@ RSpec.describe OneviewSDK::ServerProfile, integration: true, type: UPDATE do
     @enclosure_group = OneviewSDK::EnclosureGroup.find_by($client, {}).first
     @server_hardware_type = OneviewSDK::ServerHardwareType.find_by($client, {}).first
     @storage_system = OneviewSDK::StorageSystem.find_by($client, {}).first
-    # template = OneviewSDK::ServerProfileTemplate.find_by($client, {}).first
-    # @item2 = template.new_profile(SERVER_PROFILE3_NAME)
+    @item3 = OneviewSDK::ServerProfile.new($client, name: SERVER_PROFILE3_NAME)
+    @item3.retrieve!
   end
 
   describe '#self.get_available_networks' do
@@ -80,17 +80,24 @@ RSpec.describe OneviewSDK::ServerProfile, integration: true, type: UPDATE do
   end
 
   describe '#get_compliance_preview' do
-    it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
-    # it 'shows compliance preview' do
-    #   expect { @item.get_compliance_preview }.to_not raise_error
-    # end
+    # it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
+    it 'shows compliance preview' do
+      expect { @item3.get_compliance_preview }.to_not raise_error
+    end
   end
 
   describe '#update_from_template' do
-    it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
-    # it 'makes the Server Profile compliant with the template' do
-    #   expect { @item.update_from_template }.to_not raise_error
-    # end
+    # it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
+    it 'makes the Server Profile compliant with the template' do
+      expect { @item3.update_from_template }.to_not raise_error
+    end
+  end
+
+  describe '#available_networks' do
+    it 'Gets available networks' do
+      item = OneviewSDK::ServerProfile.find_by($client, name: SERVER_PROFILE_NAME).first
+      expect { item.available_networks }.not_to raise_error
+    end
   end
 
 end
