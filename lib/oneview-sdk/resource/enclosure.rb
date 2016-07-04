@@ -23,20 +23,6 @@ module OneviewSDK
       @data['type'] ||= 'EnclosureV200'
     end
 
-    # @!group Validates
-
-    VALID_LICENSING_INTENTS = %w(NotApplicable OneView OneViewNoiLO OneViewStandard).freeze
-    def validate_licensingIntent(value)
-      fail InvalidResource, 'Invalid licensingIntent' unless VALID_LICENSING_INTENTS.include?(value) || value.nil?
-    end
-
-    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
-    def validate_refreshState(value)
-      fail InvalidResource, 'Invalid refreshState' unless VALID_REFRESH_STATES.include?(value)
-    end
-
-    # @!endgroup
-
     # Claim/configure the enclosure and its components to the appliance
     def create
       ensure_client
@@ -88,7 +74,6 @@ module OneviewSDK
     def set_refresh_state(state, options = {})
       ensure_client && ensure_uri
       s = state.to_s rescue state
-      validate_refreshState(s) # Validate refreshState
       requestBody = {
         'body' => {
           refreshState: s,

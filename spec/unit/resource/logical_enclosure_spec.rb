@@ -12,25 +12,6 @@ RSpec.describe OneviewSDK::LogicalEnclosure do
     end
   end
 
-  describe '#validate' do
-    context 'valid values' do
-      it 'allows valids fabricTypes' do
-        logical_enclosure = OneviewSDK::LogicalEnclosure.new(@client)
-        described_class::VALID_FABRIC_TYPES.each do |value|
-          logical_enclosure[:fabricType] = value
-          expect(logical_enclosure[:fabricType]).to eq(value)
-        end
-      end
-    end
-
-    context 'with invalid values' do
-      it 'rejects an invalid fabricType' do
-        logical_enclosure = OneviewSDK::LogicalEnclosure.new(@client)
-        expect { logical_enclosure[:fabricType] = 'None' }.to raise_error(OneviewSDK::InvalidResource, /Invalid fabric type/)
-      end
-    end
-  end
-
   describe 'helper-methods' do
     before :each do
       @item = OneviewSDK::LogicalEnclosure.new(@client, uri: '/rest/logical-enclosures/fake')

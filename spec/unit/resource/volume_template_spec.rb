@@ -87,38 +87,4 @@ RSpec.describe OneviewSDK::VolumeTemplate do
       end
     end
   end
-
-  describe '#validate' do
-    context 'refreshState' do
-      it 'allows valid refresh states' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        valid_states = %w(NotRefreshing RefreshFailed RefreshPending Refreshing)
-        valid_states.each do |state|
-          volume_template[:refreshState] = state
-          expect(volume_template[:refreshState]).to eq(state)
-        end
-      end
-
-      it 'does not allow invalid refresh states' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        expect { volume_template[:refreshState] = 'Complete' }.to raise_error(OneviewSDK::InvalidResource, /Invalid refresh state/)
-      end
-    end
-
-    context 'status' do
-      it 'allows valid statuses' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        valid_statuses = %w(OK Disabled Warning Critical Unknown)
-        valid_statuses.each do |state|
-          volume_template[:status] = state
-          expect(volume_template[:status]).to eq(state)
-        end
-      end
-
-      it 'does not allow invalid statuses' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
-        expect { volume_template[:status] = 'Complete' }.to raise_error(OneviewSDK::InvalidResource, /Invalid status/)
-      end
-    end
-  end
 end

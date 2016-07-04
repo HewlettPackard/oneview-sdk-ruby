@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::Datacenter
+klass = OneviewSDK::LogicalDownlink
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 

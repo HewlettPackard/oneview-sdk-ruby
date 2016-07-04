@@ -14,17 +14,6 @@ module OneviewSDK
   class Volume < Resource
     BASE_URI = '/rest/storage-volumes'.freeze
 
-    # @!group Validates
-
-    VALID_PROVISION_TYPES = %w(Thin Full).freeze
-    # Validate the type of provisioning
-    # @param [String] value Must be Thin or Full
-    def validate_provisionType(value)
-      fail InvalidResource, 'Invalid provision type' unless VALID_PROVISION_TYPES.include?(value)
-    end
-
-    # @!endgroup
-
     # It's possible to create the volume in 6 different ways:
     # 1) Common = Storage System + Storage Pool
     # 2) Template = Storage Volume Template
@@ -194,6 +183,5 @@ module OneviewSDK
       resource.retrieve! unless resource['uri']
       fail IncompleteResource, "#{resource.class}: #{resource['name']} not found" unless resource['uri']
     end
-
   end
 end

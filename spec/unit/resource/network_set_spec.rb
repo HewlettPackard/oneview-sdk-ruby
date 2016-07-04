@@ -82,5 +82,4 @@ RSpec.describe OneviewSDK::NetworkSet do
       OneviewSDK::NetworkSet.get_without_ethernet(@client)
     end
   end
-
 end

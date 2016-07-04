@@ -24,7 +24,7 @@ DEPENDENCIES = {
   FCoENetwork: [],
   Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
-  LogicalDownlink: [],
+  LogicalDownlink: [:LogicalInterconnectGroup],
   LogicalEnclosure: [],
   LogicalInterconnect: [:Enclosure],
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
@@ -147,7 +147,6 @@ VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
 
 # Power Device
 POW_DEVICE1_NAME = 'PowerDevice_1'.freeze
-POW_DEVICE2_NAME = 'PowerDevice_2'.freeze
 
 # Server Profile
 SERVER_PROFILE_NAME = 'ServerProfile_1'.freeze

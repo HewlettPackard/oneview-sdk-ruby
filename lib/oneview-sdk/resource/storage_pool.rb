@@ -20,24 +20,6 @@ module OneviewSDK
       @data['type'] ||= 'StoragePoolV2'
     end
 
-    # @!group Validates
-
-    VALID_REFRESH_STATES = %w(NotRefreshing RefreshFailed RefreshPending Refreshing).freeze
-    # Validate refreshState
-    # @param [String] value NotRefreshing, RefreshFailed, RefreshPending, Refreshing
-    def validate_refreshState(value)
-      fail InvalidResource, 'Invalid refresh state' unless VALID_REFRESH_STATES.include?(value)
-    end
-
-    VALID_STATUSES = %w(OK Disabled Warning Critical Unknown).freeze
-    # Validate status
-    # @param [String] value OK, Disabled, Warning, Critical, Unknown
-    def validate_status(value)
-      fail InvalidResource, 'Invalid status' unless VALID_STATUSES.include?(value)
-    end
-
-    # @!endgroup
-
     # Set storage system
     # @param [OneviewSDK::StorageSystem] storage_system
     def set_storage_system(storage_system)
@@ -48,6 +30,5 @@ module OneviewSDK
     def update
       unavailable_method
     end
-
   end
 end
