@@ -30,11 +30,11 @@ san_manager['connectionInfo'] = [
   },
   {
     'name' => 'Userame',
-    'value' => 'dcs'
+    'value' => ''
   },
   {
     'name' => 'Password',
-    'value' => 'dcs'
+    'value' => ''
   },
   {
     'name' => 'UseSl',
