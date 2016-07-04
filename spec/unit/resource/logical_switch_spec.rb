@@ -233,7 +233,5 @@ RSpec.describe OneviewSDK::LogicalSwitch do
       ).and_return(FakeResponse.new({}))
       logical_switch.create
     end
-
   end
-
 end

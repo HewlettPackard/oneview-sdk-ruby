@@ -135,5 +135,4 @@ RSpec.describe OneviewSDK::Rack do
       rack.get_device_topology
     end
   end
-
 end

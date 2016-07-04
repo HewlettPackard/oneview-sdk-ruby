@@ -31,7 +31,6 @@ module OneviewSDK
       unavailable_method
     end
 
-
     # Add rack resource with specified options
     # @param [OneviewSDK::Resource] resource Resource to be added
     # @param [String] mount_location location in the rack
