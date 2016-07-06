@@ -30,7 +30,7 @@ DEPENDENCIES = {
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
   LogicalSwitch: [:LogicalSwitchGroup],
   LogicalSwitchGroup: [],
-  # ManagedSAN: [:SANManager],
+  ManagedSAN: [:SANManager],
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
   Rack: [:ServerHardware],
