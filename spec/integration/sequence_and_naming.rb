@@ -34,6 +34,7 @@ DEPENDENCIES = {
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
   Rack: [:ServerHardware],
+  SANManager: [],
   ServerHardware: [],
   ServerHardwareType: [:ServerHardware],
   ServerProfile: [:ServerHardwareType, :Enclosure, :ServerProfileTemplate],
@@ -176,3 +177,6 @@ DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
 
 # Unmanaged Device
 UNMANAGED_DEVICE1_NAME = 'UnmanagedDevice_1'.freeze
+
+# FC San Provider
+SAN_PROVIDER1_NAME = 'Brocade Network Advisor'.freeze
