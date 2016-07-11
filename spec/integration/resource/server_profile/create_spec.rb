@@ -16,12 +16,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     it 'can create a basic connection-less unassigned server profile' do
       item = OneviewSDK::ServerProfile.new($client, name: SERVER_PROFILE2_NAME)
       target = OneviewSDK::ServerProfile.get_available_targets($client)['targets'].first
-      server_hardware = OneviewSDK::ServerHardware.new($client, uri: target['serverHardwareUri'])
       server_hardware_type = OneviewSDK::ServerHardwareType.new($client, uri: target['serverHardwareTypeUri'])
-      enclosure_group = OneviewSDK::EnclosureGroup.new($client, uri: target['enclosureGroupUri'])
-      item.set_server_hardware(server_hardware)
       item.set_server_hardware_type(server_hardware_type)
-      item.set_enclosure_group(enclosure_group)
       expect { item.create }.to_not raise_error
     end
 
@@ -51,7 +47,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
       available_fc_network = OneviewSDK::FCNetwork.new($client, name: FC_NET_NAME)
       available_fc_network.retrieve!
-      item.add_connection(available_fc_network, {'name' => 'fc_con_1', 'functionType' => 'FibreChannel', 'portId' => 'Auto'})
+      item.add_connection(available_fc_network, 'name' => 'fc_con_1', 'functionType' => 'FibreChannel', 'portId' => 'Auto')
 
       volume_params = {
         'name' => VOLUME4_NAME,

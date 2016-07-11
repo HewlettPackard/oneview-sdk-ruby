@@ -203,7 +203,7 @@ module OneviewSDK
       # Each provisioningParameter has the prefix 'volume' attached to its name in the original options
       # Also, it needs to respect the lower camel case
       volume_options.each do |k, v|
-        attachment_options["volume#{k.to_s[0].capitalize}#{k.to_s[1, k.to_s.length-1]}"] = v
+        attachment_options["volume#{k.to_s[0].capitalize}#{k.to_s[1, k.to_s.length - 1]}"] = v
       end
 
       attachment_options['volumeStoragePoolUri'] = storage_pool['uri'] if storage_pool['uri'] || storage_pool.retrieve!
@@ -229,12 +229,15 @@ module OneviewSDK
     # @param [Fixnum] id ID number of the attachment entry
     # @return Returns the volume hash if found, otherwise returns nil
     def remove_volume_attachment(id)
-      desired_connection = nil
-      return desired_connection unless self['connections']
-      self['connections'].each do |con|
-        desired_connection = self['connections'].delete(con) if con['name'] == connection_name
+      self['sanStorage'] ||= {}
+      self['sanStorage']['volumeAttachments'] ||= []
+      return if self['sanStorage'].empty? || self['sanStorage']['volumeAttachments'].empty?
+
+      volume_attachment = nil
+      self['sanStorage']['volumeAttachments'].each do |entry|
+        volume_attachment = self['sanStorage']['volumeAttachments'].delete(entry) if entry['id'] == id
       end
-      desired_connection
+      volume_attachment
     end
 
     # Sets the Firmware Driver for the current Server Profile

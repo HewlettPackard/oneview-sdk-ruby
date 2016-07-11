@@ -37,7 +37,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
     fc_uplink_options = {
       name: LIG_UPLINK_SET2_NAME,
-      networkType: 'FibreChannel',
+      networkType: 'FibreChannel'
     }
     @fc_lig_uplink_set = OneviewSDK::LIGUplinkSet.new($client, fc_uplink_options)
     @fc_network = OneviewSDK::FCNetwork.new($client, name: FC_NET_NAME)

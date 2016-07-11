@@ -10,7 +10,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         hostname: $secrets['server_hardware2_ip'],
         username: $secrets['server_hardware2_username'],
         password: $secrets['server_hardware2_password'],
-        name: 'teste',
+        name: 'Server Hardware Type OneViewSDK Test',
         licensingIntent: 'OneView'
       }
 
