@@ -80,17 +80,17 @@ RSpec.describe OneviewSDK::ServerProfile, integration: true, type: UPDATE do
   end
 
   describe '#get_compliance_preview' do
-    # it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
-    it 'shows compliance preview' do
-      expect { @item3.get_compliance_preview }.to_not raise_error
-    end
+    it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
+    # it 'shows compliance preview' do
+    #   expect { @item3.get_compliance_preview }.to_not raise_error
+    # end
   end
 
   describe '#update_from_template' do
-    # it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
-    it 'makes the Server Profile compliant with the template' do
-      expect { @item3.update_from_template }.to_not raise_error
-    end
+    it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
+    # it 'makes the Server Profile compliant with the template' do
+    #   expect { @item3.update_from_template }.to_not raise_error
+    # end
   end
 
   describe '#available_networks' do
