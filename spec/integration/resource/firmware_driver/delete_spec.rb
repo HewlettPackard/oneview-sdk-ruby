@@ -21,5 +21,11 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
       firmware.retrieve!
       expect { firmware.delete }.not_to raise_error
     end
+
+    it 'deletes other drivers' do
+      OneviewSDK::FirmwareDriver.find_by($client, {}).each do |driver|
+        expect { driver.delete }.not_to raise_error
+      end
+    end
   end
 end
