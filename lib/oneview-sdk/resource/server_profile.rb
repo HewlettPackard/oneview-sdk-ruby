@@ -207,8 +207,8 @@ module OneviewSDK
     # @return [Hash{String=>Array<OneviewSDK::EthernetNetwork>,Array<OneviewSDK::FCNetwork>}]
     #   A hash containing the lists of Ethernet Networks and FC Networks
     #   Options:
-    #     * [String] :ethernet_networks The list of Ethernet Networks
-    #     * [String] :fc_networks The list of FC Networks
+    #     * [String] :ethernetNetworks The list of Ethernet Networks
+    #     * [String] :fcNetworks The list of FC Networks
     def self.get_available_networks(client, query = nil)
       query_uri = build_query(query) if query
       response = client.rest_get("#{BASE_URI}/available-networks#{query_uri}")
@@ -216,8 +216,8 @@ module OneviewSDK
       ethernet_networks = body['ethernetNetworks'].select { |info| OneviewSDK::EthernetNetwork.find_by(client, name: info['name']).first }
       fc_networks = body['fcNetworks'].select { |info| OneviewSDK::FCNetwork.find_by(client, name: info['name']).first }
       {
-        'ethernet_networks' => ethernet_networks,
-        'fc_networks' => fc_networks
+        'ethernetNetworks' => ethernet_networks,
+        'fcNetworks' => fc_networks
       }
     end
 

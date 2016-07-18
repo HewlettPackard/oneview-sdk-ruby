@@ -174,8 +174,8 @@ RSpec.describe OneviewSDK::ServerProfile do
         .and_return(FakeResponse.new('name' => 'unit_fc_network_2', 'uri' => 'rest/fake/fc2'))
 
       returned_set = OneviewSDK::ServerProfile.get_available_networks(@client, 'view' => 'unit')
-      returned_set['ethernet_networks'].each { |ethernet| expect(ethernet['name']).to match(/unit_ethernet_network/) }
-      returned_set['fc_networks'].each { |fibre| expect(fibre['name']).to match(/unit_fc_network/) }
+      returned_set['ethernetNetworks'].each { |ethernet| expect(ethernet['name']).to match(/unit_ethernet_network/) }
+      returned_set['fcNetworks'].each { |fibre| expect(fibre['name']).to match(/unit_fc_network/) }
     end
   end
 
