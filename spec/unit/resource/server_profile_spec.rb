@@ -164,18 +164,14 @@ RSpec.describe OneviewSDK::ServerProfile do
                         { 'name' => 'unit_fc_network_2' }
                       ]
         ))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::EthernetNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_ethernet_network_1', 'uri' => 'rest/fake/et1'))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::EthernetNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_ethernet_network_2', 'uri' => 'rest/fake/et2'))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::FCNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_fc_network_1', 'uri' => 'rest/fake/fc1'))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::FCNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_fc_network_2', 'uri' => 'rest/fake/fc2'))
 
       returned_set = OneviewSDK::ServerProfile.get_available_networks(@client, 'view' => 'unit')
-      returned_set['ethernetNetworks'].each { |ethernet| expect(ethernet['name']).to match(/unit_ethernet_network/) }
-      returned_set['fcNetworks'].each { |fibre| expect(fibre['name']).to match(/unit_fc_network/) }
+      expect(returned_set['ethernetNetworks'].size).to eq(2)
+      returned_set['ethernetNetworks'].each { |net| expect(net).to be_a(OneviewSDK::EthernetNetwork) }
+      returned_set['ethernetNetworks'].each { |net| expect(net['name']).to match(/unit_ethernet_network/) }
+      expect(returned_set['fcNetworks'].size).to eq(2)
+      returned_set['fcNetworks'].each { |net| expect(net).to be_a(OneviewSDK::FCNetwork) }
+      returned_set['fcNetworks'].each { |net| expect(net['name']).to match(/unit_fc_network/) }
     end
   end
 
