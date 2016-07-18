@@ -15,9 +15,11 @@ klass = OneviewSDK::FirmwareBundle
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
+  let(:bundle_path) { 'spec/support/hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm' }
+
   describe '#self.upload' do
     it 'Upload hotfix' do
-      item = OneviewSDK::FirmwareBundle.upload($client, 'spec/support/hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm')
+      item = OneviewSDK::FirmwareBundle.upload($client, bundle_path)
       expect(item['uri']).to be
     end
   end
