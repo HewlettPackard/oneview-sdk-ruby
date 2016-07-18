@@ -213,11 +213,9 @@ module OneviewSDK
       query_uri = build_query(query) if query
       response = client.rest_get("#{BASE_URI}/available-networks#{query_uri}")
       body = client.response_handler(response)
-      ethernet_networks = body['ethernetNetworks'].map { |info| OneviewSDK::EthernetNetwork.new(client, info) }
-      fc_networks = body['fcNetworks'].map { |info| OneviewSDK::FCNetwork.new(client, info) }
       {
-        'ethernetNetworks' => ethernet_networks,
-        'fcNetworks' => fc_networks
+        'ethernetNetworks' => body['ethernetNetworks'].map { |n| OneviewSDK::EthernetNetwork.new(client, n) },
+        'fcNetworks' => body['fcNetworks'].map { |n| OneviewSDK::FCNetwork.new(client, n) }
       }
     end
 
