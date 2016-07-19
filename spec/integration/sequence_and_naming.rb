@@ -22,6 +22,8 @@ DEPENDENCIES = {
   Fabric: [],
   FCNetwork: [],
   FCoENetwork: [],
+  FirmwareBundle: [],
+  FirmwareDriver: [:FirmwareBundle],
   Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
   LogicalDownlink: [:Enclosure],
@@ -29,7 +31,8 @@ DEPENDENCIES = {
   LogicalInterconnect: [:Enclosure],
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
   LogicalSwitch: [:LogicalSwitchGroup],
-  LogicalSwitchGroup: [:Interconnect],
+  LogicalSwitchGroup: [],
+  ManagedSAN: [:SANManager],
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
   Rack: [:ServerProfile],
@@ -180,3 +183,6 @@ UNMANAGED_DEVICE1_NAME = 'UnmanagedDevice_1'.freeze
 
 # FC San Provider
 SAN_PROVIDER1_NAME = 'Brocade Network Advisor'.freeze
+
+# Firmware Driver
+FIRMWARE_DRIVER1_NAME = 'CustomSPP_1'.freeze
