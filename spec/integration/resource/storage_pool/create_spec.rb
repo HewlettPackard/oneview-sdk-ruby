@@ -13,15 +13,15 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     }
   end
 
-  describe '#create' do
-    it 'can create resources' do
+  describe '#add' do
+    it 'can add resources' do
       item = OneviewSDK::StoragePool.from_file($client, file_path)
-      item.create
+      item.add
       storage_system = OneviewSDK::StorageSystem.new($client, storage_system_data)
       storage_system.retrieve!
-      expect(item[:storageSystemUri]).to eq(storage_system['uri'])
-      expect(item[:poolName]).to eq(STORAGE_POOL_NAME)
-      expect(item[:uri]).to be
+      expect(item['storageSystemUri']).to eq(storage_system['uri'])
+      expect(item['poolName']).to eq(STORAGE_POOL_NAME)
+      expect(item['uri']).to be
     end
   end
 
@@ -31,15 +31,15 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       item.retrieve!
       storage_system = OneviewSDK::StorageSystem.new($client, storage_system_data)
       storage_system.retrieve!
-      expect(item[:storageSystemUri]).to eq(storage_system['uri'])
-      expect(item[:name]).to eq(STORAGE_POOL_NAME)
-      expect(item[:uri]).to be
+      expect(item['storageSystemUri']).to eq(storage_system['uri'])
+      expect(item['name']).to eq(STORAGE_POOL_NAME)
+      expect(item['uri']).to be
     end
   end
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = OneviewSDK::StoragePool.find_by($client, {}).map { |item| item[:name] }
+      names = OneviewSDK::StoragePool.find_by($client, {}).map { |item| item['name'] }
       expect(names).to include(STORAGE_POOL_NAME)
     end
 
@@ -47,7 +47,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       storage_system = OneviewSDK::StorageSystem.new($client, storage_system_data)
       storage_system.retrieve!
       attrs = { name: STORAGE_POOL_NAME, storageSystemUri: storage_system['uri'] }
-      names = OneviewSDK::StoragePool.find_by($client, attrs).map { |item| item[:name] }
+      names = OneviewSDK::StoragePool.find_by($client, attrs).map { |item| item['name'] }
       expect(names).to include(STORAGE_POOL_NAME)
     end
   end

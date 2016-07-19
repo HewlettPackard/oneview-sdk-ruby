@@ -14,10 +14,25 @@ module OneviewSDK
   class StoragePool < Resource
     BASE_URI = '/rest/storage-pools'.freeze
 
+    alias add create
+    alias remove delete
+
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['type'] ||= 'StoragePoolV2'
+    end
+
+    def create
+      unavailable_method
+    end
+
+    def delete
+      unavailable_method
+    end
+
+    def update
+      unavailable_method
     end
 
     # Set storage system
@@ -25,10 +40,6 @@ module OneviewSDK
     def set_storage_system(storage_system)
       fail IncompleteResource, 'Please set the storage system\'s uri attribute!' unless storage_system['uri']
       set('storageSystemUri', storage_system['uri'])
-    end
-
-    def update
-      unavailable_method
     end
   end
 end
