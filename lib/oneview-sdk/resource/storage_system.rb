@@ -14,6 +14,8 @@ module OneviewSDK
   class StorageSystem < Resource
     BASE_URI = '/rest/storage-systems'.freeze
 
+    alias remove delete
+
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
@@ -21,6 +23,14 @@ module OneviewSDK
     end
 
     def create
+      unavailable_method
+    end
+
+    def delete
+      unavailable_method
+    end
+
+    def add
       ensure_client
       task = @client.rest_post(self.class::BASE_URI, { 'body' => self['credentials'] }, @api_version)
       temp = @data.clone

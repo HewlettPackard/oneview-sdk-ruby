@@ -119,7 +119,7 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
       managedDomain: 'TestDomain'
     }
     storage = OneviewSDK::StorageSystem.new($client, options)
-    storage.create
+    storage.add
     expect(storage['uri']).not_to be_empty
   end
 

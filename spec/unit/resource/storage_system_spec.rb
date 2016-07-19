@@ -10,7 +10,7 @@ RSpec.describe OneviewSDK::StorageSystem do
     end
   end
 
-  describe '#create' do
+  describe '#add' do
     it 'sends just the credentials hash, then the rest of the data' do
       item = OneviewSDK::StorageSystem.new(@client, name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
       expect(@client).to receive(:rest_post).with('/rest/storage-systems', { 'body' => item['credentials'] }, item.api_version)
@@ -18,7 +18,15 @@ RSpec.describe OneviewSDK::StorageSystem do
       allow(@client).to receive(:wait_for).and_return(FakeResponse.new(nil, 200, 'associatedResource' => { 'resourceUri' => '/rest/fake' }))
       expect(item).to receive(:refresh).and_return(true)
       expect(item).to receive(:update).with('name' => 'Fake', 'type' => 'StorageSystemV3').and_return(true)
-      item.create
+      item.add
+    end
+  end
+
+  describe '#remove' do
+    it 'Should support remove' do
+      storage = OneviewSDK::StorageSystem.new(@client, uri: '/rest/storage-systems/100')
+      expect(@client).to receive(:rest_delete).with('/rest/storage-systems/100', {}, 200).and_return(FakeResponse.new({}))
+      storage.remove
     end
   end
 
@@ -47,6 +55,18 @@ RSpec.describe OneviewSDK::StorageSystem do
       item = OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake')
       expect(@client).to receive(:rest_get).with('/rest/fake/managedPorts/100').and_return(FakeResponse.new({}))
       item.get_managed_ports(100)
+    end
+  end
+
+  describe 'undefined methods' do
+    it 'does not allow the create action' do
+      storage = OneviewSDK::StorageSystem.new(@client)
+      expect { storage.create }.to raise_error(/The method #create is unavailable for this resource/)
+    end
+
+    it 'does not allow the delete action' do
+      storage = OneviewSDK::StorageSystem.new(@client)
+      expect { storage.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
 end
