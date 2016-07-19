@@ -14,6 +14,8 @@ module OneviewSDK
   class ServerHardware < Resource
     BASE_URI = '/rest/server-hardware'.freeze
 
+    alias remove delete
+
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
@@ -21,6 +23,14 @@ module OneviewSDK
     end
 
     def create
+      unavailable_method
+    end
+
+    def delete
+      unavailable_method
+    end
+
+    def add
       ensure_client
       required_attributes = %w(hostname username password licensingIntent)
       required_attributes.each { |k| fail IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) }
@@ -59,7 +69,6 @@ module OneviewSDK
       response = @client.rest_get(@data['uri'] + '/bios')
       @client.response_handler(response)
     end
-
 
     # Get a url to the iLO web interface
     # @return [Hash] url
