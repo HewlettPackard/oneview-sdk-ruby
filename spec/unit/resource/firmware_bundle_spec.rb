@@ -3,9 +3,9 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::FirmwareBundle do
   include_context 'shared context'
 
-  describe '#upload' do
+  describe '#add' do
     it 'fails if the file does not exist' do
-      expect { described_class.upload(@client, 'file.fake') }.to raise_error(OneviewSDK::NotFound, //)
+      expect { described_class.add(@client, 'file.fake') }.to raise_error(OneviewSDK::NotFound, //)
     end
 
     it 'returns a FirmwareDriver resource' do
@@ -19,7 +19,7 @@ RSpec.describe OneviewSDK::FirmwareBundle do
       ).and_return(FakeResponse.new({}))
       expect(File).to receive('file?').and_return(true)
       allow(IO).to receive(:binread).and_return('FAKE FILE CONTENT')
-      OneviewSDK::FirmwareBundle.upload(@client, 'file.tar')
+      OneviewSDK::FirmwareBundle.add(@client, 'file.tar')
     end
   end
 end
