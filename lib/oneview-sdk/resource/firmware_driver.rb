@@ -14,6 +14,12 @@ module OneviewSDK
   class FirmwareDriver < Resource
     BASE_URI = '/rest/firmware-drivers'.freeze
 
+    alias remove delete
+
+    def delete
+      unavailable_method
+    end
+
     def update
       unavailable_method
     end
