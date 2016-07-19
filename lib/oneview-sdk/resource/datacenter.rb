@@ -14,10 +14,21 @@ module OneviewSDK
   class Datacenter < Resource
     BASE_URI = '/rest/datacenters'.freeze
 
+    alias add create
+    alias remove delete
+
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['contents'] ||= []
+    end
+
+    def create
+      unavailable_method
+    end
+
+    def delete
+      unavailable_method
     end
 
     # Adds existing rack to datacenter

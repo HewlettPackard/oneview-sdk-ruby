@@ -15,7 +15,7 @@ klass = OneviewSDK::Datacenter
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
-  describe '#create' do
+  describe '#add' do
     it 'Add datacenter with default values' do
       options = {
         name: DATACENTER1_NAME,
@@ -23,7 +23,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         depth: 5000
       }
       item = OneviewSDK::Datacenter.new($client, options)
-      item.create
+      item.add
       expect(item['uri']).not_to be_empty
     end
 
@@ -41,7 +41,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         coolingMultiplier: 1.5
       }
       item = OneviewSDK::Datacenter.new($client, options)
-      item.create
+      item.add
       expect(item['uri']).not_to be_empty
       options.each do |key, value|
         expect(item[key.to_s]).to eq(value)
@@ -55,7 +55,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         depth: 5000
       }
       item = OneviewSDK::Datacenter.new($client, options)
-      item.create
+      item.add
       expect(item['uri']).not_to be_empty
     end
   end
