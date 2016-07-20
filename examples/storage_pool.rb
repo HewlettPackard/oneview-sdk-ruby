@@ -27,7 +27,7 @@ storage_system.retrieve! || fail("ERROR: Storage system at #{@storage_system_ip}
 puts "Storage System uri = #{storage_system[:uri]}"
 options[:storageSystemUri] = storage_system[:uri]
 fail 'ERROR: No unmanaged pools available!' unless storage_system[:unmanagedPools].size > 0
-pool = storage_system[:unmanagedPools].find { |pool| pool['domain'] == 'TestDomain' }
+pool = storage_system[:unmanagedPools].find { |storage_pool| storage_pool['domain'] == 'TestDomain' }
 puts "Unmanaged pool name = #{pool['name']}"
 options[:poolName] = pool['name']
 
