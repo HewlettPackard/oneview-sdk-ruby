@@ -17,14 +17,24 @@ module OneviewSDK
   class Enclosure < Resource
     BASE_URI = '/rest/enclosures'.freeze
 
+    alias remove delete
+
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['type'] ||= 'EnclosureV200'
     end
 
-    # Claim/configure the enclosure and its components to the appliance
     def create
+      unavailable_method
+    end
+
+    def delete
+      unavailable_method
+    end
+
+    # Claim/configure the enclosure and its components to the appliance
+    def add
       ensure_client
       required_attributes = %w(enclosureGroupUri hostname username password licensingIntent)
       required_attributes.each { |k| fail IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) }

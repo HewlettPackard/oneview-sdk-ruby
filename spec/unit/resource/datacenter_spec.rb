@@ -106,5 +106,4 @@ RSpec.describe OneviewSDK::Datacenter do
       expect { datacenter.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
-
 end
