@@ -195,7 +195,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#updateAttribute' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).update_attribute(:op, :path, :val) }
+      expect { OneviewSDK::Enclosure.new(@client).patch(:op, :path, :val) }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -203,7 +203,7 @@ RSpec.describe OneviewSDK::Enclosure do
       item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
       data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
       expect(@client).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
-      expect(item.update_attribute('operation', '/path', 'val')).to eq('key' => 'Val')
+      expect(item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
     end
   end
 

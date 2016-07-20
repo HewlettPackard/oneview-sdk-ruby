@@ -143,7 +143,7 @@ module OneviewSDK
     # @param [String] operation operation to be performed
     # @param [String] path path
     # @param [String] value value
-    def update_attribute(operation, path, value)
+    def patch(operation, path, value)
       ensure_client && ensure_uri
       response = @client.rest_patch(@data['uri'], { 'body' => [{ op: operation, path: path, value: value }] }, @api_version)
       @client.response_handler(response)
