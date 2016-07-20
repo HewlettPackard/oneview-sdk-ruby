@@ -15,6 +15,8 @@ module OneviewSDK
     BASE_URI = '/rest/switches'.freeze
     TYPE_URI = '/rest/switch-types'.freeze
 
+    alias remove delete
+
     def create
       unavailable_method
     end
@@ -24,6 +26,10 @@ module OneviewSDK
     end
 
     def refresh
+      unavailable_method
+    end
+
+    def delete
       unavailable_method
     end
 

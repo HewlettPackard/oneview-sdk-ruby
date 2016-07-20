@@ -8,20 +8,6 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     @item = OneviewSDK::Switch.find_by($client, {}).first
   end
 
-  describe 'Unavailable methods' do
-    it '#create' do
-      expect { @item.create }.to raise_error(/unavailable for this resource/)
-    end
-
-    it '#update' do
-      expect { @item.update }.to raise_error(/unavailable for this resource/)
-    end
-
-    it '#refresh' do
-      expect { @item.refresh }.to raise_error(/unavailable for this resource/)
-    end
-  end
-
   describe '#statistics' do
     it 'gets data for the port X1' do
       expect(@item.statistics('X1')).to_not be_empty
