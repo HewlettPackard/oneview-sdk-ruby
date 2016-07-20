@@ -14,6 +14,8 @@ module OneviewSDK
   class ServerHardwareType < Resource
     BASE_URI = '/rest/server-hardware-types'.freeze
 
+    alias remove delete
+
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
@@ -21,6 +23,10 @@ module OneviewSDK
     end
 
     def create
+      unavailable_method
+    end
+
+    def delete
       unavailable_method
     end
 
@@ -33,6 +39,5 @@ module OneviewSDK
       @client.response_handler(response)
       self
     end
-
   end
 end
