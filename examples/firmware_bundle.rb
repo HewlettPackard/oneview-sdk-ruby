@@ -13,5 +13,5 @@ require_relative '_client' # Gives access to @client
 
 # NOTE: This will upload a firmware bundle
 
-item = OneviewSDK::FirmwareBundle.upload(@client, @firmware_bundle_path)
-puts "\nFirmware bundle #{item['name']} was successfully uploaded."
+item = OneviewSDK::FirmwareBundle.add(@client, @firmware_bundle_path)
+puts "\nFirmware bundle #{item['name']} was successfully added."

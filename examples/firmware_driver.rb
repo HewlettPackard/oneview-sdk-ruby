@@ -32,5 +32,5 @@ custom_spp['customBaselineName'] = 'FirmwareDriver1_Example'
 custom_spp.create
 
 # Example: Delete firmware driver
-custom_spp.delete
+custom_spp.remove
 puts "\nSucessfully deleted '#{custom_spp['name']}'."
