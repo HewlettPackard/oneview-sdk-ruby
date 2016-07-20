@@ -178,12 +178,22 @@ module OneviewSDK
       desired_connection
     end
 
+    # Adds volume attachment entry in Server profile template
+    # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
+    # @param [Hash] attachment_options Options of the new attachment
+    # @option attachment_options [Fixnum] 'id' The ID of the attached storage volume. Do not use it if you want it to be created automatically.
+    # @option attachment_options [String] 'lun' The logical unit number.
+    # @option attachment_options [String] 'lunType' The logical unit number type: Auto or Manual.
+    # @option attachment_options [Boolean] 'permanent' Required. If true, indicates that the volume will persist when the profile is deleted.
+    #   If false, then the volume will be deleted when the profile is deleted.
+    # @option attachment_options [Array] 'storagePaths' A list of host-to-target path associations.
+    # @return Returns the connection hash if found, otherwise returns nil
     def add_volume_attachment(volume, attachment_options = {})
       self['sanStorage'] ||= {}
       self['sanStorage']['volumeAttachments'] ||= []
-      attachment_options['id'] = 0
+      attachment_options['id'] ||= 0
 
-      volume.retrieve!
+      volume.retrieve! unless volume['uri'] || volume['storagePoolUri'] || volume['storageSystemUri']
       attachment_options['volumeUri'] = volume['uri']
       attachment_options['volumeStoragePoolUri'] = volume['storagePoolUri']
       attachment_options['volumeStorageSystemUri'] = volume['storageSystemUri']
@@ -191,6 +201,18 @@ module OneviewSDK
       self['sanStorage']['volumeAttachments'] << attachment_options
     end
 
+    # Adds volume attachment entry in Server profile template
+    # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
+    # @param [Hash] volume_options Options to create a new Volume.
+    #   Please refer to OneviewSDK::Volume documentation for the data necessary to create a new Volume.
+    # @param [Hash] attachment_options Options of the new attachment
+    # @option attachment_options [Fixnum] 'id' The ID of the attached storage volume. Do not use it if you want it to be created automatically.
+    # @option attachment_options [String] 'lun' The logical unit number.
+    # @option attachment_options [String] 'lunType' The logical unit number type: Auto or Manual.
+    # @option attachment_options [Boolean] 'permanent' Required. If true, indicates that the volume will persist when the profile is deleted.
+    #   If false, then the volume will be deleted when the profile is deleted.
+    # @option attachment_options [Array] 'storagePaths' A list of host-to-target path associations.
+    # @return Returns the connection hash if found, otherwise returns nil
     def create_volume_with_attachment(storage_pool, volume_options, attachment_options = {})
       self['sanStorage'] ||= {}
       self['sanStorage']['volumeAttachments'] ||= []
@@ -222,7 +244,6 @@ module OneviewSDK
       attachment_options['storagePaths'] ||= []
 
       self['sanStorage']['volumeAttachments'] << attachment_options
-      puts JSON.pretty_generate(self['sanStorage'])
     end
 
     # Remove volume attachment entry in Server profile template
