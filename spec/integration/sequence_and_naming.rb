@@ -132,6 +132,7 @@ VOL_TEMP_NAME_UPDATED = 'VolumeTemplate_1_UPDATED'.freeze
 VOLUME_NAME = 'Volume_1'.freeze
 VOLUME2_NAME = 'Volume_2'.freeze
 VOLUME3_NAME = 'Volume_3'.freeze
+VOLUME4_NAME = 'Volume_4'.freeze
 VOL_SNAPSHOT_NAME = 'snapshot_qa'.freeze
 VOL_SNAPSHOT2_NAME = 'snapshot_qa_2'.freeze
 
