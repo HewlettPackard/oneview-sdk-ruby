@@ -22,22 +22,25 @@ DEPENDENCIES = {
   Fabric: [],
   FCNetwork: [],
   FCoENetwork: [],
+  FirmwareBundle: [],
+  FirmwareDriver: [:FirmwareBundle],
   Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
-  LogicalDownlink: [:LogicalInterconnectGroup],
-  LogicalEnclosure: [],
+  LogicalDownlink: [:Enclosure],
+  LogicalEnclosure: [:Enclosure],
   LogicalInterconnect: [:Enclosure],
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
   LogicalSwitch: [:LogicalSwitchGroup],
   LogicalSwitchGroup: [],
+  ManagedSAN: [:SANManager],
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
-  Rack: [:ServerHardware],
+  Rack: [:ServerProfile],
   SANManager: [],
-  ServerHardware: [],
+  ServerHardware: [:Enclosure],
   ServerHardwareType: [:ServerHardware],
   ServerProfile: [:ServerHardwareType, :Enclosure, :ServerProfileTemplate],
-  ServerProfileTemplate: [:EnclosureGroup, :ServerHardwareType],
+  ServerProfileTemplate: [:EnclosureGroup, :ServerHardwareType, :Volume],
   StoragePool: [:StorageSystem],
   StorageSystem: [],
   Switch: [:LogicalSwitch],
@@ -45,7 +48,7 @@ DEPENDENCIES = {
   UplinkSet: [:LogicalInterconnectGroup],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
-  VolumeTemplate: [:StorageSystem, :StoragePool]
+  VolumeTemplate: [:StoragePool]
 }.freeze
 
 SEQ = DEPENDENCIES.tsort
@@ -116,7 +119,7 @@ UPLINK_SET3_NAME = 'EthernetUplinkSet_2'.freeze
 
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
-LIG_UPLINK_SET2_NAME = 'EthernetUplinkSet_2'.freeze
+LIG_UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
 
 # storageSystem
 STORAGE_SYSTEM_NAME = 'ThreePAR7200-2027'.freeze
@@ -180,3 +183,6 @@ UNMANAGED_DEVICE1_NAME = 'UnmanagedDevice_1'.freeze
 
 # FC San Provider
 SAN_PROVIDER1_NAME = 'Brocade Network Advisor'.freeze
+
+# Firmware Driver
+FIRMWARE_DRIVER1_NAME = 'CustomSPP_1'.freeze
