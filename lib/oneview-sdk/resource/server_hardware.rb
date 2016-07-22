@@ -14,22 +14,35 @@ module OneviewSDK
   class ServerHardware < Resource
     BASE_URI = '/rest/server-hardware'.freeze
 
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
     alias remove delete
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
       @data['type'] ||= 'server-hardware-4'
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
 
+    # Add the resource on OneView using the current data
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set or required attributes are missing
+    # @return [OneviewSDK::ServerHardware] self
     def add
       ensure_client
       required_attributes = %w(hostname username password licensingIntent)
@@ -191,6 +204,5 @@ module OneviewSDK
       set_all(body)
       true
     end
-
   end
 end

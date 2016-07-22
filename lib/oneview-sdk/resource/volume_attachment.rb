@@ -14,23 +14,30 @@ module OneviewSDK
   class VolumeAttachment < Resource
     BASE_URI = '/rest/storage-volume-attachments'.freeze
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['type'] ||= 'StorageVolumeAttachment'
     end
 
-    # unavailable method
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
-    # unavailable method
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def update
       unavailable_method
     end
 
-    # unavailable method
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
@@ -68,6 +75,5 @@ module OneviewSDK
       response = @client.rest_get("#{@data['uri']}/paths/#{id}")
       @client.response_handler(response)
     end
-
   end
 end

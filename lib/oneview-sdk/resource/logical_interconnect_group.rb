@@ -13,8 +13,13 @@ module OneviewSDK
   # Logical enclosure group resource implementation
   class LogicalInterconnectGroup < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
+
     attr_reader :bay_count
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
@@ -35,6 +40,7 @@ module OneviewSDK
     # Add an interconnect
     # @param [Fixnum] bay Bay number
     # @param [String] type Interconnect type
+    # @raise [StandardError] if a invalid type is given then raises an error
     def add_interconnect(bay, type)
       @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
         entry['logicalLocation']['locationEntries'].each do |location|
@@ -69,6 +75,7 @@ module OneviewSDK
     end
 
     # Saves the current data attributes to the Logical Interconnect Group
+    # @param [Hash] attributes attributes to be updated
     # @return Updated instance of the Logical Interconnect Group
     def update(attributes = {})
       set_all(attributes)
@@ -83,6 +90,7 @@ module OneviewSDK
 
     private
 
+    # Parse interconnect map template structure
     def parse_interconnect_map_template
       1.upto(@bay_count) do |bay_number|
         entry = {
@@ -98,6 +106,5 @@ module OneviewSDK
         @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry
       end
     end
-
   end
 end

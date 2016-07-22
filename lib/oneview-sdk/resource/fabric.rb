@@ -14,21 +14,28 @@ module OneviewSDK
   class Fabric < Resource
     BASE_URI = '/rest/fabrics'.freeze
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def update
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def refresh
       unavailable_method
     end
-
   end
 end

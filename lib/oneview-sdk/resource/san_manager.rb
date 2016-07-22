@@ -15,14 +15,22 @@ module OneviewSDK
     BASE_URI = '/rest/fc-sans/device-managers'.freeze
     PROVIDERS_URI = '/rest/fc-sans/providers'.freeze
 
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
     alias remove delete
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['type'] = 'FCDeviceManagerV2'
     end
 
+    # Add the resource on OneView using the current data
+    # @return [OneviewSDK::SANManager] self
     def add
       ensure_client
       fail 'providerDisplayName' unless @data['providerDisplayName']
@@ -33,10 +41,14 @@ module OneviewSDK
       self
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
@@ -63,6 +75,8 @@ module OneviewSDK
 
     private
 
+    # Get provider uri
+    # @return [String] provider uri
     def get_provider_uri
       return @data['providerUri'] if @data['providerUri']
       response = @client.rest_get(PROVIDERS_URI)
@@ -70,6 +84,5 @@ module OneviewSDK
       desired_provider = providers.find { |provider| provider['displayName'] == @data['providerDisplayName'] }
       desired_provider['uri']
     end
-
   end
 end

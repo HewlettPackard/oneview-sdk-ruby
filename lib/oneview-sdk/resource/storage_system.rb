@@ -14,22 +14,35 @@ module OneviewSDK
   class StorageSystem < Resource
     BASE_URI = '/rest/storage-systems'.freeze
 
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
     alias remove delete
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['type'] ||= 'StorageSystemV3'
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
 
+    # Add the resource on OneView using the current data
+    # @note Calls the refresh method to set additional data
+    # @return [OneviewSDK::StorageSystem] self
     def add
       ensure_client
       task = @client.rest_post(self.class::BASE_URI, { 'body' => self['credentials'] }, @api_version)
@@ -42,8 +55,11 @@ module OneviewSDK
       self
     end
 
+    # Retrieve resource details based on this resource's name or URI.
+    # @note Name,URI or ip_hostname must be specified inside resource
+    # @return [Boolean] Whether or not retrieve was successful
     def retrieve!
-      if @data['name']
+      if @data['name'] || @data['uri']
         super
       else
         ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname']

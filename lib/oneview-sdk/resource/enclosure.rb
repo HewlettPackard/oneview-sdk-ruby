@@ -17,23 +17,36 @@ module OneviewSDK
   class Enclosure < Resource
     BASE_URI = '/rest/enclosures'.freeze
 
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
     alias remove delete
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['type'] ||= 'EnclosureV200'
     end
 
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
 
     # Claim/configure the enclosure and its components to the appliance
+    # @note Calls the refresh method to set additional data
+    # @return [OneviewSDK::Enclosure] self
     def add
       ensure_client
       required_attributes = %w(enclosureGroupUri hostname username password licensingIntent)
@@ -52,6 +65,8 @@ module OneviewSDK
     end
 
     # Override update operation because only the name and rackName can be updated (& it uses PATCH).
+    # @param [Hash] attributes attributes to be updated
+    # @return [OneviewSDK::Enclosure] self
     def update(attributes = {})
       set_all(attributes)
       ensure_client && ensure_uri
@@ -156,10 +171,10 @@ module OneviewSDK
       @data['enclosureGroupUri'] = eg['uri']
     end
 
-
     private
 
     # Convert Date, Time, or String objects to iso8601 string
+    # @raise [InvalidResource] if time is not formatted correctly
     def convert_time(t)
       case t
       when nil then nil

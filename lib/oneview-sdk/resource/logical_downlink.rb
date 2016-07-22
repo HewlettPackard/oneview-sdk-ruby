@@ -14,21 +14,27 @@ module OneviewSDK
   class LogicalDownlink < Resource
     BASE_URI = '/rest/logical-downlinks'.freeze
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def update
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
 
     # Gets a list of logical downlinks, excluding any existing ethernet network
     # @param [OneviewSDK::Client] client HPE OneView client
-    # @param [Array<OneviewSDK::LogicalDownlink] Logical Downlink array
+    # @return [Array<OneviewSDK::LogicalDownlink] Logical Downlink array
     def self.get_without_ethernet(client)
       result = []
       response = client.rest_get(BASE_URI + '/withoutEthernet')
@@ -43,6 +49,5 @@ module OneviewSDK
       response = @client.rest_get(@data['uri'] + '/withoutEthernet')
       OneviewSDK::LogicalDownlink.new(@client, @client.response_handler(response))
     end
-
   end
 end
