@@ -14,6 +14,10 @@ module OneviewSDK
   class LogicalEnclosure < Resource
     BASE_URI = '/rest/logical-enclosures'.freeze
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values
@@ -24,7 +28,7 @@ module OneviewSDK
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [OneviewSDK::IncompleteResource] if the uri is not set
     # @raise [StandardError] if the reapply fails
-    # @return [LogicalEnclosure] self
+    # @return [OneviewSDK::LogicalEnclosure] self
     def reconfigure
       ensure_client && ensure_uri
       response = @client.rest_put("#{@data['uri']}/configuration", {}, @api_version)
@@ -36,7 +40,7 @@ module OneviewSDK
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [OneviewSDK::IncompleteResource] if the uri is not set
     # @raise [StandardError] if the process fails
-    # @return [Resource] self
+    # @return [OneviewSDK::LogicalEnclosure] self
     def update_from_group
       ensure_client && ensure_uri
       response = @client.rest_put("#{@data['uri']}/updateFromGroup", {}, @api_version)
@@ -59,7 +63,7 @@ module OneviewSDK
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [OneviewSDK::IncompleteResource] if the uri is not set
     # @raise [StandardError] if the reapply fails
-    # @return [Resource] self
+    # @return [OneviewSDK::LogicalEnclosure] self
     def set_script(script)
       ensure_client && ensure_uri
       response = @client.rest_put("#{@data['uri']}/script", { 'body' => script }, @api_version)
@@ -71,13 +75,12 @@ module OneviewSDK
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [OneviewSDK::IncompleteResource] if the uri is not set
     # @raise [StandardError] if the process fails when generating the support dump
-    # @return [Resource] self
+    # @return [OneviewSDK::LogicalEnclosure] self
     def support_dump(options)
       ensure_client && ensure_uri
       response = @client.rest_post("#{@data['uri']}/support-dumps", { 'body' => options }, @api_version)
       @client.wait_for(response.header['location'])
       self
     end
-
   end
 end

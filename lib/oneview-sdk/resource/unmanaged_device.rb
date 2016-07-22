@@ -14,13 +14,25 @@ module OneviewSDK
   class UnmanagedDevice < Resource
     BASE_URI = '/rest/unmanaged-devices'.freeze
 
+    # Add the resource on OneView using the current data
+    # @note Calls the refresh method to set additional data
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
+    # @return [OneviewSDK::UnmanagedDevice] self
     alias add create
+
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
     alias remove delete
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
@@ -39,6 +51,5 @@ module OneviewSDK
       response = @client.rest_get(@data['uri'] + '/environmentalConfiguration')
       @client.response_handler(response)
     end
-
   end
 end

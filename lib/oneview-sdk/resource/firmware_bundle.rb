@@ -19,7 +19,7 @@ module OneviewSDK
     # @param [OneviewSDK::Client] client
     # @param [String] file_path
     # @return [OneviewSDK::FirmwareDriver] if the upload was sucessful, return a FirmwareDriver object
-    def self.upload(client, file_path)
+    def self.add(client, file_path)
       fail NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
       options = {}
       options['Content-Type'] = "multipart/form-data; boundary=#{BOUNDARY}"

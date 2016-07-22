@@ -14,27 +14,42 @@ module OneviewSDK
   class Rack < Resource
     BASE_URI = '/rest/racks'.freeze
 
+    # Add the resource on OneView using the current data
+    # @note Calls the refresh method to set additional data
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
+    # @return [OneviewSDK::Rack] self
     alias add create
+
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
     alias remove delete
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['rackMounts'] ||= []
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def delete
       unavailable_method
     end
 
     # Add rack resource with specified options
     # @param [OneviewSDK::Resource] resource Resource to be added
-    # @param [String] mount_location location in the rack
-    # @options [Hash] options
+    # @param [String] options rack options
     def add_rack_resource(resource, options = {})
       rack_resource_options = {}
       # Write values to hash and transform any symbol to string
@@ -58,13 +73,11 @@ module OneviewSDK
       @data['rackMounts'].reject! { |rack_resource| rack_resource['mountUri'] == resource['uri'] }
     end
 
-
     # Get topology information for the rack
     # @return [Hash] Environmental analysis
     def get_device_topology
       response = @client.rest_get(@data['uri'] + '/deviceTopology')
       @client.response_handler(response)
     end
-
   end
 end

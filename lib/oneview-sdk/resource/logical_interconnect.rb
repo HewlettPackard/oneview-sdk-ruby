@@ -35,7 +35,8 @@ module OneviewSDK
     # Deletes an INTERCONNECT
     # WARN: This won't delete the LOGICAL INTERCONNECT itself, and may cause inconsistency between the enclosure and LIG
     # @param [Fixnum] bay_number Number of the bay to locate the logical interconnect
-    # @param [OneviewSDK::Resource] enclosure Enclosure to remove the logical interconnect
+    # @param [OneviewSDK::Enclosure] enclosure Enclosure to remove the logical interconnect
+    # @return [OneviewSDK::LogicalInterconnect] self
     def delete(bay_number, enclosure)
       enclosure.ensure_uri
       delete_uri = self.class::LOCATION_URI + "?location=Enclosure:#{enclosure['uri']},Bay:#{bay_number}"
@@ -225,6 +226,11 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
+    # Update firmware
+    # @param [String] command
+    # @param [OneviewSDK::FirmwareDriver] firmware_driver
+    # @param [Hash] firmware_options
+    # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
     def firmware_update(command, firmware_driver, firmware_options)
       ensure_client && ensure_uri
       firmware_options['command'] = command
@@ -237,6 +243,5 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'] + '/firmware', update_json)
       @client.response_handler(response)
     end
-
   end
 end

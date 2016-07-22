@@ -15,7 +15,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       }
 
       item = OneviewSDK::ServerHardware.new($client, options)
-      expect { item.create }.to_not raise_error
+      expect { item.add }.to_not raise_error
     end
   end
 end

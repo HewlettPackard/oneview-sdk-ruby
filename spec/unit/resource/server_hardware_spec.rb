@@ -123,7 +123,7 @@ RSpec.describe OneviewSDK::ServerHardware do
     end
   end
 
-  describe '#create' do
+  describe '#add' do
     context 'with valid data' do
       before :each do
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
@@ -144,24 +144,15 @@ RSpec.describe OneviewSDK::ServerHardware do
       it 'only sends certain attributes on the POST' do
         data = @data.select { |k, _v| k != 'other' }
         expect(@client).to receive(:rest_post).with('/rest/server-hardware', { 'body' => data }, anything)
-        @server_hardware.create
+        @server_hardware.add
       end
     end
 
     context 'with invalid data' do
       it 'fails when certain attributes are not set' do
         server_hardware = OneviewSDK::ServerHardware.new(@client, {})
-        expect { server_hardware.create }.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute/)
+        expect { server_hardware.add }.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute/)
       end
-    end
-  end
-
-  describe '#update' do
-    it 'does not allow it' do
-      server_hardware = OneviewSDK::ServerHardware.new(@client, {})
-      expect { server_hardware.update(name: 'new') }
-        .to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
-      expect(server_hardware[:name]).to be_nil
     end
   end
 
@@ -234,6 +225,33 @@ RSpec.describe OneviewSDK::ServerHardware do
         .and_return(FakeResponse.new(powerState: 'Off'))
       expect(@item.power_off).to eq(true)
       expect(@item['powerState']).to eq('Off')
+    end
+  end
+
+
+  describe 'undefined methods' do
+    it 'does not allow the create action' do
+      server_hardware = OneviewSDK::ServerHardware.new(@client)
+      expect { server_hardware.create }.to raise_error(
+        OneviewSDK::MethodUnavailable,
+        /The method #create is unavailable for this resource/
+      )
+    end
+
+    it 'does not allow the update action' do
+      server_hardware = OneviewSDK::ServerHardware.new(@client)
+      expect { server_hardware.update }.to raise_error(
+        OneviewSDK::MethodUnavailable,
+        /The method #update is unavailable for this resource/
+      )
+    end
+
+    it 'does not allow the delete action' do
+      server_hardware = OneviewSDK::ServerHardware.new(@client)
+      expect { server_hardware.delete }.to raise_error(
+        OneviewSDK::MethodUnavailable,
+        /The method #delete is unavailable for this resource/
+      )
     end
   end
 end

@@ -21,6 +21,31 @@ RSpec.describe OneviewSDK::Datacenter do
     end
   end
 
+  describe '#add' do
+    it 'adds datacenter' do
+      options = {
+        name: 'Datacenter',
+        width: 5000,
+        depth: 5000
+      }
+      item = OneviewSDK::Datacenter.new(@client, options)
+      expect(@client).to receive(:rest_post).with(
+        '/rest/datacenters',
+        { 'body' => { 'name' => 'Datacenter', 'width' => 5000, 'depth' => 5000, 'contents' => [] } },
+        item.api_version
+      ).and_return(FakeResponse.new('uri' => '/rest/task/fake'))
+      item.add
+    end
+  end
+
+  describe '#remove' do
+    it 'Should support remove' do
+      datacenter = OneviewSDK::Datacenter.new(@client, uri: '/rest/datacenters/100')
+      expect(@client).to receive(:rest_delete).with('/rest/datacenters/100', {}, 200).and_return(FakeResponse.new({}))
+      datacenter.remove
+    end
+  end
+
   describe '#add_rack' do
     before :each do
       @datacenter = OneviewSDK::Datacenter.new(@client)
@@ -67,6 +92,18 @@ RSpec.describe OneviewSDK::Datacenter do
       results = @datacenter['contents'].map { |rack| rack['resourceUri'] }
       expect(results).not_to include(rack1['uri'])
       expect(results).to include(rack2['uri'])
+    end
+  end
+
+  describe 'undefined methods' do
+    it 'does not allow the create action' do
+      datacenter = OneviewSDK::Datacenter.new(@client)
+      expect { datacenter.create }.to raise_error(/The method #create is unavailable for this resource/)
+    end
+
+    it 'does not allow the delete action' do
+      datacenter = OneviewSDK::Datacenter.new(@client)
+      expect { datacenter.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
 end

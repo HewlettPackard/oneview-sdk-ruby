@@ -19,7 +19,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#self.upload' do
     it 'Upload hotfix' do
-      item = OneviewSDK::FirmwareBundle.upload($client, bundle_path)
+      item = OneviewSDK::FirmwareBundle.add($client, bundle_path)
       expect(item['uri']).to be
     end
   end

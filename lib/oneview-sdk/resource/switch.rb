@@ -15,15 +15,31 @@ module OneviewSDK
     BASE_URI = '/rest/switches'.freeze
     TYPE_URI = '/rest/switch-types'.freeze
 
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
+    alias remove delete
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def create
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def update
       unavailable_method
     end
 
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def refresh
+      unavailable_method
+    end
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
+    def delete
       unavailable_method
     end
 
@@ -46,8 +62,8 @@ module OneviewSDK
     end
 
     # Get statistics for an interconnect, for the specified port or subport
-    # @param [String] portName port to retrieve statistics
-    # @param [String] subportNumber subport to retrieve statistics
+    # @param [String] port_name port to retrieve statistics
+    # @param [String] subport_number subport to retrieve statistics
     # @return [Hash] Switch statistics
     def statistics(port_name = nil, subport_number = nil)
       uri = if subport_number
@@ -66,6 +82,5 @@ module OneviewSDK
       response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
       @client.response_handler(response)
     end
-
   end
 end
