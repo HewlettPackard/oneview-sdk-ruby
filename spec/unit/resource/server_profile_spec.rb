@@ -156,26 +156,27 @@ RSpec.describe OneviewSDK::ServerProfile do
       expect(@client).to receive(:rest_get).with("#{OneviewSDK::ServerProfile::BASE_URI}/available-networks?view=unit")
         .and_return(FakeResponse.new(
                       'ethernetNetworks' => [
-                        { 'name' => 'unit_ethernet_network_1', 'uri' => 'fake1', 'vlan' => 1 },
-                        { 'name' => 'unit_ethernet_network_2', 'uri' => 'fake2', 'vlan' => 2 }
+                        { 'name' => 'ethernet_network_1', 'uri' => 'fake1', 'vlan' => 1 },
+                        { 'name' => 'ethernet_network_2', 'uri' => 'fake2', 'vlan' => 2 }
                       ],
                       'fcNetworks' => [
-                        { 'name' => 'unit_fc_network_1', 'uri' => 'fake3', 'vlan' => 3 },
-                        { 'name' => 'unit_fc_network_2', 'uri' => 'fake4', 'vlan' => 4 }
-                      ]
+                        { 'name' => 'fc_network_1', 'uri' => 'fake3', 'vlan' => 3 },
+                        { 'name' => 'fc_network_2', 'uri' => 'fake4', 'vlan' => 4 }
+                      ],
+                      'networkSets' => [
+                        { 'name' => 'network_set_1', 'uri' => 'fake5' }
+                      ],
+                      'type' => 'fakeType'
         ))
 
       returned_set = OneviewSDK::ServerProfile.get_available_networks(@client, 'view' => 'unit')
       expect(returned_set['ethernetNetworks'].size).to eq(2)
-      returned_set['ethernetNetworks'].each { |net| expect(net).to be_a(OneviewSDK::EthernetNetwork) }
-      returned_set['ethernetNetworks'].each { |net| expect(net['name']).to match(/unit_ethernet_network/) }
-      returned_set['ethernetNetworks'].each { |net| expect(net['uri']).to match(/fake/) }
-      returned_set['ethernetNetworks'].each { |net| expect(net['vlan']).to be_nil }
+      returned_set['ethernetNetworks'].each { |net| expect(net['name']).to match(/ethernet_network/) }
       expect(returned_set['fcNetworks'].size).to eq(2)
-      returned_set['fcNetworks'].each { |net| expect(net).to be_a(OneviewSDK::FCNetwork) }
-      returned_set['fcNetworks'].each { |net| expect(net['name']).to match(/unit_fc_network/) }
-      returned_set['fcNetworks'].each { |net| expect(net['uri']).to match(/fake/) }
-      returned_set['fcNetworks'].each { |net| expect(net['vlan']).to be_nil }
+      returned_set['fcNetworks'].each { |net| expect(net['name']).to match(/fc_network/) }
+      expect(returned_set['networkSets'].size).to eq(1)
+      returned_set['networkSets'].each { |net| expect(net['name']).to match(/network_set/) }
+      expect(returned_set['type']).to be_nil
     end
   end
 

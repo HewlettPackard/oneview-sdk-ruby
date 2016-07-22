@@ -106,8 +106,8 @@ module OneviewSDK
       sh
     end
 
-    # Get all the available Ethernet and FC Networks
-    # @return [Hash{String=>Array<OneviewSDK::EthernetNetwork>,Array<OneviewSDK::FCNetwork>}]
+    # Get all the available Ethernet and FC Networks, and Network Sets
+    # @return [Hash]
     #   A hash containing the lists of Ethernet Networks and FC Networks
     def available_networks
       query = { enclosure_group_uri: @data['enclosureGroupUri'], server_hardware_type_uri: @data['serverHardwareTypeUri'] }
@@ -204,24 +204,17 @@ module OneviewSDK
     # @option query [OneviewSDK::ServerHardware] 'server_hardware' The server hardware associated with the resource
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
     # @option query [String] 'view' Name of a predefined view to return a specific subset of the attributes of the resource or collection
-    # @return [Hash{String=>Array<OneviewSDK::EthernetNetwork>,Array<OneviewSDK::FCNetwork>}]
+    # @return [Hash]
     #   A hash containing the lists of Ethernet Networks and FC Networks
-    #   NOTE: Only the name and uri attributes will be set in the network resource objects. Refresh them to load all the attributes.
     #   Options:
     #     * [String] 'ethernetNetworks' The list of Ethernet Networks
     #     * [String] 'fcNetworks' The list of FC Networks
+    #     * [String] 'networkSets' The list of Networks Sets
     def self.get_available_networks(client, query = nil)
       query_uri = build_query(query) if query
       response = client.rest_get("#{BASE_URI}/available-networks#{query_uri}")
       body = client.response_handler(response)
-      eth_nets = body['ethernetNetworks'].map { |n| OneviewSDK::EthernetNetwork.new(client, n) }
-      fc_nets  = body['fcNetworks'].map { |n| OneviewSDK::FCNetwork.new(client, n) }
-      eth_nets.each { |n| n.data.delete_if { |k, _v| ! %w(name uri).include?(k) } }
-      fc_nets.each  { |n| n.data.delete_if { |k, _v| ! %w(name uri).include?(k) } }
-      {
-        'ethernetNetworks' => eth_nets,
-        'fcNetworks' => fc_nets
-      }
+      body.select { |k, _v| %w(ethernetNetworks networkSets fcNetworks).include?(k) }
     end
 
     # Get Available Servers based on the query parameters
