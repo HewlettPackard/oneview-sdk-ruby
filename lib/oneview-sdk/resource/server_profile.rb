@@ -196,7 +196,7 @@ module OneviewSDK
 
     # @!endgroup
 
-    # Get all the available Ethernet and FC Networks
+    # Get all the available Ethernet and FC Networks, and Network Sets
     # @param [OneviewSDK::Client] client Appliance client
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
@@ -205,7 +205,7 @@ module OneviewSDK
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
     # @option query [String] 'view' Name of a predefined view to return a specific subset of the attributes of the resource or collection
     # @return [Hash]
-    #   A hash containing the lists of Ethernet Networks and FC Networks
+    #   A hash containing the lists of Ethernet and FC Networks, and Network Sets
     #   Options:
     #     * [String] 'ethernetNetworks' The list of Ethernet Networks
     #     * [String] 'fcNetworks' The list of FC Networks
