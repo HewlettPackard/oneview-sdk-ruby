@@ -12,6 +12,8 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
         expect(item).to be
         expect { item.delete }.to_not raise_error
       end
+      assoc_vol = OneviewSDK::Volume.find_by($client, 'name' => VOLUME4_NAME).first
+      expect { assoc_vol.delete }.to_not raise_error
     end
   end
 end
