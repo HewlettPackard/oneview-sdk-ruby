@@ -178,7 +178,7 @@ module OneviewSDK
       desired_connection
     end
 
-    # Adds volume attachment entry in Server profile template
+    # Adds volume attachment entry with associated Volume in Server profile
     # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
     # @param [Hash] attachment_options Options of the new attachment
     # @option attachment_options [Fixnum] 'id' The ID of the attached storage volume. Do not use it if you want it to be created automatically.
@@ -201,7 +201,7 @@ module OneviewSDK
       self['sanStorage']['volumeAttachments'] << attachment_options
     end
 
-    # Adds volume attachment entry in Server profile template
+    # Adds volume attachment entry and creates a new Volume associated in the Server profile
     # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
     # @param [Hash] volume_options Options to create a new Volume.
     #   Please refer to OneviewSDK::Volume documentation for the data necessary to create a new Volume.
@@ -246,7 +246,7 @@ module OneviewSDK
       self['sanStorage']['volumeAttachments'] << attachment_options
     end
 
-    # Remove volume attachment entry in Server profile template
+    # Remove volume attachment entry in the Server profile
     # @param [Fixnum] id ID number of the attachment entry
     # @return Returns the volume hash if found, otherwise returns nil
     def remove_volume_attachment(id)
