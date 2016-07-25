@@ -428,7 +428,7 @@ RSpec.describe OneviewSDK::ServerProfile do
         provisioningParameters: {
           provisionType: 'Full',
           shareable: true,
-          requestedCapacity: 1024 * 1024 * 1024,
+          requestedCapacity: 1024 * 1024 * 1024
         }
       }
       @item.create_volume_with_attachment(storage_pool, volume_options)
