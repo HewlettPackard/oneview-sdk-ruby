@@ -31,7 +31,7 @@ puts "\nCreated server profile '#{profile[:name]}' sucessfully.\n  uri = '#{prof
 
 # Show available server hardware that matches this profile's requirements
 puts "\nAvailable server hardware for profile '#{profile[:name]}':"
-profile.available_hardware.each { |hw| puts "  - #{hw[:name]}" }
+profile.get_available_hardware.each { |hw| puts "  - #{hw[:name]}" }
 
 # Find recently created server profile by name
 matches = OneviewSDK::ServerProfile.find_by(@client, name: profile[:name])
@@ -39,7 +39,7 @@ profile2 = matches.first
 puts "\nFound server profile by name: '#{profile[:name]}'.\n  uri = '#{profile2[:uri]}'"
 
 # Power-off attached server hardware
-profile2.server_hardware.power_off
+profile2.get_server_hardware.power_off
 
 # Retrieve recently created server profile
 profile3 = OneviewSDK::ServerProfile.new(@client, name: profile[:name])

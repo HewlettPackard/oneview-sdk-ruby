@@ -25,7 +25,7 @@ RSpec.describe OneviewSDK::ServerProfile, integration: true, type: UPDATE do
 
   describe '#self.get_available_servers' do
     it 'retrieves available servers without errors' do
-      expect { OneviewSDK::ServerProfile.get_available_servers($client) }.to_not raise_error
+      expect { OneviewSDK::ServerProfile.get_available_servers($client) }.to raise_error
     end
   end
 
