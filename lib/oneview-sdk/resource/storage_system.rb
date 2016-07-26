@@ -55,19 +55,33 @@ module OneviewSDK
       self
     end
 
+    # Check if a resource exists
+    # @note name,uri or ip_hostname must be specified inside resource
+    # @return [Boolean] Whether or not resource exists
+    def exists?
+      ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] if self['credentials']
+      return true if @data['name'] && self.class.find_by(@client, name: @data['name']).size == 1
+      return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri']).size == 1
+      return true if ip_hostname && self.class.find_by(@client, credentials: { ip_hostname: ip_hostname }).size == 1
+      unless @data['name'] || @data['uri'] || ip_hostname
+        fail IncompleteResource, 'Must set resource name, uri or ip_hostname before trying to retrieve!'
+      end
+      false
+    end
+
     # Retrieve resource details based on this resource's name or URI.
     # @note Name,URI or ip_hostname must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
+    # @raise [OneviewSDK::IncompleteResource] if attributes are not filled
     def retrieve!
-      if @data['name'] || @data['uri']
-        super
-      else
-        ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname']
-        results = self.class.find_by(@client, credentials: { ip_hostname: ip_hostname })
-        return false unless results.size == 1
-        set_all(results[0].data)
-        true
-      end
+      ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] if self['credentials']
+      return super if @data['name'] || @data['uri']
+
+      fail IncompleteResource, 'Must set resource name, uri or ip_hostname before trying to retrieve!' unless ip_hostname
+      results = self.class.find_by(@client, credentials: { ip_hostname: ip_hostname })
+      return false unless results.size == 1
+      set_all(results[0].data)
+      true
     end
 
     # Get host types for storage system resource
