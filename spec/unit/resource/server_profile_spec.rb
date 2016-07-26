@@ -156,26 +156,27 @@ RSpec.describe OneviewSDK::ServerProfile do
       expect(@client).to receive(:rest_get).with("#{OneviewSDK::ServerProfile::BASE_URI}/available-networks?view=unit")
         .and_return(FakeResponse.new(
                       'ethernetNetworks' => [
-                        { 'name' => 'unit_ethernet_network_1' },
-                        { 'name' => 'unit_ethernet_network_2' }
+                        { 'name' => 'ethernet_network_1', 'uri' => 'fake1', 'vlan' => 1 },
+                        { 'name' => 'ethernet_network_2', 'uri' => 'fake2', 'vlan' => 2 }
                       ],
                       'fcNetworks' => [
-                        { 'name' => 'unit_fc_network_1' },
-                        { 'name' => 'unit_fc_network_2' }
-                      ]
+                        { 'name' => 'fc_network_1', 'uri' => 'fake3', 'vlan' => 3 },
+                        { 'name' => 'fc_network_2', 'uri' => 'fake4', 'vlan' => 4 }
+                      ],
+                      'networkSets' => [
+                        { 'name' => 'network_set_1', 'uri' => 'fake5' }
+                      ],
+                      'type' => 'fakeType'
         ))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::EthernetNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_ethernet_network_1', 'uri' => 'rest/fake/et1'))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::EthernetNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_ethernet_network_2', 'uri' => 'rest/fake/et2'))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::FCNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_fc_network_1', 'uri' => 'rest/fake/fc1'))
-      expect(@client).to receive(:rest_get).with(OneviewSDK::FCNetwork::BASE_URI)
-        .and_return(FakeResponse.new('name' => 'unit_fc_network_2', 'uri' => 'rest/fake/fc2'))
 
       returned_set = OneviewSDK::ServerProfile.get_available_networks(@client, 'view' => 'unit')
-      returned_set['ethernet_networks'].each { |ethernet| expect(ethernet['name']).to match(/unit_ethernet_network/) }
-      returned_set['fc_networks'].each { |fibre| expect(fibre['name']).to match(/unit_fc_network/) }
+      expect(returned_set['ethernetNetworks'].size).to eq(2)
+      returned_set['ethernetNetworks'].each { |net| expect(net['name']).to match(/ethernet_network/) }
+      expect(returned_set['fcNetworks'].size).to eq(2)
+      returned_set['fcNetworks'].each { |net| expect(net['name']).to match(/fc_network/) }
+      expect(returned_set['networkSets'].size).to eq(1)
+      returned_set['networkSets'].each { |net| expect(net['name']).to match(/network_set/) }
+      expect(returned_set['type']).to be_nil
     end
   end
 
@@ -338,36 +339,36 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
   end
 
-  describe '#server_hardware' do
+  describe '#get_server_hardware' do
     it 'returns nil if no hardware is assigned' do
-      hw = OneviewSDK::ServerProfile.new(@client).server_hardware
+      hw = OneviewSDK::ServerProfile.new(@client).get_server_hardware
       expect(hw).to be_nil
     end
 
     it 'retrieves and returns the hardware if it is assigned' do
       expect_any_instance_of(OneviewSDK::ServerHardware).to receive(:retrieve!).and_return(true)
-      hw = OneviewSDK::ServerProfile.new(@client, serverHardwareUri: '/rest/fake').server_hardware
+      hw = OneviewSDK::ServerProfile.new(@client, serverHardwareUri: '/rest/fake').get_server_hardware
       expect(hw).to be_a(OneviewSDK::ServerHardware)
     end
   end
 
-  describe '#available_networks' do
+  describe '#get_available_networks' do
     it 'calls the #get_available_networks class method' do
       p = OneviewSDK::ServerProfile.new(@client, enclosureGroupUri: '/rest/fake', serverHardwareTypeUri: '/rest/fake2')
       query = { enclosure_group_uri: p['enclosureGroupUri'], server_hardware_type_uri: p['serverHardwareTypeUri'] }
       expect(OneviewSDK::ServerProfile).to receive(:get_available_networks).with(@client, query).and_return([])
-      expect(p.available_networks).to eq([])
+      expect(p.get_available_networks).to eq([])
     end
   end
 
   describe '#available_hardware' do
     it 'requires the serverHardwareTypeUri value to be set' do
-      expect { OneviewSDK::ServerProfile.new(@client).available_hardware }
+      expect { OneviewSDK::ServerProfile.new(@client).get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'requires the enclosureGroupUri value to be set' do
-      expect { OneviewSDK::ServerProfile.new(@client, serverHardwareTypeUri: '/rest/fake').available_hardware }
+      expect { OneviewSDK::ServerProfile.new(@client, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
@@ -375,7 +376,7 @@ RSpec.describe OneviewSDK::ServerProfile do
       @item = OneviewSDK::ServerProfile.new(@client, serverHardwareTypeUri: '/rest/fake', enclosureGroupUri: '/rest/fake2')
       params = { state: 'NoProfileApplied', serverHardwareTypeUri: @item['serverHardwareTypeUri'], serverGroupUri: @item['enclosureGroupUri'] }
       expect(OneviewSDK::ServerHardware).to receive(:find_by).with(@client, params).and_return([])
-      expect(@item.available_hardware).to eq([])
+      expect(@item.get_available_hardware).to eq([])
     end
   end
 

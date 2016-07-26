@@ -183,7 +183,7 @@ module OneviewSDK
     # Get available server hardware
     # @return [Array<OneviewSDK::ServerHardware>] Array of ServerHardware resources that matches this
     #   profile template's server hardware type and enclosure group and who's state is 'NoProfileApplied'
-    def available_hardware
+    def get_available_hardware
       ensure_client
       fail IncompleteResource, 'Must set @data[\'serverHardwareTypeUri\']' unless @data['serverHardwareTypeUri']
       fail IncompleteResource, 'Must set @data[\'enclosureGroupUri\']' unless @data['enclosureGroupUri']

@@ -160,12 +160,12 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
   describe '#available_hardware' do
     it 'requires the serverHardwareTypeUri value to be set' do
-      expect { OneviewSDK::ServerProfileTemplate.new(@client).available_hardware }
+      expect { OneviewSDK::ServerProfileTemplate.new(@client).get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'requires the enclosureGroupUri value to be set' do
-      expect { OneviewSDK::ServerProfileTemplate.new(@client, serverHardwareTypeUri: '/rest/fake').available_hardware }
+      expect { OneviewSDK::ServerProfileTemplate.new(@client, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
@@ -173,7 +173,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
       @item = OneviewSDK::ServerProfileTemplate.new(@client, serverHardwareTypeUri: '/rest/fake', enclosureGroupUri: '/rest/fake2')
       params = { state: 'NoProfileApplied', serverHardwareTypeUri: @item['serverHardwareTypeUri'], serverGroupUri: @item['enclosureGroupUri'] }
       expect(OneviewSDK::ServerHardware).to receive(:find_by).with(@client, params).and_return([])
-      expect(@item.available_hardware).to eq([])
+      expect(@item.get_available_hardware).to eq([])
     end
   end
 

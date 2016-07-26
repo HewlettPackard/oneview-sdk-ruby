@@ -99,17 +99,17 @@ module OneviewSDK
     # Get attached ServerHardware for the profile
     # @return [OneviewSDK::ServerHardware] if hardware is attached
     # @return [nil] if no hardware is attached
-    def server_hardware
+    def get_server_hardware
       return nil unless self['serverHardwareUri']
       sh = OneviewSDK::ServerHardware.new(@client, uri: self['serverHardwareUri'])
       sh.retrieve!
       sh
     end
 
-    # Get all the available Ethernet and FC Networks
-    # @return [Hash{String=>Array<OneviewSDK::EthernetNetwork>,Array<OneviewSDK::FCNetwork>}]
+    # Get all the available Ethernet and FC Networks, and Network Sets
+    # @return [Hash]
     #   A hash containing the lists of Ethernet Networks and FC Networks
-    def available_networks
+    def get_available_networks
       query = { enclosure_group_uri: @data['enclosureGroupUri'], server_hardware_type_uri: @data['serverHardwareTypeUri'] }
       self.class.get_available_networks(@client, query)
     end
@@ -117,7 +117,7 @@ module OneviewSDK
     # Get available server hardware
     # @return [Array<OneviewSDK::ServerHardware>] Array of ServerHardware resources that matches this
     #   profile's server hardware type and enclosure group and who's state is 'NoProfileApplied'
-    def available_hardware
+    def get_available_hardware
       ensure_client
       fail IncompleteResource, 'Must set @data[\'serverHardwareTypeUri\']' unless @data['serverHardwareTypeUri']
       fail IncompleteResource, 'Must set @data[\'enclosureGroupUri\']' unless @data['enclosureGroupUri']
@@ -279,7 +279,7 @@ module OneviewSDK
 
     # @!endgroup
 
-    # Get all the available Ethernet and FC Networks
+    # Get all the available Ethernet and FC Networks, and Network Sets
     # @param [OneviewSDK::Client] client Appliance client
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
@@ -287,21 +287,17 @@ module OneviewSDK
     # @option query [OneviewSDK::ServerHardware] 'server_hardware' The server hardware associated with the resource
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
     # @option query [String] 'view' Name of a predefined view to return a specific subset of the attributes of the resource or collection
-    # @return [Hash{String=>Array<OneviewSDK::EthernetNetwork>,Array<OneviewSDK::FCNetwork>}]
-    #   A hash containing the lists of Ethernet Networks and FC Networks
+    # @return [Hash]
+    #   A hash containing the lists of Ethernet and FC Networks, and Network Sets
     #   Options:
-    #     * [String] :ethernet_networks The list of Ethernet Networks
-    #     * [String] :fc_networks The list of FC Networks
-    def self.get_available_networks(client, query = nil)
+    #     * [String] 'ethernetNetworks' The list of Ethernet Networks
+    #     * [String] 'fcNetworks' The list of FC Networks
+    #     * [String] 'networkSets' The list of Networks Sets
+    def self.get_available_networks(client, query)
       query_uri = build_query(query) if query
       response = client.rest_get("#{BASE_URI}/available-networks#{query_uri}")
       body = client.response_handler(response)
-      ethernet_networks = body['ethernetNetworks'].select { |info| OneviewSDK::EthernetNetwork.find_by(client, name: info['name']).first }
-      fc_networks = body['fcNetworks'].select { |info| OneviewSDK::FCNetwork.find_by(client, name: info['name']).first }
-      {
-        'ethernet_networks' => ethernet_networks,
-        'fc_networks' => fc_networks
-      }
+      body.select { |k, _v| %w(ethernetNetworks networkSets fcNetworks).include?(k) }
     end
 
     # Get Available Servers based on the query parameters
@@ -380,6 +376,5 @@ module OneviewSDK
       response = client.rest_get("#{BASE_URI}/profile-ports#{query_uri}")
       client.response_handler(response)
     end
-
   end
 end
