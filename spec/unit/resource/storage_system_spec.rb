@@ -43,6 +43,31 @@ RSpec.describe OneviewSDK::StorageSystem do
         .and_return([item])
       expect(item.retrieve!).to eq(true)
     end
+
+    it 'no parameter given' do
+      item = OneviewSDK::StorageSystem.new(@client, {})
+      expect { item.retrieve! }.to raise_error(OneviewSDK::IncompleteResource)
+    end
+  end
+
+  describe '#exists?' do
+    it 'finds by name if it is set' do
+      item = OneviewSDK::StorageSystem.new(@client, name: 'Fake')
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, name: 'Fake').and_return([item])
+      expect(item.exists?).to eq(true)
+    end
+
+    it 'finds by credentials if the name is not set' do
+      item = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
+        .and_return([item])
+      expect(item.exists?).to eq(true)
+    end
+
+    it 'no parameter given' do
+      item = OneviewSDK::StorageSystem.new(@client, {})
+      expect { item.exists? }.to raise_error(OneviewSDK::IncompleteResource)
+    end
   end
 
   describe '#get_managed_ports' do
