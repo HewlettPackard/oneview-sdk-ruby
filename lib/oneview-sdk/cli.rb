@@ -191,9 +191,9 @@ module OneviewSDK
           options['attribute'].split(',').each do |attr|
             temp[attr] = d[attr]
           end
-          data.push temp
+          data.push(d['name'] => temp)
         end
-        output data
+        output data, -2 # Shift left by 2 so things look right
       else # List names only by default
         names = []
         matches.each { |m| names.push(m['name']) }
@@ -377,34 +377,29 @@ module OneviewSDK
       when 'yaml'
         puts data.to_yaml
       else
+        # rubocop:disable Metrics/BlockNesting
         if data.class == Hash || data.class <= OneviewSDK::Resource
           data.each do |k, v|
             if v.class == Hash || v.class == Array
-              puts "#{' ' * indent}#{k}:"
+              puts "#{' ' * indent}#{k.nil? ? 'nil' : k}:"
               output(v, indent + 2)
             else
-              puts "#{' ' * indent}#{k}: #{v}"
+              puts "#{' ' * indent}#{k.nil? ? 'nil' : k}: #{v.nil? ? 'nil' : v}"
             end
           end
         elsif data.class == Array
           data.each do |d|
             if d.class == Hash || d.class == Array
-              # rubocop:disable Metrics/BlockNesting
-              if indent == 0
-                puts ''
-                output(d, indent)
-              else
-                output(d, indent + 2)
-              end
-              # rubocop:enable Metrics/BlockNesting
+              output(d, indent + 2)
             else
-              puts "#{' ' * indent}#{d}"
+              puts "#{' ' * indent}#{d.nil? ? 'nil' : d}"
             end
           end
-          puts "\nTotal: #{data.size}" if indent == 0
+          puts "\nTotal: #{data.size}" if indent < 1
         else
-          puts "#{' ' * indent}#{data}"
+          puts "#{' ' * indent}#{data.nil? ? 'nil' : data}"
         end
+        # rubocop:enable Metrics/BlockNesting
       end
     end
   end

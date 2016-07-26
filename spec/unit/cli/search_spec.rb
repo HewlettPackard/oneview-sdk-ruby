@@ -52,7 +52,7 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'prints a subset of the resource details when the attribute option is given' do
         expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, 'description' => 'Blah')
-        out = [resource_data.select { |k, _v| k == 'uri' }, resource_data2.select { |k, _v| k == 'uri' }]
+        out = [{ resource_data['name'] => { 'uri' => resource_data['uri'] } }, { resource_data2['name'] => { 'uri' => resource_data2['uri'] } }]
         expect { OneviewSDK::Cli.start(%w(search ServerProfile -f yaml --filter description:Blah -a uri)) }
           .to output(out.to_yaml).to_stdout_from_any_process
       end
