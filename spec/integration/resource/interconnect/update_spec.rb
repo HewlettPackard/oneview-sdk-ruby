@@ -46,7 +46,7 @@ RSpec.describe OneviewSDK::Interconnect, integration: true, type: UPDATE do
     end
   end
 
-  describe '#update_attribute' do
+  describe '#patch' do
     it 'is a pending example'
   end
 end

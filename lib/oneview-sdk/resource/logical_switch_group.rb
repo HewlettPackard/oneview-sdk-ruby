@@ -30,6 +30,7 @@ module OneviewSDK
     # Define how the switches will be grouped setting the number and the type of the switches
     # @param [Fixnum] number_of_switches Number of the switch inside the group [1,2]
     # @param [String] type Switch type name
+    # @raise [StandardError]
     def set_grouping_parameters(number_of_switches, type)
       @data['switchMapTemplate']['switchMapEntryTemplates'] = []
       parse_switch_map_template(number_of_switches)
@@ -46,6 +47,8 @@ module OneviewSDK
 
     private
 
+    # Parse switch map template structure
+    # @param [Integer] number_of_switches number of switches
     def parse_switch_map_template(number_of_switches)
       1.upto(number_of_switches) do |stacking_member_id|
         entry = {
@@ -59,6 +62,5 @@ module OneviewSDK
         @data['switchMapTemplate']['switchMapEntryTemplates'] << entry
       end
     end
-
   end
 end

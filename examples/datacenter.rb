@@ -13,7 +13,7 @@ require_relative '_client' # Gives access to @client
 
 # Example for adding a Datacenter with default values
 datacenter = OneviewSDK::Datacenter.new(@client, name: 'MyDatacenter', width: 5000, depth: 5000)
-datacenter.create
+datacenter.add
 puts "Datacenter #{datacenter['name']} was added with uri='#{datacenter['uri']}'"
 
 
@@ -22,4 +22,4 @@ datacenter.update(name: 'Datacenter')
 puts "Datacenter MyDatacenter name changed to #{datacenter['name']}"
 
 # Deleting recently created datacenter
-datacenter.delete
+datacenter.remove

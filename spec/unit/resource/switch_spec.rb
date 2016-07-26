@@ -1,25 +1,13 @@
+require 'spec_helper'
 
 RSpec.describe OneviewSDK::Switch do
   include_context 'shared context'
 
-  describe '#create' do
-    it 'cannot be created' do
-      @item = OneviewSDK::Switch.new(@client)
-      expect { @item.create }.to raise_error(/unavailable for this resource/)
-    end
-  end
-
-  describe '#update' do
-    it 'cannot be updated' do
-      @item = OneviewSDK::Switch.new(@client)
-      expect { @item.update }.to raise_error(/unavailable for this resource/)
-    end
-  end
-
-  describe '#refresh' do
-    it 'cannot be refreshed' do
-      @item = OneviewSDK::Switch.new(@client)
-      expect { @item.refresh }.to raise_error(/unavailable for this resource/)
+  describe '#remove' do
+    it 'Should support remove' do
+      switch = OneviewSDK::Switch.new(@client, uri: '/rest/switches/100')
+      expect(@client).to receive(:rest_delete).with('/rest/switches/100', {}, 200).and_return(FakeResponse.new({}))
+      switch.remove
     end
   end
 
@@ -52,7 +40,27 @@ RSpec.describe OneviewSDK::Switch do
       expect(@client).to receive(:rest_get).with('/statistics/p1/subport/sp1').and_return(FakeResponse.new)
       @item.statistics('p1', 'sp1')
     end
-
   end
 
+  describe 'undefined methods' do
+    it 'does not allow the create action' do
+      switch = OneviewSDK::Switch.new(@client)
+      expect { switch.create }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create is unavailable for this resource/)
+    end
+
+    it 'does not allow the update action' do
+      switch = OneviewSDK::Switch.new(@client)
+      expect { switch.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
+    end
+
+    it 'does not allow the refresh action' do
+      switch = OneviewSDK::Switch.new(@client)
+      expect { switch.refresh }.to raise_error(OneviewSDK::MethodUnavailable, /The method #refresh is unavailable for this resource/)
+    end
+
+    it 'does not allow the delete action' do
+      switch = OneviewSDK::Switch.new(@client)
+      expect { switch.delete }.to raise_error(OneviewSDK::MethodUnavailable, /The method #delete is unavailable for this resource/)
+    end
+  end
 end

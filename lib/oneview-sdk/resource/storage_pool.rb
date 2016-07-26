@@ -14,10 +14,43 @@ module OneviewSDK
   class StoragePool < Resource
     BASE_URI = '/rest/storage-pools'.freeze
 
+    # Add the resource on OneView using the current data
+    # @note Calls the refresh method to set additional data
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
+    # @return [OneviewSDK::StoragePool] self
+    alias add create
+
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
+    alias remove delete
+
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
       @data['type'] ||= 'StoragePoolV2'
+    end
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
+    def create
+      unavailable_method
+    end
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
+    def delete
+      unavailable_method
+    end
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
+    def update
+      unavailable_method
     end
 
     # Set storage system
@@ -25,10 +58,6 @@ module OneviewSDK
     def set_storage_system(storage_system)
       fail IncompleteResource, 'Please set the storage system\'s uri attribute!' unless storage_system['uri']
       set('storageSystemUri', storage_system['uri'])
-    end
-
-    def update
-      unavailable_method
     end
   end
 end

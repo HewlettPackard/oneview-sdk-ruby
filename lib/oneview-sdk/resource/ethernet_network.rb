@@ -14,6 +14,10 @@ module OneviewSDK
   class EthernetNetwork < Resource
     BASE_URI = '/rest/ethernet-networks'.freeze
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:

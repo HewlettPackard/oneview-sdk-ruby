@@ -13,36 +13,24 @@ module OneviewSDK
   # Firmware bundle resource implementation
   class FirmwareBundle
     BASE_URI = '/rest/firmware-bundles'.freeze
-    BOUNDARY = '---OneView-SDK-RubyFormBoundaryWzS4H31b7UMbKMCx'.freeze
+    BOUNDARY = '----011000010111000001101001'.freeze
 
     # Upload a firmware bundle file
     # @param [OneviewSDK::Client] client
     # @param [String] file_path
     # @return [OneviewSDK::FirmwareDriver] if the upload was sucessful, return a FirmwareDriver object
-    def self.upload(client, file_path)
+    def self.add(client, file_path)
       fail NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
-      type = case File.extname(file_path)
-             when '.zip' then 'application/x-zip-compressed'
-             when '.exe' then 'application/x-msdownload'
-             else 'application/octet-stream'
-             end
-
-      body = "--#{BOUNDARY}\r\n"
-      body << "Content-Disposition: form-data; name=\"file\"; filename=\"#{File.basename(file_path)}\"\r\n"
-      body << "Content-Type: #{type}\r\n\r\n"
-      body << File.read(file_path)
-      body << "\r\n--#{BOUNDARY}--"
-
-      options = {
-        'Content-Type' => "multipart/form-data; boundary=#{BOUNDARY}",
-        'uploadfilename' => File.basename(file_path),
-        'body' => body
-      }
-
+      options = {}
+      options['Content-Type'] = "multipart/form-data; boundary=#{BOUNDARY}"
+      options['uploadfilename'] = File.basename(file_path)
+      options['body'] = "--#{BOUNDARY}\r\n"
+      options['body'] << "Content-Disposition: form-data; name=\"file\"; filename=\"#{File.basename(file_path)}\"\r\n"
+      options['body'] << "Content-Type: application/octet-stream; Content-Transfer-Encoding: binary\r\n\r\n"
+      options['body'] << "#{IO.binread(file_path)}\r\n--#{BOUNDARY}--"
       response = client.rest_post(BASE_URI, options)
       data = client.response_handler(response)
       OneviewSDK::FirmwareDriver.new(client, data)
     end
-
   end
 end

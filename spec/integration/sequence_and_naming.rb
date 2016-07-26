@@ -22,11 +22,12 @@ DEPENDENCIES = {
   Fabric: [],
   FCNetwork: [],
   FCoENetwork: [],
-  FirmwareDriver: [],
+  FirmwareBundle: [],
+  FirmwareDriver: [:FirmwareBundle],
   Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
-  LogicalDownlink: [:LogicalInterconnectGroup],
-  LogicalEnclosure: [],
+  LogicalDownlink: [:Enclosure],
+  LogicalEnclosure: [:Enclosure],
   LogicalInterconnect: [:Enclosure],
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
   LogicalSwitch: [:LogicalSwitchGroup],
@@ -34,12 +35,12 @@ DEPENDENCIES = {
   ManagedSAN: [:SANManager],
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
-  Rack: [:ServerHardware],
+  Rack: [:ServerProfile],
   SANManager: [],
-  ServerHardware: [],
-  ServerHardwareType: [:ServerHardware],
-  ServerProfile: [:ServerHardwareType, :Enclosure, :ServerProfileTemplate],
-  ServerProfileTemplate: [:EnclosureGroup, :ServerHardwareType],
+  ServerHardware: [:ServerHardwareType],
+  ServerHardwareType: [:Enclosure],
+  ServerProfile: [:ServerHardware, :Enclosure, :ServerProfileTemplate],
+  ServerProfileTemplate: [:EnclosureGroup, :ServerHardware, :Volume],
   StoragePool: [:StorageSystem],
   StorageSystem: [],
   Switch: [:LogicalSwitch],
@@ -47,7 +48,7 @@ DEPENDENCIES = {
   UplinkSet: [:LogicalInterconnectGroup],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
-  VolumeTemplate: [:StorageSystem, :StoragePool]
+  VolumeTemplate: [:StoragePool]
 }.freeze
 
 SEQ = DEPENDENCIES.tsort
@@ -118,7 +119,7 @@ UPLINK_SET3_NAME = 'EthernetUplinkSet_2'.freeze
 
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
-LIG_UPLINK_SET2_NAME = 'EthernetUplinkSet_2'.freeze
+LIG_UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
 
 # storageSystem
 STORAGE_SYSTEM_NAME = 'ThreePAR7200-2027'.freeze
@@ -134,6 +135,7 @@ VOL_TEMP_NAME_UPDATED = 'VolumeTemplate_1_UPDATED'.freeze
 VOLUME_NAME = 'Volume_1'.freeze
 VOLUME2_NAME = 'Volume_2'.freeze
 VOLUME3_NAME = 'Volume_3'.freeze
+VOLUME4_NAME = 'Volume_4'.freeze
 VOL_SNAPSHOT_NAME = 'snapshot_qa'.freeze
 VOL_SNAPSHOT2_NAME = 'snapshot_qa_2'.freeze
 

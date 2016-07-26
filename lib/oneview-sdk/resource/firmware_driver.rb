@@ -14,6 +14,18 @@ module OneviewSDK
   class FirmwareDriver < Resource
     BASE_URI = '/rest/firmware-drivers'.freeze
 
+    # Remove resource from OneView
+    # @return [true] if resource was removed successfully
+    alias remove delete
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
+    def delete
+      unavailable_method
+    end
+
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def update
       unavailable_method
     end
