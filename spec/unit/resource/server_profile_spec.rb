@@ -379,4 +379,68 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
   end
 
+  describe 'Volume attachment operations' do
+    it 'can call the #add_volume_attachment using a specific already created Volume' do
+      volume = OneviewSDK::Volume.new(@client, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+      @item.add_volume_attachment(volume)
+
+      expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
+      va = @item['sanStorage']['volumeAttachments'].first
+      expect(va['volumeUri']).to eq(volume['uri'])
+      expect(va['volumeStoragePoolUri']).to eq(volume['storagePoolUri'])
+      expect(va['volumeStorageSystemUri']).to eq(volume['storageSystemUri'])
+    end
+
+    describe 'can call #remove_volume_attachment' do
+      it 'and remove attachment with id 0' do
+        volume = OneviewSDK::Volume.new(@client, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+        @item.add_volume_attachment(volume, 'id' => 7)
+        expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
+        va = @item.remove_volume_attachment(7)
+        expect(@item['sanStorage']['volumeAttachments']).to be_empty
+        expect(va['volumeUri']).to eq(volume['uri'])
+        expect(va['volumeStoragePoolUri']).to eq(volume['storagePoolUri'])
+        expect(va['volumeStorageSystemUri']).to eq(volume['storageSystemUri'])
+      end
+
+      it 'and return nil if no attachment found' do
+        volume = OneviewSDK::Volume.new(@client, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+        @item.add_volume_attachment(volume, 'id' => 7)
+        expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
+        va = @item.remove_volume_attachment(5)
+        expect(@item['sanStorage']['volumeAttachments']).not_to be_empty
+        expect(va).not_to be
+      end
+
+      it 'and return nil if there is no attachment' do
+        expect(@item['sanStorage']).not_to be
+        va = @item.remove_volume_attachment(0)
+        expect(@item['sanStorage']['volumeAttachments']).to be_empty
+        expect(va).not_to be
+      end
+    end
+
+    it 'can call #create_volume_with_attachment and generate the data required for a new Volume with attachment' do
+      storage_pool = OneviewSDK::StoragePool.new(@client, uri: 'fake/storage-pool')
+      volume_options = {
+        name: 'TestVolume',
+        description: 'Test Volume for Server Profile Volume Attachment',
+        provisioningParameters: {
+          provisionType: 'Full',
+          shareable: true,
+          requestedCapacity: 1024 * 1024 * 1024
+        }
+      }
+      @item.create_volume_with_attachment(storage_pool, volume_options)
+      expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
+      va = @item['sanStorage']['volumeAttachments'].first
+      expect(va['volumeUri']).not_to be
+      expect(va['volumeStorageSystemUri']).not_to be
+      expect(va['volumeStoragePoolUri']).to eq('fake/storage-pool')
+      expect(va['volumeShareable']).to eq(true)
+      expect(va['volumeProvisionedCapacityBytes']).to eq(1024 * 1024 * 1024)
+      expect(va['volumeProvisionType']).to eq('Full')
+    end
+  end
+
 end
