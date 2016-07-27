@@ -16,7 +16,7 @@ module OneviewSDK
     TYPE_URI = '/rest/interconnect-types'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -41,16 +41,16 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Retrieve interconnect types
-    # @param [Client] client http client
+    # Retrieves interconnect types
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     def self.get_types(client)
       response = client.rest_get(TYPE_URI)
       response = client.response_handler(response)
       response['members']
     end
 
-    # Retrieve interconnect ype with name
-    # @param [Client] client http client
+    # Retrieves the interconnect type with name
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] name Interconnect type name
     # @return [Array] Interconnect type
     def self.get_type(client, name)
@@ -58,7 +58,7 @@ module OneviewSDK
       results.find { |interconnect_type| interconnect_type['name'] == name }
     end
 
-    # Retrieve named servers for this interconnect
+    # Retrieves the named servers for this interconnect
     def name_servers
       response = @client.rest_get(@data['uri'] + '/nameServers')
       response.body
@@ -89,13 +89,13 @@ module OneviewSDK
       response.body
     end
 
-    # Triggers a reset of port protection
+    # Triggers the reset port protection action
     def reset_port_protection
       response = @client.rest_put(@data['uri'] + '/resetportprotection')
       @client.response_handler(response)
     end
 
-    # Update specific attributes of a given interconnect resource
+    # Updates specific attributes for a given interconnect resource
     # @param [String] operation operation to be performed
     # @param [String] path path
     # @param [String] value value

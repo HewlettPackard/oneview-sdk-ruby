@@ -10,12 +10,12 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Storage Volume Attachment resource implementation
+  # Storage volume attachment resource implementation
   class VolumeAttachment < Resource
     BASE_URI = '/rest/storage-volume-attachments'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -42,15 +42,15 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Get the list of extra unmanaged storage volumes
-    # @param [OneviewSDK::Client] client Oneview client
+    # Gets the list of extra unmanaged storage volumes
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     def self.get_extra_unmanaged_volumes(client)
       response = client.rest_get(BASE_URI + '/repair?alertFixType=ExtraUnmanagedStorageVolumes')
       client.response_handler(response)
     end
 
     # Removes extra presentations from a specific server profile
-    # @param [OneviewSDK::Client] client Oneview client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [OneviewSDK::Resource] resource Oneview resource
     def self.remove_extra_unmanaged_volume(client, resource)
       requestBody = {
@@ -62,7 +62,7 @@ module OneviewSDK
     end
 
     # Gets all volume attachment paths
-    # @return [Array] List of StorageVolumeAttachmentPath
+    # @return [Array] List of the storage volume attachments paths
     def get_paths
       response = @client.rest_get(@data['uri'] + '/paths')
       @client.response_handler(response)

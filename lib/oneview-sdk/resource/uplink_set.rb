@@ -15,7 +15,7 @@ module OneviewSDK
     BASE_URI = '/rest/uplink-sets'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -29,7 +29,7 @@ module OneviewSDK
       @data['type'] ||= 'uplink-setV3'
     end
 
-    # Add portConfigInfos to the array
+    # Adds the portConfigInfos to the array
     # @param [String] portUri
     # @param [String] speed
     # @param [Hash] locationEntries
@@ -44,7 +44,7 @@ module OneviewSDK
       @data['portConfigInfos'] << entry
     end
 
-    # Set logical interconnect uri
+    # Sets the logical interconnect uri
     # @param [OneviewSDK::LogicalInterconnect, Hash] logical_interconnect
     def set_logical_interconnect(logical_interconnect)
       uri = logical_interconnect[:uri] || logical_interconnect['uri']
@@ -52,7 +52,7 @@ module OneviewSDK
       @data['logicalInterconnectUri'] = uri
     end
 
-    # Add an uri to networkUris array
+    # Adds an ethernet network to the uplink set
     # @param [OneviewSDK::EthernetNetwork, Hash] network
     def add_network(network)
       uri = network[:uri] || network['uri']
@@ -60,7 +60,7 @@ module OneviewSDK
       @data['networkUris'].push(uri)
     end
 
-    # Add an uri to fcnetworkUris array
+    # Adds an fc network to the uplink set
     # @param [OneviewSDK::FCNetwork, Hash] network must accept hash syntax
     def add_fcnetwork(network)
       uri = network[:uri] || network['uri']
@@ -68,7 +68,7 @@ module OneviewSDK
       @data['fcNetworkUris'].push(uri)
     end
 
-    # Add an uri to fcoenetworkUris array
+    # Adds an fcoe network to the uplink set
     # @param [OneviewSDK::FCoENetwork, Hash] network must accept hash syntax
     def add_fcoenetwork(network)
       uri = network[:uri] || network['uri']

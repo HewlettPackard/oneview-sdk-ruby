@@ -22,7 +22,7 @@ module OneviewSDK
     alias remove delete
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -64,7 +64,7 @@ module OneviewSDK
       self
     end
 
-    # Override update operation because only the name and rackName can be updated (& it uses PATCH).
+    # Overrides the update operation because only the name and rackName can be updated (and it uses PATCH).
     # @param [Hash] attributes attributes to be updated
     # @return [OneviewSDK::Enclosure] self
     def update(attributes = {})
@@ -84,7 +84,7 @@ module OneviewSDK
       self
     end
 
-    # Reapply enclosure configuration
+    # Reapplies the enclosure configuration
     def configuration
       ensure_client && ensure_uri
       response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
@@ -93,7 +93,7 @@ module OneviewSDK
     end
 
 
-    # Refresh enclosure along with all of its components
+    # Refreshes the enclosure along with all of its components
     # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     # @param [Hash] options  Optional force fields for refreshing the enclosure
     def set_refresh_state(state, options = {})
@@ -110,7 +110,7 @@ module OneviewSDK
       set_all(new_data)
     end
 
-    # Get enclosure script content
+    # Gets the enclosure script content
     # @return [String] Script content
     def script
       ensure_client && ensure_uri
@@ -118,7 +118,8 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Get settings that describe the environmental configuration
+    # Gets the enclosure settings that describe the environmental configuration
+    # @return [Hash] The enclosure envirnomental configuration
     def environmental_configuration
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
@@ -154,7 +155,7 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Update specific attributes of a given enclosure resource
+    # Updates specific attributes of a given enclosure resource
     # @param [String] operation operation to be performed
     # @param [String] path path
     # @param [String] value value
@@ -164,7 +165,7 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Associates one Enclosure Group to the enclosure to be added
+    # Associates an enclosure group to the enclosure
     # @param [OneviewSDK<Resource>] eg Enclosure Group associated
     def set_enclosure_group(eg)
       eg.retrieve! unless eg['uri']
@@ -173,7 +174,7 @@ module OneviewSDK
 
     private
 
-    # Convert Date, Time, or String objects to iso8601 string
+    # Converts Date, Time, or String objects to iso8601 string
     # @raise [InvalidResource] if time is not formatted correctly
     def convert_time(t)
       case t

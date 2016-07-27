@@ -10,12 +10,12 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Uplink Sets  resource implementation to be used in Logical interconnect groups
+  # Uplink sets resource implementation to be used in logical interconnect groups
   class LIGUplinkSet < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -27,15 +27,15 @@ module OneviewSDK
       @data['networkUris'] ||= []
     end
 
-    # Add existing network to the network list.
+    # Add an existing network to the network list.
     # Ethernet and FibreChannel networks are allowed.
-    # @param [OneviewSDK::Resource] network resource to be added to the list
+    # @param [OneviewSDK::Resource] network The resource to be added to the list
     def add_network(network)
       network.retrieve! unless network['uri']
       @data['networkUris'] << network['uri']
     end
 
-    # Specify one uplink passing the VC Bay and the port to be attached.
+    # Specify one uplink passing the virtual connect bay and the port to be attached.
     # @param [Fixnum] bay number to identify the VC
     # @param [String] port to attach the uplink. Allowed D1..D16 and X1..X10
     def add_uplink(bay, port)
@@ -52,7 +52,7 @@ module OneviewSDK
       @data['logicalPortConfigInfos'] << entry
     end
 
-    # Set all params
+    # Sets all params
     # @overload sets networkType first
     def set_all(params = {})
       params = params.data if params.class <= Resource
@@ -76,6 +76,5 @@ module OneviewSDK
                end
       port.to_i + offset
     end
-
   end
 end

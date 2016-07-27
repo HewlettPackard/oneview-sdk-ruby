@@ -10,7 +10,7 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Logical Downlink resource implementation
+  # Logical downlink resource implementation
   class LogicalDownlink < Resource
     BASE_URI = '/rest/logical-downlinks'.freeze
 
@@ -33,8 +33,8 @@ module OneviewSDK
     end
 
     # Gets a list of logical downlinks, excluding any existing ethernet network
-    # @param [OneviewSDK::Client] client HPE OneView client
-    # @return [Array<OneviewSDK::LogicalDownlink] Logical Downlink array
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @return [Array<OneviewSDK::LogicalDownlink] Logical downlink array
     def self.get_without_ethernet(client)
       result = []
       response = client.rest_get(BASE_URI + '/withoutEthernet')
@@ -43,8 +43,8 @@ module OneviewSDK
       result
     end
 
-    # Get a logical downlink excluding any existing ethernet network
-    # @return [OneviewSDK::LogicalDownlink] Logical Downlink array
+    # Gets a logical downlink, excluding any existing ethernet network
+    # @return [OneviewSDK::LogicalDownlink] Logical downlink array
     def get_without_ethernet
       response = @client.rest_get(@data['uri'] + '/withoutEthernet')
       OneviewSDK::LogicalDownlink.new(@client, @client.response_handler(response))

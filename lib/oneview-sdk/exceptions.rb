@@ -26,13 +26,13 @@ module OneviewSDK
   class IncompleteResource < StandardError # Missing required resource data to complete action
   end
 
-  class MethodUnavailable < StandardError # Resource doesn't support this method
+  class MethodUnavailable < StandardError # Resource does not support this method
   end
 
   class UnsupportedVersion < StandardError # Resource not supported on this API version
   end
 
-  class InvalidRequest < StandardError # Couldn't even make request
+  class InvalidRequest < StandardError # Could not make request
   end
 
   class BadRequest < StandardError # 400
@@ -47,7 +47,7 @@ module OneviewSDK
   class RequestError < StandardError # Other bad response codes
   end
 
-  class TaskError < StandardError # Task ended in bad state
+  class TaskError < StandardError # Task ended in a bad state
   end
 
   class InvalidFormat < StandardError # File format is invalid

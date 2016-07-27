@@ -15,7 +15,7 @@ module OneviewSDK
     BASE_URI = '/rest/logical-enclosures'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -24,7 +24,7 @@ module OneviewSDK
       @data['type'] ||= 'LogicalEnclosure'
     end
 
-    # Reapplies the appliance's configuration on enclosures
+    # Reapplies the appliance's configuration on the enclosures
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [OneviewSDK::IncompleteResource] if the uri is not set
     # @raise [StandardError] if the reapply fails

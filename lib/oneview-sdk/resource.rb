@@ -24,10 +24,10 @@ module OneviewSDK
       :logger
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
-    #   Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.
+    #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
       fail InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
       @client = client
@@ -42,7 +42,7 @@ module OneviewSDK
     end
 
     # Retrieve resource details based on this resource's name or URI.
-    # @note Name or URI must be specified inside resource
+    # @note Name or URI must be specified inside the resource
     # @return [Boolean] Whether or not retrieve was successful
     def retrieve!
       fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
@@ -64,7 +64,7 @@ module OneviewSDK
     end
 
     # Set the given hash of key-value pairs as resource data attributes
-    # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
+    # @param [Hash, Resource] params The options for this resource (key-value pairs or resource object)
     # @note All top-level keys will be converted to strings
     # @return [Resource] self
     def set_all(params = {})
@@ -117,15 +117,15 @@ module OneviewSDK
     end
 
     # Check equality of 2 resources. Same as ==(other)
-    # @param [Resource] other The other resource to check equality for
+    # @param [Resource] other The other resource to check for equality
     # @return [Boolean] Whether or not the two objects are equal
     def eql?(other)
       self == other
     end
 
-    # Check equality of data on other resource with that of this resource.
-    # @note Doesn't check the client, logger, or api_version if another Resource is passed in
-    # @param [Hash, Resource] other Resource or hash to compare key-value pairs with
+    # Check the equality of the data for the other resource with this resource.
+    # @note Does not check the client, logger, or api_version if another resource is passed in
+    # @param [Hash, Resource] other resource or hash to compare the key-value pairs with
     # @example Compare to hash
     #   myResource = OneviewSDK::Resource.new(client, { name: 'res1', description: 'example'}, 200)
     #   myResource.like?(description: '') # returns false
@@ -219,7 +219,7 @@ module OneviewSDK
     end
 
     # Get resource schema
-    # @param [Client] client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [Hash] Schema
     def self.schema(client)
       response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
@@ -230,7 +230,7 @@ module OneviewSDK
     end
 
     # Load resource from a .json or .yaml file
-    # @param [Client] client The client object to associate this resource with
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] file_path The full path to the file
     # @return [Resource] New resource created from the file contents
     def self.from_file(client, file_path)
@@ -238,8 +238,8 @@ module OneviewSDK
       new(client, resource['data'], resource['api_version'])
     end
 
-    # Make a GET request to the resource uri and return an array with results matching the search
-    # @param [Client] client
+    # Make a GET request to the resource uri, and returns an array with results matching the search
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] attributes Hash containing the attributes name and value
     # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
@@ -260,7 +260,7 @@ module OneviewSDK
       results
     end
 
-    # Make a GET request to the resource base uri and return an array with all objects of this type
+    # Make a GET request to the resource base uri, and returns an array with all objects of this type
     # @return [Array<Resource>] Results
     def self.get_all(client)
       find_by(client, {})

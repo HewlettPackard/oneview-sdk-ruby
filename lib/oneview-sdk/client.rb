@@ -24,20 +24,20 @@ module OneviewSDK
 
     include Rest
 
-    # Create client object, establish connection, and set up logging and api version.
+    # Creates client object, establish connection, and set up logging and api version.
     # @param [Hash] options the options to configure the client
     # @option options [Logger] :logger (Logger.new(STDOUT)) Logger object to use.
     #   Must implement debug(String), info(String), warn(String), error(String), & level=
     # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
-    # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on tasks to complete.
+    # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on the tasks to complete.
     # @option options [String] :url URL of OneView appliance
-    # @option options [String] :user ('Administrator') Username to use for authentication with OneView appliance
-    # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) Password to use for authentication with OneView appliance
-    # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) Token to use for authentication with OneView appliance
-    #   Use this OR the username and password (not both). Token has precedence.
-    # @option options [Integer] :api_version (200) API Version to use by default for requests
+    # @option options [String] :user ('Administrator') The username to use for authentication with the OneView appliance
+    # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) The password to use for authentication with OneView appliance
+    # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) The token to use for authentication with OneView appliance
+    #   Use the token or the username and password (not both). The token has precedence.
+    # @option options [Integer] :api_version (200) This is the API version to use by default for requests
     # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['ONEVIEWSDK_SSL_ENABLED']
-    # @option options [Integer] :timeout (nil) Override default request timeout value
+    # @option options [Integer] :timeout (nil) Override the default request timeout value
     def initialize(options = {})
       options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
       @logger = options[:logger] || Logger.new(STDOUT)
@@ -72,14 +72,14 @@ module OneviewSDK
       @token = login
     end
 
-    # Tell OneView to create the resource using the current attribute data
+    # Tells OneView to create the resource using the current attribute data
     # @param [Resource] resource the object to create
     def create(resource)
       resource.client = self
       resource.create
     end
 
-    # Set attribute data and save to OneView
+    # Sets the attribute data, and then saves to OneView
     # @param [Resource] resource the object to update
     def update(resource, attributes = {})
       resource.client = self
@@ -114,7 +114,7 @@ module OneviewSDK
     # Wait for a task to complete
     # @param [String] task_uri
     # @raise [OneviewSDK::TaskError] if the task resulted in an error or early termination.
-    # @return [Hash] if the task completed sucessfully, return the task details
+    # @return [Hash] if the task completed successfully, return the task details
     def wait_for(task_uri)
       fail ArgumentError, 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
       loop do

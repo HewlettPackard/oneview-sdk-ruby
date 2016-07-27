@@ -129,7 +129,7 @@ The direct hash accessor on the resource converts all keys to strings, so `resou
 
 ##### Update a resource
 
-Notice that there's a few different ways to do things, so pick your poison!
+Notice that there are a few different ways to do things, so pick your poison!
 ```ruby
 ethernet.set_all(name: 'newName', vlanId:  1002)
 ethernet['purpose'] = 'General'
@@ -191,7 +191,7 @@ Resources can be saved to files and loaded again very easily using the built-in 
    ```ruby
    ethernet.to_file("full_file_path.json")
    ```
- - To load a Resource from a file: (note the class method, not instance method)
+ - To load a resource from a file: (note the class method, not instance method)
 
    ```ruby
    ethernet4 = OneviewSDK::Resource.from_file(client, "full_file_path.json")
@@ -275,8 +275,8 @@ HINT: The @client object is available to you
 
 ##### Import a self-signed SSL certificate from your OneView instance:
 
-Although you can disable ssl validation altogether for the client, this is strongly discouraged.
-Instead, please import the certificate using the built-in cli cert command:
+Although you can disable SSL validation altogether for the client, this is strongly discouraged.
+Instead, please import the certificate using the built-in CLI cert command:
 ```bash
 # Check the certificate first:
 $ oneview-sdk-ruby cert check https://oneview.example.com

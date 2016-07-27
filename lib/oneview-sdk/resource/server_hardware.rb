@@ -19,7 +19,7 @@ module OneviewSDK
     alias remove delete
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -40,7 +40,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Add the resource on OneView using the current data
+    # Adds the resource on OneView using the current data
     # @raise [OneviewSDK::IncompleteResource] if the client is not set or required attributes are missing
     # @return [OneviewSDK::ServerHardware] self
     def add
@@ -57,54 +57,55 @@ module OneviewSDK
       self
     end
 
-    # unavailable method
+    # Method is not available
+    # @raise [OneviewSDK::MethodUnavailable] method is not available
     def update(*)
       unavailable_method
     end
 
     # Power on the server hardware
     # @param [Boolean] force Use 'PressAndHold' action?
-    # @return [Boolean] Whether or not server was powered on
+    # @return [Boolean] Returns whether or not the server was powered on
     def power_on(force = false)
       set_power_state('on', force)
     end
 
     # Power off the server hardware
     # @param [Boolean] force Use 'PressAndHold' action?
-    # @return [Boolean] Whether or not server was powered off
+    # @return [Boolean] Returns whether or not the server was powered off
     def power_off(force = false)
       set_power_state('off', force)
     end
 
-    # Get list of BIOS/UEFI values on the physical server
+    # Gets a list of BIOS/UEFI values on the physical server
     # @return [Hash] List with BIOS/UEFI settings
     def get_bios
       response = @client.rest_get(@data['uri'] + '/bios')
       @client.response_handler(response)
     end
 
-    # Get a url to the iLO web interface
+    # Gets a url to the iLO web interface
     # @return [Hash] url
     def get_ilo_sso_url
       response = @client.rest_get(@data['uri'] + '/iloSsoUrl')
       @client.response_handler(response)
     end
 
-    # Get a Single Sign-On session for the Java Applet console
+    # Gets a Single Sign-On session for the Java Applet console
     # @return [Hash] url
     def get_java_remote_sso_url
       response = @client.rest_get(@data['uri'] + '/javaRemoteConsoleUrl')
       @client.response_handler(response)
     end
 
-    # Get a url to the iLO web interface
+    # Gets a url to the iLO web interface
     # @return [Hash] url
     def get_remote_console_url
       response = @client.rest_get(@data['uri'] + '/remoteConsoleUrl')
       @client.response_handler(response)
     end
 
-    # Refresh enclosure along with all of its components
+    # Refreshes the enclosure along with all of its components
     # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing
     # @param [Hash] options  Optional force fields for refreshing the enclosure
     def set_refresh_state(state, options = {})
@@ -121,13 +122,13 @@ module OneviewSDK
       set_all(new_data)
     end
 
-    # Updates the iLO firmware on a physical server to a minimum ILO firmware required by OneView
+    # Updates the iLO firmware on a physical server to a minimum iLO firmware required by OneView
     def update_ilo_firmware
       response = @client.rest_put(@data['uri'] + '/mpFirmwareVersion')
       @client.response_handler(response)
     end
 
-    # Get settings that describe the environmental configuration
+    # Gets the settings that describe the environmental configuration
     def environmental_configuration
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
@@ -165,7 +166,7 @@ module OneviewSDK
 
     private
 
-    # Convert Date, Time, or String objects to iso8601 string
+    # Converts Date, Time, or String objects to iso8601 string
     def convert_time(t)
       case t
       when nil then nil

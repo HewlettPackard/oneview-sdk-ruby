@@ -27,14 +27,14 @@ module OneviewSDK
       fail "Resource #{server_hardware_type['name']} could not be found!" unless server_hardware_type['uri']
     end
 
-    # Sets the Enclosure Group for the Server Profile Template
+    # Sets the enclosure group for the server profile template
     # @param [OneviewSDK::EnclosureGroup] enclosure_group Enclosure Group that the Server is a member
     def set_enclosure_group(enclosure_group)
       self['enclosureGroupUri'] = enclosure_group['uri'] if enclosure_group['uri'] || enclosure_group.retrieve!
       fail "Resource #{enclosure_group['name']} could not be found!" unless enclosure_group['uri']
     end
 
-    # Sets the Firmware Driver for the current Server Profile Template
+    # Sets the firmware driver for the current server profile template
     # @param [OneviewSDK::FirmwareDriver] firmware Firmware Driver to be associated with the resource
     # @param [Hash<String,Object>] firmware_options Firmware Driver options
     # @option firmware_options [Boolean] 'manageFirmware' Indicates that the server firmware is configured using the server profile.
@@ -50,7 +50,7 @@ module OneviewSDK
       self['firmware'] = firmware_options
     end
 
-    # Add connection entry to Server profile template
+    # Adds a connection entry to server profile template
     # @param [OneviewSDK::EthernetNetwork,OneviewSDK::FCNetwork] network Network associated with the connection
     # @param [Hash<String,String>] connection_options Hash containing the configuration of the connection
     # @option connection_options [Integer] 'allocatedMbps' The transmit throughput (mbps) currently allocated to
@@ -85,7 +85,7 @@ module OneviewSDK
       self['connections'] << connection_options
     end
 
-    # Remove connection entry in Server profile template
+    # Removes a connection entry in server profile template
     # @param [String] connection_name Name of the connection
     # @return Returns the connection hash if found, otherwise returns nil
     def remove_connection(connection_name)
@@ -97,7 +97,7 @@ module OneviewSDK
       desired_connection
     end
 
-    # Adds volume attachment entry with associated Volume in Server profile template
+    # Adds a volume attachment entry with associated volume in server profile template
     # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
     # @param [Hash] attachment_options Options of the new attachment
     # @option attachment_options [Fixnum] 'id' The ID of the attached storage volume. Do not use it if you want it to be created automatically.
@@ -120,7 +120,7 @@ module OneviewSDK
       self['sanStorage']['volumeAttachments'] << attachment_options
     end
 
-    # Add volume attachment entry with new volume in Server profile template
+    # Adds a volume attachment entry with new volume in Server profile template
     # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
     # @param [Hash] volume_options Options to create a new Volume.
     #   Please refer to OneviewSDK::Volume documentation for the data necessary to create a new Volume.
@@ -165,7 +165,7 @@ module OneviewSDK
       self['sanStorage']['volumeAttachments'] << attachment_options
     end
 
-    # Remove volume attachment entry in Server profile template
+    # Removes a volume attachment entry in Server profile template
     # @param [Fixnum] id ID number of the attachment entry
     # @return Returns the volume hash if found, otherwise returns nil
     def remove_volume_attachment(id)
@@ -180,7 +180,7 @@ module OneviewSDK
       volume_attachment
     end
 
-    # Get available server hardware
+    # Gets the available server hardwares
     # @return [Array<OneviewSDK::ServerHardware>] Array of ServerHardware resources that matches this
     #   profile template's server hardware type and enclosure group and who's state is 'NoProfileApplied'
     def get_available_hardware
@@ -197,7 +197,7 @@ module OneviewSDK
       raise IncompleteResource, "Failed to get available hardware. Message: #{e.message}"
     end
 
-    # Create ServerProfile using this template
+    # Creates a ServerProfile using this template
     # @param [String] name Name of new server profile
     # @return [OneviewSDK::ServerProfile] New server profile from template.
     #   Temporary object only; call .create to actually create resource on OneView.

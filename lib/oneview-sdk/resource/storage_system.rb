@@ -19,7 +19,7 @@ module OneviewSDK
     alias remove delete
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -40,7 +40,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Add the resource on OneView using the current data
+    # Adds the resource to OneView using the current data
     # @note Calls the refresh method to set additional data
     # @return [OneviewSDK::StorageSystem] self
     def add
@@ -55,7 +55,7 @@ module OneviewSDK
       self
     end
 
-    # Check if a resource exists
+    # Checks if the resource already exists
     # @note name,uri or ip_hostname must be specified inside resource
     # @return [Boolean] Whether or not resource exists
     def exists?
@@ -69,7 +69,7 @@ module OneviewSDK
       false
     end
 
-    # Retrieve resource details based on this resource's name or URI.
+    # Retrieves the resource details based on this resource's name or URI.
     # @note Name,URI or ip_hostname must be specified inside resource
     # @return [Boolean] Whether or not retrieve was successful
     # @raise [OneviewSDK::IncompleteResource] if attributes are not filled
@@ -84,21 +84,21 @@ module OneviewSDK
       true
     end
 
-    # Get host types for storage system resource
-    # @param [Client] client client handle REST calls to OV instance
+    # Gets the host types for the storage system resource
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [String] response body
     def self.get_host_types(client)
       response = client.rest_get(BASE_URI + '/host-types')
       response.body
     end
 
-    # List of storage pools
+    # Lists the storage pools
     def get_storage_pools
       response = @client.rest_get(@data['uri'] + '/storage-pools')
       response.body
     end
 
-    # List of all managed target ports for the specified storage system
+    # Lists all managed target ports for the specified storage system,
     # or only the one specified
     # @param [String] port Target port
     def get_managed_ports(port = nil)
@@ -109,6 +109,5 @@ module OneviewSDK
                  end
       response.body
     end
-
   end
 end

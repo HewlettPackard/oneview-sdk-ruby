@@ -10,7 +10,7 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # SAN Manager resource implementation
+  # SAN manager resource implementation
   class SANManager < Resource
     BASE_URI = '/rest/fc-sans/device-managers'.freeze
     PROVIDERS_URI = '/rest/fc-sans/providers'.freeze
@@ -20,7 +20,7 @@ module OneviewSDK
     alias remove delete
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -29,7 +29,7 @@ module OneviewSDK
       @data['type'] = 'FCDeviceManagerV2'
     end
 
-    # Add the resource on OneView using the current data
+    # Adds the resource on OneView using the current data
     # @return [OneviewSDK::SANManager] self
     def add
       ensure_client
@@ -53,7 +53,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Refresh state or change connection info
+    # Refreshes the san manager state or change connection information
     # @param [Hash] options
     def update(options)
       ensure_client && ensure_uri
@@ -62,10 +62,10 @@ module OneviewSDK
       set_all(new_data)
     end
 
-    # Retrieve default connection info for a specific provider
-    # @param [OneviewSDK::Client] client HPE OneView client
+    # Retrieves the default connection information for a specific provider
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] provider_name Providers name
-    # @return [Hash] hash with default connectionInfo information
+    # @return [Hash] A hash with default connectionInfo information
     def self.get_default_connection_info(client, provider_name)
       response = client.rest_get(PROVIDERS_URI)
       providers = client.response_handler(response)['members']
@@ -75,7 +75,7 @@ module OneviewSDK
 
     private
 
-    # Get provider uri
+    # Gets the provider uri
     # @return [String] provider uri
     def get_provider_uri
       return @data['providerUri'] if @data['providerUri']

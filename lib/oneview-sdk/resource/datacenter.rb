@@ -26,7 +26,7 @@ module OneviewSDK
     alias remove delete
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -47,7 +47,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Adds existing rack to datacenter
+    # Adds an existing rack to the datacenter
     # @param [OneviewSDK::Rack] rack rack
     # @param [Decimal] pos_x x position
     # @param [Decimal] pos_y y position
@@ -67,7 +67,7 @@ module OneviewSDK
       @data['contents'].reject! { |resource| resource['resourceUri'] == rack['uri'] }
     end
 
-    # Get a list of visual content objects
+    # Gets a list of the visual content objects
     # @return [Hash]
     def get_visual_content
       response = @client.rest_get(@data['uri'] + '/visualContent')

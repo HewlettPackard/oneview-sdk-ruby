@@ -15,7 +15,7 @@ module OneviewSDK
     BASE_URI = '/rest/enclosure-groups'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -27,15 +27,15 @@ module OneviewSDK
     end
 
     # Get the script executed by enclosures in this enclosure group
-    # @return [String] script for this enclosure group
+    # @return [String] The script for this enclosure group
     def get_script
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/script', @api_version)
       @client.response_handler(response)
     end
 
-    # Change the script executed by enclosures in this enclosure group
-    # @param [String] body script to be executed
+    # Changes the script executed by the enclosures in this enclosure group
+    # @param [String] body The script to be executed
     # @return true if set successfully
     def set_script(body)
       ensure_client && ensure_uri
@@ -44,7 +44,7 @@ module OneviewSDK
       true
     end
 
-    # Add logical interconnect group
+    # Adds the logical interconnect group
     # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
     def add_logical_interconnect_group(lig)
       lig.retrieve! unless lig['uri']
@@ -55,7 +55,7 @@ module OneviewSDK
       end
     end
 
-    # Create interconnect bay mapping
+    # Creates the interconnect bay mapping
     def create_interconnect_bay_mapping
       @data['interconnectBayMappings'] = []
       1.upto(@data['interconnectBayMappingCount']) do |bay_number|

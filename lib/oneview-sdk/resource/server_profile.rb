@@ -56,7 +56,7 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Retrieve the error or status messages associated with the specified profile.
+    # Retrieves the error or status messages associated with the specified profile.
     # @return [Hash] Hash containing the required information
     def get_messages
       ensure_client & ensure_uri
@@ -82,7 +82,7 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Update the server profile from the server profile template.
+    # Updates the server profile from the server profile template.
     def update_from_template
       ensure_client & ensure_uri
       patch_operation = { 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant' }
@@ -96,7 +96,7 @@ module OneviewSDK
 
     # @!group Helpers
 
-    # Get attached ServerHardware for the profile
+    # Gets attached ServerHardware for the profile
     # @return [OneviewSDK::ServerHardware] if hardware is attached
     # @return [nil] if no hardware is attached
     def get_server_hardware
@@ -106,7 +106,7 @@ module OneviewSDK
       sh
     end
 
-    # Get all the available Ethernet and FC Networks, and Network Sets
+    # Gets all the available Ethernet and FC Networks, and Network Sets
     # @return [Hash]
     #   A hash containing the lists of Ethernet Networks and FC Networks
     def get_available_networks
@@ -114,7 +114,7 @@ module OneviewSDK
       self.class.get_available_networks(@client, query)
     end
 
-    # Get available server hardware
+    # Gets available server hardware
     # @return [Array<OneviewSDK::ServerHardware>] Array of ServerHardware resources that matches this
     #   profile's server hardware type and enclosure group and who's state is 'NoProfileApplied'
     def get_available_hardware
@@ -131,7 +131,7 @@ module OneviewSDK
       raise IncompleteResource, "Failed to get available hardware. Message: #{e.message}"
     end
 
-    # Add connection entry to Server profile template
+    # Adds a connection entry to Server profile template
     # @param [OneviewSDK::EthernetNetwork,OneviewSDK::FCNetwork] network Network associated with the connection
     # @param [Hash<String,String>] connection_options Hash containing the configuration of the connection
     # @option connection_options [Integer] 'allocatedMbps' The transmit throughput (mbps) currently allocated to
@@ -166,7 +166,7 @@ module OneviewSDK
       self['connections'] << connection_options
     end
 
-    # Remove connection entry in Server profile template
+    # Removes a connection entry in Server profile template
     # @param [String] connection_name Name of the connection
     # @return Returns the connection hash if found, otherwise returns nil
     def remove_connection(connection_name)
@@ -246,7 +246,7 @@ module OneviewSDK
       self['sanStorage']['volumeAttachments'] << attachment_options
     end
 
-    # Remove volume attachment entry in the Server profile
+    # Removes a volume attachment entry in the Server profile
     # @param [Fixnum] id ID number of the attachment entry
     # @return Returns the volume hash if found, otherwise returns nil
     def remove_volume_attachment(id)
@@ -261,7 +261,7 @@ module OneviewSDK
       volume_attachment
     end
 
-    # Sets the Firmware Driver for the current Server Profile
+    # Sets the Firmware Driver for the server profile
     # @param [OneviewSDK::FirmwareDriver] firmware Firmware Driver to be associated with the resource
     # @param [Hash<String,Object>] firmware_options Firmware Driver options
     # @option firmware_options [Boolean] 'manageFirmware' Indicates that the server firmware is configured using the server profile.
@@ -279,8 +279,8 @@ module OneviewSDK
 
     # @!endgroup
 
-    # Get all the available Ethernet and FC Networks, and Network Sets
-    # @param [OneviewSDK::Client] client Appliance client
+    # Gets all the available ethernet and fc networks, and network sets
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [String] 'function_type' The FunctionType (Ethernet or FibreChannel) to filter the list of networks returned
@@ -300,8 +300,8 @@ module OneviewSDK
       body.select { |k, _v| %w(ethernetNetworks networkSets fcNetworks).include?(k) }
     end
 
-    # Get Available Servers based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # Gets the available servers based on the query parameters
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerProfile] 'server_profile' The server profile associated with the resource
@@ -317,8 +317,8 @@ module OneviewSDK
       client.response_handler(response)
     end
 
-    # Get Available Storage System based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # Gets the available storage systems based on the query parameters
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
@@ -335,10 +335,10 @@ module OneviewSDK
       client.response_handler(response)
     end
 
-    # Get Available Storage Systems based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # Gets the available storage systems based on the query parameters
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
-    # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
+    # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' The enclosure group associated with the resource
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
     # @option query [Array<String>] 'filter' A general filter/query string to narrow the list of items returned.
     #   The default is no filter - all resources are returned.
@@ -353,8 +353,8 @@ module OneviewSDK
       client.response_handler(response)
     end
 
-    # Get Available Targets based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # Get the available targets based on the query parameters
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerProfile] 'server_profile' The server profile associated with the resource
@@ -365,8 +365,8 @@ module OneviewSDK
       client.response_handler(response)
     end
 
-    # Get all the available Ethernet and FC Networks
-    # @param [OneviewSDK::Client] client Appliance client
+    # Gets all the available ethernet and fc networks
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerHardware] 'server_hardware' The server hardware associated with the resource

@@ -17,7 +17,7 @@ module OneviewSDK
     attr_accessor :logical_switch_credentials
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -69,11 +69,11 @@ module OneviewSDK
       end
     end
 
-    # Set switch credentials
+    # Sets switch credentials
     # @param [String] host IP address or host name
     # @param [CredentialsSSH] ssh_credentials SSH credentials
     # @param [CredentialsSNMP] snmp_credentials SNMP credentials
-    # @return [Array] Array containing SSH and SNMP credentials
+    # @return [Array] An Array containing the SSH and SNMP credentials
     def set_switch_credentials(host, ssh_credentials, snmp_credentials)
       fail TypeError, 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSSH>' if ssh_credentials.class != OneviewSDK::LogicalSwitch::CredentialsSSH
       fail TypeError, 'Use struct<OneviewSDK::LogicalSwitch::CredentialsSNMP>' unless snmp_credentials.respond_to?('version')
@@ -86,7 +86,7 @@ module OneviewSDK
     # @!endgroup
 
 
-    # Set logical switch group
+    # Sets the logical switch group
     # @param [OneviewSDK::logicalSwitchGroup] logical_switch_group Logical switch group
     def set_logical_switch_group(logical_switch_group)
       @data['logicalSwitchGroupUri'] = logical_switch_group['uri']
@@ -94,7 +94,7 @@ module OneviewSDK
 
     private
 
-    # Generate logical switch credentials for POST and PUT requests
+    # Generates the logical switch credentials for POST and PUT requests
     # @return [Array] List of connection properties for each logical switch
     def generate_logical_switch_credentials
       credentials = []
@@ -144,7 +144,7 @@ module OneviewSDK
       credentials
     end
 
-    # Generate logical switch credential configuration for POST and PUT requests
+    # Generates the logical switch credential configuration for POST and PUT requests
     # @return [Array] List of logical switch credential configuration for each switch
     def generate_logical_switch_credential_configuration
       configuration = []
@@ -180,6 +180,5 @@ module OneviewSDK
       end
       configuration
     end
-
   end
 end
