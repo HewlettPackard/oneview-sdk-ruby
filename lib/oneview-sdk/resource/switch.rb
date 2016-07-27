@@ -43,7 +43,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Retrieve switch types
+    # Retrieves the switch types
     # @param [Client] client http client
     # @return [Array] All the Switch types
     def self.get_types(client)
@@ -52,8 +52,8 @@ module OneviewSDK
       response['members']
     end
 
-    # Retrieve switch type with name
-    # @param [Client] client http client
+    # Retrieves the switch type with the name
+    # @param [Client] client The http client
     # @param [String] name Switch type name
     # @return [Array] Switch type
     def self.get_type(client, name)

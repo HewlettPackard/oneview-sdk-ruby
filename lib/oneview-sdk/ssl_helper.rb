@@ -14,7 +14,7 @@ require 'net/http'
 require 'openssl'
 
 module OneviewSDK
-  # SSL Certificate helper
+  # SSL certificate helper
   module SSLHelper
     CERT_STORE = File.join(Dir.home, '/.oneview-sdk-ruby/trusted_certs.cer')
 
@@ -36,8 +36,8 @@ module OneviewSDK
       nil
     end
 
-    # Check to see if a OneView instance's certificate is trusted
-    # @param [String] url URL of the OneView Instance to be added
+    # Check to see if the OneView instance's certificate is trusted
+    # @param [String] url URL for the OneView Instance to be added
     # @return [Boolean] Whether or not certificate is trusted
     # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.check_cert(url)
@@ -53,9 +53,9 @@ module OneviewSDK
       false
     end
 
-    # Fetch and add the ssl certificate of a OneView instance to the trusted certs store.
+    # Fetch and add the SSL certificate for the OneView instance to the trusted certs store.
     #   Creates/modifies file at ~/.oneview-sdk-ruby/trusted_certs.cer
-    # @param [String] url URL of the OneView Instance to be added
+    # @param [String] url URL for the OneView Instance to be added
     # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.install_cert(url)
       uri = URI.parse(URI.escape(url))

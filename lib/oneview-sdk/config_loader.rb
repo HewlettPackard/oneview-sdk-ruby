@@ -13,7 +13,7 @@ require 'yaml'
 require 'json'
 
 module OneviewSDK
-  # Configuration helper class to allow .yaml & .json files to be easily used to specify OneView Configuration
+  # Configuration helper class to allow .yaml and .json files to be easily used to specify OneView Configuration
   class Config
 
     # Load config from .yaml or .json file

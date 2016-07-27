@@ -10,7 +10,7 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Logical enclosure group resource implementation
+  # Logical interconnect group resource implementation
   class LogicalInterconnectGroup < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
 
@@ -37,7 +37,7 @@ module OneviewSDK
       parse_interconnect_map_template if @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] == []
     end
 
-    # Add an interconnect
+    # Adds an interconnect
     # @param [Fixnum] bay Bay number
     # @param [String] type Interconnect type
     # @raise [StandardError] if a invalid type is given then raises an error
@@ -54,20 +54,22 @@ module OneviewSDK
       raise "Interconnect type #{type} not found! Supported types: #{list}"
     end
 
-    # Add an uplink set
+    # Adds an uplink set
     # @param [OneviewSDK::LIGUplinkSet] uplink_set
     def add_uplink_set(uplink_set)
       @data['uplinkSets'] << uplink_set.data
     end
 
-    # Get the default settings
+    # Get the logical interconnect group default settings
+    # @return [Hash] The logical interconnect group settings
     def get_default_settings
       get_uri = self.class::BASE_URI + '/defaultSettings'
       response = @client.rest_get(get_uri, @api_version)
       @client.response_handler(response)
     end
 
-    # Get settings
+    # Gets the logical interconnect group settings
+    # @return [Hash] The logical interconnect group settings
     def get_settings
       get_uri = @data['uri'] + '/settings'
       response = @client.rest_get(get_uri, @api_version)

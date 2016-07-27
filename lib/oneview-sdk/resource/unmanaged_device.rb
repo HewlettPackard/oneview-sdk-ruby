@@ -37,7 +37,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Get a list of unmanaged devices
+    # Gets a list of unmanaged devices
     # @param [OneviewSDK::Client] client HPE OneView client
     # @return [Array] list of unmanaged devices
     def self.get_devices(client)

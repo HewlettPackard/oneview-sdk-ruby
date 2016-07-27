@@ -41,7 +41,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Retrieve interconnect types
+    # Retrieves interconnect types
     # @param [Client] client http client
     def self.get_types(client)
       response = client.rest_get(TYPE_URI)
@@ -49,7 +49,7 @@ module OneviewSDK
       response['members']
     end
 
-    # Retrieve interconnect ype with name
+    # Retrieves the interconnect type with name
     # @param [Client] client http client
     # @param [String] name Interconnect type name
     # @return [Array] Interconnect type
@@ -58,7 +58,7 @@ module OneviewSDK
       results.find { |interconnect_type| interconnect_type['name'] == name }
     end
 
-    # Retrieve named servers for this interconnect
+    # Retrieves the named servers for this interconnect
     def name_servers
       response = @client.rest_get(@data['uri'] + '/nameServers')
       response.body
@@ -89,13 +89,13 @@ module OneviewSDK
       response.body
     end
 
-    # Triggers a reset of port protection
+    # Triggers the reset port protection action
     def reset_port_protection
       response = @client.rest_put(@data['uri'] + '/resetportprotection')
       @client.response_handler(response)
     end
 
-    # Update specific attributes of a given interconnect resource
+    # Updates specific attributes for a given interconnect resource
     # @param [String] operation operation to be performed
     # @param [String] path path
     # @param [String] value value

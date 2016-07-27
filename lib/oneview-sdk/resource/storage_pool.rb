@@ -53,7 +53,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Set storage system
+    # Sets the storage system
     # @param [OneviewSDK::StorageSystem] storage_system
     def set_storage_system(storage_system)
       fail IncompleteResource, 'Please set the storage system\'s uri attribute!' unless storage_system['uri']

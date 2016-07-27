@@ -10,7 +10,7 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Storage Volume Attachment resource implementation
+  # Storage volume attachment resource implementation
   class VolumeAttachment < Resource
     BASE_URI = '/rest/storage-volume-attachments'.freeze
 
@@ -42,7 +42,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Get the list of extra unmanaged storage volumes
+    # Gets the list of extra unmanaged storage volumes
     # @param [OneviewSDK::Client] client Oneview client
     def self.get_extra_unmanaged_volumes(client)
       response = client.rest_get(BASE_URI + '/repair?alertFixType=ExtraUnmanagedStorageVolumes')
@@ -62,7 +62,7 @@ module OneviewSDK
     end
 
     # Gets all volume attachment paths
-    # @return [Array] List of StorageVolumeAttachmentPath
+    # @return [Array] List of the storage volume attachments paths
     def get_paths
       response = @client.rest_get(@data['uri'] + '/paths')
       @client.response_handler(response)

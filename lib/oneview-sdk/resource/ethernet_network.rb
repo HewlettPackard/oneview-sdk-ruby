@@ -25,7 +25,7 @@ module OneviewSDK
       @data['type'] ||= 'ethernet-networkV3'
     end
 
-    # Bulk create ethernet networks
+    # Bulk create the ethernet networks
     # @param [Client] client client to connect with OneView
     # @param [Hash] options information necessary to create networks
     # @return [Array] list of ethernet networks created
@@ -39,19 +39,18 @@ module OneviewSDK
       OneviewSDK::EthernetNetwork.get_all(client).select { |network| network_names.include?(network['name']) }
     end
 
-    # Get associatedProfiles
+    # Gets the associated profiles
     def get_associated_profiles
       ensure_client && ensure_uri
       response = @client.rest_get("#{@data['uri']}/associatedProfiles", @api_version)
       response.body
     end
 
-    # Get associatedUplinkGroups
+    # Gets the associated uplink groups
     def get_associated_uplink_groups
       ensure_client && ensure_uri
       response = @client.rest_get("#{@data['uri']}/associatedUplinkGroups", @api_version)
       response.body
     end
-
   end
 end

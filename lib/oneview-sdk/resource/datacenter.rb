@@ -47,7 +47,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Adds existing rack to datacenter
+    # Adds an existing rack to the datacenter
     # @param [OneviewSDK::Rack] rack rack
     # @param [Decimal] pos_x x position
     # @param [Decimal] pos_y y position
@@ -67,7 +67,7 @@ module OneviewSDK
       @data['contents'].reject! { |resource| resource['resourceUri'] == rack['uri'] }
     end
 
-    # Get a list of visual content objects
+    # Gets a list of the visual content objects
     # @return [Hash]
     def get_visual_content
       response = @client.rest_get(@data['uri'] + '/visualContent')

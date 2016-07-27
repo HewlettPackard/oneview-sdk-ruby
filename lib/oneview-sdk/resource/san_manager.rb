@@ -10,7 +10,7 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # SAN Manager resource implementation
+  # SAN manager resource implementation
   class SANManager < Resource
     BASE_URI = '/rest/fc-sans/device-managers'.freeze
     PROVIDERS_URI = '/rest/fc-sans/providers'.freeze
@@ -29,7 +29,7 @@ module OneviewSDK
       @data['type'] = 'FCDeviceManagerV2'
     end
 
-    # Add the resource on OneView using the current data
+    # Adds the resource on OneView using the current data
     # @return [OneviewSDK::SANManager] self
     def add
       ensure_client
@@ -53,19 +53,19 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Refresh state or change connection info
+    # Refreshes the san manager state or change connection information
     # @param [Hash] options
     def update(options)
       ensure_client && ensure_uri
       response = @client.rest_put(@data['uri'], 'body' => options)
       new_data = @client.response_handler(response)
       set_all(new_data)
-    end
+    ends
 
-    # Retrieve default connection info for a specific provider
+    # Retrieves the default connection information for a specific provider
     # @param [OneviewSDK::Client] client HPE OneView client
     # @param [String] provider_name Providers name
-    # @return [Hash] hash with default connectionInfo information
+    # @return [Hash] A hash with default connectionInfo information
     def self.get_default_connection_info(client, provider_name)
       response = client.rest_get(PROVIDERS_URI)
       providers = client.response_handler(response)['members']
@@ -75,7 +75,7 @@ module OneviewSDK
 
     private
 
-    # Get provider uri
+    # Gets the provider uri
     # @return [String] provider uri
     def get_provider_uri
       return @data['providerUri'] if @data['providerUri']

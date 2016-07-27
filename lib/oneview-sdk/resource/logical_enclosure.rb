@@ -24,7 +24,7 @@ module OneviewSDK
       @data['type'] ||= 'LogicalEnclosure'
     end
 
-    # Reapplies the appliance's configuration on enclosures
+    # Reapplies the appliance's configuration on the enclosures
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [OneviewSDK::IncompleteResource] if the uri is not set
     # @raise [StandardError] if the reapply fails

@@ -15,7 +15,7 @@ module OneviewSDK
     BASE_URI = '/rest/logical-interconnects'.freeze
     LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 
-    # Create an Interconnect in the desired Bay in a specified enclosure
+    # Creates an Interconnect in the desired bay in a specified enclosure
     # WARN: It does not create the LOGICAL INTERCONNECT itself.
     # It will fail if no interconnect is already present on the specified position
     # @param [Fixnum] bay_number Number of the bay to put the interconnect
@@ -33,8 +33,8 @@ module OneviewSDK
     end
 
     # Deletes an INTERCONNECT
-    # WARN: This won't delete the LOGICAL INTERCONNECT itself, and may cause inconsistency between the enclosure and LIG
-    # @param [Fixnum] bay_number Number of the bay to locate the logical interconnect
+    # WARN: This will not delete the LOGICAL INTERCONNECT itself, and may cause inconsistency between the enclosure and LIG
+    # @param [Fixnum] bay_number The bay number to locate the logical interconnect
     # @param [OneviewSDK::Enclosure] enclosure Enclosure to remove the logical interconnect
     # @return [OneviewSDK::LogicalInterconnect] self
     def delete(bay_number, enclosure)
@@ -79,7 +79,7 @@ module OneviewSDK
       internal_networks
     end
 
-    # Updates ethernet settings of the Logical Interconnect
+    # Updates ethernet settings of the logical interconnect
     # @note The attribute is defined inside the instance of the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_ethernet_settings
@@ -94,7 +94,7 @@ module OneviewSDK
       set_all(body)
     end
 
-    # Updates settings of the Logical Interconnect
+    # Updates settings of the logical interconnect
     # @param options Options to update the Logical Interconnect
     # @return Updated instance of the Logical Interconnect
     def update_settings(options = {})
@@ -190,7 +190,7 @@ module OneviewSDK
     # It will add one trap destination to the Logical Interconnect SNMP configuration
     # @param trap_format [String] SNMP version for this trap destination, `'SNMPv1'` or `'SNMPv2'` or `'SNMPv3'`
     # @param trap_destination [String] The trap destination IP address or host name
-    # @param community_string [String] Authentication string for the trap destination
+    # @param community_string [String] The Authentication string for the trap destination
     # @param trap_options [Hash] Hash with the options of the trap. Create it using generate_trap_options method
     def add_snmp_trap_destination(trap_destination, trap_format = 'SNMPv1', community_string = 'public', trap_options = {})
       trap_options['communityString'] = community_string

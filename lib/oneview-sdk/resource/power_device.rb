@@ -49,10 +49,10 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Add HP iPDU and bring all components under management by discovery of its management modules
+    # Adds HP iPDU and bring all components under management by discovery of its management modules
     # @param [OneviewSDK::Client] client HPE OneView client
-    # @param [Hash] options options for HP iPDU
-    # @return [OneviewSDK::PowerDevice] iPDU power device created in OneView
+    # @param [Hash] options options for the iPDU
+    # @return [OneviewSDK::PowerDevice] The iPDU power device created in OneView
     def self.discover(client, options)
       options['force'] ||= options[:force] || false
       response = client.rest_post(BASE_URI + '/discover', 'body' => options)
@@ -60,9 +60,9 @@ module OneviewSDK
       new(client, power_device_info)
     end
 
-    # Retrieve list of power devices given an iPDU hostname
+    # Retrieves the list of power devices given an iPDU hostname
     # @param [OneviewSDK::Client] client HPE OneView client
-    # @param [String] hostname iPDU hostname
+    # @param [String] hostname The iPDU hostname
     # @return [Array] array of OneviewSDK::PowerDevice
     def self.get_ipdu_devices(client, hostname)
       find_by(client, managedBy: { hostName: hostname })
@@ -75,7 +75,7 @@ module OneviewSDK
       response.body
     end
 
-    # Add power connection
+    # Adds a power connection
     # @param [OneviewSDK::Resource] resource
     # @param [Integer] connection connection number
     def add_connection(resource, connection)
@@ -86,7 +86,7 @@ module OneviewSDK
       }
     end
 
-    # Remove power connection
+    # Removes the power connection
     # @param [OneviewSDK::Resource] resource
     # @param [Integer] connection connection number
     def remove_connection(resource, connection)
@@ -158,7 +158,7 @@ module OneviewSDK
 
     private
 
-    # Convert Date, Time, or String objects to iso8601 string
+    # Converts Date, Time, or String objects to iso8601 string
     def convert_time(t)
       case t
       when nil then nil

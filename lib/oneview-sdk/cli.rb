@@ -15,7 +15,7 @@ require 'yaml'
 require 'highline/import'
 
 module OneviewSDK
-  # cli for oneview-sdk
+  # cli for OneView-SDK
   class Cli < Thor
     # Runner class to enable testing
     class Runner

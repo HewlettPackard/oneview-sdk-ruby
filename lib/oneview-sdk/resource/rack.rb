@@ -47,7 +47,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Add rack resource with specified options
+    # Adds the rack resource with specified options
     # @param [OneviewSDK::Resource] resource Resource to be added
     # @param [String] options rack options
     def add_rack_resource(resource, options = {})
@@ -67,13 +67,13 @@ module OneviewSDK
       end
     end
 
-    # Remove resource from rack
+    # Remove resources from the rack
     # @param [OneviewSDK::Resource] resource Resource to be removed from rack
     def remove_rack_resource(resource)
       @data['rackMounts'].reject! { |rack_resource| rack_resource['mountUri'] == resource['uri'] }
     end
 
-    # Get topology information for the rack
+    # Gets topology information for the rack
     # @return [Hash] Environmental analysis
     def get_device_topology
       response = @client.rest_get(@data['uri'] + '/deviceTopology')
