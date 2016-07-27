@@ -60,7 +60,7 @@ module OneviewSDK
       response = @client.rest_put(@data['uri'], 'body' => options)
       new_data = @client.response_handler(response)
       set_all(new_data)
-    ends
+    end
 
     # Retrieves the default connection information for a specific provider
     # @param [OneviewSDK::Client] client HPE OneView client
