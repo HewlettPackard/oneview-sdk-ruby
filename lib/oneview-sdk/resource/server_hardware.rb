@@ -64,7 +64,7 @@ module OneviewSDK
     end
 
     # Power on the server hardware
-    # @param [Boolean] force Uses 'PressAndHold' action?
+    # @param [Boolean] force Use 'PressAndHold' action?
     # @return [Boolean] Returns whether or not the server was powered on
     def power_on(force = false)
       set_power_state('on', force)

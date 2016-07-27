@@ -165,7 +165,7 @@ module OneviewSDK
       @client.response_handler(response)
     end
 
-    # Associates a enclosure group to the enclosure
+    # Associates an enclosure group to the enclosure
     # @param [OneviewSDK<Resource>] eg Enclosure Group associated
     def set_enclosure_group(eg)
       eg.retrieve! unless eg['uri']
