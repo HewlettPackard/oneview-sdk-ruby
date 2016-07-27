@@ -20,7 +20,7 @@ module OneviewSDK
     alias remove delete
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -63,7 +63,7 @@ module OneviewSDK
     end
 
     # Retrieves the default connection information for a specific provider
-    # @param [OneviewSDK::Client] client HPE OneView client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] provider_name Providers name
     # @return [Hash] A hash with default connectionInfo information
     def self.get_default_connection_info(client, provider_name)

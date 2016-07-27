@@ -15,7 +15,7 @@ module OneviewSDK
     BASE_URI = '/rest/storage-volume-templates'.freeze
 
     # Create the client object, establishes connection, and set up the logging and api version.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     # Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.

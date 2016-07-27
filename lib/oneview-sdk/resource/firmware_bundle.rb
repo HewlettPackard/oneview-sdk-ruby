@@ -16,7 +16,7 @@ module OneviewSDK
     BOUNDARY = '----011000010111000001101001'.freeze
 
     # Uploads a firmware bundle file
-    # @param [OneviewSDK::Client] client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] file_path
     # @return [OneviewSDK::FirmwareDriver] if the upload was sucessful, return a FirmwareDriver object
     def self.add(client, file_path)

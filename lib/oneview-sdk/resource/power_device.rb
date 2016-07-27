@@ -26,7 +26,7 @@ module OneviewSDK
     alias remove delete
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
@@ -50,7 +50,7 @@ module OneviewSDK
     end
 
     # Adds an iPDU and bring all components under management by discovery of its management modules
-    # @param [OneviewSDK::Client] client HPE OneView client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] options options for the iPDU
     # @return [OneviewSDK::PowerDevice] The iPDU power device created in OneView
     def self.discover(client, options)
@@ -61,7 +61,7 @@ module OneviewSDK
     end
 
     # Retrieves the list of power devices given an iPDU hostname
-    # @param [OneviewSDK::Client] client HPE OneView client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] hostname The iPDU hostname
     # @return [Array] array of OneviewSDK::PowerDevice
     def self.get_ipdu_devices(client, hostname)

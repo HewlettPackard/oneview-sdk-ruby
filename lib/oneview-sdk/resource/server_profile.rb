@@ -280,7 +280,7 @@ module OneviewSDK
     # @!endgroup
 
     # Gets all the available ethernet and fc networks, and network sets
-    # @param [OneviewSDK::Client] client Appliance client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [String] 'function_type' The FunctionType (Ethernet or FibreChannel) to filter the list of networks returned
@@ -301,7 +301,7 @@ module OneviewSDK
     end
 
     # Gets the available servers based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerProfile] 'server_profile' The server profile associated with the resource
@@ -318,7 +318,7 @@ module OneviewSDK
     end
 
     # Gets the available storage systems based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
@@ -336,7 +336,7 @@ module OneviewSDK
     end
 
     # Gets the available storage systems based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' The enclosure group associated with the resource
     # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
@@ -354,7 +354,7 @@ module OneviewSDK
     end
 
     # Get the available targets based on the query parameters
-    # @param [OneviewSDK::Client] client Appliance client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerProfile] 'server_profile' The server profile associated with the resource
@@ -366,7 +366,7 @@ module OneviewSDK
     end
 
     # Gets all the available ethernet and fc networks
-    # @param [OneviewSDK::Client] client Appliance client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash<String,Object>] query Query parameters
     # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
     # @option query [OneviewSDK::ServerHardware] 'server_hardware' The server hardware associated with the resource

@@ -145,7 +145,7 @@ module OneviewSDK
     end
 
     # Gets all the attachable volumes managed by the appliance
-    # @param [Client] client The client object for the appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [Array<OneviewSDK::Volume>] Array of volumes
     def self.get_attachable_volumes(client)
       results = []
@@ -162,7 +162,7 @@ module OneviewSDK
     end
 
     # Gets the list of extra managed storage volume paths
-    # @param [OneviewSDK::Client] client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return response
     def self.get_extra_managed_volume_paths(client)
       response = client.rest_get(BASE_URI + '/repair?alertFixType=ExtraManagedStorageVolumePaths')

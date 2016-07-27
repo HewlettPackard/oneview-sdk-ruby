@@ -24,7 +24,7 @@ module OneviewSDK
       :logger
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
@@ -219,7 +219,7 @@ module OneviewSDK
     end
 
     # Get resource schema
-    # @param [Client] client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [Hash] Schema
     def self.schema(client)
       response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
@@ -230,7 +230,7 @@ module OneviewSDK
     end
 
     # Load resource from a .json or .yaml file
-    # @param [Client] client The client object to associate this resource with
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] file_path The full path to the file
     # @return [Resource] New resource created from the file contents
     def self.from_file(client, file_path)
@@ -239,7 +239,7 @@ module OneviewSDK
     end
 
     # Make a GET request to the resource uri, and returns an array with results matching the search
-    # @param [Client] client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] attributes Hash containing the attributes name and value
     # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search

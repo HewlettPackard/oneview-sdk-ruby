@@ -33,7 +33,7 @@ module OneviewSDK
     end
 
     # Gets a list of logical downlinks, excluding any existing ethernet network
-    # @param [OneviewSDK::Client] client HPE OneView client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [Array<OneviewSDK::LogicalDownlink] Logical downlink array
     def self.get_without_ethernet(client)
       result = []
