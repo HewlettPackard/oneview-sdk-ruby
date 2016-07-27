@@ -1,4 +1,4 @@
-# Oneview-SDK for Ruby
+# oneview-sdk for Ruby
 [![Gem Version](https://badge.fury.io/rb/oneview-sdk.svg)](https://badge.fury.io/rb/oneview-sdk)
 
 

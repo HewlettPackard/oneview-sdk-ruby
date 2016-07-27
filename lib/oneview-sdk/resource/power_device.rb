@@ -49,7 +49,7 @@ module OneviewSDK
       unavailable_method
     end
 
-    # Adds HP iPDU and bring all components under management by discovery of its management modules
+    # Adds an iPDU and bring all components under management by discovery of its management modules
     # @param [OneviewSDK::Client] client HPE OneView client
     # @param [Hash] options options for the iPDU
     # @return [OneviewSDK::PowerDevice] The iPDU power device created in OneView

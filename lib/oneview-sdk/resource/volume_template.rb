@@ -72,7 +72,7 @@ module OneviewSDK
       @data['provisioning']['storagePoolUri'] = storage_pool['uri']
     end
 
-    # Set the storage system
+    # Sets the storage system
     # @param [OneviewSDK::StorageSystem] storage_system Storage System to be used to create the template
     def set_storage_system(storage_system)
       storage_system.retrieve! unless storage_system['uri']

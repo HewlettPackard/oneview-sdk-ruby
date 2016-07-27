@@ -10,7 +10,7 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Uplink sets  resource implementation to be used in logical interconnect groups
+  # Uplink sets resource implementation to be used in logical interconnect groups
   class LIGUplinkSet < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
 
