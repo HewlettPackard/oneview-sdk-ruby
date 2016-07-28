@@ -25,13 +25,12 @@ RSpec.describe OneviewSDK::ServerProfile, integration: true, type: UPDATE do
 
   describe '#self.get_available_servers' do
     it 'retrieves available servers without errors' do
-      expect { OneviewSDK::ServerProfile.get_available_servers($client) }.to raise_error
+      expect { OneviewSDK::ServerProfile.get_available_servers($client) }.to_not raise_error
     end
   end
 
   describe '#self.get_available_storage_system' do
-    it 'is expected to FAIL: Bug in OneView/Documentation'
-    it 'retrieves available storage system without errors' do
+    it 'retrieves available storage system without errors. FAIL: Bug in OneView/Documentation' do
       query_options = {
         'enclosure_group' => @enclosure_group,
         'server_hardware_type' => @server_hardware_type,
@@ -80,23 +79,21 @@ RSpec.describe OneviewSDK::ServerProfile, integration: true, type: UPDATE do
   end
 
   describe '#get_compliance_preview' do
-    it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
-    # it 'shows compliance preview' do
-    #   expect { @item3.get_compliance_preview }.to_not raise_error
-    # end
+    it 'shows compliance preview' do
+      expect { @item3.get_compliance_preview }.to_not raise_error
+    end
   end
 
   describe '#update_from_template' do
-    it 'is pending: It is needed to associate the Server Profile with a Server Profile Template before trying this operation'
-    # it 'makes the Server Profile compliant with the template' do
-    #   expect { @item3.update_from_template }.to_not raise_error
-    # end
+    it 'makes the Server Profile compliant with the template' do
+      expect { @item3.update_from_template }.to_not raise_error
+    end
   end
 
-  describe '#available_networks' do
+  describe '#get_available_networks' do
     it 'Gets available networks' do
       item = OneviewSDK::ServerProfile.find_by($client, name: SERVER_PROFILE_NAME).first
-      expect { item.available_networks }.not_to raise_error
+      expect { item.get_available_networks }.not_to raise_error
     end
   end
 
