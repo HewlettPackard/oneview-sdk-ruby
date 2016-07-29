@@ -17,7 +17,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe 'Remove FC Networks' do
     it 'Remove' do
-      managed_sans = OneviewSDK::ManagedSAN.find_by($client, deviceManagerName:$secrets['san_manager_ip']).each do |san|
+      OneviewSDK::ManagedSAN.find_by($client, deviceManagerName: $secrets['san_manager_ip']).each do |san|
         fc = OneviewSDK::FCNetwork.new($client, name: "FC_#{san['name']}")
         fc.retrieve!
         fc.delete

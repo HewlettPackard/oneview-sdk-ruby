@@ -4,18 +4,17 @@ klass = OneviewSDK::ManagedSAN
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
-  let(:fc_options) {
+  let(:fc_options) do
     {
       connectionTemplateUri: nil,
       autoLoginRedistribution: true,
       fabricType: 'FabricAttach'
     }
-  }
+  end
 
   describe 'Import SANs' do
     it 'create fc networks' do
-      puts @san_manager_ip
-      managed_sans = OneviewSDK::ManagedSAN.find_by($client, deviceManagerName: $secrets['san_manager_ip']).each do |san|
+      OneviewSDK::ManagedSAN.find_by($client, deviceManagerName: $secrets['san_manager_ip']).each do |san|
         options = fc_options
         options[:name] = "FC_#{san['name']}"
         options[:managedSanUri] = san['uri']

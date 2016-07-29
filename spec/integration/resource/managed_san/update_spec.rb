@@ -15,12 +15,12 @@ RSpec.describe OneviewSDK::ManagedSAN, integration: true, type: UPDATE do
   include_context 'integration context'
 
   before :each do
-    @item = OneviewSDK::ManagedSAN.find_by($client,  state: 'Managed').first
+    @item = OneviewSDK::ManagedSAN.find_by($client, state: 'Managed').first
   end
 
   describe 'Check if SANs were imported' do
     it 'check if SAN was imported' do
-      managed_sans = OneviewSDK::ManagedSAN.find_by($client, deviceManagerName: $secrets['san_manager_ip']).each do |san|
+      OneviewSDK::ManagedSAN.find_by($client, deviceManagerName: $secrets['san_manager_ip']).each do |san|
         expect(san['state']).to eq('Managed')
       end
     end
