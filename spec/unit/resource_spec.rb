@@ -5,8 +5,8 @@ RSpec.describe OneviewSDK::Resource do
 
   describe '#initialize' do
     it 'requires a valid client to be passed' do
-      expect { OneviewSDK::Resource.new(nil) }.to raise_error(/Must specify a valid client/)
-      expect { OneviewSDK::Resource.new('client') }.to raise_error(/Must specify a valid client/)
+      expect { OneviewSDK::Resource.new(nil) }.to raise_error(OneviewSDK::InvalidClient, /Must specify a valid client/)
+      expect { OneviewSDK::Resource.new('client') }.to raise_error(OneviewSDK::InvalidClient, /Must specify a valid client/)
     end
 
     it 'uses the client\'s logger' do
@@ -26,7 +26,7 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     it 'can\'t use an api version greater than the client\'s max' do
-      expect { OneviewSDK::Resource.new(@client, {}, 300) }.to raise_error(/is greater than the client's max/)
+      expect { OneviewSDK::Resource.new(@client, {}, 300) }.to raise_error(OneviewSDK::UnsupportedVersion, /is greater than the client's max/)
     end
 
     it 'starts with an empty data hash' do
@@ -44,7 +44,7 @@ RSpec.describe OneviewSDK::Resource do
   describe '#retrieve!' do
     it 'requires the name attribute to be set' do
       res = OneviewSDK::Resource.new(@client)
-      expect { res.retrieve! }.to raise_error(/Must set resource name/)
+      expect { res.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name/)
     end
 
     it 'sets the data if the resource is found' do
@@ -67,7 +67,7 @@ RSpec.describe OneviewSDK::Resource do
   describe '#exists?' do
     it 'requires the name attribute to be set' do
       res = OneviewSDK::Resource.new(@client)
-      expect { res.exists? }.to raise_error(/Must set resource name or uri/)
+      expect { res.exists? }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri/)
     end
 
     it 'uses the uri attribute when the name is not set' do
@@ -171,7 +171,7 @@ RSpec.describe OneviewSDK::Resource do
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client)
       res.client = nil
-      expect { res.create }.to raise_error(/Please set client attribute/)
+      expect { res.create }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'sets the data from the response' do
@@ -186,7 +186,7 @@ RSpec.describe OneviewSDK::Resource do
       res = OneviewSDK::Resource.new(@client, name: 'Name')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
       allow(@client).to receive(:rest_post).and_return(fake_response)
-      expect { res.create }.to raise_error(/400 BAD REQUEST {"message":"Invalid"}/)
+      expect { res.create }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
     end
   end
 
@@ -214,12 +214,12 @@ RSpec.describe OneviewSDK::Resource do
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client)
       res.client = nil
-      expect { res.refresh }.to raise_error(/Please set client attribute/)
+      expect { res.refresh }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'requires the uri to be set' do
       res = OneviewSDK::Resource.new(@client)
-      expect { res.refresh }.to raise_error(/Please set uri attribute/)
+      expect { res.refresh }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
     it 'sets the data from the server\'s response' do
@@ -236,12 +236,12 @@ RSpec.describe OneviewSDK::Resource do
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client)
       res.client = nil
-      expect { res.update }.to raise_error(/Please set client attribute/)
+      expect { res.update }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'requires the uri to be set' do
       res = OneviewSDK::Resource.new(@client)
-      expect { res.update }.to raise_error(/Please set uri attribute/)
+      expect { res.update }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
     it 'uses the rest_put method to update the data' do
@@ -256,7 +256,7 @@ RSpec.describe OneviewSDK::Resource do
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
       expect(@client).to receive(:rest_put).with(
         res['uri'], { 'body' => res.data }, res.api_version).and_return(fake_response)
-      expect { res.update }.to raise_error(/400 BAD REQUEST {"message":"Invalid"}/)
+      expect { res.update }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
     end
   end
 
@@ -264,12 +264,12 @@ RSpec.describe OneviewSDK::Resource do
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client)
       res.client = nil
-      expect { res.delete }.to raise_error(/Please set client attribute/)
+      expect { res.delete }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'requires the uri to be set' do
       res = OneviewSDK::Resource.new(@client)
-      expect { res.delete }.to raise_error(/Please set uri attribute/)
+      expect { res.delete }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
     it 'returns true if the delete was successful' do
@@ -284,7 +284,7 @@ RSpec.describe OneviewSDK::Resource do
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
       expect(@client).to receive(:rest_delete).with(
         res['uri'], {}, res.api_version).and_return(fake_response)
-      expect { res.delete }.to raise_error(/400 BAD REQUEST {"message":"Invalid"}/)
+      expect { res.delete }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
     end
   end
 
@@ -312,7 +312,7 @@ RSpec.describe OneviewSDK::Resource do
 
     it 'fails when an invalid format is specified' do
       path = 'res.txt'
-      expect { @res.to_file(path, 'txt') }.to raise_error(/Invalid format/)
+      expect { @res.to_file(path, 'txt') }.to raise_error(OneviewSDK::InvalidFormat, /Invalid format/)
     end
   end
 
@@ -331,9 +331,10 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     it 'displays a nice error if the schema endpoint returns a 404 response' do
-      allow(@client).to receive(:rest_get).and_raise('ERROR: 404 NOT FOUND /schema')
+      fake_response = FakeResponse.new({ message: 'Not Found' }, 404)
+      allow(@client).to receive(:rest_get).and_return(fake_response)
       expect(@client.logger).to receive(:error).with(/does not implement the schema endpoint/)
-      expect { OneviewSDK::Resource.schema(@client) }.to raise_error(/404 NOT FOUND/)
+      expect { OneviewSDK::Resource.schema(@client) }.to raise_error(OneviewSDK::NotFound, /404 NOT FOUND/)
     end
   end
 
@@ -366,6 +367,27 @@ RSpec.describe OneviewSDK::Resource do
     it 'calls find_by with an empty attributes hash' do
       expect(OneviewSDK::Resource).to receive(:find_by).with(@client, {})
       OneviewSDK::Resource.get_all(@client)
+    end
+  end
+
+  describe '#build_query' do
+    it 'builds basic query' do
+      expect(OneviewSDK::Resource.build_query('test' => 'TEST')).to eq('?test=TEST')
+    end
+
+    it 'builds resource query' do
+      fake_resource = OneviewSDK::Resource.new(@client, 'uri' => 'URI')
+      expect(OneviewSDK::Resource.build_query('this_resource' => fake_resource)).to eq('?thisResourceUri=URI')
+    end
+
+    it 'builds composed query' do
+      fake_resource = OneviewSDK::Resource.new(@client, 'uri' => 'URI')
+      expect(OneviewSDK::Resource.build_query('test' => 'TEST', 'this_resource' => fake_resource)).to eq('?test=TEST&thisResourceUri=URI')
+    end
+
+    it 'returns empty String for invalid values' do
+      expect(OneviewSDK::Resource.build_query('')).to eq('')
+      expect(OneviewSDK::Resource.build_query(nil)).to eq('')
     end
   end
 end

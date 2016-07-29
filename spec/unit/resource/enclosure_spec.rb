@@ -13,7 +13,7 @@ RSpec.describe OneviewSDK::Enclosure do
     end
   end
 
-  describe '#create' do
+  describe '#add' do
     context 'with valid data' do
       before :each do
         allow_any_instance_of(OneviewSDK::Enclosure).to receive(:update).and_return(true)
@@ -34,17 +34,17 @@ RSpec.describe OneviewSDK::Enclosure do
 
       it 'only sends certain attributes on the POST' do
         expect(@client).to receive(:rest_post).with('/rest/enclosures', { 'body' => @data.select { |k, _v| k != 'name' } }, anything)
-        @enclosure.create
+        @enclosure.add
       end
 
       it 'sets the enclosure name correctly' do
-        @enclosure.create
+        @enclosure.add
         expect(@enclosure[:name]).to eq('Fake-Enclosure')
       end
 
       it 'uses the given name if one is not specified' do
         @enclosure.data.delete('name')
-        @enclosure.create
+        @enclosure.add
         expect(@enclosure[:name]).to eq('Encl1')
       end
     end
@@ -52,7 +52,7 @@ RSpec.describe OneviewSDK::Enclosure do
     context 'with invalid data' do
       it 'fails when certain attributes are not set' do
         enclosure = OneviewSDK::Enclosure.new(@client, {})
-        expect { enclosure.create }.to raise_error(/Missing required attribute/)
+        expect { enclosure.add }.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute/)
       end
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe OneviewSDK::Enclosure do
     end
 
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).update }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).update }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does not send a PATCH request if the name and rackName are the same' do
@@ -91,9 +91,17 @@ RSpec.describe OneviewSDK::Enclosure do
     end
   end
 
+  describe '#remove' do
+    it 'removes enclosure' do
+      item = OneviewSDK::Enclosure.new(@client, name: 'E1', rackName: 'R1', uri: '/rest/enclosures/encl1')
+      expect(@client).to receive(:rest_delete).with('/rest/enclosures/encl1', {}, 200).and_return(FakeResponse.new({}))
+      item.remove
+    end
+  end
+
   describe '#configuration' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).configuration }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to /uri/configuration and updates the attributes' do
@@ -106,18 +114,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#set_refresh_state' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).set_refresh_state(:state) }.to raise_error(/Please set uri/)
-    end
-
-    it 'only permits certain states' do
-      allow(@client).to receive(:rest_put).and_return(FakeResponse.new)
-
-      OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
-        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(i) }.to_not raise_error
-      end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state('state') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').set_refresh_state(nil) }.to raise_error(/Invalid refreshState/)
+      expect { OneviewSDK::Enclosure.new(@client).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to /refreshState' do
@@ -139,7 +136,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#script' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).script }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).script }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/script' do
@@ -152,7 +149,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).environmental_configuration }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).environmental_configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/environmentalConfiguration' do
@@ -164,7 +161,7 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).utilization }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do
@@ -198,34 +195,15 @@ RSpec.describe OneviewSDK::Enclosure do
 
   describe '#updateAttribute' do
     it 'requires a uri' do
-      expect { OneviewSDK::Enclosure.new(@client).update_attribute(:op, :path, :val) }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::Enclosure.new(@client).patch(:op, :path, :val) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PATCH to the enclusre uri' do
       item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
       data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
       expect(@client).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
-      expect(item.update_attribute('operation', '/path', 'val')).to eq('key' => 'Val')
-    end
-  end
-
-
-  describe 'validations' do
-    it 'only allows certain licensingIntent values' do
-      OneviewSDK::Enclosure::VALID_LICENSING_INTENTS.each do |intent|
-        expect { OneviewSDK::Enclosure.new(@client, licensingIntent: intent) }.to_not raise_error
-      end
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: '') }.to raise_error(/Invalid licensingIntent/)
-      expect { OneviewSDK::Enclosure.new(@client, licensingIntent: 'invalid') }.to raise_error(/Invalid licensingIntent/)
-    end
-
-    it 'only allows certain refreshState values' do
-      OneviewSDK::Enclosure::VALID_REFRESH_STATES.each do |i|
-        expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(i) }.to_not raise_error
-      end
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState('state') }.to raise_error(/Invalid refreshState/)
-      expect { OneviewSDK::Enclosure.new(@client, uri: '/rest/fake').validate_refreshState(nil) }.to raise_error(/Invalid refreshState/)
+      expect(item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
     end
   end
 
@@ -257,11 +235,23 @@ RSpec.describe OneviewSDK::Enclosure do
     end
 
     it 'does not accepts other types' do
-      expect { @item.send(:convert_time, []) }.to raise_error(/Invalid time format/)
+      expect { @item.send(:convert_time, []) }.to raise_error(OneviewSDK::InvalidResource, /Invalid time format/)
     end
 
     it 'raises an error for invalid strings' do
-      expect { @item.send(:convert_time, 'badtime') }.to raise_error(/Failed to parse time/)
+      expect { @item.send(:convert_time, 'badtime') }.to raise_error(OneviewSDK::InvalidResource, /Failed to parse time/)
+    end
+  end
+
+  describe 'undefined methods' do
+    it 'does not allow the create action' do
+      enclosure = OneviewSDK::Enclosure.new(@client)
+      expect { enclosure.create }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create is unavailable for this resource/)
+    end
+
+    it 'does not allow the delete action' do
+      enclosure = OneviewSDK::Enclosure.new(@client)
+      expect { enclosure.delete }.to raise_error(OneviewSDK::MethodUnavailable, /The method #delete is unavailable for this resource/)
     end
   end
 end

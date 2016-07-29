@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CREATE, sequence: 2 do
+klass = OneviewSDK::LogicalInterconnectGroup
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   before :all do
@@ -25,15 +26,22 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CR
     }
     @item_3 = OneviewSDK::LogicalInterconnectGroup.new($client, lig_default_options_3)
 
-    uplink_options = {
+    eth_uplink_options = {
       name: LIG_UPLINK_SET_NAME,
       networkType: 'Ethernet',
       ethernetNetworkType: 'Tagged'
     }
-    @lig_uplink_set = OneviewSDK::LIGUplinkSet.new($client, uplink_options)
-
+    @eth_lig_uplink_set = OneviewSDK::LIGUplinkSet.new($client, eth_uplink_options)
     @ethernet_network = OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME)
     @ethernet_network.retrieve!
+
+    fc_uplink_options = {
+      name: LIG_UPLINK_SET2_NAME,
+      networkType: 'FibreChannel'
+    }
+    @fc_lig_uplink_set = OneviewSDK::LIGUplinkSet.new($client, fc_uplink_options)
+    @fc_network = OneviewSDK::FCNetwork.new($client, name: FC_NET_NAME)
+    @fc_network.retrieve!
   end
 
   let(:interconnect_type) { 'HP VC FlexFabric 10Gb/24-Port Module' }
@@ -49,12 +57,19 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: CR
       expect { @item.add_interconnect(1, 'invalid_type') }.to raise_error(/Interconnect type invalid_type/)
     end
 
-    it 'LIG with interconnect and uplink set' do
-      @lig_uplink_set.add_network(@ethernet_network)
-      @lig_uplink_set.add_uplink(1, 'X1')
-      @lig_uplink_set.add_uplink(1, 'X2')
+    it 'LIG with interconnect and uplink sets' do
       @item.add_interconnect(1, interconnect_type)
-      @item.add_uplink_set(@lig_uplink_set)
+
+      @eth_lig_uplink_set.add_network(@ethernet_network)
+      @eth_lig_uplink_set.add_uplink(1, 'X1')
+      @eth_lig_uplink_set.add_uplink(1, 'X2')
+      @item.add_uplink_set(@eth_lig_uplink_set)
+
+      @fc_lig_uplink_set.add_network(@fc_network)
+      @fc_lig_uplink_set.add_uplink(1, 'X3')
+      @fc_lig_uplink_set.add_uplink(1, 'X4')
+      @item.add_uplink_set(@fc_lig_uplink_set)
+
       expect { @item.create }.not_to raise_error
       expect(@item['uri']).to be
       expect(@item['uplinkSets']).to_not be_empty

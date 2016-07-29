@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::EthernetNetwork, integration: true, type: DELETE, sequence: 12 do
+klass = OneviewSDK::EthernetNetwork
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
   describe '#delete' do

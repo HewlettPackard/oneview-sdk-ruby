@@ -1,9 +1,25 @@
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
 module OneviewSDK
-  # Logical enclosure group resource implementation
+  # Logical interconnect group resource implementation
   class LogicalInterconnectGroup < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
+
     attr_reader :bay_count
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
@@ -21,9 +37,10 @@ module OneviewSDK
       parse_interconnect_map_template if @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] == []
     end
 
-    # Add an interconnect
+    # Adds an interconnect
     # @param [Fixnum] bay Bay number
     # @param [String] type Interconnect type
+    # @raise [StandardError] if a invalid type is given then raises an error
     def add_interconnect(bay, type)
       @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
         entry['logicalLocation']['locationEntries'].each do |location|
@@ -37,20 +54,22 @@ module OneviewSDK
       raise "Interconnect type #{type} not found! Supported types: #{list}"
     end
 
-    # Add an uplink set
+    # Adds an uplink set
     # @param [OneviewSDK::LIGUplinkSet] uplink_set
     def add_uplink_set(uplink_set)
       @data['uplinkSets'] << uplink_set.data
     end
 
-    # Get the default settings
+    # Get the logical interconnect group default settings
+    # @return [Hash] The logical interconnect group settings
     def get_default_settings
       get_uri = self.class::BASE_URI + '/defaultSettings'
       response = @client.rest_get(get_uri, @api_version)
       @client.response_handler(response)
     end
 
-    # Get settings
+    # Gets the logical interconnect group settings
+    # @return [Hash] The logical interconnect group settings
     def get_settings
       get_uri = @data['uri'] + '/settings'
       response = @client.rest_get(get_uri, @api_version)
@@ -58,6 +77,7 @@ module OneviewSDK
     end
 
     # Saves the current data attributes to the Logical Interconnect Group
+    # @param [Hash] attributes attributes to be updated
     # @return Updated instance of the Logical Interconnect Group
     def update(attributes = {})
       set_all(attributes)
@@ -72,6 +92,7 @@ module OneviewSDK
 
     private
 
+    # Parse interconnect map template structure
     def parse_interconnect_map_template
       1.upto(@bay_count) do |bay_number|
         entry = {
@@ -87,6 +108,5 @@ module OneviewSDK
         @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry
       end
     end
-
   end
 end

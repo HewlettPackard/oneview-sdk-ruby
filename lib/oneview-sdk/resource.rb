@@ -1,3 +1,14 @@
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
 require_relative 'client'
 
 # OneviewSDK Resources
@@ -13,27 +24,28 @@ module OneviewSDK
       :logger
 
     # Create a resource object, associate it with a client, and set its properties.
-    # @param [Client] client The Client object with a connection to the OneView appliance
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
-    #   Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.
+    #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
-      fail 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
+      fail InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
       if @api_version > @client.max_api_version
-        fail "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
+        fail UnsupportedVersion,
+             "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
       end
       @data ||= {}
       set_all(params)
     end
 
     # Retrieve resource details based on this resource's name or URI.
-    # @note Name or URI must be specified inside resource
+    # @note Name or URI must be specified inside the resource
     # @return [Boolean] Whether or not retrieve was successful
     def retrieve!
-      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
       results = self.class.find_by(@client, name: @data['name']) if @data['name']
       results = self.class.find_by(@client, uri:  @data['uri'])  if @data['uri'] && (!results || results.empty?)
       return false unless results.size == 1
@@ -45,14 +57,14 @@ module OneviewSDK
     # @note name or uri must be specified inside resource
     # @return [Boolean] Whether or not resource exists
     def exists?
-      fail 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+      fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
       return true if @data['name'] && self.class.find_by(@client, name: @data['name']).size == 1
       return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri']).size == 1
       false
     end
 
     # Set the given hash of key-value pairs as resource data attributes
-    # @param [Hash, Resource] params The options for this resource (key-value pairs or Resource object)
+    # @param [Hash, Resource] params The options for this resource (key-value pairs or resource object)
     # @note All top-level keys will be converted to strings
     # @return [Resource] self
     def set_all(params = {})
@@ -105,15 +117,15 @@ module OneviewSDK
     end
 
     # Check equality of 2 resources. Same as ==(other)
-    # @param [Resource] other The other resource to check equality for
+    # @param [Resource] other The other resource to check for equality
     # @return [Boolean] Whether or not the two objects are equal
     def eql?(other)
       self == other
     end
 
-    # Check equality of data on other resource with that of this resource.
-    # @note Doesn't check the client, logger, or api_version if another Resource is passed in
-    # @param [Hash, Resource] other Resource or hash to compare key-value pairs with
+    # Check the equality of the data for the other resource with this resource.
+    # @note Does not check the client, logger, or api_version if another resource is passed in
+    # @param [Hash, Resource] other resource or hash to compare the key-value pairs with
     # @example Compare to hash
     #   myResource = OneviewSDK::Resource.new(client, { name: 'res1', description: 'example'}, 200)
     #   myResource.like?(description: '') # returns false
@@ -125,8 +137,8 @@ module OneviewSDK
 
     # Create the resource on OneView using the current data
     # @note Calls the refresh method to set additional data
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the resource creation fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
     def create
       ensure_client
@@ -138,8 +150,8 @@ module OneviewSDK
 
     # Delete the resource from OneView if it exists, then create it using the current data
     # @note Calls refresh method to set additional data
-    # @raise [RuntimeError] if the client is not set
-    # @raise [RuntimeError] if the resource creation fails
+    # @raise [OneviewSDK::IncompleteResource] if the client is not set
+    # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
     def create!
       temp = self.class.new(@client, @data)
@@ -160,8 +172,8 @@ module OneviewSDK
 
     # Set data and save to OneView
     # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
-    # @raise [RuntimeError] if the client or uri is not set
-    # @raise [RuntimeError] if the resource save fails
+    # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
+    # @raise [StandardError] if the resource save fails
     # @return [Resource] self
     def update(attributes = {})
       set_all(attributes)
@@ -194,7 +206,7 @@ module OneviewSDK
       when :yml, :yaml
         File.open(file_path, 'w') { |f| f.write(temp_data.to_yaml) }
       else
-        fail "Invalid format: #{format}"
+        fail InvalidFormat, "Invalid format: #{format}"
       end
       true
     end
@@ -207,7 +219,7 @@ module OneviewSDK
     end
 
     # Get resource schema
-    # @param [Client] client
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [Hash] Schema
     def self.schema(client)
       response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
@@ -218,7 +230,7 @@ module OneviewSDK
     end
 
     # Load resource from a .json or .yaml file
-    # @param [Client] client The client object to associate this resource with
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] file_path The full path to the file
     # @return [Resource] New resource created from the file contents
     def self.from_file(client, file_path)
@@ -226,8 +238,8 @@ module OneviewSDK
       new(client, resource['data'], resource['api_version'])
     end
 
-    # Make a GET request to the resource uri and return an array with results matching the search
-    # @param [Client] client
+    # Make a GET request to the resource uri, and returns an array with results matching the search
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] attributes Hash containing the attributes name and value
     # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
@@ -242,35 +254,61 @@ module OneviewSDK
           temp = new(client, member)
           results.push(temp) if temp.like?(attributes)
         end
-        break unless body['nextPageUri']
+        break unless body['nextPageUri'] && (body['nextPageUri'] != body['uri'])
         uri = body['nextPageUri']
       end
       results
     end
 
-    # Make a GET request to the resource base uri and return an array with all objects of this type
+    # Make a GET request to the resource base uri, and returns an array with all objects of this type
     # @return [Array<Resource>] Results
     def self.get_all(client)
       find_by(client, {})
+    end
+
+    # Builds a Query string corresponding to the parameters passed
+    # @param [Hash{String=>String,OneviewSDK::Resource}] query_options Query parameters and values
+    #   to be applied to the query url.
+    #   All key values should be Strings in snake case, the values could be Strings or Resources.
+    # @option query_options [String] String Values that are Strings can be associated as usual
+    # @option query_options [String] Resources Values that are Resources can be associated as usual,
+    #   with keys representing only the resource names (like 'ethernet_network'). This method
+    #   translates the SDK and Ruby standards to OneView request standard.
+    def self.build_query(query_options)
+      return '' if !query_options || query_options.empty?
+      query_path = '?'
+      query_options.each do |k, v|
+        words = k.to_s.split('_')
+        words.map!(&:capitalize!)
+        words[0] = words.first.downcase
+        new_key = words.join
+        v.retrieve! if v.respond_to?(:retrieve!) && !v['uri']
+        if v.class <= OneviewSDK::Resource
+          new_key = new_key.concat('Uri')
+          v = v['uri']
+        end
+        query_path.concat("&#{new_key}=#{v}")
+      end
+      query_path.sub('?&', '?')
     end
 
     protected
 
     # Fail unless @client is set for this resource.
     def ensure_client
-      fail 'Please set client attribute before interacting with this resource' unless @client
+      fail IncompleteResource, 'Please set client attribute before interacting with this resource' unless @client
       true
     end
 
     # Fail unless @data['uri'] is set for this resource.
     def ensure_uri
-      fail 'Please set uri attribute before interacting with this resource' unless @data['uri']
+      fail IncompleteResource, 'Please set uri attribute before interacting with this resource' unless @data['uri']
       true
     end
 
     # Fail for methods that are not available for one resource
     def unavailable_method
-      fail "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
+      fail MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
     end
 
     private

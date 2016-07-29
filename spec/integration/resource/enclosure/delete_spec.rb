@@ -1,12 +1,13 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Enclosure, integration: true, type: DELETE, sequence: 9 do
+klass = OneviewSDK::Enclosure
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
-  describe '#delete' do
-    it 'deletes the resource' do
+  describe '#remove' do
+    it 'removes the resource' do
       item = OneviewSDK::Enclosure.find_by($client, 'name' => ENCL_NAME).first
-      item.delete
+      expect { item.remove }.not_to raise_error
     end
   end
 end

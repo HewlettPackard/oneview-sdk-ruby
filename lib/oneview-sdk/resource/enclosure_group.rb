@@ -1,8 +1,23 @@
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
 module OneviewSDK
   # Enclosure group resource implementation
   class EnclosureGroup < Resource
     BASE_URI = '/rest/enclosure-groups'.freeze
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
@@ -11,47 +26,16 @@ module OneviewSDK
       create_interconnect_bay_mapping unless @data['interconnectBayMappings']
     end
 
-    # @!group Validates
-
-    VALID_INTERCONNECT_BAY_MAPPING_COUNTS = (1..8).freeze
-    def validate_interconnectBayMappingCount(value)
-      fail 'Interconnect Bay Mapping Count out of range 1..8' unless VALID_INTERCONNECT_BAY_MAPPING_COUNTS.include?(value)
-    end
-
-    VALID_IP_ADDRESSING_MODES = %w(DHCP External IpPool).freeze
-    def validate_ipAddressingMode(value)
-      return if !@data['enclosureTypeUri'] || /c7000/ =~ @data['enclosureTypeUri']
-      is_not_a_c7000_without_ip_addressing_mode = !(/c7000/ =~ @data['enclosureTypeUri']) && !value
-      fail "Invalid ip AddressingMode: #{value}" if !VALID_IP_ADDRESSING_MODES.include?(value) || is_not_a_c7000_without_ip_addressing_mode
-    end
-
-    VALID_PORT_MAPPING_COUNTS = (0..8).freeze
-    def validate_portMappingCount(value)
-      fail 'Port Mapping Count out of range 0..8' unless VALID_PORT_MAPPING_COUNTS.include?(value)
-    end
-
-    VALID_POWER_MODES = ['RedundantPowerFeed', 'RedundantPowerSupply', nil].freeze
-    def validate_powerMode(value)
-      fail 'Invalid powerMode' unless VALID_POWER_MODES.include?(value)
-    end
-
-    VALID_STACKING_MODES = %w(Enclosure MultiEnclosure None SwitchPairs).freeze
-    def validate_stackingMode(value)
-      fail 'Invalid stackingMode' unless VALID_STACKING_MODES.include?(value)
-    end
-
-    # @!endgroup
-
     # Get the script executed by enclosures in this enclosure group
-    # @return [String] script for this enclosure group
+    # @return [String] The script for this enclosure group
     def get_script
       ensure_client && ensure_uri
       response = @client.rest_get(@data['uri'] + '/script', @api_version)
       @client.response_handler(response)
     end
 
-    # Change the script executed by enclosures in this enclosure group
-    # @param [String] body script to be executed
+    # Changes the script executed by the enclosures in this enclosure group
+    # @param [String] body The script to be executed
     # @return true if set successfully
     def set_script(body)
       ensure_client && ensure_uri
@@ -60,7 +44,7 @@ module OneviewSDK
       true
     end
 
-    # Add logical interconnect group
+    # Adds the logical interconnect group
     # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
     def add_logical_interconnect_group(lig)
       lig.retrieve! unless lig['uri']
@@ -71,7 +55,7 @@ module OneviewSDK
       end
     end
 
-    # Create interconnect bay mapping
+    # Creates the interconnect bay mapping
     def create_interconnect_bay_mapping
       @data['interconnectBayMappings'] = []
       1.upto(@data['interconnectBayMappingCount']) do |bay_number|

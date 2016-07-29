@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Enclosure, integration: true, type: CREATE, sequence: 4 do
+klass = OneviewSDK::Enclosure
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
   let(:enclosure_options) do
@@ -13,11 +14,11 @@ RSpec.describe OneviewSDK::Enclosure, integration: true, type: CREATE, sequence:
     }
   end
 
-  describe '#create' do
+  describe '#add' do
     it 'can add an enclosure' do
       item = OneviewSDK::Enclosure.new($client, enclosure_options)
       item.set_enclosure_group(OneviewSDK::EnclosureGroup.new($client, 'name' => ENC_GROUP2_NAME))
-      item.create
+      item.add
       expect(item['uri']).not_to be_empty
     end
   end

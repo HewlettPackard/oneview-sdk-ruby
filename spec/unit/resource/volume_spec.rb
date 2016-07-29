@@ -59,7 +59,7 @@ RSpec.describe OneviewSDK::Volume do
     describe '#set_storage_pool' do
       it 'sets the storagePoolUri' do
         @item.set_storage_pool(OneviewSDK::StoragePool.new(@client, uri: '/rest/fake'))
-        expect(@item['storagePoolUri']).to eq('/rest/fake')
+        expect(@item['provisioningParameters']['storagePoolUri']).to eq('/rest/fake')
       end
     end
 
@@ -120,12 +120,4 @@ RSpec.describe OneviewSDK::Volume do
       end
     end
   end
-
-  describe '#validate' do
-    it 'validates provisionType' do
-      vol = OneviewSDK::Volume.new(@client, {})
-      expect { vol['provisionType'] = 'N/A' }.to raise_error(/Invalid provision type/)
-    end
-  end
-
 end

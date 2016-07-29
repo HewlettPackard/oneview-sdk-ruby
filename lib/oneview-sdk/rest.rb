@@ -1,12 +1,23 @@
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
 require 'uri'
 require 'net/http'
 require 'openssl'
 require 'json'
 
 module OneviewSDK
-  # Contains all the methods for making API REST calls
+  # Contains all of the methods for making API REST calls
   module Rest
-    # Make a restful API request to OneView
+    # Makes a restful API request to OneView
     # @param [Symbol] type The rest method/type Options: [:get, :post, :delete, :patch, :put]
     # @param [String] path The path for the request. Usually starts with "/rest/"
     # @param [Hash] options The options for the request
@@ -14,11 +25,12 @@ module OneviewSDK
     # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
     # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
     # @option options [Integer] :auth (client.token) Authentication token to use for this request
-    # @raise [RuntimeError] if SSL validation of OneView instance's certificate failed
+    # @param [Integer] api_ver The api version to use when interracting with this resource
+    # @raise [OpenSSL::SSL::SSLError] if SSL validation of OneView instance's certificate failed
     # @return [NetHTTPResponse] Response object
     def rest_api(type, path, options = {}, api_ver = @api_version)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
-      fail 'Must specify path' unless path
+      fail InvalidRequest, 'Must specify path' unless path
 
       uri = URI.parse(URI.escape(@url + path))
       http = Net::HTTP.new(uri.host, uri.port)
@@ -27,6 +39,8 @@ module OneviewSDK
         http.cert_store = @cert_store if @cert_store
       else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
+      http.read_timeout = @timeout if @timeout # Timeout for a request
+      http.open_timeout = @timeout if @timeout # Timeout for a connection
 
       request = build_request(type, uri, options, api_ver)
       response = http.request(request)
@@ -42,32 +56,62 @@ module OneviewSDK
       raise e
     end
 
-    # Make a restful GET request to OneView
-    # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
+    # Makes a restful GET request to OneView
+    # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Integer] api_ver The api version to use when interracting with this resource
+    # @return [NetHTTPResponse] Response object
     def rest_get(path, api_ver = @api_version)
       rest_api(:get, path, {}, api_ver)
     end
 
-    # Make a restful POST request to OneView
-    # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
+    # Makes a restful POST request to OneView
+    # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Hash] options The options for the request
+    # @option options [String] :body Hash to be converted into json and set as the request body
+    # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
+    # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
+    # @option options [Integer] :auth (client.token) Authentication token to use for this request
+    # @param [Integer] api_ver The api version to use when interracting with this resource
+    # @return [NetHTTPResponse] Response object
     def rest_post(path, options = {}, api_ver = @api_version)
       rest_api(:post, path, options, api_ver)
     end
 
-    # Make a restful PUT request to OneView
-    # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
+    # Makes a restful PUT request to OneView
+    # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Hash] options The options for the request
+    # @option options [String] :body Hash to be converted into json and set as the request body
+    # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
+    # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
+    # @option options [Integer] :auth (client.token) Authentication token to use for this request
+    # @param [Integer] api_ver The api version to use when interracting with this resource
+    # @return [NetHTTPResponse] Response object
     def rest_put(path, options = {}, api_ver = @api_version)
       rest_api(:put, path, options, api_ver)
     end
 
-    # Make a restful PATCH request to OneView
-    # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
+    # Makes a restful PATCH request to OneView
+    # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Hash] options The options for the request
+    # @option options [String] :body Hash to be converted into json and set as the request body
+    # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
+    # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
+    # @option options [Integer] :auth (client.token) Authentication token to use for this request
+    # @param [Integer] api_ver The api version to use when interracting with this resource
+    # @return [NetHTTPResponse] Response object
     def rest_patch(path, options = {}, api_ver = @api_version)
       rest_api(:patch, path, options, api_ver)
     end
 
-    # Make a restful DELETE request to OneView
-    # Parameters & return value align with those of the {OneviewSDK::Rest::rest_api} method above
+    # Makes a restful DELETE request to OneView
+    # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Hash] options The options for the request
+    # @option options [String] :body Hash to be converted into json and set as the request body
+    # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
+    # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
+    # @option options [Integer] :auth (client.token) Authentication token to use for this request
+    # @param [Integer] api_ver The api version to use when interracting with this resource
+    # @return [NetHTTPResponse] Response object
     def rest_delete(path, options = {}, api_ver = @api_version)
       rest_api(:delete, path, options, api_ver)
     end
@@ -80,12 +124,12 @@ module OneviewSDK
     RESPONSE_CODE_UNAUTHORIZED = 401
     RESPONSE_CODE_NOT_FOUND    = 404
 
-    # Handle the response from a rest call.
+    # Handles the response from a rest call.
     #   If an asynchronous task was started, this waits for it to complete.
     # @param [HTTPResponse] response HTTP response
     # @param [Boolean] wait_on_task Wait on task (or just return task details)
-    # @raise [RuntimeError] if the request failed
-    # @raise [RuntimeError] if a task was returned that did not complete successfully
+    # @raise [StandardError] if the request failed
+    # @raise [StandardError] if a task was returned that did not complete successfully
     # @return [Hash] The parsed JSON body
     def response_handler(response, wait_on_task = true)
       case response.code.to_i
@@ -101,27 +145,28 @@ module OneviewSDK
       when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete
         return JSON.parse(response.body) unless wait_on_task
         @logger.debug "Waiting for task: response.header['location']"
-        task = wait_for(response.header['location'])
+        uri = response.header['location'] || JSON.parse(response.body)['uri'] # If task uri is not returned in header
+        task = wait_for(uri)
         return true unless task['associatedResource'] && task['associatedResource']['resourceUri']
         resource_data = rest_get(task['associatedResource']['resourceUri'])
         return JSON.parse(resource_data.body)
       when RESPONSE_CODE_NO_CONTENT # Synchronous delete
         return {}
       when RESPONSE_CODE_BAD_REQUEST
-        fail "400 BAD REQUEST #{response.body}"
+        fail BadRequest, "400 BAD REQUEST #{response.body}"
       when RESPONSE_CODE_UNAUTHORIZED
-        fail "401 UNAUTHORIZED #{response.body}"
+        fail Unauthorized, "401 UNAUTHORIZED #{response.body}"
       when RESPONSE_CODE_NOT_FOUND
-        fail "404 NOT FOUND #{response.body}"
+        fail NotFound, "404 NOT FOUND #{response.body}"
       else
-        fail "#{response.code} #{response.body}"
+        fail RequestError, "#{response.code} #{response.body}"
       end
     end
 
 
     private
 
-    # Build a request object using the data given
+    # Builds a request object using the data given
     def build_request(type, uri, options, api_ver)
       case type.downcase.to_sym
       when :get
@@ -135,7 +180,7 @@ module OneviewSDK
       when :delete
         request = Net::HTTP::Delete.new(uri.request_uri)
       else
-        fail "Invalid rest call: #{type}"
+        fail InvalidRequest, "Invalid rest call: #{type}"
       end
 
       options['X-API-Version'] ||= api_ver

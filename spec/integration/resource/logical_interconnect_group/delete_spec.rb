@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: DELETE, sequence: 11 do
+klass = OneviewSDK::LogicalInterconnectGroup
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration context'
 
   before :all do

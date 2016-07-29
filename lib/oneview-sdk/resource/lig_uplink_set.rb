@@ -1,8 +1,23 @@
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
 module OneviewSDK
-  # Uplink Sets  resource implementation to be used in Logical interconnect groups
+  # Uplink sets resource implementation to be used in logical interconnect groups
   class LIGUplinkSet < Resource
     BASE_URI = '/rest/logical-interconnect-groups'.freeze
 
+    # Create a resource object, associate it with a client, and set its properties.
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interracting with this resource.
     def initialize(client, params = {}, api_ver = nil)
       super
       # Default values:
@@ -12,35 +27,15 @@ module OneviewSDK
       @data['networkUris'] ||= []
     end
 
-    # @!group Validates
-
-    VALID_NETWORK_TYPES = %w(FibreChannel Ethernet).freeze
-    # Validate ethernetNetworkType request
-    # @param [String] value FibreChannel, Ethernet
-    def validate_networkType(value)
-      fail 'Invalid network type' unless VALID_NETWORK_TYPES.include?(value)
-      fail 'Attribute missing' if value == 'Ethernet' && !@data['ethernetNetworkType']
-      fail 'Attribute not supported' if value == 'FibreChannel' && @data['ethernetNetworkType']
-    end
-
-    VALID_ETHERNET_NETWORK_TYPES = %w(NotApplicable Tagged Tunnel Unknown Untagged).freeze
-    # Validate ethernetNetworkType request
-    # @param [String] value Notapplicable, Tagged, Tunnel, Unknown, Untagged. Must exist if networkType is 'Ethernet', otherwise shouldn't.
-    def validate_ethernetNetworkType(value)
-      fail 'Invalid ethernetNetworkType' unless VALID_ETHERNET_NETWORK_TYPES.include?(value)
-    end
-
-    # @!endgroup
-
-    # Add existing network to the network list.
+    # Add an existing network to the network list.
     # Ethernet and FibreChannel networks are allowed.
-    # @param [OneviewSDK::Resource] network resource to be added to the list
+    # @param [OneviewSDK::Resource] network The resource to be added to the list
     def add_network(network)
-      fail 'Resource not retrieved from server' unless network['uri']
+      network.retrieve! unless network['uri']
       @data['networkUris'] << network['uri']
     end
 
-    # Specify one uplink passing the VC Bay and the port to be attached.
+    # Specify one uplink passing the virtual connect bay and the port to be attached.
     # @param [Fixnum] bay number to identify the VC
     # @param [String] port to attach the uplink. Allowed D1..D16 and X1..X10
     def add_uplink(bay, port)
@@ -57,7 +52,7 @@ module OneviewSDK
       @data['logicalPortConfigInfos'] << entry
     end
 
-    # Set all params
+    # Sets all params
     # @overload sets networkType first
     def set_all(params = {})
       params = params.data if params.class <= Resource
@@ -77,10 +72,9 @@ module OneviewSDK
       offset = case identifier
                when 'D' then 0
                when 'X' then 16
-               else fail "Port not supported: #{identifier} type not found"
+               else fail InvalidResource, "Port not supported: #{identifier} type not found"
                end
       port.to_i + offset
     end
-
   end
 end

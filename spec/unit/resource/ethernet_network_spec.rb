@@ -13,7 +13,8 @@ RSpec.describe OneviewSDK::EthernetNetwork do
 
   describe '#get_associated_profiles' do
     it 'requires a uri' do
-      expect { OneviewSDK::EthernetNetwork.new(@client).get_associated_profiles }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::EthernetNetwork.new(@client).get_associated_profiles }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'returns the response body from uri/associatedProfiles' do
@@ -26,7 +27,8 @@ RSpec.describe OneviewSDK::EthernetNetwork do
 
   describe '#get_associated_uplink_groups' do
     it 'requires a uri' do
-      expect { OneviewSDK::EthernetNetwork.new(@client).get_associated_uplink_groups }.to raise_error(/Please set uri/)
+      expect { OneviewSDK::EthernetNetwork.new(@client).get_associated_uplink_groups }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'returns the response body from uri/associatedUplinkGroups' do
@@ -53,22 +55,6 @@ RSpec.describe OneviewSDK::EthernetNetwork do
       expect_any_instance_of(OneviewSDK::Client).to receive(:wait_for).and_return({})
       list = OneviewSDK::EthernetNetwork.bulk_create(@client, options)
       expect(list.length).to eq(3)
-    end
-  end
-
-  describe 'validations' do
-    it 'validates ethernetNetworkType' do
-      OneviewSDK::EthernetNetwork::VALID_ETHERNET_NETWORK_TYPES.each do |i|
-        expect { OneviewSDK::EthernetNetwork.new(@client, ethernetNetworkType: i) }.to_not raise_error
-      end
-      expect { OneviewSDK::EthernetNetwork.new(@client, ethernetNetworkType: 'FakeType') }.to raise_error(/Invalid network type/)
-    end
-
-    it 'validates the purpose' do
-      OneviewSDK::EthernetNetwork::VALID_PURPOSES.each do |i|
-        expect { OneviewSDK::EthernetNetwork.new(@client, purpose: i) }.to_not raise_error
-      end
-      expect { OneviewSDK::EthernetNetwork.new(@client, purpose: 'Fake') }.to raise_error(/Invalid ethernet purpose/)
     end
   end
 end

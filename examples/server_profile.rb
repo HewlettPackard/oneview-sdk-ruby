@@ -1,32 +1,45 @@
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
+
 require_relative '_client' # Gives access to @client
 
 # Example: Create a server profile
 # NOTE: This will create a server profile named 'OneViewSDK Test ServerProfile', then delete it.
-# NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
-#   @server_hardware_type_uri
-#   @enclosure_group_uri
 
-fail 'Must set @server_hardware_type_uri in _client.rb' unless @server_hardware_type_uri
-fail 'Must set @enclosure_group_uri in _client.rb' unless @enclosure_group_uri
+profile = OneviewSDK::ServerProfile.new(@client, 'name' => 'OneViewSDK Test ServerProfile')
 
-options = {
-  name:  'OneViewSDK Test ServerProfile',
-  serverHardwareTypeUri: @server_hardware_type_uri,
-  enclosureGroupUri: @enclosure_group_uri
-}
+target = OneviewSDK::ServerProfile.get_available_targets(@client)['targets'].first
 
-profile = OneviewSDK::ServerProfile.new(@client, options)
+server_hardware = OneviewSDK::ServerHardware.new(@client, uri: target['serverHardwareUri'])
+server_hardware_type = OneviewSDK::ServerHardwareType.new(@client, uri: target['serverHardwareTypeUri'])
+enclosure_group = OneviewSDK::EnclosureGroup.new(@client, uri: target['enclosureGroupUri'])
+
+profile.set_server_hardware(server_hardware)
+profile.set_server_hardware_type(server_hardware_type)
+profile.set_enclosure_group(enclosure_group)
+
 profile.create
 puts "\nCreated server profile '#{profile[:name]}' sucessfully.\n  uri = '#{profile[:uri]}'"
 
 # Show available server hardware that matches this profile's requirements
 puts "\nAvailable server hardware for profile '#{profile[:name]}':"
-profile.available_hardware.each { |hw| puts "  - #{hw[:name]}" }
+profile.get_available_hardware.each { |hw| puts "  - #{hw[:name]}" }
 
 # Find recently created server profile by name
 matches = OneviewSDK::ServerProfile.find_by(@client, name: profile[:name])
 profile2 = matches.first
 puts "\nFound server profile by name: '#{profile[:name]}'.\n  uri = '#{profile2[:uri]}'"
+
+# Power-off attached server hardware
+profile2.get_server_hardware.power_off
 
 # Retrieve recently created server profile
 profile3 = OneviewSDK::ServerProfile.new(@client, name: profile[:name])
@@ -36,7 +49,6 @@ puts "\nRetrieved server profile data by name: '#{profile[:name]}'.\n  uri = '#{
 # Delete this profile
 profile.delete
 puts "\nSucessfully deleted profile '#{profile[:name]}'."
-
 
 # Example: List all server profiles with certain attributes
 attributes = { affinity: 'Bay' }
