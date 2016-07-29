@@ -26,7 +26,7 @@
    - Unmanaged devices
  3. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
 
-### Breaking Changes
+### Breaking changes
  1. Refactored some method names that may cause incompatibility with older SDK versions. Due to the nature of OneView, the `create` and `delete` methods did not fit the physical infrastructure elements like Enclosures, or Switches, so they now have `add` and `remove` methods that act the same as before, but now it leaves no margin to misunderstand that OneView could actually create these resources. They are:
    - Datacenters
    - Enclosure
@@ -35,7 +35,7 @@
    - Storage systems
    - Storage pools
    - Firmware drivers
-   - Firmware bundles
+   - Firmware bundles (Only `add`)
    - SAN managers
    - Server hardwares
    - Server hardware types
@@ -105,7 +105,7 @@
 - Server Profile Template (CRUD supported)
 - Server Hardware (CRUD Supported)
 
-### Known Issues
+### Known issues
 The integration tests may warn about 3 issues:
 
 1. OneviewSDK::LogicalInterconnect Firmware Updates perform the actions Stage
