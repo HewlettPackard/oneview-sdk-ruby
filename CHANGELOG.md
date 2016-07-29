@@ -35,11 +35,12 @@
    - Storage systems
    - Storage pools
    - Firmware drivers
+   - Firmware bundles
    - SAN managers
    - Server hardwares
    - Server hardware types
    - Switches
-   - Unamanaged devices
+   - Unmanaged devices
 
 ### Features supported
 - Ethernet network
