@@ -37,7 +37,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#self.get_default_connection_info' do
     it 'Retrieve connection info for provider' do
-      expect { OneviewSDK::SANManager.get_default_connection_info($client, SAN_PROVIDER1_NAME) }
+      expect { OneviewSDK::SANManager.get_default_connection_info($client, SAN_PROVIDER1_NAME) }.to_not raise_error
     end
   end
 end
