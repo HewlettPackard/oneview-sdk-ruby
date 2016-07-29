@@ -15,7 +15,15 @@ RSpec.describe OneviewSDK::ManagedSAN, integration: true, type: UPDATE do
   include_context 'integration context'
 
   before :each do
-    @item = OneviewSDK::ManagedSAN.find_by($client, {}).first
+    @item = OneviewSDK::ManagedSAN.find_by($client,  state: 'Managed').first
+  end
+
+  describe 'Check if SANs were imported' do
+    it 'check if SAN was imported' do
+      managed_sans = OneviewSDK::ManagedSAN.find_by($client, deviceManagerName: $secrets['san_manager_ip']).each do |san|
+        expect(san['state']).to eq('Managed')
+      end
+    end
   end
 
   describe '#get_endpoints' do
@@ -34,19 +42,16 @@ RSpec.describe OneviewSDK::ManagedSAN, integration: true, type: UPDATE do
     it 'Update public attributes' do
       attributes = [
         {
-          name: 'MetaSan',
-          value: 'Neon SAN',
-          valueType: 'String',
-          valueFormat: 'None'
+          'name' => 'MetaSan',
+          'value' => 'Neon SAN',
+          'valueType' => 'String',
+          'valueFormat' => 'None',
+          'displayName' => nil,
+          'required' => false
         }
       ]
       expect { @item.set_public_attributes(attributes) }.not_to raise_error
-      item_attributes = @item['publicAttributes']
-      attributes.each_with_index do |attr, index|
-        attr.each do |key, value|
-          expect(value).to eq(item_attributes[index][key.to_s])
-        end
-      end
+      expect(@item['publicAttributes']).to eq(attributes)
     end
   end
 
