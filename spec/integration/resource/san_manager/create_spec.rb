@@ -26,7 +26,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           'value' => $secrets['san_manager_password']
         },
         {
-          'name' => 'UseSl',
+          'name' => 'UseSsl',
           'value' => true
         }
       ]
