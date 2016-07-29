@@ -24,7 +24,10 @@
    - Racks
    - Server hardware types
    - Unmanaged devices
- 3. Refactored some method names that may cause incompatibility with older SDK versions. Due to the nature of OneView, the `create` and `delete` methods did not fit the physical infrastructure elements like Enclosures, or Switches, so they now have `add` and `remove` methods that act the same as before, but now it leaves no margin to misunderstand that OneView could actually create these resources. They are:
+ 3. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
+
+### Breaking Changes
+ 1. Refactored some method names that may cause incompatibility with older SDK versions. Due to the nature of OneView, the `create` and `delete` methods did not fit the physical infrastructure elements like Enclosures, or Switches, so they now have `add` and `remove` methods that act the same as before, but now it leaves no margin to misunderstand that OneView could actually create these resources. They are:
    - Datacenters
    - Enclosure
    - Power devices
@@ -37,9 +40,8 @@
    - Server hardware types
    - Switches
    - Unamanaged devices
- 4. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
 
-### Full features support list
+### Features supported
 - Ethernet network
 - FC network
 - FCOE network
@@ -74,7 +76,35 @@
 - Server hardware type
 - Unmanaged devices
 
-### Known Issues
+# v1.0.0
+### Notes
+ This is the first release of the OneView SDK in Ruby and it adds full support to some core features listed bellow, with some execptions that are explicit.
+ This version of this SDK supports OneView appliances version 2.00.00 or higher, using the OneView Rest API version 200.
+ For now it only supports C7000 enclosure types.
+
+
+### Features supported
+- Ethernet Network
+- FC Network
+- FCoE Network
+- Interconnect
+- Logical Interconnect
+- Logical Interconnect Group
+- Uplink Set
+- Enclosure
+- Logical Enclosure
+- Enclosure Group
+- Firmware Bundle
+- Firmware Driver
+- Storage System
+- Storage Pool
+- Volume
+- Volume Template
+- Server Profile (CRUD supported)
+- Server Profile Template (CRUD supported)
+- Server Hardware (CRUD Supported)
+
+### Know Issues
 The integration tests may warn about 3 issues:
 
 1. OneviewSDK::LogicalInterconnect Firmware Updates perform the actions Stage
