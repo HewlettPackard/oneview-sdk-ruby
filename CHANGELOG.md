@@ -1,4 +1,4 @@
-### v2.0.1
+### v2.1.0
  - Fixed issue with the :resource_named method for OneViewSDK::Resource in Ruby 2.3
 
 # v2.0.0
