@@ -46,6 +46,9 @@ Style/AccessorMethodName:
 Style/EmptyLines:
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Style/IndentArray:
   Enabled: false
 

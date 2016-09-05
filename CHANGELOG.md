@@ -1,3 +1,6 @@
+### v2.1.0
+ - Fixed issue with the :resource_named method for OneViewSDK::Resource in Ruby 2.3
+
 # v2.0.0
 ### Notes
  This is the second version of the Ruby SDK for HPE OneView. It was given support to the major features of OneView, refactor in some of the already existing code, and also a full set of exceptions to make some common exceptions more explicit in the debugging process.

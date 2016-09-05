@@ -336,11 +336,13 @@ module OneviewSDK
   def self.resource_named(type)
     classes = {}
     orig_classes = []
-    ObjectSpace.each_object(Class).select { |klass| klass < OneviewSDK::Resource }.each do |c|
-      name = c.name.split('::').last
+    OneviewSDK.constants.each do |c|
+      klass = OneviewSDK.const_get(c)
+      next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
+      name = klass.name.split('::').last
       orig_classes.push(name)
-      classes[name.downcase.delete('_').delete('-')] = c
-      classes["#{name.downcase.delete('_').delete('-')}s"] = c
+      classes[name.downcase.delete('_').delete('-')] = klass
+      classes["#{name.downcase.delete('_').delete('-')}s"] = klass
     end
     new_type = type.to_s.downcase.gsub(/[ -_]/, '')
     return classes[new_type] if classes.keys.include?(new_type)
