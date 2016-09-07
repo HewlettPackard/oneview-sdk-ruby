@@ -9,8 +9,8 @@ SimpleCov.profiles.define 'unit' do
   add_group 'Client', client_files
   add_group 'Resources', resource_path
   add_group 'CLI', 'cli.rb'
-  minimum_coverage 90 # TODO: bump up as we increase coverage. Goal: 95%
-  minimum_coverage_by_file 50 # TODO: bump up as we increase coverage. Goal: 70%
+  minimum_coverage 92 # TODO: bump up as we increase coverage. Goal: 95%
+  minimum_coverage_by_file 60 # TODO: bump up as we increase coverage. Goal: 70%
 end
 
 SimpleCov.profiles.define 'integration' do

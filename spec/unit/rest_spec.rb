@@ -155,7 +155,7 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'fails when an invalid request type is given' do
-      expect { @client.send(:build_request, :fake, @uri, {}, @client.api_version) }.to raise_error(OneviewSDK::InvalidRequest, /Invalid rest call/)
+      expect { @client.send(:build_request, :fake, @uri, {}, @client.api_version) }.to raise_error(OneviewSDK::InvalidRequest, /Invalid rest method/)
     end
 
     context 'default header values' do

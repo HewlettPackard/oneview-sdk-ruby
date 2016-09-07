@@ -13,12 +13,6 @@ RSpec.describe OneviewSDK::Cli do
         expect { OneviewSDK::Cli.start(['create_from_file']) }
           .to output(/was called with no arguments*\sUsage:/).to_stderr_from_any_process
       end
-
-      it 'does not allow both the if_missing and force options' do
-        expect(STDOUT).to receive(:puts).with(/flags at the same time/)
-        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file, '-f', '-i']) }
-          .to raise_error SystemExit
-      end
     end
 
     context 'with valid options' do
@@ -36,24 +30,13 @@ RSpec.describe OneviewSDK::Cli do
           .to output(/Created Successfully!/).to_stdout_from_any_process
       end
 
-      it 'respects the force option for overrides' do
-        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file, '-f']) }
-          .to output(/Updated Successfully!/).to_stdout_from_any_process
-      end
-
       it 'respects the if_missing option' do
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file, '-i']) }
           .to output(/Skipped/).to_stdout_from_any_process
       end
 
-      it 'fails if the resource already exists' do
-        expect(STDOUT).to receive(:puts).with(/already exists/)
-        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
-          .to raise_error SystemExit
-      end
-
       it 'fails if the file does not exist' do
-        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file + '.yml', '-f']) }
+        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file + '.yml']) }
           .to raise_error(/No such file or directory/)
       end
 
@@ -61,7 +44,7 @@ RSpec.describe OneviewSDK::Cli do
         resource = OneviewSDK::Resource.new(@client)
         allow(OneviewSDK::Resource).to receive(:from_file).and_return(resource)
         expect(STDOUT).to receive(:puts).with(/must specify a resource name/)
-        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file, '-f']) }
+        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
           .to raise_error SystemExit
       end
 
@@ -76,7 +59,7 @@ RSpec.describe OneviewSDK::Cli do
       it 'shows the resource update error message on failure' do
         allow_any_instance_of(OneviewSDK::Resource).to receive(:update).and_raise('Explanation')
         expect(STDOUT).to receive(:puts).with(/Failed to update.*Explanation/)
-        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file, '-f']) }
+        expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
           .to raise_error SystemExit
       end
     end
