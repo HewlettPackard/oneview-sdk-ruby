@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Server profile resource implementation
-  class ServerProfile < BaseResource
+  class ServerProfile < Resource
     BASE_URI = '/rest/server-profiles'.freeze
 
     def initialize(client, params = {}, api_ver = nil)

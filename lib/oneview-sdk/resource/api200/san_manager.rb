@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # SAN manager resource implementation
-  class SANManager < BaseResource
+  class SANManager < Resource
     BASE_URI = '/rest/fc-sans/device-managers'.freeze
     PROVIDERS_URI = '/rest/fc-sans/providers'.freeze
 

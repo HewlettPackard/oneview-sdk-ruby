@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Logical switch resource implementation
-  class LogicalSwitch < BaseResource
+  class LogicalSwitch < Resource
     BASE_URI = '/rest/logical-switches'.freeze
 
     attr_accessor :logical_switch_credentials

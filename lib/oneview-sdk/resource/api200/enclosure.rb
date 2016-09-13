@@ -11,11 +11,12 @@
 
 require 'time'
 require 'date'
+require_relative 'resource'
 
 module OneviewSDK
   module API200
   # Enclosure resource implementation
-  class Enclosure < BaseResource
+  class Enclosure < Resource
     BASE_URI = '/rest/enclosures'.freeze
 
     # Remove resource from OneView

@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Rack resource implementation
-  class Rack < BaseResource
+  class Rack < Resource
     BASE_URI = '/rest/racks'.freeze
 
     # Add the resource on OneView using the current data

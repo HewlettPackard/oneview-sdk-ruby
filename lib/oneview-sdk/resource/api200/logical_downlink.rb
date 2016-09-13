@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Logical downlink resource implementation
-  class LogicalDownlink < BaseResource
+  class LogicalDownlink < Resource
     BASE_URI = '/rest/logical-downlinks'.freeze
 
     # Method is not available

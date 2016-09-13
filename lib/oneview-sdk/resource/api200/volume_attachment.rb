@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Storage volume attachment resource implementation
-  class VolumeAttachment < BaseResource
+  class VolumeAttachment < Resource
     BASE_URI = '/rest/storage-volume-attachments'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.

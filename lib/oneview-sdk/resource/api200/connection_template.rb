@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Connection template resource implementation
-  class ConnectionTemplate < BaseResource
+  class ConnectionTemplate < Resource
     BASE_URI = '/rest/connection-templates'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.

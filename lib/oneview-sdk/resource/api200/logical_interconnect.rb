@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Logical interconnect resource implementation
-  class LogicalInterconnect < BaseResource
+  class LogicalInterconnect < Resource
     BASE_URI = '/rest/logical-interconnects'.freeze
     LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 

@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Enclosure group resource implementation
-  class EnclosureGroup < BaseResource
+  class EnclosureGroup < Resource
     BASE_URI = '/rest/enclosure-groups'.freeze
 
     # Create a resource object, associate it with a client, and set its properties.

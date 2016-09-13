@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Firmware driver resource implementation
-  class FirmwareDriver < BaseResource
+  class FirmwareDriver < Resource
     BASE_URI = '/rest/firmware-drivers'.freeze
 
     # Remove resource from OneView

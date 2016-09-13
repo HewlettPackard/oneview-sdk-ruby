@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API200
   # Volume template resource implementation
-  class VolumeTemplate < BaseResource
+  class VolumeTemplate < Resource
     BASE_URI = '/rest/storage-volume-templates'.freeze
 
     # Create the client object, establishes connection, and set up the logging and api version.
