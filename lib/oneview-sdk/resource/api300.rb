@@ -9,16 +9,11 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative 'oneview-sdk/version'
-require_relative 'oneview-sdk/exceptions'
-require_relative 'oneview-sdk/client'
-require_relative 'oneview-sdk/base_resource'
-Dir[File.dirname(__FILE__) + '/oneview-sdk/resource/*.rb'].each { |file| require file }
+# Load all API-specific resources:
+Dir[File.dirname(__FILE__) + '/api300/*.rb'].each { |file| require file }
 
-require_relative 'oneview-sdk/resource_finder'
-require_relative 'oneview-sdk/cli'
-
-# Module for interacting with the HPE OneView API
 module OneviewSDK
-  ENV_VARS = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED).freeze
+  # Module for API v300
+  module API300
+  end
 end
