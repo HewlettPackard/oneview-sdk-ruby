@@ -17,6 +17,7 @@ require_relative 'ssl_helper'
 module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
+    SUPPORTED_API_VERSIONS = [200, 300].freeze
     DEFAULT_API_VERSION = 200
 
     attr_reader :url, :user, :token, :password, :max_api_version

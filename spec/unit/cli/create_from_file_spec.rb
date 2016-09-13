@@ -25,13 +25,13 @@ RSpec.describe OneviewSDK::Cli do
       before :each do
         @resource_data = { 'name' => 'My', 'uri' => '/rest/fake', 'description' => 'Blah' }
         response = [OneviewSDK::EthernetNetwork.new(@client, @resource_data)]
-        allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:create).and_return(true)
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:update).and_return(true)
+        allow(OneviewSDK::BaseResource).to receive(:find_by).and_return(response)
+        allow_any_instance_of(OneviewSDK::BaseResource).to receive(:create).and_return(true)
+        allow_any_instance_of(OneviewSDK::BaseResource).to receive(:update).and_return(true)
       end
 
       it 'creates a valid resource by name' do
-        allow(OneviewSDK::Resource).to receive(:find_by).and_return([])
+        allow(OneviewSDK::BaseResource).to receive(:find_by).and_return([])
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
           .to output(/Created Successfully!/).to_stdout_from_any_process
       end
@@ -58,23 +58,23 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'fails if the file does not specify a name' do
-        resource = OneviewSDK::Resource.new(@client)
-        allow(OneviewSDK::Resource).to receive(:from_file).and_return(resource)
+        resource = OneviewSDK::BaseResource.new(@client)
+        allow(OneviewSDK::BaseResource).to receive(:from_file).and_return(resource)
         expect(STDOUT).to receive(:puts).with(/must specify a resource name/)
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file, '-f']) }
           .to raise_error SystemExit
       end
 
       it 'shows the resource creation error message on failure' do
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:create).and_raise('Explanation')
-        allow(OneviewSDK::Resource).to receive(:find_by).and_return([])
+        allow_any_instance_of(OneviewSDK::BaseResource).to receive(:create).and_raise('Explanation')
+        allow(OneviewSDK::BaseResource).to receive(:find_by).and_return([])
         expect(STDOUT).to receive(:puts).with(/Failed to create.*Explanation/)
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
           .to raise_error SystemExit
       end
 
       it 'shows the resource update error message on failure' do
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:update).and_raise('Explanation')
+        allow_any_instance_of(OneviewSDK::BaseResource).to receive(:update).and_raise('Explanation')
         expect(STDOUT).to receive(:puts).with(/Failed to update.*Explanation/)
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file, '-f']) }
           .to raise_error SystemExit

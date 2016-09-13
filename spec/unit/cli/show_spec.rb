@@ -25,25 +25,25 @@ RSpec.describe OneviewSDK::Cli do
 
     before :each do
       @resource_data = { 'name' => 'Profile1', 'uri' => '/rest/fake', 'description' => 'Blah' }
-      response = [OneviewSDK::Resource.new(@client, @resource_data)]
-      allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
+      response = [OneviewSDK::BaseResource.new(@client, @resource_data)]
+      allow(OneviewSDK::BaseResource).to receive(:find_by).and_return(response)
     end
 
     context '(unfiltered)' do
       it 'prints the resource details' do
-        expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, name: 'Profile1')
+        expect(OneviewSDK::BaseResource).to receive(:find_by).with(OneviewSDK::Client, name: 'Profile1')
         expect { OneviewSDK::Cli.start(%w(show ServerProfile Profile1)) }
           .to output(%r{^name: Profile1\suri: \/rest\/fake\sdescription: Blah$}).to_stdout_from_any_process
       end
 
       it 'prints the resource details in json format' do
-        expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, name: 'Profile1')
+        expect(OneviewSDK::BaseResource).to receive(:find_by).with(OneviewSDK::Client, name: 'Profile1')
         expect { OneviewSDK::Cli.start(%w(show ServerProfile Profile1 -f json)) }
           .to output(JSON.pretty_generate(@resource_data) + "\n").to_stdout_from_any_process
       end
 
       it 'prints the resource details in yaml format' do
-        expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, name: 'Profile1')
+        expect(OneviewSDK::BaseResource).to receive(:find_by).with(OneviewSDK::Client, name: 'Profile1')
         expect { OneviewSDK::Cli.start(%w(show ServerProfile Profile1 -f yaml)) }
           .to output(@resource_data.to_yaml).to_stdout_from_any_process
       end
