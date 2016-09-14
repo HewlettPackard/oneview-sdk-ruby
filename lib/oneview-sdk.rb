@@ -22,6 +22,7 @@ module OneviewSDK
   SUPPORTED_API_VERSIONS = [120, 200, 300].freeze
   DEFAULT_API_VERSION = 200
   @api_version = DEFAULT_API_VERSION
+  @api_version_updated = false # Whether or not the API version has been set by the user
 
   # Get the current API version
   def self.api_version
@@ -33,7 +34,14 @@ module OneviewSDK
     version = version.to_i rescue version
     fail "API version #{version} not supported!" unless SUPPORTED_API_VERSIONS.include?(version)
     fail "The module for API version #{@api_version} is undefined" unless constants.include?("API#{@api_version}".to_sym)
+    @api_version_updated = true
     @api_version = version
+  end
+
+  # Has the API version been set by the user?
+  # @return [TrueClass, FalseClass]
+  def self.api_version_updated?
+    @api_version_updated
   end
 
   # This method will help redirect to resources within the API module that is currently in use.
