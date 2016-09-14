@@ -9,16 +9,11 @@ RSpec.describe OneviewSDK::FirmwareBundle do
     end
 
     it 'returns a FirmwareDriver resource' do
-      expect(@client).to receive(:rest_post).with(
-        OneviewSDK::FirmwareBundle::BASE_URI,
-        hash_including(
-          'body' => %r{Content-Type: application/octet-stream; Content-Transfer-Encoding: binary\r\n\r\nFAKE FILE CONTENT\r\n--},
-          'uploadfilename' => 'file.tar',
-          'Content-Type' => "multipart/form-data; boundary=#{OneviewSDK::FirmwareBundle::BOUNDARY}"
-        )
-      ).and_return(FakeResponse.new({}))
-      expect(File).to receive('file?').and_return(true)
-      allow(IO).to receive(:binread).and_return('FAKE FILE CONTENT')
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_return(FakeResponse.new({}))
+      allow(@client).to receive(:response_handler).and_return(uri: '/rest/firmware-drivers/f1')
+      allow(File).to receive('file?').and_return(true)
+      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
+      expect(OneviewSDK::FirmwareBundle).to receive(:add).and_return(OneviewSDK::FirmwareDriver)
       OneviewSDK::FirmwareBundle.add(@client, 'file.tar')
     end
   end
