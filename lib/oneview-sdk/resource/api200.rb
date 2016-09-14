@@ -9,11 +9,11 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-# Load all API-specific resources:
-Dir[File.dirname(__FILE__) + '/api200/*.rb'].each { |file| require file }
-
 module OneviewSDK
   # Module for API v200
   module API200
   end
 end
+
+# Load all API-specific resources:
+Dir[File.dirname(__FILE__) + '/api200/*.rb'].each { |file| require file }

@@ -336,7 +336,7 @@ module OneviewSDK
   def self.resource_named(type)
     classes = {}
     orig_classes = []
-    api_module = OneviewSDK.const_get("API#{@@api_version}")
+    api_module = OneviewSDK.const_get("API#{@api_version}")
     api_module.constants.each do |c|
       klass = OneviewSDK.const_get(c)
       next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
