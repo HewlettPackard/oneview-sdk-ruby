@@ -17,9 +17,6 @@ require_relative 'ssl_helper'
 module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
-    SUPPORTED_API_VERSIONS = [200, 300].freeze
-    DEFAULT_API_VERSION = 200
-
     attr_reader :url, :user, :token, :password, :max_api_version
     attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
@@ -52,7 +49,7 @@ module OneviewSDK
       if options[:api_version] && options[:api_version].to_i > @max_api_version
         logger.warn "API version #{options[:api_version]} is greater than the appliance API version (#{@max_api_version})"
       end
-      @api_version = options[:api_version] || [DEFAULT_API_VERSION, @max_api_version].min
+      @api_version = options[:api_version] || [OneviewSDK::DEFAULT_API_VERSION, @max_api_version].min
       @ssl_enabled = true
       if ENV.key?('ONEVIEWSDK_SSL_ENABLED')
         if %w(true false 1 0).include?(ENV['ONEVIEWSDK_SSL_ENABLED'])
@@ -151,8 +148,8 @@ module OneviewSDK
       version = version.to_i if version.class != Fixnum
       version
     rescue ConnectionError
-      @logger.warn "Failed to get OneView max api version. Using default (#{DEFAULT_API_VERSION})"
-      DEFAULT_API_VERSION
+      @logger.warn "Failed to get OneView max api version. Using default (#{OneviewSDK::DEFAULT_API_VERSION})"
+      OneviewSDK::DEFAULT_API_VERSION
     end
 
     # Log in to OneView appliance and set max_api_version

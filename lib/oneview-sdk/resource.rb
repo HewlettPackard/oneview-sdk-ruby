@@ -14,7 +14,7 @@ require_relative 'client'
 # OneviewSDK Resources
 module OneviewSDK
   # Resource base class that defines all common resource functionality.
-  class BaseResource
+  class Resource
     BASE_URI = '/rest'.freeze
 
     attr_accessor \
@@ -336,9 +336,10 @@ module OneviewSDK
   def self.resource_named(type)
     classes = {}
     orig_classes = []
-    OneviewSDK.constants.each do |c|
+    api_module = OneviewSDK.const_get("API#{@@api_version}")
+    api_module.constants.each do |c|
       klass = OneviewSDK.const_get(c)
-      next unless klass.is_a?(Class) && klass < OneviewSDK::ResourceFinder
+      next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
       name = klass.name.split('::').last
       orig_classes.push(name)
       classes[name.downcase.delete('_').delete('-')] = klass

@@ -335,7 +335,7 @@ module OneviewSDK
       valid_classes = []
       OneviewSDK.constants.each do |c|
         klass = OneviewSDK.const_get(c)
-        next unless klass.is_a?(Class) && klass < OneviewSDK::ResourceFinder
+        next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
         valid_classes.push(klass.name.split('::').last)
       end
       OneviewSDK.resource_named(type) || fail_nice("Invalid resource type: '#{type}'.\n  Valid options are #{valid_classes}")

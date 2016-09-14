@@ -26,8 +26,8 @@ RSpec.describe OneviewSDK::Cli do
       before :each do
         @resource_data = { 'name' => 'Profile1', 'uri' => '/rest/fake', 'description' => 'Blah' }
         response = [OneviewSDK::ServerProfile.new(@client, @resource_data)]
-        allow(OneviewSDK::BaseResource).to receive(:find_by).and_return(response)
-        allow_any_instance_of(OneviewSDK::BaseResource).to receive(:delete).and_return(true)
+        allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
+        allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_return(true)
         allow_any_instance_of(HighLine).to receive(:agree).and_return(true)
       end
 
@@ -44,7 +44,7 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'fails if deletion fails' do
-        allow_any_instance_of(OneviewSDK::BaseResource).to receive(:delete).and_raise 'Failure'
+        allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_raise 'Failure'
         expect(STDOUT).to receive(:puts).with(/Failed to delete/)
         expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1 -f)) }
           .to raise_error SystemExit
@@ -53,7 +53,7 @@ RSpec.describe OneviewSDK::Cli do
 
     context 'when the resource does not exist' do
       before :each do
-        allow(OneviewSDK::BaseResource).to receive(:find_by).and_return([])
+        allow(OneviewSDK::Resource).to receive(:find_by).and_return([])
         allow_any_instance_of(HighLine).to receive(:agree).and_return(true)
       end
 
