@@ -17,20 +17,43 @@ module OneviewSDK
   # This class is a proxy class to determine the correct resource class based on the client's API version.
   # It will forward all requests to the correct class or fail if a valid class doesn't exist.
   class ResourceFinder
+    attr_accessor :target
 
-    # This overrides the :new method, returning an instance of the correct resource class.
-    def self.new(client, options = {}, api_ver = nil)
-      get_resource_class(api_ver || client.api_version).new(client, options, api_ver)
+    # Create a resource object, associate it with a client, and set its properties.
+    # The resource version will be determined by the api_version attribute or client's api version
+    # and the target will be set to the newly created resource.
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [Hash] params The options for this resource (key-value pairs)
+    # @param [Integer] api_ver The api version to use when interacting with this resource.
+    def initialize(client, params = {}, api_ver = nil)
+      if client && client.is_a?(OneviewSDK::Client)
+        klass = self.class.get_resource_class(api_ver || client.api_version)
+      else
+        klass = self.class.get_resource_class(api_ver)
+      end
+      @target = klass.new(client, params, api_ver)
+    end
+
+    # Proxy instance methods back to the target
+    def method_missing(name, *args, &block)
+      @target.public_send(name, *args, &block)
     end
 
     # Proxy class methods back to the correct resource class.
-    def self.method_missing(method, *args, &block)
+    def self.method_missing(name, *args, &block)
       client = args.first
       if client && client.is_a?(OneviewSDK::Client)
-        get_resource_class(client.api_version).send(method, *args, &block)
+        get_resource_class(client.api_version).public_send(name, *args, &block)
       else
-        get_resource_class.send(method, *args, &block)
+        get_resource_class.public_send(name, *args, &block)
       end
+    end
+
+    # This method will help redirect to resources. It should NOT be called directly.
+    # WARNING: It has no way of determining which API version the user is referring to, so tries the default,
+    # and if it can't find it there, it returns the next available match
+    def self.const_missing(const)
+      get_resource_class.const_get(const)
     end
 
     # This gets the correct resource class

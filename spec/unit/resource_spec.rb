@@ -1,41 +1,41 @@
 require_relative './../spec_helper'
 
-RSpec.describe OneviewSDK::BaseResource do
+RSpec.describe OneviewSDK::Resource do
   include_context 'shared context'
 
   describe '#initialize' do
     it 'requires a valid client to be passed' do
-      expect { OneviewSDK::BaseResource.new(nil) }.to raise_error(OneviewSDK::InvalidClient, /Must specify a valid client/)
-      expect { OneviewSDK::BaseResource.new('client') }.to raise_error(OneviewSDK::InvalidClient, /Must specify a valid client/)
+      expect { OneviewSDK::Resource.new(nil) }.to raise_error(OneviewSDK::InvalidClient, /Must specify a valid client/)
+      expect { OneviewSDK::Resource.new('client') }.to raise_error(OneviewSDK::InvalidClient, /Must specify a valid client/)
     end
 
     it 'uses the client\'s logger' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect(res.logger).to eq(@client.logger)
     end
 
     it 'uses the client\'s api version' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect(res.api_version).to eq(@client.api_version)
     end
 
     it 'can override the client\'s api version' do
-      res = OneviewSDK::BaseResource.new(@client, {}, 120)
+      res = OneviewSDK::Resource.new(@client, {}, 120)
       expect(res.api_version).to_not eq(@client.api_version)
       expect(res.api_version).to eq(120)
     end
 
     it 'can\'t use an api version greater than the client\'s max' do
-      expect { OneviewSDK::BaseResource.new(@client, {}, 300) }.to raise_error(OneviewSDK::UnsupportedVersion, /is greater than the client's max/)
+      expect { OneviewSDK::Resource.new(@client, {}, 300) }.to raise_error(OneviewSDK::UnsupportedVersion, /is greater than the client's max/)
     end
 
     it 'starts with an empty data hash' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect(res.data).to eq({})
     end
 
     it 'sets the provided attributes' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Test', description: 'None')
+      res = OneviewSDK::Resource.new(@client, name: 'Test', description: 'None')
       expect(res[:name]).to eq('Test')
       expect(res['description']).to eq('None')
     end
@@ -43,14 +43,14 @@ RSpec.describe OneviewSDK::BaseResource do
 
   describe '#retrieve!' do
     it 'requires the name attribute to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect { res.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name/)
     end
 
     it 'sets the data if the resource is found' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'ResourceName')
-      allow(OneviewSDK::BaseResource).to receive(:find_by).and_return([
-        OneviewSDK::BaseResource.new(@client, res.data.merge(uri: '/rest/fake', description: 'Blah'))
+      res = OneviewSDK::Resource.new(@client, name: 'ResourceName')
+      allow(OneviewSDK::Resource).to receive(:find_by).and_return([
+        OneviewSDK::Resource.new(@client, res.data.merge(uri: '/rest/fake', description: 'Blah'))
       ])
       res.retrieve!
       expect(res['uri']).to eq('/rest/fake')
@@ -58,33 +58,33 @@ RSpec.describe OneviewSDK::BaseResource do
     end
 
     it 'returns false when the resource is not found' do
-      allow(OneviewSDK::BaseResource).to receive(:find_by).and_return([])
-      res = OneviewSDK::BaseResource.new(@client, name: 'ResourceName')
+      allow(OneviewSDK::Resource).to receive(:find_by).and_return([])
+      res = OneviewSDK::Resource.new(@client, name: 'ResourceName')
       expect(res.retrieve!).to eq(false)
     end
   end
 
   describe '#exists?' do
     it 'requires the name attribute to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect { res.exists? }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri/)
     end
 
     it 'uses the uri attribute when the name is not set' do
-      res = OneviewSDK::BaseResource.new(@client, uri: '/rest/fake')
-      expect(OneviewSDK::BaseResource).to receive(:find_by).with(@client, uri: res['uri']).and_return([])
+      res = OneviewSDK::Resource.new(@client, uri: '/rest/fake')
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, uri: res['uri']).and_return([])
       expect(res.exists?).to eq(false)
     end
 
     it 'returns true when the resource is found' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'ResourceName')
-      expect(OneviewSDK::BaseResource).to receive(:find_by).with(@client, name: res['name']).and_return([res])
+      res = OneviewSDK::Resource.new(@client, name: 'ResourceName')
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, name: res['name']).and_return([res])
       expect(res.exists?).to eq(true)
     end
 
     it 'returns false when the resource is not found' do
-      res = OneviewSDK::BaseResource.new(@client, uri: '/rest/fake')
-      expect(OneviewSDK::BaseResource).to receive(:find_by).with(@client, uri: res['uri']).and_return([])
+      res = OneviewSDK::Resource.new(@client, uri: '/rest/fake')
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, uri: res['uri']).and_return([])
       expect(res.exists?).to eq(false)
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe OneviewSDK::BaseResource do
       end
 
       it 'returns false when the classes are not the same' do
-        res1 = OneviewSDK::BaseResource.new(@client, name: 'ResourceName')
+        res1 = OneviewSDK::Resource.new(@client, name: 'ResourceName')
         res2 = OneviewSDK::Enclosure.new(@client, name: 'ResourceName')
         expect(res1 == res2).to eq(false)
       end
@@ -131,51 +131,51 @@ RSpec.describe OneviewSDK::BaseResource do
   describe '#like?' do
     it 'returns true for an alike hash' do
       options = { name: 'res', uri: '/rest/fake', description: 'Resource' }
-      res = OneviewSDK::BaseResource.new(@client, options)
+      res = OneviewSDK::Resource.new(@client, options)
       expect(res.like?(description: 'Resource', uri: '/rest/fake', name: 'res')).to eq(true)
     end
 
     it 'returns true for an alike resource' do
       options = { name: 'res', uri: '/rest/fake', description: 'Resource' }
-      res = OneviewSDK::BaseResource.new(@client, options)
-      res2 = OneviewSDK::BaseResource.new(@client, options)
+      res = OneviewSDK::Resource.new(@client, options)
+      res2 = OneviewSDK::Resource.new(@client, options)
       expect(res.like?(res2)).to eq(true)
     end
 
     it 'does not compare client object or api_version' do
       options = { name: 'res', uri: '/rest/fake', description: 'Resource' }
-      res = OneviewSDK::BaseResource.new(@client, options)
-      res2 = OneviewSDK::BaseResource.new(@client_120, options, 120)
+      res = OneviewSDK::Resource.new(@client, options)
+      res2 = OneviewSDK::Resource.new(@client_120, options, 120)
       expect(res.like?(res2)).to eq(true)
     end
 
     it 'works for nested hashes' do
       options = { name: 'res', uri: '/rest/fake', data: { 'key1' => 'val1', 'key2' => 'val2' } }
-      res = OneviewSDK::BaseResource.new(@client, options)
+      res = OneviewSDK::Resource.new(@client, options)
       expect(res.like?(data: { key2: 'val2' })).to eq(true)
     end
 
     it 'returns false for unlike hashes' do
       options = { name: 'res', uri: '/rest/fake' }
-      res = OneviewSDK::BaseResource.new(@client, options)
+      res = OneviewSDK::Resource.new(@client, options)
       expect(res.like?(data: { key2: 'val2' })).to eq(false)
     end
 
     it 'requires the other objet to respond to .each' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect { res.like?(nil) }.to raise_error(/Can't compare with object type: NilClass/)
     end
   end
 
   describe '#create' do
     it 'requires the client to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       res.client = nil
       expect { res.create }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'sets the data from the response' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Name')
+      res = OneviewSDK::Resource.new(@client, name: 'Name')
       fake_response = FakeResponse.new(res.data.merge(uri: '/rest/fake'))
       allow(@client).to receive(:rest_post).and_return(fake_response)
       res.create
@@ -183,7 +183,7 @@ RSpec.describe OneviewSDK::BaseResource do
     end
 
     it 'raises an error if the request failed' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Name')
+      res = OneviewSDK::Resource.new(@client, name: 'Name')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
       allow(@client).to receive(:rest_post).and_return(fake_response)
       expect { res.create }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
@@ -192,7 +192,7 @@ RSpec.describe OneviewSDK::BaseResource do
 
   describe '#create!' do
     before :each do
-      @res = OneviewSDK::BaseResource.new(@client, name: 'Name')
+      @res = OneviewSDK::Resource.new(@client, name: 'Name')
     end
 
     it 'deletes the resource if it exists' do
@@ -212,18 +212,18 @@ RSpec.describe OneviewSDK::BaseResource do
 
   describe '#refresh' do
     it 'requires the client to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       res.client = nil
       expect { res.refresh }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'requires the uri to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect { res.refresh }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
     it 'sets the data from the server\'s response' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Name', uri: '/rest/fake')
+      res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new(res.data.merge(name: 'NewName', description: 'Blah'))
       allow(@client).to receive(:rest_get).and_return(fake_response)
       res.refresh
@@ -234,25 +234,25 @@ RSpec.describe OneviewSDK::BaseResource do
 
   describe '#update' do
     it 'requires the client to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       res.client = nil
       expect { res.update }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'requires the uri to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect { res.update }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
     it 'uses the rest_put method to update the data' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Name', uri: '/rest/fake')
+      res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       expect(@client).to receive(:rest_put).with(
         res['uri'], { 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
       res.update
     end
 
     it 'raises an error if the update fails' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Name', uri: '/rest/fake')
+      res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
       expect(@client).to receive(:rest_put).with(
         res['uri'], { 'body' => res.data }, res.api_version).and_return(fake_response)
@@ -262,25 +262,25 @@ RSpec.describe OneviewSDK::BaseResource do
 
   describe '#delete' do
     it 'requires the client to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       res.client = nil
       expect { res.delete }.to raise_error(OneviewSDK::IncompleteResource, /Please set client attribute/)
     end
 
     it 'requires the uri to be set' do
-      res = OneviewSDK::BaseResource.new(@client)
+      res = OneviewSDK::Resource.new(@client)
       expect { res.delete }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
     it 'returns true if the delete was successful' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Name', uri: '/rest/fake')
+      res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       expect(@client).to receive(:rest_delete).with(
         res['uri'], {}, res.api_version).and_return(FakeResponse.new)
       expect(res.delete).to eq(true)
     end
 
     it 'raises an error if the delete fails' do
-      res = OneviewSDK::BaseResource.new(@client, name: 'Name', uri: '/rest/fake')
+      res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
       expect(@client).to receive(:rest_delete).with(
         res['uri'], {}, res.api_version).and_return(fake_response)
@@ -318,14 +318,14 @@ RSpec.describe OneviewSDK::BaseResource do
 
   describe '#schema' do
     it 'forwards the instance method call to the class method' do
-      expect(OneviewSDK::BaseResource).to receive(:schema).with(@client)
-      OneviewSDK::BaseResource.new(@client).schema
+      expect(OneviewSDK::Resource).to receive(:schema).with(@client)
+      OneviewSDK::Resource.new(@client).schema
     end
 
     it 'tries to get BASE_URI/schema' do
-      expect(@client).to receive(:rest_get).with("#{OneviewSDK::BaseResource::BASE_URI}/schema", @client.api_version)
+      expect(@client).to receive(:rest_get).with("#{OneviewSDK::Resource::BASE_URI}/schema", @client.api_version)
         .and_return(FakeResponse.new(key: 'val1', other_key: 'val2'))
-      schema = OneviewSDK::BaseResource.schema(@client)
+      schema = OneviewSDK::Resource.schema(@client)
       expect(schema['key']).to eq('val1')
       expect(schema['other_key']).to eq('val2')
     end
@@ -334,7 +334,7 @@ RSpec.describe OneviewSDK::BaseResource do
       fake_response = FakeResponse.new({ message: 'Not Found' }, 404)
       allow(@client).to receive(:rest_get).and_return(fake_response)
       expect(@client.logger).to receive(:error).with(/does not implement the schema endpoint/)
-      expect { OneviewSDK::BaseResource.schema(@client) }.to raise_error(OneviewSDK::NotFound, /404 NOT FOUND/)
+      expect { OneviewSDK::Resource.schema(@client) }.to raise_error(OneviewSDK::NotFound, /404 NOT FOUND/)
     end
   end
 
@@ -365,29 +365,29 @@ RSpec.describe OneviewSDK::BaseResource do
 
   describe '#get_all' do
     it 'calls find_by with an empty attributes hash' do
-      expect(OneviewSDK::BaseResource).to receive(:find_by).with(@client, {})
-      OneviewSDK::BaseResource.get_all(@client)
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, {})
+      OneviewSDK::Resource.get_all(@client)
     end
   end
 
   describe '#build_query' do
     it 'builds basic query' do
-      expect(OneviewSDK::BaseResource.build_query('test' => 'TEST')).to eq('?test=TEST')
+      expect(OneviewSDK::Resource.build_query('test' => 'TEST')).to eq('?test=TEST')
     end
 
     it 'builds resource query' do
-      fake_resource = OneviewSDK::BaseResource.new(@client, 'uri' => 'URI')
-      expect(OneviewSDK::BaseResource.build_query('this_resource' => fake_resource)).to eq('?thisResourceUri=URI')
+      fake_resource = OneviewSDK::Resource.new(@client, 'uri' => 'URI')
+      expect(OneviewSDK::Resource.build_query('this_resource' => fake_resource)).to eq('?thisResourceUri=URI')
     end
 
     it 'builds composed query' do
-      fake_resource = OneviewSDK::BaseResource.new(@client, 'uri' => 'URI')
-      expect(OneviewSDK::BaseResource.build_query('test' => 'TEST', 'this_resource' => fake_resource)).to eq('?test=TEST&thisResourceUri=URI')
+      fake_resource = OneviewSDK::Resource.new(@client, 'uri' => 'URI')
+      expect(OneviewSDK::Resource.build_query('test' => 'TEST', 'this_resource' => fake_resource)).to eq('?test=TEST&thisResourceUri=URI')
     end
 
     it 'returns empty String for invalid values' do
-      expect(OneviewSDK::BaseResource.build_query('')).to eq('')
-      expect(OneviewSDK::BaseResource.build_query(nil)).to eq('')
+      expect(OneviewSDK::Resource.build_query('')).to eq('')
+      expect(OneviewSDK::Resource.build_query(nil)).to eq('')
     end
   end
 end
