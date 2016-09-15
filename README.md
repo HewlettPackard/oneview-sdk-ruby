@@ -264,11 +264,18 @@ $ oneview-sdk-ruby create_from_file /my-server-profile.json
 $ oneview-sdk-ruby delete_from_file /my-server-profile.json
 ```
 
-##### Update a resource by name:
+##### Update resources by name:
 
 ```bash
 $ oneview-sdk-ruby update FCNetwork FC1 -h linkStabilityTime:20  # Using hash format
 $ oneview-sdk-ruby update Volume VOL_01 -j '{"shareable": true}' # Using json format
+```
+
+##### Make REST calls:
+
+```bash
+$ oneview-sdk-ruby rest get rest/fc-networks
+$ oneview-sdk-ruby rest PUT rest/enclosures/<id>/configuration
 ```
 
 ##### Start an interactive console session with a OneView connection:
