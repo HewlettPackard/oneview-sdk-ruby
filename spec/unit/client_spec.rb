@@ -115,7 +115,7 @@ RSpec.describe OneviewSDK::Client do
       client = OneviewSDK::Client.new(options)
       expect(client.timeout).to eq(5)
     end
-    
+
     it 'sets the module api version unless it has already been set' do
       expect(OneviewSDK).to receive(:api_version_updated?).and_return false
       expect(OneviewSDK).to receive(:api_version=).with(200).and_return true
