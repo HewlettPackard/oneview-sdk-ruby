@@ -13,38 +13,38 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-  # Volume snapshot resource implementation
-  class VolumeSnapshot < Resource
-    BASE_URI = nil
+    # Volume snapshot resource implementation
+    class VolumeSnapshot < Resource
+      BASE_URI = nil
 
-    # Create a resource object, associate it with a client, and set its properties.
-    # @param [OneviewSDK::Client] client The client object for the OneView appliance
-    # @param [Hash] params The options for this resource (key-value pairs)
-    # @param [Integer] api_ver The api version to use when interracting with this resource.
-    def initialize(client, params = {}, api_ver = nil)
-      super
-      # Default values
-      @data['type'] ||= 'Snapshot'
-    end
+      # Create a resource object, associate it with a client, and set its properties.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [Hash] params The options for this resource (key-value pairs)
+      # @param [Integer] api_ver The api version to use when interracting with this resource.
+      def initialize(client, params = {}, api_ver = nil)
+        super
+        # Default values
+        @data['type'] ||= 'Snapshot'
+      end
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def create
-      unavailable_method
-    end
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def create
+        unavailable_method
+      end
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def update
-      unavailable_method
-    end
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def update
+        unavailable_method
+      end
 
-    # Sets the volume
-    # @param [OneviewSDK::Volume] volume Volume
-    def set_volume(volume)
-      volume.retrieve! unless volume['uri']
-      @data['storageVolumeUri'] = volume['uri']
+      # Sets the volume
+      # @param [OneviewSDK::Volume] volume Volume
+      def set_volume(volume)
+        volume.retrieve! unless volume['uri']
+        @data['storageVolumeUri'] = volume['uri']
+      end
     end
-  end
   end
 end

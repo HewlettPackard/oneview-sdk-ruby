@@ -13,47 +13,47 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-  # Storage system resource implementation
-  class UnmanagedDevice < Resource
-    BASE_URI = '/rest/unmanaged-devices'.freeze
+    # Storage system resource implementation
+    class UnmanagedDevice < Resource
+      BASE_URI = '/rest/unmanaged-devices'.freeze
 
-    # Add the resource on OneView using the current data
-    # @note Calls the refresh method to set additional data
-    # @raise [OneviewSDK::IncompleteResource] if the client is not set
-    # @raise [StandardError] if the resource creation fails
-    # @return [OneviewSDK::UnmanagedDevice] self
-    alias add create
+      # Add the resource on OneView using the current data
+      # @note Calls the refresh method to set additional data
+      # @raise [OneviewSDK::IncompleteResource] if the client is not set
+      # @raise [StandardError] if the resource creation fails
+      # @return [OneviewSDK::UnmanagedDevice] self
+      alias add create
 
-    # Remove resource from OneView
-    # @return [true] if resource was removed successfully
-    alias remove delete
+      # Remove resource from OneView
+      # @return [true] if resource was removed successfully
+      alias remove delete
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def create
-      unavailable_method
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def create
+        unavailable_method
+      end
+
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def delete
+        unavailable_method
+      end
+
+      # Gets a list of unmanaged devices
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @return [Array] list of unmanaged devices
+      def self.get_devices(client)
+        response = client.rest_get(BASE_URI)
+        client.response_handler(response)['members']
+      end
+
+      # Get settings that describe the environmental configuration
+      def environmental_configuration
+        ensure_client && ensure_uri
+        response = @client.rest_get(@data['uri'] + '/environmentalConfiguration')
+        @client.response_handler(response)
+      end
     end
-
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def delete
-      unavailable_method
-    end
-
-    # Gets a list of unmanaged devices
-    # @param [OneviewSDK::Client] client The client object for the OneView appliance
-    # @return [Array] list of unmanaged devices
-    def self.get_devices(client)
-      response = client.rest_get(BASE_URI)
-      client.response_handler(response)['members']
-    end
-
-    # Get settings that describe the environmental configuration
-    def environmental_configuration
-      ensure_client && ensure_uri
-      response = @client.rest_get(@data['uri'] + '/environmentalConfiguration')
-      @client.response_handler(response)
-    end
-  end
   end
 end

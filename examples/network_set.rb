@@ -25,7 +25,7 @@ network_set['name'] = 'NetworkSet_1'
 ethernet_networks.each_with_index { |ethernet, index| network_set.add_ethernet_network(ethernet) if index < 4 }
 
 # Set first ethernet network as native network for network set
-network_set.set_native_network(ethernet_networks.first) if ethernet_networks.size > 0
+network_set.set_native_network(ethernet_networks.first) unless ethernet_networks.empty?
 
 # Network set creation
 network_set.create

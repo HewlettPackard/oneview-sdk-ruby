@@ -13,56 +13,56 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-  # Network set resource implementation
-  class NetworkSet < Resource
-    BASE_URI = '/rest/network-sets'.freeze
+    # Network set resource implementation
+    class NetworkSet < Resource
+      BASE_URI = '/rest/network-sets'.freeze
 
-    # Create a resource object, associate it with a client, and set its properties.
-    # @param [OneviewSDK::Client] client The client object for the OneView appliance
-    # @param [Hash] params The options for this resource (key-value pairs)
-    # @param [Integer] api_ver The api version to use when interracting with this resource.
-    def initialize(client, params = {}, api_ver = nil)
-      super
-      # Default values:
-      @data['connectionTemplateUri'] ||= nil
-      @data['nativeNetworkUri'] ||= nil
-      @data['networkUris'] ||= []
-      @data['type'] ||= 'network-set'
-    end
+      # Create a resource object, associate it with a client, and set its properties.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [Hash] params The options for this resource (key-value pairs)
+      # @param [Integer] api_ver The api version to use when interracting with this resource.
+      def initialize(client, params = {}, api_ver = nil)
+        super
+        # Default values:
+        @data['connectionTemplateUri'] ||= nil
+        @data['nativeNetworkUri'] ||= nil
+        @data['networkUris'] ||= []
+        @data['type'] ||= 'network-set'
+      end
 
-    # Sets the native network for the network set
-    # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
-    def set_native_network(ethernet_network)
-      @data['nativeNetworkUri'] = ethernet_network['uri']
-      @data['networkUris'] << ethernet_network['uri'] unless @data['networkUris'].include?(ethernet_network['uri'])
-    end
+      # Sets the native network for the network set
+      # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
+      def set_native_network(ethernet_network)
+        @data['nativeNetworkUri'] = ethernet_network['uri']
+        @data['networkUris'] << ethernet_network['uri'] unless @data['networkUris'].include?(ethernet_network['uri'])
+      end
 
-    # Adds an ethernet network to the network set
-    # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
-    def add_ethernet_network(ethernet_network)
-      @data['networkUris'] << ethernet_network['uri'] unless @data['networkUris'].include?(ethernet_network['uri'])
-    end
+      # Adds an ethernet network to the network set
+      # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
+      def add_ethernet_network(ethernet_network)
+        @data['networkUris'] << ethernet_network['uri'] unless @data['networkUris'].include?(ethernet_network['uri'])
+      end
 
-    # Removes an ethernet network from the network set
-    # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
-    def remove_ethernet_network(ethernet_network)
-      @data['networkUris'].delete(ethernet_network['uri']) if @data['networkUris'].include?(ethernet_network['uri'])
-    end
+      # Removes an ethernet network from the network set
+      # @param [OneviewSDK::EthernetNetwork] ethernet_network Ethernet Network
+      def remove_ethernet_network(ethernet_network)
+        @data['networkUris'].delete(ethernet_network['uri']) if @data['networkUris'].include?(ethernet_network['uri'])
+      end
 
-    # Lists network sets excluding ethernet networks
-    # @param [OneviewSDK::Client] client The client object for the OneView appliance
-    # @return [Array] List of network sets
-    def self.get_without_ethernet(client)
-      response = client.rest_get(BASE_URI + '/withoutEthernet')
-      client.response_handler(response)
-    end
+      # Lists network sets excluding ethernet networks
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @return [Array] List of network sets
+      def self.get_without_ethernet(client)
+        response = client.rest_get(BASE_URI + '/withoutEthernet')
+        client.response_handler(response)
+      end
 
-    # Lists network set excluding ethernet networks
-    # @return [OneviewSDK::NetworkSet] Network set
-    def get_without_ethernet
-      response = @client.rest_get(@data['uri'] + '/withoutEthernet')
-      @client.response_handler(response)
+      # Lists network set excluding ethernet networks
+      # @return [OneviewSDK::NetworkSet] Network set
+      def get_without_ethernet
+        response = @client.rest_get(@data['uri'] + '/withoutEthernet')
+        @client.response_handler(response)
+      end
     end
-  end
   end
 end

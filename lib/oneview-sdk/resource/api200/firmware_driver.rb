@@ -13,25 +13,25 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-  # Firmware driver resource implementation
-  class FirmwareDriver < Resource
-    BASE_URI = '/rest/firmware-drivers'.freeze
+    # Firmware driver resource implementation
+    class FirmwareDriver < Resource
+      BASE_URI = '/rest/firmware-drivers'.freeze
 
-    # Remove resource from OneView
-    # @return [true] if resource was removed successfully
-    alias remove delete
+      # Remove resource from OneView
+      # @return [true] if resource was removed successfully
+      alias remove delete
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def delete
-      unavailable_method
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def delete
+        unavailable_method
+      end
+
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def update
+        unavailable_method
+      end
     end
-
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def update
-      unavailable_method
-    end
-  end
   end
 end

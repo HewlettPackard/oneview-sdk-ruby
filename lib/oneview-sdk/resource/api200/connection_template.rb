@@ -13,40 +13,40 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-  # Connection template resource implementation
-  class ConnectionTemplate < Resource
-    BASE_URI = '/rest/connection-templates'.freeze
+    # Connection template resource implementation
+    class ConnectionTemplate < Resource
+      BASE_URI = '/rest/connection-templates'.freeze
 
-    # Create a resource object, associate it with a client, and set its properties.
-    # @param [OneviewSDK::Client] client The client object for the OneView appliance
-    # @param [Hash] params The options for this resource (key-value pairs)
-    # @param [Integer] api_ver The api version to use when interracting with this resource.
-    def initialize(client, params = {}, api_ver = nil)
-      super
-      # Default values:
-      @data['bandwidth'] ||= {}
-      @data['type'] ||= 'connection-template'
-    end
+      # Create a resource object, associate it with a client, and set its properties.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [Hash] params The options for this resource (key-value pairs)
+      # @param [Integer] api_ver The api version to use when interracting with this resource.
+      def initialize(client, params = {}, api_ver = nil)
+        super
+        # Default values:
+        @data['bandwidth'] ||= {}
+        @data['type'] ||= 'connection-template'
+      end
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def create
-      unavailable_method
-    end
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def create
+        unavailable_method
+      end
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def delete
-      unavailable_method
-    end
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def delete
+        unavailable_method
+      end
 
-    # Get the default network connection template
-    # @param [OneviewSDK::Client] client The client object for the OneView appliance
-    # @return [OneviewSDK::ConnectionTemplate] Connection template
-    def self.get_default(client)
-      response = client.rest_get(BASE_URI + '/defaultConnectionTemplate')
-      OneviewSDK::ConnectionTemplate.new(client, client.response_handler(response))
+      # Get the default network connection template
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @return [OneviewSDK::ConnectionTemplate] Connection template
+      def self.get_default(client)
+        response = client.rest_get(BASE_URI + '/defaultConnectionTemplate')
+        OneviewSDK::ConnectionTemplate.new(client, client.response_handler(response))
+      end
     end
-  end
   end
 end

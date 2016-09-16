@@ -16,17 +16,17 @@ require_relative '_client'
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #   @storage_system_ip
 
-fail 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
+raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
 type = 'storage pool'
 options = {}
 
 # Gather storage system information
 storage_system = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
-storage_system.retrieve! || fail("ERROR: Storage system at #{@storage_system_ip} not found!")
+storage_system.retrieve! || raise("ERROR: Storage system at #{@storage_system_ip} not found!")
 puts "Storage System uri = #{storage_system[:uri]}"
 options[:storageSystemUri] = storage_system[:uri]
-fail 'ERROR: No unmanaged pools available!' unless storage_system[:unmanagedPools].size > 0
+raise 'ERROR: No unmanaged pools available!' if storage_system[:unmanagedPools].empty?
 pool = storage_system[:unmanagedPools].find { |storage_pool| storage_pool['domain'] == 'TestDomain' }
 puts "Unmanaged pool name = #{pool['name']}"
 options[:poolName] = pool['name']

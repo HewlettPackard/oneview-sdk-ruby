@@ -61,7 +61,7 @@ RSpec.shared_context 'integration context', a: :b do
                else '_____'
                end
       puts "#{action} #{e.metadata[:sequence] || '_'}: #{described_class}: #{e.metadata[:description]}"
-      fail 'Skipped'
+      raise 'Skipped'
     end
   end
 end

@@ -13,22 +13,22 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-  # FC network resource implementation
-  class FCNetwork < Resource
-    BASE_URI = '/rest/fc-networks'.freeze
+    # FC network resource implementation
+    class FCNetwork < Resource
+      BASE_URI = '/rest/fc-networks'.freeze
 
-    # Create a resource object, associate it with a client, and set its properties.
-    # @param [OneviewSDK::Client] client The client object for the OneView appliance
-    # @param [Hash] params The options for this resource (key-value pairs)
-    # @param [Integer] api_ver The api version to use when interracting with this resource.
-    def initialize(client, params = {}, api_ver = nil)
-      super
-      # Default values
-      @data['autoLoginRedistribution'] ||= false
-      @data['type'] ||= 'fc-networkV2'
-      @data['linkStabilityTime'] ||= 30
-      @data['fabricType'] ||= 'FabricAttach'
+      # Create a resource object, associate it with a client, and set its properties.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [Hash] params The options for this resource (key-value pairs)
+      # @param [Integer] api_ver The api version to use when interracting with this resource.
+      def initialize(client, params = {}, api_ver = nil)
+        super
+        # Default values
+        @data['autoLoginRedistribution'] ||= false
+        @data['type'] ||= 'fc-networkV2'
+        @data['linkStabilityTime'] ||= 30
+        @data['fabricType'] ||= 'FabricAttach'
+      end
     end
-  end
   end
 end

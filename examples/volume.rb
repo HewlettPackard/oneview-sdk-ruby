@@ -17,7 +17,7 @@ require_relative '_client'
 #   @storage_system_ip
 #   @unmanaged_volume_wwn (optional)
 
-fail 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
+raise 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
 # 1) Common = Storage System + Storage Pool
 puts '1) Common = Storage System + Storage Pool'
@@ -28,7 +28,7 @@ storage_system.retrieve!
 
 # Retrieve a Storage Pool
 pools = OneviewSDK::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
-fail 'ERROR: No storage pools found attached to the provided storage system' if pools.empty?
+raise 'ERROR: No storage pools found attached to the provided storage system' if pools.empty?
 storage_pool = pools.first
 
 options1 = {

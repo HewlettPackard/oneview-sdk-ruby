@@ -13,33 +13,33 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-  # FC network resource implementation
-  class Fabric < Resource
-    BASE_URI = '/rest/fabrics'.freeze
+    # FC network resource implementation
+    class Fabric < Resource
+      BASE_URI = '/rest/fabrics'.freeze
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def create
-      unavailable_method
-    end
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def create
+        unavailable_method
+      end
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def update
-      unavailable_method
-    end
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def update
+        unavailable_method
+      end
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def delete
-      unavailable_method
-    end
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def delete
+        unavailable_method
+      end
 
-    # Method is not available
-    # @raise [OneviewSDK::MethodUnavailable] method is not available
-    def refresh
-      unavailable_method
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def refresh
+        unavailable_method
+      end
     end
-  end
   end
 end

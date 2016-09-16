@@ -134,8 +134,8 @@ RSpec.describe OneviewSDK::Client do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(FakeResponse.new)
       options = { url: 'https://oneview.example.com', token: 'token123' }
       client = nil
-      expect { client = OneviewSDK::Client.new(options) }.to output(
-        /Failed to get OneView max api version. Using default/).to_stdout_from_any_process
+      expect { client = OneviewSDK::Client.new(options) }.to output(/Failed to get OneView max api version. Using default/)
+        .to_stdout_from_any_process
       expect(client.api_version).to eq(200)
     end
   end
