@@ -332,20 +332,18 @@ module OneviewSDK
 
   # Get resource class that matches the type given
   # @param [String] type Name of the desired class type
+  # @param [Fixnum] api_ver API module version to fetch resource from
   # @return [Class] Resource class or nil if not found
-  def self.resource_named(type)
-    classes = {}
-    orig_classes = []
-    api_module = OneviewSDK.const_get("API#{@api_version}")
-    api_module.constants.each do |c|
-      klass = OneviewSDK.const_get(c)
-      next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
-      name = klass.name.split('::').last
-      orig_classes.push(name)
-      classes[name.downcase.delete('_').delete('-')] = klass
-      classes["#{name.downcase.delete('_').delete('-')}s"] = klass
-    end
+  def self.resource_named(type, api_ver = @api_version)
+    raise "API version #{api_ver} is not supported!" unless SUPPORTED_API_VERSIONS.include?(api_ver)
     new_type = type.to_s.downcase.gsub(/[ -_]/, '')
-    return classes[new_type] if classes.keys.include?(new_type)
+    api_module = OneviewSDK.const_get("API#{api_ver}")
+    api_module.constants.each do |c|
+      klass = api_module.const_get(c)
+      next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
+      name = klass.name.split('::').last.downcase.delete('_').delete('-')
+      return klass if new_type =~ /^#{name}[s]?$/
+    end
+    nil
   end
 end

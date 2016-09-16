@@ -12,6 +12,12 @@
 module OneviewSDK
   # Module for API v200
   module API200
+    # Get resource class that matches the type given
+    # @param [String] type Name of the desired class type
+    # @return [Class] Resource class or nil if not found
+    def self.resource_named(type)
+      OneviewSDK.resource_named(type, 200)
+    end
   end
 end
 

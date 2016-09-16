@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.license       = 'Apache-2.0'
   spec.homepage      = 'https://github.com/HewlettPackard/oneview-sdk-ruby'
 
-  all_files = `git ls-files -z`.split("\x0")
+  all_files          = `git ls-files -z`.split("\x0")
   spec.files         = all_files.reject { |f| f.match(%r{^(examples\/)|(spec\/)}) }
   spec.executables   = all_files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']

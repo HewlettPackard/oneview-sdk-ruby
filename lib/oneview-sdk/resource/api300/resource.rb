@@ -11,25 +11,8 @@
 
 module OneviewSDK
   module API300
-    # Base Resource implementation
+    # Base Resource implementation for API300 resources
     class Resource < OneviewSDK::Resource
-      # Get resource class that matches the type given
-      # @param [String] type Name of the desired class type
-      # @return [Class] Resource class or nil if not found
-      def self.resource_named(type)
-        classes = {}
-        orig_classes = []
-        OneviewSDK::API300.constants.each do |c|
-          klass = OneviewSDK.const_get(c)
-          next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
-          name = klass.name.split('::').last
-          orig_classes.push(name)
-          classes[name.downcase.delete('_').delete('-')] = klass
-          classes["#{name.downcase.delete('_').delete('-')}s"] = klass
-        end
-        new_type = type.to_s.downcase.gsub(/[ -_]/, '')
-        return classes[new_type] if classes.keys.include?(new_type)
-      end
     end
   end
 end

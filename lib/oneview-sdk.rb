@@ -19,7 +19,7 @@ require_relative 'oneview-sdk/cli'
 # Module for interacting with the HPE OneView API
 module OneviewSDK
   ENV_VARS = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED).freeze
-  SUPPORTED_API_VERSIONS = [120, 200, 300].freeze
+  SUPPORTED_API_VERSIONS = [200, 300].freeze
   DEFAULT_API_VERSION = 200
   @api_version = DEFAULT_API_VERSION
   @api_version_updated = false # Whether or not the API version has been set by the user
@@ -32,7 +32,7 @@ module OneviewSDK
   # Set the default API version
   def self.api_version=(version)
     version = version.to_i rescue version
-    raise "API version #{version} not supported!" unless SUPPORTED_API_VERSIONS.include?(version)
+    raise "API version #{version} is not supported!" unless SUPPORTED_API_VERSIONS.include?(version)
     raise "The module for API version #{@api_version} is undefined" unless constants.include?("API#{@api_version}".to_sym)
     @api_version_updated = true
     @api_version = version

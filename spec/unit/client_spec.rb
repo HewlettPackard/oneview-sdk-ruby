@@ -1,4 +1,4 @@
-require_relative './../spec_helper'
+require 'spec_helper'
 
 RSpec.describe OneviewSDK::Client do
 
@@ -114,6 +114,12 @@ RSpec.describe OneviewSDK::Client do
       options = { url: 'https://oneview.example.com', token: 'token123', timeout: 5 }
       client = OneviewSDK::Client.new(options)
       expect(client.timeout).to eq(5)
+    end
+    
+    it 'sets the module api version unless it has already been set' do
+      expect(OneviewSDK).to receive(:api_version_updated?).and_return false
+      expect(OneviewSDK).to receive(:api_version=).with(200).and_return true
+      OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'token123', api_version: 200)
     end
   end
 
