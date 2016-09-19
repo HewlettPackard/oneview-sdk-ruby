@@ -1,5 +1,5 @@
 # v3.0.0
- - Split resourced into API modules
+ - Split resources into API modules
  - Added OneView API300 endpoints
 
 ### v2.1.0
