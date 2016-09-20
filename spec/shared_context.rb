@@ -6,6 +6,9 @@ RSpec.shared_context 'shared context', a: :b do
 
     options_200 = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
     @client = OneviewSDK::Client.new(options_200)
+
+    options_300 = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', api_version: 300 }
+    @client_300 = OneviewSDK::Client.new(options_300)
   end
 end
 
@@ -89,6 +92,7 @@ RSpec.shared_context 'system context', a: :b do
     $config  ||= OneviewSDK::Config.load(@config_path)
     $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
     $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
+    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
 
     allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
     allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
