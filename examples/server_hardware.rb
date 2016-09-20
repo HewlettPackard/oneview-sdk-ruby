@@ -33,7 +33,7 @@ puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 # Find recently created item by name
 matches = OneviewSDK::ServerHardware.find_by(@client, name: item[:name])
 item2 = matches.first
-fail "Failed to find #{type} by name: '#{item[:name]}'" unless matches.first
+raise "Failed to find #{type} by name: '#{item[:name]}'" unless matches.first
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
 
 # Retrieve recently created item

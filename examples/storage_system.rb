@@ -18,9 +18,9 @@ require_relative '_client' # Gives access to @client
 #   @storage_system_username
 #   @storage_system_password
 
-fail 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
-fail 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
-fail 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
+raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
+raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
+raise 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
 
 # Example: Create a storage system
 options = {

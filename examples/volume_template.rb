@@ -15,7 +15,7 @@ require_relative '_client'
 # NOTE: You'll need to add the following instance variable to the _client.rb file with valid values for your environment:
 #   @storage_system_ip
 
-fail 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
+raise 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
 options = {
   name: 'ONEVIEW_SDK_TEST VT1',
@@ -25,9 +25,9 @@ options = {
 
 # Retrieve storage pool and storage system
 storage_pool = OneviewSDK::StoragePool.find_by(@client, {}).first
-fail 'ERROR: No storage pools found!' unless storage_pool
+raise 'ERROR: No storage pools found!' unless storage_pool
 storage_system = OneviewSDK::StorageSystem.find_by(@client, credentials: { ip_hostname: @storage_system_ip }).first
-fail "ERROR: Storage System #{@storage_system_ip} not found!" unless storage_system
+raise "ERROR: Storage System #{@storage_system_ip} not found!" unless storage_system
 
 # Create Volume Template
 volume_template = OneviewSDK::VolumeTemplate.new(@client, options)

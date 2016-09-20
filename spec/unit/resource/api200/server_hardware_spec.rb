@@ -127,8 +127,8 @@ RSpec.describe OneviewSDK::ServerHardware do
     context 'with valid data' do
       before :each do
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
-        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(
-          name: 'En1OA1,bay 1', serialNumber: 'Fake', uri: '/rest/fake')
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler)
+          .and_return(name: 'En1OA1,bay 1', serialNumber: 'Fake', uri: '/rest/fake')
 
         @data = {
           'hostname' => '1.1.1.1',

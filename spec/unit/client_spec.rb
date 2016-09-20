@@ -1,4 +1,4 @@
-require_relative './../spec_helper'
+require 'spec_helper'
 
 RSpec.describe OneviewSDK::Client do
 
@@ -115,6 +115,12 @@ RSpec.describe OneviewSDK::Client do
       client = OneviewSDK::Client.new(options)
       expect(client.timeout).to eq(5)
     end
+
+    it 'sets the module api version unless it has already been set' do
+      expect(OneviewSDK).to receive(:api_version_updated?).and_return false
+      expect(OneviewSDK).to receive(:api_version=).with(200).and_return true
+      OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'token123', api_version: 200)
+    end
   end
 
   describe '#appliance_api_version' do
@@ -134,8 +140,8 @@ RSpec.describe OneviewSDK::Client do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(FakeResponse.new)
       options = { url: 'https://oneview.example.com', token: 'token123' }
       client = nil
-      expect { client = OneviewSDK::Client.new(options) }.to output(
-        /Failed to get OneView max api version. Using default/).to_stdout_from_any_process
+      expect { client = OneviewSDK::Client.new(options) }.to output(/Failed to get OneView max api version. Using default/)
+        .to_stdout_from_any_process
       expect(client.api_version).to eq(200)
     end
   end

@@ -246,16 +246,14 @@ RSpec.describe OneviewSDK::Resource do
 
     it 'uses the rest_put method to update the data' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
-      expect(@client).to receive(:rest_put).with(
-        res['uri'], { 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
+      expect(@client).to receive(:rest_put).with(res['uri'], { 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
       res.update
     end
 
     it 'raises an error if the update fails' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
-      expect(@client).to receive(:rest_put).with(
-        res['uri'], { 'body' => res.data }, res.api_version).and_return(fake_response)
+      expect(@client).to receive(:rest_put).with(res['uri'], { 'body' => res.data }, res.api_version).and_return(fake_response)
       expect { res.update }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
     end
   end
@@ -274,16 +272,14 @@ RSpec.describe OneviewSDK::Resource do
 
     it 'returns true if the delete was successful' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
-      expect(@client).to receive(:rest_delete).with(
-        res['uri'], {}, res.api_version).and_return(FakeResponse.new)
+      expect(@client).to receive(:rest_delete).with(res['uri'], {}, res.api_version).and_return(FakeResponse.new)
       expect(res.delete).to eq(true)
     end
 
     it 'raises an error if the delete fails' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
-      expect(@client).to receive(:rest_delete).with(
-        res['uri'], {}, res.api_version).and_return(fake_response)
+      expect(@client).to receive(:rest_delete).with(res['uri'], {}, res.api_version).and_return(fake_response)
       expect { res.delete }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
     end
   end

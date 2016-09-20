@@ -21,7 +21,7 @@ classes = [
 classes.each do |klass|
   RSpec.describe klass do
     it 'exists and supports a message parameter' do
-      expect { fail described_class, 'Msg' }.to raise_error(described_class, /Msg/)
+      expect { raise described_class, 'Msg' }.to raise_error(described_class, /Msg/)
     end
   end
 end

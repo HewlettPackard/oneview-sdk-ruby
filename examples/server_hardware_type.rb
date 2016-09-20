@@ -20,7 +20,7 @@ list = OneviewSDK::ServerHardwareType.find_by(@client, {})
 puts "\n#{type.capitalize} list:"
 list.each { |p| puts "  #{p[:name]}" }
 
-if list.size > 0
+unless list.empty?
   item = list.first
 
   # Rename a server hardware type

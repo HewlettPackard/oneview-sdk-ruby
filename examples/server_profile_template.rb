@@ -17,10 +17,10 @@ type = 'Server Profile Template'
 puts "\n### Creating a new Server Profile Template based on a Server Hardware Type and Enclosure Group"
 item = OneviewSDK::ServerProfileTemplate.new(@client, name:  'OneViewSDK Test ServerProfileTemplate')
 server_hardware_type = OneviewSDK::ServerHardwareType.find_by(@client, {}).first
-fail 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
+raise 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
 item.set_server_hardware_type(server_hardware_type)
 enclosure_group = OneviewSDK::EnclosureGroup.find_by(@client, {}).first
-fail 'Failed to find Enclosure Group' unless enclosure_group || enclosure_group['uri']
+raise 'Failed to find Enclosure Group' unless enclosure_group || enclosure_group['uri']
 item.set_enclosure_group(enclosure_group)
 item.create
 puts "\nCreated #{type} '#{item['name']}' sucessfully.\n  uri = '#{item['uri']}'"
@@ -31,7 +31,7 @@ puts "\nEnclosure Group '#{enclosure_group['name']}'.\n  uri = '#{item['enclosur
 puts "\n\n### Find recently created item by name"
 matches = OneviewSDK::ServerProfileTemplate.find_by(@client, name: item['name'])
 item2 = matches.first
-fail "Failed to find #{type} by name: '#{item['name']}'" unless matches.first
+raise "Failed to find #{type} by name: '#{item['name']}'" unless matches.first
 puts "\nFound #{type} by name: '#{item['name']}'.\n  uri = '#{item2['uri']}'"
 
 puts "\n\n### Retrieve recently created item"

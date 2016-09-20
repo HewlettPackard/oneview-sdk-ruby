@@ -24,11 +24,11 @@ Style/IndentationWidth:
 Style/VariableName:
   EnforcedStyle: snake_case
   Exclude:
-    - 'lib/oneview-sdk/resource/*'
+    - 'lib/oneview-sdk/resource/**/*'
 
 Style/MethodName:
   Exclude:
-    - 'lib/oneview-sdk/resource/*'
+    - 'lib/oneview-sdk/resource/**/*'
 
 Style/FileName:
   Exclude:
