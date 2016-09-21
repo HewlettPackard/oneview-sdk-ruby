@@ -16,7 +16,7 @@ Metrics/ModuleLength:
   Max: 150
 
 Style/GlobalVars:
-  AllowedVariables: [$config, $secrets, $client, $client_120]
+  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300]
 
 Style/IndentationWidth:
   Width: 2

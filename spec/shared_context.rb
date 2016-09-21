@@ -23,50 +23,24 @@ end
 
 # Context for integration testing:
 # WARNING: Communicates with & modifies a real instance.
-# Must set the following environment variables:
-#   ENV['ONEVIEWSDK_INTEGRATION_CONFIG'] = '/full/path/to/one_view/config.json'
-#   ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] = '/full/path/to/one_view/secrets.json'
-# Or use the default paths:
-#   spec/integration/one_view_config.json
-#   spec/integration/one_view_secrets.json
 RSpec.shared_context 'integration context', a: :b do
   # Ensure config & secrets files exist
   before :all do
-    default_config  = 'spec/integration/one_view_config.json'
-    default_secrets = 'spec/integration/one_view_secrets.json'
-
-    @config_path  ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG']  || default_config
-    @secrets_path ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] || default_secrets
-
-    unless File.file?(@config_path) && File.file?(@secrets_path)
-      STDERR.puts "\n\n"
-      STDERR.puts 'ERROR: Integration config file not found' unless File.file?(@config_path)
-      STDERR.puts 'ERROR: Integration secrets file not found' unless File.file?(@secrets_path)
-      STDERR.puts "\n\n"
-      exit!
-    end
-
-    $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
-
-    # Create client objects:
-    $config  ||= OneviewSDK::Config.load(@config_path)
-    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
-    $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
+    integration_context
   end
 
-  before :each do |e|
-    if ENV['PRINT_METADATA_ONLY']
-      # For debugging only: Shows test metadata without actually running the tests
-      action = case e.metadata[:type]
-               when CREATE then 'CREATE'
-               when UPDATE then 'UPDATE'
-               when DELETE then 'DELETE'
-               else '_____'
-               end
-      puts "#{action} #{e.metadata[:sequence] || '_'}: #{described_class}: #{e.metadata[:description]}"
-      raise 'Skipped'
-    end
+  integration_context_debugging
+end
+
+# Context for API300 integration testing:
+# Same as the one above, but including a 300 client
+RSpec.shared_context 'integration api300 context', a: :b do
+  before :all do
+    integration_context
+    $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
   end
+
+  integration_context_debugging
 end
 
 RSpec.shared_context 'system context', a: :b do
@@ -92,10 +66,54 @@ RSpec.shared_context 'system context', a: :b do
     $config  ||= OneviewSDK::Config.load(@config_path)
     $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
     $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
-    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
+    $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
 
     allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
     allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
   end
 
+end
+
+# Must set the following environment variables:
+#   ENV['ONEVIEWSDK_INTEGRATION_CONFIG'] = '/full/path/to/one_view/config.json'
+#   ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] = '/full/path/to/one_view/secrets.json'
+# Or use the default paths:
+#   spec/integration/one_view_config.json
+#   spec/integration/one_view_secrets.json
+def integration_context
+  default_config  = 'spec/integration/one_view_config.json'
+  default_secrets = 'spec/integration/one_view_secrets.json'
+
+  @config_path  ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG']  || default_config
+  @secrets_path ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] || default_secrets
+
+  unless File.file?(@config_path) && File.file?(@secrets_path)
+    STDERR.puts "\n\n"
+    STDERR.puts 'ERROR: Integration config file not found' unless File.file?(@config_path)
+    STDERR.puts 'ERROR: Integration secrets file not found' unless File.file?(@secrets_path)
+    STDERR.puts "\n\n"
+    exit!
+  end
+  $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
+
+  # Create client objects:
+  $config  ||= OneviewSDK::Config.load(@config_path)
+  $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
+  $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
+end
+
+# For debugging only: Shows test metadata without actually running the tests
+def integration_context_debugging
+  before :each do |e|
+    if ENV['PRINT_METADATA_ONLY']
+      action = case e.metadata[:type]
+               when CREATE then 'CREATE'
+               when UPDATE then 'UPDATE'
+               when DELETE then 'DELETE'
+               else '_____'
+               end
+      puts "#{action} #{e.metadata[:sequence] || '_'}: #{described_class}: #{e.metadata[:description]}"
+      raise 'Skipped'
+    end
+  end
 end
