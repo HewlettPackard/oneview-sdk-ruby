@@ -21,19 +21,19 @@ RSpec.shared_context 'cli context', a: :b do
   end
 end
 
-# Context for integration testing:
+# Context for API =< 200 integration testing:
 # WARNING: Communicates with & modifies a real instance.
 RSpec.shared_context 'integration context', a: :b do
-  # Ensure config & secrets files exist
   before :all do
     integration_context
+    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
+    $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
   end
 
   integration_context_debugging
 end
 
 # Context for API300 integration testing:
-# Same as the one above, but including a 300 client
 RSpec.shared_context 'integration api300 context', a: :b do
   before :all do
     integration_context
@@ -87,6 +87,7 @@ def integration_context
   @config_path  ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG']  || default_config
   @secrets_path ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] || default_secrets
 
+  # Ensure config & secrets files exist
   unless File.file?(@config_path) && File.file?(@secrets_path)
     STDERR.puts "\n\n"
     STDERR.puts 'ERROR: Integration config file not found' unless File.file?(@config_path)
@@ -96,10 +97,8 @@ def integration_context
   end
   $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
 
-  # Create client objects:
+  # Creates the global config variable
   $config  ||= OneviewSDK::Config.load(@config_path)
-  $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
-  $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
 end
 
 # For debugging only: Shows test metadata without actually running the tests
