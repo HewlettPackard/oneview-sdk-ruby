@@ -11,7 +11,8 @@
 
 module OneviewSDK
   module API300
-    class ServerProfile < API200::ServerProfile
+    # Connection template resource implementation
+    class ConnectionTemplate < API200::ConnectionTemplate
     end
   end
 end

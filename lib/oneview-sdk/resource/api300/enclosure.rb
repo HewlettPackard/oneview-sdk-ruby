@@ -11,7 +11,8 @@
 
 module OneviewSDK
   module API300
-    class ServerProfile < API200::ServerProfile
+    # Enclosure resource implementation
+    class Enclosure < API200::Enclosure
     end
   end
 end

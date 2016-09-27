@@ -1,7 +1,7 @@
-# (c) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -11,7 +11,8 @@
 
 module OneviewSDK
   module API300
-    class ServerProfile < API200::ServerProfile
+    # Network set resource implementation
+    class NetworkSet < API200::NetworkSet
     end
   end
 end
