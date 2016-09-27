@@ -43,7 +43,8 @@ RSpec.describe OneviewSDK::API300::StoragePool do
 
     it 'requires a storage_system with a uri' do
       item = OneviewSDK::API300::StoragePool.new(@client_300)
-      expect { item.set_storage_system(OneviewSDK::API300::StorageSystem.new(@client_300)) }.to raise_error(OneviewSDK::IncompleteResource, /Please set/)
+      expect { item.set_storage_system(OneviewSDK::API300::StorageSystem.new(@client_300)) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set/)
     end
   end
 

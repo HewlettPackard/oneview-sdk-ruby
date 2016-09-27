@@ -17,7 +17,8 @@ RSpec.describe OneviewSDK::API300::LogicalInterconnect do
 
   describe '#create' do
     it 'requires the enclosure to have a uri value' do
-      expect { log_int.create(1, OneviewSDK::API300::Enclosure.new(@client_300)) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { log_int.create(1, OneviewSDK::API300::Enclosure.new(@client_300)) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'makes a POST call to the base uri' do
@@ -29,7 +30,8 @@ RSpec.describe OneviewSDK::API300::LogicalInterconnect do
 
   describe '#delete' do
     it 'requires the enclosure to have a uri value' do
-      expect { log_int.delete(1, OneviewSDK::API300::Enclosure.new(@client_300)) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { log_int.delete(1, OneviewSDK::API300::Enclosure.new(@client_300)) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'makes a DELETE call to the base uri' do
@@ -77,7 +79,8 @@ RSpec.describe OneviewSDK::API300::LogicalInterconnect do
 
   describe '#compliance' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::LogicalInterconnect.new(@client_300).compliance }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::LogicalInterconnect.new(@client_300).compliance }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to uri/compliance & updates @data' do
@@ -91,7 +94,8 @@ RSpec.describe OneviewSDK::API300::LogicalInterconnect do
 
   describe '#configuration' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::LogicalInterconnect.new(@client_300).configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::LogicalInterconnect.new(@client_300).configuration }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to uri/configuration & updates @data' do
@@ -136,7 +140,8 @@ RSpec.describe OneviewSDK::API300::LogicalInterconnect do
 
   describe '#get_firmware' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::LogicalInterconnect.new(@client_300).get_firmware }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::LogicalInterconnect.new(@client_300).get_firmware }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/firmware & returns the result' do

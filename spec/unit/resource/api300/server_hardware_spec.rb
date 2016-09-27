@@ -61,7 +61,8 @@ RSpec.describe OneviewSDK::API300::ServerHardware do
 
   describe '#set_refresh_state' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::ServerHardware.new(@client_300).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::ServerHardware.new(@client_300).set_refresh_state(:state) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to /refreshState' do
@@ -83,24 +84,28 @@ RSpec.describe OneviewSDK::API300::ServerHardware do
 
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::ServerHardware.new(@client_300).environmental_configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::ServerHardware.new(@client_300).environmental_configuration }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/environmentalConfiguration' do
       item = OneviewSDK::API300::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
       expect(item.environmental_configuration).to eq('key' => 'val')
     end
   end
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::ServerHardware.new(@client_300).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::ServerHardware.new(@client_300).utilization }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do
       item = OneviewSDK::API300::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
       expect(item.utilization).to eq('key' => 'val')
     end
 
@@ -201,7 +206,8 @@ RSpec.describe OneviewSDK::API300::ServerHardware do
     end
 
     it 'does a PUT to uri/powerState and updates @data' do
-      expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/powerState', 'body' => { powerState: 'Off', powerControl: 'MomentaryPress' })
+      expect(@client_300).to receive(:rest_put)
+        .with(@item['uri'] + '/powerState', 'body' => { powerState: 'Off', powerControl: 'MomentaryPress' })
         .and_return(FakeResponse.new(powerState: 'Off'))
       expect(@item.power_off).to eq(true)
       expect(@item['powerState']).to eq('Off')
@@ -209,7 +215,8 @@ RSpec.describe OneviewSDK::API300::ServerHardware do
 
     it 'powering on does a ColdBoot for servers in an Unknown state' do
       @item['powerState'] = 'Unknown'
-      expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/powerState', 'body' => { powerState: 'On', powerControl: 'ColdBoot' })
+      expect(@client_300).to receive(:rest_put)
+        .with(@item['uri'] + '/powerState', 'body' => { powerState: 'On', powerControl: 'ColdBoot' })
         .and_return(FakeResponse.new(powerState: 'On'))
       expect(@item.power_on).to eq(true)
       expect(@item['powerState']).to eq('On')
@@ -217,7 +224,8 @@ RSpec.describe OneviewSDK::API300::ServerHardware do
 
     it 'powering off does a PressAndHold for servers in an Unknown state' do
       @item['powerState'] = 'Unknown'
-      expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/powerState', 'body' => { powerState: 'Off', powerControl: 'PressAndHold' })
+      expect(@client_300).to receive(:rest_put)
+        .with(@item['uri'] + '/powerState', 'body' => { powerState: 'Off', powerControl: 'PressAndHold' })
         .and_return(FakeResponse.new(powerState: 'Off'))
       expect(@item.power_off).to eq(true)
       expect(@item['powerState']).to eq('Off')
@@ -225,7 +233,8 @@ RSpec.describe OneviewSDK::API300::ServerHardware do
 
     it 'powering off does a PressAndHold for servers in a Resetting state' do
       @item['powerState'] = 'Resetting'
-      expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/powerState', 'body' => { powerState: 'Off', powerControl: 'PressAndHold' })
+      expect(@client_300).to receive(:rest_put)
+        .with(@item['uri'] + '/powerState', 'body' => { powerState: 'Off', powerControl: 'PressAndHold' })
         .and_return(FakeResponse.new(powerState: 'Off'))
       expect(@item.power_off).to eq(true)
       expect(@item['powerState']).to eq('Off')

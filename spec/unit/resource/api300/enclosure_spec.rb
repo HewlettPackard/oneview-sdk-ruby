@@ -22,7 +22,8 @@ RSpec.describe OneviewSDK::API300::Enclosure do
       before :each do
         allow_any_instance_of(OneviewSDK::API300::Enclosure).to receive(:update).and_return(true)
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
-        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(name: 'Encl1', serialNumber: 'Fake', uri: '/rest/fake')
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(name: 'Encl1',
+                                                                                           serialNumber: 'Fake', uri: '/rest/fake')
 
         @data = {
           'name' => 'Fake-Enclosure',
@@ -105,12 +106,14 @@ RSpec.describe OneviewSDK::API300::Enclosure do
 
   describe '#configuration' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Enclosure.new(@client_300).configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::Enclosure.new(@client_300).configuration }.to raise_error(OneviewSDK::IncompleteResource,
+                                                                                             /Please set uri/)
     end
 
     it 'does a PUT to /uri/configuration and updates the attributes' do
       item = OneviewSDK::API300::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_put).with('/rest/fake/configuration', {}, item.api_version).and_return(FakeResponse.new(name: 'NewName'))
+      expect(@client_300).to receive(:rest_put).with('/rest/fake/configuration', {}, item.api_version)
+        .and_return(FakeResponse.new(name: 'NewName'))
       item.configuration
       expect(item['name']).to eq('NewName')
     end
@@ -118,7 +121,8 @@ RSpec.describe OneviewSDK::API300::Enclosure do
 
   describe '#set_refresh_state' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Enclosure.new(@client_300).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::Enclosure.new(@client_300).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource,
+                                                                                                         /Please set uri/)
     end
 
     it 'does a PUT to /refreshState' do
@@ -153,19 +157,22 @@ RSpec.describe OneviewSDK::API300::Enclosure do
 
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Enclosure.new(@client_300).environmental_configuration }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::Enclosure.new(@client_300).environmental_configuration }.to raise_error(OneviewSDK::IncompleteResource,
+                                                                                                           /Please set uri/)
     end
 
     it 'gets uri/environmentalConfiguration' do
       item = OneviewSDK::API300::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', item.api_version)
+        .and_return(FakeResponse.new(key: 'val'))
       expect(item.environmental_configuration).to eq('key' => 'val')
     end
   end
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Enclosure.new(@client_300).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::Enclosure.new(@client_300).utilization }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do

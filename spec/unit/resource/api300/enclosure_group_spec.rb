@@ -18,7 +18,8 @@ RSpec.describe OneviewSDK::API300::EnclosureGroup do
 
   describe '#script' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::EnclosureGroup.new(@client_300).get_script }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::EnclosureGroup.new(@client_300).get_script }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/script' do
@@ -31,12 +32,14 @@ RSpec.describe OneviewSDK::API300::EnclosureGroup do
 
   describe '#set_script' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::EnclosureGroup.new(@client_300).set_script('Blah') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::EnclosureGroup.new(@client_300).set_script('Blah') }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to uri/script' do
       item = OneviewSDK::API300::EnclosureGroup.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_put).with('/rest/fake/script', { 'body' => 'Blah' }, item.api_version).and_return(FakeResponse.new('Blah'))
+      expect(@client_300).to receive(:rest_put).with('/rest/fake/script', { 'body' => 'Blah' }, item.api_version)
+        .and_return(FakeResponse.new('Blah'))
       expect(@client_300.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
       expect(item.set_script('Blah')).to eq(true)
     end

@@ -276,7 +276,8 @@ RSpec.describe OneviewSDK::API300::ServerProfile do
   describe '#add_connection' do
     before :each do
       @item['connections'] = []
-      @network = OneviewSDK::API300::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
+      @network = OneviewSDK::API300::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
+                                                                      uri: 'rest/fake/ethernet-networks/unit')
     end
 
     it 'adds simple connection' do
@@ -302,7 +303,8 @@ RSpec.describe OneviewSDK::API300::ServerProfile do
     describe '#remove_connection' do
       before :each do
         @item['connections'] = []
-        @network = OneviewSDK::API300::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
+        @network = OneviewSDK::API300::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
+                                                                        uri: 'rest/fake/ethernet-networks/unit')
         base_uri = @network['uri']
         1.upto(5) do |count|
           @network['uri'] = "#{@network['uri']}_#{count}"
@@ -386,7 +388,8 @@ RSpec.describe OneviewSDK::API300::ServerProfile do
 
   describe 'Volume attachment operations' do
     it 'can call the #add_volume_attachment using a specific already created Volume' do
-      volume = OneviewSDK::Volume.new(@client_300, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+      volume = OneviewSDK::Volume.new(@client_300,
+                                      uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
       @item.add_volume_attachment(volume)
 
       expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -398,7 +401,8 @@ RSpec.describe OneviewSDK::API300::ServerProfile do
 
     describe 'can call #remove_volume_attachment' do
       it 'and remove attachment with id 0' do
-        volume = OneviewSDK::Volume.new(@client_300, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+        volume = OneviewSDK::Volume.new(@client_300,
+                                        uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
         va = @item.remove_volume_attachment(7)
@@ -409,7 +413,8 @@ RSpec.describe OneviewSDK::API300::ServerProfile do
       end
 
       it 'and return nil if no attachment found' do
-        volume = OneviewSDK::Volume.new(@client_300, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+        volume = OneviewSDK::Volume.new(@client_300,
+                                        uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
         va = @item.remove_volume_attachment(5)
