@@ -12,7 +12,7 @@
 module OneviewSDK
   module API300
     module Thunderbird
-      class ConnectionTemplate < API200::ConnectionTemplate
+      class ServerProfile < API200::ServerProfile
       end
     end
   end

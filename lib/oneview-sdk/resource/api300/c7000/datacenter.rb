@@ -11,8 +11,8 @@
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      class ConnectionTemplate < API200::ConnectionTemplate
+    module C7000
+      class Datacenter < API200::Datacenter
       end
     end
   end

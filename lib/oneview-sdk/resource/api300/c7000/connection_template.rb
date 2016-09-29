@@ -13,7 +13,6 @@ module OneviewSDK
   module API300
     module C7000
       class ConnectionTemplate < API200::ConnectionTemplate
-
       end
     end
   end
