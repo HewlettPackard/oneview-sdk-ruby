@@ -1,3 +1,7 @@
+# v3.0.0
+ - Split resources into API modules
+ - Added OneView API300 endpoints
+
 ### v2.1.0
  - Fixed issue with the :resource_named method for OneViewSDK::Resource in Ruby 2.3
 

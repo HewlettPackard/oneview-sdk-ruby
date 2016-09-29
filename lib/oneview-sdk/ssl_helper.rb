@@ -42,7 +42,7 @@ module OneviewSDK
     # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.check_cert(url)
       uri = URI.parse(URI.escape(url))
-      fail InvalidURL, "Invalid url '#{url}'" unless uri.host
+      raise InvalidURL, "Invalid url '#{url}'" unless uri.host
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
       trusted_certs = load_trusted_certs
@@ -59,12 +59,12 @@ module OneviewSDK
     # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.install_cert(url)
       uri = URI.parse(URI.escape(url))
-      fail InvalidURL, "Invalid url '#{url}'" unless uri.host
+      raise InvalidURL, "Invalid url '#{url}'" unless uri.host
       options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
       pem = Net::HTTP.start(uri.host, uri.port, options) do |http|
         http.peer_cert.to_pem
       end
-      fail "Could not download cert from #{url}. You may have to do it manually, and append it to '#{CERT_STORE}'" if pem.nil?
+      raise "Could not download cert from #{url}. You may have to do it manually, and append it to '#{CERT_STORE}'" if pem.nil?
 
       name = "OneView at #{url}"
       content = "\n#{name}\n"
