@@ -17,7 +17,7 @@ module OneviewSDK
       # @param [String] type Name of the desired class type
       # @return [Class] Resource class or nil if not found
       def self.resource_named(type)
-        OneviewSDK::API300.resource_named(type, 300)
+        OneviewSDK::API300.resource_named(type, 'Thunderbird')
       end
     end
   end
