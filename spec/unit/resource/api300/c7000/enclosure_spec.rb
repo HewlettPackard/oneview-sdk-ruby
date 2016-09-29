@@ -107,7 +107,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
   describe '#configuration' do
     it 'requires a uri' do
       expect { OneviewSDK::API300::C7000::Enclosure.new(@client_300).configuration }.to raise_error(OneviewSDK::IncompleteResource,
-                                                                                             /Please set uri/)
+                                                                                                    /Please set uri/)
     end
 
     it 'does a PUT to /uri/configuration and updates the attributes' do
@@ -122,7 +122,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
   describe '#set_refresh_state' do
     it 'requires a uri' do
       expect { OneviewSDK::API300::C7000::Enclosure.new(@client_300).set_refresh_state(:state) }.to raise_error(OneviewSDK::IncompleteResource,
-                                                                                                         /Please set uri/)
+                                                                                                                /Please set uri/)
     end
 
     it 'does a PUT to /refreshState' do
@@ -158,7 +158,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
       expect { OneviewSDK::API300::C7000::Enclosure.new(@client_300).environmental_configuration }.to raise_error(OneviewSDK::IncompleteResource,
-                                                                                                           /Please set uri/)
+                                                                                                                  /Please set uri/)
     end
 
     it 'gets uri/environmentalConfiguration' do

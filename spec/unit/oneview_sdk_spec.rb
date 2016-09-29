@@ -9,12 +9,12 @@ RSpec.describe OneviewSDK do
   end
 
   it 'returns a valid API version' do
-    ['API200', 'API300'].each { |v| expect{ OneviewSDK::const_get(v) }.not_to raise_error }
+    %w(API200 API300).each { |v| expect { OneviewSDK.const_get(v) }.not_to raise_error }
   end
 
   it 'raises an error when an invalid API300 version is called' do
-    expect{ OneviewSDK::API999 }.to raise_error(NameError,
-                                                'The API999 method or resource does not exist for OneView API version 200.')
+    expect { OneviewSDK::API999 }.to raise_error(NameError,
+                                                 'The API999 method or resource does not exist for OneView API version 200.')
   end
 
   it 'has a default api version' do

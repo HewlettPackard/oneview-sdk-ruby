@@ -31,7 +31,11 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
     end
 
     it 'SNMPv3 Credentials' do
-      snmp_v3 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV3.new(161, 'user', 'MD5', 'auth_password', 'AES128', 'privacy_password')
+      snmp_v3 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV3.new(161, 'user',
+                                                                                'MD5',
+                                                                                'auth_password',
+                                                                                'AES128',
+                                                                                'privacy_password')
       expect(snmp_v3.port).to eq(161)
       expect(snmp_v3.user).to eq('user')
       expect(snmp_v3.auth_protocol).to eq('MD5')
@@ -72,7 +76,11 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
     it 'Valid structure and host for SNMPv3' do
       item = OneviewSDK::API300::C7000::LogicalSwitch.new(@client_300)
       ssh_credentials = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSSH.new('ssh_user', 'ssh_password')
-      snmp_v3 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV3.new(161, 'public', 'MD5', 'auth_password', 'AES128', 'privacy_password')
+      snmp_v3 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV3.new(161, 'public',
+                                                                                'MD5',
+                                                                                'auth_password',
+                                                                                'AES128',
+                                                                                'privacy_password')
       item.set_switch_credentials('127.0.0.1', ssh_credentials, snmp_v3)
       expect(item.logical_switch_credentials['127.0.0.1'][0]).to eq(ssh_credentials)
       expect(item.logical_switch_credentials['127.0.0.1'][1]).to eq(snmp_v3)
@@ -173,7 +181,11 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
     it 'Adding SNMPv3 switch' do
       logical_switch = OneviewSDK::API300::C7000::LogicalSwitch.new(@client_300)
       ssh_credentials = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSSH.new('ssh_user', 'ssh_password')
-      snmp_v3 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV3.new(161, 'user', 'MD5', 'auth_password', 'AES128', 'privacy_password')
+      snmp_v3 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV3.new(161, 'user',
+                                                                                'MD5',
+                                                                                'auth_password',
+                                                                                'AES128',
+                                                                                'privacy_password')
       logical_switch.set_switch_credentials('127.0.0.1', ssh_credentials, snmp_v3)
       expect(@client_300).to receive(:rest_post).with(
         '/rest/logical-switches',

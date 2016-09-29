@@ -177,7 +177,8 @@ RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300).utilization }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do

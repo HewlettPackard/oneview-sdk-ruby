@@ -277,7 +277,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
     before :each do
       @item['connections'] = []
       @network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
-                                                                      uri: 'rest/fake/ethernet-networks/unit')
+                                                                                   uri: 'rest/fake/ethernet-networks/unit')
     end
 
     it 'adds simple connection' do
@@ -304,7 +304,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
       before :each do
         @item['connections'] = []
         @network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
-                                                                        uri: 'rest/fake/ethernet-networks/unit')
+                                                                                     uri: 'rest/fake/ethernet-networks/unit')
         base_uri = @network['uri']
         1.upto(5) do |count|
           @network['uri'] = "#{@network['uri']}_#{count}"

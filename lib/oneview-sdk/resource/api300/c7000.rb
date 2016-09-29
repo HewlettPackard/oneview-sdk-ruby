@@ -10,8 +10,8 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Module for API v300
   module API300
+    # Module for API300 C7000
     module C7000
       # Get resource class that matches the type given
       # @param [String] type Name of the desired class type

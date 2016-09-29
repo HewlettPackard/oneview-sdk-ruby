@@ -12,8 +12,8 @@
 module OneviewSDK
   # Module for API v300
   module API300
-    SUPPORTED_API300_VERSIONS = ['C7000', 'Thunderbird'].freeze
-    DEFAULT_API300_VERSION = 'C7000'
+    SUPPORTED_API300_VERSIONS = %w(C7000 Thunderbird).freeze
+    DEFAULT_API300_VERSION = 'C7000'.freeze
     @api300_version = DEFAULT_API300_VERSION
     @api300_version_updated = false # Whether or not the API version has been set by the user
 
@@ -37,7 +37,7 @@ module OneviewSDK
 
     # Helps redirect resources to the correct API300 version
     def self.const_missing(const)
-      api300_module = OneviewSDK::API300.const_get("#{@api300_version}")
+      api300_module = OneviewSDK::API300.const_get(@api300_version.to_s)
       api300_module.const_get(const)
     rescue NameError
       raise NameError, "The #{const} method or resource does not exist for OneView API300 version #{@api300_version}."

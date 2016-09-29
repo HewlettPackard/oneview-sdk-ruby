@@ -12,7 +12,7 @@
 module OneviewSDK
   module API300
     module C7000
-      class EnclosureGroup < API200::EnclosureGroup  
+      class EnclosureGroup < API200::EnclosureGroup
       end
     end
   end
