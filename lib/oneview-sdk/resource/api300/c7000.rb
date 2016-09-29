@@ -10,8 +10,18 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
+  # Module for API v300
   module API300
-    class ServerProfile < API200::ServerProfile
+    module C7000
+      # Get resource class that matches the type given
+      # @param [String] type Name of the desired class type
+      # @return [Class] Resource class or nil if not found
+      def self.resource_named(type)
+        OneviewSDK::API300.resource_named(type, 300)
+      end
     end
   end
 end
+
+# Load all API-specific resources:
+Dir[File.dirname(__FILE__) + '/c7000/*.rb'].each { |file| require file }

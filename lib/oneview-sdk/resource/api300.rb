@@ -12,14 +12,45 @@
 module OneviewSDK
   # Module for API v300
   module API300
+    SUPPORTED_API300_VERSIONS = ['C7000', 'Thunderbird'].freeze
+    DEFAULT_API300_VERSION = 'C7000'
+    @api300_version = DEFAULT_API300_VERSION
+    @api300_version_updated = false # Whether or not the API version has been set by the user
+
     # Get resource class that matches the type given
     # @param [String] type Name of the desired class type
     # @return [Class] Resource class or nil if not found
     def self.resource_named(type)
       OneviewSDK.resource_named(type, 300)
     end
+
+    # Get the current API300 version
+    def self.api300_version
+      @api300_version
+    end
+
+    # Has the API300 version been set by the user?
+    # @return [TrueClass, FalseClass]
+    def self.api300_version_updated?
+      @api300_version_updated
+    end
+
+    # Sets the API300 version
+    def self.api300_version=(version)
+      raise "API300 version #{version} is not supported!" unless SUPPORTED_API300_VERSIONS.include?(version)
+      @api300_version_updated = true
+      @api300_version = version
+    end
+
+    # Helps redirect resources to the correct API300 version
+    def self.const_missing(const)
+      api300_module = OneviewSDK::API300.const_get("#{@api300_version}")
+      api300_module.const_get(const)
+    rescue NameError
+      raise NameError, "The #{const} method or resource does not exist for OneView API300 version #{@api300_version}."
+    end
   end
 end
 
-# Load all API-specific resources:
+# Load all API300-specific resources:
 Dir[File.dirname(__FILE__) + '/api300/*.rb'].each { |file| require file }
