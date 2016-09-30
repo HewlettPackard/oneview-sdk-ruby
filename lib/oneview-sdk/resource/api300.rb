@@ -12,42 +12,52 @@
 module OneviewSDK
   # Module for API v300
   module API300
-    SUPPORTED_API300_VERSIONS = %w(C7000 Thunderbird).freeze
-    DEFAULT_API300_VERSION = 'C7000'.freeze
-    @api300_version = DEFAULT_API300_VERSION
-    @api300_version_updated = false # Whether or not the API version has been set by the user
+    SUPPORTED_VERSIONS = %w(C7000 Thunderbird).freeze
+    DEFAULT_VERSION = 'C7000'.freeze
+    @version = DEFAULT_VERSION
+    @version_updated = false # Whether or not the API version has been set by the user
 
     # Get resource class that matches the type given
     # @param [String] type Name of the desired class type
+    # @param [String] version Version (C7000 or Thunderbird)
     # @return [Class] Resource class or nil if not found
-    def self.resource_named(type)
-      OneviewSDK.resource_named(type, 300)
+    def self.resource_named(type, version = @version)
+      raise "API300 version #{version} is not supported!" unless SUPPORTED_VERSIONS.include?(version)
+      new_type = type.to_s.downcase.gsub(/[ -_]/, '')
+      api_module = OneviewSDK::API300.const_get(version)
+      api_module.constants.each do |c|
+        klass = api_module.const_get(c)
+        next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
+        name = klass.name.split('::').last.downcase.delete('_').delete('-')
+        return klass if new_type =~ /^#{name}[s]?$/
+      end
+      nil
     end
 
     # Get the current API300 version
-    def self.api300_version
-      @api300_version
+    def self.version
+      @version
     end
 
     # Has the API300 version been set by the user?
     # @return [TrueClass, FalseClass]
-    def self.api300_version_updated?
-      @api300_version_updated
+    def self.version_updated?
+      @version_updated
     end
 
     # Sets the API300 version
-    def self.api300_version=(version)
-      raise "API300 version #{version} is not supported!" unless SUPPORTED_API300_VERSIONS.include?(version)
-      @api300_version_updated = true
-      @api300_version = version
+    def self.version=(version)
+      raise "API300 version #{version} is not supported!" unless SUPPORTED_VERSIONS.include?(version)
+      @version_updated = true
+      @version = version
     end
 
     # Helps redirect resources to the correct API300 version
     def self.const_missing(const)
-      api300_module = OneviewSDK::API300.const_get(@api300_version.to_s)
+      api300_module = OneviewSDK::API300.const_get(@version.to_s)
       api300_module.const_get(const)
     rescue NameError
-      raise NameError, "The #{const} method or resource does not exist for OneView API300 version #{@api300_version}."
+      raise NameError, "The #{const} method or resource does not exist for OneView API300 version #{@version}."
     end
   end
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::API300 do
   it 'has a list of supported api versions' do
-    versions = described_class::SUPPORTED_API300_VERSIONS
+    versions = described_class::SUPPORTED_VERSIONS
     expect(versions).to be_a Array
     %w(C7000 Thunderbird).each { |v| expect(versions).to include(v) }
   end
@@ -17,20 +17,31 @@ RSpec.describe OneviewSDK::API300 do
   end
 
   it 'has a default api version' do
-    expect(described_class::DEFAULT_API300_VERSION).to eq('C7000')
+    expect(described_class::DEFAULT_VERSION).to eq('C7000')
+  end
+
+  describe '#resource_named' do
+    it 'gets the correct resource class' do
+      expect(described_class.resource_named('ServerProfile')).to eq(described_class::ServerProfile)
+    end
+
+    it 'allows you to override the version' do
+      expect(described_class.resource_named('ServerProfile', 'Thunderbird')).to eq(described_class::Thunderbird::ServerProfile)
+      expect(described_class.resource_named('ServerProfile', 'C7000')).to eq(described_class::C7000::ServerProfile)
+    end
   end
 
   describe '#api_version' do
     it 'gets the current api_version' do
-      expect(described_class::SUPPORTED_API300_VERSIONS).to include(OneviewSDK::API300.api300_version)
+      expect(described_class::SUPPORTED_VERSIONS).to include(OneviewSDK::API300.version)
     end
   end
 
   describe '#api_version=' do
     it 'sets the current api_version' do
-      OneviewSDK::API300.api300_version = 'Thunderbird'
-      expect(OneviewSDK::API300.api300_version).to eq('Thunderbird')
-      expect(OneviewSDK::API300.api300_version_updated?).to eq(true)
+      OneviewSDK::API300.version = 'Thunderbird'
+      expect(OneviewSDK::API300.version).to eq('Thunderbird')
+      expect(OneviewSDK::API300.version_updated?).to eq(true)
     end
   end
 end
