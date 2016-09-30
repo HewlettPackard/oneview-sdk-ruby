@@ -33,7 +33,7 @@ RSpec.describe OneviewSDK::StorageSystem do
   describe '#retrieve!' do
     it 'finds by name if it is set' do
       item = OneviewSDK::StorageSystem.new(@client, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, name: 'Fake').and_return([item])
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, 'name' => 'Fake').and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
