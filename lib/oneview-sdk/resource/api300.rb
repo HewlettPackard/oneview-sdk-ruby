@@ -17,6 +17,13 @@ module OneviewSDK
     @api300_version = DEFAULT_API300_VERSION
     @api300_version_updated = false # Whether or not the API version has been set by the user
 
+    # Get resource class that matches the type given
+    # @param [String] type Name of the desired class type
+    # @return [Class] Resource class or nil if not found
+    def self.resource_named(type)
+      OneviewSDK.resource_named(type, 300)
+    end
+
     # Get the current API300 version
     def self.api300_version
       @api300_version
