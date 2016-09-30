@@ -101,7 +101,7 @@ Each OneView resource is exposed for usage with CRUD-like functionality.
 
 For example, once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
-Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation for the complete list and usage details, but here are a few examples to get you started:
+Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation for complete usage details and the [examples](examples/) directory for more examples and test-scripts, but here are a few examples to get you started:
 
 ##### Create a resource
 
@@ -262,6 +262,20 @@ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:t
 ```bash
 $ oneview-sdk-ruby create_from_file /my-server-profile.json
 $ oneview-sdk-ruby delete_from_file /my-server-profile.json
+```
+
+##### Update resources by name:
+
+```bash
+$ oneview-sdk-ruby update FCNetwork FC1 -h linkStabilityTime:20  # Using hash format
+$ oneview-sdk-ruby update Volume VOL_01 -j '{"shareable": true}' # Using json format
+```
+
+##### Make REST calls:
+
+```bash
+$ oneview-sdk-ruby rest get rest/fc-networks
+$ oneview-sdk-ruby rest PUT rest/enclosures/<id>/configuration
 ```
 
 ##### Start an interactive console session with a OneView connection:
