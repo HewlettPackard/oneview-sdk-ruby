@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/uplink_set'
+
 module OneviewSDK
   module API300
     module C7000
-      class UplinkSet < API200::UplinkSet
+      class UplinkSet < OneviewSDK::API200::UplinkSet
       end
     end
   end

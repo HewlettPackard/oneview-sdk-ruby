@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/logical_enclosure'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class LogicalEnclosure < API200::LogicalEnclosure
+      class LogicalEnclosure < OneviewSDK::API200::LogicalEnclosure
       end
     end
   end

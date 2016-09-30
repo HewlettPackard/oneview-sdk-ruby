@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/fc_network'
+
 module OneviewSDK
   module API300
     module C7000
-      class FCNetwork < API200::FCNetwork
+      class FCNetwork < OneviewSDK::API200::FCNetwork
       end
     end
   end

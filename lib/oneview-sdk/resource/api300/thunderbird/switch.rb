@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/switch'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class Switch < API200::Switch
+      class Switch < OneviewSDK::API200::Switch
       end
     end
   end

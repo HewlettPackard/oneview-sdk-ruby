@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/unmanaged_device'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class UnmanagedDevice < API200::UnmanagedDevice
+      class UnmanagedDevice < OneviewSDK::API200::UnmanagedDevice
       end
     end
   end

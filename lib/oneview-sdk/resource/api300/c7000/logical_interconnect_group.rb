@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/logical_interconnect_group'
+
 module OneviewSDK
   module API300
     module C7000
-      class LogicalInterconnectGroup < API200::LogicalInterconnectGroup
+      class LogicalInterconnectGroup < OneviewSDK::API200::LogicalInterconnectGroup
       end
     end
   end

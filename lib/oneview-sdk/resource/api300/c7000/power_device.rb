@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/power_device'
+
 module OneviewSDK
   module API300
     module C7000
-      class PowerDevice < API200::PowerDevice
+      class PowerDevice < OneviewSDK::API200::PowerDevice
       end
     end
   end

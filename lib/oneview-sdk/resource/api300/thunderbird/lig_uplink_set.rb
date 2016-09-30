@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/lig_uplink_set'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class LIGUplinkSet < API200::LIGUplinkSet
+      class LIGUplinkSet < OneviewSDK::API200::LIGUplinkSet
       end
     end
   end

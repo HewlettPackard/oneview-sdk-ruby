@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/logical_interconnect'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class LogicalInterconnect < API200::LogicalInterconnect
+      class LogicalInterconnect < OneviewSDK::API200::LogicalInterconnect
       end
     end
   end

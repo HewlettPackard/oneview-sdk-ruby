@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/network_set'
+
 module OneviewSDK
   module API300
     module C7000
-      class NetworkSet < API200::NetworkSet
+      class NetworkSet < OneviewSDK::API200::NetworkSet
       end
     end
   end

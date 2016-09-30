@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/firmware_bundle'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class FirmwareBundle < API200::FirmwareBundle
+      class FirmwareBundle < OneviewSDK::API200::FirmwareBundle
       end
     end
   end

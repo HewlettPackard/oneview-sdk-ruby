@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/server_hardware'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class ServerHardware < API200::ServerHardware
+      class ServerHardware < OneviewSDK::API200::ServerHardware
       end
     end
   end

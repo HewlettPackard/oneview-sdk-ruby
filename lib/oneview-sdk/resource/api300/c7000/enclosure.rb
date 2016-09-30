@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/enclosure'
+
 module OneviewSDK
   module API300
     module C7000
-      class Enclosure < API200::Enclosure
+      class Enclosure < OneviewSDK::API200::Enclosure
       end
     end
   end

@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/datacenter'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class Datacenter < API200::Datacenter
+      class Datacenter < OneviewSDK::API200::Datacenter
       end
     end
   end

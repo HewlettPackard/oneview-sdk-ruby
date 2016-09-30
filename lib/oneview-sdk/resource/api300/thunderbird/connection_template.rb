@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/connection_template'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class ConnectionTemplate < API200::ConnectionTemplate
+      class ConnectionTemplate < OneviewSDK::API200::ConnectionTemplate
       end
     end
   end

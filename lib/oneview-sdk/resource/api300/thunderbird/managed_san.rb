@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/managed_san'
+
 module OneviewSDK
   module API300
     module Thunderbird
-      class ManagedSAN < API200::ManagedSAN
+      class ManagedSAN < OneviewSDK::API200::ManagedSAN
       end
     end
   end

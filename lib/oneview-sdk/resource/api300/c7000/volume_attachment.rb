@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/volume_attachment'
+
 module OneviewSDK
   module API300
     module C7000
-      class VolumeAttachment < API200::VolumeAttachment
+      class VolumeAttachment < OneviewSDK::API200::VolumeAttachment
       end
     end
   end

@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/volume_snapshot'
+
 module OneviewSDK
   module API300
     module C7000
-      class VolumeSnapshot < API200::VolumeSnapshot
+      class VolumeSnapshot < OneviewSDK::API200::VolumeSnapshot
       end
     end
   end

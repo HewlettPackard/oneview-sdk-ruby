@@ -9,10 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api200/server_profile'
+
 module OneviewSDK
   module API300
     module C7000
-      class ServerProfile < API200::ServerProfile
+      class ServerProfile < OneviewSDK::API200::ServerProfile
       end
     end
   end
