@@ -1,3 +1,6 @@
+#### v2.1.1
+ - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
+
 ### v2.1.0
  - Fixed issue with the :resource_named method for OneViewSDK::Resource in Ruby 2.3
 
