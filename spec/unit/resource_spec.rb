@@ -395,6 +395,11 @@ RSpec.describe OneviewSDK do
       expect(OneviewSDK.resource_named('FCoENetwork')).to eq(OneviewSDK::FCoENetwork)
     end
 
+    it 'allows you to set the api version to look in' do
+      expect(OneviewSDK.resource_named('ServerProfile', 200)).to eq(OneviewSDK::API200::ServerProfile)
+      expect(OneviewSDK.resource_named('FCoENetwork', 300)).to eq(OneviewSDK::API300::FCoENetwork)
+    end
+
     it 'ignores case' do
       expect(OneviewSDK.resource_named('SERVERProfilE')).to eq(OneviewSDK::ServerProfile)
     end
