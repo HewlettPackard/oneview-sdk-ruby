@@ -16,6 +16,7 @@ module OneviewSDK
   # Enclosure resource implementation
   class Enclosure < Resource
     BASE_URI = '/rest/enclosures'.freeze
+    UNIQUE_IDENTIFIERS = %w(name uri serialNumber activeOaPreferredIP standbyOaPreferredIP).freeze
 
     # Remove resource from OneView
     # @return [true] if resource was removed successfully

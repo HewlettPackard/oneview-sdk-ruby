@@ -13,6 +13,7 @@ module OneviewSDK
   # Server hardware resource implementation
   class ServerHardware < Resource
     BASE_URI = '/rest/server-hardware'.freeze
+    UNIQUE_IDENTIFIERS = %w(name uri serialNumber virtualSerialNumber serverProfileUri).freeze
 
     # Remove resource from OneView
     # @return [true] if resource was removed successfully
@@ -26,6 +27,33 @@ module OneviewSDK
       super
       # Default values
       @data['type'] ||= 'server-hardware-4'
+    end
+
+    # Retrieve resource details based on this resource's name or URI.
+    # @note one of the UNIQUE_IDENTIFIERS must be specified in the resource
+    # @return [Boolean] Whether or not retrieve was successful
+    def retrieve!
+      super
+    rescue IncompleteResource => e
+      hostname = @data['hostname'] || @data['mpHostInfo']['mpHostName'] rescue nil
+      raise e unless hostname
+      results = self.class.find_by(@client, 'mpHostInfo' => { 'mpHostName' => hostname })
+      return false if results.size != 1
+      set_all(results[0].data)
+      true
+    end
+
+    # Check if a resource exists
+    # @note one of the UNIQUE_IDENTIFIERS must be specified in the resource
+    # @return [Boolean] Whether or not resource exists
+    def exists?
+      super
+    rescue IncompleteResource => e
+      hostname = @data['hostname'] || @data['mpHostInfo']['mpHostName'] rescue nil
+      raise e unless hostname
+      results = self.class.find_by(@client, 'mpHostInfo' => { 'mpHostName' => hostname })
+      return true if results.size == 1
+      false
     end
 
     # Method is not available
