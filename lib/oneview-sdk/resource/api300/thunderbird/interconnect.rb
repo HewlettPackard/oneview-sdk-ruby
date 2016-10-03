@@ -14,6 +14,7 @@ require_relative '../../api200/interconnect'
 module OneviewSDK
   module API300
     module Thunderbird
+      # Interconnect resource implementation for thunderbird on api300
       class Interconnect < OneviewSDK::API200::Interconnect
         LINK_TOPOLOGY_URI = '/rest/interconnect-link-topologies'.freeze
 
