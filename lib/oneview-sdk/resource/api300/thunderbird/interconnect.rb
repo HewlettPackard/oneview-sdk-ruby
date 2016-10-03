@@ -15,6 +15,27 @@ module OneviewSDK
   module API300
     module Thunderbird
       class Interconnect < OneviewSDK::API200::Interconnect
+        LINK_TOPOLOGY_URI = '/rest/interconnect-link-topologies'.freeze
+
+
+        # Retrieves the interconnect link topologies
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @return [Array] All the Interconnect Link Topologies
+        def self.get_link_topologies(client)
+          response = client.rest_get(LINK_TOPOLOGY_URI)
+          response = client.response_handler(response)
+          response['members']
+        end
+
+        # Retrieves the interconnect link topology with the name
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [String] name Switch type name
+        # @return [Array] Switch type
+        def self.get_link_topology(client, name)
+          results = get_link_topologies(client)
+          results.find { |interconnect_link_topology| interconnect_link_topology['name'] == name }
+        end
+
       end
     end
   end
