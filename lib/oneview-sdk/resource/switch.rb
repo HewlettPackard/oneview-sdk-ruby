@@ -14,6 +14,7 @@ module OneviewSDK
   class Switch < Resource
     BASE_URI = '/rest/switches'.freeze
     TYPE_URI = '/rest/switch-types'.freeze
+    UNIQUE_IDENTIFIERS = %w(name uri serialNumber).freeze
 
     # Remove resource from OneView
     # @return [true] if resource was removed successfully
