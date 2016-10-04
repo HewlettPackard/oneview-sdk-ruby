@@ -26,7 +26,7 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     it 'can\'t use an api version greater than the client\'s max' do
-      expect { OneviewSDK::Resource.new(@client, {}, 300) }.to raise_error(OneviewSDK::UnsupportedVersion, /is greater than the client's max/)
+      expect { OneviewSDK::Resource.new(@client, {}, 400) }.to raise_error(OneviewSDK::UnsupportedVersion, /is greater than the client's max/)
     end
 
     it 'starts with an empty data hash' do
@@ -246,16 +246,14 @@ RSpec.describe OneviewSDK::Resource do
 
     it 'uses the rest_put method to update the data' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
-      expect(@client).to receive(:rest_put).with(
-        res['uri'], { 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
+      expect(@client).to receive(:rest_put).with(res['uri'], { 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
       res.update
     end
 
     it 'raises an error if the update fails' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
-      expect(@client).to receive(:rest_put).with(
-        res['uri'], { 'body' => res.data }, res.api_version).and_return(fake_response)
+      expect(@client).to receive(:rest_put).with(res['uri'], { 'body' => res.data }, res.api_version).and_return(fake_response)
       expect { res.update }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
     end
   end
@@ -274,16 +272,14 @@ RSpec.describe OneviewSDK::Resource do
 
     it 'returns true if the delete was successful' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
-      expect(@client).to receive(:rest_delete).with(
-        res['uri'], {}, res.api_version).and_return(FakeResponse.new)
+      expect(@client).to receive(:rest_delete).with(res['uri'], {}, res.api_version).and_return(FakeResponse.new)
       expect(res.delete).to eq(true)
     end
 
     it 'raises an error if the delete fails' do
       res = OneviewSDK::Resource.new(@client, name: 'Name', uri: '/rest/fake')
       fake_response = FakeResponse.new({ message: 'Invalid' }, 400)
-      expect(@client).to receive(:rest_delete).with(
-        res['uri'], {}, res.api_version).and_return(fake_response)
+      expect(@client).to receive(:rest_delete).with(res['uri'], {}, res.api_version).and_return(fake_response)
       expect { res.delete }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST {"message":"Invalid"}/)
     end
   end
@@ -397,6 +393,11 @@ RSpec.describe OneviewSDK do
     it 'gets the correct resource class' do
       expect(OneviewSDK.resource_named('ServerProfile')).to eq(OneviewSDK::ServerProfile)
       expect(OneviewSDK.resource_named('FCoENetwork')).to eq(OneviewSDK::FCoENetwork)
+    end
+
+    it 'allows you to set the api version to look in' do
+      expect(OneviewSDK.resource_named('ServerProfile', 200)).to eq(OneviewSDK::API200::ServerProfile)
+      expect(OneviewSDK.resource_named('FCoENetwork', 300)).to eq(OneviewSDK::API300::FCoENetwork)
     end
 
     it 'ignores case' do

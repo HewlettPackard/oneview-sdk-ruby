@@ -30,7 +30,7 @@ module OneviewSDK
     # @return [NetHTTPResponse] Response object
     def rest_api(type, path, options = {}, api_ver = @api_version)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
-      fail InvalidRequest, 'Must specify path' unless path
+      raise InvalidRequest, 'Must specify path' unless path
 
       uri = URI.parse(URI.escape(@url + path))
       http = Net::HTTP.new(uri.host, uri.port)
@@ -153,13 +153,13 @@ module OneviewSDK
       when RESPONSE_CODE_NO_CONTENT # Synchronous delete
         return {}
       when RESPONSE_CODE_BAD_REQUEST
-        fail BadRequest, "400 BAD REQUEST #{response.body}"
+        raise BadRequest, "400 BAD REQUEST #{response.body}"
       when RESPONSE_CODE_UNAUTHORIZED
-        fail Unauthorized, "401 UNAUTHORIZED #{response.body}"
+        raise Unauthorized, "401 UNAUTHORIZED #{response.body}"
       when RESPONSE_CODE_NOT_FOUND
-        fail NotFound, "404 NOT FOUND #{response.body}"
+        raise NotFound, "404 NOT FOUND #{response.body}"
       else
-        fail RequestError, "#{response.code} #{response.body}"
+        raise RequestError, "#{response.code} #{response.body}"
       end
     end
 
@@ -180,7 +180,7 @@ module OneviewSDK
       when :delete
         request = Net::HTTP::Delete.new(uri.request_uri)
       else
-        fail InvalidRequest, "Invalid rest method: #{type}. Valid methods are: get, post, put, patch, delete"
+        raise InvalidRequest, "Invalid rest method: #{type}. Valid methods are: get, post, put, patch, delete"
       end
 
       options['X-API-Version'] ||= api_ver

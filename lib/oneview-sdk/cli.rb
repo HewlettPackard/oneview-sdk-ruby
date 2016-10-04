@@ -107,7 +107,7 @@ module OneviewSDK
       OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
       if @options['format'] == 'human'
         data.each do |key, value|
-          value = "'#{value}'" if value && ! %w(true false).include?(value)
+          value = "'#{value}'" if value && !%w(true false).include?(value)
           printf "%-#{data.keys.max_by(&:length).length}s = %s\n", key, value || 'nil'
         end
       else

@@ -10,7 +10,7 @@ SimpleCov.profiles.define 'unit' do
   add_group 'Resources', resource_path
   add_group 'CLI', 'cli.rb'
   minimum_coverage 92 # TODO: bump up as we increase coverage. Goal: 95%
-  minimum_coverage_by_file 60 # TODO: bump up as we increase coverage. Goal: 70%
+  minimum_coverage_by_file 61 # TODO: bump up as we increase coverage. Goal: 70%
 end
 
 SimpleCov.profiles.define 'integration' do
@@ -68,7 +68,7 @@ RSpec.configure do |config|
   config.before(:each) do
     unless config.filter_manager.inclusions.rules[:integration] || config.filter_manager.inclusions.rules[:system]
       # Mock appliance version and login api requests, as well as loading trusted certs
-      allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(200)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(300)
       allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_return('secretToken')
       allow(OneviewSDK::SSLHelper).to receive(:load_trusted_certs).and_return(nil)
     end
