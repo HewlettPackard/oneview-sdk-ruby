@@ -41,4 +41,20 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Interconnect do
     end
 
   end
+
+  describe 'get link' do
+    it 'topology' do
+      link_topology_list = FakeResponse.new(
+        'members' => [
+          { 'name' => 'topology_a', 'uri' => 'rest/fake/A' },
+          { 'name' => 'topology_b', 'uri' => 'rest/fake/B' },
+          { 'name' => 'topology_c', 'uri' => 'rest/fake/C' }
+        ]
+      )
+      expect(@client_300).to receive(:rest_get).with('/rest/interconnect-link-topologies').and_return(link_topology_list)
+      @item = OneviewSDK::API300::Thunderbird::Interconnect.get_link_topology(@client_300, 'topology_c')
+      expect(@item['uri']).to eq('rest/fake/C')
+    end
+
+  end
 end
