@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::FCNetwork, integration: true, type: UPDATE do
+RSpec.describe OneviewSDK::API300::Thunderbird::FCNetwork, integration: true, type: UPDATE do
   include_context 'integration context'
 
   describe '#update' do
     it 'updates the network name' do
-      item = OneviewSDK::FCNetwork.new($client, name: FC_NET_NAME)
+      item = OneviewSDK::API300::Thunderbird::FCNetwork.new($client, name: FC_NET_NAME)
       item.retrieve!
       item.update(name: FC_NET_NAME_UPDATED)
       item.refresh

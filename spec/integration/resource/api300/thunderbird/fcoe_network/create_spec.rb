@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::FCoENetwork
+klass = OneviewSDK::API300::Thunderbird::FCoENetwork
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
@@ -8,7 +8,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#create' do
     it 'can create resources' do
-      item = OneviewSDK::FCoENetwork.from_file($client, file_path)
+      item = OneviewSDK::API300::Thunderbird::FCoENetwork.from_file($client, file_path)
       item.create
       expect(item[:name]).to eq(FCOE_NET_NAME)
       expect(item[:connectionTemplateUri]).not_to eq(nil)
@@ -19,7 +19,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#retrieve!' do
     it 'retrieves the resource' do
-      item = OneviewSDK::FCoENetwork.new($client, name: FCOE_NET_NAME)
+      item = OneviewSDK::API300::Thunderbird::FCoENetwork.new($client, name: FCOE_NET_NAME)
       item.retrieve!
       expect(item[:name]).to eq(FCOE_NET_NAME)
       expect(item[:connectionTemplateUri]).not_to eq(nil)
@@ -30,13 +30,13 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = OneviewSDK::FCoENetwork.find_by($client, {}).map { |item| item[:name] }
+      names = OneviewSDK::API300::Thunderbird::FCoENetwork.find_by($client, {}).map { |item| item[:name] }
       expect(names).to include(FCOE_NET_NAME)
     end
 
     it 'finds networks by multiple attributes' do
       attrs = { name: FCOE_NET_NAME, vlanId: 300, type: 'fcoe-network' }
-      names = OneviewSDK::FCoENetwork.find_by($client, attrs).map { |item| item[:name] }
+      names = OneviewSDK::API300::Thunderbird::FCoENetwork.find_by($client, attrs).map { |item| item[:name] }
       expect(names).to include(FCOE_NET_NAME)
     end
   end

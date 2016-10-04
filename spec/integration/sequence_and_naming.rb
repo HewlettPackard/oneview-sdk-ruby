@@ -75,7 +75,7 @@ end
 
 # BulkEthernetNetwork
 BULK_ETH_NET_PREFIX = 'BulkEthernetNetwork'.freeze
-BULK_ETH_NET_RANGE = '1-5'.freeze
+BULK_ETH_NET_RANGE = '2-6'.freeze
 
 # EthernetNetwork
 ETH_NET_NAME = 'EthernetNetwork_1'.freeze

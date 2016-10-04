@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::FCNetwork
+klass = OneviewSDK::API300::C7000::FCNetwork
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration context'
 
@@ -8,7 +8,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#create' do
     it 'can create resources' do
-      item = OneviewSDK::FCNetwork.from_file($client, file_path)
+      item = OneviewSDK::API300::C7000::FCNetwork.from_file($client, file_path)
       item.create
       expect(item[:name]).to eq(FC_NET_NAME)
       expect(item[:autoLoginRedistribution]).to eq(true)
@@ -19,7 +19,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#retrieve!' do
     it 'retrieves the resource' do
-      item = OneviewSDK::FCNetwork.new($client, name: FC_NET_NAME)
+      item = OneviewSDK::API300::C7000::FCNetwork.new($client, name: FC_NET_NAME)
       item.retrieve!
       expect(item[:name]).to eq(FC_NET_NAME)
       expect(item[:autoLoginRedistribution]).to eq(true)
@@ -30,13 +30,13 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = OneviewSDK::FCNetwork.find_by($client, {}).map { |item| item[:name] }
+      names = OneviewSDK::API300::C7000::FCNetwork.find_by($client, {}).map { |item| item[:name] }
       expect(names).to include(FC_NET_NAME)
     end
 
     it 'finds networks by multiple attributes' do
       attrs = { name: FC_NET_NAME, fabricType: 'FabricAttach' }
-      names = OneviewSDK::FCNetwork.find_by($client, attrs).map { |item| item[:name] }
+      names = OneviewSDK::API300::C7000::FCNetwork.find_by($client, attrs).map { |item| item[:name] }
       expect(names).to include(FC_NET_NAME)
     end
   end
