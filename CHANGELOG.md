@@ -2,6 +2,13 @@
  - Split resources into API modules
  - Added OneView API300 endpoints
 
+#### v2.2.1
+ - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
+
+### v2.2.0
+ - Added the 'rest' and 'update' commands to the CLI
+ - Removed the --force option from the create_from_file CLI command
+
 ### v2.1.0
  - Fixed issue with the :resource_named method for OneViewSDK::Resource in Ruby 2.3
 

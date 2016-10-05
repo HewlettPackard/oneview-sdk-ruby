@@ -1,7 +1,7 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2016 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -201,6 +201,80 @@ module OneviewSDK
       end
     end
 
+    method_option :format,
+      desc: 'Output format',
+      aliases: '-f',
+      enum: %w(json yaml raw),
+      default: 'json'
+    method_option :data,
+      desc: 'Data to pass in the request body (in JSON format)',
+      aliases: '-d'
+    rest_examples =  "\n  oneview-sdk-ruby rest GET rest/fc-networks"
+    rest_examples << "\n  oneview-sdk-ruby rest PUT rest/fc-networks/<id> -d '{\"linkStabilityTime\": 20, ...}'"
+    rest_examples << "\n  oneview-sdk-ruby rest PUT rest/enclosures/<id>/configuration"
+    desc 'rest METHOD URI', "Make REST call to the OneView API. Examples:#{rest_examples}"
+    def rest(method, uri)
+      client_setup('log_level' => :error)
+      uri_copy = uri.dup
+      uri_copy.prepend('/') unless uri_copy.start_with?('/')
+      if @options['data']
+        begin
+          data = { body: JSON.parse(@options['data']) }
+        rescue JSON::ParserError => e
+          fail_nice("Failed to parse data as JSON\n#{e.message}")
+        end
+      end
+      data ||= {}
+      response = @client.rest_api(method, uri_copy, data)
+      if response.code.to_i.between?(200, 299)
+        case @options['format']
+        when 'yaml'
+          puts JSON.parse(response.body).to_yaml
+        when 'json'
+          puts JSON.pretty_generate(JSON.parse(response.body))
+        else # raw
+          puts response.body
+        end
+      else
+        body = JSON.pretty_generate(JSON.parse(response.body)) rescue response.body
+        fail_nice("Request failed: #{response.inspect}\nHeaders: #{response.to_hash}\nBody: #{body}")
+      end
+    rescue OneviewSDK::InvalidRequest => e
+      fail_nice(e.message)
+    end
+
+    method_option :hash,
+      type: :hash,
+      desc: 'Hash of key/value pairs to update',
+      aliases: '-h'
+    method_option :json,
+      desc: 'JSON data to pass in the request body',
+      aliases: '-j'
+    update_examples =  "\n  oneview-sdk-ruby update FCNetwork FC1 -h linkStabilityTime:20"
+    update_examples << "\n  oneview-sdk-ruby update Volume VOL1 -j '{\"shareable\": true}'"
+    desc 'update TYPE NAME --[hash|json] <data>', "Update resource by name. Examples:#{update_examples}"
+    def update(type, name)
+      resource_class = parse_type(type)
+      client_setup
+      fail_nice 'Must set the hash or json option' unless @options['hash'] || @options['json']
+      fail_nice 'Must set the hash OR json option. Not both' if @options['hash'] && @options['json']
+      begin
+        data = @options['hash'] || JSON.parse(@options['json'])
+      rescue JSON::ParserError => e
+        fail_nice("Failed to parse json\n#{e.message}")
+      end
+      matches = resource_class.find_by(@client, name: name)
+      fail_nice 'Not Found' if matches.empty?
+      resource = matches.first
+      begin
+        resource[:uri] = '/rest/storage-volumes/57A22A70-73EC-43C1-91B9-9FABD1E'
+        resource.update(data)
+        output 'Updated Successfully!'
+      rescue StandardError => e
+        fail_nice "Failed to update #{resource.class.name.split('::').last} '#{name}': #{e}"
+      end
+    end
+
     method_option :force,
       desc: 'Delete without confirmation',
       type: :boolean,
@@ -245,17 +319,12 @@ module OneviewSDK
       end
     end
 
-    method_option :force,
-      desc: 'Overwrite without confirmation',
-      type: :boolean,
-      aliases: '-f'
     method_option :if_missing,
       desc: 'Only create if missing (Don\'t update)',
       type: :boolean,
       aliases: '-i'
-    desc 'create_from_file FILE_PATH', 'Create/Overwrite resource defined in file'
+    desc 'create_from_file FILE_PATH', 'Create/Update resource defined in file'
     def create_from_file(file_path)
-      fail_nice "Can't use the 'force' and 'if_missing' flags at the same time." if options['force'] && options['if_missing']
       client_setup
       resource = OneviewSDK::Resource.from_file(@client, file_path)
       resource[:uri] = nil
@@ -266,7 +335,6 @@ module OneviewSDK
           puts "Skipped: '#{resource[:name]}': #{resource.class.name.split('::').last} already exists."
           return
         end
-        fail_nice "#{resource.class.name.split('::').last} '#{resource[:name]}' already exists." unless options['force']
         begin
           resource.data.delete('uri')
           existing_resource.update(resource.data)
@@ -338,7 +406,8 @@ module OneviewSDK
         next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
         valid_classes.push(klass.name.split('::').last)
       end
-      OneviewSDK.resource_named(type) || fail_nice("Invalid resource type: '#{type}'.\n  Valid options are #{valid_classes}")
+      vc = valid_classes.sort_by!(&:downcase).join("\n  ")
+      OneviewSDK.resource_named(type) || fail_nice("Invalid resource type: '#{type}'.  Valid options are:\n  #{vc}")
     end
 
     # Parse options hash from input. Handles chaining and keywords such as true/false & nil

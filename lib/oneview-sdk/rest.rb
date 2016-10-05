@@ -180,7 +180,7 @@ module OneviewSDK
       when :delete
         request = Net::HTTP::Delete.new(uri.request_uri)
       else
-        raise InvalidRequest, "Invalid rest call: #{type}"
+        raise InvalidRequest, "Invalid rest method: #{type}. Valid methods are: get, post, put, patch, delete"
       end
 
       options['X-API-Version'] ||= api_ver
