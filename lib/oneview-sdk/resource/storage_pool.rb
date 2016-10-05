@@ -60,7 +60,8 @@ module OneviewSDK
       fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
       fail IncompleteResource, 'Must set resource storageSystemUri before trying to retrieve!' unless @data['storageSystemUri']
       results = self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri']) if @data['name']
-      results = self.class.find_by(@client, uri:  @data['uri'], storageSystemUri: @data['storageSystemUri'])  if @data['uri'] && (!results || results.empty?)
+      results = self.class.find_by(@client, uri:  @data['uri'], storageSystemUri: @data['storageSystemUri'])  if @data['uri'] &&
+        (!results || results.empty?)
       return false unless results.size == 1
       set_all(results[0].data)
       true

@@ -51,7 +51,10 @@ RSpec.describe OneviewSDK::StoragePool do
 
     it 'requires the storageSystemUri attribute to be set' do
       storage_pool = OneviewSDK::StoragePool.new(@client, name: 'StoragePoolName')
-      expect { storage_pool.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource storageSystemUri before trying to retrieve!/)
+      expect { storage_pool.retrieve! }.to raise_error(
+        OneviewSDK::IncompleteResource,
+        /Must set resource storageSystemUri before trying to retrieve!/
+      )
     end
 
     it 'uses the uri attribute when the name is not set' do
@@ -60,7 +63,7 @@ RSpec.describe OneviewSDK::StoragePool do
       expect(OneviewSDK::StoragePool).to receive(:find_by).with(@client, uri: res['uri'], storageSystemUri: '/rest/fake').and_return([])
       expect(res.exists?).to eq(false)
     end
-    
+
     it 'sets the data if the resource is found' do
       res = OneviewSDK::StoragePool.new(@client, name: 'ResourceName')
       res.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
