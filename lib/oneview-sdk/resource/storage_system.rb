@@ -84,6 +84,20 @@ module OneviewSDK
       true
     end
 
+    # Check the equality of the data for the other resource with this resource.
+    # @note Does not check the client, logger, or api_version if another resource is passed in
+    # @param [Hash, Resource] other resource or hash to compare the key-value pairs with
+    # @example Compare to hash
+    #   myResource = OneviewSDK::Resource.new(client, { name: 'res1', description: 'example'}, 200)
+    #   myResource.like?(description: '') # returns false
+    #   myResource.like?(name: 'res1') # returns true
+    # @return [Boolean] Whether or not the two objects are alike
+    def like?(other)
+      other.delete('credentials') if other['credentials']
+      other.delete(:credentials) if other[:credentials]
+      super
+    end
+
     # Gets the host types for the storage system resource
     # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [String] response body
