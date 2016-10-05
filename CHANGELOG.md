@@ -1,3 +1,6 @@
+#### v2.2.2
+ - Fixed issue #95 (storage pool retrieve! and exists?). Now it requires storageSystemUri
+
 #### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
 

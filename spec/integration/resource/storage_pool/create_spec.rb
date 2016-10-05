@@ -27,7 +27,9 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#retrieve!' do
     it 'retrieves the resource' do
-      item = OneviewSDK::StoragePool.new($client, name: STORAGE_POOL_NAME)
+      storage_system_ref = OneviewSDK::StorageSystem.new($client, storage_system_data)
+      storage_system_ref.retrieve!
+      item = OneviewSDK::StoragePool.new($client, name: STORAGE_POOL_NAME, storageSystemUri: storage_system_ref['uri'])
       item.retrieve!
       storage_system = OneviewSDK::StorageSystem.new($client, storage_system_data)
       storage_system.retrieve!
