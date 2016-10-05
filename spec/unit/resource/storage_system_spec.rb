@@ -70,6 +70,30 @@ RSpec.describe OneviewSDK::StorageSystem do
     end
   end
 
+  describe '#like?' do
+    it 'must not compare storage system credentials' do
+      options = {
+        name: 'StorageSystemName',
+        credentials: {
+          'ip_hostname' => '127.0.0.1',
+          'username' => 'user',
+          'password' => 'pass'
+        },
+        state: 'Configured'
+      }
+      item = OneviewSDK::StorageSystem.new(
+        @client,
+        name: 'StorageSystemName',
+        credentials: {
+          'ip_hostname' => '127.0.0.1',
+          'username' => 'user'
+        },
+        state: 'Configured'
+      )
+      expect(item.like?(options)).to eq(true)
+    end
+  end
+
   describe '#get_managed_ports' do
     it 'No port given' do
       item = OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake')

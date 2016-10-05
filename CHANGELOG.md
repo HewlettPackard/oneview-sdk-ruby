@@ -1,3 +1,6 @@
+#### v2.2.2
+ - Fixed issue #92 (storage system like?). Excluding comparison of credentials
+
 #### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
 
