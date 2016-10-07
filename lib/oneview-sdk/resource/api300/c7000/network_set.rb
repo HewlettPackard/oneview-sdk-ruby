@@ -14,7 +14,23 @@ require_relative '../../api200/network_set'
 module OneviewSDK
   module API300
     module C7000
+      # Network set resource implementation for API300 C7000
       class NetworkSet < OneviewSDK::API200::NetworkSet
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['connectionTemplateUri'] ||= nil
+          @data['nativeNetworkUri'] ||= nil
+          @data['networkUris'] ||= []
+          @data['type'] ||= 'network-set'
+          super
+        end
+
       end
     end
   end
