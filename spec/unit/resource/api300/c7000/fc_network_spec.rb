@@ -10,7 +10,7 @@ RSpec.describe OneviewSDK::API300::C7000::FCNetwork do
   describe '#initialize' do
     it 'sets the defaults correctly' do
       item = OneviewSDK::API300::C7000::FCNetwork.new(@client_300)
-      expect(item[:type]).to eq('fc-networkV2')
+      expect(item[:type]).to eq('fc-networkV300')
       expect(item[:autoLoginRedistribution]).to eq(false)
       expect(item[:linkStabilityTime]).to eq(30)
       expect(item[:fabricType]).to eq('FabricAttach')
