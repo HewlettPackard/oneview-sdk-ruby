@@ -17,13 +17,11 @@ options = {
   name: 'ONEVIEW_SDK_TEST_SAS_LIG'
 }
 
-SYNERGY_12_MODEL = 'Synergy 12Gb SAS Connection Module'.freeze
-
 lig = OneviewSDK::API300::Thunderbird::SASLogicalInterconnectGroup.new(@client, options)
 
 # Add the interconnects to the bays 1 and 4
-lig.add_interconnect(1, SYNERGY_12_MODEL)
-lig.add_interconnect(4, SYNERGY_12_MODEL)
+lig.add_interconnect(1, @sas_interconnect_type)
+lig.add_interconnect(4, @sas_interconnect_type)
 
 lig.create!
 puts "\n#{type} #{lig[:name]} created!"
