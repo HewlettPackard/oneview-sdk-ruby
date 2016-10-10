@@ -11,7 +11,7 @@
 
 require_relative '../../_client' # Gives access to @client
 
-type = 'SAS Logical Interconnect Group'
+SAS_INT_TYPE = 'Synergy 12Gb SAS Connection Module'.freeze
 
 # Gets all types of SAS interconnects supported by the appliance
 puts "\nListing all SAS Interconnect types supported by the appliance bellow:"
@@ -19,7 +19,6 @@ OneviewSDK::API300::Thunderbird::SASInterconnect.get_types(@client).each do |int
   puts "SAS Interconnect type: '#{interconnect_type['name']}', uri: '#{interconnect_type['uri']}'"
 end
 
-SAS_INT_TYPE = 'Synergy 12Gb SAS Connection Module'.freeze
 # Getting a specific type of SAS interconnect
 puts "\n\nSpecifically retrieving SAS Interconnect type '#{SAS_INT_TYPE}':"
 sas_int_type = OneviewSDK::API300::Thunderbird::SASInterconnect.get_type(@client, SAS_INT_TYPE)
