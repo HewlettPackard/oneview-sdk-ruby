@@ -25,7 +25,7 @@ module OneviewSDK
           @data ||= {}
           # Default values:
           @data['connectionTemplateUri'] ||= nil
-          @data['type'] ||= 'fcoe-network'
+          @data['type'] ||= 'fcoe-networkV300'
           super
         end
 

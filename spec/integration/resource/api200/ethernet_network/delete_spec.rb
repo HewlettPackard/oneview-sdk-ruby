@@ -8,7 +8,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
     it 'deletes the resource' do
       item = OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME)
       item.retrieve!
-      item.delete
+      expect { item.delete }.not_to raise_error
     end
 
     it 'deletes bulk created networks' do
@@ -18,7 +18,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
       network_names.each do |name|
         network = OneviewSDK::EthernetNetwork.new($client, name: name)
         network.retrieve!
-        network.delete
+        expect { network.delete }.not_to raise_error
       end
     end
   end

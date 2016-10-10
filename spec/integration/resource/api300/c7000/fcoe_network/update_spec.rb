@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe OneviewSDK::API300::C7000::FCoENetwork, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#update' do
     it 'update OneViewSDK Test FCoE Network name' do
-      item = OneviewSDK::API300::C7000::FCoENetwork.new($client, name: FCOE_NET_NAME)
+      item = OneviewSDK::API300::C7000::FCoENetwork.new($client_300, name: FCOE_NET_NAME)
       item.retrieve!
       item.update(name: FCOE_NET_NAME_UPDATED)
       item.refresh

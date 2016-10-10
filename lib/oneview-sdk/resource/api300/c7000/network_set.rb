@@ -27,7 +27,7 @@ module OneviewSDK
           @data['connectionTemplateUri'] ||= nil
           @data['nativeNetworkUri'] ||= nil
           @data['networkUris'] ||= []
-          @data['type'] ||= 'network-set'
+          @data['type'] ||= 'network-setV300'
           super
         end
 

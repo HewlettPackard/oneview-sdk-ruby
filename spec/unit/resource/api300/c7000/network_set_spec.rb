@@ -13,7 +13,7 @@ RSpec.describe OneviewSDK::API300::C7000::NetworkSet do
       expect(item['connectionTemplateUri']).to eq(nil)
       expect(item['nativeNetworkUri']).to eq(nil)
       expect(item['networkUris']).to eq([])
-      expect(item['type']).to eq('network-set')
+      expect(item['type']).to eq('network-setV300')
     end
   end
 
