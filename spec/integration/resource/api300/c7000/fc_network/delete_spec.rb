@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-klass = OneviewSDK::FCoENetwork
+klass = OneviewSDK::API300::C7000::FCNetwork
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#delete' do
     it 'deletes the resource' do
-      item = OneviewSDK::FCoENetwork.new($client, name: FCOE_NET_NAME)
+      item = OneviewSDK::API300::C7000::FCNetwork.new($client_300, name: FC_NET_NAME)
       item.retrieve!
       expect { item.delete }.not_to raise_error
     end

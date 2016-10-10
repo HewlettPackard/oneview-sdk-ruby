@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-klass = OneviewSDK::EthernetNetwork
+klass = OneviewSDK::API300::Thunderbird::EthernetNetwork
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#delete' do
     it 'deletes the resource' do
-      item = OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME)
+      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
       item.retrieve!
       expect { item.delete }.not_to raise_error
     end
@@ -16,7 +16,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
       network_names = []
       range[0].upto(range[1]) { |i| network_names << "#{BULK_ETH_NET_PREFIX}_#{i}" }
       network_names.each do |name|
-        network = OneviewSDK::EthernetNetwork.new($client, name: name)
+        network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300, name: name)
         network.retrieve!
         expect { network.delete }.not_to raise_error
       end

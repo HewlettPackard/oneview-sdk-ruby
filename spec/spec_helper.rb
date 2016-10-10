@@ -78,4 +78,10 @@ RSpec.configure do |config|
       ENV[name] = nil
     end
   end
+
+  # Rspec color configurations Start
+  config.color = true
+  config.tty = true
+  # Rspec color configurations End
+
 end

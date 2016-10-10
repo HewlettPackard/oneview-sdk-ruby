@@ -11,7 +11,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::EthernetNetwork do
     it 'sets the defaults correctly api_ver 200' do
       item = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, {}, 200)
       expect(item[:ethernetNetworkType]).to eq('Tagged')
-      expect(item[:type]).to eq('ethernet-networkV3')
+      expect(item[:type]).to eq('ethernet-networkV300')
     end
   end
 
