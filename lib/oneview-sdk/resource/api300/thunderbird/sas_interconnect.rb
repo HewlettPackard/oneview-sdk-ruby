@@ -61,52 +61,6 @@ module OneviewSDK
           results = get_types(client)
           results.find { |interconnect_type| interconnect_type['name'] == name }
         end
-        #
-        # # Retrieves the named servers for this interconnect
-        # def name_servers
-        #   response = @client.rest_get(@data['uri'] + '/nameServers')
-        #   response.body
-        # end
-        #
-        # # Updates an interconnect port
-        # # @param [String] portName port name
-        # # @param [Hash] attributes hash with attributes and values to be changed
-        # def update_port(portName, attributes)
-        #   @data['ports'].each do |port|
-        #     next unless port['name'] == portName
-        #     attributes.each { |key, value| port[key.to_s] = value }
-        #     response = @client.rest_put(@data['uri'] + '/ports', 'body' => port)
-        #     @client.response_handler(response)
-        #   end
-        # end
-        #
-        # # Get statistics for an interconnect, for the specified port or subport
-        # # @param [String] portName port to retrieve statistics
-        # # @param [String] subportNumber subport to retrieve statistics
-        # def statistics(portName = nil, subportNumber = nil)
-        #   uri = if subportNumber.nil?
-        #           "#{@data['uri']}/statistics/#{portName}"
-        #         else
-        #           "#{@data['uri']}/statistics/#{portName}/subport/#{subportNumber}"
-        #         end
-        #   response = @client.rest_get(uri)
-        #   response.body
-        # end
-        #
-        # # Triggers the reset port protection action
-        # def reset_port_protection
-        #   response = @client.rest_put(@data['uri'] + '/resetportprotection')
-        #   @client.response_handler(response)
-        # end
-        #
-        # # Updates specific attributes for a given interconnect resource
-        # # @param [String] operation operation to be performed
-        # # @param [String] path path
-        # # @param [String] value value
-        # def patch(operation, path, value)
-        #   response = @client.rest_patch(@data['uri'], 'body' => [{ op: operation, path: path, value: value }])
-        #   @client.response_handler(response)
-        # end
       end
     end
   end
