@@ -14,7 +14,23 @@ require_relative '../../api200/enclosure_group'
 module OneviewSDK
   module API300
     module C7000
+      # Enclosure group resource implementation on API300 C7000
       class EnclosureGroup < OneviewSDK::API200::EnclosureGroup
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'EnclosureGroupV300'
+          @data['stackingMode'] ||= 'Enclosure'
+          @data['interconnectBayMappingCount'] ||= 8
+          create_interconnect_bay_mapping unless @data['interconnectBayMappings']
+          super
+        end
+
       end
     end
   end

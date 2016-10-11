@@ -1,24 +1,24 @@
 require 'spec_helper'
 
-klass = OneviewSDK::EnclosureGroup
+klass = OneviewSDK::API300::Thunderbird::EnclosureGroup
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#delete' do
     it 'deletes the simple enclosure group' do
-      item = OneviewSDK::EnclosureGroup.new($client, 'name' => ENC_GROUP_NAME)
+      item = klass.new($client_300, 'name' => ENC_GROUP_NAME)
       item.retrieve!
       expect { @item.delete }.not_to raise_error
     end
 
     it 'deletes the enclosure group with LIG' do
-      item = OneviewSDK::EnclosureGroup.new($client, 'name' => ENC_GROUP2_NAME)
+      item = klass.new($client_300, 'name' => ENC_GROUP2_NAME)
       item.retrieve!
       expect { @item.delete }.not_to raise_error
     end
 
     it 'deletes the enclosure group with empty LIG' do
-      item = OneviewSDK::EnclosureGroup.new($client, 'name' => ENC_GROUP3_NAME)
+      item = klass.new($client_300, 'name' => ENC_GROUP3_NAME)
       item.retrieve!
       expect { @item.delete }.not_to raise_error
     end
