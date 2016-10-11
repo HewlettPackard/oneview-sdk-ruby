@@ -22,4 +22,24 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalSwitch do
       expect(item['uri']).to eq('rest/fake/internal-link-set')
     end
   end
+
+  describe 'undefined methods' do
+    it 'does not allow the create action' do
+      logical_switch = OneviewSDK::API300::Thunderbird::LogicalSwitch.new(@client_300)
+      expect { logical_switch.create }.to raise_error(OneviewSDK::MethodUnavailable,
+                                                      /The method #create is unavailable for this resource/)
+    end
+
+    it 'does not allow the update action' do
+      logical_switch = OneviewSDK::API300::Thunderbird::LogicalSwitch.new(@client_300)
+      expect { logical_switch.update }.to raise_error(OneviewSDK::MethodUnavailable,
+                                                      /The method #update is unavailable for this resource/)
+    end
+
+    it 'does not allow the delete action' do
+      logical_switch = OneviewSDK::API300::Thunderbird::LogicalSwitch.new(@client_300)
+      expect { logical_switch.delete }.to raise_error(OneviewSDK::MethodUnavailable,
+                                                      /The method #delete is unavailable for this resource/)
+    end
+  end
 end
