@@ -28,7 +28,6 @@ module OneviewSDK
           @data['stackingMode'] ||= 'Enclosure'
           @data['ipAddressingMode'] ||= 'DHCP'
           @data['interconnectBayMappingCount'] ||= 6
-          # create_interconnect_bay_mapping unless @data['interconnectBayMappings']
           super
         end
 
