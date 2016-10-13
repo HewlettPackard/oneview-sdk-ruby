@@ -3,6 +3,9 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
   include_context 'shared context'
 
+  let(:data) { [{ op: 'replace', path: '/name', value: {} }] }
+  let(:response) { { 'key1' => 'val1', 'key2' => 'val2', 'key3' => { 'key4' => 'val4' } } }
+
   it 'inherits from API200' do
     expect(described_class).to be < OneviewSDK::API200::LogicalEnclosure
   end
@@ -11,7 +14,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
     context 'OneView 2.0' do
       it 'sets the type correctly' do
         template = OneviewSDK::API300::Thunderbird::LogicalEnclosure.new(@client_300)
-        expect(template[:type]).to eq('LogicalEnclosure')
+        expect(template[:type]).to eq('LogicalEnclosureV300')
       end
     end
   end
@@ -42,6 +45,15 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new('Content'))
         expect(@client_300).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', @client_300.api_version)
         expect(@item.get_script).to eq('Content')
+      end
+    end
+
+    describe '#rest_patch' do
+      it 'makes a rest call with any data that is passed in' do
+        expect(@client_300).to receive(:rest_patch)
+          .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/name', value: {} }] })
+          .and_return(FakeResponse.new(response))
+        expect(@item.patch(@client_300, data)).to eq(response)
       end
     end
 
