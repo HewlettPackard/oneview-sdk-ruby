@@ -29,7 +29,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       @item.delete if @item.retrieve!
     end
 
-    it 'SAS LIG with unrecognized interconnect' do
+    it 'raises an error when adding an unrecognized interconnect type' do
       expect { @item.add_interconnect(1, 'invalid_type') }.to raise_error(/SAS Interconnect type 'invalid_type' not found!/)
     end
 

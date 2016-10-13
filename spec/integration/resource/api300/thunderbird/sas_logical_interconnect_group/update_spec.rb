@@ -18,11 +18,16 @@ RSpec.describe klass, integration: true, type: UPDATE do
   let(:item) { klass.new($client_300, name: SAS_LOG_INT_GROUP_NAME) }
 
   describe '#update' do
-    it 'adding and removing uplink set' do
+    it 'is able to update the resource name and set it back' do
       item.retrieve!
 
-      expect { item.update }.not_to raise_error
+      expect { item.update(name: 'Test') }.not_to raise_error
 
+      expect(item['name']).to eq('Test')
+
+      expect { item.update(name: SAS_LOG_INT_GROUP_NAME) }.not_to raise_error
+
+      expect(item['name']).to eq(SAS_LOG_INT_GROUP_NAME)
       expect(item['uri']).to be
     end
   end
