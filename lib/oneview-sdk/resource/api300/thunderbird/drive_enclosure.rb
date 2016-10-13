@@ -9,11 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative 'resource'
+
 module OneviewSDK
   module API300
     module Thunderbird
       # Drive enclosure resource implementation for API300 Thunderbird
-      class DriveEnclosure < OneviewSDK::API300::Resource
+      class DriveEnclosure < Resource
         BASE_URI = '/rest/drive-enclosures'.freeze
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -27,19 +29,19 @@ module OneviewSDK
         # Method is unavailable
         # @raise [OneviewSDK::MethodUnavailable] method is not available
         def create
-          method_unavailable
+          unavailable_method
         end
 
         # Method is unavailable
         # @raise [OneviewSDK::MethodUnavailable] method is not available
         def delete
-          method_unavailable
+          unavailable_method
         end
 
         # Method is unavailable
         # @raise [OneviewSDK::MethodUnavailable] method is not available
         def update
-          method_unavailable
+          unavailable_method
         end
 
         # Retrieve the drive enclosure I/O adapter port to SAS interconnect port connectivity
