@@ -16,7 +16,7 @@ require_relative '../../_client' # Gives access to @client
 options = {
   name: 'OneViewSDK Test FCoE Network',
   connectionTemplateUri: nil,
-  type: 'fcoe-network',
+  type: 'fcoe-networkV300',
   vlanId: 300
 }
 
