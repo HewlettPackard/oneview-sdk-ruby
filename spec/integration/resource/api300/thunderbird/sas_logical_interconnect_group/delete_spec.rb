@@ -16,7 +16,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
   before :all do
-    @item = klass.new($client_300, name: SAS_LOG_INT_GROUP_NAME)
+    @item = klass.new($client_300, name: SAS_LOG_INT_GROUP1_NAME)
     @item.retrieve!
   end
 
