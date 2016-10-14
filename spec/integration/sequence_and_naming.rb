@@ -16,6 +16,7 @@ end
 
 DEPENDENCIES = {
   Datacenter: [],
+  DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
   EnclosureGroup: [:LogicalInterconnectGroup],
   EthernetNetwork: [],

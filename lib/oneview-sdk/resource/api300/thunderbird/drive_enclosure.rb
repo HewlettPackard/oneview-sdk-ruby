@@ -51,7 +51,7 @@ module OneviewSDK
         end
 
         # Refresh a drive enclosure
-        # @param [String] state
+        # @param [String] state Indicates if the resource is currently refreshing
         def set_refresh_state(state)
           response = @client.rest_put(@data['uri'] + '/refreshState', 'body' => { refreshState: state })
           @client.response_handler(response)

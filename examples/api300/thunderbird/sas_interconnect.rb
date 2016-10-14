@@ -12,7 +12,7 @@
 require_relative '../../_client' # Gives access to @client
 
 # Gets all types of SAS interconnects supported by the appliance
-puts "\nListing all SAS Interconnect types supported by the appliance bellow:"
+puts "\nListing all SAS Interconnect types supported by the appliance below:"
 OneviewSDK::API300::Thunderbird::SASInterconnect.get_types(@client).each do |interconnect_type|
   puts "SAS Interconnect type: '#{interconnect_type['name']}', uri: '#{interconnect_type['uri']}'"
 end
