@@ -16,6 +16,7 @@ module OneviewSDK
     # Storage system resource implementation
     class StorageSystem < Resource
       BASE_URI = '/rest/storage-systems'.freeze
+      UNIQUE_IDENTIFIERS = %w(name uri serialNumber wwn).freeze # credentials['ip_hostname'] is supported too
 
       # Remove resource from OneView
       # @return [true] if resource was removed successfully
@@ -59,32 +60,35 @@ module OneviewSDK
       end
 
       # Checks if the resource already exists
-      # @note name,uri or ip_hostname must be specified inside resource
+      # @note one of the UNIQUE_IDENTIFIERS or credentials['ip_hostname'] must be specified in the resource
       # @return [Boolean] Whether or not resource exists
+      # @raise [OneviewSDK::IncompleteResource] if required attributes are not filled
       def exists?
         ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] if self['credentials']
-        return true if @data['name'] && self.class.find_by(@client, name: @data['name']).size == 1
-        return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri']).size == 1
         return true if ip_hostname && self.class.find_by(@client, credentials: { ip_hostname: ip_hostname }).size == 1
-        unless @data['name'] || @data['uri'] || ip_hostname
-          raise IncompleteResource, 'Must set resource name, uri or ip_hostname before trying to retrieve!'
-        end
+        super
+      rescue IncompleteResource => e
+        raise e unless ip_hostname
         false
       end
 
       # Retrieves the resource details based on this resource's name or URI.
-      # @note Name,URI or ip_hostname must be specified inside resource
+      # @note one of the UNIQUE_IDENTIFIERS or credentials['ip_hostname'] must be specified in the resource
       # @return [Boolean] Whether or not retrieve was successful
-      # @raise [OneviewSDK::IncompleteResource] if attributes are not filled
+      # @raise [OneviewSDK::IncompleteResource] if required attributes are not filled
       def retrieve!
         ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] if self['credentials']
-        return super if @data['name'] || @data['uri']
-
-        raise IncompleteResource, 'Must set resource name, uri or ip_hostname before trying to retrieve!' unless ip_hostname
-        results = self.class.find_by(@client, credentials: { ip_hostname: ip_hostname })
-        return false unless results.size == 1
-        set_all(results[0].data)
-        true
+        if ip_hostname
+          results = self.class.find_by(@client, credentials: { ip_hostname: ip_hostname })
+          if results.size == 1
+            set_all(results[0].data)
+            return true
+          end
+        end
+        super
+      rescue IncompleteResource => e
+        raise e unless ip_hostname
+        false
       end
 
       # Gets the host types for the storage system resource

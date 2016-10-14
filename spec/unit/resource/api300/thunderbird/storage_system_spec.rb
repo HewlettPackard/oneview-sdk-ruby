@@ -16,9 +16,11 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
 
   describe '#add' do
     it 'sends just the credentials hash, then the rest of the data' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300,
-                                                                name: 'Fake',
-                                                                credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
+      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+        @client_300,
+        name: 'Fake',
+        credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
+      )
       expect(@client_300).to receive(:rest_post).with('/rest/storage-systems', { 'body' => item['credentials'] }, item.api_version)
         .and_return(FakeResponse.new('uri' => '/rest/task/fake'))
       allow(@client_300).to receive(:wait_for)
@@ -40,15 +42,16 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
   describe '#retrieve!' do
     it 'finds by name if it is set' do
       item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, name: 'Fake').and_return([item])
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
     it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300,
-                                                                credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
-        .and_return([item])
+      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+        @client_300,
+        credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
+      )
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: 'a.com' }).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
@@ -61,15 +64,16 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
   describe '#exists?' do
     it 'finds by name if it is set' do
       item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, name: 'Fake').and_return([item])
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
       expect(item.exists?).to eq(true)
     end
 
     it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300,
-                                                                credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
-        .and_return([item])
+      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+        @client_300,
+        credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
+      )
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: 'a.com' }).and_return([item])
       expect(item.exists?).to eq(true)
     end
 
@@ -85,6 +89,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
       expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts').and_return(FakeResponse.new({}))
       item.get_managed_ports
     end
+
     it 'With port given' do
       item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts/100').and_return(FakeResponse.new({}))
