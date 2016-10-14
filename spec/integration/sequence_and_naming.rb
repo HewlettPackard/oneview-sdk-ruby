@@ -37,6 +37,7 @@ DEPENDENCIES = {
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
   Rack: [:ServerProfile],
   SANManager: [],
+  SASLogicalInterconnectGroup: [],
   ServerHardware: [:ServerHardwareType],
   ServerHardwareType: [:Enclosure],
   ServerProfile: [:ServerHardware, :Enclosure, :ServerProfileTemplate],
@@ -186,3 +187,6 @@ SAN_PROVIDER1_NAME = 'Brocade Network Advisor'.freeze
 
 # Firmware Driver
 FIRMWARE_DRIVER1_NAME = 'CustomSPP_1'.freeze
+
+# SAS Logical Interconnect Group
+SAS_LOG_INT_GROUP1_NAME = 'SASLogicalInterconnectGroup_1'.freeze

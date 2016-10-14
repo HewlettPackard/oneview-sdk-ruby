@@ -118,7 +118,7 @@ module OneviewSDK
     def wait_for(task_uri)
       raise ArgumentError, 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
       loop do
-        task_uri.gsub!(%r{/https:(.*)\/rest/}, '/rest')
+        task_uri.gsub!(%r{https:(.*)\/rest}, '/rest')
         task = rest_get(task_uri)
         body = JSON.parse(task.body)
         case body['taskState'].downcase
