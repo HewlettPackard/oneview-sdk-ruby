@@ -11,13 +11,19 @@
 
 require_relative '../../_client' # Gives access to @client
 
-# Gets all types of SAS interconnects supported by the appliance
-puts "\nListing all SAS Interconnect types supported by the appliance below:"
-OneviewSDK::API300::Thunderbird::SASInterconnect.get_types(@client).each do |interconnect_type|
-  puts "SAS Interconnect type: '#{interconnect_type['name']}', uri: '#{interconnect_type['uri']}'"
+# Gets all Drive Enclosures currently in the Appliance
+puts 'Listing all Drive Enclosures below:'
+OneviewSDK::API300::Thunderbird::DriveEnclosure.find_by(@client, {}).each do |drive_enclosure|
+  puts "Name: '#{drive_enclosure['name']}', uri: '#{drive_enclosure['uri']}'"
 end
 
-# Getting a specific type of SAS interconnect
-puts "\n\nSpecifically retrieving SAS Interconnect type '#{@sas_interconnect_type}':"
-sas_int_type = OneviewSDK::API300::Thunderbird::SASInterconnect.get_type(@client, @sas_interconnect_type)
-puts "SAS Interconnect type '#{sas_int_type['name']}' uri: '#{sas_int_type['uri']}'"
+drive_enclosure = OneviewSDK::API300::Thunderbird::DriveEnclosure.find_by(@client, {}).first
+
+# Gets a specific Drive Enclosure port map information
+puts drive_enclosure.get_port_map
+
+# Sets the Drive Enclosure refresh state to RefreshPending
+drive_enclosure.set_refresh_state('RefreshPending')
+
+# Sends a patch update to the Drive Enclosure
+drive_enclosure.patch('replace', '/uidState', 'On')
