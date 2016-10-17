@@ -51,6 +51,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   #   end
   # end
 
+  # NOTE: This action requires a firmware image to be specified
   # describe 'Firmware Updates' do
   #   it 'will assure the firmware is present' do
   #     firmware_name = firmware_path.split('/').last
@@ -78,14 +79,9 @@ RSpec.describe klass, integration: true, type: UPDATE do
   #       firmware = OneviewSDK::FirmwareDriver.new($client_300, name: firmware_name)
   #       firmware.retrieve!
   #       firmware_opt = sas_log_int.get_firmware
-  #       firmware_opt['ethernetActivationDelay'] = 7
-  #       firmware_opt['ethernetActivationType'] = 'OddEven'
-  #       firmware_opt['fcActivationDelay'] = 7
-  #       firmware_opt['fcActivationType'] = 'Serial'
   #       firmware_opt['force'] = true
   #       expect { sas_log_int.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
   #     end
-  #
   #   end
   # end
 end
