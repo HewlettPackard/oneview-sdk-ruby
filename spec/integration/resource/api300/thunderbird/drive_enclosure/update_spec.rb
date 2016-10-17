@@ -33,7 +33,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#patch' do
     it 'sends a patch request to the resource' do
-      expect { @item.patch('replace', '/uidState', 'On') }.not_to raise_error
+      expect { @item.patch('replace', '/hardResetState', 'Reset') }.not_to raise_error
     end
   end
 end
