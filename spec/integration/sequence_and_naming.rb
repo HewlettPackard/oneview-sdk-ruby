@@ -111,6 +111,9 @@ ENC_GROUP3_NAME = 'EnclosureGroup_3'.freeze
 ENCL_NAME = 'Encl1'.freeze
 ENCL_NAME_UPDATED = 'Encl1_UPDATED'.freeze
 
+# LogicalEnclosure
+LOG_ENCL1_NAME = 'LogicalEnclosure_1'.freeze
+
 # LogicalInterconnect
 LOG_INT_NAME = 'Encl1-LogicalInterconnectGroup_1'.freeze
 
@@ -191,3 +194,10 @@ FIRMWARE_DRIVER1_NAME = 'CustomSPP_1'.freeze
 
 # SAS Logical Interconnect Group
 SAS_LOG_INT_GROUP1_NAME = 'SASLogicalInterconnectGroup_1'.freeze
+
+# SASLogicalInterconnect
+SAS_LOG_INT1_NAME = "#{LOG_ENCL1_NAME}-#{SAS_LOG_INT_GROUP1_NAME}-1".freeze
+
+# DriveEnclosure
+DRIVE_ENCL1_SERIAL = 'SN123100'.freeze
+DRIVE_ENCL1_SERIAL_UPDATED = 'SN123102'.freeze
