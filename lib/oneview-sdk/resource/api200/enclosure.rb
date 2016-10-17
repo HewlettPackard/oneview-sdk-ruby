@@ -128,6 +128,14 @@ module OneviewSDK
         @client.response_handler(response)
       end
 
+      # Sets the calibrated max power of an unmanaged or unsupported enclosure
+      # @param [String] power The calibrated maximum power of the resource
+      def set_environmental_configuration(power)
+        ensure_client && ensure_uri
+        response = @client.rest_put(@data['uri'] + '/environmentalConfiguration', 'body' => { calibratedMaxPower: power })
+        @client.response_handler(response)
+      end
+
       # Retrieves historical utilization
       # @param [Hash] queryParameters query parameters (ie :startDate, :endDate, :fields, :view, etc.)
       # @option queryParameters [Array] :fields

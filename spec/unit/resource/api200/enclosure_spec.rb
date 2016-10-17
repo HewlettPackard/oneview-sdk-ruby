@@ -159,6 +159,15 @@ RSpec.describe OneviewSDK::Enclosure do
     end
   end
 
+  describe '#set_environmental_configuration' do
+    it 'sets the configuration' do
+      item = OneviewSDK::Enclosure.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_put).with('/rest/fake/environmentalConfiguration', 'body' => { calibratedMaxPower: 2500 })
+        .and_return(FakeResponse.new({}))
+      item.set_environmental_configuration(2500)
+    end
+  end
+
   describe '#utilization' do
     it 'requires a uri' do
       expect { OneviewSDK::Enclosure.new(@client).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
