@@ -16,7 +16,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   end
 
   describe '#compliance' do
-    it 'defines the position of the Logical Interconnect' do
+    it 'defines the position of the SAS Logical Interconnect' do
       sas_log_int.retrieve!
       expect { sas_log_int.compliance }.to_not raise_error
     end
