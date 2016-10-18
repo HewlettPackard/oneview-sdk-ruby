@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Enclosure, integration: true, type: UPDATE do
-  include_context 'integration context'
+RSpec.describe OneviewSDK::API300::C7000::Enclosure, integration: true, type: UPDATE do
+  include_context 'integration api300 context'
 
   before :each do
-    @item = OneviewSDK::Enclosure.find_by($client, name: ENCL_NAME).first
+    @item = OneviewSDK::API300::C7000::Enclosure.find_by($client_300, name: ENCL_NAME).first
   end
 
   describe '#update' do
