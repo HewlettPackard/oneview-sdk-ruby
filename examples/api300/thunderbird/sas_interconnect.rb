@@ -32,10 +32,10 @@ end
 
 sas_interconnect1 = OneviewSDK::API300::Thunderbird::SASInterconnect.find_by(@client, {}).first
 
-# Sets a refresh state to the interconnect
+# Sets a refresh state to the SAS interconnect
 puts "\nSetting the refresh state of the #{type} '#{sas_interconnect1['name']}' to 'RefreshPending'..."
 puts sas_interconnect1.set_refresh_state('RefreshPending')
 
-# Sets a refresh state to the interconnect
+# Uses patch to hard reset a SAS interconnect
 puts "\nRunning a patch operation on the #{type} '#{sas_interconnect1['name']}' to reset it..."
 puts sas_interconnect1.patch('replace', '/hardResetState', 'Reset')
