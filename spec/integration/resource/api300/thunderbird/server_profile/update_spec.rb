@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   before :all do
     @item = OneviewSDK::API300::Thunderbird::ServerProfile.new($client_300, name: SERVER_PROFILE_NAME)

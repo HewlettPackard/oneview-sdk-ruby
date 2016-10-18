@@ -2,7 +2,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::ServerProfile
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#create' do
     it 'can create a basic connection-less assigned server profile' do

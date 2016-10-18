@@ -2,7 +2,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::ServerProfile
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#delete' do
     it 'deletes all the resources' do
