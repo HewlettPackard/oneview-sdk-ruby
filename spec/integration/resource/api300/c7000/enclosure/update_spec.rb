@@ -28,21 +28,15 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure, integration: true, type: UP
     end
   end
 
-  describe '#environmentalConfiguration' do
-    it 'sets the environmental configuration' do
-      expect { @item.set_environmental_configuration(2500) }.not_to raise_error
-    end
-  end
-
   describe '#patch' do
     it 'updates the enclosure name' do
-      expect { @item.patch([{ 'op' => 'replace', 'path' => '/name', 'value' => ENCL_NAME_UPDATED }]) }.not_to raise_error
+      expect { @item.patch('replace', '/name', ENCL_NAME_UPDATED) }.not_to raise_error
       @item.retrieve!
       expect(@item['name']).to eq(ENCL_NAME_UPDATED)
     end
 
     it 'sets it back to the original name' do
-      expect { @item.patch([{ 'op' => 'replace', 'path' => '/name', 'value' => ENCL_NAME }]) }.not_to raise_error
+      expect { @item.patch('replace', '/name', ENCL_NAME) }.not_to raise_error
       @item.retrieve!
       expect(@item['name']).to eq(ENCL_NAME)
     end

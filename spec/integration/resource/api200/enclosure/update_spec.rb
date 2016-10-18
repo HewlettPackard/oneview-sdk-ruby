@@ -27,10 +27,4 @@ RSpec.describe OneviewSDK::Enclosure, integration: true, type: UPDATE do
       expect { @item.set_refresh_state('RefreshPending') }.not_to raise_error
     end
   end
-
-  describe '#environmentalConfiguration' do
-    it 'sets the environmental configuration' do
-      expect { @item.set_environmental_configuration(2500) }.not_to raise_error
-    end
-  end
 end
