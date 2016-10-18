@@ -24,8 +24,8 @@ RSpec.describe OneviewSDK::Interconnect do
   describe '#retrieve!' do
     before :each do
       resp = FakeResponse.new(members: [
-        { name: 'name1', uri: 'uri1', serialNumber: 'sn1', interconnectIP: 'ip1' },
-        { name: 'name2', uri: 'uri2', serialNumber: 'sn2', interconnectIP: 'ip2' }
+        { name: 'name1', uri: 'uri1', serialNumber: 'sn1' },
+        { name: 'name2', uri: 'uri2', serialNumber: 'sn2' }
       ])
       allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
     end
@@ -44,18 +44,13 @@ RSpec.describe OneviewSDK::Interconnect do
       expect(described_class.new(@client, serialNumber: 'sn1').retrieve!).to be true
       expect(described_class.new(@client, serialNumber: 'fake').retrieve!).to be false
     end
-
-    it 'retrieves by interconnectIP' do
-      expect(described_class.new(@client, interconnectIP: 'ip1').retrieve!).to be true
-      expect(described_class.new(@client, interconnectIP: 'fake').retrieve!).to be false
-    end
   end
 
   describe '#exists?' do
     before :each do
       resp = FakeResponse.new(members: [
-        { name: 'name1', uri: 'uri1', serialNumber: 'sn1', interconnectIP: 'ip1' },
-        { name: 'name2', uri: 'uri2', serialNumber: 'sn2', interconnectIP: 'ip2' }
+        { name: 'name1', uri: 'uri1', serialNumber: 'sn1' },
+        { name: 'name2', uri: 'uri2', serialNumber: 'sn2' }
       ])
       allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
     end
@@ -73,11 +68,6 @@ RSpec.describe OneviewSDK::Interconnect do
     it 'finds it by serialNumber' do
       expect(described_class.new(@client, serialNumber: 'sn1').exists?).to be true
       expect(described_class.new(@client, serialNumber: 'fake').exists?).to be false
-    end
-
-    it 'finds it by interconnectIP' do
-      expect(described_class.new(@client, interconnectIP: 'ip1').exists?).to be true
-      expect(described_class.new(@client, interconnectIP: 'fake').exists?).to be false
     end
   end
 
