@@ -4,7 +4,6 @@ klass = OneviewSDK::API300::Thunderbird::SASLogicalInterconnect
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
-  # let(:enclosure) { OneviewSDK::Enclosure.new($client_300, name: ENCL_NAME) }
   let(:sas_log_int) { klass.new($client_300, name: SAS_LOG_INT1_NAME) }
   let(:firmware_path) { 'spec/support/Service Pack for ProLiant' }
 
