@@ -14,7 +14,32 @@ require_relative '../../api200/server_profile_template'
 module OneviewSDK
   module API300
     module Thunderbird
+      # Server Profile Template resource implementation on API300 Thunderbird
       class ServerProfileTemplate < OneviewSDK::API200::ServerProfileTemplate
+
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values
+          @data['type'] ||= 'ServerProfileTemplateV2'
+          super
+        end
+
+        # Transforms an existing profile template by supplying a new server hardware type and/or enclosure group.
+        # A profile template will be returned with a new configuration based on the capabilities of the supplied
+        # server hardware type and/or enclosure group. All configured connections will have their port assignment set to 'Auto'.
+        # The new profile template can subsequently be used for the PUT https://{appl}/rest/server-profile-templates/{id}
+        # API but is not guaranteed to pass validation. Any incompatibilities will be flagged
+        # when the transformed server profile template is submitted.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash<String,Object>] query Query parameters
+        # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
+        # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
+        # @return [Hash] Hash containing the required information
+        def get_transformation(client, query = nil)
+          query_uri = OneviewSDK::Resource.build_query(query) if query
+          response = client.rest_get("#{@data['uri']}/transformation#{query_uri}")
+          client.response_handler(response)
+        end
       end
     end
   end

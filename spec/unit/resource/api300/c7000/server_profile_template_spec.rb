@@ -13,7 +13,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerProfileTemplate do
 
   describe '#initialize' do
     it 'sets the type correctly' do
-      expect(@item[:type]).to eq('ServerProfileTemplateV1')
+      expect(@item[:type]).to eq('ServerProfileTemplateV2')
     end
   end
 
@@ -271,6 +271,15 @@ RSpec.describe OneviewSDK::API300::C7000::ServerProfileTemplate do
       expect(va['volumeShareable']).to eq(true)
       expect(va['volumeProvisionedCapacityBytes']).to eq(1024 * 1024 * 1024)
       expect(va['volumeProvisionType']).to eq('Full')
+    end
+  end
+
+  describe '#get_transformation' do
+    it 'transforms an existing profile template' do
+      template = OneviewSDK::API300::C7000::ServerProfileTemplate.new(@client_300, uri: '/rest/server-profile-templates/fake')
+      expect(@client_300).to receive(:rest_get).with("#{template['uri']}/transformation?queryTest=Test")
+        .and_return(FakeResponse.new('it' => 'ServerProfileTemplate'))
+      expect(template.get_transformation(@client_300, 'query_test' => 'Test')['it']).to eq('ServerProfileTemplate')
     end
   end
 end
