@@ -9,12 +9,24 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/logical_switch'
-
 module OneviewSDK
   module API300
     module Thunderbird
-      class LogicalSwitch < OneviewSDK::API200::LogicalSwitch
+      # Logical switch resource implementation (internal link set endpoints only)
+      class LogicalSwitch
+        # Retrieves all internal link sets
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        def self.get_internal_link_sets(client)
+          OneviewSDK::API300::C7000::LogicalSwitch.get_internal_link_sets(client)
+        end
+
+        # Retrieves the internal link set with name
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [String] name The internal link set name
+        # @return [Array] Internal Link Set Array
+        def self.get_internal_link_set(client, name)
+          OneviewSDK::API300::C7000::LogicalSwitch.get_internal_link_set(client, name)
+        end
       end
     end
   end

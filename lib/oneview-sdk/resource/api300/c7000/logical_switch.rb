@@ -14,7 +14,26 @@ require_relative '../../api200/logical_switch'
 module OneviewSDK
   module API300
     module C7000
+      # Logical switch resource implementation
       class LogicalSwitch < OneviewSDK::API200::LogicalSwitch
+        INTERNAL_LINK_SET_URI = '/rest/internal-link-sets'.freeze
+
+        # Retrieves all internal link sets
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        def self.get_internal_link_sets(client)
+          response = client.rest_get(INTERNAL_LINK_SET_URI)
+          response = client.response_handler(response)
+          response['members']
+        end
+
+        # Retrieves the internal link set with name
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [String] name The internal link set name
+        # @return [Array] Internal Link Set Array
+        def self.get_internal_link_set(client, name)
+          results = get_internal_link_sets(client)
+          results.find { |internal_link_set| internal_link_set['name'] == name }
+        end
       end
     end
   end
