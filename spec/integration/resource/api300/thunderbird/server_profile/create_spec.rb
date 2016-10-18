@@ -1,21 +1,21 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ServerProfile
+klass = OneviewSDK::API300::Thunderbird::ServerProfile
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
   describe '#create' do
     it 'can create a basic connection-less assigned server profile' do
-      item = OneviewSDK::ServerProfile.new($client_300, name: SERVER_PROFILE_NAME)
-      target = OneviewSDK::ServerProfile.get_available_targets($client_300)['targets'].first
+      item = OneviewSDK::API300::Thunderbird::ServerProfile.new($client_300, name: SERVER_PROFILE_NAME)
+      target = OneviewSDK::API300::Thunderbird::ServerProfile.get_available_targets($client_300)['targets'].first
       server_hardware = OneviewSDK::ServerHardware.new($client_300, uri: target['serverHardwareUri'])
       item.set_server_hardware(server_hardware)
       expect { item.create }.to_not raise_error
     end
 
     it 'can create a basic connection-less unassigned server profile' do
-      item = OneviewSDK::ServerProfile.new($client_300, name: SERVER_PROFILE2_NAME)
-      target = OneviewSDK::ServerProfile.get_available_targets($client_300)['targets'].first
+      item = OneviewSDK::API300::Thunderbird::ServerProfile.new($client_300, name: SERVER_PROFILE2_NAME)
+      target = OneviewSDK::API300::Thunderbird::ServerProfile.get_available_targets($client_300)['targets'].first
       server_hardware_type = OneviewSDK::ServerHardwareType.new($client_300, uri: target['serverHardwareTypeUri'])
       item.set_server_hardware_type(server_hardware_type)
       expect { item.create }.to_not raise_error
@@ -23,14 +23,14 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   end
 
   it 'can be created from template' do
-    template = OneviewSDK::ServerProfileTemplate.find_by($client_300, {}).first
+    template = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by($client_300, {}).first
     item = template.new_profile(SERVER_PROFILE3_NAME)
     expect { item.create }.to_not raise_error
     expect(item['uri']).to be
   end
 
   it 'can create advanced server profile with connections and volume attachments' do
-    item = OneviewSDK::ServerProfile.new($client_300, name: SERVER_PROFILE4_NAME)
+    item = OneviewSDK::API300::Thunderbird::ServerProfile.new($client_300, name: SERVER_PROFILE4_NAME)
 
     server_hardware_type = OneviewSDK::ServerHardwareType.new($client_300, name: 'BL460c Gen8 1')
     item.set_server_hardware_type(server_hardware_type)
@@ -67,7 +67,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#get_available_networks' do
     it 'Gets available networks' do
-      item = OneviewSDK::ServerProfile.find_by($client_300, name: SERVER_PROFILE_NAME).first
+      item = OneviewSDK::API300::Thunderbird::ServerProfile.find_by($client_300, name: SERVER_PROFILE_NAME).first
       expect { item.get_available_networks }.not_to raise_error
     end
   end
