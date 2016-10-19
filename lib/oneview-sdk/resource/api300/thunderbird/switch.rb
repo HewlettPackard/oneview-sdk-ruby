@@ -9,12 +9,27 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/switch'
-
 module OneviewSDK
   module API300
     module Thunderbird
-      class Switch < OneviewSDK::API200::Switch
+      # Switch resource implementation
+      class Switch
+        TYPE_URI = '/rest/switch-types'.freeze
+
+        # Retrieves the switch types
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @return [Array] All the Switch types
+        def self.get_types(client)
+          OneviewSDK::API200::Switch.get_types(client)
+        end
+
+        # Retrieves the switch type with the name
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [String] name Switch type name
+        # @return [Array] Switch type
+        def self.get_type(client, name)
+          OneviewSDK::API200::Switch.get_type(client, name)
+        end
       end
     end
   end
