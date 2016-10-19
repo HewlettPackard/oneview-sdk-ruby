@@ -51,7 +51,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
     describe '#rest_patch' do
       it 'makes a rest call with any data that is passed in' do
         expect(@client_300).to receive(:rest_patch)
-          .with(@item['uri'], 'body' => [{ op: 'replace', path: '/name', value: {} }] )
+          .with(@item['uri'], 'body' => [{ op: 'replace', path: '/name', value: {} }])
           .and_return(FakeResponse.new(response))
         expect(@item.patch(@client_300, data)).to eq(response)
       end
