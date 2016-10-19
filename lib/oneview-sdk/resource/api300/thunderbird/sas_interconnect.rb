@@ -45,7 +45,7 @@ module OneviewSDK
           unavailable_method
         end
 
-        # Retrieves interconnect types
+        # Retrieves SAS interconnect types
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         def self.get_types(client)
           response = client.rest_get(TYPE_URI)
@@ -53,13 +53,33 @@ module OneviewSDK
           response['members']
         end
 
-        # Retrieves the interconnect type with name
+        # Retrieves a SAS interconnect type by name
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [String] name Interconnect type name
         # @return [Array] Interconnect type
         def self.get_type(client, name)
           results = get_types(client)
           results.find { |interconnect_type| interconnect_type['name'] == name }
+        end
+
+        # Set refresh state for SAS Interconnect
+        # @param [String] state Desired refresh state
+        def set_refresh_state(state)
+          ensure_client && ensure_uri
+          response = @client.rest_put(@data['uri'] + '/refreshState', 'body' => { refreshState: state })
+          refreshed_data = @client.response_handler(response)
+          set_all(refreshed_data)
+        end
+
+        # Updates specific attributes for a given SAS interconnect
+        # @param [String] operation operation to be performed
+        # @param [String] path path
+        # @param [String] value value
+        def patch(operation, path, value)
+          ensure_client && ensure_uri
+          response = @client.rest_patch(@data['uri'], 'body' => [{ op: operation, path: path, value: value }])
+          patched_data = @client.response_handler(response)
+          set_all(patched_data)
         end
       end
     end
