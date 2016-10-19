@@ -14,6 +14,76 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
   end
 
+  describe '#retrieve!' do
+    before :each do
+      resp = FakeResponse.new(members: [
+        { name: 'name1', uri: 'uri1', associatedServer: 'as1', serialNumber: 'sn1', serverHardwareUri: 'sh1' },
+        { name: 'name2', uri: 'uri2', associatedServer: 'as2', serialNumber: 'sn2', serverHardwareUri: 'sh2' }
+      ])
+      allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+    end
+
+    it 'retrieves by name' do
+      expect(described_class.new(@client, name: 'name1').retrieve!).to be true
+      expect(described_class.new(@client, name: 'fake').retrieve!).to be false
+    end
+
+    it 'retrieves by uri' do
+      expect(described_class.new(@client, uri: 'uri1').retrieve!).to be true
+      expect(described_class.new(@client, uri: 'fake').retrieve!).to be false
+    end
+
+    it 'retrieves by associatedServer' do
+      expect(described_class.new(@client, associatedServer: 'as1').retrieve!).to be true
+      expect(described_class.new(@client, associatedServer: 'fake').retrieve!).to be false
+    end
+
+    it 'retrieves by serialNumber' do
+      expect(described_class.new(@client, serialNumber: 'sn1').retrieve!).to be true
+      expect(described_class.new(@client, serialNumber: 'fake').retrieve!).to be false
+    end
+
+    it 'retrieves by serverHardwareUri' do
+      expect(described_class.new(@client, serverHardwareUri: 'sh1').retrieve!).to be true
+      expect(described_class.new(@client, serverHardwareUri: 'fake').retrieve!).to be false
+    end
+  end
+
+  describe '#exists?' do
+    before :each do
+      resp = FakeResponse.new(members: [
+        { name: 'name1', uri: 'uri1', associatedServer: 'as1', serialNumber: 'sn1', serverHardwareUri: 'sh1' },
+        { name: 'name2', uri: 'uri2', associatedServer: 'as2', serialNumber: 'sn2', serverHardwareUri: 'sh2' }
+      ])
+      allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+    end
+
+    it 'finds it by name' do
+      expect(described_class.new(@client, name: 'name1').exists?).to be true
+      expect(described_class.new(@client, name: 'fake').exists?).to be false
+    end
+
+    it 'finds it by uri' do
+      expect(described_class.new(@client, uri: 'uri1').exists?).to be true
+      expect(described_class.new(@client, uri: 'fake').exists?).to be false
+    end
+
+    it 'finds it by associatedServer' do
+      expect(described_class.new(@client, associatedServer: 'as1').exists?).to be true
+      expect(described_class.new(@client, associatedServer: 'fake').exists?).to be false
+    end
+
+    it 'finds it by serialNumber' do
+      expect(described_class.new(@client, serialNumber: 'sn1').exists?).to be true
+      expect(described_class.new(@client, serialNumber: 'fake').exists?).to be false
+    end
+
+    it 'finds it by serverHardwareUri' do
+      expect(described_class.new(@client, serverHardwareUri: 'sh1').exists?).to be true
+      expect(described_class.new(@client, serverHardwareUri: 'fake').exists?).to be false
+    end
+  end
+
   describe '#set_server_hardware' do
     before :each do
       @server_hardware = OneviewSDK::ServerHardware.new(@client, name: 'server_hardware')

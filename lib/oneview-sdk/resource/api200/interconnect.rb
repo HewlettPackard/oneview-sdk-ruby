@@ -17,6 +17,7 @@ module OneviewSDK
     class Interconnect < Resource
       BASE_URI = '/rest/interconnects'.freeze
       TYPE_URI = '/rest/interconnect-types'.freeze
+      UNIQUE_IDENTIFIERS = %w(name uri serialNumber).freeze
 
       # Create a resource object, associate it with a client, and set its properties.
       # @param [OneviewSDK::Client] client The client object for the OneView appliance

@@ -31,40 +31,80 @@ RSpec.describe OneviewSDK::StorageSystem do
   end
 
   describe '#retrieve!' do
-    it 'finds by name if it is set' do
-      item = OneviewSDK::StorageSystem.new(@client, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, name: 'Fake').and_return([item])
-      expect(item.retrieve!).to eq(true)
+    before :each do
+      resp = FakeResponse.new(members: [
+        { name: 'name1', uri: 'uri1', serialNumber: 'sn1', wwn: 'wwn1', credentials: { ip_hostname: 'ip1' } },
+        { name: 'name2', uri: 'uri2', serialNumber: 'sn2', wwn: 'wwn2', credentials: { ip_hostname: 'ip2' } }
+      ])
+      allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
     end
 
-    it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
-        .and_return([item])
-      expect(item.retrieve!).to eq(true)
+    it 'retrieves by name' do
+      expect(described_class.new(@client, name: 'name1').retrieve!).to be true
+      expect(described_class.new(@client, name: 'fake').retrieve!).to be false
     end
 
-    it 'no parameter given' do
+    it 'retrieves by uri' do
+      expect(described_class.new(@client, uri: 'uri1').retrieve!).to be true
+      expect(described_class.new(@client, uri: 'fake').retrieve!).to be false
+    end
+
+    it 'retrieves by serialNumber' do
+      expect(described_class.new(@client, serialNumber: 'sn1').retrieve!).to be true
+      expect(described_class.new(@client, serialNumber: 'fake').retrieve!).to be false
+    end
+
+    it 'retrieves by wwn' do
+      expect(described_class.new(@client, wwn: 'wwn1').retrieve!).to be true
+      expect(described_class.new(@client, wwn: 'fake').retrieve!).to be false
+    end
+
+    it 'retrieves by credentials' do
+      expect(described_class.new(@client, credentials: { ip_hostname: 'ip1' }).retrieve!).to be true
+      expect(described_class.new(@client, credentials: { ip_hostname: 'fake' }).retrieve!).to be false
+    end
+
+    it 'raises an exception if no identifiers are given' do
       item = OneviewSDK::StorageSystem.new(@client, {})
       expect { item.retrieve! }.to raise_error(OneviewSDK::IncompleteResource)
     end
   end
 
   describe '#exists?' do
-    it 'finds by name if it is set' do
-      item = OneviewSDK::StorageSystem.new(@client, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, name: 'Fake').and_return([item])
-      expect(item.exists?).to eq(true)
+    before :each do
+      resp = FakeResponse.new(members: [
+        { name: 'name1', uri: 'uri1', serialNumber: 'sn1', wwn: 'wwn1', credentials: { ip_hostname: 'ip1' } },
+        { name: 'name2', uri: 'uri2', serialNumber: 'sn2', wwn: 'wwn2', credentials: { ip_hostname: 'ip2' } }
+      ])
+      allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
     end
 
-    it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
-        .and_return([item])
-      expect(item.exists?).to eq(true)
+    it 'finds it by name' do
+      expect(described_class.new(@client, name: 'name1').exists?).to be true
+      expect(described_class.new(@client, name: 'fake').exists?).to be false
     end
 
-    it 'no parameter given' do
+    it 'finds it by uri' do
+      expect(described_class.new(@client, uri: 'uri1').exists?).to be true
+      expect(described_class.new(@client, uri: 'fake').exists?).to be false
+    end
+
+    it 'finds it by serialNumber' do
+      expect(described_class.new(@client, serialNumber: 'sn1').exists?).to be true
+      expect(described_class.new(@client, serialNumber: 'fake').exists?).to be false
+    end
+
+    it 'finds it by wwn' do
+      expect(described_class.new(@client, wwn: 'wwn1').exists?).to be true
+      expect(described_class.new(@client, wwn: 'fake').exists?).to be false
+    end
+
+    it 'finds it by credentials' do
+      expect(described_class.new(@client, credentials: { ip_hostname: 'ip1' }).exists?).to be true
+      expect(described_class.new(@client, credentials: { ip_hostname: 'fake' }).exists?).to be false
+    end
+
+    it 'raises an exception if no identifiers are given' do
       item = OneviewSDK::StorageSystem.new(@client, {})
       expect { item.exists? }.to raise_error(OneviewSDK::IncompleteResource)
     end

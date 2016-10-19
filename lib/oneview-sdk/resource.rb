@@ -16,6 +16,7 @@ module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
     BASE_URI = '/rest'.freeze
+    UNIQUE_IDENTIFIERS = %w(name uri).freeze # Ordered list of unique attributes to search by
 
     attr_accessor \
       :client,
@@ -42,24 +43,30 @@ module OneviewSDK
     end
 
     # Retrieve resource details based on this resource's name or URI.
-    # @note Name or URI must be specified inside the resource
+    # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri, must be specified in the resource
     # @return [Boolean] Whether or not retrieve was successful
     def retrieve!
-      raise IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
-      results = self.class.find_by(@client, name: @data['name']) if @data['name']
-      results = self.class.find_by(@client, uri:  @data['uri'])  if @data['uri'] && (!results || results.empty?)
-      return false unless results.size == 1
-      set_all(results[0].data)
-      true
+      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
+      raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
+      retrieval_keys.each do |k|
+        results = self.class.find_by(@client, k => @data[k])
+        next if results.size != 1
+        set_all(results[0].data)
+        return true
+      end
+      false
     end
 
     # Check if a resource exists
-    # @note name or uri must be specified inside resource
+    # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri, must be specified in the resource
     # @return [Boolean] Whether or not resource exists
     def exists?
-      raise IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
-      return true if @data['name'] && self.class.find_by(@client, name: @data['name']).size == 1
-      return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri']).size == 1
+      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
+      raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
+      retrieval_keys.each do |k|
+        results = self.class.find_by(@client, k => @data[k])
+        return true if results.size == 1
+      end
       false
     end
 

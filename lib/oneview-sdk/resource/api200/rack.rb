@@ -16,6 +16,7 @@ module OneviewSDK
     # Rack resource implementation
     class Rack < Resource
       BASE_URI = '/rest/racks'.freeze
+      UNIQUE_IDENTIFIERS = %w(name uri serialNumber).freeze
 
       # Add the resource on OneView using the current data
       # @note Calls the refresh method to set additional data

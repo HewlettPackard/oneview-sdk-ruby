@@ -40,15 +40,16 @@ RSpec.describe OneviewSDK::API300::C7000::StorageSystem do
   describe '#retrieve!' do
     it 'finds by name if it is set' do
       item = OneviewSDK::API300::C7000::StorageSystem.new(@client_300, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, name: 'Fake').and_return([item])
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
     it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::API300::C7000::StorageSystem.new(@client_300,
-                                                          credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
-        .and_return([item])
+      item = OneviewSDK::API300::C7000::StorageSystem.new(
+        @client_300,
+        credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
+      )
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: 'a.com' }).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
@@ -61,15 +62,16 @@ RSpec.describe OneviewSDK::API300::C7000::StorageSystem do
   describe '#exists?' do
     it 'finds by name if it is set' do
       item = OneviewSDK::API300::C7000::StorageSystem.new(@client_300, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, name: 'Fake').and_return([item])
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
       expect(item.exists?).to eq(true)
     end
 
     it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::API300::C7000::StorageSystem.new(@client_300,
-                                                          credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: item['credentials'][:ip_hostname] })
-        .and_return([item])
+      item = OneviewSDK::API300::C7000::StorageSystem.new(
+        @client_300,
+        credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
+      )
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, credentials: { ip_hostname: 'a.com' }).and_return([item])
       expect(item.exists?).to eq(true)
     end
 

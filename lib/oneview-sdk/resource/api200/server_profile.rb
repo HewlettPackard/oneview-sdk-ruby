@@ -16,6 +16,7 @@ module OneviewSDK
     # Server profile resource implementation
     class ServerProfile < Resource
       BASE_URI = '/rest/server-profiles'.freeze
+      UNIQUE_IDENTIFIERS = %w(name uri associatedServer serialNumber serverHardwareUri).freeze
 
       def initialize(client, params = {}, api_ver = nil)
         super
