@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::C7000::Enclosure, integration: true, type: UPDATE do
+klass = OneviewSDK::API300::C7000::Enclosure
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = OneviewSDK::API300::C7000::Enclosure.find_by($client_300, name: ENCL_NAME).first
+    @item = klass.find_by($client_300, name: ENCL_NAME).first
   end
 
   describe '#update' do
@@ -29,13 +30,10 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure, integration: true, type: UP
   end
 
   describe '#patch' do
-    it 'updates the enclosure name' do
+    it 'replaces the enclosure name and sets it back to the original' do
       expect { @item.patch('replace', '/name', ENCL_NAME_UPDATED) }.not_to raise_error
       @item.retrieve!
       expect(@item['name']).to eq(ENCL_NAME_UPDATED)
-    end
-
-    it 'sets it back to the original name' do
       expect { @item.patch('replace', '/name', ENCL_NAME) }.not_to raise_error
       @item.retrieve!
       expect(@item['name']).to eq(ENCL_NAME)

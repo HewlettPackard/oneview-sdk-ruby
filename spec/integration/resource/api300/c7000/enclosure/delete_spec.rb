@@ -6,7 +6,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe '#remove' do
     it 'removes the resource' do
-      item = OneviewSDK::API300::C7000::Enclosure.find_by($client_300, 'name' => ENCL_NAME).first
+      item = klass.find_by($client_300, 'name' => ENCL_NAME).first
       expect { item.remove }.not_to raise_error
     end
   end

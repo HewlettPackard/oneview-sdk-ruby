@@ -16,6 +16,17 @@ module OneviewSDK
     module C7000
       # Enclosure resource implementation for API300 C7000
       class Enclosure < OneviewSDK::API200::Enclosure
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          super
+          # Default values:
+          @data['type'] ||= 'EnclosureV300'
+        end
+
         # Update specific attributes of a given enclosure
         # @param [String] operation Operation to be performed
         # @param [String] path Path

@@ -14,6 +14,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     }
   end
 
+  # Requires:
+  # => Enclosure Group 'EnclosureGroup_2'
   describe '#add' do
     it 'can add an enclosure' do
       item = OneviewSDK::API300::C7000::Enclosure.new($client_300, enclosure_options)

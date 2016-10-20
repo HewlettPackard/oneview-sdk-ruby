@@ -12,7 +12,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Enclosure do
     context 'OneView 2.0' do
       it 'sets the defaults correctly' do
         enclosure = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300)
-        expect(enclosure[:type]).to eq('EnclosureV200')
+        expect(enclosure[:type]).to eq('EnclosureV300')
       end
     end
   end
@@ -28,10 +28,6 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Enclosure do
         @data = {
           'name' => 'Fake-Enclosure',
           'hostname' => '1.1.1.1',
-          'username' => 'Admin',
-          'password' => 'secret123',
-          'enclosureGroupUri' => '/rest/enclosure-groups/fake',
-          'licensingIntent' => 'OneView',
           'force' => true
         }
         @enclosure = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, @data)
