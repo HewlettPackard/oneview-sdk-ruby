@@ -14,7 +14,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
   describe '#initialize' do
     it 'sets the type correctly' do
       profile = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300)
-      expect(profile[:type]).to eq('ServerProfileV5')
+      expect(profile[:type]).to eq('ServerProfileV6')
     end
   end
 

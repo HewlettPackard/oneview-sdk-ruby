@@ -19,6 +19,15 @@ module OneviewSDK
         LOGICAL_JBOD_URI = '/rest/sas-logical-jbods'.freeze
         ATTACHMENT_URI = '/rest/sas-logical-jbod-attachments'.freeze
 
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interacting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          super
+          @data['type'] = 'ServerProfileV6'
+        end
+
         # Retrieves all SAS Logical JBOD
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         def self.get_sas_logical_jbods(client)

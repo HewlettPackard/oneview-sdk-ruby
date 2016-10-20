@@ -1,15 +1,16 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true, type: UPDATE do
+klass = OneviewSDK::API300::Thunderbird::ServerProfile
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @item = OneviewSDK::API300::Thunderbird::ServerProfile.new($client_300, name: SERVER_PROFILE_NAME)
+    @item = klass.new($client_300, name: SERVER_PROFILE_NAME)
     @item.retrieve!
-    @enclosure_group = OneviewSDK::EnclosureGroup.find_by($client_300, {}).first
-    @server_hardware_type = OneviewSDK::ServerHardwareType.find_by($client_300, {}).first
-    @storage_system = OneviewSDK::StorageSystem.find_by($client_300, {}).first
-    @item3 = OneviewSDK::API300::Thunderbird::ServerProfile.new($client_300, name: SERVER_PROFILE3_NAME)
+    @enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by($client_300, {}).first
+    @server_hardware_type = OneviewSDK::Thunderbird::ServerHardwareType.find_by($client_300, {}).first
+    @storage_system = OneviewSDK::Thunderbird::StorageSystem.find_by($client_300, {}).first
+    @item3 = klass.new($client_300, name: SERVER_PROFILE2_NAME)
     @item3.retrieve!
   end
 
@@ -19,13 +20,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true
         'enclosure_group' => @enclosure_group,
         'server_hardware_type' => @server_hardware_type
       }
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_available_networks($client_300, query_options) }.to_not raise_error
+      expect { klass.get_available_networks($client_300, query_options) }.to_not raise_error
     end
   end
 
   describe '#self.get_available_servers' do
     it 'retrieves available servers without errors' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_available_servers($client_300) }.to_not raise_error
+      expect { klass.get_available_servers($client_300) }.to_not raise_error
     end
   end
 
@@ -36,7 +37,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true
         'server_hardware_type' => @server_hardware_type,
         'storage_system' => @storage_system
       }
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_available_storage_system($client_300, query_options) }.to_not raise_error
+      expect { klass.get_available_storage_system($client_300, query_options) }.to_not raise_error
     end
   end
 
@@ -46,13 +47,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true
         'enclosure_group' => @enclosure_group,
         'server_hardware_type' => @server_hardware_type
       }
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_available_storage_systems($client_300, query_options) }.to_not raise_error
+      expect { klass.get_available_storage_systems($client_300, query_options) }.to_not raise_error
     end
   end
 
   describe '#self.get_available_targets' do
     it 'retrieves available targets without errors' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_available_targets($client_300) }.to_not raise_error
+      expect { klass.get_available_targets($client_300) }.to_not raise_error
     end
   end
 
@@ -62,7 +63,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true
         'enclosure_group' => @enclosure_group,
         'server_hardware_type' => @server_hardware_type
       }
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_profile_ports($client_300, query_options) }.to_not raise_error
+      expect { klass.get_profile_ports($client_300, query_options) }.to_not raise_error
     end
   end
 
@@ -74,7 +75,8 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true
 
   describe '#get_transformation' do
     it 'transforms an existing profile' do
-      expect { @item.get_transformation('server_hardware_type' => @server_hardware_type) }.to_not raise_error
+      expect { @item.get_transformation('server_hardware_type' => @server_hardware_type, 'enclosure_group' => @enclosure_group) }
+        .to_not raise_error
     end
   end
 
@@ -92,20 +94,20 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile, integration: true
 
   describe '#get_available_networks' do
     it 'Gets available networks' do
-      item = OneviewSDK::API300::Thunderbird::ServerProfile.find_by($client_300, name: SERVER_PROFILE_NAME).first
+      item = klass.find_by($client_300, name: SERVER_PROFILE_NAME).first
       expect { item.get_available_networks }.not_to raise_error
     end
   end
 
   describe '#get_sas_logical_jbods' do
     it 'returns all SAS Logical JBODs' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_sas_logical_jbods($client_300) }.not_to raise_error
+      expect { klass.get_sas_logical_jbods($client_300) }.not_to raise_error
     end
   end
 
   describe '#get_sas_logical_jbod_attachments' do
     it 'retrieves all attachments' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.get_sas_logical_jbod_attachments($client_300) }.not_to raise_error
+      expect { klass.get_sas_logical_jbod_attachments($client_300) }.not_to raise_error
     end
   end
 end
