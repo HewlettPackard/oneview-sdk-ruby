@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require_relative '../../_client' # Gives access to @client
 
 # Example: Add an enclosure
 # NOTE: This will add an enclosure named 'OneViewSDK-Test-Enclosure', then delete it.
@@ -20,20 +20,12 @@ require_relative '../_client' # Gives access to @client
 #   @enclosure_group_uri
 
 type = 'enclosure'
-options = {
-  name: 'OneViewSDK-Test-Enclosure',
-  hostname: @enclosure_hostname,
-  username: @enclosure_username,
-  password: @enclosure_password,
-  enclosureGroupUri: @enclosure_group_uri,
-  licensingIntent: 'OneView'
-}
 
-item = OneviewSDK::Enclosure.new(@client, options)
+item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, hostname: @enclosure_hostname)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
-item2 = OneviewSDK::Enclosure.new(@client, name: options[:name])
+item2 = OneviewSDK::Enclosure.new(@client, {}).first
 item2.retrieve!
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
 

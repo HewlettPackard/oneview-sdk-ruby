@@ -107,6 +107,7 @@ ENC_GROUP2_NAME = 'EnclosureGroup_2'.freeze
 ENC_GROUP3_NAME = 'EnclosureGroup_3'.freeze
 
 # Enclosure
+ENCL_HOSTNAME = 'fe80::2:0:9:1%eth2'.freeze
 ENCL_NAME = 'Encl1'.freeze
 ENCL_NAME_UPDATED = 'Encl1_UPDATED'.freeze
 

@@ -12,7 +12,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     context 'OneView 2.0' do
       it 'sets the defaults correctly' do
         enclosure = OneviewSDK::API300::C7000::Enclosure.new(@client_300)
-        expect(enclosure[:type]).to eq('EnclosureV200')
+        expect(enclosure[:type]).to eq('EnclosureV300')
       end
     end
   end

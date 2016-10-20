@@ -67,6 +67,12 @@ module OneviewSDK
         def set_environmental_configuration
           unavailable_method
         end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def set_enclosure_group
+          unavailable_method
+        end
       end
     end
   end
