@@ -22,9 +22,10 @@ module OneviewSDK
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
         def initialize(client, params = {}, api_ver = nil)
-          super
+          @data ||= {}
           # Default values:
           @data['type'] = 'EnclosureV300'
+          super
         end
 
         # Update specific attributes of a given enclosure
