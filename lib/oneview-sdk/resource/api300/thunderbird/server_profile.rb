@@ -24,8 +24,10 @@ module OneviewSDK
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interacting with this resource.
         def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values
+          @data['type'] ||= 'ServerProfileV6'
           super
-          @data['type'] = 'ServerProfileV6'
         end
 
         # Retrieves all SAS Logical JBOD
