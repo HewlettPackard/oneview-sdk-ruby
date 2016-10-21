@@ -14,8 +14,9 @@ require_relative '../../api200/server_profile'
 module OneviewSDK
   module API300
     module C7000
+      # Server profile resource implementation
       class ServerProfile < OneviewSDK::API200::ServerProfile
-        
+
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
