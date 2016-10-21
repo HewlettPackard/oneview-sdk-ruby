@@ -24,7 +24,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
-          @data['type'] = 'EnclosureV300'
+          @data['type'] ||= 'EnclosureV300'
           super
         end
 
