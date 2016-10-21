@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalSwitch do
   end
 
   describe '#get_internal_link_set' do
-    it 'finds the specified switch' do
+    it 'finds internal link sets' do
       internal_link_set_list = FakeResponse.new(
         'members' => [
           { 'name' => 'InternalLinkSet1', 'uri' => 'rest/fake/internal-link-set' },
@@ -24,7 +24,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalSwitch do
   end
 
   describe '#get_internal_link_sets' do
-    it 'finds the specified switch' do
+    it 'finds the specified internal link set' do
       expect(@client_300).to receive(:rest_get).with('/rest/internal-link-sets').and_return(FakeResponse.new('members' => []))
       expect(described_class.get_internal_link_sets(@client_300)).to be
     end
