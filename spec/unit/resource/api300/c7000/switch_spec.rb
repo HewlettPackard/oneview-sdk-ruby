@@ -67,4 +67,13 @@ RSpec.describe OneviewSDK::API300::C7000::Switch do
       expect { switch.delete }.to raise_error(OneviewSDK::MethodUnavailable, /The method #delete is unavailable for this resource/)
     end
   end
+
+  describe '#patch' do
+    it 'does a PATCH to a switch' do
+      item = OneviewSDK::API300::C7000::Switch.new(@client_300, uri: '/rest/fake')
+      data = { 'body' => [{ op: 'replace', path: '/scopeUris', value: ['/rest/scopes/fee00629-9931-426d-8771-a597917eb9d2'] }] }
+      expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
+      expect(item.patch(['/rest/scopes/fee00629-9931-426d-8771-a597917eb9d2'])).to eq('key' => 'Val')
+    end
+  end
 end

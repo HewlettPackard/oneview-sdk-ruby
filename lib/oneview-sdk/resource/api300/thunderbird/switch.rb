@@ -14,7 +14,6 @@ module OneviewSDK
     module Thunderbird
       # Switch resource implementation
       class Switch
-        TYPE_URI = '/rest/switch-types'.freeze
 
         # Retrieves the switch types
         # @param [OneviewSDK::Client] client The client object for the OneView appliance

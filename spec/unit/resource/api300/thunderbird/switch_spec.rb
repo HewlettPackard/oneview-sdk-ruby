@@ -5,6 +5,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Switch do
 
   it 'does not inherit from API200' do
     expect(described_class).not_to be < OneviewSDK::API200::Switch
+    expect(described_class).not_to be < OneviewSDK::Resource
   end
 
   describe '#get_type' do
@@ -17,8 +18,15 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Switch do
         ]
       )
       expect(@client_300).to receive(:rest_get).with('/rest/switch-types').and_return(switch_type_list)
-      @item = OneviewSDK::API300::Thunderbird::Switch.get_type(@client_300, 'TheSwitch')
+      @item = described_class.get_type(@client_300, 'TheSwitch')
       expect(@item['uri']).to eq('rest/fake/switch')
+    end
+  end
+
+  describe '#get_types' do
+    it 'finds the specified switch' do
+      expect(@client_300).to receive(:rest_get).with('/rest/switch-types').and_return(FakeResponse.new('members' => []))
+      expect(described_class.get_types(@client_300)).to be
     end
   end
 end
