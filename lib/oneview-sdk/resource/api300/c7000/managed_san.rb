@@ -14,7 +14,22 @@ require_relative '../../api200/managed_san'
 module OneviewSDK
   module API300
     module C7000
+      # Managed SAN resource implementation for API300 C7000
       class ManagedSAN < OneviewSDK::API200::ManagedSAN
+
+        # Retrieves interconnect types
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [String] wwn The wwn of the switch from which the managed sans should be retrieved
+        def self.get_wwn(client, wwn = nil)
+          response = client.rest_get(BASE_URI + '?locate=' + wwn)
+          client.response_handler(response)
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def set_public_attributes
+          unavailable_method
+        end
       end
     end
   end
