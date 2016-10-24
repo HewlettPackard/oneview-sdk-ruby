@@ -8,8 +8,8 @@ RSpec.describe klass, integration: true, type: UPDATE do
     @item = klass.new($client_300, name: SERVER_PROFILE_NAME)
     @item.retrieve!
     @enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by($client_300, {}).first
-    @server_hardware_type = OneviewSDK::Thunderbird::ServerHardwareType.find_by($client_300, {}).first
-    @storage_system = OneviewSDK::Thunderbird::StorageSystem.find_by($client_300, {}).first
+    @server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300, {}).first
+    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.find_by($client_300, {}).first
     @item3 = klass.new($client_300, name: SERVER_PROFILE2_NAME)
     @item3.retrieve!
   end

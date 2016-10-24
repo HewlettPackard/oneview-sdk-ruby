@@ -1,3 +1,12 @@
+# Requirements:
+# => 2 Server Hardware Types (any name)
+# => Enclosure Group 'EnclosureGroup_1'
+# => Storage System (any name)
+# => FC Network 'FCNetwork_1' (it has to be associated to the LIG 'EnclosureGroup_1' is associated to)
+# => Volume 'Volume_4'
+# => Storage Pool 'CPG-SSD-AO'
+# => Server Profile Template (any name)
+
 require 'spec_helper'
 
 klass = OneviewSDK::API300::Thunderbird::ServerProfile
@@ -5,9 +14,6 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
   describe '#create' do
-    # Requirements:
-    # => Server Hardware Type (any name)
-    # => Enclosure Group 'EnclosureGroup_1'
     it 'can create a basic connection-less unassigned server profile' do
       item = klass.new($client_300, name: SERVER_PROFILE_NAME)
       server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300, {}).first
@@ -17,8 +23,6 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       expect { item.create }.to_not raise_error
     end
 
-    # Requirements:
-    # => Server Profile Template (any name)
     it 'can be created from template' do
       template = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by($client_300, {}).first
       item = template.new_profile(SERVER_PROFILE2_NAME)
@@ -26,18 +30,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       expect(item['uri']).to be
     end
 
-    # Requirements:
-    # => Server Hardware Type 'SY 660 Gen9 3'
-    # => Enclosure Group 'EnclosureGroup_1'
-    # => Storage System (any name)
-    # => FC Network 'FC_NET_NAME' (it has to be associated to the LIG 'EnclosureGroup_1' is associated to)
-    # => Volume 'Volume_4'
-    # => Storage Pool 'StoragePool_1'
     it 'can create advanced server profile with connections and volume attachments' do
       item = klass.new($client_300, name: SERVER_PROFILE3_NAME)
 
-      server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.new($client_300, name: 'SY 660 Gen9 3')
-      item.set_server_hardware_type(server_hardware_type)
+      server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.new($client_300, {})
+      item.set_server_hardware_type(server_hardware_type[1])
 
       enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.new($client_300, name: ENC_GROUP_NAME)
       item.set_enclosure_group(enclosure_group)
