@@ -12,7 +12,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     context 'OneView 2.0' do
       it 'sets the defaults correctly' do
         enclosure = OneviewSDK::API300::C7000::Enclosure.new(@client_300)
-        expect(enclosure[:type]).to eq('EnclosureV200')
+        expect(enclosure[:type]).to eq('EnclosureV300')
       end
     end
   end
@@ -210,11 +210,18 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
-    it 'does a PATCH to the enclusre uri' do
+    it 'does a PATCH to the enclosure uri with all parameters' do
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
       data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
       expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
       expect(item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
+    end
+
+    it 'does a PATCH to the enclosure uri with 2 parameters' do
+      item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, uri: '/rest/fake')
+      data = { 'body' => [{ op: 'operation', path: '/path' }] }
+      expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Op'))
+      expect(item.patch('operation', '/path')).to eq('key' => 'Op')
     end
   end
 
@@ -265,4 +272,6 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
       expect { enclosure.delete }.to raise_error(OneviewSDK::MethodUnavailable, /The method #delete is unavailable for this resource/)
     end
   end
+
+  describe
 end
