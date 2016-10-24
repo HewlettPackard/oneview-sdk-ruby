@@ -25,7 +25,7 @@ item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, hostname: @enclos
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
-item2 = OneviewSDK::Enclosure.new(@client, {}).first
+item2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, {}).first
 item2.retrieve!
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
 

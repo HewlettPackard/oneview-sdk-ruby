@@ -29,11 +29,11 @@ options = {
   licensingIntent: 'OneView'
 }
 
-item = OneviewSDK::Enclosure.new(@client, options)
+item = OneviewSDK::API300::C7000::Enclosure.new(@client, options)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
-item2 = OneviewSDK::Enclosure.new(@client, name: options[:name])
+item2 = OneviewSDK::API300::C7000::Enclosure.new(@client, name: options[:name])
 item2.retrieve!
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
 
