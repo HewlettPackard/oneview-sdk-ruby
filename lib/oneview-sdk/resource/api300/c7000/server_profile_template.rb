@@ -17,6 +17,10 @@ module OneviewSDK
       # Server Profile Template resource implementation on API300 C7000
       class ServerProfileTemplate < OneviewSDK::API200::ServerProfileTemplate
 
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values
@@ -31,13 +35,12 @@ module OneviewSDK
         # API but is not guaranteed to pass validation. Any incompatibilities will be flagged
         # when the transformed server profile template is submitted.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [Hash<String,Object>] query Query parameters
+        # @param [Hash] query Query parameters
         # @option query [OneviewSDK::EnclosureGroup] 'enclosure_group' Enclosure Group associated with the resource
         # @option query [OneviewSDK::ServerHardwareType] 'server_hardware_type' The server hardware type associated with the resource
         # @return [Hash] Hash containing the required information
         def get_transformation(client, query = nil)
           query_uri = OneviewSDK::Resource.build_query(query) if query
-          puts query_uri
           response = client.rest_get("#{@data['uri']}/transformation#{query_uri}")
           client.response_handler(response)
         end

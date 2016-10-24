@@ -58,6 +58,7 @@ item4.create
 server_hardware_type2 = OneviewSDK::API300::C7000::ServerHardwareType.find_by(@client, {}).last
 enclosure_group2 = OneviewSDK::API300::C7000::EnclosureGroup.find_by(@client, {}).last
 item4.get_transformation(@client, 'server_hardware_type' => server_hardware_type2, 'enclosure_group' => enclosure_group2)
+item4.update
 puts "\nTransformed Server Profile Template '#{item4['name']}' sucessfully.\n  uri = '#{item4['uri']}' "
 item4.delete
 
