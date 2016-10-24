@@ -51,12 +51,12 @@ item3.delete
 puts "\nSucessfully deleted #{type} '#{item['name']}'."
 
 puts "\n\n### Transforms an existing profile template by supplying a new server hardware type and/or enclosure group"
-item4 = OneviewSDK::API300::C7000::ServerProfileTemplate.new(@client, name:  item['name'])
+item4 = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client, name:  item['name'])
 item4.set_server_hardware_type(server_hardware_type)
 item4.set_enclosure_group(enclosure_group)
 item4.create
-server_hardware_type2 = OneviewSDK::API300::C7000::ServerHardwareType.find_by(@client, {}).last
-enclosure_group2 = OneviewSDK::API300::C7000::EnclosureGroup.find_by(@client, {}).last
+server_hardware_type2 = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by(@client, {}).last
+enclosure_group2 = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by(@client, {}).last
 item4.get_transformation(@client, 'server_hardware_type' => server_hardware_type2, 'enclosure_group' => enclosure_group2)
 item4.update
 puts "\nTransformed Server Profile Template '#{item4['name']}' sucessfully.\n  uri = '#{item4['uri']}' "
