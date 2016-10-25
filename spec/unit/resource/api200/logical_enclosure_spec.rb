@@ -3,14 +3,16 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalEnclosure do
   include_context 'shared context'
 
-  describe '#initialize' do
-    context 'OneView 2.0' do
-      it 'sets the type correctly' do
-        template = OneviewSDK::LogicalEnclosure.new(@client)
-        expect(template[:type]).to eq('LogicalEnclosure')
-      end
-    end
-  end
+  # Commented because in endpoints of creation and delete, when passed the type
+  # occurs an exception returning UNRECOGNIZED_JSON_FIELD.
+  # describe '#initialize' do
+  #   context 'OneView 2.0' do
+  #     it 'sets the type correctly' do
+  #       template = OneviewSDK::LogicalEnclosure.new(@client)
+  #       expect(template[:type]).to eq('LogicalEnclosure')
+  #     end
+  #   end
+  # end
 
   describe 'helper-methods' do
     before :each do

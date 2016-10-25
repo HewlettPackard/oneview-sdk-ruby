@@ -10,14 +10,16 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalEnclosure do
     expect(described_class).to be < OneviewSDK::API200::LogicalEnclosure
   end
 
-  describe '#initialize' do
-    context 'OneView 2.0' do
-      it 'sets the type correctly' do
-        template = OneviewSDK::API300::C7000::LogicalEnclosure.new(@client_300)
-        expect(template[:type]).to eq('LogicalEnclosureV300')
-      end
-    end
-  end
+  # Commented because in endpoints of creation and delete, when passed the type
+  # occurs an exception returning UNRECOGNIZED_JSON_FIELD.
+  # describe '#initialize' do
+  #   context 'OneView 3.0' do
+  #     it 'sets the type correctly' do
+  #       template = OneviewSDK::API300::C7000::LogicalEnclosure.new(@client_300)
+  #       expect(template[:type]).to eq('LogicalEnclosureV300')
+  #     end
+  #   end
+  # end
 
   describe 'helper-methods' do
     before :each do
@@ -48,12 +50,18 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalEnclosure do
       end
     end
 
-    describe '#rest_patch' do
-      it 'makes a rest call with any data that is passed in' do
+    describe '#perfoms a specific patch' do
+      it 'requires a uri' do
+        logical_enclosure = OneviewSDK::API300::C7000::LogicalEnclosure.new(@client_300)
+        expect { logical_enclosure.patch(:val) }
+          .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      end
+
+      it 'does a patch to the server hardware uri' do
+        data = { 'body' => [{ op: 'replace', path: '/firmware', value: 'val' }] }
         expect(@client_300).to receive(:rest_patch)
-          .with(@item['uri'], 'body' => [{ op: 'replace', path: '/name', value: {} }])
-          .and_return(FakeResponse.new(response))
-        expect(@item.patch(@client_300, data)).to eq(response)
+          .with('/rest/logical-enclosures/fake', data, @item.api_version).and_return(FakeResponse.new(key: 'Val'))
+        expect(@item.patch('val')).to eq('key' => 'Val')
       end
     end
 

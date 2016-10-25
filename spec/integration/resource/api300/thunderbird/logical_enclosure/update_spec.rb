@@ -1,24 +1,24 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure, integration: true, type: UPDATE do
+klass = OneviewSDK::API300::Thunderbird::LogicalEnclosure
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
+
+  let(:value) do
+    {
+      firmwareUpdateOn: 'SharedInfrastructureOnly',
+      forceInstallFirmware: false,
+      updateFirmwareOnUnmanagedInterconnect: true
+    }
+  end
 
   describe '#patch' do
     it 'Update a given logical enclosure' do
-
-      retrieved_item = OneviewSDK::API300::Thunderbird::
-      LogicalEnclosure.find_by($client_300, name: ENCL_NAME).first
-
-      to_update = [{
-        op: 'replace',
-        path: '/firmware',
-        value: {
-          firmwareUpdateOn: 'SharedInfrastructureOnly',
-          forceInstallFirmware: false,
-          updateFirmwareOnUnmanagedInterconnect: true
-        }
-      }]
-      expect { retrieved_item.patch($client_300, to_update) }.to_not raise_error
+      item = klass.find_by($client_300, name: LOG_ENCL1_NAME).first
+      response = nil
+      expect { response = item.patch(value) }.to_not raise_error
+      expect(response['uri']).to eq(item['uri'])
+      expect(response['name']).to eq(item['name'])
     end
   end
 end

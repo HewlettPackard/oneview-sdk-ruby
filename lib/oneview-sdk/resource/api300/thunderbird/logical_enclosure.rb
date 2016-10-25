@@ -9,29 +9,44 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/logical_enclosure'
+require_relative '../c7000/logical_enclosure'
 
 module OneviewSDK
   module API300
     module Thunderbird
-      # Logical Enclosure for API version 300
-      class LogicalEnclosure < OneviewSDK::API200::LogicalEnclosure
+      # Logical Enclosure resource implementation on API300 Thunderbird
+      class LogicalEnclosure < OneviewSDK::API300::C7000::LogicalEnclosure
 
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
-          # Default values
-          @data['type'] ||= 'LogicalEnclosureV300'
           super
         end
 
-        # Updates specific attributes of a given logical enclosure resource
-        # @param [String] operation operation to be performed
-        # @param [String] path path
-        # @param [String] value value
-        def patch(client, received_value)
-          ensure_client && ensure_uri
-          response = client.rest_patch(@data['uri'], 'body' => received_value)
-          client.response_handler(response)
+        # Sets the enclosure group for the logical enclosure
+        # @param [OneviewSDK::API300::Thunderbird::EnclosureGroup] enclosure_group Enclosure Group that the Server is a member
+        def set_enclosure_group(enclosure_group)
+          self['enclosureGroupUri'] = enclosure_group['uri'] if enclosure_group['uri'] || enclosure_group.retrieve!
+          raise "Resource #{enclosure_group['name']} could not be found!" unless enclosure_group['uri']
+        end
+
+        # Sets a list of enclosures uris for the logical enclosure
+        # @param [Array] Array of OneviewSDK::API300::Thunderbird::Enclosure
+        def set_enclosures(enclosures = [])
+          enclosureUris = []
+          enclosures.each do |enclosure|
+            enclosureUris.push(enclosure['uri']) if enclosure['uri'] || enclosure.retrieve!
+            raise "Resource #{enclosure['name']} could not be found!" unless enclosure['uri']
+          end
+
+          raise 'EnclosureUris is empty!' if enclosureUris.empty?
+          self['enclosureUris'] = enclosureUris unless enclosureUris.empty?
+        end
+
+        # Sets the firmware driver uri for the logical enclosure
+        # @param [OneviewSDK::API300::Thunderbird::FirmwareDriver] firmware The firmware driver
+        def set_firmware_driver(firmware)
+          self['firmwareBaselineUri'] = firmware['uri'] if firmware['uri'] || firmware.retrieve!
+          raise "Resource #{firmware['customBaselineName']} could not be found!" unless firmware['uri']
         end
       end
     end
