@@ -33,8 +33,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     it 'can create advanced server profile with connections and volume attachments' do
       item = klass.new($client_300, name: SERVER_PROFILE3_NAME)
 
-      server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.new($client_300, {})
-      item.set_server_hardware_type(server_hardware_type[1])
+      server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300, {}).first
+      item.set_server_hardware_type(server_hardware_type)
 
       enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.new($client_300, name: ENC_GROUP_NAME)
       item.set_enclosure_group(enclosure_group)

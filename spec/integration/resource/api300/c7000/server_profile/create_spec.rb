@@ -2,7 +2,7 @@
 # => 2 Server Hardware Types (any name)
 # => Enclosure Group 'EnclosureGroup_1'
 # => Storage System (any name)
-# => FC Network 'FCNetwork_1' (it has to be associated to the LIG 'EnclosureGroup_1' is associated to)
+# => Ethernet Network 'EthernetNetwork_1' (it has to be associated to the LIG 'EnclosureGroup_1' is associated to)
 # => Volume 'Volume_4'
 # => Storage Pool 'CPG-SSD-AO'
 # => Server Profile Template (any name)
@@ -33,8 +33,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     it 'can create advanced server profile with connections and volume attachments' do
       item = klass.new($client_300, name: SERVER_PROFILE3_NAME)
 
-      server_hardware_type = OneviewSDK::API300::C7000::ServerHardwareType.new($client_300, {})
-      item.set_server_hardware_type(server_hardware_type[1])
+      server_hardware_type = OneviewSDK::API300::C7000::ServerHardwareType.find_by($client_300, {}).first
+      item.set_server_hardware_type(server_hardware_type)
 
       enclosure_group = OneviewSDK::API300::C7000::EnclosureGroup.new($client_300, name: ENC_GROUP_NAME)
       item.set_enclosure_group(enclosure_group)
@@ -45,9 +45,9 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       storage_system = OneviewSDK::API300::C7000::StorageSystem.find_by($client_300, {}).first
       expect(storage_system['uri']).to be
 
-      available_fc_network = OneviewSDK::API300::C7000::FCNetwork.new($client_300, name: FC_NET_NAME)
-      available_fc_network.retrieve!
-      item.add_connection(available_fc_network, 'name' => 'fc_con_1', 'functionType' => 'FibreChannel', 'portId' => 'Auto')
+      ethernet_network = OneviewSDK::API300::C7000::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
+      ethernet_network.retrieve!
+      item.add_connection(ethernet_network, 'name' => 'eth_con_1', 'functionType' => 'Ethernet', 'portId' => 'Auto')
 
       volume_params = {
         'name' => VOLUME4_NAME,

@@ -98,16 +98,4 @@ RSpec.describe klass, integration: true, type: UPDATE do
       expect { item.get_available_networks }.not_to raise_error
     end
   end
-
-  describe '#get_sas_logical_jbods' do
-    it 'returns all SAS Logical JBODs' do
-      expect { klass.get_sas_logical_jbods($client_300) }.not_to raise_error
-    end
-  end
-
-  describe '#get_sas_logical_jbod_attachments' do
-    it 'retrieves all attachments' do
-      expect { klass.get_sas_logical_jbod_attachments($client_300) }.not_to raise_error
-    end
-  end
 end
