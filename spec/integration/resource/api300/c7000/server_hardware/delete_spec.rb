@@ -6,12 +6,12 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe '#remove' do
     it 'deletes the resource' do
-      item = OneviewSDK::API300::C7000::ServerHardware.find_by($client_300, 'name' => $secrets['server_hardware_ip']).first
+      item = klass.find_by($client_300, 'name' => $secrets['server_hardware_ip']).first
       item.remove
     end
 
     it 'deletes the resource 2' do
-      item = OneviewSDK::API300::C7000::ServerHardware.find_by($client_300, 'name' => $secrets['rack_server_hardware_ip']).first
+      item = klass.find_by($client_300, 'name' => $secrets['rack_server_hardware_ip']).first
       item.remove
     end
   end

@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware, integration: true, type: UPDATE do
+klass = OneviewSDK::API300::Thunderbird::ServerHardware
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = OneviewSDK::API300::Thunderbird::ServerHardware.find_by($client, name: $secrets['server_hardware_ip']).first
+    @item = klass.find_by($client_300, name: $secrets['server_hardware_ip']).first
   end
 
   describe '#set_refresh_state' do

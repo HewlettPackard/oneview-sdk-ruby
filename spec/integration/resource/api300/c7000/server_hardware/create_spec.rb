@@ -13,7 +13,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       licensingIntent: 'OneView'
     }
 
-    @item = OneviewSDK::API300::C7000::ServerHardware.new($client_300, options)
+    @item = klass.new($client_300, options)
   end
 
   describe '#add' do
@@ -60,7 +60,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#get firmware by id' do
     it 'Gets the Server Hardware firmware without uri' do
-      item = OneviewSDK::API300::C7000::ServerHardware.new($client_300)
+      item = klass.new($client_300)
       expect { item.get_firmware_by_id }.to raise_error
     end
 

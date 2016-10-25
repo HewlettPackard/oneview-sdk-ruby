@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::C7000::ServerHardware, integration: true, type: UPDATE do
+klass = OneviewSDK::API300::C7000::ServerHardware
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @item = OneviewSDK::API300::C7000::ServerHardware.find_by($client_300, name: $secrets['server_hardware_ip']).first
+    @item = klass.find_by($client_300, name: $secrets['server_hardware_ip']).first
   end
 
   describe '#set_refresh_state' do
