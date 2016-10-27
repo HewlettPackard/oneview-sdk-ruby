@@ -102,4 +102,14 @@ RSpec.describe klass do
       san.get_zoning_report
     end
   end
+
+  describe '#get_wwn' do
+    it 'Get managed sans by switch wwn' do
+      san = klass.new(@client_300, name: 'test')
+      expect(@client_300).to receive(:rest_get).with(
+        '/rest/fc-sans/managed-sans' + '?locate=' + '20:00:4A:2B:21:E0:00:00'
+      ).and_return(FakeResponse.new([san]))
+      expect { klass.get_wwn(@client_300, '20:00:4A:2B:21:E0:00:00') }.not_to raise_error
+    end
+  end
 end
