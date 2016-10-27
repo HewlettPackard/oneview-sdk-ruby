@@ -14,6 +14,7 @@ require_relative '../../api200/fabric'
 module OneviewSDK
   module API300
     module C7000
+      # Fabric resource implementation for API300 C7000
       class Fabric < OneviewSDK::API200::Fabric
       end
     end
