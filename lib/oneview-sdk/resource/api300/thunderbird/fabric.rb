@@ -26,7 +26,6 @@ module OneviewSDK
           ensure_client && ensure_uri
           response = @client.rest_get("#{@data['uri']}/reserved-vlan-range", @api_version)
           @client.response_handler(response)
-          # response.body
         end
 
         # Updates the reserved vlan ID range for the fabric.
