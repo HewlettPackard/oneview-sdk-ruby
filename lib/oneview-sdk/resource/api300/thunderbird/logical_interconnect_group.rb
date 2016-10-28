@@ -38,10 +38,9 @@ module OneviewSDK
 
         # Get the logical interconnect group default settings
         # @return [Hash] The logical interconnect group settings
-        def get_default_settings
-          get_uri = self.class::BASE_URI + '/defaultSettings'
-          response = @client.rest_get(get_uri, @api_version)
-          @client.response_handler(response)
+        def self.get_default_settings(client)
+          response = client.rest_get(BASE_URI + '/defaultSettings')
+          client.response_handler(response)
         end
 
         # Gets the logical interconnect group settings
@@ -71,6 +70,7 @@ module OneviewSDK
         def add_interconnect(bay, type, logical_downlink = nil, enclosure_index = 1)
           parse_interconnect_map_template(bay, enclosure_index)
           @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
+            # Default value in case of no specified logical downlink
             entry['logicalDownlinkUri'] = nil
             if logical_downlink
               ld = OneviewSDK::API300::Thunderbird::LogicalDownlink.find_by(@client, name: logical_downlink).first['uri']

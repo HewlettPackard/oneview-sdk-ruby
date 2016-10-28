@@ -1,54 +1,75 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup do
+klass = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup
+RSpec.describe klass do
   include_context 'shared context'
 
-  it 'inherits from API200' do
-    expect(described_class).to be < OneviewSDK::API300::Resource
+  it 'inherits from API200 and does not inherit from LogicalInterconnectGroup' do
+    expect(described_class).to be < OneviewSDK::API300::Thunderbird::Resource
+    expect(klass).not_to be < OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup
   end
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup.new(@client_300)
-      expect(item['enclosureType']).to eq('SYN12000')
+      item = klass.new(@client_300)
+      expect(item['enclosureType']).to eq('SY12000')
       expect(item['state']).to eq('Active')
       expect(item['uplinkSets']).to eq([])
       expect(item['type']).to eq('logical-interconnect-groupV300')
-      path = 'spec/support/fixtures/unit/resource/lig_default_templates.json'
-      expect(item['interconnectMapTemplate']).to eq(JSON.parse(File.read(path)))
-      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates'].size).to eq(8)
-    end
-  end
-
-  describe '#add_interconnect' do
-    before :each do
-      @item = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup.new(@client_300)
-      @type = 'HP VC FlexFabric-20/40 F8 Module'
-    end
-
-    it 'adds a valid interconnect' do
-      expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
-        .and_return('uri' => '/rest/fake')
-      @item.add_interconnect(3, @type)
-      expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][2]['permittedInterconnectTypeUri'])
-        .to eq('/rest/fake')
-    end
-
-    it 'raises an error if the interconnect is not found' do
-      expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
-        .and_return([])
-      expect(OneviewSDK::Interconnect).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
-      expect { @item.add_interconnect(3, @type) }.to raise_error(/not found!/)
+      expect(item['interconnectMapTemplate']).to eq('interconnectMapEntryTemplates' => [])
+      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates']).to be_empty
     end
   end
 
   describe '#add_uplink_set' do
     it 'adds it to the \'uplinkSets\' data attribute' do
-      item = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup.new(@client_300)
+      item = klass.new(@client_300)
       uplink = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
       item.add_uplink_set(uplink)
       expect(item['uplinkSets'].size).to eq(1)
       expect(item['uplinkSets'].first).to eq(uplink.data)
+    end
+  end
+
+  describe '#settings' do
+    it 'gets the default settings' do
+      expect(@client_300).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings')
+        .and_return(FakeResponse.new('Default' => 'Settings'))
+      expect(klass.get_default_settings(@client_300)).to eq('Default' => 'Settings')
+    end
+
+    it 'gets the current settings' do
+      item = klass.new(@client_300, uri: '/rest/fake')
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/settings', 300)
+        .and_return(FakeResponse.new('Current' => 'Settings'))
+      expect(item.get_settings).to eq('Current' => 'Settings')
+    end
+  end
+
+  describe '#add_internal_network' do
+    it 'adds a network' do
+      item = klass.new(@client_300)
+      network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client, uri: '/rest/fake')
+      expect(item.add_internal_network(network)).to be
+      expect(item['internalNetworkUris']).to eq(['/rest/fake'])
+    end
+  end
+
+  describe '#add_interconnect' do
+    it 'adds a valid interconnect type' do
+      item = klass.new(@client_300)
+      type = 'Virtual Connect SE 40Gb F8 Module for Synergy'
+      logical_downlink = OneviewSDK::API300::Thunderbird::LogicalDownlink.new(@client_300, name: 'LD')
+      allow(OneviewSDK::API300::Thunderbird::LogicalDownlink).to receive(:find_by).with(anything, name: 'LD')
+        .and_return([logical_downlink])
+      logical_downlink['uri'] = '/rest/fake'
+      allow(OneviewSDK::API300::Thunderbird::Interconnect).to receive(:get_type).with(anything, type)
+        .and_return('uri' => '/rest/fake')
+      item.add_interconnect(1, type, 'LD')
+      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates'][0]['permittedInterconnectTypeUri'])
+        .to eq('/rest/fake')
+      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates'][0]['logicalDownlinkUri'])
+        .to eq('/rest/fake')
     end
   end
 end

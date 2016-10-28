@@ -54,16 +54,13 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   end
 
   describe 'getters' do
-    before(:all) do
-      @item = klass.find_by($client_300, name: LOG_INT_GROUP_NAME).first
-    end
-
     it 'gets the default settings' do
-      expect { @item.get_default_settings }.not_to raise_error
+      expect { klass.get_default_settings }.not_to raise_error
     end
 
     it 'gets the current settings' do
-      expect { @item.get_settings }.not_to raise_error
+      item = klass.find_by($client_300, name: LOG_INT_GROUP_NAME).first
+      expect { item.get_settings }.not_to raise_error
     end
   end
 end
