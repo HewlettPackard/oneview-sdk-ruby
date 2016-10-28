@@ -114,7 +114,7 @@ RSpec.describe OneviewSDK::Interconnect do
     it 'sends a patch request to the interconnect' do
       item = OneviewSDK::Interconnect.new(@client, uri: '/rest/fake')
       expect(@client).to receive(:rest_patch)
-        .with(item['uri'], { 'body' => [{ op: 'replace', path: '/uidState', value: 'On' }] })
+        .with(item['uri'], 'body' => [{ op: 'replace', path: '/uidState', value: 'On' }])
         .and_return(FakeResponse.new)
       expect(item.patch('replace', '/uidState', 'On')).to be
     end
