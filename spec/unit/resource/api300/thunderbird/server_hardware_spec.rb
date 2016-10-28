@@ -7,55 +7,54 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
     expect(described_class).to be < OneviewSDK::API200::ServerHardware
   end
 
+  before(:each) do
+    @item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
+  end
+
   describe '#initialize' do
     it 'sets the defaults correctly' do
       server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect(server_hardware[:type]).to eq('server-hardware-4')
+      expect(server_hardware[:type]).to eq('server-hardware-5')
     end
   end
 
   describe '#update_ilo_firmware' do
     it '' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_put).with(item['uri'] + '/mpFirmwareVersion')
+      expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/mpFirmwareVersion')
         .and_return(FakeResponse.new({}))
-      item.update_ilo_firmware
+      @item.update_ilo_firmware
     end
   end
 
   describe '#get_bios' do
     it '' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with(item['uri'] + '/bios')
+      expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/bios')
         .and_return(FakeResponse.new({}))
-      item.get_bios
+      @item.get_bios
     end
   end
 
   describe '#get_remote_console_url' do
     it '' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with(item['uri'] + '/remoteConsoleUrl')
+      expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/remoteConsoleUrl')
         .and_return(FakeResponse.new({}))
-      item.get_remote_console_url
+      @item.get_remote_console_url
     end
   end
 
   describe '#get_ilo_sso_url' do
     it '' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with(item['uri'] + '/iloSsoUrl')
+      expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/iloSsoUrl')
         .and_return(FakeResponse.new({}))
-      item.get_ilo_sso_url
+      @item.get_ilo_sso_url
     end
   end
 
   describe '#get_java_remote_sso_url' do
     it '' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with(item['uri'] + '/javaRemoteConsoleUrl')
+      expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/javaRemoteConsoleUrl')
         .and_return(FakeResponse.new({}))
-      item.get_java_remote_sso_url
+      @item.get_java_remote_sso_url
     end
   end
 
@@ -89,10 +88,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
     end
 
     it 'gets uri/environmentalConfiguration' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
-      expect(item.environmental_configuration).to eq('key' => 'val')
+      expect(@item.environmental_configuration).to eq('key' => 'val')
     end
   end
 
@@ -103,32 +101,28 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
     end
 
     it 'gets uri/utilization' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
-      expect(item.utilization).to eq('key' => 'val')
+      expect(@item.utilization).to eq('key' => 'val')
     end
 
     it 'takes query parameters' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
-      expect(item.utilization(key: :val)).to eq('key' => 'val')
+      expect(@item.utilization(key: :val)).to eq('key' => 'val')
     end
 
     it 'takes an array for the :fields query parameter' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
-      expect(item.utilization(fields: %w(one two three))).to eq('key' => 'val')
+      expect(@item.utilization(fields: %w(one two three))).to eq('key' => 'val')
     end
 
     it 'converts Time query parameters' do
       t = Time.now
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", item.api_version)
+      expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
-      expect(item.utilization(startDate: t)).to eq('key' => 'val')
+      expect(@item.utilization(startDate: t)).to eq('key' => 'val')
     end
   end
 
@@ -167,29 +161,25 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe '#power_on' do
     it 'calls #set_power_state' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect(item).to receive(:set_power_state).with('on', false).and_return(true)
-      item.power_on
+      expect(@item).to receive(:set_power_state).with('on', false).and_return(true)
+      @item.power_on
     end
 
     it 'passes the force value' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect(item).to receive(:set_power_state).with('on', true).and_return(true)
-      item.power_on(true)
+      expect(@item).to receive(:set_power_state).with('on', true).and_return(true)
+      @item.power_on(true)
     end
   end
 
   describe '#power_off' do
     it 'calls #set_power_state' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect(item).to receive(:set_power_state).with('off', false).and_return(true)
-      item.power_off
+      expect(@item).to receive(:set_power_state).with('off', false).and_return(true)
+      @item.power_off
     end
 
     it 'passes the force value' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect(item).to receive(:set_power_state).with('off', true).and_return(true)
-      item.power_off(true)
+      expect(@item).to receive(:set_power_state).with('off', true).and_return(true)
+      @item.power_off(true)
     end
   end
 
@@ -244,27 +234,93 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe 'undefined methods' do
     it 'does not allow the create action' do
-      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect { server_hardware.create }.to raise_error(
+      expect { @item.create }.to raise_error(
         OneviewSDK::MethodUnavailable,
         /The method #create is unavailable for this resource/
       )
     end
 
     it 'does not allow the update action' do
-      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect { server_hardware.update }.to raise_error(
+      expect { @item.update }.to raise_error(
         OneviewSDK::MethodUnavailable,
         /The method #update is unavailable for this resource/
       )
     end
 
     it 'does not allow the delete action' do
-      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
-      expect { server_hardware.delete }.to raise_error(
+      expect { @item.delete }.to raise_error(
         OneviewSDK::MethodUnavailable,
         /The method #delete is unavailable for this resource/
       )
+    end
+  end
+
+  describe '#get firmware by id' do
+    it 'requires the uri to be set' do
+      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
+      expect { server_hardware.get_firmware_by_id }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+    end
+
+    it 'gets uri/firmware & returns the result' do
+      expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/firmware').and_return(FakeResponse.new(key: 'val'))
+      expect(@item.get_firmware_by_id).to eq('key' => 'val')
+    end
+  end
+
+  describe '#get firmwares' do
+    it 'gets an empty list of firmwares' do
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => [])
+      expect(@client_300).to receive(:rest_get).with('/rest/server-hardware/*/firmware')
+      response = @item.get_firmwares([])
+      expect(response.class).to eq(Array)
+      expect(response).to be_empty
+    end
+
+    it 'gets an list with two firmwares' do
+      members = [
+        { category: 'cat1', components: { componentKey: 'componentKey' } },
+        { category: 'cat2' }
+      ]
+      allow(@client_300).to receive(:response_handler).and_return('members' => members)
+      expect(@client_300).to receive(:rest_get).with('/rest/server-hardware/*/firmware')
+      response = @item.get_firmwares([])
+      expect(response.class).to eq(Array)
+      expect(response.size).to eq(2)
+      expect(response).to match_array(members)
+    end
+
+    it 'gets an list by filters with two firmwares' do
+      filters = [
+        { name: 'components.componentName', operation: '=', value: 'HP ProLiant System ROM' },
+        { name: 'components.componentVersion', operation: 'like', value: '_37%25' }
+      ]
+      members = [
+        { category: 'cat1', components: { componentKey: 'componentKey' } },
+        { category: 'cat2' }
+      ]
+      base_uri = '/rest/server-hardware/*/firmware'
+      allow(@client_300).to receive(:response_handler).and_return('members' => members)
+      expect(@client_300).to receive(:rest_get)
+        .with(base_uri + "?filter=components.componentName='HP ProLiant System ROM'&filter=components.componentVersion like '_37%25'")
+      response = @item.get_firmwares(filters)
+      expect(response.class).to eq(Array)
+      expect(response.size).to eq(2)
+      expect(response).to match_array(members)
+    end
+  end
+
+  describe '#perfoms a specific patch' do
+    it 'requires a uri' do
+      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
+      expect { server_hardware.patch(:op, :path, :val) }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+    end
+
+    it 'does a patch to the server hardware uri' do
+      data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
+      expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, @item.api_version).and_return(FakeResponse.new(key: 'Val'))
+      expect(@item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
     end
   end
 end
