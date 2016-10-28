@@ -34,5 +34,5 @@ RSpec.describe OneviewSDK::LogicalSwitchGroup do
       expect { @item.set_grouping_parameters(1, @type) }.to raise_error(/not found!/)
     end
   end
-
+  
 end
