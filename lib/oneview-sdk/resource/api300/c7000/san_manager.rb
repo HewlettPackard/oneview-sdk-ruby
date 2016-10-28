@@ -15,6 +15,28 @@ module OneviewSDK
   module API300
     module C7000
       class SANManager < OneviewSDK::API200::SANManager
+
+        REQUIRED_FIELDS_TO_UPDATE = %w(Host Port Username Password UseSsl).freeze
+
+        def update(options)
+          options ||= {}
+          if options.has_key? :connectionInfo
+            result = validateConnectionInfo(options[:connectionInfo])
+            raise IncompleteResource, "You must complete connectionInfo properties with #{result.join(', ')} values" unless result.empty?
+          end
+
+          super(options)
+        end
+
+        private
+
+        def validateConnectionInfo(_connectionInfo)
+          required = REQUIRED_FIELDS_TO_UPDATE.dup
+          keys = _connectionInfo.map do |k|
+            k['name'] if k.include?('name')
+          end
+          required.select { |a| !keys.include?(a) }
+        end
       end
     end
   end
