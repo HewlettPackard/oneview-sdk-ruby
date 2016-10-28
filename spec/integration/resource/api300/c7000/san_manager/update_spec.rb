@@ -17,7 +17,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   before :each do
     @item = klass.new($client_300, name: $secrets['san_manager_ip'])
-    @item.retrieve!    
+    @item.retrieve!
   end
 
   describe '#update' do

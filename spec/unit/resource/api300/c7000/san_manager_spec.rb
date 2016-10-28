@@ -78,7 +78,8 @@ RSpec.describe OneviewSDK::API300::C7000::SANManager do
         name: 'san_manager_1',
         uri: '/rest/fake',
         providerDisplayName: 'Brocade',
-        providerUri: '/rest/fc-sans/providers/100')
+        providerUri: '/rest/fc-sans/providers/100'
+      )
     end
 
     before do
@@ -97,17 +98,17 @@ RSpec.describe OneviewSDK::API300::C7000::SANManager do
           { 'name' => 'Host', 'value' => 'host.com' },
           { 'name' => 'Port', 'value' => 5598 }
         ])
-      end.to raise_error(OneviewSDK::IncompleteResource, "You must complete connectionInfo properties with Username, Password, UseSsl values")
+      end.to raise_error(OneviewSDK::IncompleteResource, 'You must complete connectionInfo properties with Username, Password, UseSsl values')
     end
 
-    it 'Should validate ok' do      
+    it 'Should validate ok' do
       expect do
         san_manager.update(connectionInfo: [
           { 'name' => 'Host', 'value' => 'host.com' },
           { 'name' => 'Port', 'value' => 5598 },
           { 'name' => 'Username', 'value' => 'dcs' },
           { 'name' => 'Password', 'value' => 'dcs' },
-          { 'name' => 'UseSsl', 'value' => true },
+          { 'name' => 'UseSsl', 'value' => true }
         ])
       end.not_to raise_error
     end
