@@ -12,13 +12,14 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API300::Thunderbird::ManagedSAN
+extra_klass = OneviewSDK::API300::Thunderbird::FCNetwork
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
   describe 'Remove FC Networks' do
     it 'Remove' do
-      OneviewSDK::ManagedSAN.find_by($client_300, deviceManagerName: $secrets['san_manager_ip']).each do |san|
-        fc = OneviewSDK::FCNetwork.new($client_300, name: "FC_#{san['name']}")
+      klass.find_by($client_300, deviceManagerName: $secrets['san_manager_ip']).each do |san|
+        fc = extra_klass.new($client_300, name: "FC_#{san['name']}")
         fc.retrieve!
         fc.delete
       end
