@@ -28,4 +28,23 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Fabric do
       expect { item.refresh }.to raise_error(OneviewSDK::MethodUnavailable, /unavailable for this resource/)
     end
   end
+
+  describe '#get_reserved_vlan_range' do
+    it 'gets the reserved vlan range attributes successfully' do
+      item = OneviewSDK::API300::Thunderbird::Fabric.new(@client_300, uri: '/rest/fake')
+      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/reserved-vlan-range", item.api_version)
+        .and_return(FakeResponse.new([{ start: 105, length: 105, type: 'vlan-pool' }]))
+      expect { item.get_reserved_vlan_range }.not_to raise_error
+    end
+  end
+
+  describe '#set_reserved_vlan_range' do
+    it 'sets new reserved vlan range attributes successfully' do
+      options = { start: 105, length: 105, type: 'vlan-pool' }
+      item = OneviewSDK::API300::Thunderbird::Fabric.new(@client_300, uri: '/rest/fake')
+      expect(@client_300).to receive(:rest_put).with("#{item['uri']}/reserved-vlan-range", { 'body' => options }, item.api_version)
+        .and_return(FakeResponse.new(options))
+      expect { item.set_reserved_vlan_range(options) }.not_to raise_error
+    end
+  end
 end
