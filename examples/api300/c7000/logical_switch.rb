@@ -11,11 +11,24 @@
 
 require_relative '../../_client'
 
-# List of C7000 Internal Link Sets
-OneviewSDK::LogicalSwitch.get_internal_link_sets(@client).each do |internal_link_set|
-  puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
-end
+# # List of C7000 Internal Link Sets
+# OneviewSDK::LogicalSwitch.get_internal_link_sets(@client).each do |internal_link_set|
+#   puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
+# end
+#
+# # Retrieves a specific Internal Link Set
+# internal_link_set = OneviewSDK::LogicalSwitch.get_internal_link_set(@client, 'ils1')
+# puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
 
-# Retrieves a specific Internal Link Set
-internal_link_set = OneviewSDK::LogicalSwitch.get_internal_link_set(@client, 'ils1')
-puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
+$client_300 = @client
+
+klass = OneviewSDK::API300::C7000::LogicalSwitch
+@item = klass.new($client_300, name: 'LOG_SWI_NAME')
+ssh_credentials = klass::CredentialsSSH.new('dcs', 'dcs')
+snmp_v1 = klass::CredentialsSNMPV1.new(161, 'admin')
+logical_switch_group = OneviewSDK::API300::C7000::LogicalSwitchGroup.find_by($client_300, {}).first
+@item.set_logical_switch_group(logical_switch_group)
+@item.set_switch_credentials('172.18.20.1', ssh_credentials, snmp_v1)
+@item.set_switch_credentials('172.18.20.2', ssh_credentials, snmp_v1)
+@item.create
+expect(@item['uri']).to be
