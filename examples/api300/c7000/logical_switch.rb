@@ -11,24 +11,35 @@
 
 require_relative '../../_client'
 
-# # List of C7000 Internal Link Sets
-# OneviewSDK::LogicalSwitch.get_internal_link_sets(@client).each do |internal_link_set|
-#   puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
-# end
-#
-# # Retrieves a specific Internal Link Set
-# internal_link_set = OneviewSDK::LogicalSwitch.get_internal_link_set(@client, 'ils1')
-# puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
+# SSH Credential
+ssh_credentials = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSSH.new('dcs', 'dcs')
 
-$client_300 = @client
+# SNMP credentials
+snmp_v1 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV1.new(161, 'public')
+snmp_v1_2 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV1.new(161, 'public')
 
-klass = OneviewSDK::API300::C7000::LogicalSwitch
-@item = klass.new($client_300, name: 'LOG_SWI_NAME')
-ssh_credentials = klass::CredentialsSSH.new('dcs', 'dcs')
-snmp_v1 = klass::CredentialsSNMPV1.new(161, 'admin')
-logical_switch_group = OneviewSDK::API300::C7000::LogicalSwitchGroup.find_by($client_300, {}).first
-@item.set_logical_switch_group(logical_switch_group)
-@item.set_switch_credentials('172.18.20.1', ssh_credentials, snmp_v1)
-@item.set_switch_credentials('172.18.20.2', ssh_credentials, snmp_v1)
-@item.create
-expect(@item['uri']).to be
+
+logical_switch = OneviewSDK::API300::C7000::LogicalSwitch.new(
+  @client,
+  name: 'Teste_SDK',
+  logicalSwitchGroupUri: '/rest/logical-switch-groups/2c5de7f0-7cb6-4897-9423-181e625a614c'
+)
+
+# Adding switches credentials
+logical_switch.set_switch_credentials('172.16.11.11', ssh_credentials, snmp_v1)
+logical_switch.set_switch_credentials('172.16.11.12', ssh_credentials, snmp_v1_2)
+
+# Creates logical switch for a switch group
+logical_switch.create
+puts "Logical switch created with uri=#{logical_switch['uri']}"
+
+# ======================= Internal Link Sets =================================
+
+# List of C7000 Internal Link Sets
+OneviewSDK::API300::C7000::LogicalSwitch.get_internal_link_sets(@client).each do |internal_link_set|
+  puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
+end
+
+# Retrieves a specific Internal Link Set
+internal_link_set = OneviewSDK::API300::C7000::LogicalSwitch.get_internal_link_set(@client, 'ils1')
+puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"

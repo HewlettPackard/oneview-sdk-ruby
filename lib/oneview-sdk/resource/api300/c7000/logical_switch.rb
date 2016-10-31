@@ -18,6 +18,17 @@ module OneviewSDK
       class LogicalSwitch < OneviewSDK::API200::LogicalSwitch
         INTERNAL_LINK_SET_URI = '/rest/internal-link-sets'.freeze
 
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'logical-switchV300'
+          super
+        end
+
         # Updates the scope URIs of a specific switch
         # @param [Array] scope_uris Array of scope uri strings
         def set_scope_uris(scope_uris)

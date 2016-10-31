@@ -2,7 +2,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::LogicalSwitch
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   before :all do
     @item = klass.new($client_300, name: LOG_SWI_NAME)

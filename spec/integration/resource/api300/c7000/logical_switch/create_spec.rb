@@ -30,4 +30,9 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
   end
 
+  describe '#get_internal_link_sets' do
+    it 'gets the internal link sets' do
+      expect { klass.get_internal_link_sets($client_300) }.not_to raise_error
+    end
+  end
 end
