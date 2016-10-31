@@ -9,8 +9,8 @@ require 'pry'
 )
 
 ## This setting allows the SDK to flush messages to the screen as it is being run.
-#  # It defaults to true when a client is created, and can set to false in order
-#  # to only output everything at the end of execution.
+#  # It defaults to true when a client is created, and can be set to false in order
+#  # to only flush at the end of execution.
 # STDOUT.sync = false
 
 # This setting allows for use of the shortened name of the resources, like OneviewSDK::<Resource_name>,
