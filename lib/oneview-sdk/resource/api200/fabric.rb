@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-    # FC network resource implementation
+    # Fabric resource implementation
     class Fabric < Resource
       BASE_URI = '/rest/fabrics'.freeze
 

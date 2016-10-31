@@ -8,7 +8,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
     it 'replaces the switch scopeUris' do
       item = klass.find_by($client_300, {}).first
       item.retrieve!
-      expect { item.patch(item['scopeUris']) }.not_to raise_error
+      expect { item.set_scope_uris(item['scopeUris']) }.not_to raise_error
     end
   end
 end
