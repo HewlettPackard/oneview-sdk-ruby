@@ -46,23 +46,12 @@ puts "Found logical-enclosure '#{logical_enclosure[:name]}'."
 orig_script = logical_enclosure3.get_script
 puts "Retrieved logical-enclosure '#{logical_enclosure[:name]}' script\n  Content = '#{orig_script}'"
 
-# Set configuration script
-logical_enclosure3.set_script('test')
-puts "Setting logical-enclosure '#{logical_enclosure[:name]}' configuration script"
-
-# Get configuration script
-puts "Retrieved logical-enclosure '#{logical_enclosure[:name]}' script\n  Content = '#{logical_enclosure.get_script}'"
-
-# Reset configuration script
-logical_enclosure3.set_script(orig_script)
-
-
 # Update from Group
 logical_enclosure3.update_from_group
 puts 'Logical enclosure updated'
 
 # Performs a patch
-puts "Performs a patch on logigal-enclosure #{logical_enclosure[:name]}"
+puts "Performs a patch on logical-enclosure #{logical_enclosure[:name]}"
 value = {
   firmwareUpdateOn: 'SharedInfrastructureOnly',
   forceInstallFirmware: false,
@@ -70,13 +59,12 @@ value = {
 }
 
 logical_enclosure3.patch(value)
-puts "Patch perfomed successfully on logigal-enclosure #{logical_enclosure[:name]}"
+puts "Patch perfomed successfully on logical-enclosure #{logical_enclosure[:name]}"
 
 # Generate dump
 dump = {
-  errorCode: 'Mydump',
-  encrypt: false,
-  excludeApplianceDump: false
+  errorCode: 'test'
 }
+puts 'Generate dump'
 logical_enclosure3.support_dump(dump)
 puts "\nGenerated dump for logical-enclosure '#{logical_enclosure[:name]}'."

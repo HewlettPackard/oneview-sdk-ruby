@@ -18,7 +18,6 @@ module OneviewSDK
       class LogicalEnclosure < OneviewSDK::API300::C7000::LogicalEnclosure
 
         def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
           super
         end
 
@@ -47,6 +46,12 @@ module OneviewSDK
         def set_firmware_driver(firmware)
           self['firmwareBaselineUri'] = firmware['uri'] if firmware['uri'] || firmware.retrieve!
           raise "Resource #{firmware['customBaselineName']} could not be found!" unless firmware['uri']
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def set_script
+          unavailable_method
         end
       end
     end

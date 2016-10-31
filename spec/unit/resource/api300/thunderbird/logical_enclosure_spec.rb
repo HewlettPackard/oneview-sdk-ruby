@@ -1,6 +1,10 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
+klass = OneviewSDK::API300::Thunderbird::LogicalEnclosure
+extra_klass_1 = OneviewSDK::API300::Thunderbird::EnclosureGroup
+extra_klass_2 = OneviewSDK::API300::Thunderbird::Enclosure
+extra_klass_3 = OneviewSDK::API300::Thunderbird::FirmwareDriver
+RSpec.describe klass do
   include_context 'shared context'
 
   let(:data) { [{ op: 'replace', path: '/name', value: {} }] }
@@ -10,20 +14,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
     expect(described_class).to be < OneviewSDK::API200::LogicalEnclosure
   end
 
-  # Commented because in endpoints of creation and delete, when passed the type
-  # occurs an exception returning UNRECOGNIZED_JSON_FIELD.
-  # describe '#initialize' do
-  #   context 'OneView 3.0' do
-  #     it 'sets the type correctly' do
-  #       template = OneviewSDK::API300::Thunderbird::LogicalEnclosure.new(@client_300)
-  #       expect(template[:type]).to eq('LogicalEnclosureV300')
-  #     end
-  #   end
-  # end
-
   describe 'helper-methods' do
     before :each do
-      @item = OneviewSDK::API300::Thunderbird::LogicalEnclosure.new(@client_300, uri: '/rest/logical-enclosures/fake')
+      @item = klass.new(@client_300, uri: '/rest/logical-enclosures/fake')
     end
 
     describe '#reconfigure' do
@@ -42,17 +35,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
       end
     end
 
-    describe '#get_script' do
-      it 'calls the /script uri' do
-        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new('Content'))
-        expect(@client_300).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', @client_300.api_version)
-        expect(@item.get_script).to eq('Content')
-      end
-    end
-
     describe '#perfoms a specific patch' do
       it 'requires a uri' do
-        logical_enclosure = OneviewSDK::API300::Thunderbird::LogicalEnclosure.new(@client_300)
+        logical_enclosure = klass.new(@client_300)
         expect { logical_enclosure.patch(:val) }
           .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
       end
@@ -65,11 +50,20 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
       end
     end
 
-    describe '#set_script' do
-      it 'calls the /script uri' do
-        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_put).and_return(FakeResponse.new)
-        expect(@client_300).to receive(:rest_put).with('/rest/logical-enclosures/fake/script', { 'body' => 'New' }, @client_300.api_version)
-        @item.set_script('New')
+    describe '#script' do
+      it 'requires a uri' do
+        expect { klass.new(@client_300).get_script }
+          .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      end
+
+      it 'gets uri/script' do
+        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new('Content'))
+        expect(@client_300).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', @client_300.api_version)
+        expect(@item.get_script).to eq('Content')
+      end
+
+      it 'returns method unavailable for the set_script method' do
+        expect { @item.set_script }.to raise_error(/The method #set_script is unavailable for this resource/)
       end
     end
 
@@ -85,7 +79,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
 
     describe '#set_enclosure_group' do
       before :each do
-        @enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.new(@client_300, name: 'enclosure_group')
+        @enclosure_group = extra_klass_1.new(@client_300, name: 'enclosure_group')
         @enclosure_group_uri = '/rest/fake/enclosure-groups/test'
       end
 
@@ -112,7 +106,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
 
     describe '#set_enclosure_uris' do
       before :each do
-        @enclosure = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, name: 'enclosure_group')
+        @enclosure = extra_klass_2.new(@client_300, name: 'enclosure_group')
         @enclosure_uri = '/rest/fake/enclosures/test'
       end
 
@@ -135,7 +129,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
 
       it 'will set the enclosureUris with two enclosures correctly' do
         @enclosure['uri'] = @enclosure_uri
-        enclosure2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, name: 'enclosure_group2')
+        enclosure2 = extra_klass_2.new(@client_300, name: 'enclosure_group2')
         enclosure2['uri'] = @enclosure_uri
         expect { @item.set_enclosures([@enclosure, enclosure2]) }.to_not raise_error
         expect(@item['enclosureUris'].size).to eq(2)
@@ -153,7 +147,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalEnclosure do
 
     describe '#set_firmware_driver' do
       before :each do
-        @firmware_driver = OneviewSDK::API300::Thunderbird::FirmwareDriver.new(@client_300, name: 'firmware_driver')
+        @firmware_driver = extra_klass_3.new(@client_300, name: 'firmware_driver')
         @firmware_driver_uri = '/rest/fake/firmware-drivers/test'
       end
 

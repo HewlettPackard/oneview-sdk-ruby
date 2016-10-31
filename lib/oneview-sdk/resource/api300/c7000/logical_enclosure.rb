@@ -18,7 +18,6 @@ module OneviewSDK
       class LogicalEnclosure < OneviewSDK::API200::LogicalEnclosure
 
         def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
           super
         end
 

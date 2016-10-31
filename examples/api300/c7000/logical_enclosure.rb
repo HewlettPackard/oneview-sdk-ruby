@@ -11,7 +11,6 @@
 
 require_relative '../../_client' # Gives access to @client
 
-
 # Get first logical enclosure
 logical_enclosure = OneviewSDK::API300::C7000::LogicalEnclosure.find_by(@client, {}).first
 puts "Found logical-enclosure '#{logical_enclosure[:name]}'."
@@ -36,13 +35,12 @@ puts "Retrieved logical-enclosure '#{logical_enclosure[:name]}' script\n  Conten
 # Reset configuration script
 logical_enclosure.set_script(orig_script)
 
-
 # Update from Group
 logical_enclosure.update_from_group
 puts 'Logical enclosure updated'
 
 # Performs a patch
-puts "Performs a patch on logigal-enclosure #{logical_enclosure[:name]}"
+puts "Performs a patch on logical-enclosure #{logical_enclosure[:name]}"
 value = {
   firmwareUpdateOn: 'SharedInfrastructureOnly',
   forceInstallFirmware: false,
@@ -50,13 +48,12 @@ value = {
 }
 
 logical_enclosure.patch(value)
-puts "Patch perfomed successfully on logigal-enclosure #{logical_enclosure[:name]}"
+puts "Patch perfomed successfully on logical-enclosure #{logical_enclosure[:name]}"
 
 # Generate dump
 dump = {
-  errorCode: 'Mydump',
-  encrypt: false,
-  excludeApplianceDump: false
+  errorCode: 'test'
 }
+puts 'Generate dump'
 logical_enclosure.support_dump(dump)
 puts "\nGenerated dump for logical-enclosure '#{logical_enclosure[:name]}'."
