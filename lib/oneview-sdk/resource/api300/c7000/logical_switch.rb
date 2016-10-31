@@ -14,7 +14,7 @@ require_relative '../../api200/logical_switch'
 module OneviewSDK
   module API300
     module C7000
-      # Logical switch resource implementation
+      # Logical switch resource implementation for API300 C7000
       class LogicalSwitch < OneviewSDK::API200::LogicalSwitch
         INTERNAL_LINK_SET_URI = '/rest/internal-link-sets'.freeze
 

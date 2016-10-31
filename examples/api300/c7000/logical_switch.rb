@@ -15,13 +15,13 @@ require_relative '../../_client'
 ssh_credentials = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSSH.new('dcs', 'dcs')
 
 # SNMP credentials
-snmp_v1 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV1.new(161, 'public')
-snmp_v1_2 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV1.new(161, 'public')
+snmp_v1 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV1.new(161, 'admin')
+snmp_v1_2 = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSNMPV1.new(161, 'admin')
 
 
 logical_switch = OneviewSDK::API300::C7000::LogicalSwitch.new(
   @client,
-  name: 'Teste_SDK',
+  name: 'Test_SDK',
   logicalSwitchGroupUri: '/rest/logical-switch-groups/2c5de7f0-7cb6-4897-9423-181e625a614c'
 )
 
