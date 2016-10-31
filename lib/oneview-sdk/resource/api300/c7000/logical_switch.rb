@@ -29,15 +29,6 @@ module OneviewSDK
           super
         end
 
-        # Updates the scope URIs of a specific switch
-        # @param [Array] scope_uris Array of scope uri strings
-        def set_scope_uris(scope_uris)
-          ensure_client && ensure_uri
-          body = { op: 'replace', path: '/scopeUris', value: scope_uris }
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
-        end
-
         # Retrieves all internal link sets
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         def self.get_internal_link_sets(client)

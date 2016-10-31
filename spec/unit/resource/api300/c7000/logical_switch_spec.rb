@@ -11,7 +11,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
     context 'OneView 2.0' do
       it 'sets the defaults correctly' do
         logical_switch = OneviewSDK::API300::C7000::LogicalSwitch.new(@client_300)
-        expect(logical_switch[:type]).to eq('logical-switch')
+        expect(logical_switch[:type]).to eq('logical-switchV300')
       end
     end
   end
@@ -134,7 +134,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
         {
           'body' => {
             'logicalSwitch' => {
-              'type' => 'logical-switch',
+              'type' => 'logical-switchV300',
               'switchCredentialConfiguration' => []
             },
             'logicalSwitchCredentials' => []
@@ -155,7 +155,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
         {
           'body' => {
             'logicalSwitch' => {
-              'type' => 'logical-switch',
+              'type' => 'logical-switchV300',
               'switchCredentialConfiguration' => [
                 {
                   'snmpPort' => 161,
@@ -207,7 +207,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
         {
           'body' => {
             'logicalSwitch' => {
-              'type' => 'logical-switch',
+              'type' => 'logical-switchV300',
               'switchCredentialConfiguration' => [
                 {
                   'snmpPort' => 161,
