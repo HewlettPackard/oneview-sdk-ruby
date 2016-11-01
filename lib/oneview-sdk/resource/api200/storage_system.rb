@@ -116,6 +116,25 @@ module OneviewSDK
                    end
         response.body
       end
+
+      # Set refreshState for storage system
+      # @param [Type] state describe state
+      def set_refresh_state(state, options = {})
+        ensure_client && ensure_uri
+        s = state.to_s rescue state
+        requestBody = {
+          'body' => {
+            refreshState: s
+          }
+        }
+        binding.pry
+        options[:type] ||= @data['type']
+        options[:serialNumber] ||= @data['serialNumber']
+        options[:managedDomain] ||= @data['managedDomain']
+        requestBody['body'].merge!(options)
+        response = @client.rest_put(@data['uri'], requestBody, api_version)
+        @client.response_handler(response)
+      end
     end
   end
 end
