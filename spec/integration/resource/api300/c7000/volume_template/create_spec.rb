@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::VolumeTemplate
+klass = OneviewSDK::API300::C7000::VolumeTemplate
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
@@ -13,10 +13,10 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       },
       managedDomain: 'TestDomain'
     }
-    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300, storage_system_options)
+    @storage_system = OneviewSDK::API300::C7000::StorageSystem.new($client_300, storage_system_options)
     @storage_system.add unless @storage_system.retrieve!
     @storage_system.retrieve!
-    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.get_all($client_300).first
+    @storage_pool = OneviewSDK::API300::C7000::StoragePool.get_all($client_300).first
   end
 
   describe '#create' do
