@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::StorageSystem
+klass = OneviewSDK::API300::Thunderbird::StorageSystem
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
