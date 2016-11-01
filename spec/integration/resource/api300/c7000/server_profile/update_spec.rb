@@ -7,11 +7,43 @@ RSpec.describe klass, integration: true, type: UPDATE do
   before :all do
     @item = klass.new($client_300, name: SERVER_PROFILE_NAME)
     @item.retrieve!
-    @enclosure_group = OneviewSDK::API300::C7000::EnclosureGroup.find_by($client_300, {}).first
+    @enclosure_group = OneviewSDK::API300::C7000::EnclosureGroup.find_by($client_300, name: ENC_GROUP_NAME).first
     @server_hardware_type = OneviewSDK::API300::C7000::ServerHardwareType.find_by($client_300, {}).first
     @storage_system = OneviewSDK::API300::C7000::StorageSystem.find_by($client_300, {}).first
     @item3 = klass.new($client_300, name: SERVER_PROFILE2_NAME)
     @item3.retrieve!
+  end
+
+  describe '#set_enclosure_group' do
+    it 'sets the enclosure group' do
+      expect { @item.set_enclosure_group(@enclosure_group) }.to_not raise_error
+      expect(@item['enclosureGroupUri']).to eq(@enclosure_group['uri'])
+    end
+  end
+
+  describe '#get_server_hardware' do
+    it 'retrieves the current server hardware' do
+      expect { @item.get_server_hardware }.to_not raise_error
+    end
+  end
+
+  describe '#get_available_hardware' do
+    it 'retrieves the available hardware' do
+      expect { @item.get_available_hardware }.to_not raise_error
+    end
+  end
+
+  describe '#add_volume_attachment' do
+    it 'adds a new volume to the server profile' do
+      volume_attachment = OneviewSDK::API300::C7000::Volume.find_by($client_300, {}).first
+      expect { @item.add_volume_attachment(volume_attachment) }.to_not raise_error
+    end
+  end
+
+  describe '#remove_connection' do
+    it 'removes a connection from the server profile' do
+      expect { @item.remove_connection(ETH_NET_NAME) }.not_to raise_error
+    end
   end
 
   describe '#self.get_available_networks' do
