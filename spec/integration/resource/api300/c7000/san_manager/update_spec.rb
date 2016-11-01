@@ -48,7 +48,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
           'value' => true
         }
       ]
-      expect { @item.update(connectionInfo: connection_info) }.not_to raise_error
+      expect { @item.update('connectionInfo' => connection_info) }.not_to raise_error
     end
 
     it 'Update invalid field' do

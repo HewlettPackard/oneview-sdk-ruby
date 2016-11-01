@@ -15,7 +15,7 @@ klass = OneviewSDK::API300::Thunderbird::SANManager
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
-  describe '#create' do
+  describe '#add' do
     it 'can create resources' do
       item = klass.new($client_300)
       item['providerDisplayName'] = SAN_PROVIDER1_NAME
@@ -36,11 +36,6 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           'name' => 'Password',
           'value' => $secrets['san_manager_password']
         }
-        # ,
-        # {
-        #   'name' => 'UseSsl',
-        #   'value' => true
-        # }
       ]
       expect { item.add }.not_to raise_error
       expect(item['uri']).to be

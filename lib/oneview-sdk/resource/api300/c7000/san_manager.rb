@@ -21,8 +21,8 @@ module OneviewSDK
 
         def update(options)
           options ||= {}
-          if options.key? :connectionInfo
-            result = validateConnectionInfo(options[:connectionInfo])
+          if options.key? 'connectionInfo'
+            result = validate_connection_info(options['connectionInfo'])
             raise IncompleteResource, "You must complete connectionInfo properties with #{result.join(', ')} values" unless result.empty?
           end
 
@@ -31,7 +31,7 @@ module OneviewSDK
 
         private
 
-        def validateConnectionInfo(connectionInfo)
+        def validate_connection_info(connectionInfo)
           required = REQUIRED_FIELDS_TO_UPDATE.dup
           keys = connectionInfo.map do |k|
             k['name'] if k.include?('name')

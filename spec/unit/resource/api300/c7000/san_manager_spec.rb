@@ -94,7 +94,7 @@ RSpec.describe OneviewSDK::API300::C7000::SANManager do
 
     it 'Should raise error if connectioInfo is not completed' do
       expect do
-        san_manager.update(connectionInfo: [
+        san_manager.update('connectionInfo' => [
           { 'name' => 'Host', 'value' => 'host.com' },
           { 'name' => 'Port', 'value' => 5598 }
         ])

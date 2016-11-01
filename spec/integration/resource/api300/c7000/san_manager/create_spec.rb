@@ -15,7 +15,7 @@ klass = OneviewSDK::API300::C7000::SANManager
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
-  describe '#create' do
+  describe '#add' do
     it 'can create resources' do
       item = klass.new($client_300)
       item['providerDisplayName'] = SAN_PROVIDER1_NAME
