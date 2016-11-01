@@ -127,7 +127,6 @@ module OneviewSDK
             refreshState: s
           }
         }
-        binding.pry
         options[:type] ||= @data['type']
         options[:serialNumber] ||= @data['serialNumber']
         options[:managedDomain] ||= @data['managedDomain']
