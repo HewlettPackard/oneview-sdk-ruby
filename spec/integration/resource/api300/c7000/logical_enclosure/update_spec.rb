@@ -1,39 +1,15 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::LogicalEnclosure
-extra_klass_1 = OneviewSDK::API300::C7000::EnclosureGroup
-extra_klass_2 = OneviewSDK::API300::C7000::Enclosure
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   let(:value) do
     {
-      firmwareUpdateOn: 'SharedInfrastructureOnly',
+      firmwareUpdateOn: 'EnclosureOnly',
       forceInstallFirmware: false,
       updateFirmwareOnUnmanagedInterconnect: true
     }
-  end
-
-  before :all do
-    enclosure_group_options = {
-      'name' => ENC_GROUP2_NAME,
-      'stackingMode' => 'Enclosure',
-      'type' => 'EnclosureGroupV300'
-    }
-    enclosure_options = {
-      'hostname' => $secrets['enclosure1_ip'],
-      'username' => $secrets['enclosure1_user'],
-      'password' => $secrets['enclosure1_password'],
-      'licensingIntent' => 'OneView',
-      'name' => ENCL_NAME
-    }
-    enclosure_group = extra_klass_1.new($client_300, enclosure_group_options)
-    enclosure_group.delete if enclosure_group.retrieve!
-    enclosure_group.create
-    enclosure_group.retrieve!
-    enclosure = extra_klass_2.new($client_300, enclosure_options)
-    enclosure.set_enclosure_group(enclosure_group)
-    enclosure.add
   end
 
   before :each do
@@ -66,10 +42,10 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#support_dump' do
     it 'Support dump successfully' do
-      expect { @item.support_dump(errorCode: 'test') }.to_not raise_error
+      expect { @item.support_dump(errorCode: 'test', excludeApplianceDump: true) }.to_not raise_error
     end
     it 'Raises exception when encrypt is false' do
-      expect { @item.support_dump(errorCode: 'test', encrypt: false) }
+      expect { @item.support_dump(errorCode: 'test', encrypt: false, excludeApplianceDump: true) }
         .to raise_error(/unexpected problem creating the logical enclosure support dump/)
     end
   end

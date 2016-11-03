@@ -42,7 +42,7 @@ puts 'Logical enclosure updated'
 # Performs a patch
 puts "Performs a patch on logical-enclosure #{logical_enclosure[:name]}"
 value = {
-  firmwareUpdateOn: 'SharedInfrastructureOnly',
+  firmwareUpdateOn: 'EnclosureOnly',
   forceInstallFirmware: false,
   updateFirmwareOnUnmanagedInterconnect: true
 }
@@ -52,7 +52,8 @@ puts "Patch perfomed successfully on logical-enclosure #{logical_enclosure[:name
 
 # Generate dump
 dump = {
-  errorCode: 'test'
+  errorCode: 'test',
+  excludeApplianceDump: true
 }
 puts 'Generate dump'
 logical_enclosure.support_dump(dump)

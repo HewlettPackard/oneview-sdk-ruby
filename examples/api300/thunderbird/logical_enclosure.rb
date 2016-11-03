@@ -63,7 +63,8 @@ puts "Patch perfomed successfully on logical-enclosure #{logical_enclosure[:name
 
 # Generate dump
 dump = {
-  errorCode: 'test'
+  errorCode: 'test',
+  excludeApplianceDump: true
 }
 puts 'Generate dump'
 logical_enclosure3.support_dump(dump)

@@ -6,7 +6,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   let(:value) do
     {
-      firmwareUpdateOn: 'SharedInfrastructureOnly',
+      firmwareUpdateOn: 'EnclosureOnly',
       forceInstallFirmware: false,
       updateFirmwareOnUnmanagedInterconnect: true
     }
@@ -41,10 +41,10 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#support_dump' do
     it 'Support dump successfully' do
-      expect { @item.support_dump(errorCode: 'test') }.to_not raise_error
+      expect { @item.support_dump(errorCode: 'test', excludeApplianceDump: true) }.to_not raise_error
     end
     it 'Raises exception when encrypt is false' do
-      expect { @item.support_dump(errorCode: 'test', encrypt: false) }
+      expect { @item.support_dump(errorCode: 'test', encrypt: false, excludeApplianceDump: true) }
         .to raise_error(/unexpected problem creating the logical enclosure support dump/)
     end
   end
