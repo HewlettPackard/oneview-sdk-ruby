@@ -104,6 +104,34 @@ desc 'Run rubocop & integration tests for specified path'
 task 'test:path', [:path] do |_t, spec|
   spec_pattern = spec['path']
   Rake::Task[:rubocop].invoke
-  # Rake::Task[:spec].invoke
+  Rake::Task['spec:integration'].invoke
+end
+
+desc 'Run rubocop & integration tests for specified model & API. Defaults to model C7000 and API 300.'
+task 'spec:integration:api', [:model, :api] do |_t, spec|
+  args = {}
+  args['model'] = spec['model'] || 'c7000'
+  args['api'] = spec['api'] || 300
+  spec_pattern = "spec/integration/resource/api#{args['api']}/#{args['model']}/**/*_spec.rb"
+  spec_pattern = 'spec/integration/resource/api200/**/*_spec.rb' if args['api'] == 200
+  Rake::Task[:rubocop].invoke
+  Rake::Task['spec:integration'].invoke
+end
+
+desc 'Run rubocop & integration tests for specified API. Defaults to API 300.'
+task 'spec:integration:api_version', [:api] do |_t, spec|
+  args = spec['api'] || 300
+  spec_pattern = "spec/integration/resource/api#{args}/**/**/*_spec.rb"
+  spec_pattern = 'spec/integration/resource/api200/**/*_spec.rb' if args == 200
+  Rake::Task[:rubocop].invoke
+  Rake::Task['spec:integration'].invoke
+end
+
+desc 'Run rubocop & integration deletion tests for specified API. Defaults to API 300'
+task 'spec:integration:delete:api_version', [:api] do |_t, spec|
+  args = spec['api'] || 300
+  spec_pattern = "spec/integration/resource/api#{args}/**/**/*delete_spec.rb"
+  spec_pattern = 'spec/integration/resource/api200/**/*delete_spec.rb' if args == 200
+  Rake::Task[:rubocop].invoke
   Rake::Task['spec:integration'].invoke
 end

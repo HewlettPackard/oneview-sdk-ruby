@@ -15,7 +15,7 @@ klass = OneviewSDK::API300::Thunderbird::SASLogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
-  let(:item) { klass.new($client_300, name: SAS_LOG_INT_GROUP1_NAME) }
+  let(:item) { klass.new($client_300_thunderbird, name: SAS_LOG_INT_GROUP1_NAME) }
 
   describe '#update' do
     it 'is able to update the resource name and set it back' do

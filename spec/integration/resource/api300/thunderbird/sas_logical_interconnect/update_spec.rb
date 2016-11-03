@@ -4,7 +4,7 @@ klass = OneviewSDK::API300::Thunderbird::SASLogicalInterconnect
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
-  let(:sas_log_int) { klass.new($client_300, name: SAS_LOG_INT1_NAME) }
+  let(:sas_log_int) { klass.new($client_300_thunderbird, name: SAS_LOG_INT1_NAME) }
   let(:firmware_path) { 'spec/support/Service Pack for ProLiant' }
 
   describe '#retrieve!' do
@@ -23,7 +23,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = klass.find_by($client_300, {}).map { |item| item[:name] }
+      names = klass.find_by($client_300_thunderbird, {}).map { |item| item[:name] }
       expect(names).to include(sas_log_int[:name])
     end
   end
@@ -54,13 +54,13 @@ RSpec.describe klass, integration: true, type: UPDATE do
   # describe 'Firmware Updates' do
   #   it 'will assure the firmware is present' do
   #     firmware_name = firmware_path.split('/').last
-  #     firmware = OneviewSDK::FirmwareDriver.new($client_300, name: firmware_name)
+  #     firmware = OneviewSDK::FirmwareDriver.new($client_300_thunderbird, name: firmware_name)
   #     firmware.retrieve!
   #   end
   #
   #   it 'will retrieve the firmware options' do
   #     firmware_name = firmware_path.split('/').last
-  #     firmware = OneviewSDK::FirmwareDriver.new($client_300, name: firmware_name)
+  #     firmware = OneviewSDK::FirmwareDriver.new($client_300_thunderbird, name: firmware_name)
   #     firmware.retrieve!
   #     sas_log_int.retrieve!
   #     firmware_opt = sas_log_int.get_firmware
@@ -75,7 +75,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   #     it 'Stage' do
   #       sas_log_int.retrieve!
   #       firmware_name = firmware_path.split('/').last
-  #       firmware = OneviewSDK::FirmwareDriver.new($client_300, name: firmware_name)
+  #       firmware = OneviewSDK::FirmwareDriver.new($client_300_thunderbird, name: firmware_name)
   #       firmware.retrieve!
   #       firmware_opt = sas_log_int.get_firmware
   #       firmware_opt['force'] = true
