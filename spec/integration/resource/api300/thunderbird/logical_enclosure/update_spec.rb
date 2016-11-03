@@ -13,7 +13,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   end
 
   before :each do
-    @item = klass.find_by($client_300, name: LOG_ENCL1_NAME).first
+    @item = klass.find_by($client_300_thunderbird, name: LOG_ENCL1_NAME).first
   end
 
   describe '#reconfigure' do

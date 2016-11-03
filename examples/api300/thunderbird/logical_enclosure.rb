@@ -69,3 +69,7 @@ dump = {
 puts 'Generate dump'
 logical_enclosure3.support_dump(dump)
 puts "\nGenerated dump for logical-enclosure '#{logical_enclosure[:name]}'."
+
+puts 'Removing the logical-enclosure'
+logical_enclosure3.delete
+puts "\nRemoved logical-enclosure '#{logical_enclosure[:name]}'."
