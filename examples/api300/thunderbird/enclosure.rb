@@ -20,24 +20,21 @@ require_relative '../../_client' # Gives access to @client
 #   @enclosure_group_uri
 
 # type = 'enclosure'
-#
-# item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure', hostname: @thunderbird_enclosure_hostname)
-# item.add
-# puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
-item = OneviewSDK::API300::Thunderbird::Enclosure.find_by(@client, {}).first
-puts item['name']
-item.update(name: 'test')
-puts item['name']
-# item2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, {}).first
-# item2.retrieve!
-# puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
-#
-# item.refresh
-# item.update(name: 'OneViewSDK_Test_Enclosure')
-# puts "\nUpdated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
-#
-# # Patch update
-# item.patch('replace', '/name', 'Edited_Enclosure')
 
-# item.remove
-# puts "\nSucessfully removed #{type} '#{item[:name]}'."
+item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure', hostname: @thunderbird_enclosure_hostname)
+item.add
+puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+
+item2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, {}).first
+item2.retrieve!
+puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
+
+item.refresh
+item.update(name: 'OneViewSDK_Test_Enclosure')
+puts "\nUpdated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+
+# Patch update
+item.patch('replace', '/name', 'Edited_Enclosure')
+
+item.remove
+puts "\nSucessfully removed #{type} '#{item[:name]}'."
