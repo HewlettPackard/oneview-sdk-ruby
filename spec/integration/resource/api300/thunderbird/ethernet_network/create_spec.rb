@@ -8,7 +8,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#create' do
     it 'can create resources' do
-      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.from_file($client_300, file_path)
+      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.from_file($client_300_thunderbird, file_path)
       item.create
       expect(item[:name]).to eq(ETH_NET_NAME)
       expect(item[:ethernetNetworkType]).to eq('Tagged')
@@ -30,14 +30,14 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           typicalBandwidth: 2_000
         }
       }
-      bulk_networks = OneviewSDK::API300::Thunderbird::EthernetNetwork.bulk_create($client_300, bulk_options)
+      bulk_networks = OneviewSDK::API300::Thunderbird::EthernetNetwork.bulk_create($client_300_thunderbird, bulk_options)
       expect(bulk_networks.length).to eq(5)
     end
   end
 
   describe '#retrieve!' do
     it 'retrieves the resource' do
-      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
+      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300_thunderbird, name: ETH_NET_NAME)
       item.retrieve!
       expect(item[:name]).to eq(ETH_NET_NAME)
       expect(item[:ethernetNetworkType]).to eq('Tagged')
@@ -50,13 +50,13 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300, {}).map { |item| item[:name] }
+      names = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300_thunderbird, {}).map { |item| item[:name] }
       expect(names).to include(ETH_NET_NAME)
     end
 
     it 'finds networks by multiple attributes' do
       attrs = { name: ETH_NET_NAME, vlanId: 1001, purpose: 'General' }
-      names = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300, attrs).map { |item| item[:name] }
+      names = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300_thunderbird, attrs).map { |item| item[:name] }
       expect(names).to include(ETH_NET_NAME)
     end
   end

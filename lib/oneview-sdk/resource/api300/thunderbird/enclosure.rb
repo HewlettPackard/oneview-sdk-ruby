@@ -30,21 +30,15 @@ module OneviewSDK
 
         # Claim/configure the enclosure and its components to the appliance
         # @note Calls the refresh method to set additional data
-        # @return [OneviewSDK::Enclosure] self
+        # @return [OneviewSDK::API300::Thunderbird::Enclosure] self
         def add
           ensure_client
           required_attributes = %w(hostname)
           required_attributes.each { |k| raise IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) }
-          optional_attrs = %w(enclosureUri firmwareBaselineUri force forceInstallFirmware state unmanagedEnclosure updateFirmwareOn)
 
-          temp_data = @data.select { |k, _v| required_attributes.include?(k) || optional_attrs.include?(k) }
+          temp_data = @data.select { |k, _v| required_attributes.include?(k) }
           response = @client.rest_post(self.class::BASE_URI, { 'body' => temp_data }, @api_version)
-          new_data = @client.response_handler(response)
-          old_name = @data.select { |k, _v| %w(name rackName).include?(k) } # Save name (if given)
-          %w(hostname).each { |k| @data.delete(k) } # These are no longer needed
-          set_all(new_data)
-          set_all(old_name)
-          update
+          @client.response_handler(response)
           self
         end
 

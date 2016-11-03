@@ -16,7 +16,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = klass.find_by($client_300, {}).first
+    @item = klass.find_by($client_300_thunderbird, {}).first
   end
 
   describe '#get_port_map' do

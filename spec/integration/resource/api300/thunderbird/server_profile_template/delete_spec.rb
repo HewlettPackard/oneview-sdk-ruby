@@ -9,8 +9,8 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   describe '#delete' do
     it 'deletes the associated Server profiles' do
       names.each do |name|
-        item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by($client_300, 'name' => name).first
-        spts = OneviewSDK::API300::Thunderbird::ServerProfile.find_by($client_300, 'serverProfileTemplateUri' => item['uri'])
+        item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by($client_300_thunderbird, 'name' => name).first
+        spts = OneviewSDK::API300::Thunderbird::ServerProfile.find_by($client_300_thunderbird, 'serverProfileTemplateUri' => item['uri'])
         spts.each do |spt|
           expect { spt.delete }.to_not raise_error
         end
@@ -19,7 +19,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
     it 'deletes all the resources' do
       names.each do |name|
-        item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by($client_300, 'name' => name).first
+        item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by($client_300_thunderbird, 'name' => name).first
         expect(item).to be
         expect { item.delete }.to_not raise_error
       end

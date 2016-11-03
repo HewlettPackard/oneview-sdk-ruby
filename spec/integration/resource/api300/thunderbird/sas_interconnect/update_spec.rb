@@ -16,19 +16,19 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   let(:sas_interconnect_type) { 'Synergy 12Gb SAS Connection Module' }
-  let(:sas_interconnect) { klass.new($client_300, name: SAS_INTERCONNECT1_NAME) }
+  let(:sas_interconnect) { klass.new($client_300_thunderbird, name: SAS_INTERCONNECT1_NAME) }
 
   before :each do
     sas_interconnect.retrieve!
   end
   describe '#get_type' do
     it 'retrieves all types of SAS interconnects supported by the appliance' do
-      types = klass.get_types($client_300)
+      types = klass.get_types($client_300_thunderbird)
       expect(types).not_to be_empty
     end
 
     it 'retrieves a specific type of SAS interconnect supported by the appliance' do
-      type = klass.get_type($client_300, sas_interconnect_type)
+      type = klass.get_type($client_300_thunderbird, sas_interconnect_type)
       expect(type).not_to be_empty
     end
   end
