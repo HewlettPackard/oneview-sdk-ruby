@@ -13,10 +13,10 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       },
       managedDomain: 'TestDomain'
     }
-    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300, storage_system_options)
+    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300_thunderbird, storage_system_options)
     @storage_system.add unless @storage_system.retrieve!
     @storage_system.retrieve!
-    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.get_all($client_300).first
+    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.get_all($client_300_thunderbird).first
   end
 
   describe '#create' do
@@ -28,7 +28,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         type: 'StorageVolumeTemplateV3'
       }
 
-      item = klass.new($client_300, options)
+      item = klass.new($client_300_thunderbird, options)
       item.set_provisioning(true, 'Thin', 2 * 1024 * 1024 * 1024, @storage_pool)
       item.set_storage_system(@storage_system)
       item.set_snapshot_pool(@storage_pool)
