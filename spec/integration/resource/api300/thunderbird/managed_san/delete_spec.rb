@@ -18,8 +18,8 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe 'Remove FC Networks' do
     it 'Remove' do
-      klass.find_by($client_300, deviceManagerName: $secrets['san_manager_ip']).each do |san|
-        fc = extra_klass.new($client_300, name: "FC_#{san['name']}")
+      klass.find_by($client_300_thunderbird, deviceManagerName: $secrets['san_manager_ip']).each do |san|
+        fc = extra_klass.new($client_300_thunderbird, name: "FC_#{san['name']}")
         fc.retrieve!
         fc.delete
       end

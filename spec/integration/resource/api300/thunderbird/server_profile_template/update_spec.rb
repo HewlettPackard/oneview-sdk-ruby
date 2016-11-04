@@ -4,7 +4,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate, integrati
   include_context 'integration api300 context'
 
   before :all do
-    @item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new($client_300, name: SERVER_PROFILE_TEMPLATE_NAME)
+    @item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new($client_300_thunderbird, name: SERVER_PROFILE_TEMPLATE_NAME)
   end
 
   describe '#update' do
@@ -20,10 +20,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate, integrati
 
   describe '#get_transformation' do
     it 'transforms an existing profile' do
-      server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300, {}).first
-      enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by($client_300, {}).first
-      expect { @item.get_transformation($client_300, 'server_hardware_type' => server_hardware_type, 'enclosure_group' => enclosure_group) }
-        .to_not raise_error
+      server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300_thunderbird, {}).first
+      enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by($client_300_thunderbird, {}).first
+      expect do
+        @item.get_transformation($client_300_thunderbird,
+                                 'server_hardware_type' => server_hardware_type,
+                                 'enclosure_group' => enclosure_group)
+      end.to_not raise_error
     end
   end
 end

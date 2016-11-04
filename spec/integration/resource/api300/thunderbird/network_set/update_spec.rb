@@ -5,14 +5,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet, integration: true, t
 
   describe '#get_without_ethernet' do
     it 'instance' do
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300, name: NETWORK_SET3_NAME)
+      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300_thunderbird, name: NETWORK_SET3_NAME)
       item.retrieve!
       item_without_networks = item.get_without_ethernet
       expect(item_without_networks['networkUris']).to eq([])
     end
 
     it 'class' do
-      OneviewSDK::API300::Thunderbird::NetworkSet.get_without_ethernet($client_300)['members'].each do |network_set|
+      OneviewSDK::API300::Thunderbird::NetworkSet.get_without_ethernet($client_300_thunderbird)['members'].each do |network_set|
         expect(network_set['networkUris']).to eq([])
       end
     end

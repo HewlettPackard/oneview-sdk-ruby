@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::EthernetNetwork, integration: tr
 
   describe '#update' do
     it 'update name' do
-      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
+      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300_thunderbird, name: ETH_NET_NAME)
       item.retrieve!
       item.update(name: ETH_NET_NAME_UPDATED)
       item.refresh
