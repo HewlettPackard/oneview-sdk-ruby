@@ -17,7 +17,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#update' do
     it 'updates depth' do
-      item = klass.new($client_300, name: RACK1_NAME)
+      item = klass.new($client_300_thunderbird, name: RACK1_NAME)
       item.retrieve!
       item.update(depth: 1300)
       expect(item['depth']).to eq(1300)

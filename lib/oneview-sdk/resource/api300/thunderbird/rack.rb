@@ -14,7 +14,7 @@ require_relative '../../api200/rack'
 module OneviewSDK
   module API300
     module Thunderbird
-      # Rack resource implementation
+      # Rack resource implementation for API300 Thunderbird
       class Rack < OneviewSDK::API200::Rack
       end
     end

@@ -9,23 +9,18 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'spec_helper'
+require_relative '../../_client' # Gives access to @client
 
-klass = OneviewSDK::API300::Thunderbird::Rack
-RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
+options = {
+  name: 'myrack'
+}
 
-  describe '#remove' do
-    it 'Rack_1' do
-      item = klass.new($client_300_thunderbird, name: RACK1_NAME)
-      item.retrieve!
-      expect { item.remove }.not_to raise_error
-    end
+item = OneviewSDK::API300::Thunderbird::Rack.new(@client, options)
+item.add
+puts "Rack #{item['name']} was added with uri='#{item['uri']}'"
 
-    it 'Rack_2' do
-      item = klass.new($client_300_thunderbird, name: RACK2_NAME)
-      item.retrieve!
-      expect { item.remove }.not_to raise_error
-    end
-  end
-end
+item.update(depth: 1300)
+puts "Rack #{item['name']} was updated with new depth value = '#{item['depth']}'"
+
+item.remove
+puts "Rack #{item['name']} was successfully removed."
