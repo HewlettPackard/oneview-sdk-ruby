@@ -5,12 +5,12 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @item = klass.new($client_300, name: SERVER_PROFILE_NAME)
+    @item = klass.new($client_300_thunderbird, name: SERVER_PROFILE_NAME)
     @item.retrieve!
-    @enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by($client_300, {}).first
-    @server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300, {}).first
-    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.find_by($client_300, {}).first
-    @item3 = klass.new($client_300, name: SERVER_PROFILE2_NAME)
+    @enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by($client_300_thunderbird, {}).first
+    @server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300_thunderbird, {}).first
+    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.find_by($client_300_thunderbird, {}).first
+    @item3 = klass.new($client_300_thunderbird, name: SERVER_PROFILE2_NAME)
     @item3.retrieve!
   end
 
@@ -20,13 +20,13 @@ RSpec.describe klass, integration: true, type: UPDATE do
         'enclosure_group' => @enclosure_group,
         'server_hardware_type' => @server_hardware_type
       }
-      expect { klass.get_available_networks($client_300, query_options) }.to_not raise_error
+      expect { klass.get_available_networks($client_300_thunderbird, query_options) }.to_not raise_error
     end
   end
 
   describe '#self.get_available_servers' do
     it 'retrieves available servers without errors' do
-      expect { klass.get_available_servers($client_300) }.to_not raise_error
+      expect { klass.get_available_servers($client_300_thunderbird) }.to_not raise_error
     end
   end
 
@@ -37,7 +37,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
         'server_hardware_type' => @server_hardware_type,
         'storage_system' => @storage_system
       }
-      expect { klass.get_available_storage_system($client_300, query_options) }.to_not raise_error
+      expect { klass.get_available_storage_system($client_300_thunderbird, query_options) }.to_not raise_error
     end
   end
 
@@ -47,13 +47,13 @@ RSpec.describe klass, integration: true, type: UPDATE do
         'enclosure_group' => @enclosure_group,
         'server_hardware_type' => @server_hardware_type
       }
-      expect { klass.get_available_storage_systems($client_300, query_options) }.to_not raise_error
+      expect { klass.get_available_storage_systems($client_300_thunderbird, query_options) }.to_not raise_error
     end
   end
 
   describe '#self.get_available_targets' do
     it 'retrieves available targets without errors' do
-      expect { klass.get_available_targets($client_300) }.to_not raise_error
+      expect { klass.get_available_targets($client_300_thunderbird) }.to_not raise_error
     end
   end
 
@@ -63,7 +63,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
         'enclosure_group' => @enclosure_group,
         'server_hardware_type' => @server_hardware_type
       }
-      expect { klass.get_profile_ports($client_300, query_options) }.to_not raise_error
+      expect { klass.get_profile_ports($client_300_thunderbird, query_options) }.to_not raise_error
     end
   end
 
@@ -94,20 +94,20 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#get_available_networks' do
     it 'Gets available networks' do
-      item = klass.find_by($client_300, name: SERVER_PROFILE_NAME).first
+      item = klass.find_by($client_300_thunderbird, name: SERVER_PROFILE_NAME).first
       expect { item.get_available_networks }.not_to raise_error
     end
   end
 
   describe '#get_sas_logical_jbods' do
     it 'returns all SAS Logical JBODs' do
-      expect { klass.get_sas_logical_jbods($client_300) }.not_to raise_error
+      expect { klass.get_sas_logical_jbods($client_300_thunderbird) }.not_to raise_error
     end
   end
 
   describe '#get_sas_logical_jbod_attachments' do
     it 'retrieves all attachments' do
-      expect { klass.get_sas_logical_jbod_attachments($client_300) }.not_to raise_error
+      expect { klass.get_sas_logical_jbod_attachments($client_300_thunderbird) }.not_to raise_error
     end
   end
 end
