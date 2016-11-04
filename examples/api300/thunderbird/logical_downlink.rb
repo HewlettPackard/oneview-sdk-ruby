@@ -9,6 +9,6 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../_client'
+require_relative '../../_client'
 
 puts OneviewSDK::API300::Thunderbird::LogicalDownlink.find_by(@client, {}).first.get_without_ethernet
