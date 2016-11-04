@@ -13,7 +13,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::Datacenter
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#add' do
     it 'Add datacenter with default values' do
@@ -22,7 +22,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         width: 5000,
         depth: 5000
       }
-      item = klass.new($client, options)
+      item = klass.new($client_300, options)
       item.add
       expect(item['uri']).not_to be_empty
     end
@@ -40,7 +40,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         defaultPowerLineVoltage: 220,
         coolingMultiplier: 1.5
       }
-      item = klass.new($client, options)
+      item = klass.new($client_300, options)
       item.add
       expect(item['uri']).not_to be_empty
       options.each do |key, value|
@@ -54,7 +54,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         width: 5000,
         depth: 5000
       }
-      item = klass.new($client, options)
+      item = klass.new($client_300, options)
       item.add
       expect(item['uri']).not_to be_empty
     end
@@ -62,7 +62,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#get_visual_content' do
     it 'Gets utilization data' do
-      item = klass.find_by($client, name: DATACENTER1_NAME).first
+      item = klass.find_by($client_300, name: DATACENTER1_NAME).first
       expect { item.get_visual_content }.not_to raise_error
     end
   end

@@ -13,15 +13,15 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::Datacenter
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#remove' do
     it 'removes the resource' do
-      datacenters = klass.find_by($client, {})
+      datacenters = klass.find_by($client_300, {})
       datacenters.each do |datacenter|
         datacenter.remove if [DATACENTER1_NAME, DATACENTER2_NAME, DATACENTER3_NAME].include?(datacenter['name'])
       end
-      datacenter_after_deletion = klass.find_by($client, {}).map { |datacenter| datacenter['name'] }
+      datacenter_after_deletion = klass.find_by($client_300, {}).map { |datacenter| datacenter['name'] }
       [DATACENTER1_NAME, DATACENTER2_NAME, DATACENTER3_NAME].each { |name| expect(datacenter_after_deletion).not_to include(name) }
     end
   end
