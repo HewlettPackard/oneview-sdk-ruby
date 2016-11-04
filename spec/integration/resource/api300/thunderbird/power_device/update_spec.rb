@@ -16,7 +16,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @ipdu_list = klass.find_by($client_300, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
+    @ipdu_list = klass.find_by($client_300_thunderbird, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
     @item = @ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
   end
 

@@ -17,9 +17,9 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe '#remove' do
     before :all do
-      @power_device_1 = klass.new($client_300, name: POW_DEVICE1_NAME)
+      @power_device_1 = klass.new($client_300_thunderbird, name: POW_DEVICE1_NAME)
       @power_device_1.retrieve!
-      ipdu_list = klass.find_by($client_300, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
+      ipdu_list = klass.find_by($client_300_thunderbird, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
       @power_device_2 = ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
     end
 
