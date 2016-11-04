@@ -18,7 +18,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       new_item['credentials']['ip_hostname'] = $secrets['storage_system1_ip']
       new_item.retrieve!
       list = new_item.data['unmanagedPorts'].select { |a| a['expectedNetworkUri'] == fc_network['uri'] }
-      expect(list.empty?).to be false
+      expect(list).not_to be_empty
     end
   end
 end
