@@ -27,8 +27,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Enclosure do
 
         @data = {
           'name' => 'Fake-Enclosure',
-          'hostname' => '1.1.1.1',
-          'force' => true
+          'hostname' => '1.1.1.1'
         }
         @enclosure = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, @data)
       end
@@ -41,12 +40,6 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Enclosure do
       it 'sets the enclosure name correctly' do
         @enclosure.add
         expect(@enclosure[:name]).to eq('Fake-Enclosure')
-      end
-
-      it 'uses the given name if one is not specified' do
-        @enclosure.data.delete('name')
-        @enclosure.add
-        expect(@enclosure[:name]).to eq('Encl1')
       end
     end
 

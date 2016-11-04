@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::FCoENetwork, integration: true, 
 
   describe '#update' do
     it 'update OneViewSDK Test FCoE Network name' do
-      item = OneviewSDK::API300::Thunderbird::FCoENetwork.new($client_300, name: FCOE_NET_NAME)
+      item = OneviewSDK::API300::Thunderbird::FCoENetwork.new($client_300_thunderbird, name: FCOE_NET_NAME)
       item.retrieve!
       item.update(name: FCOE_NET_NAME_UPDATED)
       item.refresh
