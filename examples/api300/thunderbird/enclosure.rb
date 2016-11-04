@@ -19,9 +19,9 @@ require_relative '../../_client' # Gives access to @client
 #   @enclosure_password
 #   @enclosure_group_uri
 
-type = 'enclosure'
+# type = 'enclosure'
 
-item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, hostname: @enclosure_hostname)
+item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure', hostname: @thunderbird_enclosure_hostname)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 

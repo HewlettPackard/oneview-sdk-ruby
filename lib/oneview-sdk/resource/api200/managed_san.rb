@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-    # Power device resource implementation
+    # Managed SAN resource implementation
     class ManagedSAN < Resource
       BASE_URI = '/rest/fc-sans/managed-sans'.freeze
 

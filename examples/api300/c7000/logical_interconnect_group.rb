@@ -1,0 +1,129 @@
+# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+require_relative '../../_client'
+
+type = 'Logical Interconnect Group'
+
+# Example: Create a Logical Interconnect Group
+# NOTE: This will create a few networks (ethernet & FC), as well as a LIG named 'ONEVIEW_SDK_TEST_LIG', then delete them all.
+options = {
+  name: 'ONEVIEW_SDK_TEST_LIG',
+  enclosureType: 'C7000',
+  type: 'logical-interconnect-groupV3'
+}
+
+HP_VC_FF_24_MODEL = 'HP VC FlexFabric 10Gb/24-Port Module'.freeze
+
+lig = OneviewSDK::API300::C7000::LogicalInterconnectGroup.new(@client, options)
+
+# Add the interconnects to the bays 1 and 2
+lig.add_interconnect(1, HP_VC_FF_24_MODEL)
+lig.add_interconnect(2, HP_VC_FF_24_MODEL)
+
+# Create an Ethernet Uplink Set
+eth1_options = {
+  vlanId:  801,
+  purpose:  'General',
+  name:  'ONEVIEW_SDK_TEST_ETH01',
+  smartLink:  false,
+  privateNetwork:  false,
+  connectionTemplateUri:  nil,
+  type:  'ethernet-networkV3'
+}
+
+eth2_options = {
+  vlanId:  802,
+  purpose:  'General',
+  name:  'ONEVIEW_SDK_TEST_ETH02',
+  smartLink:  false,
+  privateNetwork:  false,
+  connectionTemplateUri:  nil,
+  type:  'ethernet-networkV3'
+}
+
+eth01 = OneviewSDK::API300::C7000::EthernetNetwork.new(@client, eth1_options)
+eth02 = OneviewSDK::API300::C7000::EthernetNetwork.new(@client, eth2_options)
+
+eth01.create!
+eth02.create!
+
+upset01_options = {
+  name: 'ETH_UP_01',
+  networkType: 'Ethernet',
+  ethernetNetworkType: 'Tagged'
+}
+
+upset01 = OneviewSDK::API300::C7000::LIGUplinkSet.new(@client, upset01_options)
+upset01.add_network(eth01)
+upset01.add_network(eth02)
+
+upset01.add_uplink(1, 'X5')
+upset01.add_uplink(1, 'X6')
+upset01.add_uplink(2, 'X7')
+upset01.add_uplink(2, 'X8')
+
+lig.add_uplink_set(upset01)
+
+# Create an FC Uplink Set
+fc1_options = {
+  name: 'ONEVIEW_SDK_TEST_FC01',
+  connectionTemplateUri: nil,
+  autoLoginRedistribution: true,
+  fabricType: 'FabricAttach'
+}
+
+fc01 = OneviewSDK::API300::C7000::FCNetwork.new(@client, fc1_options)
+
+fc01.create!
+
+upset02_options = {
+  name: 'FC_UP_01',
+  networkType: 'FibreChannel'
+}
+
+upset02 = OneviewSDK::API300::C7000::LIGUplinkSet.new(@client, upset02_options)
+upset02.add_network(fc01)
+
+upset02.add_uplink(1, 'X1')
+upset02.add_uplink(1, 'X2')
+upset02.add_uplink(1, 'X3')
+
+lig.add_uplink_set(upset02)
+
+# Create the fully configured LIG
+lig.create!
+puts "\n#{type} #{lig[:name]} created!"
+
+# List the LIGs
+# Example: List all the logical interconnect groups
+puts "\n#{type}s:"
+OneviewSDK::API300::C7000::LogicalInterconnectGroup.find_by(@client, {}).each do |r|
+  puts "  #{r[:name]}"
+end
+
+puts '## Listing default settings ##'
+puts lig.get_default_settings
+
+puts '## Listing this LIG settings ##'
+puts lig.get_settings
+
+puts '## Updating the lig (Removing the uplink set)##'
+lig['uplinkSets'] = []
+lig.update
+puts lig.data
+
+# Clean up after ourselves
+lig.delete
+eth01.delete
+eth02.delete
+fc01.delete
+puts "\nCleanup complete!"

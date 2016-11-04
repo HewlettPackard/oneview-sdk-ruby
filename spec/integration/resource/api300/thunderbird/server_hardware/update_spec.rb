@@ -5,7 +5,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = klass.find_by($client_300, name: $secrets['server_hardware_ip']).first
+    @item = klass.find_by($client_300_thunderbird, name: $secrets['server_hardware_ip']).first
   end
 
   describe '#set_refresh_state' do
