@@ -5,7 +5,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @volume = klass.new($client_300, name: VOLUME_NAME)
+    @volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
     @volume.retrieve!
   end
 

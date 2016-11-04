@@ -6,22 +6,22 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   before :all do
     storage_system_data = { credentials: { ip_hostname: $secrets['storage_system1_ip'] } }
-    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300, storage_system_data)
+    @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300_thunderbird, storage_system_data)
     @storage_system.retrieve!
-    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.get_all($client_300).first
+    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.get_all($client_300_thunderbird).first
     @storage_pool.retrieve!
-    @vol_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new($client_300, name: VOL_TEMP_NAME)
+    @vol_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new($client_300_thunderbird, name: VOL_TEMP_NAME)
   end
 
   describe '#create' do
     before :each do
-      volume = klass.new($client_300, name: VOLUME_NAME)
+      volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
       volume.delete if volume.retrieve!
     end
 
     it 'create new volume' do
       options = {
-        name: VOLUME_NAME,
+        name: VOLUME4_NAME,
         description: 'Integration test volume',
         storageSystemUri: @storage_system[:uri],
         provisioningParameters: {
@@ -30,7 +30,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = klass.new($client_300, options)
+      volume = klass.new($client_300_thunderbird, options)
       volume.create
     end
 
@@ -45,7 +45,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = klass.new($client_300, options)
+      volume = klass.new($client_300_thunderbird, options)
       volume.create
     end
 
@@ -61,7 +61,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = klass.new($client_300, options)
+      volume = klass.new($client_300_thunderbird, options)
       volume.create
     end
 
@@ -139,7 +139,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = klass.new($client_300, options)
+      volume = klass.new($client_300_thunderbird, options)
       volume.create
 
       volume.create_snapshot(VOL_SNAPSHOT_NAME)
@@ -156,7 +156,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           storagePoolUri: @storage_pool[:uri]
         }
       }
-      volume_2 = klass.new($client_300, options)
+      volume_2 = klass.new($client_300_thunderbird, options)
       expect { volume_2.create }.to_not raise_error
     end
 
@@ -172,7 +172,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = klass.new($client_300, options)
+      volume = klass.new($client_300_thunderbird, options)
       volume.create
 
       snapshot_data = {
@@ -195,7 +195,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           storagePoolUri: @storage_pool[:uri]
         }
       }
-      volume_3 = klass.new($client_300, options)
+      volume_3 = klass.new($client_300_thunderbird, options)
       expect { volume_3.create }.to_not raise_error
     end
   end

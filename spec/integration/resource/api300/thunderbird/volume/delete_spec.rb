@@ -5,11 +5,11 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
   before :all do
-    @volume = klass.new($client_300, name: VOLUME_NAME)
+    @volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
     @volume.retrieve!
-    @volume_2 = klass.new($client_300, name: VOLUME2_NAME)
+    @volume_2 = klass.new($client_300_thunderbird, name: VOLUME2_NAME)
     @volume_2.retrieve!
-    @volume_3 = klass.new($client_300, name: VOLUME3_NAME)
+    @volume_3 = klass.new($client_300_thunderbird, name: VOLUME3_NAME)
     @volume_3.retrieve!
   end
 
