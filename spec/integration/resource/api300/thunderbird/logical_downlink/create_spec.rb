@@ -17,7 +17,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#find_by' do
     it 'returns all logical downlinks in the appliance' do
-      expect { klass.find_by($client_300, {}) }.not_to raise_error
+      expect { klass.find_by($client_300_thunderbird, {}) }.not_to raise_error
     end
   end
 end
