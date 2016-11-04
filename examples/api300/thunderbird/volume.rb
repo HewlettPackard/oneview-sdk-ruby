@@ -23,7 +23,6 @@ raise 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 # 1) Common = Storage System + Storage Pool
 puts '1) Common = Storage System + Storage Pool'
 
-binding.pry
 
 # Set Storage System
 storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
