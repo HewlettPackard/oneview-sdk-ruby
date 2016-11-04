@@ -16,7 +16,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = klass.new($client_300, name: $secrets['san_manager_ip'])
+    @item = klass.new($client_300_thunderbird, name: $secrets['san_manager_ip'])
     @item.retrieve!
   end
 

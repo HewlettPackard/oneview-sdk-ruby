@@ -17,7 +17,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#add' do
     it 'can create resources' do
-      item = klass.new($client_300)
+      item = klass.new($client_300_thunderbird)
       item['providerDisplayName'] = SAN_PROVIDER1_NAME
       item['connectionInfo'] = [
         {
@@ -44,7 +44,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#self.get_default_connection_info' do
     it 'Retrieve connection info for provider' do
-      expect { klass.get_default_connection_info($client_300, SAN_PROVIDER1_NAME) }.to_not raise_error
+      expect { klass.get_default_connection_info($client_300_thunderbird, SAN_PROVIDER1_NAME) }.to_not raise_error
     end
   end
 end

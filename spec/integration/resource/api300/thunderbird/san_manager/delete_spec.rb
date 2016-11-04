@@ -17,7 +17,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe '#remove' do
     it 'Brocade Network Advisor' do
-      item = klass.new($client_300, name: $secrets['san_manager_ip'])
+      item = klass.new($client_300_thunderbird, name: $secrets['san_manager_ip'])
       item.retrieve!
       expect { item.remove }.not_to raise_error
     end
