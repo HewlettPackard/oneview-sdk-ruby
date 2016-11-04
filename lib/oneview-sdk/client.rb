@@ -38,6 +38,7 @@ module OneviewSDK
     # @option options [Integer] :timeout (nil) Override the default request timeout value
     def initialize(options = {})
       options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
+      STDOUT.sync = true
       @logger = options[:logger] || Logger.new(STDOUT)
       [:debug, :info, :warn, :error, :level=].each { |m| raise InvalidClient, "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
       @log_level = options[:log_level] || :info

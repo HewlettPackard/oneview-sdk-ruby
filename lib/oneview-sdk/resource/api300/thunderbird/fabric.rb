@@ -14,7 +14,32 @@ require_relative '../../api200/fabric'
 module OneviewSDK
   module API300
     module Thunderbird
+      # Fabric resource implementation for API300 Thunderbird
       class Fabric < OneviewSDK::API200::Fabric
+
+        # Gets the reserved vlan ID range for the fabric
+        # @raise [OneviewSDK::IncompleteResource] if the client is not set
+        # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+        # @raise [StandardError] if retrieving fails
+        # @return [OneviewSDK::Fabric] self
+        def get_reserved_vlan_range
+          ensure_client && ensure_uri
+          response = @client.rest_get("#{@data['uri']}/reserved-vlan-range", @api_version)
+          @client.response_handler(response)
+        end
+
+        # Updates the reserved vlan ID range for the fabric.
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @raise [OneviewSDK::IncompleteResource] if the client is not set
+        # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+        # @raise [StandardError] if the reapply fails
+        # @return [OneviewSDK::Fabric] self
+        def set_reserved_vlan_range(params)
+          ensure_client && ensure_uri
+          response = @client.rest_put("#{@data['uri']}/reserved-vlan-range", { 'body' => params }, @api_version)
+          @client.response_handler(response)
+          self
+        end
       end
     end
   end
