@@ -13,10 +13,10 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Thunderbird::Datacenter
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   before :each do
-    @item = klass.find_by($client, name: DATACENTER1_NAME).first
+    @item = klass.find_by($client_300_thunderbird, name: DATACENTER1_NAME).first
   end
 
   describe '#update' do
