@@ -6,7 +6,7 @@ RSpec.describe klass, integration: true, type: UPDATE, sequence: seq(klass) do
 
   describe '#get_internal_link_sets' do
     it 'gets the internal link sets' do
-      expect { klass.get_internal_link_sets($client_300) }.not_to raise_error
+      expect { klass.get_internal_link_sets($client_300_thunderbird) }.not_to raise_error
     end
   end
 end
