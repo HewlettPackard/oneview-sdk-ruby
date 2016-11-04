@@ -6,20 +6,14 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   before(:all) do
     options = {
-      hostname: $secrets['server_hardware_ip'],
-      username: $secrets['server_hardware_username'],
-      password: $secrets['server_hardware_password'],
-      name: 'test',
-      licensingIntent: 'OneView'
+      name: 'test'
     }
 
-    @item = klass.new($client_300, options)
+    @item = klass.new($client_300_thunderbird, options)
   end
 
   describe '#add' do
-    it 'can create resources' do
-      expect { @item.add }.to_not raise_error
-    end
+    it 'is a pending test due to no thunderbird schematics containing iLOs'
   end
 
   describe '#get_bios' do
@@ -60,7 +54,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#get firmware by id' do
     it 'Gets the Server Hardware firmware without uri' do
-      item = klass.new($client_300)
+      item = klass.new($client_300_thunderbird)
       expect { item.get_firmware_by_id }.to raise_error
     end
 

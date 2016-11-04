@@ -6,15 +6,15 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#create' do
     it 'network set withoutEthernet' do
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300)
+      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300_thunderbird)
       item['name'] = NETWORK_SET1_NAME
       item.create
       expect(item['uri']).to_not eq(nil)
     end
 
     it 'network set with ethernet network' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300, {}).first
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300)
+      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300_thunderbird, {}).first
+      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300_thunderbird)
       item['name'] = NETWORK_SET2_NAME
       item.add_ethernet_network(eth1)
       item.create
@@ -23,9 +23,9 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'network set with multiple ethernet networks' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300, {}).first
-      eth2 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300, {}).last
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300)
+      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300_thunderbird, {}).first
+      eth2 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300_thunderbird, {}).last
+      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300_thunderbird)
       item['name'] = NETWORK_SET3_NAME
       item.add_ethernet_network(eth1)
       item.add_ethernet_network(eth2)
@@ -36,8 +36,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'network set with native network' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300, {}).first
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300)
+      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by($client_300_thunderbird, {}).first
+      item = OneviewSDK::API300::Thunderbird::NetworkSet.new($client_300_thunderbird)
       item['name'] = NETWORK_SET4_NAME
       item.set_native_network(eth1)
       item.create

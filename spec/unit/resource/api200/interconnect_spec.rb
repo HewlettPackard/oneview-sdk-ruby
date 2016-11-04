@@ -85,6 +85,46 @@ RSpec.describe OneviewSDK::Interconnect do
       expect(@client).to receive(:rest_get).with('/statistics/p1/subport/sp1').and_return(FakeResponse.new)
       @item.statistics('p1', 'sp1')
     end
+  end
 
+  describe '#get_type' do
+    it 'finds the specified interconnect_type' do
+      interconnect_type_type_list = FakeResponse.new(
+        'members' => [
+          { 'name' => 'interconnect_typeA', 'uri' => 'rest/fake/A' },
+          { 'name' => 'Theinterconnect_type', 'uri' => 'rest/fake/interconnect_type' },
+          { 'name' => 'interconnect_typeC', 'uri' => 'rest/fake/C' }
+        ]
+      )
+      expect(@client).to receive(:rest_get).with('/rest/interconnect-types').and_return(interconnect_type_type_list)
+      @item = OneviewSDK::Interconnect.get_type(@client, 'Theinterconnect_type')
+      expect(@item['uri']).to eq('rest/fake/interconnect_type')
+    end
+  end
+
+  describe '#name_servers' do
+    it 'should get the name servers' do
+      item = OneviewSDK::Interconnect.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/nameServers').and_return(FakeResponse.new)
+      expect(item.name_servers).to be
+    end
+  end
+
+  describe '#patch' do
+    it 'sends a patch request to the interconnect' do
+      item = OneviewSDK::Interconnect.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_patch)
+        .with(item['uri'], 'body' => [{ op: 'replace', path: '/uidState', value: 'On' }])
+        .and_return(FakeResponse.new)
+      expect(item.patch('replace', '/uidState', 'On')).to be
+    end
+  end
+
+  describe '#reset_port_protection' do
+    it 'sets the port protection' do
+      item = OneviewSDK::Interconnect.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_put).with('/rest/fake/resetportprotection').and_return(FakeResponse.new)
+      expect(item.reset_port_protection).to be
+    end
   end
 end
