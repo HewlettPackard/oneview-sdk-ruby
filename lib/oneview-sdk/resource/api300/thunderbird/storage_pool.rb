@@ -14,6 +14,7 @@ require_relative '../../api200/storage_pool'
 module OneviewSDK
   module API300
     module Thunderbird
+      # Storage pool resource implementation for Thunderbird
       class StoragePool < OneviewSDK::API200::StoragePool
       end
     end
