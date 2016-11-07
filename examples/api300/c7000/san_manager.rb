@@ -11,6 +11,13 @@
 
 require_relative '../../_client' # Gives access to @client
 
+# NOTE: This will add a Brocade Network Advisor, then delete it.
+# NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
+# @san_manager_ip
+# @san_manager_username
+# @san_manager_password
+# NOTE: You'll need to have a BNA.
+
 # Print default connection info for Brocade Network Advisor
 default_info = OneviewSDK::API300::C7000::SANManager.get_default_connection_info(@client, 'Brocade Network Advisor')
 puts 'Brocade Network Advisor connection info:'

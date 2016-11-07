@@ -20,7 +20,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
     @item.retrieve!
   end
 
-  describe '#update' do
+  describe '#update - EXPECTED TO FAIL IF SCHEMATIC HAS NO a BNA' do
     it 'refresh a SAN Device Manager' do
       expect { @item.update(refreshState: 'RefreshPending') }.not_to raise_error
     end

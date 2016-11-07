@@ -15,7 +15,7 @@ klass = OneviewSDK::API300::Thunderbird::SANManager
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
-  describe '#add' do
+  describe '#add - EXPECTED TO FAIL IF SCHEMATIC HAS NO a BNA' do
     it 'can create resources' do
       item = klass.new($client_300_thunderbird)
       item['providerDisplayName'] = SAN_PROVIDER1_NAME
