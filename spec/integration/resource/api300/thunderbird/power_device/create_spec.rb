@@ -24,11 +24,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   end
 
   describe '#discover' do
-    it 'can discover an HP iPDU' do
+    it 'can discover an HP iPDU [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
       options = {
-        username: $secrets['hp_ipdu_username'],
-        password: $secrets['hp_ipdu_password'],
-        hostname: $secrets['hp_ipdu_ip']
+        username: $secrets_thunderbird['hp_ipdu_username'],
+        password: $secrets_thunderbird['hp_ipdu_password'],
+        hostname: $secrets_thunderbird['hp_ipdu_ip']
       }
 
       ipdu = klass.discover($client_300_thunderbird, options)

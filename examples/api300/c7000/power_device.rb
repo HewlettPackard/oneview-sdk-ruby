@@ -17,6 +17,7 @@ require_relative '../../_client' # Gives access to @client
 #   @ipdu_hostname (hostname or IP address)
 #   @ipdu_username
 #   @ipdu_password
+# NOTE: You'll need to have an IPDU:
 
 options = {
   username: @ipdu_username,

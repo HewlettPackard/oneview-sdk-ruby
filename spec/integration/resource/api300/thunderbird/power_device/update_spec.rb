@@ -16,44 +16,43 @@ RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @ipdu_list = klass.find_by($client_300_thunderbird, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
+    @ipdu_list = klass.find_by($client_300_thunderbird, 'managedBy' => { 'hostName' => $secrets_thunderbird['hp_ipdu_ip'] })
     @item = @ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
   end
 
   describe '#update' do
-    it 'Change name' do
-      name = @item['name']
-      @item.update(name: 'PowerDevice_Name_Updated')
-      expect(@item['name']).to eq('PowerDevice_Name_Updated')
-      @item.refresh
-      @item.update(name: name)
+    it 'Change name of the Power device 1' do
+      power_device = klass.new($client_300_thunderbird, name: POW_DEVICE1_NAME)
+      power_device.retrieve!
+      expect { power_device.update(name: POW_DEVICE2_NAME) }.not_to raise_error
+      expect(power_device['name']).to eq(POW_DEVICE2_NAME)
     end
   end
 
   describe '#set_refresh_state' do
-    it 'Refresh without changing credentials' do
+    it 'Refresh without changing credentials [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
       expect { @item.set_refresh_state(refreshState: 'RefreshPending') }.not_to raise_error
     end
 
-    it 'Refresh with new credentials' do
+    it 'Refresh with new credentials [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
       options = {
         refreshState: 'RefreshPending',
-        username: $secrets['hp_ipdu_username'],
-        password: $secrets['hp_ipdu_password']
+        username: $secrets_thunderbird['hp_ipdu_username'],
+        password: $secrets_thunderbird['hp_ipdu_password']
       }
       expect { @item.set_refresh_state(options) }.not_to raise_error
     end
   end
 
   describe '#set_power_state' do
-    it 'On|off state on a device that supports this operation' do
+    it 'On|off state on a device that supports this operation [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
       power_device = @ipdu_list.reject { |ipdu| ipdu['model'] != 'Managed Ext. Bar Outlet' }.first
       expect { power_device.set_power_state('On') }.not_to raise_error
     end
   end
 
   describe '#set_uid_state' do
-    it 'On|off' do
+    it 'On|off [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
       expect { @item.set_uid_state('On') }.not_to raise_error
     end
   end
