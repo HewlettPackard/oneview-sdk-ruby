@@ -20,26 +20,45 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Enclosure do
   describe '#add' do
     context 'with valid data' do
       before :each do
-        allow_any_instance_of(OneviewSDK::API300::Thunderbird::Enclosure).to receive(:update).and_return(true)
+        # allow_any_instance_of(OneviewSDK::API300::Thunderbird::Enclosure).to receive(:update).and_return(true)
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(name: 'Encl1',
                                                                                            serialNumber: 'Fake', uri: '/rest/fake')
-
         @data = {
           'name' => 'Fake-Enclosure',
-          'hostname' => '1.1.1.1'
+          'hostname' => ENCL_HOSTNAME,
+          'frameLinkModuleDomain' => 'test'
         }
         @enclosure = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, @data)
+
       end
 
       it 'only sends certain attributes on the POST' do
-        expect(@client_300).to receive(:rest_post).with('/rest/enclosures', { 'body' => @data.select { |k, _v| k != 'name' } }, anything)
+        expect(@client_300).to receive(:rest_post).with('/rest/enclosures', { 'body' => @data.select { |k, _v| k == 'hostname' } }, anything)
         @enclosure.add
       end
 
       it 'sets the enclosure name correctly' do
-        @enclosure.add
-        expect(@enclosure[:name]).to eq('Fake-Enclosure')
+        @data1 = {
+          'name' => 'Encl1',
+          'managerBays' => ['ipAddress' => ENCL_HOSTNAME],
+          'frameLinkModuleDomain' => 'test',
+          'uri' => 'test1'
+        }
+        test = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, @data1)
+        @data2 = {
+          'name' => 'Encl2',
+          'managerBays' => ['ipAddress' => ENCL_HOSTNAME],
+          'frameLinkModuleDomain' => 'test2',
+          'uri' => 'test2'
+        }
+        test2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, @data2)
+        @response = @data1, @data2
+        @response2 = [test, test2]
+        allow(OneviewSDK::API300::Thunderbird::Enclosure).to receive(:find_by).and_return(@response2)
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(@response)
+        test = @enclosure.add
+        expect(test.last[:name]).to eq('Fake-Enclosure1')
       end
     end
 

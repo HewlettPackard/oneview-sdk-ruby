@@ -29,8 +29,8 @@ module OneviewSDK
         end
 
         # Claim/configure the enclosure and its components to the appliance
-        # @note Calls the refresh method to set additional data
-        # @return [OneviewSDK::API300::Thunderbird::Enclosure] self
+        # @note Calls the update_enclosure_names method to set the enclosure names
+        # @return [Array] array Enclosures array containing the added enclosures
         def add
           ensure_client
           required_attributes = %w(hostname)
@@ -39,7 +39,10 @@ module OneviewSDK
           temp_data = @data.select { |k, _v| required_attributes.include?(k) }
           response = @client.rest_post(self.class::BASE_URI, { 'body' => temp_data }, @api_version)
           @client.response_handler(response)
-          self
+
+          # Renames the enclosures added according to the name given, if a name was given
+          @data['name'] ||= ''
+          OneviewSDK::API300::Thunderbird::Enclosure.update_enclosure_names(@client, @data['hostname'], @data['name'])
         end
 
         # Update specific attributes of a given enclosure
@@ -67,6 +70,30 @@ module OneviewSDK
         # @raise [OneviewSDK::MethodUnavailable] method is not available
         def set_enclosure_group
           unavailable_method
+        end
+
+        # Method for renaming all enclosures from the same frameLinkModuleDomain after one has been added
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [String] hostname The ipv6 of the enclosure to be added
+        # @param [String] name The name to be used for renaming the enclosures
+        # @return [Array] array Enclosures which had their name changed
+        def self.update_enclosure_names(client, hostname, name)
+          raise 'Missing parameters for update_enclosure_names' unless client && hostname && name
+          frame_link = ''
+          name ||= ''
+          OneviewSDK::API300::Thunderbird::Enclosure.find_by(client, {}).each do |encl|
+            frame_link = encl['frameLinkModuleDomain'] if encl['managerBays'].first['ipAddress'] == hostname
+          end
+          enclosures = OneviewSDK::API300::Thunderbird::Enclosure.find_by(client, frameLinkModuleDomain: frame_link)
+          number_of_enclosures = enclosures.count
+          # Return enclosures without modifying them if a name has not been specified
+          return enclosures unless name
+          enclosures.each do |encl|
+            encl['name'] = "#{name}#{number_of_enclosures}"
+            encl.update
+            number_of_enclosures -= 1
+          end
+          enclosures
         end
       end
     end

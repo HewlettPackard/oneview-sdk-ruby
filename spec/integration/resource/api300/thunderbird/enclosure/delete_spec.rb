@@ -4,6 +4,9 @@ klass = OneviewSDK::API300::Thunderbird::Enclosure
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
+  describe "#remove #{klass}" do
+    it 'is a pending test due to removing Enclosures requiring them to be phisically removed first'
+  end
   # This is commented out because a 'monitored' enclosure can't be removed unless it loses
   # connectivity, which involves physically detaching the cables from the hardware
   # describe '#remove' do
