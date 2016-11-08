@@ -14,7 +14,20 @@ require_relative '../../api200/logical_downlink'
 module OneviewSDK
   module API300
     module C7000
+      # Logical downlink resource implementation for API300 C7000
       class LogicalDownlink < OneviewSDK::API200::LogicalDownlink
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def self.get_without_ethernet
+          raise MethodUnavailable, 'The method #self.get_without_ethernet is unavailable for this resource'
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def get_without_ethernet
+          unavailable_method
+        end
       end
     end
   end
