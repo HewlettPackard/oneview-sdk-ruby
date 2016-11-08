@@ -20,4 +20,10 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       expect { klass.find_by($client_300_thunderbird, {}) }.not_to raise_error
     end
   end
+
+  describe '#get_without_ethernet' do
+    it 'self raises MethodUnavailable' do
+      expect { klass.get_without_ethernet }.to raise_error(/The method #self.get_without_ethernet is unavailable for this resource/)
+    end
+  end
 end
