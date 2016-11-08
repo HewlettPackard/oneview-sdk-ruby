@@ -12,10 +12,10 @@
 require_relative '../../_client'
 
 # List of Thunderbird Internal Link Sets
-OneviewSDK::Thunderbird::LogicalSwitch.get_internal_link_sets(@client).each do |internal_link_set|
+OneviewSDK::API300::Thunderbird::LogicalSwitch.get_internal_link_sets(@client).each do |internal_link_set|
   puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
 end
 
 # Retrieves a specific Internal Link Set
-internal_link_set = OneviewSDK::LogicalSwitch::Thunderbird.get_internal_link_set(@client, 'ils1')
+internal_link_set = OneviewSDK::API300::Thunderbird::LogicalSwitch.get_internal_link_set(@client, 'ils1')
 puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
