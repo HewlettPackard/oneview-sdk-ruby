@@ -14,6 +14,7 @@ require_relative '../../api200/datacenter'
 module OneviewSDK
   module API300
     module C7000
+      # Datacenter resource implementation for API300 C7000
       class Datacenter < OneviewSDK::API200::Datacenter
       end
     end
