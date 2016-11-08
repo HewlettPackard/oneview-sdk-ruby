@@ -19,33 +19,37 @@ require_relative '../../_client' # Gives access to @client
 # NOTE: You'll need to have a BNA.
 
 # Print default connection info for Brocade Network Advisor
-default_info = OneviewSDK::API300::Thunderbird::SANManager.get_default_connection_info(@client, 'Brocade Network Advisor')
-puts 'Brocade Network Advisor connection info:'
+default_info = OneviewSDK::API300::Thunderbird::SANManager.get_default_connection_info(@client, 'Cisco')
+puts 'Cisco Switch connection info:'
 default_info.each { |property| puts "* #{property['name']} - #{property['value']}" }
 
 # Add a Brocade Network Advisor
 san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(@client)
-san_manager['providerDisplayName'] = 'Brocade Network Advisor'
+san_manager['providerDisplayName'] = 'Cisco'
 san_manager['connectionInfo'] = [
   {
     'name' => 'Host',
     'value' => @san_manager_ip
   },
   {
-    'name' => 'Port',
-    'value' => 5989
+    'name' => 'SnmpPort',
+    'value' => 161
   },
   {
-    'name' => 'Username',
+    'name' => 'SnmpUserName',
     'value' => @san_manager_username
   },
   {
-    'name' => 'Password',
-    'value' => @san_manager_password
+    'name' => 'SnmpAuthLevel',
+    'value' => 'AUTHNOPRIV'
   },
   {
-    'name' => 'UseSsl',
-    'value' => true
+    'name' => 'SnmpAuthProtocol',
+    'value' => 'SHA'
+  },
+  {
+    'name' => 'SnmpAuthString',
+    'value' => @san_manager_password
   }
 ]
 

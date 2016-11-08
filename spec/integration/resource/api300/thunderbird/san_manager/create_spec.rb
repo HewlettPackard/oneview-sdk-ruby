@@ -15,25 +15,33 @@ klass = OneviewSDK::API300::Thunderbird::SANManager
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
-  describe '#add - EXPECTED TO FAIL IF SCHEMATIC HAS NO a BNA' do
+  describe '#add' do
     it 'can create resources' do
       item = klass.new($client_300_thunderbird)
-      item['providerDisplayName'] = SAN_PROVIDER1_NAME
+      item['providerDisplayName'] = SAN_PROVIDER2_NAME
       item['connectionInfo'] = [
         {
           'name' => 'Host',
           'value' => $secrets['san_manager_ip']
         },
         {
-          'name' => 'Port',
-          'value' => 5989
+          'name' => 'SnmpPort',
+          'value' => 161
         },
         {
-          'name' => 'Username',
+          'name' => 'SnmpUserName',
           'value' => $secrets['san_manager_username']
         },
         {
-          'name' => 'Password',
+          'name' => 'SnmpAuthLevel',
+          'value' => 'AUTHNOPRIV'
+        },
+        {
+          'name' => 'SnmpAuthProtocol',
+          'value' => 'SHA'
+        },
+        {
+          'name' => 'SnmpAuthString',
           'value' => $secrets['san_manager_password']
         }
       ]
@@ -44,7 +52,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#self.get_default_connection_info' do
     it 'Retrieve connection info for provider' do
-      expect { klass.get_default_connection_info($client_300_thunderbird, SAN_PROVIDER1_NAME) }.to_not raise_error
+      expect { klass.get_default_connection_info($client_300_thunderbird, SAN_PROVIDER2_NAME) }.to_not raise_error
     end
   end
 end

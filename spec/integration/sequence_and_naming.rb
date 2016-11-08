@@ -192,6 +192,7 @@ UNMANAGED_DEVICE1_NAME = 'UnmanagedDevice_1'.freeze
 
 # FC San Provider
 SAN_PROVIDER1_NAME = 'Brocade Network Advisor'.freeze
+SAN_PROVIDER2_NAME = 'Cisco'.freeze
 
 # Firmware Driver
 FIRMWARE_DRIVER1_NAME = 'CustomSPP_1'.freeze

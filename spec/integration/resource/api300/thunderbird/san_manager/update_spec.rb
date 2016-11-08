@@ -20,7 +20,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
     @item.retrieve!
   end
 
-  describe '#update - EXPECTED TO FAIL IF SCHEMATIC HAS NO a BNA' do
+  describe '#update' do
     it 'refresh a SAN Device Manager' do
       expect { @item.update(refreshState: 'RefreshPending') }.not_to raise_error
     end
@@ -32,20 +32,24 @@ RSpec.describe klass, integration: true, type: UPDATE do
           'value' => $secrets['san_manager_ip']
         },
         {
-          'name' => 'Port',
-          'value' => '5989'
+          'name' => 'SnmpPort',
+          'value' => 161
         },
         {
-          'name' => 'Username',
+          'name' => 'SnmpUserName',
           'value' => $secrets['san_manager_username']
         },
         {
-          'name' => 'Password',
-          'value' => $secrets['san_manager_password']
+          'name' => 'SnmpAuthLevel',
+          'value' => 'AUTHNOPRIV'
         },
         {
-          'name' => 'UseSsl',
-          'value' => true
+          'name' => 'SnmpAuthProtocol',
+          'value' => 'SHA'
+        },
+        {
+          'name' => 'SnmpAuthString',
+          'value' => $secrets['san_manager_password']
         }
       ]
       expect { @item.update(connectionInfo: connection_info) }.not_to raise_error

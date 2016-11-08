@@ -15,8 +15,8 @@ klass = OneviewSDK::API300::Thunderbird::SANManager
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
-  describe '#remove - EXPECTED TO FAIL IF SCHEMATIC HAS NO a BNA' do
-    it 'Brocade Network Advisor' do
+  describe '#remove' do
+    it 'Removing a Cisco Switch' do
       item = klass.new($client_300_thunderbird, name: $secrets['san_manager_ip'])
       item.retrieve!
       expect { item.remove }.not_to raise_error
