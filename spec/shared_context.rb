@@ -100,6 +100,7 @@ def integration_context
     exit!
   end
   $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
+  $secrets_thunderbird ||= OneviewSDK::Config.load(@default_secrets_thunderbird) # Secrets for URIs, server/enclosure credentials, etc.
 
   # Creates the global config variable
   $config ||= OneviewSDK::Config.load(@config_path)
