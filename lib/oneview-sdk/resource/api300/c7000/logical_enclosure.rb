@@ -14,7 +14,21 @@ require_relative '../../api200/logical_enclosure'
 module OneviewSDK
   module API300
     module C7000
+      # Logical Enclosure resource implementation on API300 C7000
       class LogicalEnclosure < OneviewSDK::API200::LogicalEnclosure
+
+        def initialize(client, params = {}, api_ver = nil)
+          super
+        end
+
+        # Updates specific attributes of a given logical enclosure resource
+        # @param [String] value Value
+        def patch(value)
+          ensure_client && ensure_uri
+          body = { op: 'replace', path: '/firmware', value: value }
+          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
+          @client.response_handler(response)
+        end
       end
     end
   end

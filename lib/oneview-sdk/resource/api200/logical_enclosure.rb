@@ -23,8 +23,6 @@ module OneviewSDK
       # @param [Integer] api_ver The api version to use when interracting with this resource.
       def initialize(client, params = {}, api_ver = nil)
         super
-        # Default values
-        @data['type'] ||= 'LogicalEnclosure'
       end
 
       # Reapplies the appliance's configuration on the enclosures
