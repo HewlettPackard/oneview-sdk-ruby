@@ -9,14 +9,18 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../api200/rack'
+require 'spec_helper'
 
-module OneviewSDK
-  module API300
-    module C7000
-      # Rack resource implementation for API300 C7000
-      class Rack < OneviewSDK::API200::Rack
-      end
+klass = OneviewSDK::API300::Thunderbird::Rack
+RSpec.describe klass, integration: true, type: UPDATE do
+  include_context 'integration api300 context'
+
+  describe '#update' do
+    it 'updates depth' do
+      item = klass.new($client_300_thunderbird, name: RACK1_NAME)
+      item.retrieve!
+      item.update(depth: 1300)
+      expect(item['depth']).to eq(1300)
     end
   end
 end

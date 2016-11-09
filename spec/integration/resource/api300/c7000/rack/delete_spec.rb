@@ -9,14 +9,23 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../api200/rack'
+require 'spec_helper'
 
-module OneviewSDK
-  module API300
-    module C7000
-      # Rack resource implementation for API300 C7000
-      class Rack < OneviewSDK::API200::Rack
-      end
+klass = OneviewSDK::API300::C7000::Rack
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  include_context 'integration api300 context'
+
+  describe '#remove' do
+    it 'Rack_1' do
+      item = klass.new($client_300, name: RACK1_NAME)
+      item.retrieve!
+      expect { item.remove }.not_to raise_error
+    end
+
+    it 'Rack_2' do
+      item = klass.new($client_300, name: RACK2_NAME)
+      item.retrieve!
+      expect { item.remove }.not_to raise_error
     end
   end
 end

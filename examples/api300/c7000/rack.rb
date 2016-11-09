@@ -9,14 +9,18 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../api200/rack'
+require_relative '../../_client' # Gives access to @client
 
-module OneviewSDK
-  module API300
-    module C7000
-      # Rack resource implementation for API300 C7000
-      class Rack < OneviewSDK::API200::Rack
-      end
-    end
-  end
-end
+options = {
+  name: 'myrack'
+}
+
+item = OneviewSDK::API300::C7000::Rack.new(@client, options)
+item.add
+puts "Rack #{item['name']} was added with uri='#{item['uri']}'"
+
+item.update(depth: 1300)
+puts "Rack #{item['name']} was updated with new depth value = '#{item['depth']}'"
+
+item.remove
+puts "Rack #{item['name']} was successfully removed."
