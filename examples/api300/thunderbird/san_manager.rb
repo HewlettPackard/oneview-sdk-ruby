@@ -23,7 +23,7 @@ default_info = OneviewSDK::API300::Thunderbird::SANManager.get_default_connectio
 puts 'Cisco Switch connection info:'
 default_info.each { |property| puts "* #{property['name']} - #{property['value']}" }
 
-# Add a Brocade Network Advisor
+# Add a Cisco Switch
 san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(@client)
 san_manager['providerDisplayName'] = 'Cisco'
 san_manager['connectionInfo'] = [
@@ -56,6 +56,6 @@ san_manager['connectionInfo'] = [
 san_manager.add
 puts "- SAN Manager #{san_manager['name']} sucessfully added with uri='#{san_manager['uri']}'"
 
-# Removes Brocade Network Advisor
+# Removes Cisco Switch
 san_manager.remove
 puts "- SAN Manager #{san_manager['name']} was sucessfully removed"

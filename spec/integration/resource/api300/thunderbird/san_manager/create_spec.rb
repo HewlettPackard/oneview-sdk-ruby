@@ -22,7 +22,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       item['connectionInfo'] = [
         {
           'name' => 'Host',
-          'value' => $secrets['san_manager_ip']
+          'value' => $secrets_thunderbird['san_manager_ip']
         },
         {
           'name' => 'SnmpPort',
@@ -30,7 +30,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         },
         {
           'name' => 'SnmpUserName',
-          'value' => $secrets['san_manager_username']
+          'value' => $secrets_thunderbird['san_manager_username']
         },
         {
           'name' => 'SnmpAuthLevel',
@@ -42,7 +42,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         },
         {
           'name' => 'SnmpAuthString',
-          'value' => $secrets['san_manager_password']
+          'value' => $secrets_thunderbird['san_manager_password']
         }
       ]
       expect { item.add }.not_to raise_error
