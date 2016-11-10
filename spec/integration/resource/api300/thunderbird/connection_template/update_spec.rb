@@ -1,19 +1,19 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ConnectionTemplate
+klass = OneviewSDK::API300::Thunderbird::ConnectionTemplate
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#get_default' do
     it 'builds connection template' do
-      item = klass.get_default($client)
-      expect(item).to be_a klass
+      item = klass.get_default($client_300_thunderbird)
+      expect(item).to be_a OneviewSDK::API300::Thunderbird::ConnectionTemplate
     end
   end
 
   describe '#update' do
     it 'change bandwidth' do
-      item = klass.find_by($client, {}).first
+      item = klass.find_by($client_300_thunderbird, {}).first
       old_maximum = item['bandwidth']['maximumBandwidth']
       old_typical = item['bandwidth']['typicalBandwidth']
       item['bandwidth']['maximumBandwidth'] = old_maximum - 100

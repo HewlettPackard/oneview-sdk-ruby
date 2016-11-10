@@ -19,26 +19,28 @@ if default['uri']
   puts "(- typicalBandwidth: #{default['bandwidth']['typicalBandwidth']})\n"
 end
 
-# Retrieve connection template and update its name
+# List all connections
+puts "\nList all connections templates:"
+OneviewSDK::ConnectionTemplate.find_by(@client, {}).each do |c|
+  puts "  Name: #{c[:name]} with uri: #{c[:uri]}"
+end
+
+# Retrieve connection template
 connection_template = OneviewSDK::ConnectionTemplate.find_by(@client, {}).first
 puts "\nConnection template with name='#{connection_template['name']}' bandwidth specification is:"
 puts "(- maximumBandwidth: #{connection_template['bandwidth']['maximumBandwidth']})"
 puts "(- typicalBandwidth: #{connection_template['bandwidth']['typicalBandwidth']})\n"
 
-old_name = connection_template['name']
-connection_template['name'] = 'ConnectionTemplate_1'
-connection_template.update
-puts "\nConnection template name changed from #{old_name} to #{connection_template['name']}\n"
-
 # Update typical and maximum bandwidth for the previous connection template
-connection_template['bandwidth']['maximumBandwidth'] += 1000
-connection_template['bandwidth']['typicalBandwidth'] += 1000
+puts "\nUpdating a connection template with name='#{connection_template['name']}"
+puts "\n adding value 100 for maximumBandwidth and typicalBandwidth:"
+connection_template['bandwidth']['maximumBandwidth'] -= 100
+connection_template['bandwidth']['typicalBandwidth'] -= 100
 connection_template.update
+connection_template.retrieve!
 puts "\nConnection template with name='#{connection_template['name']}' bandwidth specification changed:"
 puts "(- maximumBandwidth: #{connection_template['bandwidth']['maximumBandwidth']})"
 puts "(- typicalBandwidth: #{connection_template['bandwidth']['typicalBandwidth']})\n"
-
-# Restore connection template old name
-connection_template['name'] = old_name
+connection_template['bandwidth']['maximumBandwidth'] += 100
+connection_template['bandwidth']['typicalBandwidth'] += 100
 connection_template.update
-puts "\nConnection template name changed back to #{connection_template['name']}"

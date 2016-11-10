@@ -14,7 +14,16 @@ require_relative '../../api200/connection_template'
 module OneviewSDK
   module API300
     module C7000
+      # Connection template resource implementation for API300 C7000
       class ConnectionTemplate < OneviewSDK::API200::ConnectionTemplate
+
+        # Get the default network connection template
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @return [OneviewSDK::API300::C7000::ConnectionTemplate] Connection template
+        def self.get_default(client)
+          response = client.rest_get(BASE_URI + '/defaultConnectionTemplate')
+          OneviewSDK::API300::C7000::ConnectionTemplate.new(client, client.response_handler(response))
+        end
       end
     end
   end
