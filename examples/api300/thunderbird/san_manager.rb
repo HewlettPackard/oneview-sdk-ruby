@@ -11,14 +11,14 @@
 
 require_relative '../../_client' # Gives access to @client
 
-# NOTE: This will add a Brocade Network Advisor, then delete it.
+# NOTE: This will add a Cisco Switch, then delete it.
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 # @san_manager_ip
 # @san_manager_username
 # @san_manager_password
-# NOTE: You'll need to have a BNA.
+# NOTE: You'll need to have a Cisco Switch.
 
-# Print default connection info for Brocade Network Advisor
+# Print default connection info for Cisco Switch
 default_info = OneviewSDK::API300::Thunderbird::SANManager.get_default_connection_info(@client, 'Cisco')
 puts 'Cisco Switch connection info:'
 default_info.each { |property| puts "* #{property['name']} - #{property['value']}" }

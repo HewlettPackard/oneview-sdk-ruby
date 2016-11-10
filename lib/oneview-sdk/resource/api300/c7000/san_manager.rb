@@ -14,7 +14,7 @@ require_relative '../../api200/san_manager'
 module OneviewSDK
   module API300
     module C7000
-      # SAN manager resource implementation
+      # SAN manager resource implementation for API300 C7000
       class SANManager < OneviewSDK::API200::SANManager
 
         REQUIRED_FIELDS_TO_UPDATE = %w(Host Port Username Password UseSsl).freeze
