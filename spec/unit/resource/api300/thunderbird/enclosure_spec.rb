@@ -20,7 +20,6 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Enclosure do
   describe '#add' do
     context 'with valid data' do
       before :each do
-        # allow_any_instance_of(OneviewSDK::API300::Thunderbird::Enclosure).to receive(:update).and_return(true)
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(name: 'Encl1',
                                                                                            serialNumber: 'Fake', uri: '/rest/fake')
