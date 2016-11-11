@@ -77,7 +77,7 @@ module OneviewSDK
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [String] hostname The ipv6 of the enclosure to be added
         # @param [String] name The name to be used for renaming the enclosures
-        # @return [Array] array Enclosures which had their name changed
+        # @return [Array<OneviewSDK:API300:Thunderbird::Enclosure>] Enclosures which had their name changed
         def self.update_enclosure_names(client, hostname, name = '')
           raise IncompleteResource, 'Missing parameters for update_enclosure_names' unless client && hostname
           frame_link = ''
