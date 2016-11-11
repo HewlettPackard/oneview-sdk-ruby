@@ -72,22 +72,29 @@ module OneviewSDK
           unavailable_method
         end
 
-        # Method for renaming all enclosures from the same frameLinkModuleDomain after one has been added
+        # Method for renaming all enclosures that share the same frameLinkModuleDomain.
+        # The naming pattern for the enclosures is <name><1..number of enclosures>.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [String] hostname The ipv6 of the enclosure to be added
         # @param [String] name The name to be used for renaming the enclosures
         # @return [Array] array Enclosures which had their name changed
-        def self.update_enclosure_names(client, hostname, name)
-          raise 'Missing parameters for update_enclosure_names' unless client && hostname && name
+        def self.update_enclosure_names(client, hostname, name = '')
+          raise IncompleteResource, 'Missing parameters for update_enclosure_names' unless client && hostname
           frame_link = ''
-          name ||= ''
-          OneviewSDK::API300::Thunderbird::Enclosure.find_by(client, {}).each do |encl|
+
+          # Retrieve the frameLinkModuleDomain of the specified enclosure, then use it to find all enclosures
+          # that share that frameLinkModuleDomain.
+          all_enclosures = OneviewSDK::API300::Thunderbird::Enclosure.find_by(client, {})
+          all_enclosures.each do |encl|
             frame_link = encl['frameLinkModuleDomain'] if encl['managerBays'].first['ipAddress'] == hostname
           end
-          enclosures = OneviewSDK::API300::Thunderbird::Enclosure.find_by(client, frameLinkModuleDomain: frame_link)
-          number_of_enclosures = enclosures.count
+          enclosures = all_enclosures.select { |encl| encl['frameLinkModuleDomain'] == frame_link }
+
           # Return enclosures without modifying them if a name has not been specified
-          return enclosures unless name
+          return enclosures if name == ''
+
+          # Updates the enclosure names and return the array containing the enclosures
+          number_of_enclosures = enclosures.count
           enclosures.each do |encl|
             encl['name'] = "#{name}#{number_of_enclosures}"
             encl.update
