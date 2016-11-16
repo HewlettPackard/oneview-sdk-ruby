@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::C7000::LogicalSwitchGroup do
+klass = OneviewSDK::API300::C7000::LogicalSwitchGroup
+RSpec.describe klass do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -9,17 +10,17 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitchGroup do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = OneviewSDK::API300::C7000::LogicalSwitchGroup.new(@client_300)
+      item = klass.new(@client_300)
       expect(item['category']).to eq('logical-switch-groups')
       expect(item['state']).to eq('Active')
-      expect(item['type']).to eq('logical-switch-group')
+      expect(item['type']).to eq('logical-switch-groupV300')
       expect(item['switchMapTemplate']).to be
     end
   end
 
   describe '#set_grouping_parameters' do
     before :each do
-      @item = OneviewSDK::API300::C7000::LogicalSwitchGroup.new(@client_300)
+      @item = klass.new(@client_300)
       @type = 'Cisco Nexus 55xx'
     end
 
