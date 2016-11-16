@@ -15,8 +15,8 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   # This will FAIL if the enclosure is monitored
   describe '#configuration' do
-    it 'update OneViewSDK_Int_Ethernet_Network name' do
-      item = klass.find_by($client_300_thunderbird, name: ENCL_NAME).first
+    it 'Reapplies the appliance configuration on the enclosure. - EXPECTED TO FAIL if the enclosure is already managed' do
+      item = klass.find_by($client_300_thunderbird, {}).first
       expect { item.configuration }.not_to raise_error
     end
   end

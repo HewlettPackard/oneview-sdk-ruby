@@ -7,9 +7,10 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   describe '#add' do
     it 'can add an enclosure' do
       item = klass.new($client_300_thunderbird, hostname: ENCL_HOSTNAME, name: ENCL_NAME)
-      added_encls = item.add
-      expect(added_encls).not_to be_empty
-      expect(added_encls.first['uri']).not_to be_empty
+      encl1 = item.add[0]
+      expect(encl1).to be
+      expect(encl1['uri']).not_to be_empty
+      expect(encl1['name']).to eq("#{ENCL_NAME}3")
     end
   end
 
