@@ -21,6 +21,7 @@ module OneviewSDK
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
+        # @note Renames the enclosures only if @data['name']. Pattern used is: <@data['name']>+<1..number of enclosures added>.
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
@@ -40,7 +41,7 @@ module OneviewSDK
           response = @client.rest_post(self.class::BASE_URI, { 'body' => temp_data }, @api_version)
           @client.response_handler(response)
 
-          # Renames the enclosures added according to the name given, if a name was given
+          # Renames the enclosures if the @data['name'] is not nil, otherwise only returns the enclosures
           @data['name'] ||= ''
           OneviewSDK::API300::Thunderbird::Enclosure.update_enclosure_names(@client, @data['hostname'], @data['name'])
         end
@@ -78,6 +79,7 @@ module OneviewSDK
         # @param [String] hostname The ipv6 of the enclosure to be added
         # @param [String] name The name to be used for renaming the enclosures
         # @return [Array<OneviewSDK:API300:Thunderbird::Enclosure>] Enclosures which had their name changed
+        # @raise [OneviewSDK::IncompleteResource] if a client and hostname are nil
         def self.update_enclosure_names(client, hostname, name = '')
           raise IncompleteResource, 'Missing parameters for update_enclosure_names' unless client && hostname
           frame_link = ''

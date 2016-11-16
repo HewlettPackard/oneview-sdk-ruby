@@ -13,12 +13,9 @@ require_relative '../../_client' # Gives access to @client
 
 # Example: Add an enclosure
 # NOTE: This will add an enclosure named 'OneViewSDK-Test-Enclosure', then delete it.
-# NOTE: This resource only supports remove operations after it has been phisically removed.
-# NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
+# NOTE: This resource only supports remove operations after it has been physically removed.
+# NOTE: You will need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #   @enclosure_hostname (hostname or IP address)
-#   @enclosure_username
-#   @enclosure_password
-#   @enclosure_group_uri
 
 type = 'enclosure'
 
@@ -40,5 +37,3 @@ puts "\nUpdated #{type} '#{encl1[:name]}' sucessfully.\n  uri = '#{encl1[:uri]}'
 
 # Patch update
 encl1.patch('replace', '/name', 'Edited_Enclosure')
-
-# encl1.remove
