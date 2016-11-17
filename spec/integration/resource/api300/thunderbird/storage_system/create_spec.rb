@@ -7,9 +7,9 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   let(:storage_system_data) do
     {
       credentials: {
-        ip_hostname: $secrets['storage_system1_ip'],
-        username: $secrets['storage_system1_user'],
-        password: $secrets['storage_system1_password']
+        ip_hostname: $secrets_thunderbird['storage_system1_ip'],
+        username: $secrets_thunderbird['storage_system1_user'],
+        password: $secrets_thunderbird['storage_system1_password']
       },
       managedDomain: 'TestDomain'
     }
@@ -42,6 +42,20 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       storage = klass.new($client_300_thunderbird, credentials: { ip_hostname: storage_system_data[:credentials][:ip_hostname] })
       storage.retrieve!
       expect { storage.get_managed_ports }.not_to raise_error
+    end
+  end
+
+  describe '#retrieve' do
+    it 'raises an exception if no identifiers are given' do
+      storage = klass.new($client_300_thunderbird, {})
+      expect { storage.retrieve! }.to raise_error(OneviewSDK::IncompleteResource)
+    end
+
+    it 'not retrieves storage system with ip_hostname and invalid data types' do
+      storage = klass.new($client_300_thunderbird, 'credentials' => {})
+      storage['credentials']['ip_hostname'] = 'fake'
+      storage.retrieve!
+      expect(storage.retrieve!).to eq(false)
     end
   end
 end

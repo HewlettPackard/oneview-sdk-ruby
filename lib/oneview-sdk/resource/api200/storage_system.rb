@@ -64,7 +64,7 @@ module OneviewSDK
       # @return [Boolean] Whether or not resource exists
       # @raise [OneviewSDK::IncompleteResource] if required attributes are not filled
       def exists?
-        ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] if self['credentials']
+        ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] rescue nil
         return true if ip_hostname && self.class.find_by(@client, credentials: { ip_hostname: ip_hostname }).size == 1
         super
       rescue IncompleteResource => e
@@ -77,7 +77,7 @@ module OneviewSDK
       # @return [Boolean] Whether or not retrieve was successful
       # @raise [OneviewSDK::IncompleteResource] if required attributes are not filled
       def retrieve!
-        ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] if self['credentials']
+        ip_hostname = self['credentials'][:ip_hostname] || self['credentials']['ip_hostname'] rescue nil
         if ip_hostname
           results = self.class.find_by(@client, credentials: { ip_hostname: ip_hostname })
           if results.size == 1
@@ -89,6 +89,35 @@ module OneviewSDK
       rescue IncompleteResource => e
         raise e unless ip_hostname
         false
+      end
+
+      # Check the equality of the data for the other resource with this resource.
+      # @note Does not check the client, logger, or api_version if another resource is passed in
+      # @param [Hash, Resource] other resource or hash to compare the key-value pairs with
+      # @example Compare to hash
+      # @note Does not check the password in credentials
+      # @example myResource.like?(credentials: { ip_hostname: 'res1', username: 'admin', password: 'secret' })
+      #   myResource = OneviewSDK::Resource.new(client, { name: 'res1', description: 'example'}, 200)
+      #   myResource.like?(description: '') # returns false
+      #   myResource.like?(name: 'res1') # returns true
+      # @return [Boolean] Whether or not the two objects are alike
+      def like?(other)
+        if other.is_a? Hash
+          other_copy = Marshal.load(Marshal.dump(other))
+        else
+          other_copy = other.dup
+          other_copy.data = Marshal.load(Marshal.dump(other.data))
+        end
+
+        if other_copy['credentials']
+          other_copy['credentials'].delete('password') rescue nil
+          other_copy['credentials'].delete(:password) rescue nil
+        elsif other_copy[:credentials]
+          other_copy[:credentials].delete('password') rescue nil
+          other_copy[:credentials].delete(:password) rescue nil
+        end
+
+        super(other_copy)
       end
 
       # Gets the host types for the storage system resource
@@ -117,22 +146,11 @@ module OneviewSDK
         response.body
       end
 
-      # Set refreshState for storage system
-      # @param [Type] state describe state
-      def set_refresh_state(state, options = {})
-        ensure_client && ensure_uri
-        s = state.to_s rescue state
-        requestBody = {
-          'body' => {
-            refreshState: s
-          }
-        }
-        options[:type] ||= @data['type']
-        options[:serialNumber] ||= @data['serialNumber']
-        options[:managedDomain] ||= @data['managedDomain']
-        requestBody['body'].merge!(options)
-        response = @client.rest_put(@data['uri'], requestBody, api_version)
-        @client.response_handler(response)
+      # Refreshes a storage system
+      # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing
+      def set_refresh_state(state)
+        @data['refreshState'] = state
+        update
       end
     end
   end

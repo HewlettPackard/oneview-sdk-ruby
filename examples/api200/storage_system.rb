@@ -32,13 +32,23 @@ options = {
 storage1 = OneviewSDK::StorageSystem.new(@client)
 storage1['credentials'] = options
 storage1['managedDomain'] = 'TestDomain'
+puts "\nAdding a storage system with Managed Domain: #{storage1['managedDomain']}"
+puts "and hostname: #{options[:ip_hostname]}."
 storage1.add
-puts storage1['managedDomain']
+puts "\nStorage system added successfully."
 
+puts "\nFinding a storage system with hostname: #{options[:ip_hostname]}"
 OneviewSDK::StorageSystem.find_by(@client, credentials: { ip_hostname: options[:ip_hostname] }).each do |storage|
-  puts storage['name']
+  puts "\nStorage system with name #{storage['name']} found."
 end
 
-storage = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: options[:ip_hostname] })
-storage.retrieve!
-storage.remove
+storage2 = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: options[:ip_hostname] })
+storage2.retrieve!
+puts "\nRefreshing a storage system with #{options[:ip_hostname]}"
+puts "and state #{storage2['refreshState']}"
+storage2.set_refresh_state('RefreshPending')
+puts "\nStorage system refreshed successfully and with new state: #{storage2['refreshState']}."
+
+puts "\nRemoving the Storage system."
+storage2.remove
+puts "\nStorage system removed successfully."
