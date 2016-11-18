@@ -22,28 +22,34 @@ san_manager['providerDisplayName'] = 'Brocade Network Advisor'
 san_manager['connectionInfo'] = [
   {
     'name' => 'Host',
-    'value' => '172.18.15.1'
+    'value' => @san_manager_ip
   },
   {
     'name' => 'Port',
     'value' => 5989
   },
   {
-    'name' => 'Userame',
-    'value' => ''
+    'name' => 'Username',
+    'value' => @san_manager_username
   },
   {
     'name' => 'Password',
-    'value' => ''
+    'value' => @san_manager_password
   },
   {
-    'name' => 'UseSl',
+    'name' => 'UseSsl',
     'value' => true
   }
 ]
 
 san_manager.add
 puts "- SAN Manager #{san_manager['name']} sucessfully added with uri='#{san_manager['uri']}'"
+
+# Updates Brocade Network Advisor
+san_manager.retrieve!
+puts "Updating a SAN Manager #{san_manager['name']}"
+san_manager.update(refreshState: 'RefreshPending')
+puts "SAN Manager #{san_manager['name']} updated successfully."
 
 # Removes Brocade Network Advisor
 san_manager.remove

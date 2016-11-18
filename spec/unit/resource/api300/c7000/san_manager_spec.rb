@@ -92,15 +92,6 @@ RSpec.describe OneviewSDK::API300::C7000::SANManager do
       end.not_to raise_error
     end
 
-    it 'Should raise error if connectioInfo is not completed' do
-      expect do
-        san_manager.update('connectionInfo' => [
-          { 'name' => 'Host', 'value' => 'host.com' },
-          { 'name' => 'Port', 'value' => 5598 }
-        ])
-      end.to raise_error(OneviewSDK::IncompleteResource, 'You must complete connectionInfo properties with Username, Password, UseSsl values')
-    end
-
     it 'Should validate ok' do
       expect do
         san_manager.update(connectionInfo: [

@@ -16,28 +16,6 @@ module OneviewSDK
     module C7000
       # SAN manager resource implementation for API300 C7000
       class SANManager < OneviewSDK::API200::SANManager
-
-        REQUIRED_FIELDS_TO_UPDATE = %w(Host Port Username Password UseSsl).freeze
-
-        def update(options)
-          options ||= {}
-          if options.key? 'connectionInfo'
-            result = validate_connection_info(options['connectionInfo'])
-            raise IncompleteResource, "You must complete connectionInfo properties with #{result.join(', ')} values" unless result.empty?
-          end
-
-          super(options)
-        end
-
-        private
-
-        def validate_connection_info(connectionInfo)
-          required = REQUIRED_FIELDS_TO_UPDATE.dup
-          keys = connectionInfo.map do |k|
-            k['name'] if k.include?('name')
-          end
-          required.select { |a| !keys.include?(a) }
-        end
       end
     end
   end

@@ -56,6 +56,12 @@ san_manager['connectionInfo'] = [
 san_manager.add
 puts "- SAN Manager #{san_manager['name']} sucessfully added with uri='#{san_manager['uri']}'"
 
+# Updates Cisco Switch
+san_manager.retrieve!
+puts "Updating a SAN Manager #{san_manager['name']}"
+san_manager.update(refreshState: 'RefreshPending')
+puts "SAN Manager #{san_manager['name']} updated successfully."
+
 # Removes Cisco Switch
 san_manager.remove
 puts "- SAN Manager #{san_manager['name']} was sucessfully removed"
