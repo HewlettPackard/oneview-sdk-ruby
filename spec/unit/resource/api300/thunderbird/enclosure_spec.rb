@@ -20,26 +20,31 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Enclosure do
   describe '#add' do
     context 'with valid data' do
       before :each do
-        allow_any_instance_of(OneviewSDK::API300::Thunderbird::Enclosure).to receive(:update).and_return(true)
-        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
-        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(name: 'Encl1',
-                                                                                           serialNumber: 'Fake', uri: '/rest/fake')
-
+        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(FakeResponse.new({}, 202))
+        allow_any_instance_of(OneviewSDK::Client).to receive(:wait_for).and_return(FakeResponse.new(nil, 200, 'fake' => { 'fake_stuff' => 'fake' }))
+        allow_any_instance_of(described_class).to receive(:update).and_return(true)
         @data = {
           'name' => 'Fake-Enclosure',
-          'hostname' => '1.1.1.1'
+          'hostname' => ENCL_HOSTNAME,
+          'managerBays' => [{ 'ipAddress' => ENCL_HOSTNAME }],
+          'frameLinkModuleDomain' => 'test',
+          'uri' => '/rest/fake_uri'
         }
-        @enclosure = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, @data)
+        @enclosure = described_class.new(@client_300, @data)
+        @enclosure2 = described_class.new(@client_300, @data)
+        @enclosure3 = described_class.new(@client_300, @data)
+        @enclosures_added = [@enclosure, @enclosure2, @enclosure3]
+        allow(described_class).to receive(:find_by).with(@client_300, {}).and_return(@enclosures_added)
       end
 
       it 'only sends certain attributes on the POST' do
-        expect(@client_300).to receive(:rest_post).with('/rest/enclosures', { 'body' => @data.select { |k, _v| k != 'name' } }, anything)
+        expect(@client_300).to receive(:rest_post).with('/rest/enclosures', { 'body' => { 'hostname' => @data['hostname'] } }, anything)
         @enclosure.add
       end
 
       it 'sets the enclosure name correctly' do
-        @enclosure.add
-        expect(@enclosure[:name]).to eq('Fake-Enclosure')
+        test = @enclosure.add
+        expect(test.last[:name]).to eq('Fake-Enclosure1')
       end
     end
 

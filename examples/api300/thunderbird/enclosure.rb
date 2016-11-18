@@ -13,28 +13,27 @@ require_relative '../../_client' # Gives access to @client
 
 # Example: Add an enclosure
 # NOTE: This will add an enclosure named 'OneViewSDK-Test-Enclosure', then delete it.
-# NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
+# NOTE: This resource only supports remove operations after it has been physically removed.
+# NOTE: You will need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #   @enclosure_hostname (hostname or IP address)
-#   @enclosure_username
-#   @enclosure_password
-#   @enclosure_group_uri
 
-# type = 'enclosure'
+type = 'enclosure'
 
 item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure', hostname: @thunderbird_enclosure_hostname)
-item.add
-puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+enclosures_added = item.add
+enclosures_added.each do |encl|
+  puts "\nAdded #{type} '#{encl[:name]}' sucessfully.\n  uri = '#{encl[:uri]}'"
+end
 
-item2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, {}).first
+encl1 = enclosures_added[0]
+
+item2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure1')
 item2.retrieve!
-puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
+puts "\nFound #{type} by name: '#{item2[:name]}'.\n  uri = '#{item2[:uri]}'"
 
-item.refresh
-item.update(name: 'OneViewSDK_Test_Enclosure')
-puts "\nUpdated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+encl1.refresh
+encl1.update(name: 'OneViewSDK_Test_Enclosure')
+puts "\nUpdated #{type} '#{encl1[:name]}' sucessfully.\n  uri = '#{encl1[:uri]}'"
 
 # Patch update
-item.patch('replace', '/name', 'Edited_Enclosure')
-
-item.remove
-puts "\nSucessfully removed #{type} '#{item[:name]}'."
+encl1.patch('replace', '/name', 'Edited_Enclosure')
