@@ -71,6 +71,40 @@ RSpec.describe OneviewSDK::API300::C7000::SANManager do
     end
   end
 
+  context '#update' do
+    let(:san_manager) do
+      OneviewSDK::API300::C7000::SANManager.new(
+        @client_300,
+        name: 'san_manager_1',
+        uri: '/rest/fake',
+        providerDisplayName: 'Brocade',
+        providerUri: '/rest/fc-sans/providers/100'
+      )
+    end
+
+    before do
+      allow(@client_300).to receive(:rest_put).and_return(FakeResponse.new({}))
+    end
+
+    it 'Should not raise error if options is empty' do
+      expect do
+        san_manager.update({})
+      end.not_to raise_error
+    end
+
+    it 'Should validate ok' do
+      expect do
+        san_manager.update(connectionInfo: [
+          { 'name' => 'Host', 'value' => 'host.com' },
+          { 'name' => 'Port', 'value' => 5598 },
+          { 'name' => 'Username', 'value' => 'dcs' },
+          { 'name' => 'Password', 'value' => 'dcs' },
+          { 'name' => 'UseSsl', 'value' => true }
+        ])
+      end.not_to raise_error
+    end
+  end
+
   describe '#self.get_default_connection_info' do
     it 'Get default connection info' do
       expect(@client_300).to receive(:rest_get).with('/rest/fc-sans/providers').and_return(
