@@ -37,8 +37,12 @@ item.set_storage_system(storage_system)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
+# verifying if storage pool exists
+item_2 = OneviewSDK::StoragePool.new(@client, name: options[:poolName], storageSystemUri: storage_system['uri'])
+result_exists = item_2.exists?
+puts "\nVerifying if '#{item_2[:name]}' exists. Result: #{result_exists}"
+
 # Retrieve created storage pool
-item_2 = OneviewSDK::StoragePool.new(@client, name: options[:poolName])
 item_2.retrieve!
 puts "\nRetrieved #{type} by name: '#{item_2[:name]}'.\n  uri = '#{item_2[:uri]}'"
 

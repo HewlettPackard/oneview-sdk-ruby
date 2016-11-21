@@ -43,6 +43,79 @@ RSpec.describe OneviewSDK::StoragePool do
     end
   end
 
+  describe '#retrieve!' do
+    it 'requires the name attribute to be set' do
+      storage_pool = OneviewSDK::StoragePool.new(@client)
+      expect { storage_pool.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri before trying to retrieve!/)
+    end
+
+    it 'requires the storageSystemUri attribute to be set' do
+      storage_pool = OneviewSDK::StoragePool.new(@client, name: 'StoragePoolName')
+      expect { storage_pool.retrieve! }.to raise_error(
+        OneviewSDK::IncompleteResource,
+        /Must set resource storageSystemUri before trying to retrieve!/
+      )
+    end
+
+    it 'uses the uri attribute when the name is not set' do
+      res = OneviewSDK::StoragePool.new(@client, uri: '/rest/fake')
+      res.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
+      expect(OneviewSDK::StoragePool).to receive(:find_by).with(@client, uri: res['uri'], storageSystemUri: '/rest/fake').and_return([])
+      expect(res.exists?).to eq(false)
+    end
+
+    it 'sets the data if the resource is found' do
+      res = OneviewSDK::StoragePool.new(@client, name: 'ResourceName')
+      res.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
+      allow(OneviewSDK::StoragePool).to receive(:find_by).and_return([
+        OneviewSDK::StoragePool.new(@client, res.data.merge(uri: '/rest/fake', storageSystemUri: '/rest/fake', description: 'Blah'))
+      ])
+      res.retrieve!
+      expect(res['uri']).to eq('/rest/fake')
+      expect(res['description']).to eq('Blah')
+    end
+
+    it 'returns false when the resource is not found' do
+      allow(OneviewSDK::StoragePool).to receive(:find_by).and_return([])
+      res = OneviewSDK::StoragePool.new(@client, name: 'ResourceName')
+      res.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
+      expect(res.retrieve!).to eq(false)
+    end
+  end
+
+  describe '#exists?' do
+    it 'requires the name attribute to be set' do
+      storage_pool = OneviewSDK::StoragePool.new(@client)
+      expect { storage_pool.exists? }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri before trying to exists?/)
+    end
+
+    it 'requires the storageSystemUri attribute to be set' do
+      storage_pool = OneviewSDK::StoragePool.new(@client, name: 'StoragePoolName')
+      expect { storage_pool.exists? }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource storageSystemUri before trying to exists?/)
+    end
+
+    it 'uses the uri attribute when the name is not set' do
+      res = OneviewSDK::StoragePool.new(@client, uri: '/rest/fake')
+      res.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
+      expect(OneviewSDK::StoragePool).to receive(:find_by).with(@client, storageSystemUri: '/rest/fake', uri: res['uri']).and_return([])
+      expect(res.exists?).to eq(false)
+    end
+
+    it 'returns true when the resource is found' do
+      res = OneviewSDK::StoragePool.new(@client, name: 'ResourceName')
+      res.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
+      expect(OneviewSDK::StoragePool).to receive(:find_by).with(@client, name: res['name'], storageSystemUri: '/rest/fake').and_return([res])
+      expect(res.exists?).to eq(true)
+    end
+
+    it 'returns false when the resource is not found' do
+      res = OneviewSDK::StoragePool.new(@client, uri: '/rest/fake')
+      res.set_storage_system(OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake'))
+      expect(OneviewSDK::StoragePool).to receive(:find_by).with(@client, uri: res['uri'], storageSystemUri: '/rest/fake').and_return([])
+      expect(res.exists?).to eq(false)
+    end
+  end
+
   describe 'undefined methods' do
     it 'does not allow the create action' do
       pool = OneviewSDK::StoragePool.new(@client)
