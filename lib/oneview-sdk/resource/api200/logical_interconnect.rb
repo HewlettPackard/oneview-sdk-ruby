@@ -18,6 +18,16 @@ module OneviewSDK
       BASE_URI = '/rest/logical-interconnects'.freeze
       LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 
+      # Create a resource object, associate it with a client, and set its properties.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [Hash] params The options for this resource (key-value pairs)
+      # @param [Integer] api_ver The api version to use when interracting with this resource.
+      def initialize(client, params = {}, api_ver = nil)
+        super
+        # Default values:
+        @data['type'] ||= 'logical-interconnectV3'
+      end
+
       # Creates an Interconnect in the desired bay in a specified enclosure
       # WARN: It does not create the LOGICAL INTERCONNECT itself.
       # It will fail if no interconnect is already present on the specified position
@@ -133,6 +143,17 @@ module OneviewSDK
         set_all(body)
       end
 
+      # Gets a collection of uplink ports from the member interconnects
+      # which are eligible for assignment to an analyzer port.
+      # @return [Hash] Hash of uplink ports eligibles for assignment to an analyzer port
+      def get_unassigned_up_link_ports_for_port_monitor
+        ensure_client && ensure_uri
+        response = @client.rest_get("#{@data['uri']}/unassignedUplinkPortsForPortMonitor")
+        @client.response_handler(response)
+        body = @client.response_handler(response)
+        body['members']
+      end
+
       # Updates port monitor settings of the Logical Interconnect
       # @note The attribute is defined inside the instance of the Logical Interconnect
       # @return Updated instance of the Logical Interconnect
@@ -142,7 +163,7 @@ module OneviewSDK
           'If-Match' =>  @data['portMonitor'].delete('eTag'),
           'body' => @data['portMonitor']
         }
-        response = @client.rest_put(@data['portMonitor']['uri'], update_options, @api_version)
+        response = @client.rest_put("#{@data['uri']}/port-monitor", update_options, @api_version)
         body = @client.response_handler(response)
         set_all(body)
       end

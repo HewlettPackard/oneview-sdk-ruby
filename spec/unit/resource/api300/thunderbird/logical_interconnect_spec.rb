@@ -15,6 +15,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
   let(:fixture_path) { 'spec/support/fixtures/unit/resource/logical_interconnect_default.json' }
   let(:log_int) { OneviewSDK::API300::Thunderbird::LogicalInterconnect.from_file(@client_300, fixture_path) }
 
+  describe '#initialize' do
+    it 'requires the enclosure to have a uri value' do
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300)
+      expect(item['type']).to eq('logical-interconnectV300')
+    end
+  end
+
   describe '#create' do
     it 'requires the enclosure to have a uri value' do
       expect { log_int.create(1, OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300)) }
@@ -39,6 +46,60 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
       expect(@client_300).to receive(:rest_delete).with(uri, {}, log_int.api_version)
         .and_return(FakeResponse.new)
       log_int.delete(1, OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, uri: '/rest/fake'))
+    end
+  end
+
+
+  describe '#update_internal_networks' do
+    before :each do
+      @item = log_int
+    end
+
+    it 'updates internal networks without parameters' do
+      body = {
+        'body' => []
+      }
+      expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/internalNetworks', body)
+        .and_return(FakeResponse.new(uri: 'fake'))
+      @item.update_internal_networks
+      expect(@item['uri']).to eq('fake')
+    end
+
+    it 'updates internal networks with parameters' do
+      body = {
+        'body' => ['rest/fake/ethernet']
+      }
+      et01 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: 'rest/fake/ethernet', name: 'et01')
+      expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/internalNetworks', body)
+        .and_return(FakeResponse.new(uri: 'fake'))
+      @item.update_internal_networks(et01)
+      expect(@item['uri']).to eq('fake')
+    end
+  end
+
+  describe '#list_vlan_networks' do
+    it 'lists internal networks' do
+      item = log_int
+      response = {
+        'members' => [
+          { 'generalNetworkUri' => 'ethernet-network' },
+          { 'generalNetworkUri' => 'fc-network' },
+          { 'generalNetworkUri' => 'fcoe-network' }
+        ]
+      }
+      allow_any_instance_of(OneviewSDK::API300::Thunderbird::EthernetNetwork).to receive(:retrieve!).and_return(true)
+      allow_any_instance_of(OneviewSDK::API300::Thunderbird::FCNetwork).to receive(:retrieve!).and_return(true)
+      allow_any_instance_of(OneviewSDK::API300::Thunderbird::FCoENetwork).to receive(:retrieve!).and_return(true)
+      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/internalVlans").and_return(true)
+      expect(@client_300).to receive(:response_handler).and_return(response)
+      result = item.list_vlan_networks
+      expect(result).to_not be_empty
+      expect(result[0]).to be_instance_of(OneviewSDK::API300::Thunderbird::EthernetNetwork)
+      expect(result[1]).to be_instance_of(OneviewSDK::API300::Thunderbird::FCNetwork)
+      expect(result[2]).to be_instance_of(OneviewSDK::API300::Thunderbird::FCoENetwork)
+      expect(result[0]['uri']).to eq('ethernet-network')
+      expect(result[1]['uri']).to eq('fc-network')
+      expect(result[2]['uri']).to eq('fcoe-network')
     end
   end
 
@@ -107,6 +168,94 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
     end
   end
 
+  describe '#get_unassigned_up_link_ports_for_port_monitor' do
+    it 'requires the uri to be set' do
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300)
+      expect { item.get_unassigned_up_link_ports_for_port_monitor }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+    end
+
+    it 'get_unassigned_up_link_ports_for_port_monitor' do
+      item = log_int
+      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/unassignedUplinkPortsForPortMonitor")
+        .and_return(FakeResponse.new(members: [{ interconnectName: 'p1' }, { interconnectName: 'p2' }]))
+      results = item.get_unassigned_up_link_ports_for_port_monitor
+      expect(results).to_not be_empty
+      expect(results.first['interconnectName']).to eq('p1')
+      expect(results.last['interconnectName']).to eq('p2')
+    end
+  end
+
+  describe '#update_port_monitor' do
+    it 'raises exception when is not passed the portMonitor' do
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, uri: 'rest/fake')
+      expect { item.update_port_monitor }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve the Logical Interconnect before trying to update/)
+    end
+
+    it 'updates port monitor settings' do
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, uri: 'rest/fake', portMonitor: 'rest/fake/d1')
+      update_options = {
+        'If-Match' =>  item['portMonitor'].delete('eTag'),
+        'body' => item['portMonitor']
+      }
+      expect(@client_300).to receive(:rest_put).with("#{item['uri']}/port-monitor", update_options, item.api_version)
+        .and_return(true)
+      expect(@client_300).to receive(:response_handler).and_return(enablePortMonitor: true)
+      expect { item.update_port_monitor }.to_not raise_error
+      expect(item['enablePortMonitor']).to be true
+    end
+  end
+
+  describe '#update_qos_configuration' do
+    it 'raises exception when is not passed the qosConfiguration' do
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, uri: 'rest/fake')
+      expect { item.update_qos_configuration }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve the Logical Interconnect before trying to update/)
+    end
+
+    it 'updates QoS aggregated configuration' do
+      options = {
+        uri: 'rest/fake',
+        qosConfiguration: { type: 'qos-aggregated-configuration' }
+      }
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, options)
+      update_options = {
+        'If-Match' =>  item['qosConfiguration'].delete('eTag'),
+        'body' => item['qosConfiguration']
+      }
+      expect(@client_300).to receive(:rest_put).with("#{item['uri']}/qos-aggregated-configuration", update_options, item.api_version)
+        .and_return(true)
+      expect(@client_300).to receive(:response_handler).and_return('activeQosConfig' => { 'type' => 'QosConfiguration' })
+      expect { item.update_qos_configuration }.to_not raise_error
+      expect(item['activeQosConfig']['type']).to eq('QosConfiguration')
+    end
+  end
+
+  describe '#update_telemetry_configuration' do
+    it 'raises exception when is not passed the telemetryConfiguration' do
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, uri: 'rest/fake')
+      expect { item.update_telemetry_configuration }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve the Logical Interconnect before trying to update/)
+    end
+
+    it 'updates telemetry configuration' do
+      options = {
+        uri: 'rest/fake',
+        telemetryConfiguration: { uri: '/rest/telemetry-configurations/fake' }
+      }
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, options)
+      update_options = {
+        'If-Match' =>  item['telemetryConfiguration'].delete('eTag'),
+        'body' => item['telemetryConfiguration']
+      }
+      expect(@client_300).to receive(:rest_put).with(item['telemetryConfiguration']['uri'], update_options, item.api_version)
+        .and_return(true)
+      expect(@client_300).to receive(:response_handler).and_return('telemetryConfiguration' => { 'sampleCount' => 0 })
+      expect { item.update_telemetry_configuration }.to_not raise_error
+      expect(item['telemetryConfiguration']['sampleCount']).to eq(0)
+    end
+  end
+
   describe 'SNMP Configuration' do
     it 'builds the trap options successfully' do
       opt = log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev)
@@ -136,6 +285,29 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
       expect(entry['trapFormat']).to eq('SNMPv1')
       expect(entry['communityString']).to eq('public')
     end
+
+    it 'raises exception when is not passed the snmpConfiguration' do
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, uri: 'rest/fake')
+      expect { item.update_snmp_configuration }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve the Logical Interconnect before trying to update/)
+    end
+
+    it 'updates SNMP Configuration' do
+      options = {
+        uri: 'rest/fake',
+        snmpConfiguration: { type: 'snmp-configuration' }
+      }
+      item = OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, options)
+      update_options = {
+        'If-Match' =>  item['snmpConfiguration'].delete('eTag'),
+        'body' => item['snmpConfiguration']
+      }
+      expect(@client_300).to receive(:rest_put).with("#{item['uri']}/snmp-configuration", update_options, item.api_version)
+        .and_return(true)
+      expect(@client_300).to receive(:response_handler).and_return(enabled: true)
+      expect { item.update_snmp_configuration }.to_not raise_error
+      expect(item['enabled']).to be true
+    end
   end
 
   describe '#get_firmware' do
@@ -158,7 +330,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
 
     it 'does a PUT to uri/firmware & returns the result' do
       expect(@client_300).to receive(:rest_put).with(log_int['uri'] + '/firmware', Hash).and_return(FakeResponse.new(key: 'val'))
-      driver = OneviewSDK::FirmwareDriver.new(@client_300, name: 'FW', uri: '/rest/fake')
+      driver = OneviewSDK::API300::Thunderbird::FirmwareDriver.new(@client_300, name: 'FW', uri: '/rest/fake')
       expect(log_int.firmware_update('cmd', driver, {})).to eq('key' => 'val')
     end
   end
