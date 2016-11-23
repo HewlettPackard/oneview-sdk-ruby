@@ -26,7 +26,8 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ConnectionTemplate do
   describe '#get_default' do
     it 'verify endpoint' do
       expect(@client_300).to receive(:rest_get).with('/rest/connection-templates/defaultConnectionTemplate').and_return(FakeResponse.new({}))
-      OneviewSDK::API300::Thunderbird::ConnectionTemplate.get_default(@client_300)
+      connection = OneviewSDK::API300::Thunderbird::ConnectionTemplate.get_default(@client_300)
+      expect(connection).to be_an_instance_of OneviewSDK::API300::Thunderbird::ConnectionTemplate
     end
   end
 

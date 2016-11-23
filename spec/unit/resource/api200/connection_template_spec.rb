@@ -22,7 +22,8 @@ RSpec.describe OneviewSDK::ConnectionTemplate do
   describe '#get_default' do
     it 'verify endpoint' do
       expect(@client).to receive(:rest_get).with('/rest/connection-templates/defaultConnectionTemplate').and_return(FakeResponse.new({}))
-      OneviewSDK::ConnectionTemplate.get_default(@client)
+      connection = OneviewSDK::ConnectionTemplate.get_default(@client)
+      expect(connection).to be_an_instance_of OneviewSDK::ConnectionTemplate
     end
   end
 
