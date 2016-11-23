@@ -328,7 +328,7 @@ module OneviewSDK
         return false unless data && data.respond_to?(:[])
         if val.is_a?(Hash)
           return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
-        elsif val != data[key.to_s]
+        elsif val != data[key.to_s] && val != data[key.to_sym]
           return false
         end
       end

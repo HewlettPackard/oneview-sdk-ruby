@@ -110,6 +110,78 @@ RSpec.describe OneviewSDK::StorageSystem do
     end
   end
 
+  describe '#like?' do
+    it 'must not compare storage system credentials with password and hash String' do
+      options = {
+        name: 'StorageSystemName',
+        credentials: {
+          ip_hostname: '127.0.0.1',
+          username: 'user',
+          password: 'pass'
+        },
+        state: 'Configured'
+      }
+      item = OneviewSDK::StorageSystem.new(
+        @client,
+        name: 'StorageSystemName',
+        credentials: {
+          'ip_hostname' => '127.0.0.1',
+          'username' => 'user'
+        },
+        state: 'Configured'
+      )
+      expect(item.like?(options)).to eq(true)
+    end
+
+    it 'must not compare storage system credentials with password and key Symbol' do
+      options = {
+        'name' => 'StorageSystemName',
+        'credentials' => {
+          'ip_hostname' => '127.0.0.1',
+          'username' => 'user',
+          'password' => 'pass'
+        },
+        'state' => 'Configured'
+      }
+      item = OneviewSDK::StorageSystem.new(
+        @client,
+        'name' => 'StorageSystemName',
+        'credentials' => {
+          'ip_hostname' => '127.0.0.1',
+          'username' => 'user'
+        },
+        'state' => 'Configured'
+      )
+      expect(item.like?(options)).to eq(true)
+    end
+
+    it 'must not compare storage system credentials with password when compares resources' do
+      item1 = OneviewSDK::StorageSystem.new(@client, name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin' })
+      item2 = OneviewSDK::StorageSystem.new(@client, name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
+      expect(item1.like?(item2)).to eq(true)
+    end
+
+    it 'must not compare storage system with invalid data types' do
+      item1 = OneviewSDK::StorageSystem.new(@client, name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin' })
+      expect(item1.like?(credentials: true)).to eq(false)
+    end
+  end
+
+  describe '#host-types' do
+    it 'List Host Types' do
+      expect(@client).to receive(:rest_get).with('/rest/storage-systems/host-types').and_return(FakeResponse.new({}))
+      expect { OneviewSDK::StorageSystem.get_host_types(@client) }.not_to raise_error
+    end
+  end
+
+  describe '#storage pools' do
+    it 'List Storage Pools' do
+      item = OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake')
+      expect(@client).to receive(:rest_get).with('/rest/fake/storage-pools').and_return(FakeResponse.new({}))
+      expect { item.get_storage_pools }.not_to raise_error
+    end
+  end
+
   describe '#get_managed_ports' do
     it 'No port given' do
       item = OneviewSDK::StorageSystem.new(@client, uri: '/rest/fake')
@@ -132,6 +204,24 @@ RSpec.describe OneviewSDK::StorageSystem do
     it 'does not allow the delete action' do
       storage = OneviewSDK::StorageSystem.new(@client)
       expect { storage.delete }.to raise_error(/The method #delete is unavailable for this resource/)
+    end
+  end
+
+  describe '#set_refresh_state' do
+    it 'Refreshing a storage system' do
+      options = {
+        uri: '/rest/storage-systems/100',
+        refreshState: 'NotRefreshing'
+      }
+      options_update = {
+        uri: '/rest/storage-systems/100',
+        refreshState: 'RefreshPending'
+      }
+      storage = OneviewSDK::StorageSystem.new(@client_300, options)
+      storage_updated = OneviewSDK::StorageSystem.new(@client_300, options_update)
+      allow_any_instance_of(OneviewSDK::StorageSystem).to receive(:update).and_return(FakeResponse.new(storage_updated))
+      expect { storage.set_refresh_state('RefreshPending') }.not_to raise_error
+      expect(storage['refreshState']).to eq('RefreshPending')
     end
   end
 end

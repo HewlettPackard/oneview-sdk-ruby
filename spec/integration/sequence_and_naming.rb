@@ -46,7 +46,7 @@ DEPENDENCIES = {
   ServerProfile: [:ServerHardware, :Enclosure, :ServerProfileTemplate],
   ServerProfileTemplate: [:EnclosureGroup, :ServerHardware, :Volume],
   StoragePool: [:StorageSystem],
-  StorageSystem: [],
+  StorageSystem: [:FCNetwork],
   Switch: [:LogicalSwitch],
   UnmanagedDevice: [],
   UplinkSet: [:LogicalInterconnectGroup],

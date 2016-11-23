@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require_relative '../../_client' # Gives access to @client
 
 # Example: Create a storage system
 # NOTE: This will create a storage system, then delete it.
@@ -29,7 +29,7 @@ options = {
   password: @storage_system_password
 }
 
-storage1 = OneviewSDK::StorageSystem.new(@client)
+storage1 = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client)
 storage1['credentials'] = options
 storage1['managedDomain'] = 'TestDomain'
 puts "\nAdding a storage system with Managed Domain: #{storage1['managedDomain']}"
@@ -38,11 +38,11 @@ storage1.add
 puts "\nStorage system added successfully."
 
 puts "\nFinding a storage system with hostname: #{options[:ip_hostname]}"
-OneviewSDK::StorageSystem.find_by(@client, credentials: { ip_hostname: options[:ip_hostname] }).each do |storage|
+OneviewSDK::API300::Thunderbird::StorageSystem.find_by(@client, credentials: { ip_hostname: options[:ip_hostname] }).each do |storage|
   puts "\nStorage system with name #{storage['name']} found."
 end
 
-storage2 = OneviewSDK::StorageSystem.new(@client, credentials: { ip_hostname: options[:ip_hostname] })
+storage2 = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client, credentials: { ip_hostname: options[:ip_hostname] })
 storage2.retrieve!
 puts "\nRefreshing a storage system with #{options[:ip_hostname]}"
 puts "and state #{storage2['refreshState']}"
