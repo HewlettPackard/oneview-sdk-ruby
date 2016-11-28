@@ -56,6 +56,31 @@ module OneviewSDK
         unavailable_method
       end
 
+      # Retrieve resource details based on this resource's name or URI.
+      # @note Name or URI must be specified inside the resource
+      # @return [Boolean] Whether or not retrieve was successful
+      def retrieve!
+        raise IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+        raise IncompleteResource, 'Must set resource storageSystemUri before trying to retrieve!' unless @data['storageSystemUri']
+        results = self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri']) if @data['name']
+        results = self.class.find_by(@client, uri:  @data['uri'], storageSystemUri: @data['storageSystemUri']) if @data['uri'] &&
+          (!results || results.empty?)
+        return false unless results.size == 1
+        set_all(results[0].data)
+        true
+      end
+
+      # Check if a resource exists
+      # @note name or uri must be specified inside resource
+      # @return [Boolean] Whether or not resource exists
+      def exists?
+        raise IncompleteResource, 'Must set resource name or uri before trying to exists?' unless @data['name'] || @data['uri']
+        raise IncompleteResource, 'Must set resource storageSystemUri before trying to exists?' unless @data['storageSystemUri']
+        return true if @data['name'] && self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri']).size == 1
+        return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri'], storageSystemUri: @data['storageSystemUri']).size == 1
+        false
+      end
+
       # Sets the storage system
       # @param [OneviewSDK::StorageSystem] storage_system
       def set_storage_system(storage_system)

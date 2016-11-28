@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-klass = OneviewSDK::StoragePool
+klass = OneviewSDK::API300::Thunderbird::StoragePool
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   let(:file_path) { 'spec/support/fixtures/integration/storage_pool.json' }
   let(:storage_system_data) do
@@ -15,16 +15,16 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe '#delete' do
     it 'should throw unavailable exception' do
-      item = OneviewSDK::StoragePool.from_file($client, file_path)
+      item = klass.from_file($client_300_thunderbird, file_path)
       expect { item.delete }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 
   describe '#remove' do
     it 'deletes the resource' do
-      storage_system_ref = OneviewSDK::StorageSystem.new($client, storage_system_data)
+      storage_system_ref = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300_thunderbird, storage_system_data)
       storage_system_ref.retrieve!
-      item = OneviewSDK::StoragePool.new($client, name: STORAGE_POOL_NAME, storageSystemUri: storage_system_ref['uri'])
+      item = klass.new($client_300_thunderbird, name: STORAGE_POOL_NAME, storageSystemUri: storage_system_ref['uri'])
       item.retrieve!
 
       expect { item.remove }.to_not raise_error

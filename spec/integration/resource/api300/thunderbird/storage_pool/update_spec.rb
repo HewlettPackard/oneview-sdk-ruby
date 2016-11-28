@@ -1,13 +1,14 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::StoragePool, integration: true, type: UPDATE do
-  include_context 'integration context'
+klass = OneviewSDK::API300::Thunderbird::StoragePool
+RSpec.describe klass, integration: true, type: UPDATE, sequence: rseq(klass) do
+  include_context 'integration api300 context'
 
   let(:file_path) { 'spec/support/fixtures/integration/storage_pool.json' }
 
   describe '#update' do
     it 'should throw unavailable method error' do
-      item = OneviewSDK::StoragePool.from_file($client, file_path)
+      item = klass.from_file($client_300_thunderbird, file_path)
       expect { item.update }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
