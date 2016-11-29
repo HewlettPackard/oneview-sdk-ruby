@@ -51,6 +51,27 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
     end
   end
 
+  describe '#update' do
+    it 'requires a uri' do
+      expect { OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300).update }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+    end
+
+    it 'updates the name of the volume template' do
+      item = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300, uri: '/rest/fake', name: 'Fake')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_put).and_return(true)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(true).and_return(item['name'] = 'Fake2')
+      expect(@client_300).to receive(:rest_put).with(
+        '/rest/fake',
+        { 'Accept-Language' => 'en_US', 'body' => item.data },
+        item.api_version
+      )
+      item.update
+
+      expect(item['name']).to eq('Fake2')
+    end
+  end
+
   describe '#delete' do
     it 'adds a language header to the request' do
       item = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300, name: 'Fake', uri: '/rest/fake')
@@ -89,6 +110,15 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
         volume_template.set_snapshot_pool(fake_snapshot_pool)
         expect(volume_template['snapshotPoolUri']).to eq('/rest/storage-systems/snapshot-pools/fake_uri')
       end
+    end
+  end
+
+  describe '#get_connectable_volume_templates' do
+    it 'gets the connectable volume templates by its attributes' do
+      volume_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300)
+      allow(OneviewSDK::Resource)
+        .to receive(:find_by).with(@client_300, {}, '/rest/storage-volume-templates/connectable-volume-templates').and_return('fake')
+      expect(volume_template.get_connectable_volume_templates).to eq('fake')
     end
   end
 end
