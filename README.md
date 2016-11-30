@@ -104,21 +104,21 @@ You may notice resource classes being accessed in a few different ways; for exam
 require 'oneview-sdk'
 
 # Show defaults:
-OneviewSDK::SUPPORTED_API_VERSIONS  # [200, 300]
-OneviewSDK::DEFAULT_API_VERSION     # 200
-OneviewSDK.api_version              # 200
-OneviewSDK.api_version_updated?     # false
+OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300]
+OneviewSDK::DEFAULT_API_VERSION         # 200
+OneviewSDK.api_version                  # 200
+OneviewSDK.api_version_updated?         # false
 
 # Notice the automatic redirection/resolution when we use the shorthand accessor:
-OneviewSDK::EthernetNetwork         # OneviewSDK::API200::EthernetNetwork
+OneviewSDK::EthernetNetwork             # OneviewSDK::API200::EthernetNetwork
 
 # Even this comparison is true:
 OneviewSDK::EthernetNetwork == OneviewSDK::API200::EthernetNetwork  # true
 
 # Now let's set a new API version default:
 OneviewSDK.api_version = 300
-OneviewSDK.api_version              # 300
-OneviewSDK.api_version_updated?     # true
+OneviewSDK.api_version                  # 300
+OneviewSDK.api_version_updated?         # true
 
 # The API200 module has only 1 variant, but API300 has 2 (C7000 & Thunderbird):
 OneviewSDK::API300::SUPPORTED_VARIANTS  # ['C7000', 'Thunderbird']
@@ -127,15 +127,15 @@ OneviewSDK::API300.variant              # 'C7000'
 OneviewSDK::API300.variant_updated?     # false
 
 # Therefore, there is 1 more namespace level to the real resource class name
-OneviewSDK::EthernetNetwork          # OneviewSDK::API300::C7000::EthernetNetwork
-OneviewSDK::API300::EthernetNetwork  # OneviewSDK::API300::C7000::EthernetNetwork
+OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
+OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::C7000::EthernetNetwork
 
 # Likewise, we can set a new default variant for the API300 module:
 OneviewSDK::API300.variant = 'Thunderbird'
-OneviewSDK::API300.variant           # 'Thunderbird'
-OneviewSDK::API300.variant_updated?  # true
-OneviewSDK::EthernetNetwork          # OneviewSDK::API300::Thunderbird::EthernetNetwork
-OneviewSDK::API300::EthernetNetwork  # OneviewSDK::API300::Thunderbird::EthernetNetwork
+OneviewSDK::API300.variant              # 'Thunderbird'
+OneviewSDK::API300.variant_updated?     # true
+OneviewSDK::EthernetNetwork             # OneviewSDK::API300::Thunderbird::EthernetNetwork
+OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::Thunderbird::EthernetNetwork
 ```
 
 We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.
