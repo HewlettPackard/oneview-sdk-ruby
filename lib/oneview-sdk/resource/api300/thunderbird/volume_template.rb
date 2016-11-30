@@ -14,7 +14,18 @@ require_relative '../../api200/volume_template'
 module OneviewSDK
   module API300
     module Thunderbird
+      # Volume Template resource implementation for API300 Thunderbird
       class VolumeTemplate < OneviewSDK::API200::VolumeTemplate
+        # Create the client object, establishes connection, and set up the logging and api version.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        # Defaults to client.api_version if exists, or OneviewSDK::Client::DEFAULT_API_VERSION.
+        # Defaults type to StorageVolumeTemplate when API version is 120
+        # Defaults type to StorageVolumeTemplateV3 when API version is 200
+        def initialize(client, params = {}, api_ver = nil)
+          super
+        end
       end
     end
   end
