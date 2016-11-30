@@ -324,6 +324,8 @@ module OneviewSDK
       end
     rescue IncompleteResource => e
       fail_nice "Failed to delete #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
+    rescue SystemCallError => e # File open errors
+      fail_nice e
     end
 
     method_option :if_missing,
@@ -363,6 +365,32 @@ module OneviewSDK
       end
     rescue IncompleteResource => e
       fail_nice "Failed to create #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
+    rescue SystemCallError => e # File open errors
+      fail_nice e
+    end
+
+    method_option :path,
+      desc: 'File path to save resource in',
+      type: :string,
+      aliases: '-p',
+      required: true
+    method_option :format,
+      desc: 'Output format',
+      aliases: '-f',
+      enum: %w(json yaml),
+      default: 'json'
+    desc 'to_file TYPE NAME', 'Save resource details to file'
+    # Save resource details to file
+    def to_file(type, name)
+      file = File.expand_path(options['path'])
+      resource_class = parse_type(type)
+      client_setup
+      resource = resource_class.find_by(@client, name: name).first
+      fail_nice "#{resource_class.name.split('::').last} '#{name}' not found" unless resource
+      resource.to_file(file, options['format'])
+      puts "Output to #{file}"
+    rescue SystemCallError => e
+      fail_nice "Failed to create file! (You may need to create the necessary directories). Message: #{e}"
     end
 
     desc 'cert check|import|list URL', 'Check, import, or list OneView certs'

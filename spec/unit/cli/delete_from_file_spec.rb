@@ -11,7 +11,7 @@ RSpec.describe OneviewSDK::Cli do
     context 'with invalid options' do
       it 'requires a file name' do
         expect { OneviewSDK::Cli.start(['delete_from_file']) }
-          .to output(/was called with no arguments*\sUsage:/).to_stderr_from_any_process
+          .to output(/was called with no arguments\sUsage:/).to_stderr_from_any_process
       end
     end
 
@@ -45,8 +45,9 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'fails if the file does not exist' do
+        expect(STDOUT).to receive(:puts).with(/No such file/)
         expect { OneviewSDK::Cli.start(['delete_from_file', yaml_file + '.yml', '-f']) }
-          .to raise_error(/No such file or directory/)
+          .to raise_error SystemExit
       end
 
       it 'fails if the file does not specify a name or uri' do

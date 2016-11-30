@@ -263,7 +263,7 @@ Please refer to the documentation and [code](lib/oneview-sdk/rest.rb) for comple
 ## CLI
 This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
-Note: In order to use this, you will need to make sure your ruby `bin` directory is in your path.
+Note: In order to use this, you will need to make sure your Ruby `bin` directory is in your path.
 Run `$ gem environment` to see where the executable paths are for your Ruby installation.
 
 To get started, run `$ oneview-sdk-ruby --help`.
@@ -301,6 +301,9 @@ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:t
 ##### Create or delete resource by file:
 
 ```bash
+# Save resource details to a file (to be used with the create and delete methods below)
+$ oneview-sdk-ruby to_file ServerProfile profile-1 /my-server-profile.json
+
 $ oneview-sdk-ruby create_from_file /my-server-profile.json
 $ oneview-sdk-ruby delete_from_file /my-server-profile.json
 ```
