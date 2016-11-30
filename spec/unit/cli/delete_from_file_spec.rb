@@ -22,19 +22,10 @@ RSpec.describe OneviewSDK::Cli do
         allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_return(true)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:retrieve!).and_return(true)
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:refresh).and_return(true)
         allow_any_instance_of(HighLine).to receive(:agree).and_return(true)
       end
 
-      it 'deletes a valid resource by name' do
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:refresh).and_return(false)
-        expect_any_instance_of(HighLine).to receive(:agree)
-        expect { OneviewSDK::Cli.start(['delete_from_file', yaml_file]) }
-          .to output(/Deleted Successfully!/).to_stdout_from_any_process
-      end
-
-      it 'deletes a valid resource by uri' do
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:retrieve!).and_return(false)
+      it 'deletes a valid resource' do
         expect_any_instance_of(HighLine).to receive(:agree)
         expect { OneviewSDK::Cli.start(['delete_from_file', json_file]) }
           .to output(/Deleted Successfully!/).to_stdout_from_any_process
@@ -48,7 +39,6 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'fails if the resource can not be found' do
         allow_any_instance_of(OneviewSDK::Resource).to receive(:retrieve!).and_return(false)
-        allow_any_instance_of(OneviewSDK::Resource).to receive(:refresh).and_return(false)
         expect(STDOUT).to receive(:puts).with(/Not Found/)
         expect { OneviewSDK::Cli.start(['delete_from_file', yaml_file, '-f']) }
           .to raise_error SystemExit
@@ -62,7 +52,8 @@ RSpec.describe OneviewSDK::Cli do
       it 'fails if the file does not specify a name or uri' do
         resource = OneviewSDK::Resource.new(@client)
         allow(OneviewSDK::Resource).to receive(:from_file).and_return(resource)
-        expect(STDOUT).to receive(:puts).with(/must define name or uri/)
+        allow_any_instance_of(OneviewSDK::Resource).to receive(:retrieve!).and_call_original
+        expect(STDOUT).to receive(:puts).with(/Must set/)
         expect { OneviewSDK::Cli.start(['delete_from_file', yaml_file, '-f']) }
           .to raise_error SystemExit
       end
@@ -70,7 +61,6 @@ RSpec.describe OneviewSDK::Cli do
       it 'exits if the user does not agree to the prompt' do
         allow_any_instance_of(HighLine).to receive(:agree).and_return(false)
         expect_any_instance_of(HighLine).to receive(:agree)
-        expect(STDOUT).to receive(:puts).with(/OK, exiting./)
         OneviewSDK::Cli.start(['delete_from_file', yaml_file])
       end
 
