@@ -68,7 +68,7 @@ module OneviewSDK
       desc: 'Log level to use',
       aliases: '-l',
       enum: %w(debug info warn error),
-      default: 'warn'
+      default: :warn
 
     map ['-v', '--version'] => :version
 
@@ -223,7 +223,8 @@ module OneviewSDK
     desc 'rest METHOD URI', "Make REST call to the OneView API. Examples:#{rest_examples}"
     # Make REST call to the OneView API
     def rest(method, uri)
-      client_setup('log_level' => :error)
+      log_level = @options['log_level'] == :warn ? :error : @options['log_level'].to_sym # Default to :error
+      client_setup('log_level' => log_level)
       uri_copy = uri.dup
       uri_copy.prepend('/') unless uri_copy.start_with?('/')
       if @options['data']
