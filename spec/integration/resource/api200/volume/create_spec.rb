@@ -15,7 +15,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#create' do
     before :each do
-      volume = OneviewSDK::Volume.new($client, name: VOLUME_NAME)
+      volume = klass.new($client, name: VOLUME_NAME)
       volume.delete if volume.retrieve!
     end
 
@@ -30,7 +30,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = OneviewSDK::Volume.new($client, options)
+      volume = klass.new($client, options)
       volume.create
     end
 
@@ -45,7 +45,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = OneviewSDK::Volume.new($client, options)
+      volume = klass.new($client, options)
       volume.create
     end
 
@@ -61,7 +61,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = OneviewSDK::Volume.new($client, options)
+      volume = klass.new($client, options)
       volume.create
     end
 
@@ -77,7 +77,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #       requestedCapacity: 1024 * 1024 * 1024
     #     }
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client, options)
     #   volume.create
     #   wwn = volume[:wwn]
     #
@@ -91,7 +91,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #     type: 'AddStorageVolumeV2',
     #     wwn: wwn
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client, options)
     #   volume.create
     # end
     #
@@ -107,7 +107,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #       requestedCapacity: 1024 * 1024 * 1024
     #     }
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client, options)
     #   volume.create(
     #   )
     #
@@ -123,7 +123,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #     storageSystemVolumeName: storage_system_volume_name,
     #     type: 'AddStorageVolumeV3'
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client, options)
     #   volume.create
     # end
 
@@ -139,7 +139,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = OneviewSDK::Volume.new($client, options)
+      volume = klass.new($client, options)
       volume.create
 
       volume.create_snapshot(VOL_SNAPSHOT_NAME)
@@ -156,7 +156,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           storagePoolUri: @storage_pool[:uri]
         }
       }
-      volume_2 = OneviewSDK::Volume.new($client, options)
+      volume_2 = klass.new($client, options)
       expect { volume_2.create }.to_not raise_error
     end
 
@@ -172,7 +172,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
-      volume = OneviewSDK::Volume.new($client, options)
+      volume = klass.new($client, options)
       volume.create
 
       snapshot_data = {
@@ -195,8 +195,61 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
           storagePoolUri: @storage_pool[:uri]
         }
       }
-      volume_3 = OneviewSDK::Volume.new($client, options)
+      volume_3 = klass.new($client, options)
       expect { volume_3.create }.to_not raise_error
+    end
+  end
+
+  describe '#set_storage_system' do
+    before :each do
+      @volume = klass.new($client, name: VOLUME_NAME)
+    end
+
+    it 'raises exception when storage system without uri' do
+      storage_system = OneviewSDK::StorageSystem.new($client, name: STORAGE_SYSTEM_NAME)
+      expect { @volume.set_storage_system(storage_system) }.to raise_error(OneviewSDK::IncompleteResource, /#{STORAGE_SYSTEM_NAME} not found/)
+    end
+
+    it 'set_storage_system' do
+      @volume.set_storage_system(@storage_system)
+      expect(@volume['storageSystemUri']).to eq(@storage_system['uri'])
+    end
+  end
+
+  describe '#set_storage_pool' do
+    it 'set_storage_pool' do
+      volume = klass.new($client, name: VOLUME_NAME)
+      volume.set_storage_pool(@storage_pool)
+      expect(volume['provisioningParameters']['storagePoolUri']).to eq(@storage_pool['uri'])
+    end
+  end
+
+  describe '#set_snapshot_pool' do
+    it 'set_snapshot_pool' do
+      volume = klass.new($client, name: VOLUME_NAME)
+      volume.set_snapshot_pool(@storage_pool)
+      expect(volume['snapshotPoolUri']).to eq(@storage_pool['uri'])
+    end
+  end
+
+  describe '#set_storage_volume_template' do
+    it 'set_storage_volume_template' do
+      volume = klass.new($client, name: VOLUME_NAME)
+      @vol_template.retrieve!
+      volume.set_storage_volume_template(@vol_template)
+      expect(volume['templateUri']).to eq(@vol_template['uri'])
+    end
+  end
+
+  describe '#get_attachable_volumes' do
+    it 'gets all the attachable volumes managed by the appliance' do
+      expect { klass.get_attachable_volumes($client) }.to_not raise_error
+    end
+  end
+
+  describe '#get_extra_managed_volume_paths' do
+    it 'gets the list of extra managed storage volume paths' do
+      expect { klass.get_extra_managed_volume_paths($client) }.to_not raise_error
     end
   end
 end

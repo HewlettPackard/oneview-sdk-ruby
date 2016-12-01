@@ -8,7 +8,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     storage_system_data = { credentials: { ip_hostname: $secrets['storage_system1_ip'] } }
     @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300_thunderbird, storage_system_data)
     @storage_system.retrieve!
-    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.get_all($client_300_thunderbird).first
+    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.new($client_300_thunderbird, name: STORAGE_POOL_NAME)
     @storage_pool.retrieve!
     @vol_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new($client_300_thunderbird, name: VOL_TEMP_NAME)
   end
@@ -21,7 +21,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
     it 'create new volume' do
       options = {
-        name: VOLUME4_NAME,
+        name: VOLUME_NAME,
         description: 'Integration test volume',
         storageSystemUri: @storage_system[:uri],
         provisioningParameters: {
@@ -77,7 +77,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #       requestedCapacity: 1024 * 1024 * 1024
     #     }
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client_300_thunderbird, options)
     #   volume.create
     #   wwn = volume[:wwn]
     #
@@ -91,13 +91,13 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #     type: 'AddStorageVolumeV2',
     #     wwn: wwn
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client_300_thunderbird, options)
     #   volume.create
     # end
     #
     # it 'add volume for management using volume name in storage system' do
     #   options = {
-    #     name: VOLUME_NAME,OneviewSDK::Volume
+    #     name: VOLUME_NAME,
     #     description: 'Integration test volume',
     #     storageSystemUri: @storage_system[:uri],
     #     snapshotPoolUri: @storage_pool[:uri],
@@ -107,7 +107,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #       requestedCapacity: 1024 * 1024 * 1024
     #     }
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client_300_thunderbird, options)
     #   volume.create(
     #   )
     #
@@ -123,7 +123,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     #     storageSystemVolumeName: storage_system_volume_name,
     #     type: 'AddStorageVolumeV3'
     #   }
-    #   volume = OneviewSDK::Volume.new($client, options)
+    #   volume = klass.new($client_300_thunderbird, options)
     #   volume.create
     # end
 
@@ -197,6 +197,59 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       }
       volume_3 = klass.new($client_300_thunderbird, options)
       expect { volume_3.create }.to_not raise_error
+    end
+  end
+
+  describe '#set_storage_system' do
+    before :each do
+      @volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
+    end
+
+    it 'raises exception when storage system without uri' do
+      storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300_thunderbird, name: STORAGE_SYSTEM_NAME)
+      expect { @volume.set_storage_system(storage_system) }.to raise_error(OneviewSDK::IncompleteResource, /#{STORAGE_SYSTEM_NAME} not found/)
+    end
+
+    it 'set_storage_system' do
+      @volume.set_storage_system(@storage_system)
+      expect(@volume['storageSystemUri']).to eq(@storage_system['uri'])
+    end
+  end
+
+  describe '#set_storage_pool' do
+    it 'set_storage_pool' do
+      volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
+      volume.set_storage_pool(@storage_pool)
+      expect(volume['provisioningParameters']['storagePoolUri']).to eq(@storage_pool['uri'])
+    end
+  end
+
+  describe '#set_snapshot_pool' do
+    it 'set_snapshot_pool' do
+      volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
+      volume.set_snapshot_pool(@storage_pool)
+      expect(volume['snapshotPoolUri']).to eq(@storage_pool['uri'])
+    end
+  end
+
+  describe '#set_storage_volume_template' do
+    it 'set_storage_volume_template' do
+      volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
+      @vol_template.retrieve!
+      volume.set_storage_volume_template(@vol_template)
+      expect(volume['templateUri']).to eq(@vol_template['uri'])
+    end
+  end
+
+  describe '#get_attachable_volumes' do
+    it 'gets all the attachable volumes managed by the appliance' do
+      expect { klass.get_attachable_volumes($client_300_thunderbird) }.to_not raise_error
+    end
+  end
+
+  describe '#get_extra_managed_volume_paths' do
+    it 'gets the list of extra managed storage volume paths' do
+      expect { klass.get_extra_managed_volume_paths($client_300_thunderbird) }.to_not raise_error
     end
   end
 end
