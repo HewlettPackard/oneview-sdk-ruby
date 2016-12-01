@@ -53,7 +53,7 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'accepts a format parameter' do
-        expect_any_instance_of(OneviewSDK::Resource).to receive(:to_file)
+        expect_any_instance_of(OneviewSDK::EthernetNetwork).to receive(:to_file)
           .with(File.expand_path(path), 'yaml').and_return(true)
         expect { OneviewSDK::Cli.start(['to_file', 'EthernetNetwork', 'Test', '-p', path, '-f', 'yaml']) }
           .to output(/Output to/).to_stdout_from_any_process
@@ -74,7 +74,7 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'shows the file save error message on failure' do
-        expect_any_instance_of(OneviewSDK::Resource).to receive(:to_file).and_raise(Errno::ENOENT, 'Explanation')
+        expect_any_instance_of(OneviewSDK::EthernetNetwork).to receive(:to_file).and_raise(Errno::ENOENT, 'Explanation')
         expect(STDOUT).to receive(:puts).with(/Failed to create file.*Explanation/)
         expect { OneviewSDK::Cli.start(['to_file', 'EthernetNetwork', 'Test', '-p', path]) }
           .to raise_error SystemExit
