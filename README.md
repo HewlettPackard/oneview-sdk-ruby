@@ -96,6 +96,8 @@ error(String)
 level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ```
 
+:lock: Tip: When the log_level is set to debug, API request options will be logged (including auth tokens and passwords); be careful to protect secret information.
+
 ## Resources
 Each OneView resource is exposed for usage with CRUD-like functionality.
 
