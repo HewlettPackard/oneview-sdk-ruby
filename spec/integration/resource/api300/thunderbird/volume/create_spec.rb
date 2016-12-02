@@ -5,10 +5,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
   before :all do
-    storage_system_data = { credentials: { ip_hostname: $secrets['storage_system1_ip'] } }
+    storage_system_data = { credentials: { ip_hostname: $secrets_thunderbird['storage_system1_ip'] } }
     @storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new($client_300_thunderbird, storage_system_data)
     @storage_system.retrieve!
-    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.new($client_300_thunderbird, name: STORAGE_POOL_NAME)
+    storage_pool_data = { name: STORAGE_POOL_NAME, storageSystemUri: @storage_system['uri'] }
+    @storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.new($client_300_thunderbird, storage_pool_data)
     @storage_pool.retrieve!
     @vol_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new($client_300_thunderbird, name: VOL_TEMP_NAME)
   end

@@ -8,7 +8,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     storage_system_data = { credentials: { ip_hostname: $secrets['storage_system1_ip'] } }
     @storage_system = OneviewSDK::StorageSystem.new($client, storage_system_data)
     @storage_system.retrieve!
-    @storage_pool = OneviewSDK::StoragePool.new($client, name: STORAGE_POOL_NAME)
+    storage_pool_data = { name: STORAGE_POOL_NAME, storageSystemUri: @storage_system['uri'] }
+    @storage_pool = OneviewSDK::StoragePool.new($client, storage_pool_data)
     @storage_pool.retrieve!
     @vol_template = OneviewSDK::VolumeTemplate.new($client, name: VOL_TEMP_NAME)
   end
