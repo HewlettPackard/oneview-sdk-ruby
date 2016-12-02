@@ -21,8 +21,9 @@ module OneviewSDK
       # Uploads a firmware bundle file
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @param [String] file_path
+      # @param [Integer] timeout The number of seconds to wait for completing the request
       # @return [OneviewSDK::FirmwareDriver] if the upload was sucessful, return a FirmwareDriver object
-      def self.add(client, file_path)
+      def self.add(client, file_path, timeout = READ_TIMEOUT)
         raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
         options = {}
         options['Content-Type'] = 'multipart/form-data'
@@ -41,7 +42,7 @@ module OneviewSDK
           http_request = Net::HTTP.new(url.host, url.port)
           http_request.use_ssl = true
           http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          http_request.read_timeout = READ_TIMEOUT
+          http_request.read_timeout = timeout
 
           http_request.start do |http|
             response = http.request(req)
