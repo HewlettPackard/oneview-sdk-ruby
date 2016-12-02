@@ -108,6 +108,33 @@ RSpec.describe OneviewSDK::Volume do
       end
     end
 
+    describe '#get_snapshot' do
+      it 'get snapshot by name' do
+        @item['uri'] = '/rest/storage-volumes/fake'
+        snapshot_options = { 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
+        snapshots = [OneviewSDK::VolumeSnapshot.new(@client, snapshot_options)]
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
+        expect(@client).to receive(:rest_get).with("#{@item['uri']}/snapshots", @item.api_version)
+        snapshot = @item.get_snapshot('Vol1_Snapshot1')
+        expect(snapshot['type']).to eq('Snapshot')
+        expect(snapshot['name']).to eq('Vol1_Snapshot1')
+        expect(snapshot['description']).to eq('New Snapshot')
+      end
+    end
+
+    describe '#delete_snapshot' do
+      it 'Deletes a snapshot of the volume' do
+        @item['uri'] = '/rest/storage-volumes/fake'
+        snapshot_options = { 'uri' => '/rest/fake', 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
+        snapshots = [OneviewSDK::VolumeSnapshot.new(@client, snapshot_options)]
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
+        expect(@client).to receive(:rest_get).with("#{@item['uri']}/snapshots", @item.api_version)
+        expect(@client).to receive(:rest_api).with(:delete, '/rest/fake', {}, @item.api_version)
+        result = @item.delete_snapshot('Vol1_Snapshot1')
+        expect(result).to eq(true)
+      end
+    end
+
     describe '#get_attachable_volumes' do
       it 'returns an array of available volumes' do
         volumes = [@item]
@@ -117,6 +144,30 @@ RSpec.describe OneviewSDK::Volume do
         expect(items.class).to eq(Array)
         expect(items.size).to eq(1)
         expect(items.first['name']).to eq('volume_name')
+      end
+    end
+
+    describe '#get_extra_managed_volume_paths' do
+      it 'gets the list of extra managed storage volume paths' do
+        paths = ['%fake1', '%fake2']
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => paths)
+        expect(@client).to receive(:rest_get).with('/rest/storage-volumes/repair?alertFixType=ExtraManagedStorageVolumePaths')
+        results = OneviewSDK::Volume.get_extra_managed_volume_paths(@client)
+        expect(results['members']).to eq(paths)
+      end
+    end
+
+    describe '#repair' do
+      it 'removes extra presentation from the volume' do
+        body = {
+          resourceUri: '/rest/storage-volumes',
+          type: 'ExtraManagedStorageVolumePaths'
+        }
+        item = OneviewSDK::Volume.new(@client, uri: '/rest/storage-volumes')
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('response' => 'fake')
+        expect(@client).to receive(:rest_post).with("#{item['uri']}/repair", 'body' => body).and_return(true)
+        response = item.repair
+        expect(response['response']).to eq('fake')
       end
     end
   end
