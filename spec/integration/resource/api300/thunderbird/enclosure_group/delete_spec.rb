@@ -8,19 +8,19 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
     it 'deletes the simple enclosure group' do
       item = klass.new($client_300_thunderbird, 'name' => ENC_GROUP_NAME)
       item.retrieve!
-      expect { @item.delete }.not_to raise_error
+      expect { item.delete }.not_to raise_error
     end
 
     it 'deletes the enclosure group with LIG' do
       item = klass.new($client_300_thunderbird, 'name' => ENC_GROUP2_NAME)
       item.retrieve!
-      expect { @item.delete }.not_to raise_error
+      expect { item.delete }.not_to raise_error
     end
 
     it 'deletes the enclosure group with empty LIG' do
       item = klass.new($client_300_thunderbird, 'name' => ENC_GROUP3_NAME)
       item.retrieve!
-      expect { @item.delete }.not_to raise_error
+      expect { item.delete }.not_to raise_error
     end
   end
 end
