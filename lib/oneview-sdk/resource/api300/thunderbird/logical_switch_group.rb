@@ -14,7 +14,31 @@ require_relative '../../api200/logical_switch_group'
 module OneviewSDK
   module API300
     module Thunderbird
+      # Logical switch group resource implementation for API300 Thunderbird
       class LogicalSwitchGroup < OneviewSDK::API200::LogicalSwitchGroup
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def create
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def update
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def delete
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def set_grouping_parameters
+          unavailable_method
+        end
       end
     end
   end

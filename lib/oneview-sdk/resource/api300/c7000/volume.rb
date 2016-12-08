@@ -14,6 +14,7 @@ require_relative '../../api200/volume'
 module OneviewSDK
   module API300
     module C7000
+      # Volume resource implementation on API300 C7000
       class Volume < OneviewSDK::API200::Volume
       end
     end
