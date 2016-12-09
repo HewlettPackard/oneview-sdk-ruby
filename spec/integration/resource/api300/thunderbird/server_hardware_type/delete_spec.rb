@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ServerHardwareType
+klass = OneviewSDK::API300::Thunderbird::ServerHardwareType
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   let(:server_hardware) do
-    OneviewSDK::ServerHardware.find_by($client, name: $secrets['server_hardware2_ip']).first
+    OneviewSDK::API300::Thunderbird::ServerHardware.get_all($client_300_thunderbird).first
   end
-  subject(:target) { klass.find_by($client, uri: server_hardware['serverHardwareTypeUri']).first }
+  subject(:target) { klass.find_by($client_300_thunderbird, uri: server_hardware['serverHardwareTypeUri']).first }
 
   describe '#delete' do
     it 'should throw unavailable exception' do
@@ -20,14 +20,6 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
       it 'should not remove the resource' do
         expect { target.remove }.to raise_error
         expect(target.retrieve!).to be(true)
-      end
-    end
-
-    context 'when no matches server hardware' do
-      it 'should remove the resource' do
-        expect { server_hardware.remove }.not_to raise_error
-        expect { target.remove }.not_to raise_error
-        expect(target.retrieve!).to be(false)
       end
     end
   end

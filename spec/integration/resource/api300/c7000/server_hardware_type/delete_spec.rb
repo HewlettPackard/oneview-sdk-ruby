@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ServerHardwareType
+klass = OneviewSDK::API300::C7000::ServerHardwareType
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   let(:server_hardware) do
-    OneviewSDK::ServerHardware.find_by($client, name: $secrets['server_hardware2_ip']).first
+    OneviewSDK::API300::C7000::ServerHardware.find_by($client_300, name: $secrets['server_hardware2_ip']).first
   end
-  subject(:target) { klass.find_by($client, uri: server_hardware['serverHardwareTypeUri']).first }
+  subject(:target) { klass.find_by($client_300, uri: server_hardware['serverHardwareTypeUri']).first }
 
   describe '#delete' do
     it 'should throw unavailable exception' do

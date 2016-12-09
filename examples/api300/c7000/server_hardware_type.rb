@@ -10,7 +10,7 @@
 # specific language governing permissions and limitations under the License.
 
 # Gives access to @client, @server_hardware2_hostname, @server_hardware2_username, @server_hardware2_password
-require_relative '../_client'
+require_relative '../../_client'
 
 def print_server_hardware_type(item)
   puts "\n-- Server hardware type --",

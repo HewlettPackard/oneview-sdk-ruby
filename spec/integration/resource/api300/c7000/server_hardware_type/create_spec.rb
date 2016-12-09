@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ServerHardwareType
+klass = OneviewSDK::API300::C7000::ServerHardwareType
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#create' do
     it 'should throw unavailable exception' do
-      item = klass.new($client)
+      item = klass.new($client_300)
       expect { item.create }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
@@ -21,11 +21,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         licensingIntent: 'OneView'
       }
 
-      server_hardware = OneviewSDK::ServerHardware.new($client, options)
+      server_hardware = OneviewSDK::API300::C7000::ServerHardware.new($client_300, options)
 
       expect { server_hardware.add }.to_not raise_error
 
-      target = klass.new($client, uri: server_hardware['serverHardwareTypeUri'])
+      target = klass.new($client_300, uri: server_hardware['serverHardwareTypeUri'])
 
       expect(target.retrieve!).to be(true)
     end

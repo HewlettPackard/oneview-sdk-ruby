@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ServerHardwareType
+klass = OneviewSDK::API300::Thunderbird::ServerHardwareType
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   let(:server_hardware) do
-    OneviewSDK::ServerHardware.find_by($client, name: $secrets['server_hardware2_ip']).first
+    OneviewSDK::API300::Thunderbird::ServerHardware.get_all($client_300_thunderbird).first
   end
-  subject(:target) { klass.find_by($client, uri: server_hardware['serverHardwareTypeUri']).first }
+  subject(:target) { klass.find_by($client_300_thunderbird, uri: server_hardware['serverHardwareTypeUri']).first }
 
   describe '#update' do
     it 'should update name and description' do
