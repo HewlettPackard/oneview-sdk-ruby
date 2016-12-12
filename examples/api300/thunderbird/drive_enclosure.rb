@@ -13,11 +13,11 @@ require_relative '../../_client' # Gives access to @client
 
 # Gets all Drive Enclosures currently in the Appliance
 puts 'Listing all Drive Enclosures below:'
-OneviewSDK::API300::Thunderbird::DriveEnclosure.find_by(@client, {}).each do |drive_enclosure|
+OneviewSDK::API300::Synergy::DriveEnclosure.find_by(@client, {}).each do |drive_enclosure|
   puts "Name: '#{drive_enclosure['name']}', uri: '#{drive_enclosure['uri']}'"
 end
 
-drive_enclosure = OneviewSDK::API300::Thunderbird::DriveEnclosure.find_by(@client, {}).first
+drive_enclosure = OneviewSDK::API300::Synergy::DriveEnclosure.find_by(@client, {}).first
 
 # Gets a specific Drive Enclosure port map information
 puts drive_enclosure.get_port_map

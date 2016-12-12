@@ -12,10 +12,10 @@
 require_relative '../../_client' # Gives access to @client
 
 # Retrieves all switch types from the Appliance
-OneviewSDK::API300::Thunderbird::Switch.get_types(@client).each do |type|
+OneviewSDK::API300::Synergy::Switch.get_types(@client).each do |type|
   puts "Switch Type: #{type['name']}\nURI: #{type['uri']}\n\n"
 end
 
 # Retrieves switch type by name
-item = OneviewSDK::API300::Thunderbird::Switch.get_type(@client, 'Cisco Nexus 50xx')
+item = OneviewSDK::API300::Synergy::Switch.get_type(@client, 'Cisco Nexus 50xx')
 puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"

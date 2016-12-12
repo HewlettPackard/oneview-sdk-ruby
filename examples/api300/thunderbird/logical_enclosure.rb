@@ -17,14 +17,14 @@ options = {
   firmwareBaselineUri: nil
 }
 
-logical_enclosure = OneviewSDK::API300::Thunderbird::LogicalEnclosure.new(@client, options)
+logical_enclosure = OneviewSDK::API300::Synergy::LogicalEnclosure.new(@client, options)
 
 # set an enclosure group
-enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by(@client, {}).first
+enclosure_group = OneviewSDK::API300::Synergy::EnclosureGroup.find_by(@client, {}).first
 logical_enclosure.set_enclosure_group(enclosure_group)
 
 # set an enclosure
-enclosure = OneviewSDK::API300::Thunderbird::Enclosure.find_by(@client, {}).first
+enclosure = OneviewSDK::API300::Synergy::Enclosure.find_by(@client, {}).first
 logical_enclosure.set_enclosures([enclosure])
 
 # create a logical-enclosure
@@ -32,14 +32,14 @@ puts "\nCreate a logical-enclosure with name '#{logical_enclosure[:name]}'"
 logical_enclosure.create!
 puts "\nCreated a logical-enclosure '#{logical_enclosure[:name]}' sucessfully.\n  uri = '#{logical_enclosure[:uri]}'"
 
-logical_enclosure2 = OneviewSDK::API300::Thunderbird::EnclosureGroup.new(@client, name: options[:name])
+logical_enclosure2 = OneviewSDK::API300::Synergy::EnclosureGroup.new(@client, name: options[:name])
 # retrieve a logical-enclosure
 puts "\nRetrieve a logical-enclosure with name '#{logical_enclosure2[:name]}'"
 logical_enclosure2.retrieve!
 puts "\nFound by name: '#{logical_enclosure2[:name]}'.\n  uri = '#{logical_enclosure2[:uri]}'"
 
 # Get first logical enclosure
-logical_enclosure3 = OneviewSDK::API300::Thunderbird::LogicalEnclosure.find_by(@client, {}).first
+logical_enclosure3 = OneviewSDK::API300::Synergy::LogicalEnclosure.find_by(@client, {}).first
 puts "Found logical-enclosure '#{logical_enclosure[:name]}'."
 
 # Get configuration script

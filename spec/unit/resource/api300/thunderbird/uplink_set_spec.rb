@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::UplinkSet do
+RSpec.describe OneviewSDK::API300::Synergy::UplinkSet do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::UplinkSet do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      profile = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
+      profile = OneviewSDK::API300::Synergy::UplinkSet.new(@client_300)
       expect(profile[:type]).to eq('uplink-setV3')
       expect(profile[:portConfigInfos]).to eq([])
       expect(profile[:networkUris]).to eq([])
@@ -21,7 +21,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::UplinkSet do
 
   describe '#add_port_config' do
     it 'updates the portConfigInfos value' do
-      item = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
+      item = OneviewSDK::API300::Synergy::UplinkSet.new(@client_300)
       item.add_port_config('/rest/fake', 1000, [{ 'value' => '1', 'type' => 'Bay' }, { 'value' => '/rest/fake2', 'type' => 'Enclosure' }])
       expect(item['portConfigInfos'].size).to eq(1)
       expect(item['portConfigInfos'].first['portUri']).to eq('/rest/fake')
@@ -33,7 +33,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::UplinkSet do
   describe 'add elements' do
     context 'networks' do
       it 'Valid' do
-        uplink = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
+        uplink = OneviewSDK::API300::Synergy::UplinkSet.new(@client_300)
         uplink.add_network(uri: '/rest/ethernet-networks')
         uplink.add_fcnetwork(uri: '/rest/fc-networks')
         uplink.add_fcoenetwork(uri: '/rest/fcoe-networks')
@@ -43,7 +43,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::UplinkSet do
       end
 
       it 'Incorrect' do
-        uplink = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
+        uplink = OneviewSDK::API300::Synergy::UplinkSet.new(@client_300)
         expect { uplink.add_network({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
         expect { uplink.add_fcnetwork({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
         expect { uplink.add_fcoenetwork({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
@@ -52,13 +52,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::UplinkSet do
 
     context 'logical interconnects' do
       it 'Valid' do
-        uplink = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
+        uplink = OneviewSDK::API300::Synergy::UplinkSet.new(@client_300)
         uplink.set_logical_interconnect(uri: '/rest/logical-interconnects')
         expect(uplink[:logicalInterconnectUri]).to eq('/rest/logical-interconnects')
       end
 
       it 'Incorrect' do
-        uplink = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
+        uplink = OneviewSDK::API300::Synergy::UplinkSet.new(@client_300)
         expect { uplink.set_logical_interconnect({}) }.to raise_error(OneviewSDK::IncompleteResource, /Invalid object/)
       end
     end

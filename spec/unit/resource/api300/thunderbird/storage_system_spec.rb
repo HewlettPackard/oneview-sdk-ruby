@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
+RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -9,14 +9,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300)
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300)
       expect(item[:type]).to eq('StorageSystemV3')
     end
   end
 
   describe '#add' do
     it 'sends just the credentials hash, then the rest of the data' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(
         @client_300,
         name: 'Fake',
         credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
@@ -33,7 +33,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
 
   describe '#remove' do
     it 'Should support remove' do
-      storage = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, uri: '/rest/storage-systems/100')
+      storage = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/storage-systems/100')
       expect(@client_300).to receive(:rest_delete).with('/rest/storage-systems/100', {}, 300).and_return(FakeResponse.new({}))
       storage.remove
     end
@@ -41,13 +41,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
 
   describe '#retrieve!' do
     it 'finds by name if it is set' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, name: 'Fake')
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, name: 'Fake')
       expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
     it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(
         @client_300,
         credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
       )
@@ -56,20 +56,20 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
     end
 
     it 'no parameter given' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, {})
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, {})
       expect { item.retrieve! }.to raise_error(OneviewSDK::IncompleteResource)
     end
   end
 
   describe '#exists?' do
     it 'finds by name if it is set' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, name: 'Fake')
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, name: 'Fake')
       expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
       expect(item.exists?).to eq(true)
     end
 
     it 'finds by credentials if the name is not set' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(
         @client_300,
         credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' }
       )
@@ -78,7 +78,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
     end
 
     it 'no parameter given' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, {})
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, {})
       expect { item.exists? }.to raise_error(OneviewSDK::IncompleteResource)
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
         },
         state: 'Configured'
       }
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(
         @client,
         name: 'StorageSystemName',
         credentials: {
@@ -116,7 +116,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
         },
         'state' => 'Configured'
       }
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(
         @client,
         'name' => 'StorageSystemName',
         'credentials' => {
@@ -131,14 +131,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
     it 'must not compare storage system credentials with password when compares resources ' do
       options1 = { name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin' } }
       options2 = { name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' } }
-      item1 = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client, options1)
-      item2 = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client, options2)
+      item1 = OneviewSDK::API300::Synergy::StorageSystem.new(@client, options1)
+      item2 = OneviewSDK::API300::Synergy::StorageSystem.new(@client, options2)
       expect(item1.like?(item2)).to eq(true)
     end
 
     it 'must not compare storage system with invalid data types' do
       options = { name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin' } }
-      item1 = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client, options)
+      item1 = OneviewSDK::API300::Synergy::StorageSystem.new(@client, options)
       expect(item1.like?(credentials: true)).to eq(false)
     end
   end
@@ -146,13 +146,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
   describe '#host-types' do
     it 'List Host Types' do
       expect(@client_300).to receive(:rest_get).with('/rest/storage-systems/host-types').and_return(FakeResponse.new({}))
-      expect { OneviewSDK::API300::Thunderbird::StorageSystem.get_host_types(@client_300) }.not_to raise_error
+      expect { OneviewSDK::API300::Synergy::StorageSystem.get_host_types(@client_300) }.not_to raise_error
     end
   end
 
   describe '#storage pools' do
     it 'List Storage Pools' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, uri: '/rest/fake')
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/storage-pools').and_return(FakeResponse.new({}))
       expect { item.get_storage_pools }.not_to raise_error
     end
@@ -160,13 +160,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
 
   describe '#get_managed_ports' do
     it 'No port given' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, uri: '/rest/fake')
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts').and_return(FakeResponse.new({}))
       item.get_managed_ports
     end
 
     it 'With port given' do
-      item = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, uri: '/rest/fake')
+      item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts/100').and_return(FakeResponse.new({}))
       item.get_managed_ports(100)
     end
@@ -174,12 +174,12 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
 
   describe 'undefined methods' do
     it 'does not allow the create action' do
-      storage = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300)
+      storage = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300)
       expect { storage.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
 
     it 'does not allow the delete action' do
-      storage = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300)
+      storage = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300)
       expect { storage.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
@@ -194,9 +194,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::StorageSystem do
         uri: '/rest/storage-systems/100',
         refreshState: 'RefreshPending'
       }
-      storage = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, options)
-      storage_updated = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, options_update)
-      allow_any_instance_of(OneviewSDK::API300::Thunderbird::StorageSystem).to receive(:update).and_return(FakeResponse.new(storage_updated))
+      storage = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, options)
+      storage_updated = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, options_update)
+      allow_any_instance_of(OneviewSDK::API300::Synergy::StorageSystem).to receive(:update).and_return(FakeResponse.new(storage_updated))
       expect { storage.set_refresh_state('RefreshPending') }.not_to raise_error
       expect(storage['refreshState']).to eq('RefreshPending')
     end

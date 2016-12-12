@@ -13,8 +13,8 @@ require_relative '../../api200/volume_template'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Volume Template resource implementation for API300 Thunderbird
+    module Synergy
+      # Volume Template resource implementation for API300 Synergy
       class VolumeTemplate < OneviewSDK::API200::VolumeTemplate
         # Create the client object, establishes connection, and set up the logging and api version.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance

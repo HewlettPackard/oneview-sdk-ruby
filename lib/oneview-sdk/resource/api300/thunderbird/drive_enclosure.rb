@@ -13,8 +13,8 @@ require_relative 'resource'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Drive enclosure resource implementation for API300 Thunderbird
+    module Synergy
+      # Drive enclosure resource implementation for API300 Synergy
       class DriveEnclosure < Resource
         BASE_URI = '/rest/drive-enclosures'.freeze
 

@@ -11,19 +11,19 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::ManagedSAN
+klass = OneviewSDK::API300::Synergy::ManagedSAN
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = klass.find_by($client_300_thunderbird, state: 'Managed').first
+    @item = klass.find_by($client_300_synergy, state: 'Managed').first
   end
 
   describe 'Check if SANs were imported' do
     it 'check if SAN was imported' do
       # sleep to make sure the timing until the SANs are 'managed' isn't off
       sleep 10
-      klass.find_by($client_300_thunderbird, deviceManagerName: $secrets['san_manager_ip']).each do |san|
+      klass.find_by($client_300_synergy, deviceManagerName: $secrets['san_manager_ip']).each do |san|
         expect(san['state']).to eq('Managed')
       end
     end
@@ -90,8 +90,8 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#get_wwn' do
     it 'Gets all SANs associated with a specific SAN manager' do
-      wwn = klass.find_by($client_300_thunderbird, {}).last['principalSwitch']
-      sans = klass.get_wwn($client_300_thunderbird, wwn)
+      wwn = klass.find_by($client_300_synergy, {}).last['principalSwitch']
+      sans = klass.get_wwn($client_300_synergy, wwn)
       expect(sans.first['wwns']).to include(wwn)
     end
   end

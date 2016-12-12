@@ -11,12 +11,12 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::DriveEnclosure
+klass = OneviewSDK::API300::Synergy::DriveEnclosure
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = klass.find_by($client_300_thunderbird, {}).first
+    @item = klass.find_by($client_300_synergy, {}).first
   end
 
   describe '#get_port_map' do

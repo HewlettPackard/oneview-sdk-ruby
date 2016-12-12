@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
+RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -13,14 +13,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
 
   describe '#initialize' do
     it 'sets the type correctly' do
-      profile = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300)
+      profile = OneviewSDK::API300::Synergy::ServerProfile.new(@client_300)
       expect(profile[:type]).to eq('ServerProfileV6')
     end
   end
 
   describe '#set_server_hardware' do
     before :each do
-      @server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, name: 'server_hardware')
+      @server_hardware = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, name: 'server_hardware')
       @server_hardware_uri = '/rest/fake/server-hardwares/test'
     end
 
@@ -51,7 +51,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
 
   describe '#set_server_hardware_type' do
     before :each do
-      @server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.new(@client_300, name: 'server_hardware_type')
+      @server_hardware_type = OneviewSDK::API300::Synergy::ServerHardwareType.new(@client_300, name: 'server_hardware_type')
       @server_hardware_type_uri = '/rest/fake/server-hardware-types/test'
     end
 
@@ -157,7 +157,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
 
   describe '#self.get_available_networks' do
     it 'returns all the available networks' do
-      expect(@client_300).to receive(:rest_get).with("#{OneviewSDK::API300::Thunderbird::ServerProfile::BASE_URI}/available-networks?view=unit")
+      expect(@client_300).to receive(:rest_get).with("#{OneviewSDK::API300::Synergy::ServerProfile::BASE_URI}/available-networks?view=unit")
         .and_return(FakeResponse.new(
                       'ethernetNetworks' => [
                         { 'name' => 'ethernet_network_1', 'uri' => 'fake1', 'vlan' => 1 },
@@ -173,7 +173,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
                       'type' => 'fakeType'
         ))
 
-      returned_set = OneviewSDK::API300::Thunderbird::ServerProfile.get_available_networks(@client_300, 'view' => 'unit')
+      returned_set = OneviewSDK::API300::Synergy::ServerProfile.get_available_networks(@client_300, 'view' => 'unit')
       expect(returned_set['ethernetNetworks'].size).to eq(2)
       returned_set['ethernetNetworks'].each { |net| expect(net['name']).to match(/ethernet_network/) }
       expect(returned_set['fcNetworks'].size).to eq(2)
@@ -187,11 +187,11 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
   describe '#self.get_available_servers' do
     it 'retrieves available servers based on a query' do
       server_profile_uri = 'rest/fake/server-profiles/unit'
-      server_profile = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300, name: 'unit_server_profile', uri: server_profile_uri)
+      server_profile = OneviewSDK::API300::Synergy::ServerProfile.new(@client_300, name: 'unit_server_profile', uri: server_profile_uri)
       expect(@client_300).to receive(:rest_get)
-        .with("#{OneviewSDK::API300::Thunderbird::ServerProfile::BASE_URI}/available-servers?profileUri=#{server_profile_uri}")
+        .with("#{OneviewSDK::API300::Synergy::ServerProfile::BASE_URI}/available-servers?profileUri=#{server_profile_uri}")
         .and_return(FakeResponse.new('it' => 'works'))
-      expect(OneviewSDK::API300::Thunderbird::ServerProfile.get_available_servers(@client_300, 'server_profile' => server_profile)['it'])
+      expect(OneviewSDK::API300::Synergy::ServerProfile.get_available_servers(@client_300, 'server_profile' => server_profile)['it'])
         .to eq('works')
     end
   end
@@ -201,9 +201,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
       storage_system_uri = 'rest/fake/storage-systems/unit'
       storage_system = OneviewSDK::StorageSystem.new(@client_300, name: 'unit_storage_system', uri: storage_system_uri)
       expect(@client_300).to receive(:rest_get)
-        .with("#{OneviewSDK::API300::Thunderbird::ServerProfile::BASE_URI}/available-storage-system?storageSystemId=unit")
+        .with("#{OneviewSDK::API300::Synergy::ServerProfile::BASE_URI}/available-storage-system?storageSystemId=unit")
         .and_return(FakeResponse.new('it' => 'works'))
-      expect(OneviewSDK::API300::Thunderbird::ServerProfile.get_available_storage_system(@client_300, 'storage_system' => storage_system)['it'])
+      expect(OneviewSDK::API300::Synergy::ServerProfile.get_available_storage_system(@client_300, 'storage_system' => storage_system)['it'])
         .to eq('works')
     end
   end
@@ -211,27 +211,27 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
   describe '#self.get_available_storage_systems' do
     it 'retrieves available storage system based on a query' do
       expect(@client_300).to receive(:rest_get)
-        .with("#{OneviewSDK::API300::Thunderbird::ServerProfile::BASE_URI}/available-storage-systems")
+        .with("#{OneviewSDK::API300::Synergy::ServerProfile::BASE_URI}/available-storage-systems")
         .and_return(FakeResponse.new('it' => 'works'))
-      expect(OneviewSDK::API300::Thunderbird::ServerProfile.get_available_storage_systems(@client_300)['it']).to eq('works')
+      expect(OneviewSDK::API300::Synergy::ServerProfile.get_available_storage_systems(@client_300)['it']).to eq('works')
     end
   end
 
   describe '#self.get_available_targets' do
     it 'retrieves available targets based on a query' do
       expect(@client_300).to receive(:rest_get)
-        .with("#{OneviewSDK::API300::Thunderbird::ServerProfile::BASE_URI}/available-targets")
+        .with("#{OneviewSDK::API300::Synergy::ServerProfile::BASE_URI}/available-targets")
         .and_return(FakeResponse.new('it' => 'works'))
-      expect(OneviewSDK::API300::Thunderbird::ServerProfile.get_available_targets(@client_300)['it']).to eq('works')
+      expect(OneviewSDK::API300::Synergy::ServerProfile.get_available_targets(@client_300)['it']).to eq('works')
     end
   end
 
   describe '#self.get_profile_ports' do
     it 'retrieves profile ports based on a query' do
       expect(@client_300).to receive(:rest_get)
-        .with("#{OneviewSDK::API300::Thunderbird::ServerProfile::BASE_URI}/profile-ports")
+        .with("#{OneviewSDK::API300::Synergy::ServerProfile::BASE_URI}/profile-ports")
         .and_return(FakeResponse.new('it' => 'works'))
-      expect(OneviewSDK::API300::Thunderbird::ServerProfile.get_profile_ports(@client_300)['it']).to eq('works')
+      expect(OneviewSDK::API300::Synergy::ServerProfile.get_profile_ports(@client_300)['it']).to eq('works')
     end
   end
 
@@ -276,7 +276,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
   describe '#add_connection' do
     before :each do
       @item['connections'] = []
-      @network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
+      @network = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
                                                                                    uri: 'rest/fake/ethernet-networks/unit')
     end
 
@@ -303,7 +303,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
     describe '#remove_connection' do
       before :each do
         @item['connections'] = []
-        @network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
+        @network = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
                                                                                      uri: 'rest/fake/ethernet-networks/unit')
         base_uri = @network['uri']
         1.upto(5) do |count|
@@ -347,39 +347,39 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
 
   describe '#get_server_hardware' do
     it 'returns nil if no hardware is assigned' do
-      hw = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300).get_server_hardware
+      hw = OneviewSDK::API300::Synergy::ServerProfile.new(@client_300).get_server_hardware
       expect(hw).to be_nil
     end
 
     it 'retrieves and returns the hardware if it is assigned' do
       expect_any_instance_of(OneviewSDK::ServerHardware).to receive(:retrieve!).and_return(true)
-      hw = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300, serverHardwareUri: '/rest/fake').get_server_hardware
+      hw = OneviewSDK::API300::Synergy::ServerProfile.new(@client_300, serverHardwareUri: '/rest/fake').get_server_hardware
       expect(hw).to be_a(OneviewSDK::ServerHardware)
     end
   end
 
   describe '#get_available_networks' do
     it 'calls the #get_available_networks class method' do
-      p = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300, enclosureGroupUri: '/rest/fake', serverHardwareTypeUri: '/rest/fake2')
+      p = OneviewSDK::API300::Synergy::ServerProfile.new(@client_300, enclosureGroupUri: '/rest/fake', serverHardwareTypeUri: '/rest/fake2')
       query = { enclosure_group_uri: p['enclosureGroupUri'], server_hardware_type_uri: p['serverHardwareTypeUri'] }
-      expect(OneviewSDK::API300::Thunderbird::ServerProfile).to receive(:get_available_networks).with(@client_300, query).and_return([])
+      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_available_networks).with(@client_300, query).and_return([])
       expect(p.get_available_networks).to eq([])
     end
   end
 
   describe '#available_hardware' do
     it 'requires the serverHardwareTypeUri value to be set' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300).get_available_hardware }
+      expect { OneviewSDK::API300::Synergy::ServerProfile.new(@client_300).get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'requires the enclosureGroupUri value to be set' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
+      expect { OneviewSDK::API300::Synergy::ServerProfile.new(@client_300, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
     it 'calls #find_by with the serverHardwareTypeUri and enclosureGroupUri' do
-      @item = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client_300, serverHardwareTypeUri: '/rest/fake', enclosureGroupUri: '/rest/fake2')
+      @item = OneviewSDK::API300::Synergy::ServerProfile.new(@client_300, serverHardwareTypeUri: '/rest/fake', enclosureGroupUri: '/rest/fake2')
       params = { state: 'NoProfileApplied', serverHardwareTypeUri: @item['serverHardwareTypeUri'], serverGroupUri: @item['enclosureGroupUri'] }
       expect(OneviewSDK::ServerHardware).to receive(:find_by).with(@client_300, params).and_return([])
       expect(@item.get_available_hardware).to eq([])
@@ -463,7 +463,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
         ]
       )
       expect(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbod-attachments').and_return(attachment_list)
-      item = OneviewSDK::API300::Thunderbird::ServerProfile.get_sas_logical_jbod_attachment(@client_300, 'Attachment2')
+      item = OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod_attachment(@client_300, 'Attachment2')
       expect(item['uri']).to eq('rest/fake/2')
     end
   end
@@ -478,7 +478,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
         ]
       )
       expect(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbods').and_return(list)
-      item = OneviewSDK::API300::Thunderbird::ServerProfile.get_sas_logical_jbod(@client_300, 'SAS_LOGICAL_JBOD2')
+      item = OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod(@client_300, 'SAS_LOGICAL_JBOD2')
       expect(item['uri']).to eq('rest/fake/2')
     end
   end
@@ -487,9 +487,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfile do
     it 'should list all the SASLogicalJBOD drives' do
       list = FakeResponse.new('members' => [{ 'name' => 'SAS_LOGICAL_JBOD1', 'uri' => '/rest/fake/1' }])
       allow(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbods').and_return(list)
-      @item = OneviewSDK::API300::Thunderbird::ServerProfile.get_sas_logical_jbod(@client_300, 'SAS_LOGICAL_JBOD1')
+      @item = OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod(@client_300, 'SAS_LOGICAL_JBOD1')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/1/drives').and_return(FakeResponse.new('it' => 'works'))
-      expect(OneviewSDK::API300::Thunderbird::ServerProfile.get_sas_logical_jbod_drives(@client_300, 'SAS_LOGICAL_JBOD1')['it']).to eq('works')
+      expect(OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod_drives(@client_300, 'SAS_LOGICAL_JBOD1')['it']).to eq('works')
     end
   end
 end

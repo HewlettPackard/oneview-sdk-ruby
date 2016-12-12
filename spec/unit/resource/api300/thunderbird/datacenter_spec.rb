@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::Datacenter do
+RSpec.describe OneviewSDK::API300::Synergy::Datacenter do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -20,7 +20,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Datacenter do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      datacenter = OneviewSDK::API300::Thunderbird::Datacenter.new(@client_300)
+      datacenter = OneviewSDK::API300::Synergy::Datacenter.new(@client_300)
       expect(datacenter['contents']).to eq([])
     end
   end
@@ -32,7 +32,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Datacenter do
         width: 5000,
         depth: 5000
       }
-      item = OneviewSDK::API300::Thunderbird::Datacenter.new(@client_300, options)
+      item = OneviewSDK::API300::Synergy::Datacenter.new(@client_300, options)
       expect(@client_300).to receive(:rest_post).with(
         '/rest/datacenters',
         { 'body' => { 'name' => 'Datacenter', 'width' => 5000, 'depth' => 5000, 'contents' => [] } },
@@ -44,7 +44,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Datacenter do
 
   describe '#remove' do
     it 'Should support remove' do
-      datacenter = OneviewSDK::API300::Thunderbird::Datacenter.new(@client_300, uri: '/rest/datacenters/100')
+      datacenter = OneviewSDK::API300::Synergy::Datacenter.new(@client_300, uri: '/rest/datacenters/100')
       expect(@client_300).to receive(:rest_delete).with('/rest/datacenters/100', {}, 300).and_return(FakeResponse.new({}))
       datacenter.remove
     end
@@ -52,7 +52,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Datacenter do
 
   describe '#add_rack' do
     before :each do
-      @datacenter = OneviewSDK::API300::Thunderbird::Datacenter.new(@client_300)
+      @datacenter = OneviewSDK::API300::Synergy::Datacenter.new(@client_300)
     end
 
     it 'Add one rack without rotation' do
@@ -79,7 +79,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Datacenter do
 
   describe '#remove_rack' do
     before :each do
-      @datacenter = OneviewSDK::API300::Thunderbird::Datacenter.new(@client_300)
+      @datacenter = OneviewSDK::API300::Synergy::Datacenter.new(@client_300)
     end
 
     it 'Remove rack from empty list' do
@@ -101,12 +101,12 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Datacenter do
 
   describe 'undefined methods' do
     it 'does not allow the create action' do
-      datacenter = OneviewSDK::API300::Thunderbird::Datacenter.new(@client_300)
+      datacenter = OneviewSDK::API300::Synergy::Datacenter.new(@client_300)
       expect { datacenter.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
 
     it 'does not allow the delete action' do
-      datacenter = OneviewSDK::API300::Thunderbird::Datacenter.new(@client_300)
+      datacenter = OneviewSDK::API300::Synergy::Datacenter.new(@client_300)
       expect { datacenter.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end

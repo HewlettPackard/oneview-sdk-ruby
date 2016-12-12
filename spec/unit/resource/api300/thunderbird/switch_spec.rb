@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::Switch do
+RSpec.describe OneviewSDK::API300::Synergy::Switch do
   include_context 'shared context'
 
   it 'does not inherit from API200' do

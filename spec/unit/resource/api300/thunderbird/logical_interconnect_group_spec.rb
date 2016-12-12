@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup
+klass = OneviewSDK::API300::Synergy::LogicalInterconnectGroup
 RSpec.describe klass do
   include_context 'shared context'
 
   it 'inherits from API200 and does not inherit from LogicalInterconnectGroup' do
-    expect(described_class).to be < OneviewSDK::API300::Thunderbird::Resource
-    expect(klass).not_to be < OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup
+    expect(described_class).to be < OneviewSDK::API300::Synergy::Resource
+    expect(klass).not_to be < OneviewSDK::API300::Synergy::LogicalInterconnectGroup
   end
 
   describe '#initialize' do
@@ -24,7 +24,7 @@ RSpec.describe klass do
   describe '#add_uplink_set' do
     it 'adds it to the \'uplinkSets\' data attribute' do
       item = klass.new(@client_300)
-      uplink = OneviewSDK::API300::Thunderbird::UplinkSet.new(@client_300)
+      uplink = OneviewSDK::API300::Synergy::UplinkSet.new(@client_300)
       item.add_uplink_set(uplink)
       expect(item['uplinkSets'].size).to eq(1)
       expect(item['uplinkSets'].first).to eq(uplink.data)
@@ -49,7 +49,7 @@ RSpec.describe klass do
   describe '#add_internal_network' do
     it 'adds a network' do
       item = klass.new(@client_300)
-      network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client, uri: '/rest/fake')
+      network = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client, uri: '/rest/fake')
       expect(item.add_internal_network(network)).to be
       expect(item['internalNetworkUris']).to eq(['/rest/fake'])
     end
@@ -59,11 +59,11 @@ RSpec.describe klass do
     it 'adds a valid interconnect type' do
       item = klass.new(@client_300)
       type = 'Virtual Connect SE 40Gb F8 Module for Synergy'
-      logical_downlink = OneviewSDK::API300::Thunderbird::LogicalDownlink.new(@client_300, name: 'LD')
-      allow(OneviewSDK::API300::Thunderbird::LogicalDownlink).to receive(:find_by).with(anything, name: 'LD')
+      logical_downlink = OneviewSDK::API300::Synergy::LogicalDownlink.new(@client_300, name: 'LD')
+      allow(OneviewSDK::API300::Synergy::LogicalDownlink).to receive(:find_by).with(anything, name: 'LD')
         .and_return([logical_downlink])
       logical_downlink['uri'] = '/rest/fake'
-      allow(OneviewSDK::API300::Thunderbird::Interconnect).to receive(:get_type).with(anything, type)
+      allow(OneviewSDK::API300::Synergy::Interconnect).to receive(:get_type).with(anything, type)
         .and_return('uri' => '/rest/fake')
       item.add_interconnect(1, type, 'LD')
       expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates'][0]['permittedInterconnectTypeUri'])

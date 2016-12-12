@@ -13,8 +13,8 @@ require_relative '../../api200/enclosure'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Enclosure resource implementation for API300 Thunderbird
+    module Synergy
+      # Enclosure resource implementation for API300 Synergy
       class Enclosure < OneviewSDK::API200::Enclosure
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -31,7 +31,7 @@ module OneviewSDK
 
         # Claim/configure the enclosure and its components to the appliance
         # @note Calls the update_enclosure_names method to set the enclosure names
-        # @return [Array<OneviewSDK:API300:Thunderbird::Enclosure>] containing the added enclosures
+        # @return [Array<OneviewSDK:API300:Synergy::Enclosure>] containing the added enclosures
         def add
           ensure_client
           required_attributes = %w(hostname)
@@ -43,7 +43,7 @@ module OneviewSDK
 
           # Renames the enclosures if the @data['name'] is not nil, otherwise only returns the enclosures
           @data['name'] ||= ''
-          OneviewSDK::API300::Thunderbird::Enclosure.update_enclosure_names(@client, @data['hostname'], @data['name'])
+          OneviewSDK::API300::Synergy::Enclosure.update_enclosure_names(@client, @data['hostname'], @data['name'])
         end
 
         # Update specific attributes of a given enclosure
@@ -78,7 +78,7 @@ module OneviewSDK
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [String] hostname The ipv6 of the enclosure to be added
         # @param [String] name The name to be used for renaming the enclosures
-        # @return [Array<OneviewSDK:API300:Thunderbird::Enclosure>] which had their name changed
+        # @return [Array<OneviewSDK:API300:Synergy::Enclosure>] which had their name changed
         # @raise [OneviewSDK::IncompleteResource] if a client and hostname are nil
         def self.update_enclosure_names(client, hostname, name = '')
           raise IncompleteResource, 'Missing parameters for update_enclosure_names' unless client && hostname
@@ -86,7 +86,7 @@ module OneviewSDK
 
           # Retrieve the frameLinkModuleDomain of the specified enclosure, then use it to find all enclosures
           # that share that frameLinkModuleDomain.
-          all_enclosures = OneviewSDK::API300::Thunderbird::Enclosure.find_by(client, {})
+          all_enclosures = OneviewSDK::API300::Synergy::Enclosure.find_by(client, {})
           all_enclosures.each do |encl|
             frame_link = encl['frameLinkModuleDomain'] if encl['managerBays'].first['ipAddress'] == hostname
           end

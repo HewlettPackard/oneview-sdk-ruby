@@ -13,8 +13,8 @@ require_relative '../../api200/network_set'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Network set resource implementation for API300 Thunderbird
+    module Synergy
+      # Network set resource implementation for API300 Synergy
       class NetworkSet < OneviewSDK::API200::NetworkSet
 
         # Create a resource object, associate it with a client, and set its properties.

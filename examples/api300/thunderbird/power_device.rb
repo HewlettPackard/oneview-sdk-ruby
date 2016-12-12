@@ -26,7 +26,7 @@ options = {
 }
 
 # Adding a Power Device
-item = OneviewSDK::API300::Thunderbird::PowerDevice.new(@client, name: 'Power_Device_1', ratedCapacity: 500)
+item = OneviewSDK::API300::Synergy::PowerDevice.new(@client, name: 'Power_Device_1', ratedCapacity: 500)
 puts "\nAdding a power device with default values with name #{item['name']}."
 item.add
 item.retrieve!
@@ -34,7 +34,7 @@ puts "\nPower device  added sucessfully with name #{item['name']} and uri #{item
 
 # Gets utilization data
 puts "\nGets utilization for Power Device with name \n #{item['name']}."
-item = OneviewSDK::API300::Thunderbird::PowerDevice.find_by(@client, {}).first
+item = OneviewSDK::API300::Synergy::PowerDevice.find_by(@client, {}).first
 item.utilization
 puts "\nUtilization for Power Device with name \n #{item['name']} sucessfully."
 
@@ -51,7 +51,7 @@ puts "\nPower Device was sucessfully removed."
 
 # iPDU Discover
 puts "\nDiscovering ipdu."
-item2 = OneviewSDK::API300::Thunderbird::PowerDevice.discover(@client, options)
+item2 = OneviewSDK::API300::Synergy::PowerDevice.discover(@client, options)
 puts "IPDU with uri #{item2['uri']} was discovered sucessfully."
 
 # List iPDU power connections
@@ -68,7 +68,7 @@ options2 = {
   password: @ipdu_password,
   hostname: @ipdu_hostname
 }
-ipdu_list = OneviewSDK::API300::Thunderbird::PowerDevice.find_by(@client, 'managedBy' => { 'hostName' => @ipdu_hostname })
+ipdu_list = OneviewSDK::API300::Synergy::PowerDevice.find_by(@client, 'managedBy' => { 'hostName' => @ipdu_hostname })
 item3 = ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
 item3.set_refresh_state(options2)
 puts "\nRefresh sucessfully."

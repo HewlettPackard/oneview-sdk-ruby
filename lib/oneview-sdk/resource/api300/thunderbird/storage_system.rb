@@ -13,7 +13,7 @@ require_relative '../../api200/storage_system'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class StorageSystem < OneviewSDK::API200::StorageSystem
       end
     end

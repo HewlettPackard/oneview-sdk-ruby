@@ -13,7 +13,7 @@ require_relative '../../api200/server_profile'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       # Server profile resource implementation
       class ServerProfile < OneviewSDK::API200::ServerProfile
         LOGICAL_JBOD_URI = '/rest/sas-logical-jbods'.freeze

@@ -11,18 +11,18 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::PowerDevice
+klass = OneviewSDK::API300::Synergy::PowerDevice
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @ipdu_list = klass.find_by($client_300_thunderbird, 'managedBy' => { 'hostName' => $secrets_thunderbird['hp_ipdu_ip'] })
+    @ipdu_list = klass.find_by($client_300_synergy, 'managedBy' => { 'hostName' => $secrets_synergy['hp_ipdu_ip'] })
     @item = @ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
   end
 
   describe '#update' do
     it 'Change name of the Power device 1' do
-      power_device = klass.new($client_300_thunderbird, name: POW_DEVICE1_NAME)
+      power_device = klass.new($client_300_synergy, name: POW_DEVICE1_NAME)
       power_device.retrieve!
       expect { power_device.update(name: POW_DEVICE2_NAME) }.not_to raise_error
       expect(power_device['name']).to eq(POW_DEVICE2_NAME)
@@ -37,8 +37,8 @@ RSpec.describe klass, integration: true, type: UPDATE do
     it 'Refresh with new credentials [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
       options = {
         refreshState: 'RefreshPending',
-        username: $secrets_thunderbird['hp_ipdu_username'],
-        password: $secrets_thunderbird['hp_ipdu_password']
+        username: $secrets_synergy['hp_ipdu_username'],
+        password: $secrets_synergy['hp_ipdu_password']
       }
       expect { @item.set_refresh_state(options) }.not_to raise_error
     end

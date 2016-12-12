@@ -11,19 +11,19 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::Rack
+klass = OneviewSDK::API300::Synergy::Rack
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
   describe '#remove' do
     it 'Rack_1' do
-      item = klass.new($client_300_thunderbird, name: RACK1_NAME)
+      item = klass.new($client_300_synergy, name: RACK1_NAME)
       item.retrieve!
       expect { item.remove }.not_to raise_error
     end
 
     it 'Rack_2' do
-      item = klass.new($client_300_thunderbird, name: RACK2_NAME)
+      item = klass.new($client_300_synergy, name: RACK2_NAME)
       item.retrieve!
       expect { item.remove }.not_to raise_error
     end

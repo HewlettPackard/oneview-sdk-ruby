@@ -13,8 +13,8 @@ require_relative '../../api200/logical_switch_group'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Logical switch group resource implementation for API300 Thunderbird
+    module Synergy
+      # Logical switch group resource implementation for API300 Synergy
       class LogicalSwitchGroup < OneviewSDK::API200::LogicalSwitchGroup
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available

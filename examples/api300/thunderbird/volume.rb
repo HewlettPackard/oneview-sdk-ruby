@@ -25,11 +25,11 @@ puts '1) Common = Storage System + Storage Pool'
 
 
 # Set Storage System
-storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
+storage_system = OneviewSDK::API300::Synergy::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
 storage_system.retrieve!
 
 # Retrieve a Storage Pool
-pools = OneviewSDK::API300::Thunderbird::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
+pools = OneviewSDK::API300::Synergy::StoragePool.find_by(@client, storageSystemUri: storage_system[:uri])
 raise 'ERROR: No storage pools found attached to the provided storage system' if pools.empty?
 storage_pool = pools.first
 
@@ -44,7 +44,7 @@ options1 = {
   }
 }
 
-volume1 = OneviewSDK::API300::Thunderbird::Volume.new(@client, options1)
+volume1 = OneviewSDK::API300::Synergy::Volume.new(@client, options1)
 volume1.set_storage_system(storage_system)
 
 volume1.create!
@@ -64,7 +64,7 @@ options3 = {
   }
 }
 
-volume3 = OneviewSDK::API300::Thunderbird::Volume.new(@client, options3)
+volume3 = OneviewSDK::API300::Synergy::Volume.new(@client, options3)
 
 volume3.set_storage_system(storage_system)
 volume3.set_snapshot_pool(storage_pool) # The same snapshot pool of the storage pool
@@ -87,7 +87,7 @@ if @unmanaged_volume_wwn
     shareable: false
   }
 
-  volume4 = OneviewSDK::API300::Thunderbird::Volume.new(@client, options4)
+  volume4 = OneviewSDK::API300::Synergy::Volume.new(@client, options4)
   volume4.set_storage_system(storage_system)
 
   volume4.create!

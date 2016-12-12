@@ -4,7 +4,7 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup
+klass = OneviewSDK::API300::Synergy::LogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
@@ -24,7 +24,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'creates an uplink set and a LIG with internal networks' do
-      @ethernet_network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
+      @ethernet_network = OneviewSDK::API300::Synergy::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
       @ethernet_network.retrieve!
 
       lig_default_options = {

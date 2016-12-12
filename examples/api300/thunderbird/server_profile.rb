@@ -14,13 +14,13 @@ require_relative '../_client' # Gives access to @client
 # Example: Create a server profile
 # NOTE: This will create a server profile named 'OneViewSDK Test ServerProfile', then delete it.
 
-profile = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client, 'name' => 'OneViewSDK Test ServerProfile')
+profile = OneviewSDK::API300::Synergy::ServerProfile.new(@client, 'name' => 'OneViewSDK Test ServerProfile')
 
-target = OneviewSDK::API300::Thunderbird::ServerProfile.get_available_targets(@client)['targets'].first
+target = OneviewSDK::API300::Synergy::ServerProfile.get_available_targets(@client)['targets'].first
 
-server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client, uri: target['serverHardwareUri'])
-server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.new(@client, uri: target['serverHardwareTypeUri'])
-enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.new(@client, uri: target['enclosureGroupUri'])
+server_hardware = OneviewSDK::API300::Synergy::ServerHardware.new(@client, uri: target['serverHardwareUri'])
+server_hardware_type = OneviewSDK::API300::Synergy::ServerHardwareType.new(@client, uri: target['serverHardwareTypeUri'])
+enclosure_group = OneviewSDK::API300::Synergy::EnclosureGroup.new(@client, uri: target['enclosureGroupUri'])
 
 profile.set_server_hardware(server_hardware)
 profile.set_server_hardware_type(server_hardware_type)
@@ -30,12 +30,12 @@ profile.create
 puts "\nCreated server profile '#{profile[:name]}' sucessfully.\n  uri = '#{profile[:uri]}'"
 
 # Find recently created server profile by name
-matches = OneviewSDK::API300::Thunderbird::ServerProfile.find_by(@client, name: profile[:name])
+matches = OneviewSDK::API300::Synergy::ServerProfile.find_by(@client, name: profile[:name])
 profile2 = matches.first
 puts "\nFound server profile by name: '#{profile[:name]}'.\n  uri = '#{profile2[:uri]}'"
 
 # Retrieve recently created server profile
-profile3 = OneviewSDK::API300::Thunderbird::ServerProfile.new(@client, name: profile[:name])
+profile3 = OneviewSDK::API300::Synergy::ServerProfile.new(@client, name: profile[:name])
 profile3.retrieve!
 puts "\nRetrieved server profile data by name: '#{profile[:name]}'.\n  uri = '#{profile3[:uri]}'"
 
@@ -44,6 +44,6 @@ profile.delete
 puts "\nSucessfully deleted profile '#{profile[:name]}'."
 
 # SAS Logical JBOD
-OneviewSDK::API300::Thunderbird::ServerProfile.get_sas_logical_jbods(@client).each do |item|
+OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbods(@client).each do |item|
   puts "Name: #{item['name']}\nURI: #{item['uri']}"
 end

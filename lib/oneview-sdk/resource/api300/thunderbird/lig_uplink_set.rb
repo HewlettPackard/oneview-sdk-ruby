@@ -13,7 +13,7 @@ require_relative '../../api200/lig_uplink_set'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class LIGUplinkSet < OneviewSDK::API200::LIGUplinkSet
       end
     end

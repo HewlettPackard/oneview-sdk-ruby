@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       # SAS logical interconnect resource implementation
       class SASLogicalInterconnect < Resource
         BASE_URI = '/rest/sas-logical-interconnects'.freeze

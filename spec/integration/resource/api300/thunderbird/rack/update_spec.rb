@@ -11,13 +11,13 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::Rack
+klass = OneviewSDK::API300::Synergy::Rack
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   describe '#update' do
     it 'updates depth' do
-      item = klass.new($client_300_thunderbird, name: RACK1_NAME)
+      item = klass.new($client_300_synergy, name: RACK1_NAME)
       item.retrieve!
       item.update(depth: 1300)
       expect(item['depth']).to eq(1300)

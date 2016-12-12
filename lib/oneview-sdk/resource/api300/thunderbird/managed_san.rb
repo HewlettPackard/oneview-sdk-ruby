@@ -13,8 +13,8 @@ require_relative '../c7000/managed_san'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Managed SAN resource implementation for API300 Thunderbird
+    module Synergy
+      # Managed SAN resource implementation for API300 Synergy
       class ManagedSAN < OneviewSDK::API300::C7000::ManagedSAN
 
       end

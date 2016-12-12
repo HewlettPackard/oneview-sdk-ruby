@@ -19,7 +19,7 @@ require_relative '../../_client' # Gives access to @client
 
 type = 'enclosure'
 
-item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure', hostname: @thunderbird_enclosure_hostname)
+item = OneviewSDK::API300::Synergy::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure', hostname: @synergy_enclosure_hostname)
 enclosures_added = item.add
 enclosures_added.each do |encl|
   puts "\nAdded #{type} '#{encl[:name]}' sucessfully.\n  uri = '#{encl[:uri]}'"
@@ -27,7 +27,7 @@ end
 
 encl1 = enclosures_added[0]
 
-item2 = OneviewSDK::API300::Thunderbird::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure1')
+item2 = OneviewSDK::API300::Synergy::Enclosure.new(@client, name: 'OneViewSDK-Test-Enclosure1')
 item2.retrieve!
 puts "\nFound #{type} by name: '#{item2[:name]}'.\n  uri = '#{item2[:uri]}'"
 

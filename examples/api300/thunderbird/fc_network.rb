@@ -20,17 +20,17 @@ options = {
   fabricType: 'FabricAttach'
 }
 
-fc = OneviewSDK::API300::Thunderbird::FCNetwork.new(@client, options)
+fc = OneviewSDK::API300::Synergy::FCNetwork.new(@client, options)
 fc.create!
 puts "\nCreated fc-network '#{fc[:name]}' sucessfully.\n  uri = '#{fc[:uri]}'"
 
 # Find recently created network by name
-matches = OneviewSDK::API300::Thunderbird::FCNetwork.find_by(@client, name: fc[:name])
+matches = OneviewSDK::API300::Synergy::FCNetwork.find_by(@client, name: fc[:name])
 fc2 = matches.first
 puts "\nFound fc-network by name: '#{fc2[:name]}'.\n  uri = '#{fc2[:uri]}'"
 
 # Retrieve recently created network
-fc3 = OneviewSDK::API300::Thunderbird::FCNetwork.new(@client, name: fc[:name])
+fc3 = OneviewSDK::API300::Synergy::FCNetwork.new(@client, name: fc[:name])
 fc3.retrieve!
 puts "\nRetrieved fc-network data by name: '#{fc3[:name]}'.\n  uri = '#{fc3[:uri]}'"
 
@@ -43,7 +43,7 @@ puts "with attribute: #{attribute}"
 # Example: List all fc networks with certain attributes
 attributes = { fabricType: 'FabricAttach' }
 puts "\nFC networks with #{attributes}"
-OneviewSDK::API300::Thunderbird::FCNetwork.find_by(@client, attributes).each do |network|
+OneviewSDK::API300::Synergy::FCNetwork.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
 

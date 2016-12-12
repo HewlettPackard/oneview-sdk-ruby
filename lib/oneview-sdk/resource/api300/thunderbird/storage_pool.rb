@@ -13,8 +13,8 @@ require_relative '../../api200/storage_pool'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Storage pool resource implementation for Thunderbird
+    module Synergy
+      # Storage pool resource implementation for Synergy
       class StoragePool < OneviewSDK::API200::StoragePool
       end
     end

@@ -12,7 +12,7 @@
 require_relative '../../_client' # Gives access to @client
 
 # Example for adding a Datacenter with default values
-datacenter = OneviewSDK::API300::Thunderbird::Datacenter.new(@client, name: 'MyDatacenter', width: 5000, depth: 5000)
+datacenter = OneviewSDK::API300::Synergy::Datacenter.new(@client, name: 'MyDatacenter', width: 5000, depth: 5000)
 datacenter.add
 puts "Datacenter #{datacenter['name']} was added with uri='#{datacenter['uri']}'"
 

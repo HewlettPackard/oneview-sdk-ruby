@@ -16,14 +16,14 @@ require_relative '../../_client' # Gives access to @client
 
 # List firmware drivers
 puts "\nAvailable firmware drivers"
-OneviewSDK::API300::Thunderbird::FirmwareDriver.find_by(@client, {}).each do |firmware|
+OneviewSDK::API300::Synergy::FirmwareDriver.find_by(@client, {}).each do |firmware|
   puts firmware['name']
 end
 
-spp = OneviewSDK::API300::Thunderbird::FirmwareDriver.find_by(@client, state: 'Created', bundleType: 'SPP').first
-hotfix = OneviewSDK::API300::Thunderbird::FirmwareDriver.find_by(@client, state: 'Created', bundleType: 'Hotfix').first
+spp = OneviewSDK::API300::Synergy::FirmwareDriver.find_by(@client, state: 'Created', bundleType: 'SPP').first
+hotfix = OneviewSDK::API300::Synergy::FirmwareDriver.find_by(@client, state: 'Created', bundleType: 'Hotfix').first
 
-custom_spp = OneviewSDK::API300::Thunderbird::FirmwareDriver.new(@client)
+custom_spp = OneviewSDK::API300::Synergy::FirmwareDriver.new(@client)
 custom_spp['baselineUri'] = spp['uri']
 custom_spp['hotfixUris'] = [
   hotfix['uri']

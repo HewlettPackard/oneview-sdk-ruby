@@ -13,7 +13,7 @@ require_relative '../../api200/switch'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       # Switch resource implementation
       class Switch
 

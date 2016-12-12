@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       # SAS Logical interconnect group resource implementation
       class SASLogicalInterconnectGroup < Resource
         BASE_URI = '/rest/sas-logical-interconnect-groups'.freeze
@@ -45,12 +45,12 @@ module OneviewSDK
           @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
             entry['logicalLocation']['locationEntries'].each do |location|
               if location['type'] == 'Bay' && location['relativeValue'] == bay
-                entry['permittedInterconnectTypeUri'] = OneviewSDK::API300::Thunderbird::SASInterconnect.get_type(@client, type)['uri']
+                entry['permittedInterconnectTypeUri'] = OneviewSDK::API300::Synergy::SASInterconnect.get_type(@client, type)['uri']
               end
             end
           end
         rescue StandardError
-          list = OneviewSDK::API300::Thunderbird::SASInterconnect.get_types(@client).map { |t| t['name'] }
+          list = OneviewSDK::API300::Synergy::SASInterconnect.get_types(@client).map { |t| t['name'] }
           raise "SAS Interconnect type '#{type}' not found! Supported types: #{list}"
         end
 

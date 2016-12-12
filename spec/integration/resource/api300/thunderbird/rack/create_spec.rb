@@ -11,21 +11,21 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::Rack
+klass = OneviewSDK::API300::Synergy::Rack
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
   describe '#add' do
     it 'Add empty rack' do
-      item = klass.new($client_300_thunderbird, name: RACK1_NAME)
+      item = klass.new($client_300_synergy, name: RACK1_NAME)
       item.add
       expect(item['name']).to eq(RACK1_NAME)
       expect(item['uri']).not_to be_empty
     end
 
     it 'Add rack with custom size and mounted enclosure' do
-      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.get_all($client_300_thunderbird).first
-      item = klass.new($client_300_thunderbird, name: RACK2_NAME)
+      server_hardware = OneviewSDK::API300::Synergy::ServerHardware.get_all($client_300_synergy).first
+      item = klass.new($client_300_synergy, name: RACK2_NAME)
       item['depth'] = 1500
       item['width'] = 1200
       item['height'] = 2500
@@ -47,7 +47,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#get_device_topology' do
     it 'Retrieve device topology' do
-      item = klass.new($client_300_thunderbird, name: RACK2_NAME)
+      item = klass.new($client_300_synergy, name: RACK2_NAME)
       item.retrieve!
       expect { item.get_device_topology }.not_to raise_error
     end

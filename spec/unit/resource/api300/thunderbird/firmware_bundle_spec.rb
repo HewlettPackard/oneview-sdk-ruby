@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'net/http/post/multipart'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::FirmwareBundle do
+RSpec.describe OneviewSDK::API300::Synergy::FirmwareBundle do
   include_context 'shared context'
 
   it 'inherits from API200' do

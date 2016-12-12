@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::VolumeSnapshot do
+RSpec.describe OneviewSDK::API300::Synergy::VolumeSnapshot do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -17,14 +17,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeSnapshot do
 
   describe '#initialize' do
     it 'sets the type correctly' do
-      template = OneviewSDK::API300::Thunderbird::VolumeSnapshot.new(@client_300)
+      template = OneviewSDK::API300::Synergy::VolumeSnapshot.new(@client_300)
       expect(template[:type]).to eq('Snapshot')
     end
   end
 
   describe 'undefined methods' do
     before :each do
-      @item = OneviewSDK::API300::Thunderbird::VolumeSnapshot.new(@client_300, {})
+      @item = OneviewSDK::API300::Synergy::VolumeSnapshot.new(@client_300, {})
     end
 
     it 'does not allow the create action' do
@@ -39,7 +39,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeSnapshot do
 
   describe 'helpers' do
     before :each do
-      @item = OneviewSDK::API300::Thunderbird::VolumeSnapshot.new(@client_300, options)
+      @item = OneviewSDK::API300::Synergy::VolumeSnapshot.new(@client_300, options)
     end
 
     describe '#set_volume' do

@@ -15,10 +15,10 @@ require_relative '../../_client' # Gives access to @client
 # NOTE: This will create a network set named 'NetworkSet_1', then delete it.
 
 # Retrieve ethernet networks available in HPE OneView
-ethernet_networks = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by(@client, {})
+ethernet_networks = OneviewSDK::API300::Synergy::EthernetNetwork.find_by(@client, {})
 
 # Network set creation
-network_set = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client)
+network_set = OneviewSDK::API300::Synergy::NetworkSet.new(@client)
 network_set['name'] = 'NetworkSet_1'
 
 # Adding until three ethernet networks to the network set

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalEnclosure
-extra_klass_1 = OneviewSDK::API300::Thunderbird::EnclosureGroup
-extra_klass_2 = OneviewSDK::API300::Thunderbird::Enclosure
-extra_klass_3 = OneviewSDK::API300::Thunderbird::FirmwareDriver
+klass = OneviewSDK::API300::Synergy::LogicalEnclosure
+extra_klass_1 = OneviewSDK::API300::Synergy::EnclosureGroup
+extra_klass_2 = OneviewSDK::API300::Synergy::Enclosure
+extra_klass_3 = OneviewSDK::API300::Synergy::FirmwareDriver
 RSpec.describe klass do
   include_context 'shared context'
 

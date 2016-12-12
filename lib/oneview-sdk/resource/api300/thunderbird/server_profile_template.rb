@@ -13,8 +13,8 @@ require_relative '../c7000/server_profile_template'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Server Profile Template resource implementation on API300 Thunderbird
+    module Synergy
+      # Server Profile Template resource implementation on API300 Synergy
       class ServerProfileTemplate < OneviewSDK::API300::C7000::ServerProfileTemplate
 
         # Create a resource object, associate it with a client, and set its properties.

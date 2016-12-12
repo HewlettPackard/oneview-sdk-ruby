@@ -13,8 +13,8 @@ require_relative '../../api200/fc_network'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # FC network resource implementation for API300 Thunderbird
+    module Synergy
+      # FC network resource implementation for API300 Synergy
       class FCNetwork < OneviewSDK::API200::FCNetwork
 
         # Create a resource object, associate it with a client, and set its properties.

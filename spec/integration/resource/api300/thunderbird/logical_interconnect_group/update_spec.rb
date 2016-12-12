@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup
+klass = OneviewSDK::API300::Synergy::LogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
@@ -9,7 +9,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       item_2 = klass.new($client_300, name: LOG_INT_GROUP2_NAME)
       item_2.retrieve!
 
-      ethernet_network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
+      ethernet_network = OneviewSDK::API300::Synergy::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
       ethernet_network.retrieve!
 
       item_2['internalNetworkUris'] = []

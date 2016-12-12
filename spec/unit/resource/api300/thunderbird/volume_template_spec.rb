@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
+RSpec.describe OneviewSDK::API300::Synergy::VolumeTemplate do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -31,14 +31,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      profile = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300)
+      profile = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300)
       expect(profile[:type]).to eq('StorageVolumeTemplateV3')
     end
   end
 
   describe '#create' do
     it 'adds a language header to the request' do
-      item = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300, name: 'Fake')
+      item = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300, name: 'Fake')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(uri: '/rest/fake')
       expect(@client_300).to receive(:rest_post).with(
@@ -53,12 +53,12 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
 
   describe '#update' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300).update }
+      expect { OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300).update }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'updates the name of the volume template' do
-      item = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300, uri: '/rest/fake', name: 'Fake')
+      item = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300, uri: '/rest/fake', name: 'Fake')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_put).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(true).and_return(item['name'] = 'Fake2')
       expect(@client_300).to receive(:rest_put).with(
@@ -74,7 +74,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
 
   describe '#delete' do
     it 'adds a language header to the request' do
-      item = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300, name: 'Fake', uri: '/rest/fake')
+      item = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300, name: 'Fake', uri: '/rest/fake')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_delete).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
       expect(@client_300).to receive(:rest_delete).with(
@@ -89,7 +89,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
   describe '#set' do
     context 'provisioning' do
       it 'Attributes' do
-        volume_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300)
+        volume_template = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300)
         volume_template.set_provisioning(true, 'Thin', '10737418240', fake_storage_pool)
         expect(volume_template['provisioning']['shareable']).to eq(true)
         expect(volume_template['provisioning']['provisionType']).to eq('Thin')
@@ -100,13 +100,13 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
 
     context 'data' do
       it 'storage system' do
-        volume_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300)
+        volume_template = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300)
         volume_template.set_storage_system(fake_storage_system)
         expect(volume_template['storageSystemUri']).to eq('/rest/storage-systems/fake_uri')
       end
 
       it 'snapshot pool' do
-        volume_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300)
+        volume_template = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300)
         volume_template.set_snapshot_pool(fake_snapshot_pool)
         expect(volume_template['snapshotPoolUri']).to eq('/rest/storage-systems/snapshot-pools/fake_uri')
       end
@@ -115,7 +115,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::VolumeTemplate do
 
   describe '#get_connectable_volume_templates' do
     it 'gets the connectable volume templates by its attributes' do
-      volume_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client_300)
+      volume_template = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client_300)
       allow(OneviewSDK::Resource)
         .to receive(:find_by).with(@client_300, {}, '/rest/storage-volume-templates/connectable-volume-templates').and_return('fake')
       expect(volume_template.get_connectable_volume_templates).to eq('fake')

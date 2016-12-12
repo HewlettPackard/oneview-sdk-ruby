@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::SASInterconnect
+klass = OneviewSDK::API300::Synergy::SASInterconnect
 inherited_klass = OneviewSDK::Resource
 
 RSpec.describe klass do

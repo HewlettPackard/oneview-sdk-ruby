@@ -13,7 +13,7 @@ require_relative '../../../resource'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class Resource < OneviewSDK::Resource
       end
     end

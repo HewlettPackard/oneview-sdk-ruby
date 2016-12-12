@@ -13,8 +13,8 @@ require_relative '../../api200/datacenter'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Datacenter resource implementation for API300 Thunderbird
+    module Synergy
+      # Datacenter resource implementation for API300 Synergy
       class Datacenter < OneviewSDK::API200::Datacenter
       end
     end

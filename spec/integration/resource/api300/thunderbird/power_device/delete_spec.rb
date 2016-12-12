@@ -11,15 +11,15 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::PowerDevice
+klass = OneviewSDK::API300::Synergy::PowerDevice
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
   describe '#remove' do
     before :all do
-      @power_device_1 = klass.new($client_300_thunderbird, name: POW_DEVICE2_NAME)
+      @power_device_1 = klass.new($client_300_synergy, name: POW_DEVICE2_NAME)
       @power_device_1.retrieve!
-      ipdu_list = klass.find_by($client_300_thunderbird, 'managedBy' => { 'hostName' => $secrets_thunderbird['hp_ipdu_ip'] })
+      ipdu_list = klass.find_by($client_300_synergy, 'managedBy' => { 'hostName' => $secrets_synergy['hp_ipdu_ip'] })
       @power_device_2 = ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
     end
 

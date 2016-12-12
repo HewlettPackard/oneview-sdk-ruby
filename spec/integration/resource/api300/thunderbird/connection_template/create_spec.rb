@@ -11,13 +11,13 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::ConnectionTemplate
+klass = OneviewSDK::API300::Synergy::ConnectionTemplate
 RSpec.describe klass, integration: true, type: CREATE do
   include_context 'integration api300 context'
 
   describe '#create' do
     it 'self raises MethodUnavailable' do
-      item = klass.new($client_300_thunderbird)
+      item = klass.new($client_300_synergy)
       expect { item.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
   end

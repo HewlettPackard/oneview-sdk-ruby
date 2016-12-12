@@ -13,7 +13,7 @@ require_relative '../../api200/volume_snapshot'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class VolumeSnapshot < OneviewSDK::API200::VolumeSnapshot
       end
     end

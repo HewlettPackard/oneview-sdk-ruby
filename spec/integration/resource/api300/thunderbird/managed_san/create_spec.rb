@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::ManagedSAN
-extra_klass = OneviewSDK::API300::Thunderbird::FCNetwork
+klass = OneviewSDK::API300::Synergy::ManagedSAN
+extra_klass = OneviewSDK::API300::Synergy::FCNetwork
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
@@ -26,11 +26,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe 'Import SANs' do
     it 'create fc networks' do
-      klass.find_by($client_300_thunderbird, deviceManagerName: $secrets['san_manager_ip']).each do |san|
+      klass.find_by($client_300_synergy, deviceManagerName: $secrets['san_manager_ip']).each do |san|
         options = fc_options
         options[:name] = "FC_#{san['name']}"
         options[:managedSanUri] = san['uri']
-        fc = extra_klass.new($client_300_thunderbird, options)
+        fc = extra_klass.new($client_300_synergy, options)
         fc.create!
         expect(fc['uri']).to be
       end

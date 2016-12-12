@@ -11,7 +11,7 @@
 
 require_relative '../../_client' # Gives access to @client
 
-# Example: Add server hardware for an API300 Thunderbird Appliance
+# Example: Add server hardware for an API300 Synergy Appliance
 # NOTE: This will add an available server hardware device, then delete it.
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid credentials for your environment:
 #   @server_hardware_hostname (hostname or IP address)
@@ -26,29 +26,29 @@ options = {
   licensingIntent: 'OneView'
 }
 
-item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client, options)
+item = OneviewSDK::API300::Synergy::ServerHardware.new(@client, options)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
 # Find recently created item by name
-matches = OneviewSDK::API300::Thunderbird::ServerHardware.find_by(@client, name: item[:name])
+matches = OneviewSDK::API300::Synergy::ServerHardware.find_by(@client, name: item[:name])
 item2 = matches.first
 raise "Failed to find #{type} by name: '#{item[:name]}'" unless matches.first
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
 
 # Retrieve recently created item
-item3 = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client, name: item[:name])
+item3 = OneviewSDK::API300::Synergy::ServerHardware.new(@client, name: item[:name])
 item3.retrieve!
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item3[:uri]}'"
 
 # List all server hardware
 puts "\n\n#{type.capitalize} list:"
-OneviewSDK::API300::Thunderbird::ServerHardware.find_by(@client, {}).each do |p|
+OneviewSDK::API300::Synergy::ServerHardware.find_by(@client, {}).each do |p|
   puts "  #{p[:name]}"
 end
 
 # Get a firmware inventory by id
-item4 = OneviewSDK::API300::Thunderbird::ServerHardware.find_by(@client, {}).first
+item4 = OneviewSDK::API300::Synergy::ServerHardware.find_by(@client, {}).first
 puts "\nGet a firmware with id :'#{item4[:uri]}'"
 response = item4.get_firmware_by_id
 puts "\nFound firware inventory by id: '#{item4[:uri]}'."

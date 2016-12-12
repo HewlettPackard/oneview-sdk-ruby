@@ -12,7 +12,7 @@
 require_relative '../../_client' # Gives access to @client
 
 # Example: Manage connection templates
-default = OneviewSDK::API300::Thunderbird::ConnectionTemplate.get_default(@client)
+default = OneviewSDK::API300::Synergy::ConnectionTemplate.get_default(@client)
 if default['uri']
   puts "\nRetrieved default connection template with name='#{default['name']}'"
   puts "(- maximumBandwidth: #{default['bandwidth']['maximumBandwidth']})"
@@ -21,7 +21,7 @@ end
 
 # List all connections
 puts "\nList all connections templates:"
-OneviewSDK::API300::Thunderbird::ConnectionTemplate.find_by(@client, {}).each do |c|
+OneviewSDK::API300::Synergy::ConnectionTemplate.find_by(@client, {}).each do |c|
   puts "  Name: #{c[:name]} with uri: #{c[:uri]}"
 end
 

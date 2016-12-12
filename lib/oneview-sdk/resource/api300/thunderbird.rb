@@ -11,17 +11,17 @@
 
 module OneviewSDK
   module API300
-    # Module for API300 Thunderbird
-    module Thunderbird
+    # Module for API300 Synergy
+    module Synergy
       # Get resource class that matches the type given
       # @param [String] type Name of the desired class type
       # @return [Class] Resource class or nil if not found
       def self.resource_named(type)
-        OneviewSDK::API300.resource_named(type, 'Thunderbird')
+        OneviewSDK::API300.resource_named(type, 'Synergy')
       end
     end
   end
 end
 
 # Load all API-specific resources:
-Dir[File.dirname(__FILE__) + '/thunderbird/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/synergy/*.rb'].each { |file| require file }

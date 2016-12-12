@@ -12,14 +12,14 @@
 require_relative '../../_client' # Gives access to @client
 
 
-all_fabrics = OneviewSDK::API300::Thunderbird::Fabric.find_by(@client, {})
+all_fabrics = OneviewSDK::API300::Synergy::Fabric.find_by(@client, {})
 
 puts "\n\n### Here are all fabrics available:"
 all_fabrics.each do |fabric|
   puts fabric['name']
 end
 
-fabric2 = OneviewSDK::API300::Thunderbird::Fabric.new(@client, 'name' => 'DefaultFabric')
+fabric2 = OneviewSDK::API300::Synergy::Fabric.new(@client, 'name' => 'DefaultFabric')
 puts "\n\n### Retrieving the Fabric named: #{fabric2['name']}"
 fabric2.retrieve!
 puts JSON.pretty_generate(fabric2.data)
@@ -31,7 +31,7 @@ fabric_options = {
 }
 
 puts "\n\n### Here we get the reserved vlan range for the first fabric found"
-fabric = OneviewSDK::API300::Thunderbird::Fabric.find_by(@client, {}).first
+fabric = OneviewSDK::API300::Synergy::Fabric.find_by(@client, {}).first
 puts JSON.pretty_generate(fabric.get_reserved_vlan_range)
 puts "\n\n### Then we modify the reserved vlan range attributes and get the new values"
 fabric.set_reserved_vlan_range(fabric_options)

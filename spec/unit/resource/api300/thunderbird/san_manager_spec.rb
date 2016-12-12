@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::SANManager do
+RSpec.describe OneviewSDK::API300::Synergy::SANManager do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -20,14 +20,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::SANManager do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(@client_300)
+      san_manager = OneviewSDK::API300::Synergy::SANManager.new(@client_300)
       expect(san_manager['type']).to eq('FCDeviceManagerV2')
     end
   end
 
   describe '#add' do
     it 'Should support add' do
-      san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(
+      san_manager = OneviewSDK::API300::Synergy::SANManager.new(
         @client_300,
         name: 'san_manager_1',
         providerDisplayName: 'Brocade',
@@ -51,7 +51,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::SANManager do
 
   describe '#remove' do
     it 'Should support remove' do
-      san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(@client_300, uri: '/rest/fake')
+      san_manager = OneviewSDK::API300::Synergy::SANManager.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_delete).with('/rest/fake', {}, 300).and_return(FakeResponse.new({}))
       san_manager.remove
     end
@@ -59,14 +59,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::SANManager do
 
   describe '#create' do
     it 'Should raise error if used' do
-      san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(@client_300)
+      san_manager = OneviewSDK::API300::Synergy::SANManager.new(@client_300)
       expect { san_manager.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
   end
 
   describe '#delete' do
     it 'Should raise error if used' do
-      san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(@client_300)
+      san_manager = OneviewSDK::API300::Synergy::SANManager.new(@client_300)
       expect { san_manager.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
@@ -93,7 +93,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::SANManager do
           ]
         )
       )
-      default_connection = OneviewSDK::API300::Thunderbird::SANManager.get_default_connection_info(@client_300, 'FCProvider_01')
+      default_connection = OneviewSDK::API300::Synergy::SANManager.get_default_connection_info(@client_300, 'FCProvider_01')
       expect(default_connection.first['name']).to eq('Host')
       expect(default_connection.first['value']).to eq('san01.hpe.com')
       expect(default_connection.last['name']).to eq('Username')

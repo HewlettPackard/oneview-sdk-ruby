@@ -24,8 +24,8 @@ mkmf.log
 *.sw*
 examples/_client.rb
 spec/integration/one_view_config.json
-spec/integration/one_view_thunderbird_config.json
+spec/integration/one_view_synergy_config.json
 spec/integration/one_view_secrets.json
-spec/integration/one_view_thunderbird_secrets.json
+spec/integration/one_view_synergy_secrets.json
 spec/system/one_view_config.json
 spec/system/one_view_secrets.json

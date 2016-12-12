@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::ManagedSAN
+klass = OneviewSDK::API300::Synergy::ManagedSAN
 RSpec.describe klass do
   include_context 'shared context'
 

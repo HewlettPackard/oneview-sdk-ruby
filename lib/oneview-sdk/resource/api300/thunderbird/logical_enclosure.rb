@@ -13,8 +13,8 @@ require_relative '../c7000/logical_enclosure'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Logical Enclosure resource implementation on API300 Thunderbird
+    module Synergy
+      # Logical Enclosure resource implementation on API300 Synergy
       class LogicalEnclosure < OneviewSDK::API300::C7000::LogicalEnclosure
 
         def initialize(client, params = {}, api_ver = nil)
@@ -22,14 +22,14 @@ module OneviewSDK
         end
 
         # Sets the enclosure group for the logical enclosure
-        # @param [OneviewSDK::API300::Thunderbird::EnclosureGroup] enclosure_group Enclosure Group that the Server is a member
+        # @param [OneviewSDK::API300::Synergy::EnclosureGroup] enclosure_group Enclosure Group that the Server is a member
         def set_enclosure_group(enclosure_group)
           self['enclosureGroupUri'] = enclosure_group['uri'] if enclosure_group['uri'] || enclosure_group.retrieve!
           raise "Resource #{enclosure_group['name']} could not be found!" unless enclosure_group['uri']
         end
 
         # Sets a list of enclosures uris for the logical enclosure
-        # @param [Array] Array of OneviewSDK::API300::Thunderbird::Enclosure
+        # @param [Array] Array of OneviewSDK::API300::Synergy::Enclosure
         def set_enclosures(enclosures = [])
           enclosureUris = []
           enclosures.each do |enclosure|
@@ -42,7 +42,7 @@ module OneviewSDK
         end
 
         # Sets the firmware driver uri for the logical enclosure
-        # @param [OneviewSDK::API300::Thunderbird::FirmwareDriver] firmware The firmware driver
+        # @param [OneviewSDK::API300::Synergy::FirmwareDriver] firmware The firmware driver
         def set_firmware_driver(firmware)
           self['firmwareBaselineUri'] = firmware['uri'] if firmware['uri'] || firmware.retrieve!
           raise "Resource #{firmware['customBaselineName']} could not be found!" unless firmware['uri']

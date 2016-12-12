@@ -13,8 +13,8 @@ require_relative '../../api200/volume'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Volume resource implementation on API300 Thunderbird
+    module Synergy
+      # Volume resource implementation on API300 Synergy
       class Volume < OneviewSDK::API200::Volume
       end
     end

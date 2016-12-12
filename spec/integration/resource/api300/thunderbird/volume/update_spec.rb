@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::Volume
+klass = OneviewSDK::API300::Synergy::Volume
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
+    @volume = klass.new($client_300_synergy, name: VOLUME_NAME)
     @volume.retrieve!
   end
 

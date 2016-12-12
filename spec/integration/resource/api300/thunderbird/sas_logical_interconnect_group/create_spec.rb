@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::SASLogicalInterconnectGroup
+klass = OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
@@ -19,7 +19,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     sas_lig_default_options = {
       'name' => SAS_LOG_INT_GROUP1_NAME
     }
-    @item = klass.new($client_300_thunderbird, sas_lig_default_options)
+    @item = klass.new($client_300_synergy, sas_lig_default_options)
   end
 
   let(:sas_interconnect_type) { 'Synergy 12Gb SAS Connection Module' }
@@ -46,7 +46,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       sas_lig_default_options = {
         'name' => SAS_LOG_INT_GROUP1_NAME
       }
-      @item = klass.new($client_300_thunderbird, sas_lig_default_options)
+      @item = klass.new($client_300_synergy, sas_lig_default_options)
       @item.retrieve!
       expect(@item['uri']).to be
     end

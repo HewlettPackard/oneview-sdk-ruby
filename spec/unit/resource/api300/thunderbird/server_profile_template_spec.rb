@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
+RSpec.describe OneviewSDK::API300::Synergy::ServerProfileTemplate do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -8,7 +8,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
   end
 
   before(:each) do
-    @item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client_300, name: 'server_profile_template')
+    @item = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client_300, name: 'server_profile_template')
   end
 
   describe '#initialize' do
@@ -19,7 +19,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
 
   describe '#set_server_hardware_type' do
     before :each do
-      @server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.new(@client_300, name: 'server_hardware_type')
+      @server_hardware_type = OneviewSDK::API300::Synergy::ServerHardwareType.new(@client_300, name: 'server_hardware_type')
       @server_hardware_type_uri = '/rest/fake/server-hardware-types/test'
     end
 
@@ -50,7 +50,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
 
   describe '#set_enclosure_group' do
     before :each do
-      @enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.new(@client_300, name: 'enclosure_group')
+      @enclosure_group = OneviewSDK::API300::Synergy::EnclosureGroup.new(@client_300, name: 'enclosure_group')
       @enclosure_group_uri = '/rest/fake/enclosure-groups/test'
     end
 
@@ -82,7 +82,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
   describe '#set_firmware_driver' do
     before :each do
       @firmware_uri = '/rest/fake/firmware-drivers/unit'
-      @firmware = OneviewSDK::API300::Thunderbird::FirmwareDriver.new(@client_300, name: 'unit_firmware_driver', uri: @firmware_uri)
+      @firmware = OneviewSDK::API300::Synergy::FirmwareDriver.new(@client_300, name: 'unit_firmware_driver', uri: @firmware_uri)
     end
 
     it 'will set the FirmwareDriver with options correctly' do
@@ -95,7 +95,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
   describe '#add_connection' do
     before :each do
       @item['connections'] = []
-      @network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
+      @network = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
                                                                                    uri: 'rest/fake/ethernet-networks/unit')
     end
 
@@ -122,7 +122,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
     describe '#remove_connection' do
       before :each do
         @item['connections'] = []
-        @network = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
+        @network = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, name: 'unit_ethernet_network',
                                                                                      uri: 'rest/fake/ethernet-networks/unit')
         base_uri = @network['uri']
         1.upto(5) do |count|
@@ -166,17 +166,17 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
 
   describe '#available_hardware' do
     it 'requires the serverHardwareTypeUri value to be set' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client_300).get_available_hardware }
+      expect { OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client_300).get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'requires the enclosureGroupUri value to be set' do
-      expect { OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client_300, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
+      expect { OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client_300, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
     it 'calls #find_by with the serverHardwareTypeUri and enclosureGroupUri' do
-      @item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client_300, serverHardwareTypeUri: '/rest/fake',
+      @item = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client_300, serverHardwareTypeUri: '/rest/fake',
                                                                                       enclosureGroupUri: '/rest/fake2')
       params = { state: 'NoProfileApplied', serverHardwareTypeUri: @item['serverHardwareTypeUri'],
                  serverGroupUri: @item['enclosureGroupUri'] }
@@ -189,7 +189,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
     it 'returns a profile' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new(name: 'NewProfile'))
       expect(@client_300).to receive(:rest_get).with('/rest/server-profile-templates/fake/new-profile')
-      template = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client_300, name: 'unit_server_profile_template')
+      template = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client_300, name: 'unit_server_profile_template')
       template['uri'] = '/rest/server-profile-templates/fake'
       profile = template.new_profile
       expect(profile.class).to eq(OneviewSDK::ServerProfile)
@@ -198,7 +198,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
 
     it 'can set the name of a new profile' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new(name: 'NewProfile'))
-      template = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client_300, uri: '/rest/server-profile-templates/fake')
+      template = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client_300, uri: '/rest/server-profile-templates/fake')
       profile = template.new_profile('NewName')
       expect(profile[:name]).to eq('NewName')
     end
@@ -206,7 +206,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
 
   describe 'Volume attachment operations' do
     it 'can call the #add_volume_attachment using a specific already created Volume' do
-      volume = OneviewSDK::API300::Thunderbird::Volume.new(@client_300, uri: '/fake/volume',
+      volume = OneviewSDK::API300::Synergy::Volume.new(@client_300, uri: '/fake/volume',
                                                                         storagePoolUri: '/fake/storage-pool',
                                                                         storageSystemUri: '/fake/storage-system')
       @item.add_volume_attachment(volume)
@@ -220,7 +220,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
 
     describe 'can call #remove_volume_attachment' do
       it 'and remove attachment with id 0' do
-        volume = OneviewSDK::API300::Thunderbird::Volume.new(@client_300, uri: '/fake/volume',
+        volume = OneviewSDK::API300::Synergy::Volume.new(@client_300, uri: '/fake/volume',
                                                                           storagePoolUri: '/fake/storage-pool',
                                                                           storageSystemUri: '/fake/storage-system')
         @item.add_volume_attachment(volume, 'id' => 7)
@@ -233,7 +233,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
       end
 
       it 'and return nil if no attachment found' do
-        volume = OneviewSDK::API300::Thunderbird::Volume.new(@client_300, uri: '/fake/volume',
+        volume = OneviewSDK::API300::Synergy::Volume.new(@client_300, uri: '/fake/volume',
                                                                           storagePoolUri: '/fake/storage-pool',
                                                                           storageSystemUri: '/fake/storage-system')
         @item.add_volume_attachment(volume, 'id' => 7)
@@ -252,7 +252,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
     end
 
     it 'can call #create_volume_with_attachment and generate the data required for a new Volume with attachment' do
-      storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.new(@client_300, uri: 'fake/storage-pool')
+      storage_pool = OneviewSDK::API300::Synergy::StoragePool.new(@client_300, uri: 'fake/storage-pool')
       volume_options = {
         name: 'TestVolume',
         description: 'Test Volume for Server Profile Volume Attachment',
@@ -276,7 +276,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate do
 
   describe '#get_transformation' do
     it 'transforms an existing profile template' do
-      template = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client_300, uri: '/rest/server-profile-templates/fake')
+      template = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client_300, uri: '/rest/server-profile-templates/fake')
       expect(@client_300).to receive(:rest_get).with("#{template['uri']}/transformation?queryTest=Test")
         .and_return(FakeResponse.new('it' => 'ServerProfileTemplate'))
       expect(template.get_transformation(@client_300, 'query_test' => 'Test')['it']).to eq('ServerProfileTemplate')

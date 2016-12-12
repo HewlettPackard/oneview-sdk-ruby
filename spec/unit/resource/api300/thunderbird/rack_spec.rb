@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::Rack do
+RSpec.describe OneviewSDK::API300::Synergy::Rack do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -20,14 +20,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Rack do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300)
+      rack = OneviewSDK::API300::Synergy::Rack.new(@client_300)
       expect(rack['rackMounts']).to eq([])
     end
   end
 
   describe '#add' do
     it 'Should support add' do
-      rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300, uri: '/rest/racks')
+      rack = OneviewSDK::API300::Synergy::Rack.new(@client_300, uri: '/rest/racks')
       expect(@client_300).to receive(:rest_post).with('/rest/racks', { 'body' => { 'uri' => '/rest/racks', 'rackMounts' => [] } }, 300)
         .and_return(FakeResponse.new({}))
       rack.add
@@ -36,7 +36,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Rack do
 
   describe '#remove' do
     it 'Should support remove' do
-      rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300, uri: '/rest/fake')
+      rack = OneviewSDK::API300::Synergy::Rack.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_delete).with('/rest/fake', {}, 300).and_return(FakeResponse.new({}))
       rack.remove
     end
@@ -44,7 +44,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Rack do
 
   describe '#add_rack_resource' do
     before :each do
-      @rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300)
+      @rack = OneviewSDK::API300::Synergy::Rack.new(@client_300)
     end
 
     it 'Add one resource' do
@@ -96,7 +96,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Rack do
 
   describe '#remove_rack_resource' do
     before :each do
-      @rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300)
+      @rack = OneviewSDK::API300::Synergy::Rack.new(@client_300)
     end
 
     it 'Remove one resource' do
@@ -120,21 +120,21 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Rack do
 
   describe '#create' do
     it 'Should raise error if used' do
-      rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300)
+      rack = OneviewSDK::API300::Synergy::Rack.new(@client_300)
       expect { rack.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
   end
 
   describe '#delete' do
     it 'Should raise error if used' do
-      rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300)
+      rack = OneviewSDK::API300::Synergy::Rack.new(@client_300)
       expect { rack.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
 
   describe '#get_device_topology' do
     it 'Device topology' do
-      rack = OneviewSDK::API300::Thunderbird::Rack.new(@client_300, uri: '/rest/fake')
+      rack = OneviewSDK::API300::Synergy::Rack.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/deviceTopology').and_return(FakeResponse.new({}))
       rack.get_device_topology
     end

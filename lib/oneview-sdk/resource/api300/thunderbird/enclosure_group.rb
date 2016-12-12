@@ -13,8 +13,8 @@ require_relative '../../api200/enclosure_group'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Enclosure group resource implementation on API300 Thunderbird
+    module Synergy
+      # Enclosure group resource implementation on API300 Synergy
       class EnclosureGroup < OneviewSDK::API200::EnclosureGroup
 
         # Create a resource object, associate it with a client, and set its properties.

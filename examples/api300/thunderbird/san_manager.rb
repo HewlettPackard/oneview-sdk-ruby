@@ -19,12 +19,12 @@ require_relative '../../_client' # Gives access to @client
 # NOTE: You'll need to have a Cisco Switch.
 
 # Print default connection info for Cisco Switch
-default_info = OneviewSDK::API300::Thunderbird::SANManager.get_default_connection_info(@client, 'Cisco')
+default_info = OneviewSDK::API300::Synergy::SANManager.get_default_connection_info(@client, 'Cisco')
 puts 'Cisco Switch connection info:'
 default_info.each { |property| puts "* #{property['name']} - #{property['value']}" }
 
 # Add a Cisco Switch
-san_manager = OneviewSDK::API300::Thunderbird::SANManager.new(@client)
+san_manager = OneviewSDK::API300::Synergy::SANManager.new(@client)
 san_manager['providerDisplayName'] = 'Cisco'
 san_manager['connectionInfo'] = [
   {

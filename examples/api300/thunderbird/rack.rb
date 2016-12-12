@@ -15,7 +15,7 @@ options = {
   name: 'myrack'
 }
 
-item = OneviewSDK::API300::Thunderbird::Rack.new(@client, options)
+item = OneviewSDK::API300::Synergy::Rack.new(@client, options)
 item.add
 puts "Rack #{item['name']} was added with uri='#{item['uri']}'"
 

@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
+RSpec.describe OneviewSDK::API300::Synergy::PowerDevice do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -19,7 +19,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
   end
 
   before :each do
-    @item = OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300, uri: '/rest/fake')
+    @item = OneviewSDK::API300::Synergy::PowerDevice.new(@client_300, uri: '/rest/fake')
   end
 
   describe '#initialize' do
@@ -78,7 +78,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
 
   describe '#add' do
     it 'Should support add' do
-      power_device = OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300, name: 'power_device', ratedCapacity: 500)
+      power_device = OneviewSDK::API300::Synergy::PowerDevice.new(@client_300, name: 'power_device', ratedCapacity: 500)
       expected_request_body = {
         'name' => 'power_device',
         'ratedCapacity' => 500,
@@ -94,7 +94,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
 
   describe '#remove' do
     it 'Should support remove' do
-      power_device = OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300, uri: '/rest/fake')
+      power_device = OneviewSDK::API300::Synergy::PowerDevice.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_delete).with('/rest/fake', {}, 300).and_return(FakeResponse.new({}))
       power_device.remove
     end
@@ -102,14 +102,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
 
   describe '#create' do
     it 'Should raise error if used' do
-      power_device = OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300)
+      power_device = OneviewSDK::API300::Synergy::PowerDevice.new(@client_300)
       expect { power_device.create }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 
   describe '#delete' do
     it 'Should raise error if used' do
-      power_device = OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300)
+      power_device = OneviewSDK::API300::Synergy::PowerDevice.new(@client_300)
       expect { power_device.delete }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
@@ -124,7 +124,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
       }
       expect(@client_300).to receive(:rest_post).with('/rest/power-devices/discover', 'body' => options)
         .and_return(FakeResponse.new({}))
-      expect { OneviewSDK::API300::Thunderbird::PowerDevice.discover(@client_300, options) }.not_to raise_error
+      expect { OneviewSDK::API300::Synergy::PowerDevice.discover(@client_300, options) }.not_to raise_error
     end
   end
 
@@ -177,7 +177,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::PowerDevice do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Thunderbird::PowerDevice.new(@client_300).utilization }
+      expect { OneviewSDK::API300::Synergy::PowerDevice.new(@client_300).utilization }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 

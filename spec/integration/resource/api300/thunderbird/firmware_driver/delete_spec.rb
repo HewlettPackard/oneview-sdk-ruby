@@ -11,13 +11,13 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::FirmwareDriver
+klass = OneviewSDK::API300::Synergy::FirmwareDriver
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
   describe '#remove' do
     it 'deletes the resource (it will fail if the applicance does not have a valid spp and hotfix)' do
-      firmware = klass.new($client_300_thunderbird, name: FIRMWARE_DRIVER1_NAME)
+      firmware = klass.new($client_300_synergy, name: FIRMWARE_DRIVER1_NAME)
 
       expect(firmware.retrieve!).to eq(true)
       expect { firmware.remove }.not_to raise_error
@@ -25,7 +25,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
     end
 
     it 'deletes other drivers' do
-      klass.find_by($client_300_thunderbird, {}).each do |driver|
+      klass.find_by($client_300_synergy, {}).each do |driver|
         expect { driver.remove }.not_to raise_error
         expect(driver.retrieve!).to eq(false)
       end

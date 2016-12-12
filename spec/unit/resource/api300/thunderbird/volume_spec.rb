@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
+RSpec.describe OneviewSDK::API300::Synergy::Volume do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -29,7 +29,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
         storagePoolUri: provisioning_parameters[:storagePoolUri],
         uri: '/rest/fake'
       )
-      item = OneviewSDK::API300::Thunderbird::Volume.new(@client_300, name: volume_name)
+      item = OneviewSDK::API300::Synergy::Volume.new(@client_300, name: volume_name)
       item['provisioningParameters'] = provisioning_parameters
       item.create
       expect(item['provisionType']).to eq(provisioning_parameters[:provisionType])
@@ -42,7 +42,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
   describe '#delete' do
     it 'passes an extra header' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
-      item = OneviewSDK::API300::Thunderbird::Volume.new(@client_300, uri: '/rest/fake')
+      item = OneviewSDK::API300::Synergy::Volume.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_api).with(:delete, '/rest/fake', { 'exportOnly' => true }, item.api_version)
       item.delete(:oneview)
     end
@@ -50,19 +50,19 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
 
   describe 'helpers' do
     before :each do
-      @item = OneviewSDK::API300::Thunderbird::Volume.new(@client_300, name: volume_name)
+      @item = OneviewSDK::API300::Synergy::Volume.new(@client_300, name: volume_name)
     end
 
     describe '#set_storage_system' do
       it 'sets the storageSystemUri' do
-        @item.set_storage_system(OneviewSDK::API300::Thunderbird::StorageSystem.new(@client_300, uri: '/rest/fake'))
+        @item.set_storage_system(OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/fake'))
         expect(@item['storageSystemUri']).to eq('/rest/fake')
       end
     end
 
     describe '#set_storage_pool' do
       it 'sets the storagePoolUri' do
-        @item.set_storage_pool(OneviewSDK::API300::Thunderbird::StoragePool.new(@client_300, uri: '/rest/fake'))
+        @item.set_storage_pool(OneviewSDK::API300::Synergy::StoragePool.new(@client_300, uri: '/rest/fake'))
         expect(@item['provisioningParameters']['storagePoolUri']).to eq('/rest/fake')
       end
     end
@@ -76,7 +76,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
 
     describe '#set_snapshot_pool' do
       it 'sets the snapshotPoolUri' do
-        @item.set_snapshot_pool(OneviewSDK::API300::Thunderbird::StoragePool.new(@client_300, uri: '/rest/fake'))
+        @item.set_snapshot_pool(OneviewSDK::API300::Synergy::StoragePool.new(@client_300, uri: '/rest/fake'))
         expect(@item['snapshotPoolUri']).to eq('/rest/fake')
       end
     end
@@ -102,7 +102,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
       it 'gets an array of snapshots' do
         @item['uri'] = '/rest/storage-volumes/fake'
         snapshot_options = { 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
-        snapshots = [OneviewSDK::API300::Thunderbird::VolumeSnapshot.new(@client_300, snapshot_options)]
+        snapshots = [OneviewSDK::API300::Synergy::VolumeSnapshot.new(@client_300, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
         expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots", @item.api_version)
         snapshots = @item.get_snapshots
@@ -116,7 +116,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
       it 'get snapshot by name' do
         @item['uri'] = '/rest/storage-volumes/fake'
         snapshot_options = { 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
-        snapshots = [OneviewSDK::API300::Thunderbird::VolumeSnapshot.new(@client_300, snapshot_options)]
+        snapshots = [OneviewSDK::API300::Synergy::VolumeSnapshot.new(@client_300, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
         expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots", @item.api_version)
         snapshot = @item.get_snapshot('Vol1_Snapshot1')
@@ -130,7 +130,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
       it 'Deletes a snapshot of the volume' do
         @item['uri'] = '/rest/storage-volumes/fake'
         snapshot_options = { 'uri' => '/rest/fake', 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
-        snapshots = [OneviewSDK::API300::Thunderbird::VolumeSnapshot.new(@client_300, snapshot_options)]
+        snapshots = [OneviewSDK::API300::Synergy::VolumeSnapshot.new(@client_300, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
         expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots", @item.api_version)
         expect(@client_300).to receive(:rest_api).with(:delete, '/rest/fake', {}, @item.api_version)
@@ -144,7 +144,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
         volumes = [@item]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => volumes)
         expect(@client_300).to receive(:rest_get).with('/rest/storage-volumes/attachable-volumes')
-        items = OneviewSDK::API300::Thunderbird::Volume.get_attachable_volumes(@client_300)
+        items = OneviewSDK::API300::Synergy::Volume.get_attachable_volumes(@client_300)
         expect(items.class).to eq(Array)
         expect(items.size).to eq(1)
         expect(items.first['name']).to eq('volume_name')
@@ -156,7 +156,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
         paths = ['%fake1', '%fake2']
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => paths)
         expect(@client_300).to receive(:rest_get).with('/rest/storage-volumes/repair?alertFixType=ExtraManagedStorageVolumePaths')
-        results = OneviewSDK::API300::Thunderbird::Volume.get_extra_managed_volume_paths(@client_300)
+        results = OneviewSDK::API300::Synergy::Volume.get_extra_managed_volume_paths(@client_300)
         expect(results['members']).to eq(paths)
       end
     end
@@ -167,7 +167,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::Volume do
           resourceUri: '/rest/storage-volumes',
           type: 'ExtraManagedStorageVolumePaths'
         }
-        item = OneviewSDK::API300::Thunderbird::Volume.new(@client_300, uri: '/rest/storage-volumes')
+        item = OneviewSDK::API300::Synergy::Volume.new(@client_300, uri: '/rest/storage-volumes')
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('response' => 'fake')
         expect(@client_300).to receive(:rest_post).with("#{item['uri']}/repair", 'body' => body).and_return(true)
         response = item.repair

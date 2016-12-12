@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
+RSpec.describe OneviewSDK::API300::Synergy::ServerHardware do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -8,12 +8,12 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
   end
 
   before(:each) do
-    @item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake')
+    @item = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, uri: '/rest/fake')
   end
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
+      server_hardware = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300)
       expect(server_hardware[:type]).to eq('server-hardware-5')
     end
   end
@@ -60,12 +60,12 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe '#set_refresh_state' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300).set_refresh_state(:state) }
+      expect { OneviewSDK::API300::Synergy::ServerHardware.new(@client_300).set_refresh_state(:state) }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'does a PUT to /refreshState' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
+      item = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
         .and_return(FakeResponse.new(refreshState: 'Refreshing'))
       item.set_refresh_state('Refreshing')
@@ -73,7 +73,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
     end
 
     it 'allows string or symbol refreshState values' do
-      item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
+      item = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
         .and_return(FakeResponse.new(refreshState: 'Refreshing'))
       item.set_refresh_state(:Refreshing)
@@ -83,7 +83,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe '#environmentalConfiguration' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300).environmental_configuration }
+      expect { OneviewSDK::API300::Synergy::ServerHardware.new(@client_300).environmental_configuration }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -96,7 +96,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300).utilization }
+      expect { OneviewSDK::API300::Synergy::ServerHardware.new(@client_300).utilization }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -141,7 +141,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
           'force' => true,
           'other' => 'blah'
         }
-        @server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, @data)
+        @server_hardware = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, @data)
       end
 
       it 'only sends certain attributes on the POST' do
@@ -153,7 +153,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
     context 'with invalid data' do
       it 'fails when certain attributes are not set' do
-        server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, {})
+        server_hardware = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, {})
         expect { server_hardware.add }.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute/)
       end
     end
@@ -185,9 +185,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe '#set_power_state' do
     before :each do
-      @item = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake', powerState: 'on')
-      @item2 = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300, uri: '/rest/fake', powerState: 'off')
-      allow_any_instance_of(OneviewSDK::API300::Thunderbird::ServerHardware).to receive(:refresh).and_return(true)
+      @item = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, uri: '/rest/fake', powerState: 'on')
+      @item2 = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300, uri: '/rest/fake', powerState: 'off')
+      allow_any_instance_of(OneviewSDK::API300::Synergy::ServerHardware).to receive(:refresh).and_return(true)
     end
 
     it 'returns true if the state is the same' do
@@ -257,7 +257,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe '#get firmware by id' do
     it 'requires the uri to be set' do
-      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
+      server_hardware = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300)
       expect { server_hardware.get_firmware_by_id }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
@@ -312,7 +312,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerHardware do
 
   describe '#perfoms a specific patch' do
     it 'requires a uri' do
-      server_hardware = OneviewSDK::API300::Thunderbird::ServerHardware.new(@client_300)
+      server_hardware = OneviewSDK::API300::Synergy::ServerHardware.new(@client_300)
       expect { server_hardware.patch(:op, :path, :val) }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end

@@ -13,7 +13,7 @@ require_relative '../../api200/logical_interconnect'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class LogicalInterconnect < OneviewSDK::API200::LogicalInterconnect
       end
     end

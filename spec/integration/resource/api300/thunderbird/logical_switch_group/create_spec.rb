@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalSwitchGroup
+klass = OneviewSDK::API300::Synergy::LogicalSwitchGroup
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
   before :all do
-    @item = klass.new($client_300_thunderbird, name: LOG_SWI_GROUP_NAME)
+    @item = klass.new($client_300_synergy, name: LOG_SWI_GROUP_NAME)
     @type = 'Cisco Nexus 55xx'
   end
 

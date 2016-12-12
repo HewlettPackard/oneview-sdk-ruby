@@ -11,4 +11,4 @@
 
 require_relative '../../_client'
 
-puts OneviewSDK::API300::Thunderbird::LogicalDownlink.find_by(@client, {}).first.get_without_ethernet
+puts OneviewSDK::API300::Synergy::LogicalDownlink.find_by(@client, {}).first.get_without_ethernet

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate, integration: true, type: UPDATE do
+RSpec.describe OneviewSDK::API300::Synergy::ServerProfileTemplate, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :all do
-    @item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new($client_300_thunderbird, name: SERVER_PROFILE_TEMPLATE_NAME)
+    @item = OneviewSDK::API300::Synergy::ServerProfileTemplate.new($client_300_synergy, name: SERVER_PROFILE_TEMPLATE_NAME)
   end
 
   describe '#update' do
@@ -20,10 +20,10 @@ RSpec.describe OneviewSDK::API300::Thunderbird::ServerProfileTemplate, integrati
 
   describe '#get_transformation' do
     it 'transforms an existing profile' do
-      server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by($client_300_thunderbird, {}).first
-      enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by($client_300_thunderbird, {}).first
+      server_hardware_type = OneviewSDK::API300::Synergy::ServerHardwareType.find_by($client_300_synergy, {}).first
+      enclosure_group = OneviewSDK::API300::Synergy::EnclosureGroup.find_by($client_300_synergy, {}).first
       expect do
-        @item.get_transformation($client_300_thunderbird,
+        @item.get_transformation($client_300_synergy,
                                  'server_hardware_type' => server_hardware_type,
                                  'enclosure_group' => enclosure_group)
       end.to_not raise_error

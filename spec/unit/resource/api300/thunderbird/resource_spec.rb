@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::Resource do
+RSpec.describe OneviewSDK::API300::Synergy::Resource do
   include_context 'shared context'
 
   it 'inherits from OneviewSDK::Resource' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalDownlink
+klass = OneviewSDK::API300::Synergy::LogicalDownlink
 RSpec.describe klass do
   include_context 'shared context'
 

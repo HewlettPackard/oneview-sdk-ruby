@@ -11,15 +11,15 @@
 
 require_relative '../../_client' # Gives access to @client
 
-# Example: Create a server profile template for an API300 Thunderbird Appliance
+# Example: Create a server profile template for an API300 Synergy Appliance
 # NOTE: This will create a server profile named 'OneViewSDK Test ServerProfileTemplate', then delete it.
 type = 'Server Profile Template'
 puts "\n### Creating a new Server Profile Template based on a Server Hardware Type and Enclosure Group"
-item = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client, name:  'OneViewSDK Test ServerProfileTemplate')
-server_hardware_type = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by(@client, {}).first
+item = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client, name:  'OneViewSDK Test ServerProfileTemplate')
+server_hardware_type = OneviewSDK::API300::Synergy::ServerHardwareType.find_by(@client, {}).first
 raise 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
 item.set_server_hardware_type(server_hardware_type)
-enclosure_group = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by(@client, {}).first
+enclosure_group = OneviewSDK::API300::Synergy::EnclosureGroup.find_by(@client, {}).first
 raise 'Failed to find Enclosure Group' unless enclosure_group || enclosure_group['uri']
 item.set_enclosure_group(enclosure_group)
 item.create
@@ -29,13 +29,13 @@ puts "\nEnclosure Group '#{enclosure_group['name']}'.\n  uri = '#{item['enclosur
 
 # Find recently created item by name
 puts "\n\n### Find recently created item by name"
-matches = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by(@client, name: item['name'])
+matches = OneviewSDK::API300::Synergy::ServerProfileTemplate.find_by(@client, name: item['name'])
 item2 = matches.first
 raise "Failed to find #{type} by name: '#{item['name']}'" unless matches.first
 puts "\nFound #{type} by name: '#{item['name']}'.\n  uri = '#{item2['uri']}'"
 
 puts "\n\n### Retrieve recently created item"
-item3 = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client, name: item['name'])
+item3 = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client, name: item['name'])
 item3.retrieve!
 puts "Retrieved #{type} data by name: '#{item['name']}'.\n  uri = '#{item3['uri']}'"
 
@@ -51,12 +51,12 @@ item3.delete
 puts "\nSucessfully deleted #{type} '#{item['name']}'."
 
 puts "\n\n### Transforms an existing profile template by supplying a new server hardware type and/or enclosure group"
-item4 = OneviewSDK::API300::Thunderbird::ServerProfileTemplate.new(@client, name:  item['name'])
+item4 = OneviewSDK::API300::Synergy::ServerProfileTemplate.new(@client, name:  item['name'])
 item4.set_server_hardware_type(server_hardware_type)
 item4.set_enclosure_group(enclosure_group)
 item4.create
-server_hardware_type2 = OneviewSDK::API300::Thunderbird::ServerHardwareType.find_by(@client, {}).last
-enclosure_group2 = OneviewSDK::API300::Thunderbird::EnclosureGroup.find_by(@client, {}).last
+server_hardware_type2 = OneviewSDK::API300::Synergy::ServerHardwareType.find_by(@client, {}).last
+enclosure_group2 = OneviewSDK::API300::Synergy::EnclosureGroup.find_by(@client, {}).last
 item4.get_transformation(@client, 'server_hardware_type' => server_hardware_type2, 'enclosure_group' => enclosure_group2)
 item4.update
 puts "\nTransformed Server Profile Template '#{item4['name']}' sucessfully.\n  uri = '#{item4['uri']}' "
@@ -66,6 +66,6 @@ item4.delete
 # Example: List all server profile templates with certain attributes
 attributes = { affinity: 'Bay' }
 puts "\n\n#{type.capitalize}s with #{attributes}"
-OneviewSDK::API300::Thunderbird::ServerProfileTemplate.find_by(@client, attributes).each do |p|
+OneviewSDK::API300::Synergy::ServerProfileTemplate.find_by(@client, attributes).each do |p|
   puts "  #{p['name']}"
 end

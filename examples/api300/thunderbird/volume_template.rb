@@ -24,13 +24,13 @@ options = {
 }
 
 # Retrieve storage pool and storage system
-storage_pool = OneviewSDK::API300::Thunderbird::StoragePool.find_by(@client, {}).first
+storage_pool = OneviewSDK::API300::Synergy::StoragePool.find_by(@client, {}).first
 raise 'ERROR: No storage pools found!' unless storage_pool
-storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.find_by(@client, credentials: { ip_hostname: @storage_system_ip }).first
+storage_system = OneviewSDK::API300::Synergy::StorageSystem.find_by(@client, credentials: { ip_hostname: @storage_system_ip }).first
 raise "ERROR: Storage System #{@storage_system_ip} not found!" unless storage_system
 
 # Create Volume Template
-volume_template = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client, options)
+volume_template = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client, options)
 volume_template.set_provisioning(true, 'Thin', '10737418240', storage_pool)
 volume_template.set_snapshot_pool(storage_pool)
 volume_template.set_storage_system(storage_system)
@@ -38,12 +38,12 @@ volume_template.create
 puts "\nCreated Volume Template '#{volume_template[:name]}' sucessfully.\n  uri = '#{volume_template[:uri]}'"
 
 # Retrieve created volume template
-volume_template_2 = OneviewSDK::API300::Thunderbird::VolumeTemplate.new(@client, name: options[:name])
+volume_template_2 = OneviewSDK::API300::Synergy::VolumeTemplate.new(@client, name: options[:name])
 volume_template_2.retrieve!
 puts "\nRetrieved Volume Template by name: '#{volume_template_2[:name]}'.\n  uri = '#{volume_template_2[:uri]}'"
 
 # Find recently created volume template by name
-matches = OneviewSDK::API300::Thunderbird::VolumeTemplate.find_by(@client, name: options[:name])
+matches = OneviewSDK::API300::Synergy::VolumeTemplate.find_by(@client, name: options[:name])
 volume_template_3 = matches.first
 puts "\nFound Volume Template by name: '#{volume_template_3[:name]}'.\n  uri = '#{volume_template_3[:uri]}'"
 

@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::SASLogicalInterconnectGroup
+klass = OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
 inherited_klass = OneviewSDK::Resource
-extra_klass1 = OneviewSDK::API300::Thunderbird::SASInterconnect
+extra_klass1 = OneviewSDK::API300::Synergy::SASInterconnect
 
 RSpec.describe klass do
   include_context 'shared context'

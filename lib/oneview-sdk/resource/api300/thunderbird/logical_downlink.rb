@@ -13,8 +13,8 @@ require_relative '../../api200/logical_downlink'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Logical downlink resource implementation for API300 Thunderbird
+    module Synergy
+      # Logical downlink resource implementation for API300 Synergy
       class LogicalDownlink < OneviewSDK::API200::LogicalDownlink
 
         # Method is not available

@@ -13,7 +13,7 @@ require_relative '../../api200/firmware_bundle'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class FirmwareBundle < OneviewSDK::API200::FirmwareBundle
       end
     end

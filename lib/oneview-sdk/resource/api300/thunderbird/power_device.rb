@@ -13,7 +13,7 @@ require_relative '../../api200/power_device'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class PowerDevice < OneviewSDK::API200::PowerDevice
       end
     end

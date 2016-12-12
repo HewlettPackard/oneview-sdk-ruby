@@ -11,8 +11,8 @@
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Logical switch resource implementation for API300 Thunderbird (internal link set endpoints only)
+    module Synergy
+      # Logical switch resource implementation for API300 Synergy (internal link set endpoints only)
       class LogicalSwitch
         # Retrieves all internal link sets
         # @param [OneviewSDK::Client] client The client object for the OneView appliance

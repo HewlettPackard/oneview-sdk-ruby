@@ -11,16 +11,16 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::DriveEnclosure do
+RSpec.describe OneviewSDK::API300::Synergy::DriveEnclosure do
   include_context 'shared context'
 
   it 'inherits from Resource' do
-    expect(described_class).to be < OneviewSDK::API300::Thunderbird::Resource
+    expect(described_class).to be < OneviewSDK::API300::Synergy::Resource
   end
 
   describe 'undefined methods' do
     before :each do
-      @item = OneviewSDK::API300::Thunderbird::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
+      @item = OneviewSDK::API300::Synergy::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
     end
 
     it 'does not allow the create action' do
@@ -38,7 +38,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::DriveEnclosure do
 
   describe '#get_port_map' do
     it 'should retrieve the port map information' do
-      item = OneviewSDK::API300::Thunderbird::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
+      item = OneviewSDK::API300::Synergy::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
       expect(@client_300).to receive(:rest_get).with('/rest/drive-enclosure/port-map').and_return(FakeResponse.new('Blah'))
       expect(item.get_port_map).to eq('Blah')
     end
@@ -46,7 +46,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::DriveEnclosure do
 
   describe '#set_refresh_state' do
     it 'should set the drive enclosure refresh state' do
-      item = OneviewSDK::API300::Thunderbird::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
+      item = OneviewSDK::API300::Synergy::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
       expect(@client_300).to receive(:rest_put).with(
         '/rest/drive-enclosure/refreshState',
         'body' => { refreshState: 'RefreshPending' }
@@ -57,7 +57,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::DriveEnclosure do
 
   describe '#patch' do
     it 'should send a patch request to the drive enclosure' do
-      item = OneviewSDK::API300::Thunderbird::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
+      item = OneviewSDK::API300::Synergy::DriveEnclosure.new(@client_300, uri: '/rest/drive-enclosure')
       patch_opt = { op: 'replace', path: '/powerState', value: 'On' }
       expect(@client_300).to receive(:rest_patch).with(
         '/rest/drive-enclosure',

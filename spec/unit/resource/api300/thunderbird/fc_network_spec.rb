@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::FCNetwork do
+RSpec.describe OneviewSDK::API300::Synergy::FCNetwork do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::FCNetwork do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = OneviewSDK::API300::Thunderbird::FCNetwork.new(@client_300)
+      item = OneviewSDK::API300::Synergy::FCNetwork.new(@client_300)
       expect(item[:type]).to eq('fc-networkV300')
       expect(item[:autoLoginRedistribution]).to eq(false)
       expect(item[:linkStabilityTime]).to eq(30)

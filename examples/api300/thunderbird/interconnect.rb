@@ -11,11 +11,11 @@
 
 require_relative '../../_client' # Gives access to @client
 
-# List of thunderbird interconnect link topologies
+# List of synergy interconnect link topologies
 OneviewSDK::Interconnect.get_link_topologies(@client).each do |link_topology|
   puts "Interconnect link topology #{link_topology['name']} URI=#{interconnect['uri']}"
 end
 
-# Retrieve single interconnect thunderbird interconnect link topology
+# Retrieve single interconnect synergy interconnect link topology
 link_topology = OneviewSDK::Interconnect.get_link_topology(@client, 'topology_1')
 puts "Link topology name: #{link_topology['name']}, uri: #{link_topology['uri']}"

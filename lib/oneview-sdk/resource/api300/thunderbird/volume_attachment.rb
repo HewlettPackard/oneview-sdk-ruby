@@ -13,7 +13,7 @@ require_relative '../../api200/volume_attachment'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class VolumeAttachment < OneviewSDK::API200::VolumeAttachment
       end
     end

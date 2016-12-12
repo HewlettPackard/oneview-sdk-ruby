@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::VolumeTemplate
+klass = OneviewSDK::API300::Synergy::VolumeTemplate
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = klass.new($client_300_thunderbird, name: VOL_TEMP_NAME)
+    @item = klass.new($client_300_synergy, name: VOL_TEMP_NAME)
   end
 
   describe '#retrieve!' do
@@ -34,13 +34,13 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = klass.find_by($client_300_thunderbird, {}).map { |item| item[:name] }
+      names = klass.find_by($client_300_synergy, {}).map { |item| item[:name] }
       expect(names).to include(VOL_TEMP_NAME)
     end
 
     it 'finds networks by multiple attributes' do
       attrs = { name: VOL_TEMP_NAME }
-      names = klass.find_by($client_300_thunderbird, attrs).map { |item| item[:name] }
+      names = klass.find_by($client_300_synergy, attrs).map { |item| item[:name] }
       expect(names).to include(VOL_TEMP_NAME)
     end
   end

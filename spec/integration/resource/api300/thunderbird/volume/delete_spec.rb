@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::Volume
+klass = OneviewSDK::API300::Synergy::Volume
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
   include_context 'integration api300 context'
 
   before :all do
-    @volume = klass.new($client_300_thunderbird, name: VOLUME_NAME)
+    @volume = klass.new($client_300_synergy, name: VOLUME_NAME)
     @volume.retrieve!
-    @volume_2 = klass.new($client_300_thunderbird, name: VOLUME2_NAME)
+    @volume_2 = klass.new($client_300_synergy, name: VOLUME2_NAME)
     @volume_2.retrieve!
-    @volume_3 = klass.new($client_300_thunderbird, name: VOLUME3_NAME)
+    @volume_3 = klass.new($client_300_synergy, name: VOLUME3_NAME)
     @volume_3.retrieve!
   end
 

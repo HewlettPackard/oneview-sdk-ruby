@@ -11,18 +11,18 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::SANManager
+klass = OneviewSDK::API300::Synergy::SANManager
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
   describe '#add' do
     it 'can create resources' do
-      item = klass.new($client_300_thunderbird)
+      item = klass.new($client_300_synergy)
       item['providerDisplayName'] = SAN_PROVIDER2_NAME
       item['connectionInfo'] = [
         {
           'name' => 'Host',
-          'value' => $secrets_thunderbird['san_manager_ip']
+          'value' => $secrets_synergy['san_manager_ip']
         },
         {
           'name' => 'SnmpPort',
@@ -30,7 +30,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         },
         {
           'name' => 'SnmpUserName',
-          'value' => $secrets_thunderbird['san_manager_username']
+          'value' => $secrets_synergy['san_manager_username']
         },
         {
           'name' => 'SnmpAuthLevel',
@@ -42,7 +42,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         },
         {
           'name' => 'SnmpAuthString',
-          'value' => $secrets_thunderbird['san_manager_password']
+          'value' => $secrets_synergy['san_manager_password']
         }
       ]
       expect { item.add }.not_to raise_error
@@ -52,7 +52,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#self.get_default_connection_info' do
     it 'Retrieve connection info for provider' do
-      expect { klass.get_default_connection_info($client_300_thunderbird, SAN_PROVIDER2_NAME) }.to_not raise_error
+      expect { klass.get_default_connection_info($client_300_synergy, SAN_PROVIDER2_NAME) }.to_not raise_error
     end
   end
 end

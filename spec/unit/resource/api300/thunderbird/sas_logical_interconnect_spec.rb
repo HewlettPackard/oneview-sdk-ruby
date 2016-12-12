@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::SASLogicalInterconnect
+klass = OneviewSDK::API300::Synergy::SASLogicalInterconnect
 
 RSpec.describe klass do
   include_context 'shared context'

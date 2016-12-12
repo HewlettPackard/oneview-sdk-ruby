@@ -11,12 +11,12 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::SANManager
+klass = OneviewSDK::API300::Synergy::SANManager
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   before :each do
-    @item = klass.new($client_300_thunderbird, name: $secrets_thunderbird['san_manager_ip'])
+    @item = klass.new($client_300_synergy, name: $secrets_synergy['san_manager_ip'])
     @item.retrieve!
   end
 
@@ -29,7 +29,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       connection_info = [
         {
           'name' => 'Host',
-          'value' => $secrets_thunderbird['san_manager_ip']
+          'value' => $secrets_synergy['san_manager_ip']
         },
         {
           'name' => 'SnmpPort',
@@ -37,7 +37,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
         },
         {
           'name' => 'SnmpUserName',
-          'value' => $secrets_thunderbird['san_manager_username']
+          'value' => $secrets_synergy['san_manager_username']
         },
         {
           'name' => 'SnmpAuthLevel',
@@ -49,7 +49,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
         },
         {
           'name' => 'SnmpAuthString',
-          'value' => $secrets_thunderbird['san_manager_password']
+          'value' => $secrets_synergy['san_manager_password']
         }
       ]
       expect { @item.update(connectionInfo: connection_info) }.not_to raise_error

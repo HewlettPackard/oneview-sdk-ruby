@@ -13,8 +13,8 @@ require_relative '../c7000/server_hardware'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Server Hardware resource implementation on API300 Thunderbird
+    module Synergy
+      # Server Hardware resource implementation on API300 Synergy
       class ServerHardware < OneviewSDK::API300::C7000::ServerHardware
 
         # Create a resource object, associate it with a client, and set its properties.

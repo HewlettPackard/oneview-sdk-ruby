@@ -13,7 +13,7 @@ require_relative '../../api200/unmanaged_device'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       class UnmanagedDevice < OneviewSDK::API200::UnmanagedDevice
       end
     end

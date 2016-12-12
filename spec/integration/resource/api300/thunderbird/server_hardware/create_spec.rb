@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::ServerHardware
+klass = OneviewSDK::API300::Synergy::ServerHardware
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
@@ -9,11 +9,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       name: 'test'
     }
 
-    @item = klass.new($client_300_thunderbird, options)
+    @item = klass.new($client_300_synergy, options)
   end
 
   describe '#add' do
-    it 'is a pending test due to no thunderbird schematics containing iLOs'
+    it 'is a pending test due to no synergy schematics containing iLOs'
   end
 
   describe '#get_bios' do
@@ -54,7 +54,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#get firmware by id' do
     it 'Gets the Server Hardware firmware without uri' do
-      item = klass.new($client_300_thunderbird)
+      item = klass.new($client_300_synergy)
       expect { item.get_firmware_by_id }.to raise_error
     end
 

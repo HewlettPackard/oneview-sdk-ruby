@@ -24,12 +24,12 @@ options = {
 }
 
 # Creating a ethernet network
-ethernet = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client, options)
+ethernet = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client, options)
 ethernet.create!
 puts "\nCreated ethernet-network '#{ethernet[:name]}' sucessfully.\n  uri = '#{ethernet[:uri]}'"
 
 # Find recently created network by name
-matches = OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by(@client, name: ethernet[:name])
+matches = OneviewSDK::API300::Synergy::EthernetNetwork.find_by(@client, name: ethernet[:name])
 ethernet2 = matches.first
 puts "\nFound ethernet-network by name: '#{ethernet[:name]}'.\n  uri = '#{ethernet2[:uri]}'"
 
@@ -49,14 +49,14 @@ puts "\nSuccessfully retrieved associated profiles: #{ethernet2.get_associated_p
 puts "\nSuccessfully retrieved associated uplink groups: #{ethernet2.get_associated_uplink_groups}"
 
 # Retrieve recently created network
-ethernet3 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client, name: ethernet[:name])
+ethernet3 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client, name: ethernet[:name])
 ethernet3.retrieve!
 puts "\nRetrieved ethernet-network data by name: '#{ethernet[:name]}'.\n  uri = '#{ethernet3[:uri]}'"
 
 # Example: List all ethernet networks with certain attributes
 attributes = { purpose: 'Management' }
 puts "\n\nEthernet networks with #{attributes}"
-OneviewSDK::API300::Thunderbird::EthernetNetwork.find_by(@client, attributes).each do |network|
+OneviewSDK::API300::Synergy::EthernetNetwork.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
 
@@ -78,7 +78,7 @@ options = {
   }
 }
 
-list = OneviewSDK::API300::Thunderbird::EthernetNetwork.bulk_create(@client, options).each { |network| puts network['uri'] }
+list = OneviewSDK::API300::Synergy::EthernetNetwork.bulk_create(@client, options).each { |network| puts network['uri'] }
 
 puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully."
 

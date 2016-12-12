@@ -11,7 +11,7 @@
 
 require_relative '../../_client' # Gives access to @client
 
-# Example: Create an enclosure group for an API300 Thunderbird Appliance
+# Example: Create an enclosure group for an API300 Synergy Appliance
 # NOTE: This will create an enclosure group named 'OneViewSDK Test Enclosure Group', then delete it.
 type = 'enclosure group'
 options = {
@@ -19,16 +19,16 @@ options = {
   interconnectBayMappingCount: 6
 }
 
-item = OneviewSDK::API300::Thunderbird::EnclosureGroup.new(@client, options)
+item = OneviewSDK::API300::Synergy::EnclosureGroup.new(@client, options)
 
 # Adds a logical interconnect group to the enclosure group
-lig = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup.find_by(@client, {}).first
+lig = OneviewSDK::API300::Synergy::LogicalInterconnectGroup.find_by(@client, {}).first
 item.add_logical_interconnect_group(lig)
 
 item.create!
 puts "\nCreated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
-item2 = OneviewSDK::API300::Thunderbird::EnclosureGroup.new(@client, name: options[:name])
+item2 = OneviewSDK::API300::Synergy::EnclosureGroup.new(@client, name: options[:name])
 item2.retrieve!
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
 

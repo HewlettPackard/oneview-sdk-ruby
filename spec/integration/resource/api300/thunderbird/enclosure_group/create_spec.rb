@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::EnclosureGroup
-extra_klass_1 = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup
+klass = OneviewSDK::API300::Synergy::EnclosureGroup
+extra_klass_1 = OneviewSDK::API300::Synergy::LogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
@@ -29,14 +29,14 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#create' do
     it 'can create simple Enclosure Group' do
-      item_1 = klass.new($client_300_thunderbird, enclosure_group_options)
+      item_1 = klass.new($client_300_synergy, enclosure_group_options)
       item_1.create
       expect(item_1['name']).to eq(ENC_GROUP_NAME)
     end
 
     it 'can create EnclosureGroup with LIG' do
-      item_2 = klass.new($client_300_thunderbird, enclosure_group_options_2)
-      lig = extra_klass_1.new($client_300_thunderbird, 'name' => LOG_INT_GROUP_NAME)
+      item_2 = klass.new($client_300_synergy, enclosure_group_options_2)
+      lig = extra_klass_1.new($client_300_synergy, 'name' => LOG_INT_GROUP_NAME)
       lig.retrieve!
       item_2.add_logical_interconnect_group(lig)
       item_2.create
@@ -48,8 +48,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'can create EnclosureGroup with empty LIG' do
-      item_3 = klass.new($client_300_thunderbird, enclosure_group_options_3)
-      lig = extra_klass_1.new($client_300_thunderbird, 'name' => LOG_INT_GROUP3_NAME)
+      item_3 = klass.new($client_300_synergy, enclosure_group_options_3)
+      lig = extra_klass_1.new($client_300_synergy, 'name' => LOG_INT_GROUP3_NAME)
       lig.retrieve!
       item_3.add_logical_interconnect_group(lig)
       item_3.create

@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API300
-    module Thunderbird
+    module Synergy
       # Logical interconnect group resource implementation
       class LogicalInterconnectGroup < Resource
         BASE_URI = '/rest/logical-interconnect-groups'.freeze
@@ -73,12 +73,12 @@ module OneviewSDK
             # Default value in case of no specified logical downlink
             entry['logicalDownlinkUri'] = nil
             if logical_downlink
-              ld = OneviewSDK::API300::Thunderbird::LogicalDownlink.find_by(@client, name: logical_downlink).first['uri']
+              ld = OneviewSDK::API300::Synergy::LogicalDownlink.find_by(@client, name: logical_downlink).first['uri']
               entry['logicalDownlinkUri'] = ld
             end
             entry['logicalLocation']['locationEntries'].each do |location|
               if location['type'] == 'Bay' && location['relativeValue'] == bay
-                entry['permittedInterconnectTypeUri'] = OneviewSDK::API300::Thunderbird::Interconnect.get_type(@client, type)['uri']
+                entry['permittedInterconnectTypeUri'] = OneviewSDK::API300::Synergy::Interconnect.get_type(@client, type)['uri']
               end
             end
           end

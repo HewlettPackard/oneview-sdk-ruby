@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
+RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -13,24 +13,24 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
   let(:trap_sev) { %w(Normal Info Warning Critical Major Minor Unknown) }
 
   let(:fixture_path) { 'spec/support/fixtures/unit/resource/logical_interconnect_default.json' }
-  let(:log_int) { OneviewSDK::API300::Thunderbird::LogicalInterconnect.from_file(@client_300, fixture_path) }
+  let(:log_int) { OneviewSDK::API300::Synergy::LogicalInterconnect.from_file(@client_300, fixture_path) }
 
   describe '#create' do
     it 'requires the enclosure to have a uri value' do
-      expect { log_int.create(1, OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300)) }
+      expect { log_int.create(1, OneviewSDK::API300::Synergy::Enclosure.new(@client_300)) }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'makes a POST call to the base uri' do
       expect(@client_300).to receive(:rest_post).with(log_int.class::LOCATION_URI, Hash, log_int.api_version)
         .and_return(FakeResponse.new)
-      log_int.create(1, OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, uri: '/rest/fake'))
+      log_int.create(1, OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake'))
     end
   end
 
   describe '#delete' do
     it 'requires the enclosure to have a uri value' do
-      expect { log_int.delete(1, OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300)) }
+      expect { log_int.delete(1, OneviewSDK::API300::Synergy::Enclosure.new(@client_300)) }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -38,18 +38,18 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
       uri = log_int.class::LOCATION_URI + '?location=Enclosure:/rest/fake,Bay:1'
       expect(@client_300).to receive(:rest_delete).with(uri, {}, log_int.api_version)
         .and_return(FakeResponse.new)
-      log_int.delete(1, OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, uri: '/rest/fake'))
+      log_int.delete(1, OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake'))
     end
   end
 
   describe '#update_ethernet_settings' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300).update_ethernet_settings }
+      expect { OneviewSDK::API300::Synergy::LogicalInterconnect.new(@client_300).update_ethernet_settings }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'requires the ethernetSettings attribute to be set' do
-      expect { OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300, uri: '/rest/fake').update_ethernet_settings }
+      expect { OneviewSDK::API300::Synergy::LogicalInterconnect.new(@client_300, uri: '/rest/fake').update_ethernet_settings }
         .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve/)
     end
 
@@ -64,7 +64,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
 
   describe '#update_settings' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300).update_ethernet_settings }
+      expect { OneviewSDK::API300::Synergy::LogicalInterconnect.new(@client_300).update_ethernet_settings }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -79,7 +79,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
 
   describe '#compliance' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300).compliance }
+      expect { OneviewSDK::API300::Synergy::LogicalInterconnect.new(@client_300).compliance }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -94,7 +94,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
 
   describe '#configuration' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300).configuration }
+      expect { OneviewSDK::API300::Synergy::LogicalInterconnect.new(@client_300).configuration }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -140,7 +140,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
 
   describe '#get_firmware' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300).get_firmware }
+      expect { OneviewSDK::API300::Synergy::LogicalInterconnect.new(@client_300).get_firmware }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
@@ -152,7 +152,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::LogicalInterconnect do
 
   describe '#firmware_update' do
     it 'requires the uri to be set' do
-      expect { OneviewSDK::API300::Thunderbird::LogicalInterconnect.new(@client_300).firmware_update(:cmd, nil, {}) }
+      expect { OneviewSDK::API300::Synergy::LogicalInterconnect.new(@client_300).firmware_update(:cmd, nil, {}) }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 

@@ -13,8 +13,8 @@ require_relative '../../api200/fabric'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Fabric resource implementation for API300 Thunderbird
+    module Synergy
+      # Fabric resource implementation for API300 Synergy
       class Fabric < OneviewSDK::API200::Fabric
 
         # Gets the reserved vlan ID range for the fabric

@@ -12,7 +12,7 @@
 require_relative '../../_client' # Gives access to @client
 
 # List managed SANs for a specified SAN Manager
-managed_sans = OneviewSDK::API300::Thunderbird::ManagedSAN.find_by(@client, deviceManagerName: @san_manager_ip).each do |san|
+managed_sans = OneviewSDK::API300::Synergy::ManagedSAN.find_by(@client, deviceManagerName: @san_manager_ip).each do |san|
   puts "- #{san['name']}"
 end
 
@@ -31,8 +31,8 @@ san_01.set_san_policy(policy)
 puts "\nSAN policy updated."
 
 # Gets the wwn of a switch being used by a managed SAN, then uses it to query all SANs associated with that WWN
-wwn = OneviewSDK::API300::Thunderbird::ManagedSAN.find_by(@client, {}).last['principalSwitch']
+wwn = OneviewSDK::API300::Synergy::ManagedSAN.find_by(@client, {}).last['principalSwitch']
 
-sans = OneviewSDK::API300::Thunderbird::ManagedSAN.get_wwn(@client, wwn)
+sans = OneviewSDK::API300::Synergy::ManagedSAN.get_wwn(@client, wwn)
 
 sans.each { |san| puts "\n Found the following SAN associated with the WWN informed:\n #{san}" }

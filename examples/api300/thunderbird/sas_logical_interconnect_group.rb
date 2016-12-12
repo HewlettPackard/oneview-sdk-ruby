@@ -17,7 +17,7 @@ options = {
   name: 'ONEVIEW_SDK_TEST_SAS_LIG'
 }
 
-lig = OneviewSDK::API300::Thunderbird::SASLogicalInterconnectGroup.new(@client, options)
+lig = OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup.new(@client, options)
 
 # Add the interconnects to the bays 1 and 4
 lig.add_interconnect(1, @sas_interconnect_type)

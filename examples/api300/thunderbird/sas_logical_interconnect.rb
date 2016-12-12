@@ -16,10 +16,10 @@ type = 'SAS Logical Interconnect'
 options = {
   name:  'LogicalEnclosure_1-SASLogicalInterconnectGroup_1-1'
 }
-sas_li = OneviewSDK::API300::Thunderbird::SASLogicalInterconnect.find_by(@client, options).first
+sas_li = OneviewSDK::API300::Synergy::SASLogicalInterconnect.find_by(@client, options).first
 
 # Prints the name and uri of all SAS Logical Interconnects
-OneviewSDK::API300::Thunderbird::SASLogicalInterconnect.find_by(@client, {}).each do |sasli|
+OneviewSDK::API300::Synergy::SASLogicalInterconnect.find_by(@client, {}).each do |sasli|
   puts "\n #{type} name: #{sasli['name']} uri: #{sasli['uri']} \n"
 end
 
@@ -38,7 +38,7 @@ puts sas_li.configuration.data
 # puts sas_li.replace_drive_enclosure('SN123100', 'SN123102')
 
 # # Update the firmware for a SAS logical interconnect.
-# firmware_driver = OneviewSDK::API300::Thunderbird::FirmwareDriver.find_by(@client, name: 'Service Pack Sample').first
+# firmware_driver = OneviewSDK::API300::Synergy::FirmwareDriver.find_by(@client, name: 'Service Pack Sample').first
 # firmware_options = {
 #   force: 'false'
 # }

@@ -11,13 +11,13 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalDownlink
+klass = OneviewSDK::API300::Synergy::LogicalDownlink
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   include_context 'integration api300 context'
 
   describe '#find_by' do
     it 'returns all logical downlinks in the appliance' do
-      expect { klass.find_by($client_300_thunderbird, {}) }.not_to raise_error
+      expect { klass.find_by($client_300_synergy, {}) }.not_to raise_error
     end
   end
 

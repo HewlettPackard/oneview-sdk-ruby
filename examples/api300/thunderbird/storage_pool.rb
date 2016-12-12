@@ -22,7 +22,7 @@ type = 'storage pool'
 options = {}
 
 # Gather storage system information
-storage_system = OneviewSDK::API300::Thunderbird::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
+storage_system = OneviewSDK::API300::Synergy::StorageSystem.new(@client, credentials: { ip_hostname: @storage_system_ip })
 storage_system.retrieve! || raise("ERROR: Storage system at #{@storage_system_ip} not found!")
 puts "Storage System uri = #{storage_system[:uri]}"
 options[:storageSystemUri] = storage_system[:uri]
@@ -32,13 +32,13 @@ puts "Unmanaged pool name = #{pool['name']}"
 options[:poolName] = pool['name']
 
 # Create storage pool
-item = OneviewSDK::API300::Thunderbird::StoragePool.new(@client, options)
+item = OneviewSDK::API300::Synergy::StoragePool.new(@client, options)
 item.set_storage_system(storage_system)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
 # verifying if storage pool exists
-item_2 = OneviewSDK::API300::Thunderbird::StoragePool.new(@client, name: options[:poolName], storageSystemUri: storage_system['uri'])
+item_2 = OneviewSDK::API300::Synergy::StoragePool.new(@client, name: options[:poolName], storageSystemUri: storage_system['uri'])
 result_exists = item_2.exists?
 puts "\nVerifying if '#{item_2[:name]}' exists. Result: #{result_exists}"
 
@@ -47,7 +47,7 @@ item_2.retrieve!
 puts "\nRetrieved #{type} by name: '#{item_2[:name]}'.\n  uri = '#{item_2[:uri]}'"
 
 # Find recently created storage pool by name
-matches = OneviewSDK::API300::Thunderbird::StoragePool.find_by(@client, name: item[:name])
+matches = OneviewSDK::API300::Synergy::StoragePool.find_by(@client, name: item[:name])
 item_3 = matches.first
 puts "\nFound #{type} by name: '#{item_3[:name]}'.\n  uri = '#{item_3[:uri]}'"
 

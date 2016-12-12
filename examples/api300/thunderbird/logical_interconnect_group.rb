@@ -20,7 +20,7 @@ options = {
 }
 
 # Adds a new LIG with the options defined above
-item = OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup.new(@client, options)
+item = OneviewSDK::API300::Synergy::LogicalInterconnectGroup.new(@client, options)
 
 # Adds the following interconnects to the bays 3 and 6 with an Interconnect Type, respectively
 item.add_interconnect(3, 'Virtual Connect SE 40Gb F8 Module for Synergy')
@@ -30,7 +30,7 @@ item.add_interconnect(6, 'Virtual Connect SE 40Gb F8 Module for Synergy')
 item.create
 
 # Lists all LIGs in the Appliance
-OneviewSDK::API300::Thunderbird::LogicalInterconnectGroup.each do |lig|
+OneviewSDK::API300::Synergy::LogicalInterconnectGroup.each do |lig|
   puts "Name: #{lig['name']}\nURI: #{lig['uri']}"
 end
 

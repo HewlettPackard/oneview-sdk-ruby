@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet do
+RSpec.describe OneviewSDK::API300::Synergy::NetworkSet do
   include_context 'shared context'
 
   it 'inherits from API200' do
@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet do
 
   describe '#initialize' do
     it 'sets the defaults correctly api_ver 200' do
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client_300, {}, 200)
+      item = OneviewSDK::API300::Synergy::NetworkSet.new(@client_300, {}, 200)
       expect(item['connectionTemplateUri']).to eq(nil)
       expect(item['nativeNetworkUri']).to eq(nil)
       expect(item['networkUris']).to eq([])
@@ -19,8 +19,8 @@ RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet do
 
   describe '#set_native_network' do
     it 'sets native network for network set' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client_300, {}, 300)
+      eth1 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
+      item = OneviewSDK::API300::Synergy::NetworkSet.new(@client_300, {}, 300)
       item.set_native_network(eth1)
       expect(item['nativeNetworkUri']).to eq(eth1['uri'])
     end
@@ -28,16 +28,16 @@ RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet do
 
   describe '#add_ethernet_network' do
     it 'add ethernet network to network set' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client_300, {}, 300)
+      eth1 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
+      item = OneviewSDK::API300::Synergy::NetworkSet.new(@client_300, {}, 300)
       item.add_ethernet_network(eth1)
       expect(item['networkUris']).to include(eth1['uri'])
     end
 
     it 'add multiple ethernet networks to network set' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
-      eth2 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth2')
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client_300, {}, 300)
+      eth1 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
+      eth2 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth2')
+      item = OneviewSDK::API300::Synergy::NetworkSet.new(@client_300, {}, 300)
       item.add_ethernet_network(eth1)
       item.add_ethernet_network(eth2)
       expect(item['networkUris']).to include(eth1['uri'])
@@ -47,8 +47,8 @@ RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet do
 
   describe '#remove_ethernet_network' do
     it 'remove ethernet network from network set' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client_300, {}, 300)
+      eth1 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
+      item = OneviewSDK::API300::Synergy::NetworkSet.new(@client_300, {}, 300)
       item.add_ethernet_network(eth1)
       expect(item['networkUris']).to include(eth1['uri'])
       item.remove_ethernet_network(eth1)
@@ -56,9 +56,9 @@ RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet do
     end
 
     it 'remove multiple ethernet networks from network set' do
-      eth1 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
-      eth2 = OneviewSDK::API300::Thunderbird::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth2')
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client_300, {}, 300)
+      eth1 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth1')
+      eth2 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: '/rest/ethernet-networks/eth2')
+      item = OneviewSDK::API300::Synergy::NetworkSet.new(@client_300, {}, 300)
       item.add_ethernet_network(eth1)
       item.add_ethernet_network(eth2)
       expect(item['networkUris']).to include(eth1['uri'])
@@ -76,14 +76,14 @@ RSpec.describe OneviewSDK::API300::Thunderbird::NetworkSet do
 
   describe '#get_without_ethernet' do
     it 'instance get network set without ethernet' do
-      item = OneviewSDK::API300::Thunderbird::NetworkSet.new(@client_300, uri: '/rest/network-sets/nset1')
+      item = OneviewSDK::API300::Synergy::NetworkSet.new(@client_300, uri: '/rest/network-sets/nset1')
       expect(@client_300).to receive(:rest_get).with('/rest/network-sets/nset1/withoutEthernet').and_return(FakeResponse.new({}))
       item.get_without_ethernet
     end
 
     it 'class get network set without ethernet' do
       expect(@client_300).to receive(:rest_get).with('/rest/network-sets/withoutEthernet').and_return(FakeResponse.new({}))
-      OneviewSDK::API300::Thunderbird::NetworkSet.get_without_ethernet(@client_300)
+      OneviewSDK::API300::Synergy::NetworkSet.get_without_ethernet(@client_300)
     end
   end
 end

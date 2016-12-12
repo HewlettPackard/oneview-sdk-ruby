@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::Thunderbird::EthernetNetwork, integration: true, type: UPDATE do
+RSpec.describe OneviewSDK::API300::Synergy::EthernetNetwork, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   describe '#update' do
     it 'update name' do
-      item = OneviewSDK::API300::Thunderbird::EthernetNetwork.new($client_300_thunderbird, name: ETH_NET_NAME)
+      item = OneviewSDK::API300::Synergy::EthernetNetwork.new($client_300_synergy, name: ETH_NET_NAME)
       item.retrieve!
       item.update(name: ETH_NET_NAME_UPDATED)
       item.refresh

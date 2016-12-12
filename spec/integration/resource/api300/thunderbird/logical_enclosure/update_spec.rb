@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Thunderbird::LogicalEnclosure
+klass = OneviewSDK::API300::Synergy::LogicalEnclosure
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
@@ -13,7 +13,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   end
 
   before :each do
-    @item = klass.find_by($client_300_thunderbird, name: LOG_ENCL1_NAME).first
+    @item = klass.find_by($client_300_synergy, name: LOG_ENCL1_NAME).first
   end
 
   describe '#reconfigure' do

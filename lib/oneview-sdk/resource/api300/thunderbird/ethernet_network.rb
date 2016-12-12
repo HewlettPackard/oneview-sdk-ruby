@@ -13,8 +13,8 @@ require_relative '../../api200/ethernet_network'
 
 module OneviewSDK
   module API300
-    module Thunderbird
-      # Ethernet network resource implementation for API300 Thunderbird
+    module Synergy
+      # Ethernet network resource implementation for API300 Synergy
       class EthernetNetwork < OneviewSDK::API200::EthernetNetwork
 
         # Create a resource object, associate it with a client, and set its properties.
