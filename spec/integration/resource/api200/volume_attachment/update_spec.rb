@@ -3,7 +3,6 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::VolumeAttachment, integration: true, type: UPDATE do
   include_context 'integration context'
 
-  # Update operation should be performed through the Server-Profiles API
   describe '#update' do
     it 'should throw unavailable exception' do
       item = OneviewSDK::VolumeAttachment.new($client)
