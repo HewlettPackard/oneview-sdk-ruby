@@ -19,7 +19,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
   end
 
-  describe '#environmentalConfiguration' do
+  describe '#environmental_configuration' do
     it 'Gets the script' do
       item = klass.find_by($client_300, {}).first
       result = item.environmental_configuration
@@ -28,7 +28,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
   end
 
-  describe '#self.get_devices' do
+  describe '::get_devices' do
     it 'Check if created device is present' do
       item = klass.find_by($client_300, {}).first
       devices = klass.get_devices($client_300)
