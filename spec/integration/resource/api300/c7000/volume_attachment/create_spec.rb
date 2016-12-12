@@ -79,13 +79,4 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       expect { item.get_paths }.to_not raise_error
     end
   end
-
-  # describe '#get_path' do
-  #   it 'should get a particular storage volume attachment path' do
-  #     # TODO should refactor this test for better expectation
-  #     item = klass.get_all($client_300).first
-  #     path = item.get_paths.first
-  #     expect { item.get_path(path['id']) }# TODO should refactor this test for better expectation
-  #   end
-  # end
 end
