@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-klass = OneviewSDK::LogicalSwitchGroup
+klass = OneviewSDK::API300::C7000::LogicalSwitchGroup
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   before :all do
-    @item = OneviewSDK::LogicalSwitchGroup.new($client, name: LOG_SWI_GROUP_NAME)
+    @item = klass.new($client_300, name: LOG_SWI_GROUP_NAME)
     @type = 'Cisco Nexus 55xx'
   end
 
@@ -22,15 +22,14 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#retrieve!' do
     it 'retrieves the objects' do
-      @item = klass.new($client, name: LOG_SWI_GROUP_NAME)
+      @item = klass.new($client_300, name: LOG_SWI_GROUP_NAME)
       @item.retrieve!
       expect(@item['uri']).to be
     end
 
     it 'retrieves all the objects' do
-      list = klass.find_by($client, {})
+      list = klass.find_by($client_300, {})
       expect(list).not_to be_empty
     end
   end
-
 end
