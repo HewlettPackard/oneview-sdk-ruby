@@ -102,7 +102,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
   describe '#configuration' do
     it 'requires a uri' do
       expect { OneviewSDK::API300::Synergy::Enclosure.new(@client_300).configuration }.to raise_error(OneviewSDK::IncompleteResource,
-                                                                                                          /Please set uri/)
+                                                                                                      /Please set uri/)
     end
 
     it 'does a PUT to /uri/configuration and updates the attributes' do
