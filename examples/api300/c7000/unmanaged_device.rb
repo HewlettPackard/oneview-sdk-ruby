@@ -9,26 +9,26 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require_relative '../../_client' # Gives access to @client
 
 def print_device(device)
   puts "- \"#{device['name']}\" with model \"#{device['model']}\" and uri \"#{device['uri']}\""
 end
 
 puts "\nAdding first device ..."
-device1 = OneviewSDK::UnmanagedDevice.new(@client, name: 'Unmanaged Device 1', model: 'Procurve 4200VL')
+device1 = OneviewSDK::API300::C7000::UnmanagedDevice.new(@client, name: 'Unmanaged Device 1', model: 'Procurve 4200VL')
 device1.add
 puts 'Device added:'
 print_device(device1)
 
 puts "\nAdding second device ..."
-device2 = OneviewSDK::UnmanagedDevice.new(@client, name: 'Unmanaged Device 2', model: 'Unknown')
+device2 = OneviewSDK::API300::C7000::UnmanagedDevice.new(@client, name: 'Unmanaged Device 2', model: 'Unknown')
 device2.add
 puts 'Device added:'
 print_device(device2)
 
 puts "\nListing all devices:"
-unmanaged_devices = OneviewSDK::UnmanagedDevice.get_devices(@client)
+unmanaged_devices = OneviewSDK::API300::C7000::UnmanagedDevice.get_devices(@client)
 unmanaged_devices.each { |device| print_device(device) }
 
 [device1, device2].each do |device|

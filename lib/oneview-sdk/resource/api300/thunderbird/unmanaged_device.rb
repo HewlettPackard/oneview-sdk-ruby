@@ -14,6 +14,7 @@ require_relative '../../api200/unmanaged_device'
 module OneviewSDK
   module API300
     module Thunderbird
+      # Unmanaged Device resource implementation for API300 Thunderbird
       class UnmanagedDevice < OneviewSDK::API200::UnmanagedDevice
       end
     end
