@@ -14,6 +14,7 @@ require_relative '../../api200/firmware_driver'
 module OneviewSDK
   module API300
     module Thunderbird
+      # FirmwareDriver resource implementation for API300 Thunderbird
       class FirmwareDriver < OneviewSDK::API200::FirmwareDriver
       end
     end
