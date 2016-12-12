@@ -420,5 +420,10 @@ RSpec.describe OneviewSDK do
     it 'supports symbols' do
       expect(OneviewSDK.resource_named(:server_profile)).to eq(OneviewSDK::ServerProfile)
     end
+
+    it 'raises an error if the api_version is not supported' do
+      expect { OneviewSDK.resource_named(:server_profile, 15) }
+        .to raise_error(OneviewSDK::UnsupportedVersion, /not supported/)
+    end
   end
 end

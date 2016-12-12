@@ -1,6 +1,7 @@
 # v3.0.0
  - Split resources into API modules
  - Added OneView API300 endpoints
+ - Fixed/updated/added CLI commands
 
 #### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now

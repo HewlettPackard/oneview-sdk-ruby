@@ -25,7 +25,7 @@ module OneviewSDK
       JSON.parse(IO.read(expanded_path))
     rescue
       data = YAML.load_file(expanded_path)
-      Hash[data.map { |k, v| [k.to_s, v] }]
+      JSON.parse(data.to_json) # Convert to and from JSON to ensure compatibility
     end
   end
 end

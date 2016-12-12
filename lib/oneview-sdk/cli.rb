@@ -15,7 +15,8 @@ require 'yaml'
 require 'highline/import'
 
 module OneviewSDK
-  # cli for oneview-sdk
+  # command-line-interface for oneview-sdk
+  # When you install this gem, this cli should be available to you by running: `$ oneview-sdk-ruby`
   class Cli < Thor
     # Runner class to enable testing
     class Runner
@@ -67,12 +68,13 @@ module OneviewSDK
       desc: 'Log level to use',
       aliases: '-l',
       enum: %w(debug info warn error),
-      default: 'warn'
+      default: :warn
 
     map ['-v', '--version'] => :version
 
 
     desc 'console', 'Open a Ruby console with a connection to OneView'
+    # Open a Ruby console with a connection to OneView
     def console
       client_setup({}, true, true)
       puts "Console Connected to #{@client.url}"
@@ -88,6 +90,7 @@ module OneviewSDK
     end
 
     desc 'version', 'Print gem and OneView appliance versions'
+    # Print gem and OneView appliance versions
     def version
       puts "Gem Version: #{OneviewSDK::VERSION}"
       client_setup({ 'log_level' => :error }, true)
@@ -102,6 +105,7 @@ module OneviewSDK
       enum: %w(json yaml human),
       default: 'human'
     desc 'env', 'Show environment variables for oneview-sdk-ruby'
+    # Show environment variables for oneview-sdk-ruby
     def env
       data = {}
       OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
@@ -116,6 +120,7 @@ module OneviewSDK
     end
 
     desc 'login', 'Attempt authentication and return token'
+    # Attempt authentication and return token
     def login
       client_setup
       puts "Login Successful! Token = #{@client.token}"
@@ -127,6 +132,7 @@ module OneviewSDK
       enum: %w(json yaml human),
       default: 'human'
     desc 'list TYPE', 'List names of resources'
+    # List names of resources
     def list(type)
       resource_class = parse_type(type)
       client_setup
@@ -145,6 +151,7 @@ module OneviewSDK
       desc: 'Comma-seperated list of attributes to show',
       aliases: '-a'
     desc 'show TYPE NAME', 'Show resource details'
+    # Show resource details
     def show(type, name)
       resource_class = parse_type(type)
       client_setup
@@ -175,6 +182,7 @@ module OneviewSDK
       desc: 'Hash of key/value pairs to filter on',
       required: true
     desc 'search TYPE', 'Search for resource by key/value pair(s)'
+    # Search for resource by key/value pair(s)
     def search(type)
       resource_class = parse_type(type)
       client_setup
@@ -213,8 +221,10 @@ module OneviewSDK
     rest_examples << "\n  oneview-sdk-ruby rest PUT rest/fc-networks/<id> -d '{\"linkStabilityTime\": 20, ...}'"
     rest_examples << "\n  oneview-sdk-ruby rest PUT rest/enclosures/<id>/configuration"
     desc 'rest METHOD URI', "Make REST call to the OneView API. Examples:#{rest_examples}"
+    # Make REST call to the OneView API
     def rest(method, uri)
-      client_setup('log_level' => :error)
+      log_level = @options['log_level'] == :warn ? :error : @options['log_level'].to_sym # Default to :error
+      client_setup('log_level' => log_level)
       uri_copy = uri.dup
       uri_copy.prepend('/') unless uri_copy.start_with?('/')
       if @options['data']
@@ -253,6 +263,7 @@ module OneviewSDK
     update_examples =  "\n  oneview-sdk-ruby update FCNetwork FC1 -h linkStabilityTime:20"
     update_examples << "\n  oneview-sdk-ruby update Volume VOL1 -j '{\"shareable\": true}'"
     desc 'update TYPE NAME --[hash|json] <data>', "Update resource by name. Examples:#{update_examples}"
+    # Update resource by name
     def update(type, name)
       resource_class = parse_type(type)
       client_setup
@@ -267,9 +278,8 @@ module OneviewSDK
       fail_nice 'Not Found' if matches.empty?
       resource = matches.first
       begin
-        resource[:uri] = '/rest/storage-volumes/57A22A70-73EC-43C1-91B9-9FABD1E'
         resource.update(data)
-        output 'Updated Successfully!'
+        puts 'Updated Successfully!'
       rescue StandardError => e
         fail_nice "Failed to update #{resource.class.name.split('::').last} '#{name}': #{e}"
       end
@@ -280,16 +290,17 @@ module OneviewSDK
       type: :boolean,
       aliases: '-f'
     desc 'delete TYPE NAME', 'Delete resource by name'
+    # Delete resource by name
     def delete(type, name)
       resource_class = parse_type(type)
       client_setup
       matches = resource_class.find_by(@client, name: name)
-      fail_nice 'Not Found' if matches.empty?
+      fail_nice('Not Found', 2) if matches.empty?
       resource = matches.first
       return unless options['force'] || agree("Delete '#{name}'? [Y/N] ")
       begin
         resource.delete
-        output 'Deleted Successfully!'
+        puts 'Deleted Successfully!'
       rescue StandardError => e
         fail_nice "Failed to delete #{resource.class.name.split('::').last} '#{name}': #{e}"
       end
@@ -300,23 +311,22 @@ module OneviewSDK
       type: :boolean,
       aliases: '-f'
     desc 'delete_from_file FILE_PATH', 'Delete resource defined in file'
+    # Delete resource defined in file
     def delete_from_file(file_path)
       client_setup
       resource = OneviewSDK::Resource.from_file(@client, file_path)
-      fail_nice 'File must define name or uri' unless resource[:name] || resource[:uri]
-      found = resource.retrieve! rescue false
-      found ||= resource.refresh rescue false
-      fail_nice "#{resource.class.name.split('::').last} '#{resource[:name] || resource[:uri]}' Not Found" unless found
-      unless options['force'] || agree("Delete '#{resource[:name]}'? [Y/N] ")
-        puts 'OK, exiting.'
-        return
-      end
+      fail_nice("#{resource.class.name.split('::').last} '#{resource[:name] || resource[:uri]}' Not Found", 2) unless resource.retrieve!
+      return unless options['force'] || agree("Delete '#{resource[:name]}'? [Y/N] ")
       begin
         resource.delete
-        output 'Deleted Successfully!'
+        puts 'Deleted Successfully!'
       rescue StandardError => e
         fail_nice "Failed to delete #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
       end
+    rescue IncompleteResource => e
+      fail_nice "Failed to delete #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
+    rescue SystemCallError => e # File open errors
+      fail_nice e
     end
 
     method_option :if_missing,
@@ -324,35 +334,68 @@ module OneviewSDK
       type: :boolean,
       aliases: '-i'
     desc 'create_from_file FILE_PATH', 'Create/Update resource defined in file'
+    # Create/Update resource defined in file
     def create_from_file(file_path)
       client_setup
       resource = OneviewSDK::Resource.from_file(@client, file_path)
-      resource[:uri] = nil
-      fail_nice 'File must specify a resource name' unless resource[:name]
-      existing_resource = resource.class.find_by(@client, name: resource[:name]).first
-      if existing_resource
+      fail_nice 'Failed to determine resource type!' if resource.class == OneviewSDK::Resource
+      existing_resource = resource.class.new(@client, resource.data)
+      resource.data.delete('uri')
+      if existing_resource.retrieve!
         if options['if_missing']
-          puts "Skipped: '#{resource[:name]}': #{resource.class.name.split('::').last} already exists."
+          puts "Skipped: #{resource.class.name.split('::').last} '#{resource[:name]}' already exists.\n#{existing_resource[:uri]}"
+          return
+        end
+        if existing_resource.like?(resource.data)
+          puts "Skipped: #{resource.class.name.split('::').last} '#{resource[:name]}' is up to date.\n#{existing_resource[:uri]}"
           return
         end
         begin
-          resource.data.delete('uri')
           existing_resource.update(resource.data)
-          output "Updated Successfully!\n#{resource[:uri]}"
+          puts "Updated Successfully!\n#{existing_resource[:uri]}"
         rescue StandardError => e
           fail_nice "Failed to update #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
         end
       else
         begin
           resource.create
-          output "Created Successfully!\n#{resource[:uri]}"
+          puts "Created Successfully!\n#{resource[:uri]}"
         rescue StandardError => e
           fail_nice "Failed to create #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
         end
       end
+    rescue IncompleteResource => e
+      fail_nice "Failed to create #{resource.class.name.split('::').last} '#{resource[:name]}': #{e}"
+    rescue SystemCallError => e # File open errors
+      fail_nice e
+    end
+
+    method_option :path,
+      desc: 'File path to save resource in',
+      type: :string,
+      aliases: '-p',
+      required: true
+    method_option :format,
+      desc: 'Output format',
+      aliases: '-f',
+      enum: %w(json yaml),
+      default: 'json'
+    desc 'to_file TYPE NAME', 'Save resource details to file'
+    # Save resource details to file
+    def to_file(type, name)
+      file = File.expand_path(options['path'])
+      resource_class = parse_type(type)
+      client_setup
+      resource = resource_class.find_by(@client, name: name).first
+      fail_nice "#{resource_class.name.split('::').last} '#{name}' not found" unless resource
+      resource.to_file(file, options['format'])
+      puts "Output to #{file}"
+    rescue SystemCallError => e
+      fail_nice "Failed to create file! (You may need to create the necessary directories). Message: #{e}"
     end
 
     desc 'cert check|import|list URL', 'Check, import, or list OneView certs'
+    # Check, import, or list OneView certs
     def cert(type, url = ENV['ONEVIEWSDK_URL'])
       case type.downcase
       when 'check'
@@ -381,9 +424,9 @@ module OneviewSDK
 
     private
 
-    def fail_nice(msg = nil)
+    def fail_nice(msg = nil, exit_code = 1)
       puts "ERROR: #{msg}" if msg
-      exit 1
+      exit exit_code
     end
 
     def client_setup(client_params = {}, quiet = false, throw_errors = false)
@@ -391,6 +434,7 @@ module OneviewSDK
       client_params['ssl_enabled'] = false if @options['ssl_verify'] == false
       client_params['url'] ||= @options['url'] if @options['url']
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
+      client_params['api_version'] ||= @options['api_version'].to_i if @options['api_version']
       @client = OneviewSDK::Client.new(client_params)
     rescue StandardError => e
       raise e if throw_errors
@@ -400,14 +444,25 @@ module OneviewSDK
 
     # Get resource class from given string
     def parse_type(type)
+      api_ver = (@options['api_version'] || OneviewSDK.api_version).to_i
+      unless OneviewSDK::SUPPORTED_API_VERSIONS.include?(api_ver)
+        # Find and use the best available match for the desired API version (round down to nearest)
+        valid_api_ver = OneviewSDK::SUPPORTED_API_VERSIONS.select { |x| x <= api_ver }.max || OneviewSDK::SUPPORTED_API_VERSIONS.min
+        puts "WARNING: Module API version #{api_ver} is not supported. Using #{valid_api_ver}"
+        api_ver = valid_api_ver
+      end
+      r = OneviewSDK.resource_named(type, api_ver)
+      r ||= OneviewSDK.resource_named(type) unless api_ver == OneviewSDK.api_version # Try default API version as last resort
+      return r if r
       valid_classes = []
-      OneviewSDK.constants.each do |c|
-        klass = OneviewSDK.const_get(c)
+      api_module = OneviewSDK.const_get("API#{api_ver}")
+      api_module.constants.each do |c|
+        klass = api_module.const_get(c)
         next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
         valid_classes.push(klass.name.split('::').last)
       end
       vc = valid_classes.sort_by!(&:downcase).join("\n  ")
-      OneviewSDK.resource_named(type) || fail_nice("Invalid resource type: '#{type}'.  Valid options are:\n  #{vc}")
+      fail_nice("Invalid resource type: '#{type}'.  Valid options for API version #{api_ver} are:\n  #{vc}")
     end
 
     # Parse options hash from input. Handles chaining and keywords such as true/false & nil
