@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-# Gives access to @client, @server_hardware2_hostname, @server_hardware2_username, @server_hardware2_password
+# Gives access to @client, @server_hardware_hostname, @server_hardware_username, @server_hardware_password
 require_relative '../../_client'
 
 def print_server_hardware_type(item)
@@ -23,9 +23,9 @@ end
 puts "\nCreating server hardware type by the creation of server hardware."
 
 options_server_hardware = {
-  hostname: @server_hardware2_hostname,
-  username: @server_hardware2_username,
-  password: @server_hardware2_password,
+  hostname: @server_hardware_hostname,
+  username: @server_hardware_username,
+  password: @server_hardware_password,
   name: 'Server Hardware Type OneViewSDK Test 2',
   licensingIntent: 'OneView'
 }

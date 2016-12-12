@@ -19,7 +19,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
     context 'when matches server hardware that is under management' do
       it 'should not remove the resource' do
         expect { target.remove }.to raise_error
-        expect(target.retrieve!).to be(true)
+        expect(target.retrieve!).to eq(true)
       end
     end
   end

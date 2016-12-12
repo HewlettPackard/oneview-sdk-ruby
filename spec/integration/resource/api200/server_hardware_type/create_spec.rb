@@ -27,7 +27,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
       target = klass.new($client, uri: server_hardware['serverHardwareTypeUri'])
 
-      expect(target.retrieve!).to be(true)
+      expect(target.retrieve!).to eq(true)
     end
   end
 end
