@@ -9,24 +9,24 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client'
+require_relative '../../_client'
 
 # Example: Actions with interconnect
 # NOTE: You'll need to add an interconnect with state Configured and a port linked.
 
 # List of interconnects
 puts "\nGets all interconnects"
-OneviewSDK::Interconnect.find_by(@client, {}).each do |interconnect|
+OneviewSDK::API300::C7000::Interconnect.find_by(@client, {}).each do |interconnect|
   puts "Interconnect #{interconnect['name']} URI=#{interconnect['uri']} state #{interconnect['state']}"
 end
 
 # Retrieves interconnect types
 puts "\nRetrieving interconnect types"
-OneviewSDK::Interconnect.get_types(@client).each do |type|
+OneviewSDK::API300::C7000::Interconnect.get_types(@client).each do |type|
   puts "Interconnect type #{type['name']} URI=#{type['uri']}"
 end
 
-item = OneviewSDK::Interconnect.find_by(@client, state: 'Configured').first
+item = OneviewSDK::API300::C7000::Interconnect.find_by(@client, state: 'Configured').first
 
 # Retrieving the named servers for this interconnect
 puts "\nRetrieving the named servers for interconnect #{item['name']}"
@@ -44,7 +44,7 @@ puts stats
 # Resert Port Protection
 puts "\nReseting port protection for interconnect #{item['name']}"
 item.reset_port_protection
-puts 'Reset port protection successfully'
+puts 'Reset port protection successfully.'
 
 # Update port
 ports = item['ports'].select { |k| k['portType'] == 'Uplink' }

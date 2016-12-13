@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-klass = OneviewSDK::Interconnect
+klass = OneviewSDK::API300::Thunderbird::Interconnect
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
-  let(:interconnect) { klass.find_by($client, name: 'Encl1, interconnect 1').first }
+  let(:interconnect) { klass.find_by($client_300_thunderbird, name: INTERCONNECT1_NAME).first }
 
   describe '#update' do
     it 'self raises MethodUnavailable' do
@@ -27,7 +27,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       ports_2 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
       port_updated = ports_2.first
       expect(port_updated['enabled']).to be false
-      uplink = OneviewSDK::EthernetNetwork.find_by($client, name: ETH_NET_NAME).first
+      uplink = OneviewSDK::API300::Thunderbird::FCNetwork.find_by($client_300_thunderbird, name: FC_NET_NAME).first
       expect { interconnect.update_port(port['name'], enabled: true, associatedUplinkSetUri: uplink['uri']) }.not_to raise_error
       interconnect.retrieve!
       ports_3 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
@@ -42,6 +42,13 @@ RSpec.describe klass, integration: true, type: UPDATE do
   end
 
   describe '#patch' do
-    it 'is a pending example due to the lack of type of interconnection that supports this operation'
+    it 'update a given interconnect across a patch' do
+      expect { interconnect.patch('replace', '/uidState', 'Off') }.not_to raise_error
+      interconnect.retrieve!
+      expect(interconnect['uidState']).to eq('Off')
+      expect { interconnect.patch('replace', '/uidState', 'On') }.not_to raise_error
+      interconnect.retrieve!
+      expect(interconnect['uidState']).to eq('On')
+    end
   end
 end

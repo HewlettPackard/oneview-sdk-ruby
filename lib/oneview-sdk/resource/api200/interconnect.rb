@@ -25,6 +25,8 @@ module OneviewSDK
       # @param [Integer] api_ver The api version to use when interracting with this resource.
       def initialize(client, params = {}, api_ver = nil)
         super
+        # Default values:
+        @data['type'] ||= 'InterconnectV3'
       end
 
       # Method is not available

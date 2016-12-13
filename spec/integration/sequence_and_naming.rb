@@ -209,3 +209,6 @@ DRIVE_ENCL1_SERIAL_UPDATED = 'SN123102'.freeze
 
 # SAS Interconnect
 SAS_INTERCONNECT1_NAME = '0000A66101, interconnect 1'.freeze
+
+# Interconnect
+INTERCONNECT1_NAME = '0000A66101, interconnect 5'.freeze
