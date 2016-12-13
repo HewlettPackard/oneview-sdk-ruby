@@ -42,8 +42,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       item_2.create
       expect(item_2['name']).to eq(ENC_GROUP2_NAME)
       item_2['interconnectBayMappings'].each do |bay|
-        expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if bay['interconnectBay'] == 1
-        expect(bay['logicalInterconnectGroupUri']).to_not be if bay['interconnectBay'] != 1
+        if bay['interconnectBay'] == 3 || bay['interconnectBay'] == 6
+          expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri'])
+        else
+          expect(bay['logicalInterconnectGroupUri']).to_not be
+        end
       end
     end
 
