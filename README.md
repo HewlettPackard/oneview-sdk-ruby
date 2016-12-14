@@ -122,8 +122,8 @@ OneviewSDK.api_version = 300
 OneviewSDK.api_version                  # 300
 OneviewSDK.api_version_updated?         # true
 
-# The API200 module has only 1 variant, but API300 has 2 (C7000 & Thunderbird):
-OneviewSDK::API300::SUPPORTED_VARIANTS  # ['C7000', 'Thunderbird']
+# The API200 module has only 1 variant, but API300 has 2 (C7000 & Synergy):
+OneviewSDK::API300::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
 OneviewSDK::API300::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API300.variant              # 'C7000'
 OneviewSDK::API300.variant_updated?     # false
@@ -133,11 +133,11 @@ OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNet
 OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::C7000::EthernetNetwork
 
 # Likewise, we can set a new default variant for the API300 module:
-OneviewSDK::API300.variant = 'Thunderbird'
-OneviewSDK::API300.variant              # 'Thunderbird'
+OneviewSDK::API300.variant = 'Synergy'
+OneviewSDK::API300.variant              # 'Synergy'
 OneviewSDK::API300.variant_updated?     # true
-OneviewSDK::EthernetNetwork             # OneviewSDK::API300::Thunderbird::EthernetNetwork
-OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::Thunderbird::EthernetNetwork
+OneviewSDK::EthernetNetwork             # OneviewSDK::API300::Synergy::EthernetNetwork
+OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::Synergy::EthernetNetwork
 ```
 
 We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.
