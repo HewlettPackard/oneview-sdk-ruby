@@ -349,12 +349,13 @@ module OneviewSDK
   # Get resource class that matches the type given
   # @param [String] type Name of the desired class type
   # @param [Fixnum] api_ver API module version to fetch resource from
+  # @param [String] variant API module variant to fetch resource from
   # @return [Class] Resource class or nil if not found
-  def self.resource_named(type, api_ver = @api_version)
+  def self.resource_named(type, api_ver = @api_version, variant = nil)
     unless SUPPORTED_API_VERSIONS.include?(api_ver)
       raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"
     end
     api_module = OneviewSDK.const_get("API#{api_ver}")
-    api_module.resource_named(type)
+    variant ? api_module.resource_named(type, variant) : api_module.resource_named(type)
   end
 end
