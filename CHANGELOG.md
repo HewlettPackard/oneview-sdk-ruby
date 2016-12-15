@@ -15,6 +15,7 @@
    - FCoE network
    - Firmware bundles
    - Firmware drivers
+   - Interconnect
    - Logical downlink
    - Logical enclosure
    - Logical interconnect Group
