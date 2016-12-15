@@ -84,7 +84,9 @@ RSpec::Core::RakeTask.new('spec:system:heavy') do |spec|
   spec.rspec_opts << ' --tag system'
 end
 
-RuboCop::RakeTask.new
+RuboCop::RakeTask.new do |task|
+  task.options << '--display-cop-names'
+end
 
 desc 'Runs rubocop and unit tests'
 task :test do

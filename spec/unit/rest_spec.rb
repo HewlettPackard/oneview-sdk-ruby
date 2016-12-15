@@ -196,8 +196,8 @@ RSpec.describe OneviewSDK::Client do
       expect(req.body).to eq(options['body'].to_json)
     end
 
-    it 'logs the filtered request options (debug level)' do
-      def_options = { 'X-API-Version' => @client.api_version, 'auth' => 'filtered', 'Content-Type' => 'application/json' }
+    it 'logs the request options (debug level)' do
+      def_options = { 'X-API-Version' => @client.api_version, 'auth' => 'secretToken', 'Content-Type' => 'application/json' }
       @client.logger.level = @client.logger.class.const_get('DEBUG')
       expect { @client.send(:build_request, :get, @uri, {}, @client.api_version) }
         .to output(/Options: #{def_options}/).to_stdout_from_any_process
