@@ -22,12 +22,12 @@ end
 
 
 # List all server hardware types
-list = OneviewSDK::ServerHardwareType.get_all(@client)
+list = OneviewSDK::API300::Synergy::ServerHardwareType.get_all(@client)
 puts "\n#Listing all server hardware type:"
 list.each { |p| puts "  #{p[:name]}" }
 
 puts "\n#Retrieving by uri #{list.first['uri']}"
-target = OneviewSDK::ServerHardwareType.new(@client, uri: list.first['uri'])
+target = OneviewSDK::API300::Synergy::ServerHardwareType.new(@client, uri: list.first['uri'])
 target.retrieve!
 print_server_hardware_type(target)
 
