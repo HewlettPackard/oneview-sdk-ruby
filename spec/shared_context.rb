@@ -38,7 +38,7 @@ RSpec.shared_context 'integration api300 context', a: :b do
   before :all do
     integration_context
     $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
-    $client_300_thunderbird ||= OneviewSDK::Client.new($config_thunderbird.merge(api_version: 300))
+    $client_300_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 300))
   end
 
   integration_context_debugging
@@ -83,13 +83,13 @@ end
 #   spec/integration/one_view_secrets.json
 def integration_context
   default_config = 'spec/integration/one_view_config.json'
-  default_config_thunderbird = 'spec/integration/one_view_thunderbird_config.json'
+  default_config_synergy = 'spec/integration/one_view_synergy_config.json'
   default_secrets = 'spec/integration/one_view_secrets.json'
-  default_secrets_thunderbird = 'spec/integration/one_view_thunderbird_secrets.json'
+  default_secrets_synergy = 'spec/integration/one_view_synergy_secrets.json'
   @config_path ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG'] || default_config
-  @config_path_thunderbird ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG_THUNDERBIRD'] || default_config_thunderbird
+  @config_path_synergy ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG_SYNERGY'] || default_config_synergy
   @secrets_path ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS'] || default_secrets
-  @secrets_path_thunderbird ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS_THUNDERBIRD'] || default_secrets_thunderbird
+  @secrets_path_synergy ||= ENV['ONEVIEWSDK_INTEGRATION_SECRETS_SYNERGY'] || default_secrets_synergy
 
   # Ensure config & secrets files exist
   unless File.file?(@config_path) && File.file?(@secrets_path)
@@ -100,10 +100,10 @@ def integration_context
     exit!
   end
   $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
-  $secrets_thunderbird ||= OneviewSDK::Config.load(@secrets_path_thunderbird) # Secrets for URIs, server/enclosure credentials, etc.
+  $secrets_synergy ||= OneviewSDK::Config.load(@secrets_path_synergy) # Secrets for URIs, server/enclosure credentials, etc.
   # Creates the global config variable
   $config ||= OneviewSDK::Config.load(@config_path)
-  $config_thunderbird ||= OneviewSDK::Config.load(@config_path_thunderbird)
+  $config_synergy ||= OneviewSDK::Config.load(@config_path_synergy)
 end
 
 # For debugging only: Shows test metadata without actually running the tests

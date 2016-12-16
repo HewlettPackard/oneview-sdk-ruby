@@ -14,6 +14,7 @@ require_relative '../../api200/firmware_driver'
 module OneviewSDK
   module API300
     module C7000
+      # FirmwareDriver resource implementation for API300 C7000
       class FirmwareDriver < OneviewSDK::API200::FirmwareDriver
       end
     end

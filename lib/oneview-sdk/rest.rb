@@ -197,10 +197,7 @@ module OneviewSDK
         end
       end
 
-      filtered_options = options.to_s
-      filtered_options.gsub!(@password, 'filtered') if @password
-      filtered_options.gsub!(@token, 'filtered') if @token
-      @logger.debug "  Options: #{filtered_options}"
+      @logger.debug "  Options: #{options}" # Warning: This may include passwords and tokens
 
       request
     end

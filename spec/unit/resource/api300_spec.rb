@@ -4,11 +4,11 @@ RSpec.describe OneviewSDK::API300 do
   it 'has a list of supported variants' do
     variants = described_class::SUPPORTED_VARIANTS
     expect(variants).to be_a Array
-    %w(C7000 Thunderbird).each { |v| expect(variants).to include(v) }
+    %w(C7000 Synergy).each { |v| expect(variants).to include(v) }
   end
 
   it 'returns a valid API300 variant' do
-    %w(C7000 Thunderbird).each { |v| expect { OneviewSDK::API300.const_get(v) }.not_to raise_error }
+    %w(C7000 Synergy).each { |v| expect { OneviewSDK::API300.const_get(v) }.not_to raise_error }
   end
 
   it 'raises an error when an invalid API300 variant is called' do
@@ -26,7 +26,7 @@ RSpec.describe OneviewSDK::API300 do
     end
 
     it 'allows you to override the variant' do
-      expect(described_class.resource_named('ServerProfile', 'Thunderbird')).to eq(described_class::Thunderbird::ServerProfile)
+      expect(described_class.resource_named('ServerProfile', 'Synergy')).to eq(described_class::Synergy::ServerProfile)
       expect(described_class.resource_named('ServerProfile', 'C7000')).to eq(described_class::C7000::ServerProfile)
     end
   end
@@ -39,8 +39,8 @@ RSpec.describe OneviewSDK::API300 do
 
   describe '#variant=' do
     it 'sets the current variant' do
-      OneviewSDK::API300.variant = 'Thunderbird'
-      expect(OneviewSDK::API300.variant).to eq('Thunderbird')
+      OneviewSDK::API300.variant = 'Synergy'
+      expect(OneviewSDK::API300.variant).to eq('Synergy')
       expect(OneviewSDK::API300.variant_updated?).to eq(true)
     end
   end

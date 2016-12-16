@@ -8,7 +8,7 @@ The OneView SDK provides a Ruby library to easily interact with HPE OneView API.
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk'
+  gem 'oneview-sdk', '~> 3.0'
   ```
 
   Then run `$ bundle install`
@@ -28,11 +28,11 @@ client = OneviewSDK::Client.new(
   url: 'https://oneview.example.com',
   user: 'Administrator',              # This is the default
   password: 'secret123',
+  token: 'xxxx...',                   # Set EITHER this or the user & password
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 200,                   # Defaults to minimum of (200 and appliance API version)
-  token: 'xxxx...'                    # Set EITHER this or the user & password
+  api_version: 200                    # Defaults to minimum of 200 and appliance's max API version
 )
 ```
 
@@ -72,7 +72,8 @@ Configuration files can also be used to define client configuration (json or yam
 {
   "url": "https://oneview.example.com",
   "user": "Administrator",
-  "password": "secret123"
+  "password": "secret123",
+  "api_version": 200
 }
 ```
 
@@ -83,7 +84,7 @@ config = OneviewSDK::Config.load("full_file_path.json")
 client = OneviewSDK::Client.new(config)
 ```
 
-:lock: Tip: Check the file permissions because the password is stored in clear-text.
+:lock: Tip: Check the file permissions if the password or token is stored in clear-text.
 
 ### Custom logging
 The default logger is a standard logger to STDOUT, but if you want to specify your own, you can.  However, your logger must implement the following methods:
@@ -96,10 +97,55 @@ error(String)
 level=(Symbol, etc.) # The parameter here will be the log_level attribute
 ```
 
-## Resources
-Each OneView resource is exposed for usage with CRUD-like functionality.
+:lock: Tip: When the log_level is set to debug, API request options will be logged (including auth tokens and passwords); be careful to protect secret information.
 
-For example, once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.udpate` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
+### OneView API versions and appliance types
+You may notice resource classes being accessed in a few different ways; for example, `OneviewSDK::EthernetNetwork`, `OneviewSDK::API300::EthernetNetwork`, and `OneviewSDK::API300::C7000::EthernetNetwork`. However, each of these accessors may actually be referring to the same class. This is because in order to keep backwards compatibility and make examples a little more simple, there are module methods in place to redirect/resolve the shorthand accessors to their full namespace identifier. In order to automatically complete the full namespace identifier, there are some defaults in place. Here's some example code that should help clear things up (return values are commented behind the code):
+
+```ruby
+require 'oneview-sdk'
+
+# Show defaults:
+OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300]
+OneviewSDK::DEFAULT_API_VERSION         # 200
+OneviewSDK.api_version                  # 200
+OneviewSDK.api_version_updated?         # false
+
+# Notice the automatic redirection/resolution when we use the shorthand accessor:
+OneviewSDK::EthernetNetwork             # OneviewSDK::API200::EthernetNetwork
+
+# Even this comparison is true:
+OneviewSDK::EthernetNetwork == OneviewSDK::API200::EthernetNetwork  # true
+
+# Now let's set a new API version default:
+OneviewSDK.api_version = 300
+OneviewSDK.api_version                  # 300
+OneviewSDK.api_version_updated?         # true
+
+# The API200 module has only 1 variant, but API300 has 2 (C7000 & Synergy):
+OneviewSDK::API300::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API300::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API300.variant              # 'C7000'
+OneviewSDK::API300.variant_updated?     # false
+
+# Therefore, there is 1 more namespace level to the real resource class name
+OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
+OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::C7000::EthernetNetwork
+
+# Likewise, we can set a new default variant for the API300 module:
+OneviewSDK::API300.variant = 'Synergy'
+OneviewSDK::API300.variant              # 'Synergy'
+OneviewSDK::API300.variant_updated?     # true
+OneviewSDK::EthernetNetwork             # OneviewSDK::API300::Synergy::EthernetNetwork
+OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::Synergy::EthernetNetwork
+```
+
+We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.
+
+## Resources
+Each OneView resource is exposed via a Ruby class, enabling CRUD-like functionality (with some exceptions).
+
+Once you instantiate a resource object, you can call intuitive methods such as `resource.create`, `resource.update` and `resource.delete`. In addition, resources respond to helpful methods such as `.each`, `.eql?(other_resource)`, `.like(other_resource)`, `.retrieve!`, and many others.
 
 Please see the [rubydoc.info](http://www.rubydoc.info/gems/oneview-sdk) documentation for complete usage details and the [examples](examples/) directory for more examples and test-scripts, but here are a few examples to get you started:
 
@@ -125,7 +171,7 @@ end
 ```
 
 The resource's data is stored in its @data attribute.  However, you can access the data directly using a hash-like syntax on the resource object (recommended). `resource['key']` functions a lot like `resource.data['key']`. The difference is that when using the data attribute, you must be cautious to use the correct key type (Hash vs Symbol).
-The direct hash accessor on the resource converts all keys to strings, so `resource[:key]` and `resource['key']` access the same thing: `resource.data['key']`.
+The direct hash accessor on the resource converts first-level keys to strings; so `resource[:key]` and `resource['key']` access the same thing: `resource.data['key']`. We recommend using strings exclusively for keys, as the JSON data returned from OneView requests supports strings but not symbols.
 
 ##### Update a resource
 
@@ -144,17 +190,14 @@ ethernet.update(name: 'newName', vlanId:  1002, purpose: 'General', ethernetNetw
 
 You can use the `==`  or `.eql?` method to compare resource equality, or `.like` to compare just a subset of attributes.
 ```ruby
-ethernet2 = OneviewSDK::EthernetNetwork.new(
-  client, { name: 'OtherVlan', vlanId:  1000, purpose:  'General', smartLink: false, privateNetwork: false }
-)
+ethernet2 = OneviewSDK::EthernetNetwork.new(client, { purpose:  'General' })
 ethernet == ethernet2    # Returns false
 ethernet.eql?(ethernet2) # Returns false
 
 
 # To compare a subset of attributes:
-ethernet3 = OneviewSDK::EthernetNetwork.new(client, { purpose:  'General' })
-ethernet.like?(ethernet3)  # Returns true
-ethernet.like?(name: TestVlan, purpose: 'General')  # Returns true
+ethernet.like?(ethernet2)  # Returns true
+ethernet.like?(name: 'TestVlan', purpose: 'General')  # Returns true
 ```
 
 
@@ -222,7 +265,7 @@ Please refer to the documentation and [code](lib/oneview-sdk/rest.rb) for comple
 ## CLI
 This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
-Note: In order to use this, you will need to make sure your ruby `bin` directory is in your path.
+Note: In order to use this, you will need to make sure your Ruby `bin` directory is in your path.
 Run `$ gem environment` to see where the executable paths are for your Ruby installation.
 
 To get started, run `$ oneview-sdk-ruby --help`.
@@ -260,6 +303,9 @@ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:t
 ##### Create or delete resource by file:
 
 ```bash
+# Save resource details to a file (to be used with the create and delete methods below)
+$ oneview-sdk-ruby to_file ServerProfile profile-1 /my-server-profile.json
+
 $ oneview-sdk-ruby create_from_file /my-server-profile.json
 $ oneview-sdk-ruby delete_from_file /my-server-profile.json
 ```
