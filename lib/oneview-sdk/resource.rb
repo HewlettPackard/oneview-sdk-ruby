@@ -242,7 +242,16 @@ module OneviewSDK
     # @return [Resource] New resource created from the file contents
     def self.from_file(client, file_path)
       resource = OneviewSDK::Config.load(file_path)
-      new(client, resource['data'], resource['api_version'])
+      klass = self
+      if klass == OneviewSDK::Resource && resource['type'] # Use correct resource class by parsing type
+        klass = OneviewSDK # Secondary/temp class/module reference
+        resource['type'].split('::').each do |id|
+          c = klass.const_get(id) rescue nil
+          klass = c if c.is_a?(Class) || c.is_a?(Module)
+        end
+        klass = OneviewSDK::Resource unless klass <= OneviewSDK::Resource
+      end
+      klass.new(client, resource['data'], resource['api_version'])
     end
 
     # Make a GET request to the resource uri, and returns an array with results matching the search
@@ -340,10 +349,13 @@ module OneviewSDK
   # Get resource class that matches the type given
   # @param [String] type Name of the desired class type
   # @param [Fixnum] api_ver API module version to fetch resource from
+  # @param [String] variant API module variant to fetch resource from
   # @return [Class] Resource class or nil if not found
-  def self.resource_named(type, api_ver = @api_version)
-    raise "API version #{api_ver} is not supported!" unless SUPPORTED_API_VERSIONS.include?(api_ver)
+  def self.resource_named(type, api_ver = @api_version, variant = nil)
+    unless SUPPORTED_API_VERSIONS.include?(api_ver)
+      raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"
+    end
     api_module = OneviewSDK.const_get("API#{api_ver}")
-    api_module.resource_named(type)
+    variant ? api_module.resource_named(type, variant) : api_module.resource_named(type)
   end
 end

@@ -103,13 +103,15 @@ module OneviewSDK
 
     # Get array of all resources of a specified type
     # @param [String] type Resource type
+    # @param [Integer] api_ver API module version to fetch resources from
     # @return [Array<Resource>] Results
     # @example Get all Ethernet Networks
     #   networks = @client.get_all('EthernetNetworks')
-    def get_all(type)
-      OneviewSDK.resource_named(type).get_all(self)
-    rescue StandardError
-      raise TypeError, "Invalid resource type '#{type}'"
+    # @raise [TypeError] if the type is invalid
+    def get_all(type, api_ver = @api_version)
+      klass = OneviewSDK.resource_named(type, api_ver)
+      raise TypeError, "Invalid resource type '#{type}'. OneviewSDK::API#{api_ver} does not contain a class like it." unless klass
+      klass.get_all(self)
     end
 
     # Wait for a task to complete

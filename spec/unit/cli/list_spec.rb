@@ -32,5 +32,32 @@ RSpec.describe OneviewSDK::Cli do
       expect { command }.to output(/\n\nTotal: 3$/).to_stdout_from_any_process
     end
 
+    it 'sets the client api version if passed in' do
+      allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 201)).and_call_original
+      expect { OneviewSDK::Cli.start(%w(list ServerProfiles --api_version 201)) }
+        .to output.to_stdout_from_any_process
+    end
+
+    it 'checks for a valid module api version' do
+      expect { OneviewSDK::Cli.start(%w(list ServerProfiles --api_version 291)) }
+        .to output(/API version 291 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
+    end
+
+    it 'rounds an invalid module api version down' do
+      allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(400)
+      expect { OneviewSDK::Cli.start(%w(list ServerProfiles --api_version 399)) }
+        .to output(/API version 399 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
+    end
+
+    it 'rounds an invalid module api version up if cannot round down' do
+      expect { OneviewSDK::Cli.start(%w(list ServerProfiles --api_version 0)) }
+        .to output(/API version 0 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
+    end
+
+    it 'handles a float type api version' do
+      allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 2)).and_call_original
+      expect { OneviewSDK::Cli.start(%w(list ServerProfiles --api_version 2.01)) }
+        .to output(/API version 2 is not supported. Using \d+\sProfile1/).to_stdout_from_any_process
+    end
   end
 end
