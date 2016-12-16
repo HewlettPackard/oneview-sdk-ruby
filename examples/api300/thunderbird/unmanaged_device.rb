@@ -16,19 +16,19 @@ def print_device(device)
 end
 
 puts "\nAdding first device ..."
-device1 = OneviewSDK::API300::Thunderbird::UnmanagedDevice.new(@client, name: 'Unmanaged Device 1', model: 'Procurve 4200VL')
+device1 = OneviewSDK::API300::Synergy::UnmanagedDevice.new(@client, name: 'Unmanaged Device 1', model: 'Procurve 4200VL')
 device1.add
 puts 'Device added:'
 print_device(device1)
 
 puts "\nAdding second device ..."
-device2 = OneviewSDK::API300::Thunderbird::UnmanagedDevice.new(@client, name: 'Unmanaged Device 2', model: 'Unknown')
+device2 = OneviewSDK::API300::Synergy::UnmanagedDevice.new(@client, name: 'Unmanaged Device 2', model: 'Unknown')
 device2.add
 puts 'Device added:'
 print_device(device2)
 
 puts "\nListing all devices:"
-unmanaged_devices = OneviewSDK::API300::Thunderbird::UnmanagedDevice.get_devices(@client)
+unmanaged_devices = OneviewSDK::API300::Synergy::UnmanagedDevice.get_devices(@client)
 unmanaged_devices.each { |device| print_device(device) }
 
 [device1, device2].each do |device|

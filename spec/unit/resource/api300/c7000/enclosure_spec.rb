@@ -218,7 +218,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     end
 
     it 'does a PATCH to the enclosure uri with 2 parameters' do
-      item = OneviewSDK::API300::Thunderbird::Enclosure.new(@client_300, uri: '/rest/fake')
+      item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
       data = { 'body' => [{ op: 'operation', path: '/path' }] }
       expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Op'))
       expect(item.patch('operation', '/path')).to eq('key' => 'Op')
