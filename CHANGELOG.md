@@ -32,6 +32,7 @@
    - Storage systems
    - Switches
    - Volume
+   - Volume attachment
    - Volume template
  2. New features added:
    - Drive Enclosures

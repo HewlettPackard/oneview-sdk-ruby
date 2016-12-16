@@ -13,8 +13,8 @@ require_relative '../../api200/volume_attachment'
 
 module OneviewSDK
   module API300
-      # Storage volume attachment resource implementation for API300 Thunderbird
     module Synergy
+      # Storage volume attachment resource implementation for API300 Thunderbird
       class VolumeAttachment < OneviewSDK::API200::VolumeAttachment
       end
     end
