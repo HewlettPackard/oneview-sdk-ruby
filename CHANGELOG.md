@@ -26,6 +26,7 @@
    - Racks
    - SAN managers
    - Server hardware
+   - Server hardware type
    - Server profile
    - Server profile template
    - Storage pools
