@@ -16,7 +16,7 @@ Metrics/ModuleLength:
   Max: 150
 
 Style/GlobalVars:
-  AllowedVariables: [$config, $secrets, $client, $client_120]
+  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy]
 
 Style/IndentationWidth:
   Width: 2
@@ -24,11 +24,11 @@ Style/IndentationWidth:
 Style/VariableName:
   EnforcedStyle: snake_case
   Exclude:
-    - 'lib/oneview-sdk/resource/*'
+    - 'lib/oneview-sdk/resource/**/*'
 
 Style/MethodName:
   Exclude:
-    - 'lib/oneview-sdk/resource/*'
+    - 'lib/oneview-sdk/resource/**/*'
 
 Style/FileName:
   Exclude:

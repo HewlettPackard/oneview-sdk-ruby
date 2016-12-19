@@ -16,6 +16,7 @@ module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
     BASE_URI = '/rest'.freeze
+    UNIQUE_IDENTIFIERS = %w(name uri).freeze # Ordered list of unique attributes to search by
 
     attr_accessor \
       :client,
@@ -29,37 +30,43 @@ module OneviewSDK
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
-      fail InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
+      raise InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
       if @api_version > @client.max_api_version
-        fail UnsupportedVersion,
-             "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
+        raise UnsupportedVersion,
+              "#{self.class.name} api_version '#{@api_version}' is greater than the client's max_api_version '#{@client.max_api_version}'"
       end
       @data ||= {}
       set_all(params)
     end
 
     # Retrieve resource details based on this resource's name or URI.
-    # @note Name or URI must be specified inside the resource
+    # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri, must be specified in the resource
     # @return [Boolean] Whether or not retrieve was successful
     def retrieve!
-      fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
-      results = self.class.find_by(@client, name: @data['name']) if @data['name']
-      results = self.class.find_by(@client, uri:  @data['uri'])  if @data['uri'] && (!results || results.empty?)
-      return false unless results.size == 1
-      set_all(results[0].data)
-      true
+      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
+      raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
+      retrieval_keys.each do |k|
+        results = self.class.find_by(@client, k => @data[k])
+        next if results.size != 1
+        set_all(results[0].data)
+        return true
+      end
+      false
     end
 
     # Check if a resource exists
-    # @note name or uri must be specified inside resource
+    # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri, must be specified in the resource
     # @return [Boolean] Whether or not resource exists
     def exists?
-      fail IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
-      return true if @data['name'] && self.class.find_by(@client, name: @data['name']).size == 1
-      return true if @data['uri']  && self.class.find_by(@client, uri:  @data['uri']).size == 1
+      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
+      raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
+      retrieval_keys.each do |k|
+        results = self.class.find_by(@client, k => @data[k])
+        return true if results.size == 1
+      end
       false
     end
 
@@ -206,7 +213,7 @@ module OneviewSDK
       when :yml, :yaml
         File.open(file_path, 'w') { |f| f.write(temp_data.to_yaml) }
       else
-        fail InvalidFormat, "Invalid format: #{format}"
+        raise InvalidFormat, "Invalid format: #{format}"
       end
       true
     end
@@ -235,7 +242,16 @@ module OneviewSDK
     # @return [Resource] New resource created from the file contents
     def self.from_file(client, file_path)
       resource = OneviewSDK::Config.load(file_path)
-      new(client, resource['data'], resource['api_version'])
+      klass = self
+      if klass == OneviewSDK::Resource && resource['type'] # Use correct resource class by parsing type
+        klass = OneviewSDK # Secondary/temp class/module reference
+        resource['type'].split('::').each do |id|
+          c = klass.const_get(id) rescue nil
+          klass = c if c.is_a?(Class) || c.is_a?(Module)
+        end
+        klass = OneviewSDK::Resource unless klass <= OneviewSDK::Resource
+      end
+      klass.new(client, resource['data'], resource['api_version'])
     end
 
     # Make a GET request to the resource uri, and returns an array with results matching the search
@@ -296,19 +312,19 @@ module OneviewSDK
 
     # Fail unless @client is set for this resource.
     def ensure_client
-      fail IncompleteResource, 'Please set client attribute before interacting with this resource' unless @client
+      raise IncompleteResource, 'Please set client attribute before interacting with this resource' unless @client
       true
     end
 
     # Fail unless @data['uri'] is set for this resource.
     def ensure_uri
-      fail IncompleteResource, 'Please set uri attribute before interacting with this resource' unless @data['uri']
+      raise IncompleteResource, 'Please set uri attribute before interacting with this resource' unless @data['uri']
       true
     end
 
     # Fail for methods that are not available for one resource
     def unavailable_method
-      fail MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
+      raise MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
     end
 
     private
@@ -316,12 +332,12 @@ module OneviewSDK
     # Recursive helper method for like?
     # Allows comparison of nested hash structures
     def recursive_like?(other, data = @data)
-      fail "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
+      raise "Can't compare with object type: #{other.class}! Must respond_to :each" unless other.respond_to?(:each)
       other.each do |key, val|
         return false unless data && data.respond_to?(:[])
         if val.is_a?(Hash)
           return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
-        elsif val != data[key.to_s]
+        elsif val != data[key.to_s] && val != data[key.to_sym]
           return false
         end
       end
@@ -332,22 +348,14 @@ module OneviewSDK
 
   # Get resource class that matches the type given
   # @param [String] type Name of the desired class type
+  # @param [Fixnum] api_ver API module version to fetch resource from
+  # @param [String] variant API module variant to fetch resource from
   # @return [Class] Resource class or nil if not found
-  def self.resource_named(type)
-    classes = {}
-    orig_classes = []
-    OneviewSDK.constants.each do |c|
-      klass = OneviewSDK.const_get(c)
-      next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
-      name = klass.name.split('::').last
-      orig_classes.push(name)
-      classes[name.downcase.delete('_').delete('-')] = klass
-      classes["#{name.downcase.delete('_').delete('-')}s"] = klass
+  def self.resource_named(type, api_ver = @api_version, variant = nil)
+    unless SUPPORTED_API_VERSIONS.include?(api_ver)
+      raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"
     end
-    new_type = type.to_s.downcase.gsub(/[ -_]/, '')
-    return classes[new_type] if classes.keys.include?(new_type)
+    api_module = OneviewSDK.const_get("API#{api_ver}")
+    variant ? api_module.resource_named(type, variant) : api_module.resource_named(type)
   end
 end
-
-# Load all resources:
-Dir[File.dirname(__FILE__) + '/resource/*.rb'].each { |file| require file }

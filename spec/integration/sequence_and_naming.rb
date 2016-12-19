@@ -16,8 +16,9 @@ end
 
 DEPENDENCIES = {
   Datacenter: [],
+  DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
-  EnclosureGroup: [:LogicalInterconnectGroup],
+  EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
   EthernetNetwork: [],
   Fabric: [],
   FCNetwork: [],
@@ -37,12 +38,15 @@ DEPENDENCIES = {
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
   Rack: [:ServerProfile],
   SANManager: [],
+  SASInterconnect: [:SASLogicalInterconnect],
+  SASLogicalInterconnect: [:Enclosure],
+  SASLogicalInterconnectGroup: [],
   ServerHardware: [:ServerHardwareType],
   ServerHardwareType: [:Enclosure],
   ServerProfile: [:ServerHardware, :Enclosure, :ServerProfileTemplate],
   ServerProfileTemplate: [:EnclosureGroup, :ServerHardware, :Volume],
   StoragePool: [:StorageSystem],
-  StorageSystem: [],
+  StorageSystem: [:FCNetwork],
   Switch: [:LogicalSwitch],
   UnmanagedDevice: [],
   UplinkSet: [:LogicalInterconnectGroup],
@@ -75,7 +79,7 @@ end
 
 # BulkEthernetNetwork
 BULK_ETH_NET_PREFIX = 'BulkEthernetNetwork'.freeze
-BULK_ETH_NET_RANGE = '1-5'.freeze
+BULK_ETH_NET_RANGE = '2-6'.freeze
 
 # EthernetNetwork
 ETH_NET_NAME = 'EthernetNetwork_1'.freeze
@@ -106,8 +110,12 @@ ENC_GROUP2_NAME = 'EnclosureGroup_2'.freeze
 ENC_GROUP3_NAME = 'EnclosureGroup_3'.freeze
 
 # Enclosure
+ENCL_HOSTNAME = 'fe80::2:0:9:1%eth2'.freeze
 ENCL_NAME = 'Encl1'.freeze
 ENCL_NAME_UPDATED = 'Encl1_UPDATED'.freeze
+
+# LogicalEnclosure
+LOG_ENCL1_NAME = 'LogicalEnclosure_1'.freeze
 
 # LogicalInterconnect
 LOG_INT_NAME = 'Encl1-LogicalInterconnectGroup_1'.freeze
@@ -152,6 +160,7 @@ VOL_ATTACHMENT_NAME = 'VolumeAttachment_1'.freeze
 
 # Power Device
 POW_DEVICE1_NAME = 'PowerDevice_1'.freeze
+POW_DEVICE2_NAME = 'PowerDevice_2'.freeze
 
 # Server Profile
 SERVER_PROFILE_NAME = 'ServerProfile_1'.freeze
@@ -183,6 +192,20 @@ UNMANAGED_DEVICE1_NAME = 'UnmanagedDevice_1'.freeze
 
 # FC San Provider
 SAN_PROVIDER1_NAME = 'Brocade Network Advisor'.freeze
+SAN_PROVIDER2_NAME = 'Cisco'.freeze
 
 # Firmware Driver
 FIRMWARE_DRIVER1_NAME = 'CustomSPP_1'.freeze
+
+# SAS Logical Interconnect Group
+SAS_LOG_INT_GROUP1_NAME = 'SASLogicalInterconnectGroup_1'.freeze
+
+# SASLogicalInterconnect
+SAS_LOG_INT1_NAME = "#{LOG_ENCL1_NAME}-#{SAS_LOG_INT_GROUP1_NAME}-1".freeze
+
+# DriveEnclosure
+DRIVE_ENCL1_SERIAL = 'SN123100'.freeze
+DRIVE_ENCL1_SERIAL_UPDATED = 'SN123102'.freeze
+
+# SAS Interconnect
+SAS_INTERCONNECT1_NAME = '0000A66101, interconnect 1'.freeze
