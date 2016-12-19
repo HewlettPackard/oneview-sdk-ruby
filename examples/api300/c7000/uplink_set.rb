@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client, @enclosure_name, @interconnect_name
+require_relative '../../_client' # Gives access to @client, @enclosure_name, @interconnect_name
 
 # NOTE: This will create a uplink set named 'Teste Uplink', then update it with network, then delete it.
 # NOTE 2: Dependencies: Enclosure, EthernetNetwork, LogicalInterconnectGroup, LogicalInterconnect, Interconnect

@@ -32,6 +32,13 @@ module OneviewSDK
         @data['type'] ||= 'uplink-setV3'
       end
 
+      # Gets the JSON schema
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      def self.get_schema(client)
+        response = client.rest_get(BASE_URI + '/schema')
+        client.response_handler(response)
+      end
+
       # Adds the portConfigInfos to the array
       # @param [String] portUri
       # @param [String] speed
@@ -77,6 +84,13 @@ module OneviewSDK
         uri = network[:uri] || network['uri']
         raise IncompleteResource, 'Must set network uri attribute' unless uri
         @data['fcoeNetworkUris'].push(uri)
+      end
+
+      # Gets the unassigned uplink ports
+      def get_unassigned_ports
+        ensure_client && ensure_uri
+        response = @client.rest_post(BASE_URI + '/unassignedUplinkPorts', { 'body' => @data }, @api_version)
+        @client.response_handler(response)
       end
     end
   end

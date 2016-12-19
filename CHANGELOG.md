@@ -31,6 +31,7 @@
    - Storage pools
    - Storage systems
    - Switches
+   - Uplink Set
    - Volume
    - Volume template
  2. New features added:
