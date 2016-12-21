@@ -47,27 +47,22 @@ end
 RSpec.shared_context 'system context', a: :b do
 
   before(:each) do
-    default_config  = 'spec/system/one_view_config.json'
-    default_secrets = 'spec/system/one_view_secrets.json'
-
-    @config_path  ||= ENV['ONEVIEWSDK_SYSTEM_CONFIG']  || default_config
-    @secrets_path ||= ENV['ONEVIEWSDK_SYSTEM_SECRETS'] || default_secrets
-
-    unless File.file?(@config_path) && File.file?(@secrets_path)
-      STDERR.puts "\n\n"
-      STDERR.puts 'ERROR: System config file not found' unless File.file?(@config_path)
-      STDERR.puts 'ERROR: System secrets file not found' unless File.file?(@secrets_path)
-      STDERR.puts "\n\n"
-      exit!
-    end
-
-    $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
-
-    # Create client objects:
-    $config  ||= OneviewSDK::Config.load(@config_path)
+    system_context
     $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
     $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
+
+    allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
+    allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
+  end
+
+end
+
+RSpec.shared_context 'system api300 context', a: :b do
+
+  before(:each) do
+    system_context
     $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
+    $client_300_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 300))
 
     allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
     allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
@@ -120,4 +115,31 @@ def integration_context_debugging
       raise 'Skipped'
     end
   end
+end
+
+def system_context
+  default_config  = 'spec/system/one_view_config.json'
+  default_secrets = 'spec/system/one_view_secrets.json'
+  default_config_synergy  = 'spec/system/one_view_config_synergy.json'
+  default_secrets_synergy = 'spec/system/one_view_secrets_synergy.json'
+
+  @config_path  ||= ENV['ONEVIEWSDK_SYSTEM_CONFIG']  || default_config
+  @secrets_path ||= ENV['ONEVIEWSDK_SYSTEM_SECRETS'] || default_secrets
+  @config_path_synergy  ||= ENV['ONEVIEWSDK_SYSTEM_CONFIG_SYNERGY']  || default_config_synergy
+  @secrets_path_synergy ||= ENV['ONEVIEWSDK_SYSTEM_SECRETS_SYNERGY'] || default_secrets_synergy
+
+  unless File.file?(@config_path) && File.file?(@secrets_path)
+    STDERR.puts "\n\n"
+    STDERR.puts 'ERROR: System config file not found' unless File.file?(@config_path)
+    STDERR.puts 'ERROR: System secrets file not found' unless File.file?(@secrets_path)
+    STDERR.puts "\n\n"
+    exit!
+  end
+
+  $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
+  $secrets_synergy ||= OneviewSDK::Config.load(@secrets_path_synergy) # Secrets for URIs, server/enclosure credentials, etc.
+
+  # Create client objects:
+  $config ||= OneviewSDK::Config.load(@config_path)
+  $config_synergy ||= OneviewSDK::Config.load(@config_path_synergy)
 end
