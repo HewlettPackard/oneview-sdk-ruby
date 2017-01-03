@@ -14,13 +14,13 @@ require_relative '../_client' # Gives access to @client, @enclosure_name, @inter
 # NOTE: This will create a uplink set named 'Teste Uplink', then update it with network, then delete it.
 # NOTE 2: Dependencies: Enclosure, EthernetNetwork, LogicalInterconnectGroup, LogicalInterconnect, Interconnect
 
-ethernet = OneviewSDK::API300::C7000::EthernetNetwork.get_all(@client).first
-logical_interconnect = OneviewSDK::API300::C7000::LogicalInterconnect.get_all(@client).first
+ethernet = OneviewSDK::EthernetNetwork.get_all(@client).first
+logical_interconnect = OneviewSDK::LogicalInterconnect.get_all(@client).first
 
-enclosure = OneviewSDK::API300::C7000::Enclosure.new(@client, name: @enclosure_name)
+enclosure = OneviewSDK::Enclosure.new(@client, name: @enclosure_name)
 enclosure.retrieve!
 
-interconnect = OneviewSDK::API300::C7000::Interconnect.new(@client, name: @interconnect_name)
+interconnect = OneviewSDK::Interconnect.new(@client, name: @interconnect_name)
 interconnect.retrieve!
 
 port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['pairedPortName'] }.first
@@ -38,7 +38,7 @@ options = {
   name: 'UplinkSet Example'
 }
 
-uplink = OneviewSDK::API300::C7000::UplinkSet.new(@client, options)
+uplink = OneviewSDK::UplinkSet.new(@client, options)
 uplink.add_port_config(
   port['uri'],
   'Auto',

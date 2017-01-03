@@ -14,7 +14,7 @@ require_relative '../../api200/uplink_set'
 module OneviewSDK
   module API300
     module Synergy
-      # Uplink set resource implementation for API300 Thunderbird
+      # Uplink set resource implementation for API300 Synergy
       class UplinkSet < OneviewSDK::API200::UplinkSet
 
         # Create a resource object, associate it with a client, and set its properties.
