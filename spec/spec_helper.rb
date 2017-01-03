@@ -3,12 +3,14 @@ require 'simplecov'
 
 client_files = %w(client.rb rest.rb config_loader.rb ssl_helper.rb)
 resource_path = 'lib/oneview-sdk/resource'
+image_streamer_path = 'lib/oneview-sdk/image-streamer'
 
 SimpleCov.profiles.define 'unit' do
   add_filter 'spec/'
   add_group 'Client', client_files
   add_group 'Resources', resource_path
   add_group 'CLI', 'cli.rb'
+  add_group 'ImageStreamer', image_streamer_path
   minimum_coverage 92 # TODO: bump up as we increase coverage. Goal: 95%
   minimum_coverage_by_file 61 # TODO: bump up as we increase coverage. Goal: 70%
 end
@@ -36,6 +38,7 @@ SimpleCov.profiles.define 'all' do
   add_group 'Client', client_files
   add_group 'Resources', resource_path
   add_group 'CLI', 'cli.rb'
+  add_group 'ImageStreamer', image_streamer_path
   minimum_coverage 10 # TODO: bump up as we increase coverage. Goal: 95%
   minimum_coverage_by_file 10 # TODO: bump up as we increase coverage. Goal: 90%
 end
