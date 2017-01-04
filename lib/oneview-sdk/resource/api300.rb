@@ -12,14 +12,14 @@
 module OneviewSDK
   # Module for API v300
   module API300
-    SUPPORTED_VARIANTS = %w(C7000 Synergy).freeze
+    SUPPORTED_VARIANTS = %w(C7000 Synergy ImageStreamer).freeze
     DEFAULT_VARIANT = 'C7000'.freeze
     @variant = DEFAULT_VARIANT
     @variant_updated = false # Whether or not the API variant has been set by the user
 
     # Get resource class that matches the type given
     # @param [String] type Name of the desired class type
-    # @param [String] variant Variant (C7000 or Synergy)
+    # @param [String] variant Variant (C7000 or Synergy or ImageStreamer)
     # @return [Class] Resource class or nil if not found
     def self.resource_named(type, variant = @variant)
       raise "API300 variant #{variant} is not supported!" unless SUPPORTED_VARIANTS.include?(variant)

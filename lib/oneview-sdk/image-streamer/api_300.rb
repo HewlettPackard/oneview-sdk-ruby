@@ -16,18 +16,10 @@ module OneviewSDK
     module ImageStreamer
       # Get resource class that matches the type given
       # @param [String] type Name of the desired class type
-      # @param [String] variant There is only 1 variant for this module, so this is not used.
       #   It exists only so that the parameters match API modules that do have multiple variants.
       # @return [Class] Resource class or nil if not found
-      def self.resource_named(type, _variant = nil)
-        new_type = type.to_s.downcase.gsub(/[ -_]/, '')
-        constants.each do |c|
-          klass = const_get(c)
-          next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
-          name = klass.name.split('::').last.downcase.delete('_').delete('-')
-          return klass if new_type =~ /^#{name}[s]?$/
-        end
-        nil
+      def self.resource_named(type)
+        OneviewSDK::API300.resource_named(type, 'ImageStreamer')
       end
     end
   end
