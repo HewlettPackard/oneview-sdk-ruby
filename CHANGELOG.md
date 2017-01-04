@@ -3,6 +3,7 @@
  This is the Third major version of the Ruby SDK for HPE OneView. It features a split in the API support, allowing for C7000 and Synergy hardware variants to be used, while maintaining compatibility to older versions. There are some code improvements applied throughout the release, as well as additional endpoints support.
  This version of this SDK officially supports OneView appliances version 3.00.00 or higher, using the OneView Rest API version 300.
  Support is provided for C7000 and Synergy enclosure types.
+ This version of this SDK also supports HPE Synergy Image Streamer.
 
 ### Major changes
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
@@ -47,6 +48,7 @@
  3. Design changes:
  - Split features into API modules for each hardware variant
  - Fixed/updated/added CLI commands
+ 4. HPE Synergy Image Streamer Support:
 
 #### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
