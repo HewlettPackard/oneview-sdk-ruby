@@ -10,8 +10,9 @@
 # language governing permissions and limitations under the License.
 
 module OneviewSDK
-  # Module API 300 ImageStreamer
+  # Module API 300
   module API300
+    # Module Image Streamer
     module ImageStreamer
       # Get resource class that matches the type given
       # @param [String] type Name of the desired class type
@@ -30,7 +31,6 @@ module OneviewSDK
       end
     end
   end
-
 end
 
 # Load all API-specific resources:
