@@ -10,7 +10,7 @@ RSpec.describe OneviewSDK::VolumeAttachment, integration: true, type: UPDATE do
     end
   end
 
-    describe '::get_extra_unmanaged_volumes' do
+  describe '::get_extra_unmanaged_volumes' do
     it 'should get the list of extra unmanaged storage volumes' do
       expect { klass.get_extra_unmanaged_volumes($client) }.to_not raise_error
     end
