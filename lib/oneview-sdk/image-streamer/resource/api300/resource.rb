@@ -9,21 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../../resource'
+
 module OneviewSDK
-  # Module API 300
-  module API300
-    # Module Image Streamer
-    module ImageStreamer
-      # Get resource class that matches the type given
-      # @param [String] type Name of the desired class type
-      #   It exists only so that the parameters match API modules that do have multiple variants.
-      # @return [Class] Resource class or nil if not found
-      def self.resource_named(type)
-        OneviewSDK::API300.resource_named(type, 'ImageStreamer')
+  module ImageStreamer
+    module API300
+      class Resource < OneviewSDK::Resource
       end
     end
   end
 end
-
-# Load all API-specific resources:
-Dir[File.dirname(__FILE__) + '/api300/*.rb'].each { |file| require file }

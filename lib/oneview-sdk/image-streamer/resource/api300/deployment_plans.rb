@@ -9,14 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../resource'
+require_relative 'resource'
 
 module OneviewSDK
-  module API300
-    module ImageStreamer
-      # Build Plan resource implementation for Image Streamer
-      class BuildPlan < Resource
-        BASE_URI = '/rest/build-plans'.freeze
+  module ImageStreamer
+    module API300
+      # Deployment Plans resource implementation for Image Streamer
+      class DeploymentPlans < Resource
+        BASE_URI = '/rest/deployment-plans'.freeze
       end
     end
   end

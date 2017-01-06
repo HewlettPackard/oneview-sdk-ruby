@@ -9,14 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../resource'
+require_relative 'resource'
 
 module OneviewSDK
-  module API300
-    module ImageStreamer
-      # Artifacts Bundle resource implementation for Image Streamer
-      class ArtifactsBundle < Resource
-        BASE_URI = '/rest/artifact-bundles'.freeze
+  module ImageStreamer
+    module API300
+      # OS Volumes resource implementation for Image Streamer
+      class OsVolumes < Resource
+        BASE_URI = '/rest/os-volumes'.freeze
       end
     end
   end

@@ -9,14 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../resource'
+require_relative 'resource'
 
 module OneviewSDK
-  module API300
-    module ImageStreamer
-      # Golden Image resource implementation for Image Streamer
-      class GoldenImage < Resource
-        BASE_URI = '/rest/golden-images'.freeze
+  module ImageStreamer
+    module API300
+      # Artifacts Bundle resource implementation for Image Streamer
+      class ArtifactsBundle < Resource
+        BASE_URI = '/rest/artifact-bundles'.freeze
       end
     end
   end

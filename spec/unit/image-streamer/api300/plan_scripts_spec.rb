@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API300::ImageStreamer::PlanScripts do
+RSpec.describe OneviewSDK::ImageStreamer::API300::PlanScripts do
   include_context 'shared context'
 
   describe '#initialize' do
