@@ -9,27 +9,46 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+# Gives access to @client, @server_hardware_hostname, @server_hardware_username, @server_hardware_password
+require_relative '../_client'
 
-# Example: List server hardware types
+def print_server_hardware_type(item)
+  puts "\n-- Server hardware type --",
+       "Uri: #{item['uri']}",
+       "Name: #{item['name']}",
+       "Description: #{item['description']}",
+       '----'
+end
 
-type = 'server hardware type'
+puts "\nCreating server hardware type by the creation of server hardware."
+
+options_server_hardware = {
+  hostname: @server_hardware_hostname,
+  username: @server_hardware_username,
+  password: @server_hardware_password,
+  name: 'Server Hardware Type OneViewSDK Test 2',
+  licensingIntent: 'OneView'
+}
+
+server_hardware = OneviewSDK::ServerHardware.new(@client, options_server_hardware)
+server_hardware.add
+
+# retrieving server hardware type
+target = OneviewSDK::ServerHardwareType.new(@client, uri: server_hardware['serverHardwareTypeUri'])
+target.retrieve!
+print_server_hardware_type(target)
+
+puts "\nUpdating name and description."
+target.update(name: 'New Name', description: 'New Description')
+print_server_hardware_type(target)
 
 # List all server hardware types
-list = OneviewSDK::ServerHardwareType.find_by(@client, {})
-puts "\n#{type.capitalize} list:"
+list = OneviewSDK::ServerHardwareType.get_all(@client)
+puts "\n#Listing all:"
 list.each { |p| puts "  #{p[:name]}" }
 
-unless list.empty?
-  item = list.first
+server_hardware.remove
 
-  # Rename a server hardware type
-  old_name = item[:name]
-  new_name = old_name.tr(' ', '_') + '_'
-  item.update(name: new_name, description: '')
-  puts "\nRe-named: '#{old_name}' to '#{new_name}'"
-
-  # Restore previous name
-  item.update(name: old_name)
-  puts "\nRestored original name: '#{old_name}'"
-end
+puts "\nRemoving resource."
+target.remove
+puts "\nSucessfully removed."

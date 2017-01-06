@@ -16,7 +16,7 @@ Metrics/ModuleLength:
   Max: 150
 
 Style/GlobalVars:
-  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_thunderbird, $config_thunderbird, $secrets_thunderbird]
+  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy]
 
 Style/IndentationWidth:
   Width: 2

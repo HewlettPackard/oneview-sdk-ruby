@@ -1,20 +1,22 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::ServerHardwareType, integration: true, type: UPDATE do
+klass = OneviewSDK::ServerHardwareType
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration context'
 
-  before :each do
-    server_hardware = OneviewSDK::ServerHardware.find_by($client, name: $secrets['server_hardware2_ip']).first
-    puts server_hardware['model']
-    @item = OneviewSDK::ServerHardwareType.find_by($client, model: server_hardware['model']).first
+  let(:server_hardware) do
+    OneviewSDK::ServerHardware.find_by($client, name: $secrets['server_hardware2_ip']).first
   end
+  subject(:target) { klass.find_by($client, uri: server_hardware['serverHardwareTypeUri']).first }
 
   describe '#update' do
-    it 'Update name and description' do
-      old_name = @item['name']
-      expect { @item.update(name: 'Test', description: 'Server hardware type description') }.not_to raise_error
-      @item.update(name: old_name)
+    it 'should update name and description' do
+      expect { target.update(name: 'Name Updated', description: 'Description updated') }.not_to raise_error
+
+      target.retrieve!
+
+      expect(target['name']).to eq('Name Updated')
+      expect(target['description']).to eq('Description updated')
     end
   end
-
 end

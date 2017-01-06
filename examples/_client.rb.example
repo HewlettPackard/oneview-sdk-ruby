@@ -14,8 +14,8 @@ require 'pry'
 # STDOUT.sync = false
 
 # This setting allows for use of the shortened name of the resources, like OneviewSDK::<Resource_name>,
-  # when referring to OneviewSDK::<API_version>::Thunderbird::<Resource_name>
-# OneviewSDK::API300.variant='Thunderbird'
+  # when referring to OneviewSDK::<API_version>::Synergy::<Resource_name>
+# OneviewSDK::API300.variant='Synergy'
 
 
 puts "Connected to OneView appliance at #{@client.url}\n\n"
@@ -35,4 +35,4 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @storage_system_password = 'password123'
 # @firmware_bundle_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
 # @sas_interconnect_type = 'Synergy 12Gb SAS Connection Module'
-# @thunderbird_enclosure_hostname = 'fe80::2:0:9:1%eth2'
+# @synergy_enclosure_hostname = 'fe80::2:0:9:1%eth2'
