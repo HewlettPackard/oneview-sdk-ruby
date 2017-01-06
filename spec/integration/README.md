@@ -63,7 +63,7 @@ $ rake spec:integration
 $ rake spec:integration:create
 $ rake spec:integration:update
 $ rake spec:integration:delete
-$ rake spec:integration:api_version[version]        # eg, spec:integration:api_version[300]
-$ rake spec:integration:api[version,model]          # eg, spec:integration:api_version[300,c7000]
-$ rake spec:integration:delete:api_version[version] # eg, spec:integration:delete:api_version[300]
+$ rake spec:integration:api_version[ver]        # eg, spec:integration:api_version[300]
+$ rake spec:integration:api[version,model]      # eg, spec:integration:api_version[300,c7000]
+$ rake spec:integration:delete:api_version[ver] # eg, spec:integration:delete:api_version[300]
 ```
