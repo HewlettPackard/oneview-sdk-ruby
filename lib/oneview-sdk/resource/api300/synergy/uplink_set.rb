@@ -23,7 +23,8 @@ module OneviewSDK
         # @param [Integer] api_ver The api version to use when interracting with this resource.
         def initialize(client, params = {}, api_ver = nil)
           # Default values for api300
-          params[:type] ||= params['type'] ||= 'uplink-setV300'
+          @data ||= {}
+          @data['type'] ||= 'uplink-setV300'
           super
         end
       end

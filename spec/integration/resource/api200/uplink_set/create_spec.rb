@@ -39,12 +39,4 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       expect(ports['members']).not_to be_empty
     end
   end
-
-  describe '::get_schema' do
-    it 'should return the JSON schema' do
-      schema = klass.get_schema($client)
-      expect(schema).to be
-      expect(schema.class).to eq(Hash)
-    end
-  end
 end

@@ -35,16 +35,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       uplink = klass.new($client_300, name: UPLINK_SET4_NAME)
       expect(uplink.retrieve!).to eq(true)
       ports = uplink.get_unassigned_ports
-      expect(ports.class).to eq(Hash)
-      expect(ports['members']).not_to be_empty
-    end
-  end
-
-  describe '::get_schema' do
-    it 'should return the JSON schema' do
-      schema = klass.get_schema($client_300)
-      expect(schema).to be
-      expect(schema.class).to eq(Hash)
+      expect(ports).not_to be_empty
     end
   end
 end
