@@ -11,7 +11,7 @@
 
 require_relative '../../_client' # Gives access to @client, @enclosure_name, @interconnect_name
 
-# NOTE: This will create a uplink set named 'Teste Uplink', then update it with network, then delete it.
+# NOTE: This will create a uplink set named 'UplinkSet Example', then update it with network, then delete it.
 # NOTE 2: Dependencies: Enclosure, EthernetNetwork, LogicalInterconnectGroup, LogicalInterconnect, Interconnect
 
 ethernet = OneviewSDK::API300::C7000::EthernetNetwork.get_all(@client).first
