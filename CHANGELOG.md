@@ -1,3 +1,6 @@
+# v3.1.0
+ - New feature "Unmanaged Devices" added to OneView Rest API version 300
+
 # v3.0.0
 ### Notes
  This is the Third major version of the Ruby SDK for HPE OneView. It features a split in the API support, allowing for C7000 and Synergy hardware variants to be used, while maintaining compatibility to older versions. There are some code improvements applied throughout the release, as well as additional endpoints support.
@@ -83,7 +86,6 @@
    - Power devices
    - Racks
    - Server hardware types
-   - Unmanaged devices
  3. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
 
 ### Breaking changes
