@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-klass = OneviewSDK::UplinkSet
+klass = OneviewSDK::API300::C7000::UplinkSet
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#update' do
 
-    subject(:uplink) { klass.find_by($client, name: UPLINK_SET4_NAME).first }
-    let(:interconnect) { OneviewSDK::Interconnect.find_by($client, name: INTERCONNECT_2_NAME).first }
-    let(:enclosure) { OneviewSDK::Enclosure.find_by($client, name: ENCL_NAME).first }
-    let(:network) { OneviewSDK::EthernetNetwork.get_all($client).first }
+    subject(:uplink) { klass.find_by($client_300, name: UPLINK_SET4_NAME).first }
+    let(:interconnect) { OneviewSDK::API300::C7000::Interconnect.find_by($client_300, name: INTERCONNECT_2_NAME).first }
+    let(:enclosure) { OneviewSDK::API300::C7000::Enclosure.find_by($client_300, name: ENCL_NAME).first }
+    let(:network) { OneviewSDK::API300::C7000::EthernetNetwork.get_all($client_300).first }
     let(:port) { interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['pairedPortName'] }.first }
 
     before do

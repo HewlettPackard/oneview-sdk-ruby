@@ -10,7 +10,7 @@ RSpec.describe OneviewSDK::API300::C7000::UplinkSet do
   describe '#initialize' do
     it 'sets the defaults correctly' do
       profile = OneviewSDK::API300::C7000::UplinkSet.new(@client_300)
-      expect(profile[:type]).to eq('uplink-setV3')
+      expect(profile[:type]).to eq('uplink-setV300')
       expect(profile[:portConfigInfos]).to eq([])
       expect(profile[:networkUris]).to eq([])
       expect(profile[:fcNetworkUris]).to eq([])
