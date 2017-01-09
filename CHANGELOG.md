@@ -2,8 +2,7 @@
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
    - Uplink Set
    - Volume attachment
- 2. New features added:
-   - Unmanaged Devices
+   - Unmanaged devices
 
 ### Features supported
 - Connection template
@@ -46,7 +45,7 @@
 - SAS Logical Interconnect Group
 - SAS Logical JBOD Attachments
 - SAS Logical JBODs
-- Unmanaged Devices
+- Unmanaged devices
 
 # v3.0.0
 ### Notes
