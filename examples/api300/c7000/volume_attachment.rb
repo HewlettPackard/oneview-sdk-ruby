@@ -9,23 +9,23 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require_relative '../../_client' # Gives access to @client
 
 # List volume attachments
 puts "\nVolume attachments available: "
-OneviewSDK::VolumeAttachment.find_by(@client, {}).each do |volume_attachment|
+OneviewSDK::API300::C7000::VolumeAttachment.find_by(@client, {}).each do |volume_attachment|
   puts "- #{volume_attachment['hostName']}"
 end
 
 # List extra unmanaged storage volumes
-extra_managed_volumes = OneviewSDK::VolumeAttachment.get_extra_unmanaged_volumes(@client)['members']
+extra_managed_volumes = OneviewSDK::API300::C7000::VolumeAttachment.get_extra_unmanaged_volumes(@client)['members']
 puts "\nUnmanaged volumes: " unless extra_managed_volumes.empty?
 extra_managed_volumes.each do |unmanaged_volume|
   puts "- #{unmanaged_volume['ownerUri']}"
 end
 
 # List volume attachment paths
-volume_attachment = OneviewSDK::VolumeAttachment.find_by(@client, {}).first
+volume_attachment = OneviewSDK::API300::C7000::VolumeAttachment.find_by(@client, {}).first
 if volume_attachment
   volume_paths = volume_attachment.get_paths
   puts "\nVolume #{volume_attachment['hostName']} paths: " unless volume_paths.empty?
