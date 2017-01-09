@@ -10,7 +10,7 @@
 # specific language governing permissions and limitations under the License.
 
 # Gives access to @client, @server_hardware_hostname, @server_hardware_username, @server_hardware_password
-require_relative '../_client'
+require_relative '../../_client'
 
 def print_server_hardware_type(item)
   puts "\n-- Server hardware type --",
@@ -30,11 +30,11 @@ options_server_hardware = {
   licensingIntent: 'OneView'
 }
 
-server_hardware = OneviewSDK::ServerHardware.new(@client, options_server_hardware)
+server_hardware = OneviewSDK::API300::C7000::ServerHardware.new(@client, options_server_hardware)
 server_hardware.add
 
 # retrieving server hardware type
-target = OneviewSDK::ServerHardwareType.new(@client, uri: server_hardware['serverHardwareTypeUri'])
+target = OneviewSDK::API300::C7000::ServerHardwareType.new(@client, uri: server_hardware['serverHardwareTypeUri'])
 target.retrieve!
 print_server_hardware_type(target)
 
@@ -43,7 +43,7 @@ target.update(name: 'New Name', description: 'New Description')
 print_server_hardware_type(target)
 
 # List all server hardware types
-list = OneviewSDK::ServerHardwareType.get_all(@client)
+list = OneviewSDK::API300::C7000::ServerHardwareType.get_all(@client)
 puts "\n#Listing all:"
 list.each { |p| puts "  #{p[:name]}" }
 

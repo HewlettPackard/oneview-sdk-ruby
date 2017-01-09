@@ -9,36 +9,36 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client, @enclosure_name, @interconnect_name
+require_relative '../../_client' # Gives access to @client, @enclosure_name, @interconnect_name
 
 # NOTE: This will create a uplink set named 'UplinkSet Example', then update it with network, then delete it.
 # NOTE 2: Dependencies: Enclosure, EthernetNetwork, LogicalInterconnectGroup, LogicalInterconnect, Interconnect
 
-ethernet = OneviewSDK::EthernetNetwork.get_all(@client).first
-logical_interconnect = OneviewSDK::LogicalInterconnect.get_all(@client).first
+fc_ethernet = OneviewSDK::API300::Synergy::FCNetwork.get_all(@client).first
+logical_interconnect = OneviewSDK::API300::Synergy::LogicalInterconnect.get_all(@client).first
 
-enclosure = OneviewSDK::Enclosure.new(@client, name: @enclosure_name)
+enclosure = OneviewSDK::API300::Synergy::Enclosure.new(@client, name: @enclosure_name)
 enclosure.retrieve!
 
-interconnect = OneviewSDK::Interconnect.new(@client, name: @interconnect_name)
+interconnect = OneviewSDK::API300::Synergy::Interconnect.new(@client, name: @interconnect_name)
 interconnect.retrieve!
 
-port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['pairedPortName'] }.first
+port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['portHealthStatus'] == 'Normal' }.first
 
 options = {
   logicalInterconnectUri: logical_interconnect['uri'],
   nativeNetworkUri: nil,
-  reachability: 'Reachable',
-  manualLoginRedistributionState: 'NotSupported',
+  reachability: 'NotReachable',
+  manualLoginRedistributionState: 'Supported',
   connectionMode: 'Auto',
   lacpTimer: 'Short',
-  networkType: 'Ethernet',
-  ethernetNetworkType: 'Tagged',
+  networkType: 'FibreChannel',
+  ethernetNetworkType: 'NotApplicable',
   description: nil,
   name: 'UplinkSet Example'
 }
 
-uplink = OneviewSDK::UplinkSet.new(@client, options)
+uplink = OneviewSDK::API300::Synergy::UplinkSet.new(@client, options)
 uplink.add_port_config(
   port['uri'],
   'Auto',
@@ -52,8 +52,8 @@ puts "\nCreating UplinkSet ..."
 uplink.create
 puts "UplinkSet '#{uplink['uri']}' created successfully!"
 
-puts "\nUpdating UplinkSet (adding network '#{ethernet['uri']}') ..."
-uplink.add_network(ethernet)
+puts "\nUpdating UplinkSet (adding network '#{fc_ethernet['uri']}') ..."
+uplink.add_fcnetwork(fc_ethernet)
 uplink.update
 uplink.refresh
 puts 'UplinkSet updated successfully!'

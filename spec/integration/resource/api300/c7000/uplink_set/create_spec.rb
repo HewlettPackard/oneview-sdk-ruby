@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-klass = OneviewSDK::UplinkSet
+klass = OneviewSDK::API300::C7000::UplinkSet
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   let(:uplink_data) do
     {
@@ -18,11 +18,11 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     }
   end
 
-  let(:log_int) { OneviewSDK::LogicalInterconnect.get_all($client).first }
+  let(:log_int) { OneviewSDK::API300::C7000::LogicalInterconnect.get_all($client_300).first }
 
   describe '#create' do
     it 'can create the uplink and attach to a Logical Interconnect' do
-      item = klass.new($client, uplink_data)
+      item = klass.new($client_300, uplink_data)
       item[:logicalInterconnectUri] = log_int[:uri]
       expect { item.create }.not_to raise_error
       expect(item[:uri]).to be
@@ -32,11 +32,10 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   describe '#get_unassigned_ports' do
     it 'should return a hash with the unassigned uplink set ports' do
-      uplink = klass.new($client, name: UPLINK_SET4_NAME)
+      uplink = klass.new($client_300, name: UPLINK_SET4_NAME)
       expect(uplink.retrieve!).to eq(true)
       ports = uplink.get_unassigned_ports
-      expect(ports.class).to eq(Hash)
-      expect(ports['members']).not_to be_empty
+      expect(ports).not_to be_empty
     end
   end
 end

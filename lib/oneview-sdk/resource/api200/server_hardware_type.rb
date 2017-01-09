@@ -52,7 +52,6 @@ module OneviewSDK
         set_all(attributes)
         ensure_client && ensure_uri
         data = @data.select { |k, _v| %w(name description).include?(k) }
-        data['description'] ||= ''
         response = @client.rest_put(@data['uri'], { 'body' => data }, @api_version)
         @client.response_handler(response)
         self
