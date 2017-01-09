@@ -7,8 +7,8 @@ RSpec.describe klass, integration: true, type: UPDATE do
   let(:interconnect) { klass.find_by($client_300_synergy, name: INTERCONNECT_3_NAME).first }
 
   describe '#update' do
-    it 'self raises MethodUnavailable' do
-      expect { interconnect.update }.to raise_error(/The method #update is unavailable for this resource/)
+    it 'raises MethodUnavailable' do
+      expect { interconnect.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
   end
 
@@ -37,7 +37,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
     it 'fails to update with invalid attributes' do
       port = interconnect[:ports].first
-      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error(/BAD REQUEST/)
+      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error(OneviewSDK::BadRequest, /BAD REQUEST/)
     end
   end
 

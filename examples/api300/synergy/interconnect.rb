@@ -64,9 +64,9 @@ ports_2 = item['ports'].select { |k| k['portType'] == 'Uplink' }
 port_updated = ports_2.first
 puts "Port updated successfully for interconnect #{item['name']}"
 puts "Port #{port_updated['name']} with status #{port_updated['enabled']}"
-# Returning for original state
+# Returning to original state
 puts "\nEnabling the port #{port['name']}"
-# Its need to get an uplink to enable port
+# It needs to get an uplink
 uplink = OneviewSDK::API300::Synergy::FCNetwork.find_by(@client, name: 'FCNetwork_1').first
 item.update_port(port['name'], enabled: true, associatedUplinkSetUri: uplink['uri'])
 item.retrieve!
@@ -80,7 +80,7 @@ puts "Interconnect #{item['name']} with uidState #{item['uidState']}"
 item.patch('replace', '/uidState', 'Off')
 item.retrieve!
 puts "Interconnect #{item['name']} updated successfully with new uidState #{item['uidState']}"
-# Returning for original state
+# Returning to original state
 puts "\nReturning for original state"
 item.patch('replace', '/uidState', 'On')
 item.retrieve!

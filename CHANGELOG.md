@@ -1,5 +1,6 @@
 # v3.1.0
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
+   - Interconnect
    - Uplink Set
 
 ### Features supported
@@ -12,6 +13,7 @@
 - FCoE network
 - Firmware bundles
 - Firmware drivers
+- Interconnect
 - Logical downlink
 - Logical enclosure
 - Logical interconnect
@@ -60,7 +62,6 @@
    - FCoE network
    - Firmware bundles
    - Firmware drivers
-   - Interconnect
    - Logical downlink
    - Logical enclosure
    - Logical interconnect Group

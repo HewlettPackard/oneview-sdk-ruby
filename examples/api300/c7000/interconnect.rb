@@ -58,7 +58,7 @@ ports_2 = item['ports'].select { |k| k['portType'] == 'Uplink' }
 port_updated = ports_2.first
 puts "Port updated successfully for interconnect #{item['name']}"
 puts "Port #{port_updated['name']} with status #{port_updated['enabled']}"
-# Returning for original state
+# Returning to original state
 puts "\nEnabling the port #{port['name']}"
 item.update_port(port['name'], enabled: true)
 item.retrieve!

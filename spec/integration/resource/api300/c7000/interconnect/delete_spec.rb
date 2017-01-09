@@ -16,9 +16,9 @@ RSpec.describe klass, integration: true, type: DELETE do
   include_context 'integration api300 context'
 
   describe '#delete' do
-    it 'self raises MethodUnavailable' do
+    it 'raises MethodUnavailable' do
       item = klass.new($client_300)
-      expect { item.delete }.to raise_error(/The method #delete is unavailable for this resource/)
+      expect { item.delete }.to raise_error(OneviewSDK::MethodUnavailable, /The method #delete is unavailable for this resource/)
     end
   end
 end

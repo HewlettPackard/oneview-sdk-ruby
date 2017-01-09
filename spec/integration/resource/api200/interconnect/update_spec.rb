@@ -7,8 +7,8 @@ RSpec.describe klass, integration: true, type: UPDATE do
   let(:interconnect) { klass.find_by($client, name: 'Encl1, interconnect 1').first }
 
   describe '#update' do
-    it 'self raises MethodUnavailable' do
-      expect { interconnect.update }.to raise_error(/The method #update is unavailable for this resource/)
+    it 'raises MethodUnavailable' do
+      expect { interconnect.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
   end
 
@@ -37,11 +37,18 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
     it 'fails to update with invalid attributes' do
       port = interconnect[:ports].first
-      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error(/BAD REQUEST/)
+      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error(OneviewSDK::BadRequest, /BAD REQUEST/)
     end
   end
 
   describe '#patch' do
-    it 'is a pending example due to the lack of type of interconnection that supports this operation'
+    xit 'update a given interconnect across a patch (Skipping this test due to the lack of type of interconnection that supports this operation)' do
+      expect { interconnect.patch('replace', '/uidState', 'Off') }.not_to raise_error
+      interconnect.retrieve!
+      expect(interconnect['uidState']).to eq('Off')
+      expect { interconnect.patch('replace', '/uidState', 'On') }.not_to raise_error
+      interconnect.retrieve!
+      expect(interconnect['uidState']).to eq('On')
+    end
   end
 end
