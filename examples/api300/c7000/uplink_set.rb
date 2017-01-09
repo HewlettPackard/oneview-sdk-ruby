@@ -9,18 +9,18 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client, @enclosure_name, @interconnect_name
+require_relative '../../_client' # Gives access to @client, @enclosure_name, @interconnect_name
 
 # NOTE: This will create a uplink set named 'UplinkSet Example', then update it with network, then delete it.
 # NOTE 2: Dependencies: Enclosure, EthernetNetwork, LogicalInterconnectGroup, LogicalInterconnect, Interconnect
 
-ethernet = OneviewSDK::EthernetNetwork.get_all(@client).first
-logical_interconnect = OneviewSDK::LogicalInterconnect.get_all(@client).first
+ethernet = OneviewSDK::API300::C7000::EthernetNetwork.get_all(@client).first
+logical_interconnect = OneviewSDK::API300::C7000::LogicalInterconnect.get_all(@client).first
 
-enclosure = OneviewSDK::Enclosure.new(@client, name: @enclosure_name)
+enclosure = OneviewSDK::API300::C7000::Enclosure.new(@client, name: @enclosure_name)
 enclosure.retrieve!
 
-interconnect = OneviewSDK::Interconnect.new(@client, name: @interconnect_name)
+interconnect = OneviewSDK::API300::C7000::Interconnect.new(@client, name: @interconnect_name)
 interconnect.retrieve!
 
 port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['pairedPortName'] }.first
@@ -38,7 +38,7 @@ options = {
   name: 'UplinkSet Example'
 }
 
-uplink = OneviewSDK::UplinkSet.new(@client, options)
+uplink = OneviewSDK::API300::C7000::UplinkSet.new(@client, options)
 uplink.add_port_config(
   port['uri'],
   'Auto',

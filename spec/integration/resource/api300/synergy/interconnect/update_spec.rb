@@ -4,7 +4,7 @@ klass = OneviewSDK::API300::Synergy::Interconnect
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
-  let(:interconnect) { klass.find_by($client_300_synergy, name: INTERCONNECT1_NAME).first }
+  let(:interconnect) { klass.find_by($client_300_synergy, name: INTERCONNECT_3_NAME).first }
 
   describe '#update' do
     it 'self raises MethodUnavailable' do
