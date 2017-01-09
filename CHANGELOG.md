@@ -1,5 +1,50 @@
 # v3.1.0
- - New feature "Unmanaged Devices" added to OneView Rest API version 300
+ 1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
+   - Uplink Set
+ 2. New features added:
+   - Unmanaged Devices
+
+### Features supported
+- Connection template
+- Datacenter
+- Enclosure
+- Ethernet network
+- Fabrics
+- FC network
+- FCoE network
+- Firmware bundles
+- Firmware drivers
+- Logical downlink
+- Logical enclosure
+- Logical interconnect
+- Logical interconnect Group
+- Uplink Set
+- Logical switch
+- Logical switch group
+- Managed SANs
+- Network set
+- Power devices
+- Racks
+- SAN managers
+- Server hardware
+- Server hardware type
+- Server profile
+- Server profile template
+- Storage pools
+- Storage systems
+- Switches
+- Volume
+- Volume template
+- Drive Enclosures
+- Interconnect Link Topology
+- Internal Link Set
+- SAS Interconnect
+- SAS Interconnect Type
+- SAS Logical Interconnect
+- SAS Logical Interconnect Group
+- SAS Logical JBOD Attachments
+- SAS Logical JBODs
+- Unmanaged Devices
 
 # v3.0.0
 ### Notes

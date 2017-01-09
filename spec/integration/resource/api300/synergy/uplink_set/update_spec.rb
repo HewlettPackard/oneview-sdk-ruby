@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-klass = OneviewSDK::UplinkSet
+klass = OneviewSDK::API300::Synergy::UplinkSet
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
   describe '#update' do
 
-    subject(:uplink) { klass.find_by($client, name: UPLINK_SET4_NAME).first }
-    let(:interconnect) { OneviewSDK::Interconnect.find_by($client, name: INTERCONNECT_2_NAME).first }
-    let(:enclosure) { OneviewSDK::Enclosure.find_by($client, name: ENCL_NAME).first }
-    let(:network) { OneviewSDK::EthernetNetwork.get_all($client).first }
-    let(:port) { interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['pairedPortName'] }.first }
+    subject(:uplink) { klass.find_by($client_300_synergy, name: UPLINK_SET3_NAME).first }
+    let(:interconnect) { OneviewSDK::API300::Synergy::Interconnect.find_by($client_300_synergy, name: INTERCONNECT_1_NAME).first }
+    let(:enclosure) { OneviewSDK::API300::Synergy::Enclosure.find_by($client_300_synergy, name: ENCLOSURE_1).first }
+    let(:fc_network) { OneviewSDK::API300::Synergy::FCNetwork.find_by($client_300_synergy, name: FC_NET_NAME).first }
+    let(:port) { interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['portHealthStatus'] == 'Normal' }.first }
 
     before do
       expect(uplink.retrieve!).to eq(true)
@@ -34,16 +34,16 @@ RSpec.describe klass, integration: true, type: UPDATE do
     end
 
     it 'update network' do
-      expect(uplink['networkUris']).to be_empty
-      uplink.add_network(network)
+      expect(uplink['fcNetworkUris']).to be_empty
+      uplink.add_fcnetwork(fc_network)
       expect { uplink.update }.not_to raise_error
       uplink.refresh
-      expect(uplink['networkUris']).not_to be_empty
+      expect(uplink['fcNetworkUris']).not_to be_empty
 
-      uplink['networkUris'].clear
+      uplink['fcNetworkUris'].clear
       expect { uplink.update }.not_to raise_error
       uplink.refresh
-      expect(uplink['networkUris']).to be_empty
+      expect(uplink['fcNetworkUris']).to be_empty
     end
   end
 end
