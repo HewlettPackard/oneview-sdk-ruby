@@ -146,7 +146,7 @@ module OneviewSDK
       # Gets a collection of uplink ports from the member interconnects
       # which are eligible for assignment to an analyzer port.
       # @return [Hash] Hash of uplink ports eligibles for assignment to an analyzer port
-      def get_unassigned_up_link_ports_for_port_monitor
+      def get_unassigned_uplink_ports_for_port_monitor
         ensure_client && ensure_uri
         response = @client.rest_get("#{@data['uri']}/unassignedUplinkPortsForPortMonitor")
         @client.response_handler(response)

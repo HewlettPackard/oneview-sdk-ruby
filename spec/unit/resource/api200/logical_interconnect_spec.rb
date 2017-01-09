@@ -160,17 +160,17 @@ RSpec.describe OneviewSDK::LogicalInterconnect do
     end
   end
 
-  describe '#get_unassigned_up_link_ports_for_port_monitor' do
+  describe '#get_unassigned_uplink_ports_for_port_monitor' do
     it 'requires the uri to be set' do
       item = OneviewSDK::LogicalInterconnect.new(@client)
-      expect { item.get_unassigned_up_link_ports_for_port_monitor }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { item.get_unassigned_uplink_ports_for_port_monitor }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
-    it 'get_unassigned_up_link_ports_for_port_monitor' do
+    it 'get_unassigned_uplink_ports_for_port_monitor' do
       item = log_int
       expect(@client).to receive(:rest_get).with("#{item['uri']}/unassignedUplinkPortsForPortMonitor")
         .and_return(FakeResponse.new(members: [{ interconnectName: 'p1' }, { interconnectName: 'p2' }]))
-      results = item.get_unassigned_up_link_ports_for_port_monitor
+      results = item.get_unassigned_uplink_ports_for_port_monitor
       expect(results).to_not be_empty
       expect(results.first['interconnectName']).to eq('p1')
       expect(results.last['interconnectName']).to eq('p2')

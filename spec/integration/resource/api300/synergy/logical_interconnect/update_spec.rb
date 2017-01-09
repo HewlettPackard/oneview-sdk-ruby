@@ -223,7 +223,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
     it 'gets a collection of uplink ports eligibles for assignment to an analyzer port' do
       log_int.retrieve!
       ports = []
-      expect { ports = log_int.get_unassigned_up_link_ports_for_port_monitor }.to_not raise_error
+      expect { ports = log_int.get_unassigned_uplink_ports_for_port_monitor }.to_not raise_error
       expect(ports).to_not be_empty
     end
 
@@ -232,7 +232,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       port_monitor_bkp = log_int['portMonitor']
       interconnect = OneviewSDK::API300::Synergy::Interconnect.find_by($client_300_synergy, uri: log_int['interconnects'].first).first
       downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
-      port = log_int.get_unassigned_up_link_ports_for_port_monitor.select { |k| k['interconnectName'] == downlinks.first['interconnectName'] }
+      port = log_int.get_unassigned_uplink_ports_for_port_monitor.select { |k| k['interconnectName'] == downlinks.first['interconnectName'] }
       options = {
         'analyzerPort' => {
           'portUri' => port.first['uri'],

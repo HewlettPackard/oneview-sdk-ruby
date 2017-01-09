@@ -258,13 +258,13 @@ RSpec.describe klass, integration: true, type: UPDATE do
     it 'gets a collection of uplink ports eligibles for assignment to an analyzer port' do
       log_int.retrieve!
       ports = []
-      expect { ports = log_int.get_unassigned_up_link_ports_for_port_monitor }.to_not raise_error
+      expect { ports = log_int.get_unassigned_uplink_ports_for_port_monitor }.to_not raise_error
       expect(ports).to_not be_empty
     end
 
     it 'updates the port monitor' do
       log_int.retrieve!
-      port = log_int.get_unassigned_up_link_ports_for_port_monitor.first
+      port = log_int.get_unassigned_uplink_ports_for_port_monitor.first
       interconnect = OneviewSDK::Interconnect.find_by($client, uri: log_int['interconnects'].first).first
       downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
       options = {

@@ -124,7 +124,7 @@ puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
 # Gets a collection of uplink ports eligibles for assignment to an analyzer port
 puts "\nGets a collection of uplink ports eligibles for assignment to an analyzer port "
 item.retrieve!
-ports = item.get_unassigned_up_link_ports_for_port_monitor
+ports = item.get_unassigned_uplink_ports_for_port_monitor
 puts 'Ports eligibles'
 ports.each do |port|
   puts "\nInterconnect #{port['interconnectName']}, port name #{port['portName']} and uri #{port['uri']}."
