@@ -46,7 +46,7 @@ module OneviewSDK
         raise InvalidClient, 'Must set the url option' unless @url
         @max_api_version = appliance_api_version
         if options[:api_version] && options[:api_version].to_i > @max_api_version
-          logger.warn "API version #{options[:api_version]} is greater than the appliance API version (#{@max_api_version})"
+          logger.warn "API version #{options[:api_version]} is greater than the Image Streamer API version (#{@max_api_version})"
         end
         @api_version = options[:api_version] || [OneviewSDK::ImageStreamer::DEFAULT_API_VERSION, @max_api_version].min
         # Set the default Image Streamer module API version
@@ -99,8 +99,8 @@ module OneviewSDK
       # @param [String] type Resource type
       # @param [Integer] api_ver API module version to fetch resources from
       # @return [Array<Resource>] Results
-      # @example Get all Ethernet Networks
-      #   networks = @client.get_all('EthernetNetworks')
+      # @example Get all Deployment Plans
+      #   deployment_plans = @client.get_all('DeploymentPlans')
       # @raise [TypeError] if the type is invalid
       def get_all(type, api_ver = @api_version)
         klass = OneviewSDK.resource_named(type, api_ver)
@@ -146,7 +146,7 @@ module OneviewSDK
         version = version.to_i if version.class != Fixnum
         version
       rescue ConnectionError
-        @logger.warn "Failed to get OneView max api version. Using default (#{OneviewSDK::ImageStreamer::DEFAULT_API_VERSION})"
+        @logger.warn "Failed to get Image Streamer max api version. Using default (#{OneviewSDK::ImageStreamer::DEFAULT_API_VERSION})"
         OneviewSDK::ImageStreamer::DEFAULT_API_VERSION
       end
     end

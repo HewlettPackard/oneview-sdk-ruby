@@ -54,7 +54,7 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
       options = { url: 'https://oneview.example.com', token: 'token123', api_version: 400 }
       client = nil
       expect { client = OneviewSDK::ImageStreamer::Client.new(options) }
-        .to output(/is greater than the appliance API version/).to_stdout_from_any_process
+        .to output(/is greater than the Image Streamer API version/).to_stdout_from_any_process
       expect(client.api_version).to eq(400)
     end
 
@@ -120,25 +120,11 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
       allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:rest_api).and_return(FakeResponse.new)
       options = { url: 'https://oneview.example.com', token: 'token123' }
       client = nil
-      expect { client = OneviewSDK::ImageStreamer::Client.new(options) }.to output(/Failed to get OneView max api version. Using default/)
+      expect { client = OneviewSDK::ImageStreamer::Client.new(options) }.to output(/Failed to get Image Streamer max api version. Using default/)
         .to_stdout_from_any_process
       expect(client.api_version).to eq(300)
     end
   end
-
-  # describe '#login' do
-  #   before :each do
-  #     allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:login).and_call_original
-  #   end
-  #
-  #   it 'tries twice to get a token from the appliance' do
-  #     allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:rest_api).and_return(FakeResponse.new)
-  #     options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', log_level: :debug }
-  #     expect { OneviewSDK::ImageStreamer::Client.new(options) rescue nil }.to output(/Retrying.../).to_stdout_from_any_process
-  #     options.delete(:log_level)
-  #     expect { OneviewSDK::ImageStreamer::Client.new(options) }.to raise_error(OneviewSDK::ConnectionError, /Couldn't log into OneView server/)
-  #   end
-  # end
 
   describe 'resource action methods' do
     include_context 'shared context'

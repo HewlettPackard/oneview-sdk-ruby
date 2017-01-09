@@ -45,9 +45,7 @@ module OneviewSDK
       @api_version_updated
     end
 
-    # This method will help redirect to resources within the API module that is currently in use.
-    # It should NOT be called directly. For example, if @@api_version is set to 200, then accessing
-    # OneviewSDK::EthernetNetwork will redirect to OneviewSDK::API200::EthernetNetwork
+    # Helps redirect resources to the correct API module for Image Streamer
     def self.const_missing(const)
       api_module = OneviewSDK::ImageStreamer.const_get("API#{@api_version}")
       api_module.const_get(const)
