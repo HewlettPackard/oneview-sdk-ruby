@@ -1,6 +1,7 @@
 # v3.1.0
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
    - Uplink Set
+   - Volume attachment
  2. New features added:
    - Unmanaged Devices
 
@@ -34,6 +35,7 @@
 - Storage systems
 - Switches
 - Volume
+- Volume attachment
 - Volume template
 - Drive Enclosures
 - Interconnect Link Topology
