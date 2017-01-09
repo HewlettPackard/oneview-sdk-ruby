@@ -1,3 +1,48 @@
+# v3.1.0
+ 1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
+   - Uplink Set
+
+### Features supported
+- Connection template
+- Datacenter
+- Enclosure
+- Ethernet network
+- Fabrics
+- FC network
+- FCoE network
+- Firmware bundles
+- Firmware drivers
+- Logical downlink
+- Logical enclosure
+- Logical interconnect
+- Logical interconnect Group
+- Uplink Set
+- Logical switch
+- Logical switch group
+- Managed SANs
+- Network set
+- Power devices
+- Racks
+- SAN managers
+- Server hardware
+- Server hardware type
+- Server profile
+- Server profile template
+- Storage pools
+- Storage systems
+- Switches
+- Volume
+- Volume template
+- Drive Enclosures
+- Interconnect Link Topology
+- Internal Link Set
+- SAS Interconnect
+- SAS Interconnect Type
+- SAS Logical Interconnect
+- SAS Logical Interconnect Group
+- SAS Logical JBOD Attachments
+- SAS Logical JBODs
+
 # v3.0.0
 ### Notes
  This is the Third major version of the Ruby SDK for HPE OneView. It features a split in the API support, allowing for C7000 and Synergy hardware variants to be used, while maintaining compatibility to older versions. There are some code improvements applied throughout the release, as well as additional endpoints support.

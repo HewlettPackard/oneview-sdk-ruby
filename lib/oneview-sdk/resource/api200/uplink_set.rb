@@ -78,6 +78,15 @@ module OneviewSDK
         raise IncompleteResource, 'Must set network uri attribute' unless uri
         @data['fcoeNetworkUris'].push(uri)
       end
+
+      # Gets the unassigned uplink ports
+      # @return [Array] List of unassigned uplink-ports
+      def get_unassigned_ports
+        ensure_client && ensure_uri
+        response = @client.rest_post(BASE_URI + '/unassignedUplinkPorts', { 'body' => @data }, @api_version)
+        result = @client.response_handler(response)
+        result['members']
+      end
     end
   end
 end
