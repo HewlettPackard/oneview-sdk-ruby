@@ -11,12 +11,13 @@
 
 require_relative 'version'
 require_relative 'exceptions'
-require_relative '/image-streamer/client'
+require_relative 'image-streamer/client'
 require_relative 'resource'
 Dir[File.dirname(__FILE__) + '/image-streamer/resource/*.rb'].each { |file| require file }
 
 # Module for interacting with the HPE OneView API
 module OneviewSDK
+  # Module for interacting with the Image Streamer
   module ImageStreamer
     ENV_VARS = %w(ONEVIEWSDK_I3S_URL ONEVIEWSDK_I3S_TOKEN ONEVIEWSDK_I3S_SSL_ENABLED).freeze
     SUPPORTED_API_VERSIONS = [300].freeze
@@ -51,7 +52,7 @@ module OneviewSDK
       api_module = OneviewSDK::ImageStreamer.const_get("API#{@api_version}")
       api_module.const_get(const)
     rescue NameError
-      raise NameError, "The #{const} method or resource does not exist for ImageStreamer API version #{@api_version}."
+      raise NameError, "The #{const} method or resource does not exist for Image Streamer API version #{@api_version}."
     end
   end
 end

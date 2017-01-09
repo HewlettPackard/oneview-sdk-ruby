@@ -54,6 +54,7 @@ else # Run both
 end
 
 require 'oneview-sdk'
+require_relative '../lib/oneview-sdk/image_streamer'
 require_relative 'shared_context'
 require_relative 'support/fake_response'
 require_relative 'integration/sequence_and_naming'
