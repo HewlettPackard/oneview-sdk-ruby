@@ -45,9 +45,11 @@ RSpec.shared_context 'integration api300 context', a: :b do
 end
 
 RSpec.shared_context 'system context', a: :b do
-
   before(:each) do
-    system_context
+    load_system_properties
+
+    # Create client objects:
+    $config ||= OneviewSDK::Config.load(@config_path)
     $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
     $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
 
@@ -58,9 +60,12 @@ RSpec.shared_context 'system context', a: :b do
 end
 
 RSpec.shared_context 'system api300 context', a: :b do
-
   before(:each) do
-    system_context
+    load_system_properties
+
+    # Create client objects:
+    $config ||= OneviewSDK::Config.load(@config_path)
+    $config_synergy ||= OneviewSDK::Config.load(@config_path_synergy)
     $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
     $client_300_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 300))
 
@@ -117,7 +122,17 @@ def integration_context_debugging
   end
 end
 
-def system_context
+# Must set the following environment variables:
+#   ENV['ONEVIEWSDK_SYSTEM_CONFIG'] = '/full/path/to/one_view/one_view_config.json'
+#   ENV['ONEVIEWSDK_SYSTEM_SECRETS'] = '/full/path/to/one_view/one_view_secrets.json'
+#   ENV['ONEVIEWSDK_SYSTEM_CONFIG_SYNERGY'] = '/full/path/to/one_view/one_view_config_synergy.json'
+#   ENV['ONEVIEWSDK_SYSTEM_SECRETS_SYNERGY'] = '/full/path/to/one_view/one_view_secrets_synergy.json'
+# Or use the default paths:
+#   spec/system/one_view_config.json
+#   spec/system/one_view_secrets.json
+#   spec/system/one_view_config_synergy.json
+#   spec/system/one_view_secrets_synergy.json
+def load_system_properties
   default_config  = 'spec/system/one_view_config.json'
   default_secrets = 'spec/system/one_view_secrets.json'
   default_config_synergy  = 'spec/system/one_view_config_synergy.json'
@@ -136,10 +151,14 @@ def system_context
     exit!
   end
 
+  unless File.file?(@config_path_synergy) && File.file?(@secrets_path_synergy)
+    STDERR.puts "\n\n"
+    STDERR.puts 'ERROR: System config file for Synergy not found' unless File.file?(@config_path_synergy)
+    STDERR.puts 'ERROR: System secrets file for Synergy not found' unless File.file?(@secrets_path_synergy)
+    STDERR.puts "\n\n"
+    exit!
+  end
+
   $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
   $secrets_synergy ||= OneviewSDK::Config.load(@secrets_path_synergy) # Secrets for URIs, server/enclosure credentials, etc.
-
-  # Create client objects:
-  $config ||= OneviewSDK::Config.load(@config_path)
-  $config_synergy ||= OneviewSDK::Config.load(@config_path_synergy)
 end
