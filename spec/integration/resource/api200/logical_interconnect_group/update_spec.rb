@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::LogicalInterconnectGroup, integration: true, type: UPDATE do
   include_context 'integration context'
 
-  let(:item_2) { OneviewSDK::LogicalInterconnectGroup.new($client, name: LOG_INT_GROUP2_NAME) }
+  let(:item_2) { OneviewSDK::LogicalInterconnectGroup.new($client, name: LOG_INT_GROUP3_NAME) }
   let(:eth) { OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME) }
   let(:uplink_options_2) do
     {

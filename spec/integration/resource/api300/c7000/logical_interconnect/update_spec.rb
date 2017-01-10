@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-klass = OneviewSDK::LogicalInterconnect
-extra_klass_1 = OneviewSDK::EthernetNetwork
+klass = OneviewSDK::API300::C7000::LogicalInterconnect
+extra_klass_1 = OneviewSDK::API300::C7000::EthernetNetwork
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
-  let(:enclosure) { OneviewSDK::Enclosure.new($client, name: ENCL_NAME) }
-  let(:log_int) { klass.new($client, name: LOG_INT_NAME) }
+  let(:enclosure) { OneviewSDK::API300::C7000::Enclosure.new($client_300, name: ENCL_NAME) }
+  let(:log_int) { klass.new($client_300, name: LOG_INT_NAME) }
   let(:qos_fixture) { 'spec/support/fixtures/integration/logical_interconnect_qos.json' }
   let(:firmware_path) { 'spec/support/Service Pack for ProLiant' }
 
@@ -15,7 +15,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       expect { enclosure.retrieve! }.to_not raise_error
       expect { log_int.retrieve! }.to_not raise_error
       expect(enclosure[:uri]).to be
-      expect(log_int[:type]).to eq('logical-interconnectV3')
+      expect(log_int[:type]).to eq('logical-interconnectV300')
     end
   end
 
@@ -27,7 +27,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   #     enclosure_match = true
   #     bay_match = false
   #     log_int['interconnectMap']['interconnectMapEntries'].each do |interconnect|
-  #       interconnect['location']['locationEntries'].each do |entry|
+  #       interconnect['location']['locationEntries'].each do |entry|OneviewSDK::API300::C7000::API300::C7000::
   #         enclosure_match = true if ((enclosure['uri'] == entry['value']) && (entry['type'] == 'Enclosure'))
   #         bay_match = true if ((bay_number.to_s == entry['value']) && (entry['type'] == 'Bay'))
   #       end
@@ -79,8 +79,8 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
     it 'will add and remove new networks' do
       vlans_1 = log_int.list_vlan_networks
-      et01 = extra_klass_1.new($client, name: "#{BULK_ETH_NET_PREFIX}_2")
-      et02 = extra_klass_1.new($client, name: "#{BULK_ETH_NET_PREFIX}_3")
+      et01 = extra_klass_1.new($client_300, name: "#{BULK_ETH_NET_PREFIX}_2")
+      et02 = extra_klass_1.new($client_300, name: "#{BULK_ETH_NET_PREFIX}_3")
       et01.retrieve!
       et02.retrieve!
 
@@ -172,7 +172,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
     it 'will be updated from a fixture' do
       log_int.retrieve!
 
-      log_int['qosConfiguration'] = klass.from_file($client, qos_fixture)['qosConfiguration']
+      log_int['qosConfiguration'] = klass.from_file($client_300, qos_fixture)['qosConfiguration']
       expect { log_int.update_qos_configuration }.to_not raise_error
       log_int.compliance
     end
@@ -213,13 +213,13 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = klass.find_by($client, {}).map { |item| item[:name] }
+      names = klass.find_by($client_300, {}).map { |item| item[:name] }
       expect(names).to include(log_int[:name])
     end
 
     it 'finds networks by multiple attributes' do
       attrs = { status: 'OK' }
-      lis = extra_klass_1.find_by($client, attrs)
+      lis = extra_klass_1.find_by($client_300, attrs)
       expect(lis).to_not eq(nil)
     end
   end
@@ -265,7 +265,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
     it 'updates the port monitor' do
       log_int.retrieve!
       port = log_int.get_unassigned_uplink_ports_for_port_monitor.first
-      interconnect = OneviewSDK::Interconnect.find_by($client, uri: log_int['interconnects'].first).first
+      interconnect = OneviewSDK::API300::C7000::Interconnect.find_by($client_300, uri: log_int['interconnects'].first).first
       downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
       options = {
         'analyzerPort' => {
@@ -312,7 +312,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   # describe 'Firmware Updates' do
   #   it 'will assure the firmware is present' do
   #     firmware_name = firmware_path.split('/').last
-  #     firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
+  #     firmware = OneviewSDK::API300::C7000::FirmwareDriver.new($client_300, name: firmware_name)
   #     firmware.retrieve!
   #   end
   #
@@ -320,7 +320,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   #     it 'Stage' do
   #       log_int.retrieve!
   #       firmware_name = firmware_path.split('/').last
-  #       firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
+  #       firmware = OneviewSDK::API300::C7000::FirmwareDriver.new($client_300, name: firmware_name)
   #       firmware.retrieve!
   #       firmware_opt = log_int.get_firmware
   #       firmware_opt['ethernetActivationDelay'] = 7

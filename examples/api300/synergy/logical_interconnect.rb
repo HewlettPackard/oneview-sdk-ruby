@@ -9,18 +9,18 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require_relative '../../_client' # Gives access to @client
 
-# Example: Explores functionalities of Logical Interconnects
+# Example: Explores functionalities of Logical Interconnects for API300 Synergy
 
 # Finding a logical interconnect
-items = OneviewSDK::LogicalInterconnect.find_by(@client, {})
+items = OneviewSDK::API300::Synergy::LogicalInterconnect.find_by(@client, {})
 puts "\nListing all interconnects."
 items.each do |li|
   puts "\nLogical interconnect #{li['name']} was found."
 end
 
-item = OneviewSDK::LogicalInterconnect.find_by(@client, {}).first
+item = OneviewSDK::API300::Synergy::LogicalInterconnect.find_by(@client, {}).first
 # # Listing internal networks
 puts "\nListing internal networks of the logical  interconnect with name: #{item['name']}"
 networks = item.list_vlan_networks
@@ -28,62 +28,6 @@ networks = item.list_vlan_networks
 networks.each do |nw|
   puts "\nNetwork with name #{nw['name']}, vlan #{nw['vlanId']} and uri #{nw['uri']} was found."
 end
-
-# Update of Internal networks
-puts 'Update of Internal networks'
-
-li_et01_options = {
-  vlanId:  '2001',
-  purpose:  'General',
-  name:  'li_et01',
-  smartLink:  false,
-  privateNetwork:  false,
-  connectionTemplateUri: nil,
-  type:  'ethernet-networkV3'
-}
-et01 = OneviewSDK::EthernetNetwork.new(@client, li_et01_options)
-et01.create!
-
-li_et02_options = {
-  vlanId:  '2002',
-  purpose:  'General',
-  name:  'li_et02',
-  smartLink:  false,
-  privateNetwork:  false,
-  connectionTemplateUri: nil,
-  type:  'ethernet-networkV3'
-}
-et02 = OneviewSDK::EthernetNetwork.new(@client, li_et02_options)
-et02.create!
-
-puts "\nUpdating internal networks"
-item.update_internal_networks(et01, et02)
-
-# Listing internal networks after update
-puts "\nListing internal networks of the logical  interconnect with name: #{item['name']} after update"
-networks2 = item.list_vlan_networks
-
-networks2.each do |nw|
-  puts "\nNetwork with name #{nw['name']}, vlan #{nw['vlanId']} and uri #{nw['uri']} was found."
-end
-
-puts "\nReturning to initial state"
-# Instance compliance
-puts "\nCompliance"
-puts "Putting #{item['name']} in compliance with the LIG"
-item.compliance
-puts "Compliance applied successfully\n"
-
-# Listing internal networks after compliance
-puts "\nListing internal networks of the logical  interconnect with name: #{item['name']} after compliance"
-networks3 = item.list_vlan_networks
-
-networks3.each do |nw|
-  puts "\nNetwork with name #{nw['name']}, vlan #{nw['vlanId']} and uri #{nw['uri']} was found."
-end
-
-et01.delete
-et02.delete
 
 # Updating Ethernet Settings
 puts "\nUpdating Ethernet Settings"
@@ -135,11 +79,12 @@ puts "\nPort monitor current:"
 puts "\n#{item['portMonitor']}"
 puts "\nUpdate Port Monitor"
 # Get port and downlink for port monitor
-interconnect = OneviewSDK::Interconnect.find_by(@client, uri: item['interconnects'].first).first
+interconnect = OneviewSDK::API300::Synergy::Interconnect.find_by(@client, uri: item['interconnects'].first).first
 downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
+port = ports.select { |k| k['interconnectName'] == downlinks.first['interconnectName'] }
 options = {
   'analyzerPort' => {
-    'portUri' => ports.first['uri'],
+    'portUri' => port.first['uri'],
     'portMonitorConfigInfo' => 'AnalyzerPort'
   },
   'enablePortMonitor' => true,
@@ -147,11 +92,12 @@ options = {
   'monitoredPorts' => [
     {
       'portUri' => downlinks.first['uri'],
-      'portMonitorConfigInfo' => 'MonitoredBoth'
+      'portMonitorConfigInfo' => 'MonitoredToServer'
     }
   ]
 }
 
+port_monitor_bkp = item['portMonitor']
 item['portMonitor'] = options
 item.update_port_monitor
 item.retrieve!
@@ -160,8 +106,9 @@ puts "\nPort monitor after update:"
 puts "\n#{item['portMonitor']}"
 
 puts "\nReturning to initial state"
-item.compliance
-puts "\nPort monitor after compliance:"
+item['portMonitor'] = port_monitor_bkp
+item.update_port_monitor
+puts "\nPort monitor original:"
 puts "\n#{item['portMonitor']}"
 
 puts "\nQoS configuration current:"
@@ -188,8 +135,8 @@ puts "\n#{item['telemetryConfiguration']}"
 
 sample_count_bkp = item['telemetryConfiguration']['sampleCount']
 sample_interval_bkp = item['telemetryConfiguration']['sampleInterval']
-item['telemetryConfiguration']['sampleCount'] = 20
-item['telemetryConfiguration']['sampleInterval'] = 200
+item['telemetryConfiguration']['sampleCount'] = 24
+item['telemetryConfiguration']['sampleInterval'] = 3600
 puts "\nUpdating the telemetry configuration"
 item.update_telemetry_configuration
 item.retrieve!

@@ -9,18 +9,18 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require_relative '../../_client' # Gives access to @client
 
-# Example: Explores functionalities of Logical Interconnects
+# Example: Explores functionalities of Logical Interconnects for API300 C7000
 
 # Finding a logical interconnect
-items = OneviewSDK::LogicalInterconnect.find_by(@client, {})
+items = OneviewSDK::API300::C7000::LogicalInterconnect.find_by(@client, {})
 puts "\nListing all interconnects."
 items.each do |li|
   puts "\nLogical interconnect #{li['name']} was found."
 end
 
-item = OneviewSDK::LogicalInterconnect.find_by(@client, {}).first
+item = OneviewSDK::API300::C7000::LogicalInterconnect.find_by(@client, {}).first
 # # Listing internal networks
 puts "\nListing internal networks of the logical  interconnect with name: #{item['name']}"
 networks = item.list_vlan_networks
@@ -39,9 +39,9 @@ li_et01_options = {
   smartLink:  false,
   privateNetwork:  false,
   connectionTemplateUri: nil,
-  type:  'ethernet-networkV3'
+  type:  'ethernet-networkV300'
 }
-et01 = OneviewSDK::EthernetNetwork.new(@client, li_et01_options)
+et01 = OneviewSDK::API300::C7000::EthernetNetwork.new(@client, li_et01_options)
 et01.create!
 
 li_et02_options = {
@@ -51,9 +51,9 @@ li_et02_options = {
   smartLink:  false,
   privateNetwork:  false,
   connectionTemplateUri: nil,
-  type:  'ethernet-networkV3'
+  type:  'ethernet-networkV300'
 }
-et02 = OneviewSDK::EthernetNetwork.new(@client, li_et02_options)
+et02 = OneviewSDK::API300::C7000::EthernetNetwork.new(@client, li_et02_options)
 et02.create!
 
 puts "\nUpdating internal networks"
@@ -135,7 +135,7 @@ puts "\nPort monitor current:"
 puts "\n#{item['portMonitor']}"
 puts "\nUpdate Port Monitor"
 # Get port and downlink for port monitor
-interconnect = OneviewSDK::Interconnect.find_by(@client, uri: item['interconnects'].first).first
+interconnect = OneviewSDK::API300::C7000::Interconnect.find_by(@client, uri: item['interconnects'].first).first
 downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
 options = {
   'analyzerPort' => {
