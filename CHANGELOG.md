@@ -48,6 +48,9 @@
 - SAS Logical JBODs
 - Unmanaged devices
 
+2. Bug fixes:
+- Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
+
 # v3.0.0
 ### Notes
  This is the Third major version of the Ruby SDK for HPE OneView. It features a split in the API support, allowing for C7000 and Synergy hardware variants to be used, while maintaining compatibility to older versions. There are some code improvements applied throughout the release, as well as additional endpoints support.
