@@ -58,30 +58,102 @@ end
 
 desc 'Run System tests'
 RSpec::Core::RakeTask.new('spec:system') do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
+  spec.pattern = spec_pattern
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << ' --tag system'
+end
+
+desc 'Run System tests for specified model & API. Defaults to model C7000 and API 300.'
+task 'spec:system:api_version_model', [:api, :model] do |_t, spec|
+  args = {}
+  args['model'] = spec['model'] || 'c7000'
+  args['api'] = spec['api'] || 300
+  spec_pattern = "spec/system/**/api#{args['api']}/#{args['model']}/*_spec.rb"
+  spec_pattern = 'spec/system/**/api200/*_spec.rb' if args['api'] == '200'
+  Rake::Task['spec:system'].invoke
+end
+
+desc 'Run System tests for specified API. Defaults to API 300.'
+task 'spec:system:api_version', [:api] do |_t, spec|
+  args = spec['api'] || 300
+  spec_pattern = "spec/system/**/api#{args}/**/*_spec.rb"
+  spec_pattern = 'spec/system/**/api200/*_spec.rb' if args == '200'
+  Rake::Task['spec:system'].invoke
 end
 
 desc 'Run System tests Light Profile'
 RSpec::Core::RakeTask.new('spec:system:light') do |spec|
-  spec.pattern = 'spec/system/light_profile/*_spec.rb'
+  spec.pattern = 'spec/system/light_profile/**/*_spec.rb'
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << ' --tag system'
+end
+
+desc 'Run System tests Light Profile for specified model & API. Defaults to model C7000 and API 300.'
+task 'spec:system:light:api_version_model', [:api, :model] do |_t, spec|
+  args = {}
+  args['model'] = spec['model'] || 'c7000'
+  args['api'] = spec['api'] || 300
+  spec_pattern = "spec/system/light_profile/api#{args['api']}/#{args['model']}/*_spec.rb"
+  spec_pattern = 'spec/system/light_profile/api200/*_spec.rb' if args['api'] == '200'
+  Rake::Task['spec:system'].invoke
+end
+
+desc 'Run System tests Light Profile for specified API. Defaults to API 300.'
+task 'spec:system:light:api_version', [:api] do |_t, spec|
+  args = spec['api'] || 300
+  spec_pattern = "spec/system/light_profile/api#{args}/**/*_spec.rb"
+  spec_pattern = 'spec/system/light_profile/api200/*_spec.rb' if args == '200'
+  Rake::Task['spec:system'].invoke
 end
 
 desc 'Run System tests Medium Profile'
 RSpec::Core::RakeTask.new('spec:system:medium') do |spec|
-  spec.pattern = 'spec/system/medium_profile/*_spec.rb'
+  spec.pattern = 'spec/system/medium_profile/**/*_spec.rb'
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << ' --tag system'
 end
 
+desc 'Run System tests Medium Profile for specified model & API. Defaults to model C7000 and API 300.'
+task 'spec:system:medium:api_version_model', [:api, :model] do |_t, spec|
+  args = {}
+  args['model'] = spec['model'] || 'c7000'
+  args['api'] = spec['api'] || 300
+  spec_pattern = "spec/system/medium_profile/api#{args['api']}/#{args['model']}/*_spec.rb"
+  spec_pattern = 'spec/system/medium_profile/api200/*_spec.rb' if args['api'] == '200'
+  Rake::Task['spec:system'].invoke
+end
+
+desc 'Run System tests Medium Profile for specified API. Defaults to API 300.'
+task 'spec:system:medium:api_version', [:api] do |_t, spec|
+  args = spec['api'] || 300
+  spec_pattern = "spec/system/medium_profile/api#{args}/**/*_spec.rb"
+  spec_pattern = 'spec/system/medium_profile/api200/*_spec.rb' if args == '200'
+  Rake::Task['spec:system'].invoke
+end
+
 desc 'Run System tests Heavy Profile'
 RSpec::Core::RakeTask.new('spec:system:heavy') do |spec|
-  spec.pattern = 'spec/system/heavy_profile/*_spec.rb'
+  spec.pattern = 'spec/system/heavy_profile/**/*_spec.rb'
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << ' --tag system'
+end
+
+desc 'Run System tests Heavy Profile for specified model & API. Defaults to model C7000 and API 300.'
+task 'spec:system:heavy:api_version_model', [:api, :model] do |_t, spec|
+  args = {}
+  args['model'] = spec['model'] || 'c7000'
+  args['api'] = spec['api'] || 300
+  spec_pattern = "spec/system/heavy_profile/api#{args['api']}/#{args['model']}/*_spec.rb"
+  spec_pattern = 'spec/system/heavy_profile/api200/*_spec.rb' if args['api'] == '200'
+  Rake::Task['spec:system'].invoke
+end
+
+desc 'Run System tests Heavy Profile for specified API. Defaults to API 300.'
+task 'spec:system:heavy:api_version', [:api] do |_t, spec|
+  args = spec['api'] || 300
+  spec_pattern = "spec/system/heavy_profile/api#{args}/**/*_spec.rb"
+  spec_pattern = 'spec/system/heavy_profile/api200/*_spec.rb' if args == '200'
+  Rake::Task['spec:system'].invoke
 end
 
 RuboCop::RakeTask.new do |task|

@@ -2,8 +2,9 @@
 # Light Profie
 
 require 'spec_helper'
+require_relative 'resource_names'
 
-RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
+RSpec.describe 'Spin up fluid resource pool API200', system: true, sequence: 1 do
   include_context 'system context'
 
   it 'Ethernet Networks' do
@@ -22,20 +23,18 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
   end
 
   it 'Bulk Ethernet Network' do
-    options = {
-      vlanIdRange: '10-14',
+    bulk_options = {
+      vlanIdRange: '2-6',
       purpose: 'General',
       namePrefix: ResourceNames.bulk_ethernet_network[0],
       smartLink: false,
       privateNetwork: false,
       bandwidth: {
         maximumBandwidth: 10_000,
-        typicalBandwidth: 2000
-      },
-      type: 'bulk-ethernet-network'
+        typicalBandwidth: 2_000
+      }
     }
-    bulk_ethernet = OneviewSDK::BulkEthernetNetwork.new($client, options)
-    bulk_ethernet.create
+    OneviewSDK::EthernetNetwork.bulk_create($client, bulk_options)
   end
 
   it 'FC Network' do
@@ -67,8 +66,8 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
       enclosureType: 'C7000'
     }
     lig1 = OneviewSDK::LogicalInterconnectGroup.new($client, options)
-    lig1.add_interconnect(1, 'HP VC FlexFabric 10Gb/24-Port Module')
-    lig1.add_interconnect(2, 'HP VC FlexFabric 10Gb/24-Port Module')
+    lig1.add_interconnect(1, ResourceNames.interconnect_type[0])
+    lig1.add_interconnect(3, ResourceNames.interconnect_type[1])
     lig1.create
     expect(lig1['uri']).not_to be_empty
   end
@@ -99,22 +98,22 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
     eg1.retrieve!
     options = {
       enclosureGroupUri: eg1['uri'],
-      hostname: '172.18.1.11',
-      username: 'dcs',
-      password: 'dcs',
+      hostname: $secrets['enclosure1_ip'],
+      username: $secrets['enclosure1_user'],
+      password: $secrets['enclosure1_password'],
       licensingIntent: 'OneView'
     }
     enc = OneviewSDK::Enclosure.new($client, options)
-    enc.create
+    enc.add
     expect(enc['uri']).not_to be_empty
   end
 
   it 'Storage System' do
     options = {
       credentials: {
-        ip_hostname: '172.18.11.11',
-        username: 'dcs',
-        password: 'dcs'
+        ip_hostname: $secrets['storage_system1_ip'],
+        username: $secrets['storage_system1_user'],
+        password: $secrets['storage_system1_password']
       },
       managedDomain: 'TestDomain'
     }
@@ -129,7 +128,7 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
     expect(storage_system['uri']).not_to be_empty
     options = {
       storageSystemUri: storage_system['uri'],
-      poolName: 'FST_CPG2'
+      poolName: ResourceNames.storage_pool[0]
     }
     storage_pool = OneviewSDK::StoragePool.new($client, options)
     storage_pool.add
@@ -137,23 +136,23 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
   end
 
   it 'Volume' do
-    options = {
-      name: ResourceNames.volume[0],
-      description: 'Test volume with common creation: Storage System + Storage Pool'
-    }
-    volume = OneviewSDK::Volume.new($client, options)
     storage_system = OneviewSDK::StorageSystem.new($client, name: ResourceNames.storage_system[0])
     storage_system.retrieve!
     expect(storage_system['uri']).not_to be_empty
     pools = OneviewSDK::StoragePool.find_by($client, storageSystemUri: storage_system[:uri])
     storage_pool = pools.first
-    provisioning_parameters = {
-      provisionType: 'Full',
-      shareable: true,
-      storagePoolUri: storage_pool['uri'],
-      requestedCapacity: 512 * 1024 * 1024
+    options = {
+      name: ResourceNames.volume[0],
+      description: 'Test volume with common creation: Storage System + Storage Pool',
+      provisioningParameters: {
+        provisionType: 'Full',
+        shareable: true,
+        storagePoolUri: storage_pool['uri'],
+        requestedCapacity: 512 * 1024 * 1024
+      }
     }
-    volume.create(provisioning_parameters)
+    volume = OneviewSDK::Volume.new($client, options)
+    volume.create
     expect(volume['uri']).not_to be_empty
   end
 
@@ -184,6 +183,7 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
     li.retrieve!
 
     interconnect = OneviewSDK::Interconnect.new($client, name: ResourceNames.interconnect[0])
+    interconnect.retrieve!
 
     options = {
       connectionMode: 'Auto',
@@ -191,13 +191,14 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
       logicalInterconnectUri: li['uri'],
       manualLoginRedistributionState: 'NotSupported',
       networkType: 'Ethernet',
-      name: ResourceNames.uplink_set[0]
+      name: ResourceNames.uplink_set[0],
+      networkUris: [ethernet['uri']]
     }
     uplink = OneviewSDK::UplinkSet.new($client, options)
     uplink.add_port_config(
-      interconnect['uri'],
+      "#{interconnect['uri']}:Q1.1",
       'Auto',
-      [{ value: 1, type: 'Bay' }, { value: enclosure['uri'], type: 'Enclosure' }, { value: 'X3', type: 'Port' }]
+      [{ value: 1, type: 'Bay' }, { value: enclosure['uri'], type: 'Enclosure' }, { value: 'Q1.1', type: 'Port' }]
     )
     uplink.add_network(ethernet)
     uplink.create
@@ -213,7 +214,8 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
     li = OneviewSDK::LogicalInterconnect.new($client, name: ResourceNames.logical_interconnect[0])
     li.retrieve!
 
-    interconnect = OneviewSDK::Interconnect.new($client, name: ResourceNames.interconnect[0])
+    interconnect = OneviewSDK::Interconnect.new($client, name: ResourceNames.interconnect[1])
+    interconnect.retrieve!
 
     options = {
       connectionMode: 'Auto',
@@ -221,13 +223,14 @@ RSpec.describe 'Spin up fluid resource pool', system: true, sequence: 1 do
       logicalInterconnectUri: li['uri'],
       manualLoginRedistributionState: 'Supported',
       networkType: 'FibreChannel',
-      name: ResourceNames.uplink_set[1]
+      name: ResourceNames.uplink_set[1],
+      fcNetworkUris: [fc['uri']]
     }
     uplink = OneviewSDK::UplinkSet.new($client, options)
     uplink.add_port_config(
-      interconnect['uri'],
+      "#{interconnect['uri']}:1",
       'Auto',
-      [{ value: 1, type: 'Bay' }, { value: enclosure['uri'], type: 'Enclosure' }, { value: 'X4', type: 'Port' }]
+      [{ value: 3, type: 'Bay' }, { value: enclosure['uri'], type: 'Enclosure' }, { value: '1', type: 'Port' }]
     )
     uplink.add_fcnetwork(fc)
     uplink.create

@@ -16,6 +16,7 @@ class ResourceNames
     attr_accessor :storage_pool
     attr_accessor :volume
     attr_accessor :volume_template
+    attr_accessor :interconnect_type
   end
 
   self.ethernet_network = ['EthernetNetwork_01']
@@ -25,13 +26,12 @@ class ResourceNames
   self.logical_interconnect_group = ['LogicalInterconnectGroup_01']
   self.uplink_set = %w(EthernetUplinkSet_01 FCUplinkSet_01)
   self.enclosure_group = %w(EnclosureGroup_01 EnclosureGroup_02)
-  self.enclosure = ['Encl1']
-  self.logical_enclosure = ['Encl1']
-  self.logical_interconnect = ['Encl1-LogicalInterconnectGroup_01']
-  self.interconnect = ['Encl1, interconnect 1', 'Encl1, interconnect 2']
-  self.storage_system = ['ThreePAR7200-2027']
-  self.storage_pool = ['CPG-SSD-AO']
+  self.enclosure = %w(0000A66101 0000A66102 0000A66103)
+  self.logical_enclosure = ['LogicalEnclosure_1']
+  self.logical_interconnect = ['LogicalEnclosure_1-LogicalInterconnectGroup_01-1']
+  self.interconnect = ['0000A66101, interconnect 2', '0000A66101, interconnect 5']
+  self.storage_system = ['ThreePAR7200-6710']
+  self.storage_pool = ['FST_CPG2']
   self.volume = ['Volume_01']
-  self.volume_template = ['VolumeTemplate_01']
-
+  self.interconnect_type = ['Virtual Connect SE 16Gb FC Module for Synergy']
 end
