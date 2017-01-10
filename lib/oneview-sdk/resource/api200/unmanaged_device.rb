@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-    # Storage system resource implementation
+    # Unmanaged Device resource implementation
     class UnmanagedDevice < Resource
       BASE_URI = '/rest/unmanaged-devices'.freeze
 

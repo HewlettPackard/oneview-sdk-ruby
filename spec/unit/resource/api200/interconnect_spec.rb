@@ -127,4 +127,28 @@ RSpec.describe OneviewSDK::Interconnect do
       expect(item.reset_port_protection).to be
     end
   end
+
+  describe '#update_port' do
+    it 'updates an interconnect port' do
+      options = {
+        'uri' => '/rest/fake',
+        'ports' => [
+          {
+            'name' => 'port1',
+            'enabled' => true
+          }
+        ]
+      }
+
+      options_2 = {
+        'name' => 'port1',
+        'enabled' => false
+      }
+
+      item = OneviewSDK::Interconnect.new(@client, options)
+      expect(@client).to receive(:rest_put).with('/rest/fake/ports', 'body' => options_2).and_return(true)
+      expect(@client).to receive(:response_handler).with(true).and_return(FakeResponse.new)
+      expect(item.update_port('port1', enabled: false)).to be
+    end
+  end
 end

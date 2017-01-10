@@ -1,8 +1,10 @@
 # v3.1.0
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
+   - Interconnect
    - Logical Interconnect
    - Uplink Set
    - Volume attachment
+   - Unmanaged devices
 
 ### Features supported
 - Connection template
@@ -14,6 +16,7 @@
 - FCoE network
 - Firmware bundles
 - Firmware drivers
+- Interconnect
 - Logical downlink
 - Logical enclosure
 - Logical interconnect
@@ -45,6 +48,7 @@
 - SAS Logical Interconnect Group
 - SAS Logical JBOD Attachments
 - SAS Logical JBODs
+- Unmanaged devices
 
 2. Design changes:
   - Architecture for future Image Streamer support.
@@ -134,7 +138,6 @@
    - Power devices
    - Racks
    - Server hardware types
-   - Unmanaged devices
  3. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
 
 ### Breaking changes

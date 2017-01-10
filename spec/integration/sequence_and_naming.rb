@@ -219,6 +219,7 @@ ENCLOSURE_1 = '0000A66101'.freeze
 # Interconnect
 INTERCONNECT_1_NAME = "#{ENCLOSURE_1}, interconnect 3".freeze
 INTERCONNECT_2_NAME = "#{ENCL_NAME}, interconnect 1".freeze
+INTERCONNECT_3_NAME = "#{ENCLOSURE_1}, interconnect 5".freeze
 
 # SAS Interconnect
 SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze

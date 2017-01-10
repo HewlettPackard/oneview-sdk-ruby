@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-klass = OneviewSDK::Interconnect
+klass = OneviewSDK::API300::Synergy::Interconnect
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
-  let(:interconnect) { klass.find_by($client, name: 'Encl1, interconnect 1').first }
+  let(:interconnect) { klass.find_by($client_300_synergy, name: INTERCONNECT_3_NAME).first }
 
   describe '#update' do
     it 'raises MethodUnavailable' do
@@ -27,7 +27,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       ports_2 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
       port_updated = ports_2.first
       expect(port_updated['enabled']).to be false
-      uplink = OneviewSDK::EthernetNetwork.find_by($client, name: ETH_NET_NAME).first
+      uplink = OneviewSDK::API300::Synergy::FCNetwork.find_by($client_300_synergy, name: FC_NET_NAME).first
       expect { interconnect.update_port(port['name'], enabled: true, associatedUplinkSetUri: uplink['uri']) }.not_to raise_error
       interconnect.retrieve!
       ports_3 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
@@ -42,7 +42,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
   end
 
   describe '#patch' do
-    xit 'update a given interconnect across a patch (Skipping this test due to the lack of type of interconnection that supports this operation)' do
+    it 'update a given interconnect across a patch' do
       expect { interconnect.patch('replace', '/uidState', 'Off') }.not_to raise_error
       interconnect.retrieve!
       expect(interconnect['uidState']).to eq('Off')

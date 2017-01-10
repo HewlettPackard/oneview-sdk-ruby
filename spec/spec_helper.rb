@@ -58,8 +58,6 @@ require_relative '../lib/oneview-sdk/image_streamer'
 require_relative 'shared_context'
 require_relative 'support/fake_response'
 require_relative 'integration/sequence_and_naming'
-require_relative 'system/light_profile/resource_names'
-
 
 RSpec.configure do |config|
   # Sort integration and system tests
