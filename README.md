@@ -146,11 +146,12 @@ We understand that this can be confusing, so to avoid any confusion or unexpecte
 The OneView Ruby SDK also supports the API endpoints for HPE Synergy Image Streamer. To use the SDK, you must set the variant:
 
 ```ruby
-# Setting a new default variant for the ImageStreamer module:
-OneviewSDK::API300.variant = 'ImageStreamer'
-OneviewSDK::API300.variant              # 'ImageStreamer'
-OneviewSDK::API300.variant_updated?     # true
-OneviewSDK::API300::ImageStreamer::DeploymentPlans     # OneviewSDK::API300::ImageStreamer::DeploymentPlans
+# Show defaults:
+OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS      # 300
+OneviewSDK::ImageStreamer::DEFAULT_API_VERSION         # 300
+OneviewSDK::ImageStreamer.api_version                  # 200
+OneviewSDK::ImageStreamer.api_version_updated?         # false
+
 ```
 
 ## Resources

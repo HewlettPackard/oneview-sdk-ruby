@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
       expect(client.token).to eq('token123')
     end
 
-    it 'requires a token or user-password pair' do
+    it 'requires a token' do
       options = { url: 'https://oneview.example.com', user: 'Administrator' }
       expect { OneviewSDK::ImageStreamer::Client.new(options) }.to raise_error(OneviewSDK::InvalidClient, /Must set token option/)
     end
