@@ -11,5 +11,33 @@
 
 require_relative '../_client' # Gives access to @client
 
+puts "\nAdding first device ..."
+device1 = OneviewSDK::UnmanagedDevice.new(@client, name: 'Unmanaged Device 1', model: 'Procurve 4200VL')
+device1.add
+puts 'Device added:'
+puts "- \"#{device1['name']}\" with model \"#{device1['model']}\" and uri \"#{device1['uri']}\""
+
+puts "\nAdding second device ..."
+device2 = OneviewSDK::UnmanagedDevice.new(@client, name: 'Unmanaged Device 2', model: 'Unknown')
+device2.add
+puts 'Device added:'
+puts "- \"#{device2['name']}\" with model \"#{device2['model']}\" and uri \"#{device2['uri']}\""
+
+puts "\nListing all devices:"
 unmanaged_devices = OneviewSDK::UnmanagedDevice.get_devices(@client)
-unmanaged_devices.each { |device| puts device['name'] }
+unmanaged_devices.each do |device|
+  puts "- \"#{device['name']}\" with model \"#{device['model']}\" and uri \"#{device['uri']}\""
+end
+
+[device1, device2].each do |device|
+  puts "\nUpdating device '#{device['name']}' ..."
+  device.update(name: device['name'] + ' (Updated)', model: device['model'] + ' (Updated)')
+  device.refresh
+  puts 'Device updated:'
+  puts "- \"#{device['name']}\" with model \"#{device['model']}\" and uri \"#{device['uri']}\""
+end
+
+[device1, device2].each do |device|
+  puts "\nRemoving device '#{device['name']}' ..."
+  puts 'Device removed with success!' if device.remove
+end

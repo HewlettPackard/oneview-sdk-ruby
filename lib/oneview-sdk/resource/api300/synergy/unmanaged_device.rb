@@ -14,6 +14,7 @@ require_relative '../../api200/unmanaged_device'
 module OneviewSDK
   module API300
     module Synergy
+      # Unmanaged Device resource implementation for API300 Synergy
       class UnmanagedDevice < OneviewSDK::API200::UnmanagedDevice
       end
     end

@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client'
+require_relative '../_client' # Gives access to @client
 
 # List volume attachments
 puts "\nVolume attachments available: "
@@ -24,7 +24,7 @@ extra_managed_volumes.each do |unmanaged_volume|
   puts "- #{unmanaged_volume['ownerUri']}"
 end
 
-# List extra unmanaged storage volumes
+# List volume attachment paths
 volume_attachment = OneviewSDK::VolumeAttachment.find_by(@client, {}).first
 if volume_attachment
   volume_paths = volume_attachment.get_paths

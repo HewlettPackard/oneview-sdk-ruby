@@ -10,21 +10,29 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       'enclosureType' => 'C7000',
       'type' => 'logical-interconnect-groupV300'
     }
-    @item = klass.new($client_300, lig_default_options)
+    @item = OneviewSDK::API300::C7000::LogicalInterconnectGroup.new($client_300, lig_default_options)
 
     lig_default_options_2 = {
       'name' => LOG_INT_GROUP2_NAME,
       'enclosureType' => 'C7000',
       'type' => 'logical-interconnect-groupV300'
     }
-    @item_2 = klass.new($client_300, lig_default_options_2)
+    @item_2 = OneviewSDK::API300::C7000::LogicalInterconnectGroup.new($client_300, lig_default_options_2)
 
     lig_default_options_3 = {
       'name' => LOG_INT_GROUP3_NAME,
       'enclosureType' => 'C7000',
       'type' => 'logical-interconnect-groupV300'
     }
-    @item_3 = klass.new($client_300, lig_default_options_3)
+
+    @item_3 = OneviewSDK::API300::C7000::LogicalInterconnectGroup.new($client_300, lig_default_options_3)
+
+    lig_default_options_4 = {
+      'name' => LOG_INT_GROUP4_NAME,
+      'enclosureType' => 'C7000',
+      'type' => 'logical-interconnect-groupV300'
+    }
+    @item_4 = OneviewSDK::API300::C7000::LogicalInterconnectGroup.new($client_300, lig_default_options_4)
 
     eth_uplink_options = {
       name: LIG_UPLINK_SET_NAME,
@@ -45,47 +53,62 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   end
 
   let(:interconnect_type) { 'HP VC FlexFabric 10Gb/24-Port Module' }
+  let(:interconnect_type2) { 'HP VC FlexFabric-20/40 F8 Module' }
 
   describe '#create' do
     before(:all) do
       @item.delete if @item.retrieve!
       @item_2.delete if @item_2.retrieve!
       @item_3.delete if @item_3.retrieve!
+      @item_4.delete if @item_4.retrieve!
     end
 
     it 'LIG with unrecognized interconnect' do
       expect { @item.add_interconnect(1, 'invalid_type') }.to raise_error(/Interconnect type invalid_type/)
     end
 
-    it 'LIG with interconnect and uplink sets' do
-      @item.add_interconnect(1, interconnect_type)
+    it 'LIG with interconnect of type HP VC FlexFabric-20/40 F8 Module' do
+      @item.add_interconnect(1, interconnect_type2)
 
       @eth_lig_uplink_set.add_network(@ethernet_network)
       @eth_lig_uplink_set.add_uplink(1, 'X1')
       @eth_lig_uplink_set.add_uplink(1, 'X2')
       @item.add_uplink_set(@eth_lig_uplink_set)
 
-      @fc_lig_uplink_set.add_network(@fc_network)
-      @fc_lig_uplink_set.add_uplink(1, 'X3')
-      @fc_lig_uplink_set.add_uplink(1, 'X4')
-      @item.add_uplink_set(@fc_lig_uplink_set)
-
       expect { @item.create }.not_to raise_error
       expect(@item['uri']).to be
       expect(@item['uplinkSets']).to_not be_empty
     end
 
-    it 'LIG with interconnects' do
+    it 'LIG with interconnect and uplink sets' do
       @item_2.add_interconnect(1, interconnect_type)
-      @item_2.add_interconnect(2, interconnect_type)
+
+      @eth_lig_uplink_set.add_network(@ethernet_network)
+      @eth_lig_uplink_set.add_uplink(1, 'X1')
+      @eth_lig_uplink_set.add_uplink(1, 'X2')
+      @item_2.add_uplink_set(@eth_lig_uplink_set)
+
+      @fc_lig_uplink_set.add_network(@fc_network)
+      @fc_lig_uplink_set.add_uplink(1, 'X3')
+      @fc_lig_uplink_set.add_uplink(1, 'X4')
+      @item_2.add_uplink_set(@fc_lig_uplink_set)
+
       expect { @item_2.create }.not_to raise_error
       expect(@item_2['uri']).to be
-      expect(@item_2['uplinkSets']).to be_empty
+      expect(@item_2['uplinkSets']).to_not be_empty
+    end
+
+    it 'LIG with interconnects' do
+      @item_3.add_interconnect(1, interconnect_type)
+      @item_3.add_interconnect(2, interconnect_type)
+      expect { @item_3.create }.not_to raise_error
+      expect(@item_3['uri']).to be
+      expect(@item_3['uplinkSets']).to be_empty
     end
 
     it 'Empty LIG' do
-      expect { @item_3.create }.not_to raise_error
-      expect(@item_3['uri']).to be
+      expect { @item_4.create }.not_to raise_error
+      expect(@item_4['uri']).to be
     end
   end
 
@@ -96,7 +119,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
         'enclosureType' => 'C7000',
         'type' => 'logical-interconnect-groupV300'
       }
-      @item = klass.new($client_300, lig_default_options)
+      @item = OneviewSDK::API300::C7000::LogicalInterconnectGroup.new($client_300, lig_default_options)
       @item.retrieve!
       expect(@item['uri']).to be
     end
