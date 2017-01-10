@@ -52,7 +52,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
     it 'can create EnclosureGroup with empty LIG' do
       item_3 = klass.new($client_300, enclosure_group_options_3)
-      lig = extra_klass_1.new($client_300, 'name' => LOG_INT_GROUP3_NAME)
+      lig = extra_klass_1.new($client_300, 'name' => LOG_INT_GROUP4_NAME)
       lig.retrieve!
       item_3.add_logical_interconnect_group(lig)
       item_3.create

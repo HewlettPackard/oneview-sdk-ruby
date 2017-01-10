@@ -9,225 +9,234 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client'
-require 'json'
+require_relative '../_client' # Gives access to @client
 
-def pretty(arg)
-  return puts arg if arg.instance_of?(String)
-  puts JSON.pretty_generate(arg)
+# Example: Explores functionalities of Logical Interconnects
+
+# Finding a logical interconnect
+items = OneviewSDK::LogicalInterconnect.find_by(@client, {})
+puts "\nListing all interconnects."
+items.each do |li|
+  puts "\nLogical interconnect #{li['name']} was found."
 end
 
-# Explores functionalities of Logical Interconnects
+item = OneviewSDK::LogicalInterconnect.find_by(@client, {}).first
+# # Listing internal networks
+puts "\nListing internal networks of the logical  interconnect with name: #{item['name']}"
+networks = item.list_vlan_networks
 
-# Retrieves test enclosure to put the interconnects
-# enclosure = OneviewSDK::Enclosure.new(@client, name: 'Encl1')
-# enclosure.retrieve!
-# pretty "Sucessfully retrieved the enclosure #{enclosure[:name]}"
+networks.each do |nw|
+  puts "\nNetwork with name #{nw['name']}, vlan #{nw['vlanId']} and uri #{nw['uri']} was found."
+end
 
-log_int = OneviewSDK::LogicalInterconnect.new(@client, name: 'Encl2-EXAMPLE_LIG')
-log_int.retrieve!
-pretty "Logical interconnect #{log_int['name']} was retrieved sucessfully"
+# Update of Internal networks
+puts 'Update of Internal networks'
 
-# pretty '#### Update of Internal networks ####'
+li_et01_options = {
+  vlanId:  '2001',
+  purpose:  'General',
+  name:  'li_et01',
+  smartLink:  false,
+  privateNetwork:  false,
+  connectionTemplateUri: nil,
+  type:  'ethernet-networkV3'
+}
+et01 = OneviewSDK::EthernetNetwork.new(@client, li_et01_options)
+et01.create!
 
-# internal_networks = log_int.list_vlan_networks
-# pretty 'Listing all the internal networks'
-# internal_networks.each do |net|
-#   pretty "Network #{net[:name]} with uri #{net[:uri]}"
-# end
-#
-# li_et01_options = {
-#   vlanId:  '2001',
-#   purpose:  'General',
-#   name:  'li_et01',
-#   smartLink:  false,
-#   privateNetwork:  false,
-#   connectionTemplateUri: nil,
-#   type:  'ethernet-networkV3'
-# }
-# et01 = OneviewSDK::EthernetNetwork.new(@client, li_et01_options)
-# et01.create!
-#
-# li_et02_options = {
-#   vlanId:  '2002',
-#   purpose:  'General',
-#   name:  'li_et02',
-#   smartLink:  false,
-#   privateNetwork:  false,
-#   connectionTemplateUri: nil,
-#   type:  'ethernet-networkV3'
-# }
-# et02 = OneviewSDK::EthernetNetwork.new(@client, li_et02_options)
-# et02.create!
-#
-# pretty "\nUpdating internal networks"
-# log_int.update_internal_networks(et01, et02)
-#
-# internal_networks2 = log_int.list_vlan_networks
-# pretty 'Listing all the internal networks again'
-# internal_networks2.each do |net|
-#   pretty "Network #{net[:name]} with uri #{net[:uri]}"
-# end
-#
-# pretty "\nReturning to initial state"
-# ### Instance compliance ###
-# pretty "\n#### Compliance ####"
-# pretty "Putting #{log_int['name']} in compliance with the LIG"
-# log_int.compliance
-# pretty "Compliance update successful\n"
-#
-# internal_networks3 = log_int.list_vlan_networks
-# pretty 'Listing all the internal networks one more time'
-# internal_networks3.each do |net|
-#   pretty "Network #{net[:name]} with uri #{net[:uri]}"
-# end
-#
-# et01.delete
-# et02.delete
-#
-# pretty "\n\n#### Updating Ethernet Settings ####"
-# pretty 'Current:'
-# pretty "igmpIdleTimeoutInterval: #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
-# pretty "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}"
-#
-#
-# # Backing up
-# eth_set_backup = {}
-# eth_set_backup['igmpIdleTimeoutInterval'] = log_int['ethernetSettings']['igmpIdleTimeoutInterval']
-# eth_set_backup['macRefreshInterval'] = log_int['ethernetSettings']['macRefreshInterval']
-#
-# log_int['ethernetSettings']['igmpIdleTimeoutInterval'] = 222
-# log_int['ethernetSettings']['macRefreshInterval'] = 15
-#
-# pretty "\nChanging:"
-# pretty "igmpIdleTimeoutInterval to #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
-# pretty "macRefreshInterval to #{log_int['ethernetSettings']['macRefreshInterval']}"
-#
-# pretty "\nUpdating internet settings"
-# log_int.update_ethernet_settings
-# log_int.retrieve! # Retrieving to guarantee the remote is updated
-#
-# pretty "\nNew Ethernet Settings:"
-# pretty "igmpIdleTimeoutInterval: #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
-# pretty "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}"
-#
-#
-# pretty "\nRolling back..."
-# eth_set_backup.each do |k, v|
-#   log_int['ethernetSettings'][k] = v
-# end
-# log_int.update_ethernet_settings
-# log_int.retrieve! # Retrieving to guarantee the remote is updated
-# pretty "igmpIdleTimeoutInterval: #{log_int['ethernetSettings']['igmpIdleTimeoutInterval']}"
-# pretty "macRefreshInterval: #{log_int['ethernetSettings']['macRefreshInterval']}"
-#
-# pretty '### Port Monitor ###'
-# pretty log_int['portMonitor']
-# log_int.update_port_monitor
-#
-# enabled_bkp = log_int['portMonitor']['enablePortMonitor']
-# log_int['portMonitor']['enablePortMonitor'] = true
-# log_int.update_port_monitor
-# log_int.retrieve!
-# pretty log_int['portMonitor']
-#
-# log_int['portMonitor']['enablePortMonitor'] = enabled_bkp
-# log_int.update_port_monitor
-# log_int.retrieve!
-# pretty log_int['portMonitor']
+li_et02_options = {
+  vlanId:  '2002',
+  purpose:  'General',
+  name:  'li_et02',
+  smartLink:  false,
+  privateNetwork:  false,
+  connectionTemplateUri: nil,
+  type:  'ethernet-networkV3'
+}
+et02 = OneviewSDK::EthernetNetwork.new(@client, li_et02_options)
+et02.create!
 
+puts "\nUpdating internal networks"
+item.update_internal_networks(et01, et02)
 
-# pretty '### QoS Configuration ###'
-# pretty log_int['qosConfiguration']
-# log_int.update_qos_configuration
-#
-# config_type_bkp = log_int['qosConfiguration']['activeQosConfig']['configType']
-# description_bkp = log_int['qosConfiguration']['activeQosConfig']['description']
-# log_int['qosConfiguration']['activeQosConfig']['description'] = 'Edited QoS Configuration'
-# log_int.update_qos_configuration
-# log_int.retrieve!
-# pretty log_int['qosConfiguration']
-#
-# log_int['qosConfiguration']['activeQosConfig']['configType'] = config_type_bkp
-# log_int['qosConfiguration']['activeQosConfig']['description'] = description_bkp
-# log_int.update_qos_configuration
-# log_int.retrieve!
-# pretty log_int['qosConfiguration']
+# Listing internal networks after update
+puts "\nListing internal networks of the logical  interconnect with name: #{item['name']} after update"
+networks2 = item.list_vlan_networks
 
-# pretty '### Telemetry Configuration ###'
-# pretty log_int['telemetryConfiguration']
-#
-# sample_count_bkp = log_int['telemetryConfiguration']['sampleCount']
-# sample_interval_bkp = log_int['telemetryConfiguration']['sampleInterval']
-# log_int['telemetryConfiguration']['sampleCount'] = 20
-# log_int['telemetryConfiguration']['sampleInterval'] = 200
-# log_int.update_telemetry_configuration
-# log_int.retrieve!
-# pretty log_int['telemetryConfiguration']
-#
-# log_int['telemetryConfiguration']['sampleCount'] = sample_count_bkp
-# log_int['telemetryConfiguration']['sampleInterval'] = sample_interval_bkp
-# log_int.update_telemetry_configuration
-# log_int.retrieve!
-# pretty log_int['telemetryConfiguration']
-#
-# pretty '### SNMP Configuration ###'
-# pretty log_int['snmpConfiguration']
-#
-# # Adding configuration
-# log_int['snmpConfiguration']['snmpAccess'].push('172.18.6.15/24')
-# enet_trap = %w(PortStatus)
-# fc_trap = %w(PortStatus)
-# vcm_trap = %w(Legacy)
-# trap_sev = %w(Normal Warning Critical)
-# trap_options = log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev)
-# log_int.add_snmp_trap_destination('172.18.6.16', 'SNMPv2', 'public', trap_options)
-#
-# # Updating snmpConfiguration
-# log_int.update_snmp_configuration
-# pretty "\nUpdate Complete!\n"
-# pretty log_int['snmpConfiguration']
-#
-# # Removing all configuration
-# log_int['snmpConfiguration']['snmpAccess'] = []
-# log_int['snmpConfiguration']['trapDestinations'] = []
-# log_int.update_snmp_configuration
-# pretty "\nRemoving configuration..."
-# pretty log_int['snmpConfiguration']
+networks2.each do |nw|
+  puts "\nNetwork with name #{nw['name']}, vlan #{nw['vlanId']} and uri #{nw['uri']} was found."
+end
 
-pretty '### Firmware Update ###'
-firmware_opt = log_int.get_firmware
-pretty firmware_opt
+puts "\nReturning to initial state"
+# Instance compliance
+puts "\nCompliance"
+puts "Putting #{item['name']} in compliance with the LIG"
+item.compliance
+puts "Compliance applied successfully\n"
 
-firmware_name = 'Service Pack for ProLiant'
-firmware = OneviewSDK::FirmwareDriver.new(@client, name: firmware_name)
-firmware.retrieve!
+# Listing internal networks after compliance
+puts "\nListing internal networks of the logical  interconnect with name: #{item['name']} after compliance"
+networks3 = item.list_vlan_networks
 
-pretty '# Updating firmware options #'
+networks3.each do |nw|
+  puts "\nNetwork with name #{nw['name']}, vlan #{nw['vlanId']} and uri #{nw['uri']} was found."
+end
 
-pretty "\nStaging..."
-firmware_opt['ethernetActivationDelay'] = 7
-firmware_opt['ethernetActivationType'] = 'OddEven'
-firmware_opt['fcActivationDelay'] = 7
-firmware_opt['fcActivationType'] = 'Serial'
-firmware_opt['force'] = true
-log_int.firmware_update('Stage', firmware, firmware_opt)
-pretty firmware_opt
+et01.delete
+et02.delete
 
-pretty "\nActivating..."
-firmware_opt['ethernetActivationDelay'] = 7
-firmware_opt['ethernetActivationType'] = 'OddEven'
-firmware_opt['fcActivationDelay'] = 7
-firmware_opt['fcActivationType'] = 'Serial'
-firmware_opt['force'] = true
-log_int.firmware_update('Activate', firmware, firmware_opt)
-pretty firmware_opt
-#
-# pretty "\nUpdating..."
-# firmware_opt['ethernetActivationDelay'] = 15
-# firmware_opt['ethernetActivationType'] = 'None'
-# firmware_opt['fcActivationDelay'] = 15
-# firmware_opt['fcActivationType'] = 'None'
-# firmware_opt['force'] = true
-# log_int.firmware_update('Update', firmware, firmware_opt)
-# pretty firmware_opt
+# Updating Ethernet Settings
+puts "\nUpdating Ethernet Settings"
+puts 'Current:'
+puts "igmpIdleTimeoutInterval: #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
+puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
+
+# Backing up
+eth_set_backup = {}
+eth_set_backup['igmpIdleTimeoutInterval'] = item['ethernetSettings']['igmpIdleTimeoutInterval']
+eth_set_backup['macRefreshInterval'] = item['ethernetSettings']['macRefreshInterval']
+
+item['ethernetSettings']['igmpIdleTimeoutInterval'] = 222
+item['ethernetSettings']['macRefreshInterval'] = 15
+
+puts "\nChanging:"
+puts "igmpIdleTimeoutInterval to #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
+puts "macRefreshInterval to #{item['ethernetSettings']['macRefreshInterval']}"
+
+puts "\nUpdating internet settings"
+item.update_ethernet_settings
+item.retrieve! # Retrieving to guarantee the remote is updated
+
+puts "\nNew Ethernet Settings:"
+puts "igmpIdleTimeoutInterval: #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
+puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
+
+# Rolling back
+puts "\nRolling back..."
+eth_set_backup.each do |k, v|
+  item['ethernetSettings'][k] = v
+end
+item.update_ethernet_settings
+item.retrieve! # Retrieving to guarantee the remote is updated
+puts "igmpIdleTimeoutInterval: #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
+puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
+
+# Gets a collection of uplink ports eligibles for assignment to an analyzer port
+puts "\nGets a collection of uplink ports eligibles for assignment to an analyzer port "
+item.retrieve!
+ports = item.get_unassigned_uplink_ports_for_port_monitor
+puts 'Ports eligibles'
+ports.each do |port|
+  puts "\nInterconnect #{port['interconnectName']}, port name #{port['portName']} and uri #{port['uri']}."
+end
+
+# Update Port Monitor
+puts "\nPort monitor current:"
+puts "\n#{item['portMonitor']}"
+puts "\nUpdate Port Monitor"
+# Get port and downlink for port monitor
+interconnect = OneviewSDK::Interconnect.find_by(@client, uri: item['interconnects'].first).first
+downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
+options = {
+  'analyzerPort' => {
+    'portUri' => ports.first['uri'],
+    'portMonitorConfigInfo' => 'AnalyzerPort'
+  },
+  'enablePortMonitor' => true,
+  'type' => 'port-monitor',
+  'monitoredPorts' => [
+    {
+      'portUri' => downlinks.first['uri'],
+      'portMonitorConfigInfo' => 'MonitoredBoth'
+    }
+  ]
+}
+
+item['portMonitor'] = options
+item.update_port_monitor
+item.retrieve!
+
+puts "\nPort monitor after update:"
+puts "\n#{item['portMonitor']}"
+
+puts "\nReturning to initial state"
+item.compliance
+puts "\nPort monitor after compliance:"
+puts "\n#{item['portMonitor']}"
+
+puts "\nQoS configuration current:"
+puts "\n #{item['qosConfiguration']}"
+
+description_bkp = item['qosConfiguration']['activeQosConfig']['description']
+item['qosConfiguration']['activeQosConfig']['description'] = 'Description'
+puts "\nUpdate QoS Configuration"
+item.update_qos_configuration
+item.retrieve!
+puts "\nQoS configuration after update:"
+puts "\n #{item['qosConfiguration']}"
+
+puts "\nReturning to initial state"
+item['qosConfiguration']['activeQosConfig']['description'] = description_bkp
+item.update_qos_configuration
+item.retrieve!
+puts "\nQoS configuration original:"
+puts "\n #{item['qosConfiguration']}"
+
+puts "\nTelemetry Configuration"
+puts "\nTelemetry configuration current:"
+puts "\n#{item['telemetryConfiguration']}"
+
+sample_count_bkp = item['telemetryConfiguration']['sampleCount']
+sample_interval_bkp = item['telemetryConfiguration']['sampleInterval']
+item['telemetryConfiguration']['sampleCount'] = 20
+item['telemetryConfiguration']['sampleInterval'] = 200
+puts "\nUpdating the telemetry configuration"
+item.update_telemetry_configuration
+item.retrieve!
+puts "\nTelemetry configuration after update:"
+puts "\n#{item['telemetryConfiguration']}"
+
+puts "\nReturning to initial state"
+item['telemetryConfiguration']['sampleCount'] = sample_count_bkp
+item['telemetryConfiguration']['sampleInterval'] = sample_interval_bkp
+item.update_telemetry_configuration
+item.retrieve!
+puts "\nTelemetry configuration original:"
+puts "\n#{item['telemetryConfiguration']}"
+
+puts "\nSNMP Configuration"
+puts "\nSNMP configuration current:"
+puts "\n#{item['snmpConfiguration']}"
+
+# Adding configuration
+item['snmpConfiguration']['snmpAccess'].push('172.18.6.15/24')
+enet_trap = %w(PortStatus)
+fc_trap = %w(PortStatus)
+vcm_trap = %w(Legacy)
+trap_sev = %w(Normal Warning Critical)
+trap_options = item.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev)
+item.add_snmp_trap_destination('172.18.6.16', 'SNMPv2', 'public', trap_options)
+
+# Updating snmpConfiguration
+item.update_snmp_configuration
+puts "\nUpdate Complete!\n"
+puts "\nSNMP configuration after update:"
+puts "\n#{item['snmpConfiguration']}"
+
+# Removing all configuration
+puts "\nRemoving configuration..."
+item['snmpConfiguration']['snmpAccess'] = []
+item['snmpConfiguration']['trapDestinations'] = []
+item.update_snmp_configuration
+puts "\nSNMP configuration original:"
+puts "\n#{item['snmpConfiguration']}"
+
+# Gets the installed firmware for a logical interconnect
+item.retrieve!
+puts "\nApplies or re-applies the logical interconnect configuration to all managed interconnects"
+item.configuration
+puts "\nConfiguration Applied with successfully"
+puts "\nGets the installed firmware for a logical interconnect"
+firmware_opt = item.get_firmware
+puts "\nThe firmware installed on logical interconnect #{item['name']}:"
+puts firmware_opt.inspect

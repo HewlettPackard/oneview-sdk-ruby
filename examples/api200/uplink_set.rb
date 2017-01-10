@@ -9,33 +9,58 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client'
+require_relative '../_client' # Gives access to @client, @enclosure_name, @interconnect_name
 
-ethernet = OneviewSDK::EthernetNetwork.new(@client, name: 'lig_eth01')
-ethernet.retrieve!
-puts "Ethernet uri = '#{ethernet[:uri]}'"
+# NOTE: This will create a uplink set named 'UplinkSet Example', then update it with network, then delete it.
+# NOTE 2: Dependencies: Enclosure, EthernetNetwork, LogicalInterconnectGroup, LogicalInterconnect, Interconnect
+
+ethernet = OneviewSDK::EthernetNetwork.get_all(@client).first
+logical_interconnect = OneviewSDK::LogicalInterconnect.get_all(@client).first
+
+enclosure = OneviewSDK::Enclosure.new(@client, name: @enclosure_name)
+enclosure.retrieve!
+
+interconnect = OneviewSDK::Interconnect.new(@client, name: @interconnect_name)
+interconnect.retrieve!
+
+port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['pairedPortName'] }.first
 
 options = {
+  logicalInterconnectUri: logical_interconnect['uri'],
   nativeNetworkUri: nil,
   reachability: 'Reachable',
-  logicalInterconnectUri: '/rest/logical-interconnects/a577f08e-4de6-41f4-8570-729290a24e37',
   manualLoginRedistributionState: 'NotSupported',
   connectionMode: 'Auto',
   lacpTimer: 'Short',
   networkType: 'Ethernet',
   ethernetNetworkType: 'Tagged',
   description: nil,
-  name: 'Teste Uplink'
+  name: 'UplinkSet Example'
 }
 
 uplink = OneviewSDK::UplinkSet.new(@client, options)
 uplink.add_port_config(
-  '/rest/interconnects/f5b3790b-242f-4fed-8a6c-6ca2334e52aa',
+  port['uri'],
   'Auto',
-  [{ value: 1, type: 'Bay' }, { value: '/rest/enclosures/09SGH102X6J1', type: 'Enclosure' }, { value: 'X1', type: 'Port' }]
+  [{ value: port['bayNumber'], type: 'Bay' }, { value: enclosure[:uri], type: 'Enclosure' }, { value: port['portName'], type: 'Port' }]
 )
 
+puts "\nUplinkSet data:"
 puts uplink.data
-uplink.add_network(ethernet)
+
+puts "\nCreating UplinkSet ..."
 uplink.create
+puts "UplinkSet '#{uplink['uri']}' created successfully!"
+
+puts "\nUpdating UplinkSet (adding network '#{ethernet['uri']}') ..."
+uplink.add_network(ethernet)
+uplink.update
+uplink.refresh
+puts 'UplinkSet updated successfully!'
+
+puts "\nUplinkSet data:"
+puts uplink.data
+
+puts "\nDeleting UplinkSet ..."
 uplink.delete
+puts 'UplinkSet deleted successfully!' unless uplink.retrieve!

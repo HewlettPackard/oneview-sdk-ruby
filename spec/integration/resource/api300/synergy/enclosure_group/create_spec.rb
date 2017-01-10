@@ -16,7 +16,31 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     {
       'name' => ENC_GROUP2_NAME,
       'stackingMode' => 'Enclosure',
-      'type' => 'EnclosureGroupV300'
+      'type' => 'EnclosureGroupV300',
+      'enclosureCount' => 3,
+      'interconnectBayMappings' =>
+      [
+        {
+          'enclosureIndex' => 1,
+          'interconnectBay' => 2,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 1,
+          'interconnectBay' => 5,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 3,
+          'interconnectBay' => 2,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 3,
+          'interconnectBay' => 5,
+          'logicalInterconnectGroupUri' => ''
+        }
+      ]
     }
   end
   let(:enclosure_group_options_3) do
@@ -38,11 +62,14 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       item_2 = klass.new($client_300_synergy, enclosure_group_options_2)
       lig = extra_klass_1.new($client_300_synergy, 'name' => LOG_INT_GROUP_NAME)
       lig.retrieve!
-      item_2.add_logical_interconnect_group(lig)
+      enclosure_group_options_2['interconnectBayMappings'].each do |bay|
+        bay['logicalInterconnectGroupUri'] = lig['uri']
+      end
+
       item_2.create
       expect(item_2['name']).to eq(ENC_GROUP2_NAME)
       item_2['interconnectBayMappings'].each do |bay|
-        if bay['interconnectBay'] == 3 || bay['interconnectBay'] == 6
+        if bay['interconnectBay'] == 2 || bay['interconnectBay'] == 5
           expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri'])
         else
           expect(bay['logicalInterconnectGroupUri']).to_not be

@@ -14,21 +14,29 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       networkType: 'Ethernet',
       ethernetNetworkType: 'Tagged',
       description: nil,
-      name: UPLINK_SET3_NAME
+      name: UPLINK_SET4_NAME
     }
   end
 
-  describe '#create' do
-    before :each do
-      @log_int = OneviewSDK::LogicalInterconnect.new($client, name: LOG_INT_NAME)
-      @log_int.retrieve!
-    end
+  let(:log_int) { OneviewSDK::LogicalInterconnect.get_all($client).first }
 
+  describe '#create' do
     it 'can create the uplink and attach to a Logical Interconnect' do
-      item = OneviewSDK::UplinkSet.new($client, uplink_data)
-      item[:logicalInterconnectUri] = @log_int[:uri]
+      item = klass.new($client, uplink_data)
+      item[:logicalInterconnectUri] = log_int[:uri]
       expect { item.create }.not_to raise_error
-      expect(item[:uri]).not_to be_empty
+      expect(item[:uri]).to be
+      expect(item.retrieve!).to eq(true)
+    end
+  end
+
+  describe '#get_unassigned_ports' do
+    it 'should return a hash with the unassigned uplink set ports' do
+      uplink = klass.new($client, name: UPLINK_SET4_NAME)
+      expect(uplink.retrieve!).to eq(true)
+      ports = uplink.get_unassigned_ports
+      expect(ports.class).to eq(Hash)
+      expect(ports['members']).not_to be_empty
     end
   end
 end

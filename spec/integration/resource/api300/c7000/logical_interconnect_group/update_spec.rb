@@ -4,7 +4,7 @@ klass = OneviewSDK::API300::C7000::LogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
-  let(:item_2) { klass.new($client_300, name: LOG_INT_GROUP2_NAME) }
+  let(:item_2) { klass.new($client_300, name: LOG_INT_GROUP3_NAME) }
   let(:eth) { OneviewSDK::API300::C7000::EthernetNetwork.new($client_300, name: ETH_NET_NAME) }
   let(:uplink_options_2) do
     {

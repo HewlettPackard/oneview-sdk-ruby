@@ -29,7 +29,7 @@ DEPENDENCIES = {
   LIGUplinkSet: [],
   LogicalDownlink: [:Enclosure],
   LogicalEnclosure: [:Enclosure],
-  LogicalInterconnect: [:Enclosure],
+  LogicalInterconnect: [:Enclosure, :LogicalEnclosure],
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
   LogicalSwitch: [:LogicalSwitchGroup],
   LogicalSwitchGroup: [],
@@ -49,7 +49,7 @@ DEPENDENCIES = {
   StorageSystem: [:FCNetwork],
   Switch: [:LogicalSwitch],
   UnmanagedDevice: [],
-  UplinkSet: [:LogicalInterconnectGroup],
+  UplinkSet: [:LogicalInterconnectGroup, :LogicalInterconnect],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
   VolumeTemplate: [:StoragePool]
@@ -103,6 +103,7 @@ LOG_INT_GROUP_NAME = 'LogicalInterconnectGroup_1'.freeze
 LOG_INT_GROUP_NAME_UPDATED = 'LogicalInterconnectGroup_1_UPDATED'.freeze
 LOG_INT_GROUP2_NAME = 'LogicalInterconnectGroup_2'.freeze
 LOG_INT_GROUP3_NAME = 'LogicalInterconnectGroup_3'.freeze
+LOG_INT_GROUP4_NAME = 'LogicalInterconnectGroup_4'.freeze
 
 # EnclosureGroup
 ENC_GROUP_NAME = 'EnclosureGroup_1'.freeze
@@ -112,6 +113,9 @@ ENC_GROUP3_NAME = 'EnclosureGroup_3'.freeze
 # Enclosure
 ENCL_HOSTNAME = 'fe80::2:0:9:1%eth2'.freeze
 ENCL_NAME = 'Encl1'.freeze
+ENCL2_NAME = '0000A66101'.freeze
+ENCL3_NAME = '0000A66102'.freeze
+ENCL4_NAME = '0000A66103'.freeze
 ENCL_NAME_UPDATED = 'Encl1_UPDATED'.freeze
 
 # LogicalEnclosure
@@ -119,11 +123,13 @@ LOG_ENCL1_NAME = 'LogicalEnclosure_1'.freeze
 
 # LogicalInterconnect
 LOG_INT_NAME = 'Encl1-LogicalInterconnectGroup_1'.freeze
+LOG_INT2_NAME = 'LogicalEnclosure_1-LogicalInterconnectGroup_1-1'.freeze
 
 # UplinkSet
 UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
 UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
-UPLINK_SET3_NAME = 'EthernetUplinkSet_2'.freeze
+UPLINK_SET3_NAME = 'FCUplinkSet_2'.freeze
+UPLINK_SET4_NAME = 'EthernetUplinkSet_2'.freeze
 
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
@@ -207,5 +213,12 @@ SAS_LOG_INT1_NAME = "#{LOG_ENCL1_NAME}-#{SAS_LOG_INT_GROUP1_NAME}-1".freeze
 DRIVE_ENCL1_SERIAL = 'SN123100'.freeze
 DRIVE_ENCL1_SERIAL_UPDATED = 'SN123102'.freeze
 
+# Enclosure
+ENCLOSURE_1 = '0000A66101'.freeze
+
+# Interconnect
+INTERCONNECT_1_NAME = "#{ENCLOSURE_1}, interconnect 3".freeze
+INTERCONNECT_2_NAME = "#{ENCL_NAME}, interconnect 1".freeze
+
 # SAS Interconnect
-SAS_INTERCONNECT1_NAME = '0000A66101, interconnect 1'.freeze
+SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
