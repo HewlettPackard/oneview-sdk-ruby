@@ -44,7 +44,7 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     end
 
     it 'picks the lower of the default api version and appliance api version' do
-      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_api_version).and_return(120)
+      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_i3s_api_version).and_return(120)
       options = { url: 'https://oneview.example.com', token: 'token123' }
       client = OneviewSDK::ImageStreamer::Client.new(options)
       expect(client.api_version).to eq(120)
@@ -103,9 +103,9 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     end
   end
 
-  describe '#appliance_api_version' do
+  describe '#appliance_i3s_api_version' do
     before :each do
-      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_api_version).and_call_original
+      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_i3s_api_version).and_call_original
     end
 
     it 'gets the api version from the appliance' do
@@ -158,8 +158,8 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     include_context 'shared context'
 
     it "calls the correct resource's get_all method" do
-      expect(OneviewSDK::ServerProfile).to receive(:get_all).with(@client_i3s_300)
-      @client_i3s_300.get_all('ServerProfiles')
+      expect(OneviewSDK::ImageStreamer::DeploymentPlans).to receive(:get_all).with(@client_i3s_300)
+      @client_i3s_300.get_all('DeploymentPlans')
     end
 
     it 'fails when a bogus resource type is given' do

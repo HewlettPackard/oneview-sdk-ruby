@@ -34,4 +34,19 @@ RSpec.describe OneviewSDK::ImageStreamer do
       expect(OneviewSDK::ImageStreamer.api_version_updated?).to eq(true)
     end
   end
+
+  describe '#resource_named' do
+    it 'allows you to set the api version to look in' do
+      expect(OneviewSDK::ImageStreamer.resource_named('DeploymentPlans', 300)).to eq(OneviewSDK::ImageStreamer::API300::DeploymentPlans)
+    end
+
+    it 'supports symbols' do
+      expect(OneviewSDK::ImageStreamer.resource_named(:deployment_plans)).to eq(OneviewSDK::ImageStreamer::API300::DeploymentPlans)
+    end
+
+    it 'raises an error if the api_version is not supported' do
+      expect { OneviewSDK::ImageStreamer.resource_named(:deployment_plans, 15) }
+        .to raise_error(OneviewSDK::UnsupportedVersion, /not supported/)
+    end
+  end
 end

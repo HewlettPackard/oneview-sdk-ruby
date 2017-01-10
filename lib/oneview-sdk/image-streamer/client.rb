@@ -9,19 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require 'logger'
-require_relative '../config_loader'
-require_relative '../rest'
-require_relative '../ssl_helper'
+require_relative '../client'
 
 module OneviewSDK
   module ImageStreamer
     # The client defines the connection to the Image Streamer server and handles communication with it.
-    class Client
-      attr_reader :url, :token, :max_api_version
-      attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
-
-      include Rest
+    class Client < OneviewSDK::Client
+      undef :user
+      undef :password
 
       # Creates client object, establish connection, and set up logging and api version.
       # @param [Hash] options the options to configure the client
@@ -44,7 +39,7 @@ module OneviewSDK
         @print_wait_dots = options.fetch(:print_wait_dots, false)
         @url = options[:url] || ENV['ONEVIEWSDK_I3S_URL']
         raise InvalidClient, 'Must set the url option' unless @url
-        @max_api_version = appliance_api_version
+        @max_api_version = appliance_i3s_api_version
         if options[:api_version] && options[:api_version].to_i > @max_api_version
           logger.warn "API version #{options[:api_version]} is greater than the Image Streamer API version (#{@max_api_version})"
         end
@@ -67,34 +62,6 @@ module OneviewSDK
         @token = options[:token] || ENV['ONEVIEWSDK_I3S_TOKEN']
       end
 
-      # Tells OneView to create the resource using the current attribute data
-      # @param [Resource] resource the object to create
-      def create(resource)
-        resource.client = self
-        resource.create
-      end
-
-      # Sets the attribute data, and then saves to OneView
-      # @param [Resource] resource the object to update
-      def update(resource, attributes = {})
-        resource.client = self
-        resource.update(attributes)
-      end
-
-      # Updates this object using the data that exists on OneView
-      # @param [Resource] resource the object to refresh
-      def refresh(resource)
-        resource.client = self
-        resource.refresh
-      end
-
-      # Deletes this object from OneView
-      # @param [Resource] resource the object to delete
-      def delete(resource)
-        resource.client = self
-        resource.delete
-      end
-
       # Get array of all resources of a specified type
       # @param [String] type Resource type
       # @param [Integer] api_ver API module version to fetch resources from
@@ -103,42 +70,15 @@ module OneviewSDK
       #   deployment_plans = @client.get_all('DeploymentPlans')
       # @raise [TypeError] if the type is invalid
       def get_all(type, api_ver = @api_version)
-        klass = OneviewSDK.resource_named(type, api_ver)
+        klass = OneviewSDK::ImageStreamer.resource_named(type, api_ver)
         raise TypeError, "Invalid resource type '#{type}'. OneviewSDK::ImageStreamer::API#{api_ver} does not contain a class like it." unless klass
         klass.get_all(self)
-      end
-
-      # Wait for a task to complete
-      # @param [String] task_uri
-      # @raise [OneviewSDK::TaskError] if the task resulted in an error or early termination.
-      # @return [Hash] if the task completed successfully, return the task details
-      def wait_for(task_uri)
-        raise ArgumentError, 'Must specify a task_uri!' if task_uri.nil? || task_uri.empty?
-        loop do
-          task_uri.gsub!(%r{https:(.*)\/rest}, '/rest')
-          task = rest_get(task_uri)
-          body = JSON.parse(task.body)
-          case body['taskState'].downcase
-          when 'completed'
-            return body
-          when 'warning'
-            @logger.warn "Task ended with warning status. Details: #{JSON.pretty_generate(body['taskErrors']) rescue body}"
-            return body
-          when 'error', 'killed', 'terminated'
-            msg = "Task ended with bad state: '#{body['taskState']}'.\nResponse: "
-            msg += body['taskErrors'] ? JSON.pretty_generate(body['taskErrors']) : JSON.pretty_generate(body)
-            raise TaskError, msg
-          else
-            print '.' if @print_wait_dots
-            sleep 10
-          end
-        end
       end
 
       private
 
       # Get current api version from the Image Streamer
-      def appliance_api_version
+      def appliance_i3s_api_version
         options = { 'Content-Type' => :none, 'X-API-Version' => :none, 'auth' => :none }
         response = rest_api(:get, '/rest/version', options)
         version = response_handler(response)['currentVersion']

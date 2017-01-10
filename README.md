@@ -142,18 +142,6 @@ OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::Synergy::EthernetN
 
 We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.
 
-### HPE Synergy Image Streamer
-The OneView Ruby SDK also supports the API endpoints for HPE Synergy Image Streamer. To use the SDK, you must set the variant:
-
-```ruby
-# Show defaults:
-OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS      # 300
-OneviewSDK::ImageStreamer::DEFAULT_API_VERSION         # 300
-OneviewSDK::ImageStreamer.api_version                  # 300
-OneviewSDK::ImageStreamer.api_version_updated?         # false
-
-```
-
 ## Resources
 Each OneView resource is exposed via a Ruby class, enabling CRUD-like functionality (with some exceptions).
 

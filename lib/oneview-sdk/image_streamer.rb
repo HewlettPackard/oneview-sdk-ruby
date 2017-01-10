@@ -19,7 +19,6 @@ Dir[File.dirname(__FILE__) + '/image-streamer/resource/*.rb'].each { |file| requ
 module OneviewSDK
   # Module for interacting with the Image Streamer
   module ImageStreamer
-    ENV_VARS = %w(ONEVIEWSDK_I3S_URL ONEVIEWSDK_I3S_TOKEN ONEVIEWSDK_I3S_SSL_ENABLED).freeze
     SUPPORTED_API_VERSIONS = [300].freeze
     DEFAULT_API_VERSION = 300
     @api_version = DEFAULT_API_VERSION
@@ -51,6 +50,19 @@ module OneviewSDK
       api_module.const_get(const)
     rescue NameError
       raise NameError, "The #{const} method or resource does not exist for Image Streamer API version #{@api_version}."
+    end
+
+    # Get resource class that matches the type given
+    # @param [String] type Name of the desired class type
+    # @param [Fixnum] api_ver API module version to fetch resource from
+    # @param [String] variant API module variant to fetch resource from
+    # @return [Class] Resource class or nil if not found
+    def self.resource_named(type, api_ver = @api_version, variant = nil)
+      unless SUPPORTED_API_VERSIONS.include?(api_ver)
+        raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"
+      end
+      api_module = OneviewSDK::ImageStreamer.const_get("API#{api_ver}")
+      variant ? api_module.resource_named(type, variant) : api_module.resource_named(type)
     end
   end
 end

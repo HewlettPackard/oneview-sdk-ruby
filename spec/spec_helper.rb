@@ -74,16 +74,12 @@ RSpec.configure do |config|
       # Mock appliance version and login api requests, as well as loading trusted certs
       allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(300)
       allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_return('secretToken')
-      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_api_version).and_return(300)
-      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:login).and_return('secretToken')
+      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_i3s_api_version).and_return(300)
       allow(OneviewSDK::SSLHelper).to receive(:load_trusted_certs).and_return(nil)
     end
 
     # Clear environment variables
-
-    envs = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED)
-    envs.push('ONEVIEWSDK_I3S_URL', 'ONEVIEWSDK_I3S_TOKEN', 'ONEVIEWSDK_I3S_SSL_ENABLED')
-    envs.each do |name|
+    OneviewSDK::ENV_VARS.each do |name|
       ENV[name] = nil
     end
   end

@@ -46,12 +46,14 @@
 - SAS Logical JBOD Attachments
 - SAS Logical JBODs
 
+2. Design changes:
+  - Architecture for future Image Streamer support.
+
 # v3.0.0
 ### Notes
  This is the Third major version of the Ruby SDK for HPE OneView. It features a split in the API support, allowing for C7000 and Synergy hardware variants to be used, while maintaining compatibility to older versions. There are some code improvements applied throughout the release, as well as additional endpoints support.
  This version of this SDK officially supports OneView appliances version 3.00.00 or higher, using the OneView Rest API version 300.
  Support is provided for C7000 and Synergy enclosure types.
- This version of this SDK also supports HPE Synergy Image Streamer.
 
 ### Major changes
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
@@ -94,9 +96,8 @@
    - SAS Logical JBOD Attachments
    - SAS Logical JBODs
  3. Design changes:
- - Split features into API modules for each hardware variant
- - Fixed/updated/added CLI commands
- 4. HPE Synergy Image Streamer Support:
+   - Split features into API modules for each hardware variant
+   - Fixed/updated/added CLI commands
 
 #### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
@@ -226,3 +227,15 @@ The integration tests may warn about 3 issues:
 
 3. OneviewSDK::VolumeTemplate#update update volume name
 > OneView 2.00.00 appliances may return the old type of Volume Template resource. Run it against a newer version of OneView and it should not happen.
+
+# Unreleased Changes
+### Notes
+In the future the Ruby SDK for HPE OneView will support HPE Synergy Image Streamer.
+
+### Future features supported
+- Artifacts Bundle
+- Build Plan
+- Deployment Plans
+- Golden Image
+- Os Volumes
+- Plan Scripts
