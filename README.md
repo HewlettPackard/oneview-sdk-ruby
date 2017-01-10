@@ -149,7 +149,7 @@ The OneView Ruby SDK also supports the API endpoints for HPE Synergy Image Strea
 # Show defaults:
 OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS      # 300
 OneviewSDK::ImageStreamer::DEFAULT_API_VERSION         # 300
-OneviewSDK::ImageStreamer.api_version                  # 200
+OneviewSDK::ImageStreamer.api_version                  # 300
 OneviewSDK::ImageStreamer.api_version_updated?         # false
 
 ```
