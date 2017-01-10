@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-klass = OneviewSDK::Interconnect
+klass = OneviewSDK::API300::C7000::Interconnect
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
-  let(:interconnect) { klass.find_by($client, name: 'Encl1, interconnect 1').first }
+  let(:interconnect) { klass.find_by($client_300, name: 'Encl1, interconnect 1').first }
 
   describe '#update' do
-    it 'raises MethodUnavailable' do
+    it 'self raises MethodUnavailable' do
       expect { interconnect.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       ports_2 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
       port_updated = ports_2.first
       expect(port_updated['enabled']).to be false
-      uplink = OneviewSDK::EthernetNetwork.find_by($client, name: ETH_NET_NAME).first
+      uplink = OneviewSDK::API300::C7000::EthernetNetwork.find_by($client_300, name: ETH_NET_NAME).first
       expect { interconnect.update_port(port['name'], enabled: true, associatedUplinkSetUri: uplink['uri']) }.not_to raise_error
       interconnect.retrieve!
       ports_3 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }

@@ -11,16 +11,16 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::Interconnect
+klass = OneviewSDK::API300::C7000::Interconnect
 RSpec.describe klass, integration: true, type: CREATE do
-  include_context 'integration context'
+  include_context 'integration api300 context'
 
-  let(:interconnect) { klass.find_by($client, name: 'Encl1, interconnect 1').first }
+  let(:interconnect) { klass.find_by($client_300, name: 'Encl1, interconnect 1').first }
   let(:interconnect_type) { 'HP VC FlexFabric-20/40 F8 Module' }
 
   describe '#create' do
     it 'raises MethodUnavailable' do
-      item = klass.new($client)
+      item = klass.new($client_300)
       expect { item.create }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create is unavailable for this resource/)
     end
   end
@@ -44,14 +44,14 @@ RSpec.describe klass, integration: true, type: CREATE do
 
   describe '#get_types' do
     it 'retrieves interconnect types' do
-      expect { klass.get_types($client) }.not_to raise_error
+      expect { klass.get_types($client_300) }.not_to raise_error
     end
   end
 
   describe '#get_type' do
     it 'retrieves the interconnect type with name' do
       interconnect_type_found = {}
-      expect { interconnect_type_found = klass.get_type($client, interconnect_type) }.not_to raise_error
+      expect { interconnect_type_found = klass.get_type($client_300, interconnect_type) }.not_to raise_error
       expect(interconnect_type_found['name']).to eq(interconnect_type)
     end
   end
