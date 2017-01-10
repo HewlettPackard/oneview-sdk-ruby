@@ -29,7 +29,7 @@ DEPENDENCIES = {
   LIGUplinkSet: [],
   LogicalDownlink: [:Enclosure],
   LogicalEnclosure: [:Enclosure],
-  LogicalInterconnect: [:Enclosure],
+  LogicalInterconnect: [:Enclosure, :LogicalEnclosure],
   LogicalInterconnectGroup: [:NetworkSet, :LIGUplinkSet],
   LogicalSwitch: [:LogicalSwitchGroup],
   LogicalSwitchGroup: [],
@@ -103,6 +103,7 @@ LOG_INT_GROUP_NAME = 'LogicalInterconnectGroup_1'.freeze
 LOG_INT_GROUP_NAME_UPDATED = 'LogicalInterconnectGroup_1_UPDATED'.freeze
 LOG_INT_GROUP2_NAME = 'LogicalInterconnectGroup_2'.freeze
 LOG_INT_GROUP3_NAME = 'LogicalInterconnectGroup_3'.freeze
+LOG_INT_GROUP4_NAME = 'LogicalInterconnectGroup_4'.freeze
 
 # EnclosureGroup
 ENC_GROUP_NAME = 'EnclosureGroup_1'.freeze
@@ -112,6 +113,9 @@ ENC_GROUP3_NAME = 'EnclosureGroup_3'.freeze
 # Enclosure
 ENCL_HOSTNAME = 'fe80::2:0:9:1%eth2'.freeze
 ENCL_NAME = 'Encl1'.freeze
+ENCL2_NAME = '0000A66101'.freeze
+ENCL3_NAME = '0000A66102'.freeze
+ENCL4_NAME = '0000A66103'.freeze
 ENCL_NAME_UPDATED = 'Encl1_UPDATED'.freeze
 
 # LogicalEnclosure
@@ -119,6 +123,7 @@ LOG_ENCL1_NAME = 'LogicalEnclosure_1'.freeze
 
 # LogicalInterconnect
 LOG_INT_NAME = 'Encl1-LogicalInterconnectGroup_1'.freeze
+LOG_INT2_NAME = 'LogicalEnclosure_1-LogicalInterconnectGroup_1-1'.freeze
 
 # UplinkSet
 UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
