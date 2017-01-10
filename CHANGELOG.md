@@ -3,6 +3,7 @@
    - Logical Interconnect
    - Uplink Set
    - Volume attachment
+   - Unmanaged devices
 
 ### Features supported
 - Connection template
@@ -45,6 +46,7 @@
 - SAS Logical Interconnect Group
 - SAS Logical JBOD Attachments
 - SAS Logical JBODs
+- Unmanaged devices
 
 # v3.0.0
 ### Notes
@@ -131,7 +133,6 @@
    - Power devices
    - Racks
    - Server hardware types
-   - Unmanaged devices
  3. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
 
 ### Breaking changes

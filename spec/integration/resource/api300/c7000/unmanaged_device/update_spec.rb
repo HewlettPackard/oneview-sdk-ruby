@@ -1,11 +1,12 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::UnmanagedDevice, integration: true, type: UPDATE do
-  include_context 'integration context'
+klass = OneviewSDK::API300::C7000::UnmanagedDevice
+RSpec.describe klass, integration: true, type: UPDATE do
+  include_context 'integration api300 context'
 
   describe '#update' do
     it 'should change name' do
-      item = OneviewSDK::UnmanagedDevice.new($client, name: UNMANAGED_DEVICE1_NAME)
+      item = klass.new($client_300, name: UNMANAGED_DEVICE1_NAME)
       item.retrieve!
       item.update(name: 'UnmanagedDevice_1_Updated')
       item.refresh
