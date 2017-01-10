@@ -14,10 +14,20 @@ require_relative '../../api200/interconnect'
 module OneviewSDK
   module API300
     module Synergy
-      # Interconnect resource implementation for synergy on api300
+      # Interconnect resource implementation on API300 Synergy
       class Interconnect < OneviewSDK::API200::Interconnect
         LINK_TOPOLOGY_URI = '/rest/interconnect-link-topologies'.freeze
 
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'InterconnectV300'
+          super
+        end
 
         # Retrieves the interconnect link topologies
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
