@@ -27,7 +27,7 @@ module OneviewSDK
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def set_public_attributes
+        def set_public_attributes(_attributes)
           unavailable_method
         end
       end

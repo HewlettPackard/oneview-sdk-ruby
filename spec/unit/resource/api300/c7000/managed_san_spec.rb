@@ -51,7 +51,7 @@ RSpec.describe klass do
   describe '#set_public_attributes' do
     it 'is unavailable' do
       san = klass.new(@client_300)
-      expect { san.set_public_attributes }.to raise_error(/The method #set_public_attributes is unavailable for this resource/)
+      expect { san.set_public_attributes(name: 'MetaSan') }.to raise_error(/The method #set_public_attributes is unavailable for this resource/)
     end
 
     # NOTE: This is disabled while waiting on a defect reply from the oneview team

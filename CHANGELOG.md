@@ -50,8 +50,11 @@
 - SAS Logical JBODs
 - Unmanaged devices
 
-2. Design changes:
-  - Architecture for future Image Streamer support.
+2. Bug fixes:
+- Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
+
+3. Design changes:
+- Architecture for future Image Streamer support.
 
 # v3.0.0
 ### Notes
