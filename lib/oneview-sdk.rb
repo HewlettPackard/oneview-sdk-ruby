@@ -15,6 +15,7 @@ require_relative 'oneview-sdk/client'
 require_relative 'oneview-sdk/resource'
 Dir[File.dirname(__FILE__) + '/oneview-sdk/resource/*.rb'].each { |file| require file }
 require_relative 'oneview-sdk/cli'
+require_relative 'oneview-sdk/image_streamer'
 
 # Module for interacting with the HPE OneView API
 module OneviewSDK

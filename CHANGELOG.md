@@ -1,4 +1,6 @@
-# v3.1.0
+# Unreleased Changes
+**Proposed Version:** v3.1.0
+
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
    - Interconnect
    - Logical Interconnect
@@ -10,7 +12,13 @@
     - Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
 
  3. Design changes:
-   - Architecture for future Image Streamer support.
+   - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
+     - Artifacts Bundle
+     - Build Plan
+     - Deployment Plans
+     - Golden Image
+     - OS Volumes
+     - Plan Scripts
 
 ### Features supported
 - Connection template
@@ -106,7 +114,7 @@
    - Split features into API modules for each hardware variant
    - Fixed/updated/added CLI commands
 
-#### v2.2.1
+### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
 
 ### v2.2.0
@@ -233,15 +241,3 @@ The integration tests may warn about 3 issues:
 
 3. OneviewSDK::VolumeTemplate#update update volume name
 > OneView 2.00.00 appliances may return the old type of Volume Template resource. Run it against a newer version of OneView and it should not happen.
-
-# Unreleased Changes
-### Notes
-In the future the Ruby SDK for HPE OneView will support HPE Synergy Image Streamer.
-
-### Future features supported
-- Artifacts Bundle
-- Build Plan
-- Deployment Plans
-- Golden Image
-- Os Volumes
-- Plan Scripts
