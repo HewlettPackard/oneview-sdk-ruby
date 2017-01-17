@@ -17,6 +17,31 @@ module OneviewSDK
       # OS Volumes resource implementation for Image Streamer
       class OsVolumes < Resource
         BASE_URI = '/rest/os-volumes'.freeze
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def create
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def update
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def delete
+          unavailable_method
+        end
+
+        # Get the details of the archived OS volume with the specified attribute.
+        # @return The details of the archived OS volume with the specified attribute
+        def get_details_archive
+          response = @client.rest_get("#{BASE_URI}/archive/#{data['uri'].split('/').last}")
+          @client.response_handler(response)
+        end
       end
     end
   end
