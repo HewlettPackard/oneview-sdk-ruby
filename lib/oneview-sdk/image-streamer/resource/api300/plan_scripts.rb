@@ -31,16 +31,8 @@ module OneviewSDK
         # Retrieves the modified contents of the selected Plan Script as per the selected attributes.
         # @return The script differences of the selected Plan Script
         def retrieve_differences
-          response = @client.rest_post("#{BASE_URI}/differences/#{extract_id_from_uri}")
+          response = @client.rest_post("#{BASE_URI}/differences/#{@data['uri'].split('/').last}")
           @client.response_handler(response)
-        end
-
-        private
-
-        # Extracts the id of the uri.
-        # @return The id of the plan script
-        def extract_id_from_uri
-          @data['uri'].split('/').last
         end
       end
     end
