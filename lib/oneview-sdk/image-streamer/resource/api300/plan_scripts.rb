@@ -17,6 +17,31 @@ module OneviewSDK
       # Plan Scripts resource implementation for Image Streamer
       class PlanScripts < Resource
         BASE_URI = '/rest/plan-scripts'.freeze
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          super
+          # Default values:
+          @data['type'] ||= 'PlanScript'
+        end
+
+        # Retrieves the modified contents of the selected Plan Script as per the selected attributes.
+        # @return The script differences of the selected Plan Script
+        def retrieve_differences
+          response = @client.rest_post("#{BASE_URI}/differences/#{extract_id_from_uri}")
+          @client.response_handler(response)
+        end
+
+        private
+
+        # Extracts the id of the uri.
+        # @return The id of the plan script
+        def extract_id_from_uri
+          @data['uri'].split('/').last
+        end
       end
     end
   end
