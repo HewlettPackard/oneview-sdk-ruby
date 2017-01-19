@@ -10,6 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'resource'
+require 'net/http/post/multipart'
 
 module OneviewSDK
   module ImageStreamer
@@ -17,6 +18,78 @@ module OneviewSDK
       # Golden Image resource implementation for Image Streamer
       class GoldenImage < Resource
         BASE_URI = '/rest/golden-images'.freeze
+        READ_TIMEOUT = 300 # in seconds, 5 minutes
+        ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          super
+          # Default values:
+          @data['type'] ||= 'GoldenImage'
+        end
+
+        # # Get the details of the archived OS volume with the specified attribute.
+        # # @return The details of the archived OS volume with the specified attribute
+        # def get_details_archive
+        #   response = @client.rest_get("#{BASE_URI}/archive/#{data['uri'].split('/').last}")
+        #   @client.response_handler(response)
+        # end
+
+        # Adds an golden image resource from the file that is uploaded from a local drive.
+        # Only the .zip format file can be used for upload.
+        # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
+        # @param [String] file_path
+        # @param [Hash] options The
+        # @option options [String] :name The name of the Golden Image
+        # @option options [String] :description The description of the Golden Image
+        # @param [Integer] timeout The number of seconds to wait for completing the request
+        def self.add(client, file_path, options = {}, timeout = READ_TIMEOUT)
+          options = Hash[options.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
+          raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
+          raise InvalidFormat, 'ERROR: File with extension not supported!' unless ACCEPTED_FORMATS.include? File.extname(file_path)
+          raise IncompleteResource, 'Please set the name of the golden image!' unless options['name']
+          raise IncompleteResource, 'Please set the description of the golden image!' unless options['description']
+          options['Content-Type'] = 'multipart/form-data'
+          options['X-Api-Version'] = client.api_version.to_s
+          options['auth'] = client.token
+          options['file'] = File.basename(file_path)
+          url = URI.parse(URI.escape("#{client.url}#{BASE_URI}"))
+
+          File.open(file_path) do |file|
+            req = Net::HTTP::Post::Multipart.new(
+              url.path,
+              { 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) },
+              options
+            )
+
+            http_request = Net::HTTP.new(url.host, url.port)
+            http_request.use_ssl = true
+            http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            http_request.read_timeout = timeout
+
+            response = http_request.start do |http|
+              response = http.request(req)
+              return client.response_handler(response)
+            end
+          end
+        end
+
+        # Sets the os volume
+        # @param [OneviewSDK::ImageStreamer::API300::OsVolumes] os_volume
+        def set_os_volume(os_volume)
+          raise IncompleteResource, 'Please set the OS Volume\'s uri attribute!' unless os_volume['uri']
+          set('osVolumeURI', os_volume['uri'])
+        end
+
+        # Sets the build plan
+        # @param [OneviewSDK::ImageStreamer::API300::BuildPlan] build_plan
+        def set_build_plan(build_plan)
+          raise IncompleteResource, 'Please set the Build Plan\'s uri attribute!' unless build_plan['uri']
+          set('buildPlanUri', build_plan['uri'])
+        end
       end
     end
   end
