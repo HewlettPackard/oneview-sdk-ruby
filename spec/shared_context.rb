@@ -9,6 +9,9 @@ RSpec.shared_context 'shared context', a: :b do
 
     options_300 = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', api_version: 300 }
     @client_300 = OneviewSDK::Client.new(options_300)
+
+    options_i3s_300 = { url: 'https://oneview.example.com', token: 'token123' }
+    @client_i3s_300 = OneviewSDK::ImageStreamer::Client.new(options_i3s_300)
   end
 end
 

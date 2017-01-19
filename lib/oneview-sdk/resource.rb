@@ -10,6 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'client'
+require_relative 'image-streamer/client'
 
 # OneviewSDK Resources
 module OneviewSDK
@@ -30,7 +31,7 @@ module OneviewSDK
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
-      raise InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
+      raise InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client) || client.is_a?(OneviewSDK::ImageStreamer::Client)
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version

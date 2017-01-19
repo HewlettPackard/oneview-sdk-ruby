@@ -1,10 +1,24 @@
-# v3.1.0
+# Unreleased Changes
+**Proposed Version:** v3.1.0
+
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
    - Interconnect
    - Logical Interconnect
    - Uplink Set
    - Volume attachment
    - Unmanaged devices
+
+ 2. Bug fixes:
+    - Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
+
+ 3. Design changes:
+   - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
+     - Artifacts Bundle
+     - Build Plan
+     - Deployment Plans
+     - Golden Image
+     - OS Volumes
+     - Plan Scripts
 
 ### Features supported
 - Connection template
@@ -49,9 +63,6 @@
 - SAS Logical JBOD Attachments
 - SAS Logical JBODs
 - Unmanaged devices
-
-2. Bug fixes:
-- Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
 
 # v3.0.0
 ### Notes
@@ -100,10 +111,10 @@
    - SAS Logical JBOD Attachments
    - SAS Logical JBODs
  3. Design changes:
- - Split features into API modules for each hardware variant
- - Fixed/updated/added CLI commands
+   - Split features into API modules for each hardware variant
+   - Fixed/updated/added CLI commands
 
-#### v2.2.1
+### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
 
 ### v2.2.0

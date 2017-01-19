@@ -15,10 +15,13 @@ require_relative 'oneview-sdk/client'
 require_relative 'oneview-sdk/resource'
 Dir[File.dirname(__FILE__) + '/oneview-sdk/resource/*.rb'].each { |file| require file }
 require_relative 'oneview-sdk/cli'
+require_relative 'oneview-sdk/image_streamer'
 
 # Module for interacting with the HPE OneView API
 module OneviewSDK
-  ENV_VARS = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED).freeze
+  env_i3s = %w(ONEVIEWSDK_I3S_URL ONEVIEWSDK_I3S_TOKEN ONEVIEWSDK_I3S_SSL_ENABLED)
+  ENV_VARS = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED).concat(env_i3s).freeze
+
   SUPPORTED_API_VERSIONS = [200, 300].freeze
   DEFAULT_API_VERSION = 200
   @api_version = DEFAULT_API_VERSION
