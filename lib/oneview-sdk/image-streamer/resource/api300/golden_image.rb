@@ -31,12 +31,18 @@ module OneviewSDK
           @data['type'] ||= 'GoldenImage'
         end
 
-        # # Get the details of the archived OS volume with the specified attribute.
-        # # @return The details of the archived OS volume with the specified attribute
-        # def get_details_archive
-        #   response = @client.rest_get("#{BASE_URI}/archive/#{data['uri'].split('/').last}")
-        #   @client.response_handler(response)
-        # end
+        # Download the details of the golden image capture logs which has been archived based on the specific attribute ID.
+        # @return [True] When was saved successfully
+        def get_details_archive(file_path)
+          url = URI.parse(URI.escape("#{client.url}#{BASE_URI}"))
+          options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
+          Net::HTTP.start(url.host, url.port, options) do |http|
+            resp = http.get("/archive/#{data['uri'].split('/').last}")
+            File.open(file_path, "wb") { |file|
+              file.write(resp.body)
+          end
+          true
+        end
 
         # Adds an golden image resource from the file that is uploaded from a local drive.
         # Only the .zip format file can be used for upload.
