@@ -1,5 +1,9 @@
-# Unreleased Changes
-**Proposed Version:** v3.1.0
+## Unreleased: v4.0.0
+
+ 1. Bug fixes:
+    - Fixed issue #93 Logical Switch refresh conflict
+
+# v3.1.0
 
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
    - Interconnect

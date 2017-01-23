@@ -8,9 +8,9 @@ RSpec.describe OneviewSDK::LogicalSwitch, integration: true, type: UPDATE do
     @item.retrieve!
   end
 
-  describe '#refresh' do
+  describe '#refresh_data_state!' do
     it 'refresh logical switch' do
-      @item.refresh
+      @item.refresh_data_state!
     end
   end
 end
