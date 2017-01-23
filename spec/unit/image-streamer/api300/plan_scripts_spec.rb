@@ -6,8 +6,8 @@ RSpec.describe klass do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      connection = klass.new(@client_i3s_300)
-      expect(connection['type']).to eq('PlanScript')
+      item = klass.new(@client_i3s_300)
+      expect(item['type']).to eq('PlanScript')
     end
   end
 
