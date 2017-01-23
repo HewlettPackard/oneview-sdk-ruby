@@ -131,7 +131,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'default settings' do
-      default_settings = @item.get_default_settings
+      default_settings = OneviewSDK::API300::C7000::LogicalInterconnectGroup.get_default_settings($client_300)
       expect(default_settings).to be
       expect(default_settings['type']).to eq('InterconnectSettingsV201')
       expect(default_settings['uri']).to_not be

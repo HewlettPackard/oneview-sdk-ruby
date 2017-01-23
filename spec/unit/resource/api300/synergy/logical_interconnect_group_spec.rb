@@ -31,7 +31,7 @@ RSpec.describe klass do
     end
   end
 
-  describe '#settings' do
+  describe '::get_default_settings' do
     it 'gets the default settings' do
       expect(@client_300).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings')
         .and_return(FakeResponse.new('Default' => 'Settings'))

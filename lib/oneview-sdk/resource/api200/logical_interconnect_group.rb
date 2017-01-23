@@ -40,6 +40,14 @@ module OneviewSDK
         parse_interconnect_map_template if @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] == []
       end
 
+      # Get the logical interconnect group default settings
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @return [Hash] The logical interconnect group settings
+      def self.get_default_settings(client)
+        response = client.rest_get(BASE_URI + '/defaultSettings', client.api_version)
+        client.response_handler(response)
+      end
+
       # Adds an interconnect
       # @param [Fixnum] bay Bay number
       # @param [String] type Interconnect type
@@ -61,14 +69,6 @@ module OneviewSDK
       # @param [OneviewSDK::LIGUplinkSet] uplink_set
       def add_uplink_set(uplink_set)
         @data['uplinkSets'] << uplink_set.data
-      end
-
-      # Get the logical interconnect group default settings
-      # @return [Hash] The logical interconnect group settings
-      def get_default_settings
-        get_uri = self.class::BASE_URI + '/defaultSettings'
-        response = @client.rest_get(get_uri, @api_version)
-        @client.response_handler(response)
       end
 
       # Gets the logical interconnect group settings

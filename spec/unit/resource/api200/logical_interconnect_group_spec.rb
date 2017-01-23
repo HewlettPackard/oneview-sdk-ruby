@@ -16,6 +16,14 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     end
   end
 
+  describe '::get_default_settings' do
+    it 'should get the default settings' do
+      expect(@client).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', @client.api_version)
+        .and_return(FakeResponse.new)
+      expect(OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client)).to be
+    end
+  end
+
   describe '#add_interconnect' do
     before :each do
       @item = OneviewSDK::LogicalInterconnectGroup.new(@client)
@@ -45,15 +53,6 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
       item.add_uplink_set(uplink)
       expect(item['uplinkSets'].size).to eq(1)
       expect(item['uplinkSets'].first).to eq(uplink.data)
-    end
-  end
-
-  describe '#get_default_settings' do
-    it 'should get the default settings' do
-      item = OneviewSDK::LogicalInterconnectGroup.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', item.api_version)
-        .and_return(FakeResponse.new)
-      expect(item.get_default_settings).to be
     end
   end
 

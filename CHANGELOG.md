@@ -1,4 +1,10 @@
 # Unreleased Changes
+
+## Unreleased: v4.0.0
+
+#### Bug fixes:
+- Fixed issue #132 get_default_settings in API200 is currently an instance method, but it should be a class method
+
 #### Design changes:
    - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
      - Artifacts Bundle
