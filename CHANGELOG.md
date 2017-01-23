@@ -1,8 +1,8 @@
 # Unreleased Changes
 
-## Unreleased: v4.0.0
+## Suggested release: v4.0.0
 
-#### Bug fixes:
+#### Breaking changes:
 - Fixed issue #93 Logical Switch refresh conflict
 
 #### Design changes:
