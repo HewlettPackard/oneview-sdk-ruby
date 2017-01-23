@@ -47,6 +47,16 @@ RSpec.shared_context 'integration api300 context', a: :b do
   integration_context_debugging
 end
 
+# Context for Image Streamer API300 integration testing:
+RSpec.shared_context 'integration i3s api300 context', a: :b do
+  before :all do
+    integration_context_i3s
+    $client_i3s_300 ||= OneviewSDK::ImageStreamer::Client.new($config_i3s.merge(api_version: 300))
+  end
+
+  integration_context_debugging
+end
+
 RSpec.shared_context 'system context', a: :b do
   before(:each) do
     load_system_properties
@@ -107,6 +117,25 @@ def integration_context
   # Creates the global config variable
   $config ||= OneviewSDK::Config.load(@config_path)
   $config_synergy ||= OneviewSDK::Config.load(@config_path_synergy)
+end
+
+# Must set the following environment variables:
+#   ENV['ONEVIEWSDK_INTEGRATION_I3S_CONFIG'] = '/full/path/to/one_view/config.json'
+# Or use the default paths:
+#   spec/integration/one_view_i3s_config.json
+def integration_context_i3s
+  default_config = 'spec/integration/one_view_i3s_config.json'
+  @config_path_i3s ||= ENV['ONEVIEWSDK_INTEGRATION_I3S_CONFIG'] || default_config
+  # Ensure config & secrets files exist
+  unless File.file?(@config_path_i3s)
+    STDERR.puts "\n\n"
+    STDERR.puts 'ERROR: Integration config i3s file not found' unless File.file?(@config_path_i3s)
+    STDERR.puts "\n\n"
+    exit!
+  end
+
+  # Creates the global config variable
+  $config_i3s ||= OneviewSDK::Config.load(@config_path_i3s)
 end
 
 # For debugging only: Shows test metadata without actually running the tests

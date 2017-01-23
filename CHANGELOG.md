@@ -1,17 +1,5 @@
 # Unreleased Changes
-**Proposed Version:** v3.1.0
-
- 1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
-   - Interconnect
-   - Logical Interconnect
-   - Uplink Set
-   - Volume attachment
-   - Unmanaged devices
-
- 2. Bug fixes:
-    - Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
-
- 3. Design changes:
+#### Design changes:
    - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
      - Artifacts Bundle
      - Build Plan
@@ -20,7 +8,18 @@
      - OS Volumes
      - Plan Scripts
 
-### Features supported
+# v3.1.0
+Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
+   - Interconnect
+   - Logical Interconnect
+   - Uplink Set
+   - Volume attachment
+   - Unmanaged devices
+
+#### Bug fixes
+- Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
+
+#### Features supported
 - Connection template
 - Datacenter
 - Enclosure
