@@ -9,9 +9,9 @@ RSpec.describe klass, integration: true, type: UPDATE do
     @item.retrieve!
   end
 
-  describe '#refresh_data_state!' do
+  describe '#refresh_state!' do
     it 'refresh logical switch' do
-      @item.refresh_data_state!
+      @item.refresh_state!
     end
   end
 end

@@ -49,7 +49,7 @@ module OneviewSDK
       # Updates this object using the data that exists on OneView
       # @note Will overwrite any data that differs from OneView
       # @return [Resource] self
-      def refresh_data_state!
+      def refresh_state!
         response = @client.rest_put(@data['uri'] + '/refresh')
         @client.response_handler(response)
       end
