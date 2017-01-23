@@ -31,7 +31,9 @@ module OneviewSDK
         # Retrieves the modified contents of the selected Plan Script as per the selected attributes.
         # @return The script differences of the selected Plan Script
         def retrieve_differences
-          response = @client.rest_post("#{BASE_URI}/differences/#{@data['uri'].split('/').last}")
+          ensure_client && ensure_uri
+          path = "#{BASE_URI}/differences/#{@data['uri'].split('/').last}"
+          response = @client.rest_post(path, { 'Content-Type' => 'none' }, @api_version)
           @client.response_handler(response)
         end
       end
