@@ -34,6 +34,6 @@ logical_switch.create
 puts "Logical switch created with uri=#{logical_switch['uri']}"
 
 # Refresh state of logical switch
-puts "Refreshing state of logical switch"
+puts 'Refreshing state of logical switch'
 logical_switch.refresh_state!
-puts "Refreshed successfully!"
+puts 'Refreshed successfully!'

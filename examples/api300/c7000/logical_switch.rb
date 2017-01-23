@@ -45,6 +45,6 @@ internal_link_set = OneviewSDK::API300::C7000::LogicalSwitch.get_internal_link_s
 puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
 
 # Refresh state of logical switch
-puts "Refreshing state of logical switch"
+puts 'Refreshing state of logical switch'
 logical_switch.refresh_state!
-puts "Refreshed successfully!"
+puts 'Refreshed successfully!'
