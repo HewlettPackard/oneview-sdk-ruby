@@ -52,7 +52,6 @@ module OneviewSDK
         response = @client.rest_put(@data['uri'] + '/refresh')
         body = @client.response_handler(response)
         set_all(body)
-        self
       end
 
 

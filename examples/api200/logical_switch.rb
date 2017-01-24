@@ -22,7 +22,7 @@ logical_switch_group = OneviewSDK::LogicalSwitchGroup.get_all(@client).first
 
 logical_switch = OneviewSDK::LogicalSwitch.new(
   @client,
-  name: 'Teste_SDK',
+  name: 'LogicalSwitch',
   logicalSwitchGroupUri: logical_switch_group['uri']
 )
 
