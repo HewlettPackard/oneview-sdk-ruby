@@ -12,22 +12,23 @@
 require_relative '../_client'
 
 # SSH Credential
-ssh_credentials = OneviewSDK::LogicalSwitch::CredentialsSSH.new('dcs', 'dcs')
+ssh_credentials = OneviewSDK::LogicalSwitch::CredentialsSSH.new(@logical_switch_ssh_user, @logical_switch_ssh_password)
 
 # SNMP credentials
-snmp_v1 = OneviewSDK::LogicalSwitch::CredentialsSNMPV1.new(161, 'public')
-snmp_v1_2 = OneviewSDK::LogicalSwitch::CredentialsSNMPV1.new(161, 'public')
+snmp_v1 = OneviewSDK::LogicalSwitch::CredentialsSNMPV1.new(161, @logical_switch_community_string)
+snmp_v1_2 = OneviewSDK::LogicalSwitch::CredentialsSNMPV1.new(161, @logical_switch_community_string)
 
+logical_switch_group = OneviewSDK::LogicalSwitchGroup.get_all(@client).first
 
 logical_switch = OneviewSDK::LogicalSwitch.new(
   @client,
   name: 'Teste_SDK',
-  logicalSwitchGroupUri: '/rest/logical-switch-groups/8d1fe1cb-cf46-4711-bd73-73ea2c0f2062'
+  logicalSwitchGroupUri: logical_switch_group['uri']
 )
 
 # Adding switches credentials
-logical_switch.set_switch_credentials('172.18.16.91', ssh_credentials, snmp_v1)
-logical_switch.set_switch_credentials('172.18.16.92', ssh_credentials, snmp_v1_2)
+logical_switch.set_switch_credentials(@logical_switch1_ip, ssh_credentials, snmp_v1)
+logical_switch.set_switch_credentials(@logical_switch2_ip, ssh_credentials, snmp_v1_2)
 
 # Creates logical switch for a switch group
 logical_switch.create

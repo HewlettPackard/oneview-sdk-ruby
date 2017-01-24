@@ -50,7 +50,7 @@ module OneviewSDK
       # @return [OneviewSDK::LogicalSwitch] self
       def refresh_state!
         response = @client.rest_put(@data['uri'] + '/refresh')
-        @client.response_handler(response)
+        body = @client.response_handler(response)
         set_all(body)
         self
       end
