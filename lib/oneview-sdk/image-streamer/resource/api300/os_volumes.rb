@@ -39,6 +39,7 @@ module OneviewSDK
         # Get the details of the archived OS volume with the specified attribute.
         # @return The details of the archived OS volume with the specified attribute
         def get_details_archive
+          ensure_client && ensure_uri
           response = @client.rest_get("#{BASE_URI}/archive/#{data['uri'].split('/').last}")
           @client.response_handler(response)
         end
