@@ -108,7 +108,24 @@ RSpec.describe klass do
       allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
       expect(klass.add(@client_i3s_300, 'file.zip', options)).to eq('fake')
-      # expect(response['response']). to eq('fake')
+    end
+  end
+
+  describe '#get_details_archive' do
+    it 'raises an exception when uri is empty' do
+      item = klass.new(@client_i3s_300)
+      expect { item.get_details_archive('path fake') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
+    end
+
+    it 'Download the details of the golden image capture logs' do
+      file = double('file like object')
+      item = klass.new(@client_i3s_300, uri: '/rest/fake')
+      res = FakeResponse.new('res', 300)
+      allow_any_instance_of(Net::HTTP).to receive(:get).with('/archive/fake').and_return(res)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      expect(File).to receive(:open).with('path/fake', 'wb').and_yield(file)
+      expect(file).to receive(:write).with(res.body)
+      expect(item.get_details_archive('path/fake')).to eq(true)
     end
   end
 end
