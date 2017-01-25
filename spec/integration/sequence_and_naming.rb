@@ -53,7 +53,8 @@ DEPENDENCIES = {
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
   VolumeTemplate: [:StoragePool],
-  PlanScripts: []
+  PlanScripts: [],
+  BuildPlan: [:PlanScripts]
 }.freeze
 
 SEQ = DEPENDENCIES.tsort
@@ -228,3 +229,8 @@ SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
 # Plan Scripts
 PLAN_SCRIPT1_NAME = 'Plan_Script_1'.freeze
 PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze
+
+# Build Plan
+BUILD_PLAN1_NAME = 'Build_Plan_1'.freeze
+BUILD_PLAN2_NAME = 'Build_Plan_2'.freeze
+BUILD_PLAN1_NAME_UPDATED = 'Build_Plan_1_Updated'.freeze
