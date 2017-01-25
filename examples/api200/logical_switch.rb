@@ -34,7 +34,6 @@ logical_switch.set_switch_credentials(@logical_switch2_ip, ssh_credentials, snmp
 logical_switch.create
 puts "Logical switch created with uri=#{logical_switch['uri']}"
 
-# Refresh state of logical switch
-puts 'Refreshing state of logical switch'
-logical_switch.refresh_state!
-puts 'Refreshed successfully!'
+puts 'Reclaiming the top-of-rack switches in a logical switch'
+logical_switch.refresh_state
+puts 'Action done Successfully!'

@@ -47,11 +47,10 @@ module OneviewSDK
       end
 
       # Reclaims the top-of-rack switches in a logical switch.
-      # @return [OneviewSDK::LogicalSwitch] self
-      def refresh_state!
+      # @return [Hash] Http response body with logical switch data.
+      def refresh_state
         response = @client.rest_put(@data['uri'] + '/refresh')
-        body = @client.response_handler(response)
-        set_all(body)
+        @client.response_handler(response)
       end
 
 
