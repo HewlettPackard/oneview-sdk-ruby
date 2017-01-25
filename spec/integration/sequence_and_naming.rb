@@ -52,7 +52,8 @@ DEPENDENCIES = {
   UplinkSet: [:LogicalInterconnectGroup, :LogicalInterconnect],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
-  VolumeTemplate: [:StoragePool]
+  VolumeTemplate: [:StoragePool],
+  PlanScripts: []
 }.freeze
 
 SEQ = DEPENDENCIES.tsort
@@ -223,3 +224,7 @@ INTERCONNECT_3_NAME = "#{ENCLOSURE_1}, interconnect 5".freeze
 
 # SAS Interconnect
 SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
+
+# Plan Scripts
+PLAN_SCRIPT1_NAME = 'Plan_Script_1'.freeze
+PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze
