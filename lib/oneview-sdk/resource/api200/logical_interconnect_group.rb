@@ -65,6 +65,13 @@ module OneviewSDK
 
       # Get the logical interconnect group default settings
       # @return [Hash] The logical interconnect group settings
+      def self.get_default_settings(client)
+        response = client.rest_get(BASE_URI + '/defaultSettings')
+        client.response_handler(response)
+      end
+
+      # Get the logical interconnect group default settings
+      # @return [Hash] The logical interconnect group settings
       def get_default_settings
         get_uri = self.class::BASE_URI + '/defaultSettings'
         response = @client.rest_get(get_uri, @api_version)
