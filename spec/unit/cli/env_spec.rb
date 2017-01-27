@@ -32,9 +32,19 @@ RSpec.describe OneviewSDK::Cli do
       expect { command }.to output(/ONEVIEWSDK_SSL_ENABLED\s+=\sfalse/).to_stdout_from_any_process
     end
 
+    it 'shows ONEVIEWSDK_API_VERSION when set' do
+      ENV['ONEVIEWSDK_API_VERSION'] = '120'
+      expect { command }.to output(/ONEVIEWSDK_API_VERSION\s+=\s'120'/).to_stdout_from_any_process
+    end
+
+    it 'shows ONEVIEWSDK_VARIANT when set' do
+      ENV['ONEVIEWSDK_VARIANT'] = 'Synergy'
+      expect { command }.to output(/ONEVIEWSDK_VARIANT\s+=\s'Synergy'/).to_stdout_from_any_process
+    end
+
     it 'prints the resource details in json format' do
       data = {}
-      OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
+      OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] unless k.include?('I3S') }
       expect { OneviewSDK::Cli.start(%w(env -f json)) }.to output(JSON.pretty_generate(data) + "\n").to_stdout_from_any_process
     end
   end
