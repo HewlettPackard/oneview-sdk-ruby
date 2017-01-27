@@ -57,14 +57,6 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     end
   end
 
-  describe '#get_default_settings' do
-    it 'gets the default settings' do
-      expect(@client).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings')
-        .and_return(FakeResponse.new('Default' => 'Settings'))
-      expect(described_class.get_default_settings(@client)).to eq('Default' => 'Settings')
-    end
-  end
-
   describe '#get_settings' do
     it 'should get the settings' do
       item = described_class.new(@client, uri: '/rest/fake')
