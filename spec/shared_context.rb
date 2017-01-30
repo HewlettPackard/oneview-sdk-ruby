@@ -120,12 +120,12 @@ def integration_context
 end
 
 # Must set the following environment variables:
-#   ENV['ONEVIEWSDK_INTEGRATION_I3S_CONFIG'] = '/full/path/to/one_view/config.json'
+#   ENV['I3S_INTEGRATION_CONFIG'] = '/full/path/to/i3s/config.json'
 # Or use the default paths:
-#   spec/integration/one_view_i3s_config.json
+#   spec/integration/i3s_config.json
 def integration_context_i3s
-  default_config = 'spec/integration/one_view_i3s_config.json'
-  @config_path_i3s ||= ENV['ONEVIEWSDK_INTEGRATION_I3S_CONFIG'] || default_config
+  default_config = 'spec/integration/i3s_config.json'
+  @config_path_i3s ||= ENV['I3S_INTEGRATION_CONFIG'] || default_config
   # Ensure config & secrets files exist
   unless File.file?(@config_path_i3s)
     STDERR.puts "\n\n"

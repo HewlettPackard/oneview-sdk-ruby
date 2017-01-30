@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 require 'spec_helper'
 
 klass = OneviewSDK::ImageStreamer::API300::PlanScripts
-RSpec.describe klass, integration_i3s: true, type: CREATE do
+RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(klass) do
   include_context 'integration i3s api300 context'
 
   describe '#create' do
@@ -28,7 +28,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE do
       item = klass.new($client_i3s_300, options)
       expect { item.create! }.not_to raise_error
       item.retrieve!
-      expect(item['uri']).not_to be_empty
+      expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
       expect(item['hpProvided']).to be options[:hpProvided]
@@ -45,7 +45,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE do
 
     it 'retrieves the modified contents' do
       item = klass.find_by($client_i3s_300, name: PLAN_SCRIPT1_NAME).first
-      expect(item['uri']).not_to be_empty
+      expect(item['uri']).to be
       expect { item.retrieve_differences }.not_to raise_error
     end
   end
