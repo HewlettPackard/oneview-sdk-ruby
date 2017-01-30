@@ -1,4 +1,10 @@
 # Unreleased Changes
+
+## Suggested release: v4.0.0
+
+#### Breaking changes:
+- Fixed issue #93 Logical Switch refresh conflict
+
 #### Design changes:
    - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
      - Artifacts Bundle
