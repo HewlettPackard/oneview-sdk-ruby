@@ -37,7 +37,9 @@ RSpec.describe klass do
         .and_return(FakeResponse.new('Default' => 'Settings'))
       expect(klass.get_default_settings(@client_300)).to eq('Default' => 'Settings')
     end
+  end
 
+  describe '#get_settings' do
     it 'gets the current settings' do
       item = klass.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/settings', 300)

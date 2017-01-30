@@ -71,6 +71,15 @@ module OneviewSDK
         @data['uplinkSets'] << uplink_set.data
       end
 
+      # Get the logical interconnect group default settings
+      # @deprecated Use {::get_default_settings} instead. This method will be removed in the next major release.
+      # @return [Hash] The logical interconnect group settings
+      def get_default_settings
+        get_uri = self.class::BASE_URI + '/defaultSettings'
+        response = @client.rest_get(get_uri, @api_version)
+        @client.response_handler(response)
+      end
+
       # Gets the logical interconnect group settings
       # @return [Hash] The logical interconnect group settings
       def get_settings
