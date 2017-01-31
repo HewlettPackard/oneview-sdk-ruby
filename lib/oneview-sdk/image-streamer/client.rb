@@ -25,9 +25,9 @@ module OneviewSDK
       # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
       # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on the tasks to complete.
       # @option options [String] :url URL of Image Streamer
-      # @option options [String] :token (ENV['ONEVIEWSDK_I3S_TOKEN']) The token to use for authentication with Image Streamer
+      # @option options [String] :token (ENV['I3S_TOKEN']) The token to use for authentication with Image Streamer
       # @option options [Integer] :api_version (300) This is the API version to use by default for requests
-      # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['ONEVIEWSDK_I3S_SSL_ENABLED']
+      # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['I3S_SSL_ENABLED']
       # @option options [Integer] :timeout (nil) Override the default request timeout value
       def initialize(options = {})
         options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
@@ -37,7 +37,7 @@ module OneviewSDK
         @log_level = options[:log_level] || :info
         @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
         @print_wait_dots = options.fetch(:print_wait_dots, false)
-        @url = options[:url] || ENV['ONEVIEWSDK_I3S_URL']
+        @url = options[:url] || ENV['I3S_URL']
         raise InvalidClient, 'Must set the url option' unless @url
         @max_api_version = appliance_i3s_api_version
         if options[:api_version] && options[:api_version].to_i > @max_api_version
@@ -48,18 +48,18 @@ module OneviewSDK
         OneviewSDK::ImageStreamer.api_version = @api_version unless
           OneviewSDK::ImageStreamer.api_version_updated? || !OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS.include?(@api_version)
         @ssl_enabled = true
-        if ENV.key?('ONEVIEWSDK_I3S_SSL_ENABLED')
-          if %w(true false 1 0).include?(ENV['ONEVIEWSDK_I3S_SSL_ENABLED'])
-            @ssl_enabled = !%w(false 0).include?(ENV['ONEVIEWSDK_I3S_SSL_ENABLED'])
+        if ENV.key?('I3S_SSL_ENABLED')
+          if %w(true false 1 0).include?(ENV['I3S_SSL_ENABLED'])
+            @ssl_enabled = !%w(false 0).include?(ENV['I3S_SSL_ENABLED'])
           else
-            @logger.warn "Unrecognized ssl_enabled value '#{ENV['ONEVIEWSDK_I3S_SSL_ENABLED']}'. Valid options are 'true' & 'false'"
+            @logger.warn "Unrecognized ssl_enabled value '#{ENV['I3S_SSL_ENABLED']}'. Valid options are 'true' & 'false'"
           end
         end
         @ssl_enabled = options[:ssl_enabled] unless options[:ssl_enabled].nil?
         @timeout = options[:timeout] unless options[:timeout].nil?
         @cert_store = OneviewSDK::SSLHelper.load_trusted_certs if @ssl_enabled
-        raise InvalidClient, 'Must set token option' unless options[:token] || ENV['ONEVIEWSDK_I3S_TOKEN']
-        @token = options[:token] || ENV['ONEVIEWSDK_I3S_TOKEN']
+        raise InvalidClient, 'Must set token option' unless options[:token] || ENV['I3S_TOKEN']
+        @token = options[:token] || ENV['I3S_TOKEN']
       end
 
       # Get array of all resources of a specified type

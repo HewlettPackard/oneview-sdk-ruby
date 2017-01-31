@@ -18,7 +18,7 @@ end
 SimpleCov.profiles.define 'integration' do
   add_filter 'spec/'
   add_filter 'cli.rb'
-  add_filter '../lib/oneview-sdk/image-streamer'
+  add_filter '../lib/oneview-sdk/image-streamer/'
   add_filter '../lib/oneview-sdk/image_streamer.rb'
   add_group 'Client', client_files
   add_group 'Resources', resource_path
@@ -73,6 +73,7 @@ require_relative '../lib/oneview-sdk/image_streamer'
 require_relative 'shared_context'
 require_relative 'support/fake_response'
 require_relative 'integration/sequence_and_naming'
+require_relative 'integration/sequence_and_naming_i3s'
 
 RSpec.configure do |config|
   # Sort integration and system tests

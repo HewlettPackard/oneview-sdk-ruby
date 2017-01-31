@@ -3,6 +3,7 @@
 AllCops:
   Exclude:
     - 'examples/_client.rb'
+    - 'examples/_client_i3s.rb'
 
 Metrics/ClassLength:
   Max: 200
