@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ module OneviewSDK
         end
 
         # Retrieves the modified contents of the selected Plan Script as per the selected attributes.
-        # @return The script differences of the selected Plan Script
+        # @return [Hash] The script differences of the selected Plan Script.
         def retrieve_differences
           ensure_client && ensure_uri
           path = "#{BASE_URI}/differences/#{@data['uri'].split('/').last}"

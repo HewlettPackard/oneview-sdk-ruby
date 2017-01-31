@@ -52,9 +52,7 @@ DEPENDENCIES = {
   UplinkSet: [:LogicalInterconnectGroup, :LogicalInterconnect],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
-  VolumeTemplate: [:StoragePool],
-  PlanScripts: [],
-  BuildPlan: [:PlanScripts]
+  VolumeTemplate: [:StoragePool]
 }.freeze
 
 SEQ = DEPENDENCIES.tsort
@@ -62,18 +60,20 @@ RSEQ = SEQ.reverse
 
 # Get sequence number for the given class (Create sequence)
 # @param [Class] klass
+# @param [Array] Array with the dependencies
 # @return [Integer] sequence number
-def seq(klass)
+def seq(klass, seq = SEQ)
   k = klass.to_s.split('::').last.to_sym
-  (SEQ.index(k) || -1) + 1
+  (seq.index(k) || -1) + 1
 end
 
 # Get inverse sequence number for the given class (Delete sequence)
 # @param [Class] klass
+# @param [Array] Array with the dependencies
 # @return [Integer] sequence number
-def rseq(klass)
+def rseq(klass, rseq = RSEQ)
   k = klass.to_s.split('::').last.to_sym
-  (RSEQ.index(k) || -1) + 1
+  (rseq.index(k) || -1) + 1
 end
 
 
@@ -225,12 +225,3 @@ INTERCONNECT_3_NAME = "#{ENCLOSURE_1}, interconnect 5".freeze
 
 # SAS Interconnect
 SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
-
-# Plan Scripts
-PLAN_SCRIPT1_NAME = 'Plan_Script_1'.freeze
-PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze
-
-# Build Plan
-BUILD_PLAN1_NAME = 'Build_Plan_1'.freeze
-BUILD_PLAN2_NAME = 'Build_Plan_2'.freeze
-BUILD_PLAN1_NAME_UPDATED = 'Build_Plan_1_Updated'.freeze

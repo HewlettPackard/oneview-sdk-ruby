@@ -12,7 +12,7 @@
 require 'spec_helper'
 
 klass = OneviewSDK::ImageStreamer::API300::BuildPlan
-RSpec.describe klass, integration_i3s: true, type: DELETE do
+RSpec.describe klass, integration_i3s: true, type: DELETE, sequence: i3s_rseq(klass) do
   include_context 'integration i3s api300 context'
 
   describe '#delete' do
