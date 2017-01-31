@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE do
 
     it 'gets the details of the archived OS volume' do
       item = klass.find_by($client_i3s_300, {}).first
-      expect(item['uri']).not_to be_empty
+      expect(item['uri']).to be
       expect { item.get_details_archive }.not_to raise_error
     end
   end

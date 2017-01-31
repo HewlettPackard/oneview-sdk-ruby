@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ module OneviewSDK
         end
 
         # Get the details of the archived OS volume with the specified attribute.
-        # @return The details of the archived OS volume with the specified attribute
+        # @return [Hash] The details of the archived OS volume with the specified attribute
         def get_details_archive
           ensure_client && ensure_uri
           response = @client.rest_get("#{BASE_URI}/archive/#{data['uri'].split('/').last}")
