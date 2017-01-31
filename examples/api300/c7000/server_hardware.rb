@@ -67,6 +67,34 @@ filters = [
 response2 = item4.get_firmwares(filters)
 puts "\nFound firware inventory: '#{response2}'."
 
+scope_1 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 1')
+scope_1.create
+scope_2 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 2')
+scope_2.create
+
+puts "\nAdding scopes"
+item.add_scope(scope_1)
+item.refresh
+puts 'Scopes:', item['scopeUris']
+
+puts "\nReplacing scopes"
+item.replace_scopes(scope_2)
+item.refresh
+puts 'Scopes:', item['scopeUris']
+
+puts "\nRemoving scopes"
+item.remove_scope(scope_1)
+item.remove_scope(scope_2)
+item.refresh
+puts 'Scopes:', item['scopeUris']
+
+scope_1.refresh
+scope_2.refresh
+
+# Delete scopes
+scope_1.delete
+scope_2.delete
+
 # Delete this item
 item.remove
 puts "\nSucessfully removed #{type} '#{item[:name]}'."

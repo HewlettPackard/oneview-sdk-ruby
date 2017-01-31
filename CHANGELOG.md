@@ -2,6 +2,9 @@
 
 ## Suggested release: v4.0.0
 
+Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to features:
+   - Scope
+
 #### Breaking changes:
 - Fixed issue #93 Logical Switch refresh conflict
 

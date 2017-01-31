@@ -25,22 +25,37 @@ module OneviewSDK
           @data ||= {}
           # Default values:
           @data['type'] ||= 'EnclosureV300'
+          @data['scopeUris'] ||= []
           super
         end
 
-        # Update specific attributes of a given enclosure
-        # @param [String] operation Operation to be performed
-        # @param [String] path Path
-        # @param [String] value Value
-        def patch(operation, path, value = nil)
-          ensure_client && ensure_uri
-          body = if value
-                   { op: operation, path: path, value: value }
-                 else
-                   { op: operation, path: path }
-                 end
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
+        # Add one scope to the enclosure
+        # @param [OneviewSDK::API300::C7000::Scope] scope The scope resource
+        # @raise [OneviewSDK::IncompleteResource] if the uri of scope is not set
+        def add_scope(scope)
+          scope.ensure_uri
+          patch('add', '/scopeUris/-', scope['uri'])
+        end
+
+        # Remove one scope from the enclosure
+        # @param [OneviewSDK::API300::C7000::Scope] scope The scope resource
+        # @raise [OneviewSDK::IncompleteResource] if the uri of scope is not set
+        def remove_scope(scope)
+          scope.ensure_uri
+          scope_index = @data['scopeUris'].find_index { |uri| uri == scope['uri'] }
+          patch('remove', "/scopeUris/#{scope_index}", nil) if scope_index
+        end
+
+        # Change the list of scopes in the enclosure
+        # @param [Array[OneviewSDK::API300::C7000::Scope]] scopes The scopes list (or scopes separeted by comma)
+        # @raise [OneviewSDK::IncompleteResource] if the uri of each scope is not set
+        def replace_scopes(*scopes)
+          scopes = scopes.flatten
+          uris = scopes.map do |scope|
+            scope.ensure_uri
+            scope['uri']
+          end
+          patch('replace', '/scopeUris', uris)
         end
       end
     end
