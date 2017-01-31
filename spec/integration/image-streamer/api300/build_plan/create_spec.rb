@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE do
       item = klass.new($client_i3s_300, options)
       expect { item.create! }.not_to raise_error
       item.retrieve!
-      expect(item['uri']).not_to be_empty
+      expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
     end
@@ -53,7 +53,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE do
 
       expect { item.create! }.not_to raise_error
       item.retrieve!
-      expect(item['uri']).not_to be_empty
+      expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
     end
