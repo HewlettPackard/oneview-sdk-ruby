@@ -6,6 +6,7 @@ RSpec.describe klass, integration_i3s: true, type: UPDATE do
 
   describe '#update' do
     it 'updates the name of the golden image' do
-    
+
+    end
   end
 end

@@ -128,4 +128,22 @@ RSpec.describe klass do
       expect(item.get_details_archive('path/fake')).to eq(true)
     end
   end
+
+  describe '#download' do
+    it 'raises an exception when uri is empty' do
+      item = klass.new(@client_i3s_300)
+      expect { item.download('path fake') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
+    end
+
+    it 'Downloads the content of the selected golden image' do
+      file = double('file like object')
+      item = klass.new(@client_i3s_300, uri: '/rest/fake')
+      res = FakeResponse.new('res', 300)
+      allow_any_instance_of(Net::HTTP).to receive(:get).with('/download/fake').and_return(res)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      expect(File).to receive(:open).with('path/fake', 'wb').and_yield(file)
+      expect(file).to receive(:write).with(res.body)
+      expect(item.download('path/fake')).to eq(true)
+    end
+  end
 end

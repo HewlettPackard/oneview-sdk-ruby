@@ -32,6 +32,7 @@ module OneviewSDK
         end
 
         # Download the details of the golden image capture logs which has been archived based on the specific attribute ID.
+        # @param [String] file_path
         # @return [True] When was saved successfully
         def get_details_archive(file_path)
           ensure_client && ensure_uri
@@ -39,6 +40,20 @@ module OneviewSDK
           options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
           Net::HTTP.start(url.host, url.port, options) do |http|
             resp = http.get("/archive/#{@data['uri'].split('/').last}")
+            File.open(file_path, 'wb') { |file| file.write(resp.body) }
+          end
+          true
+        end
+
+        # Downloads the content of the selected golden image as per the specified attributes.
+        # @param [String] file_path
+        # @return [True] When was saved successfully
+        def download(file_path)
+          ensure_client && ensure_uri
+          url = URI.parse(URI.escape("#{@client.url}#{BASE_URI}"))
+          options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
+          Net::HTTP.start(url.host, url.port, options) do |http|
+            resp = http.get("/download/#{@data['uri'].split('/').last}")
             File.open(file_path, 'wb') { |file| file.write(resp.body) }
           end
           true
