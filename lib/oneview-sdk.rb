@@ -19,7 +19,7 @@ require_relative 'oneview-sdk/image_streamer'
 
 # Module for interacting with the HPE OneView API
 module OneviewSDK
-  env_i3s = %w(ONEVIEWSDK_I3S_URL ONEVIEWSDK_I3S_TOKEN ONEVIEWSDK_I3S_SSL_ENABLED)
+  env_i3s = %w(I3S_URL I3S_TOKEN I3S_SSL_ENABLED)
   ENV_VARS = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED).concat(env_i3s).freeze
 
   SUPPORTED_API_VERSIONS = [200, 300].freeze
