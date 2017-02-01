@@ -60,18 +60,20 @@ RSEQ = SEQ.reverse
 
 # Get sequence number for the given class (Create sequence)
 # @param [Class] klass
+# @param [Array] Array with the dependencies
 # @return [Integer] sequence number
-def seq(klass)
+def seq(klass, seq = SEQ)
   k = klass.to_s.split('::').last.to_sym
-  (SEQ.index(k) || -1) + 1
+  (seq.index(k) || -1) + 1
 end
 
 # Get inverse sequence number for the given class (Delete sequence)
 # @param [Class] klass
+# @param [Array] Array with the dependencies
 # @return [Integer] sequence number
-def rseq(klass)
+def rseq(klass, rseq = RSEQ)
   k = klass.to_s.split('::').last.to_sym
-  (RSEQ.index(k) || -1) + 1
+  (rseq.index(k) || -1) + 1
 end
 
 

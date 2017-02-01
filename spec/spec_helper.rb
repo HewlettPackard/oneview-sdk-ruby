@@ -18,6 +18,8 @@ end
 SimpleCov.profiles.define 'integration' do
   add_filter 'spec/'
   add_filter 'cli.rb'
+  add_filter '../lib/oneview-sdk/image-streamer/'
+  add_filter '../lib/oneview-sdk/image_streamer.rb'
   add_group 'Client', client_files
   add_group 'Resources', resource_path
   minimum_coverage 50 # TODO: bump up as we increase coverage. Goal: 85%
@@ -32,6 +34,17 @@ SimpleCov.profiles.define 'system' do
   minimum_coverage 50 # TODO: bump up as we increase coverage. Goal: 85%
   minimum_coverage_by_file 30 # TODO: bump up as we increase coverage. Goal: 70%
 end
+
+SimpleCov.profiles.define 'integration_i3s' do
+  add_filter 'spec/'
+  add_filter 'cli.rb'
+  add_filter '../lib/oneview-sdk/resource'
+  add_group 'Client', client_files
+  add_group 'Resources', image_streamer_path
+  minimum_coverage 50 # TODO: bump up as we increase coverage. Goal: 85%
+  minimum_coverage_by_file 30 # TODO: bump up as we increase coverage. Goal: 70%
+end
+
 
 SimpleCov.profiles.define 'all' do
   add_filter 'spec/'
@@ -49,6 +62,8 @@ elsif RSpec.configuration.filter_manager.inclusions.rules[:system] # Run System 
   SimpleCov.start 'system'
 elsif RSpec.configuration.filter_manager.exclusions.rules[:integration] && RSpec.configuration.filter_manager.exclusions.rules[:system]
   SimpleCov.start 'unit'
+elsif RSpec.configuration.filter_manager.inclusions.rules[:integration_i3s] # Run Integration for i3s only
+  SimpleCov.start 'integration_i3s'
 else # Run both
   SimpleCov.start 'all'
 end
@@ -58,10 +73,12 @@ require_relative '../lib/oneview-sdk/image_streamer'
 require_relative 'shared_context'
 require_relative 'support/fake_response'
 require_relative 'integration/sequence_and_naming'
+require_relative 'integration/sequence_and_naming_i3s'
 
 RSpec.configure do |config|
   # Sort integration and system tests
-  if config.filter_manager.inclusions.rules[:integration] || config.filter_manager.inclusions.rules[:system]
+  if config.filter_manager.inclusions.rules[:integration] || config.filter_manager.inclusions.rules[:system] ||
+      config.filter_manager.inclusions.rules[:integration_i3s]
     config.register_ordering(:global) do |items|
       items.sort_by { |i| [(i.metadata[:type] || 0), (i.metadata[:sequence] || 100)] }
     end
