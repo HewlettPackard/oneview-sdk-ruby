@@ -13,6 +13,9 @@ RSpec.describe klass do
       it 'sets the defaults correctly' do
         item = klass.new(@client_300)
         expect(item[:type]).to eq('EnclosureGroupV300')
+        expect(item[:stackingMode]).to eq('Enclosure')
+        expect(item[:enclosureCount]).to eq(1)
+        expect(item[:interconnectBayMappingCount]).to eq(8)
       end
     end
   end
@@ -43,6 +46,48 @@ RSpec.describe klass do
         .and_return(FakeResponse.new('Blah'))
       expect(@client_300.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
       expect(item.set_script('Blah')).to eq(true)
+    end
+  end
+
+  describe '#create_interconnect_bay_mapping' do
+    it 'creates entries for each bay in each enclosure' do
+      item = klass.new(@client_300, name: 'EG', enclosureCount: 3)
+      expect(item['interconnectBayMappings'].size).to eq(24)
+      expect(item['interconnectBayMappings'].first['enclosureIndex']).to eq(1)
+      expect(item['interconnectBayMappings'].first['interconnectBay']).to eq(1)
+    end
+  end
+
+  describe '#add_logical_interconnect_group' do
+    before :each do
+      @lig = OneviewSDK::API300::C7000::LogicalInterconnectGroup.new(@client_300, uri: '/fakelig')
+      @lig['interconnectMapTemplate']['interconnectMapEntryTemplates'] = [
+        { 'permittedInterconnectTypeUri' => '/fake', 'logicalLocation' => { 'locationEntries' => [{ 'type' => 'Bay', 'relativeValue' => 1 }] } },
+        { 'permittedInterconnectTypeUri' => '/fake', 'logicalLocation' => { 'locationEntries' => [{ 'type' => 'Bay', 'relativeValue' => 4 }] } }
+      ]
+      @item = klass.new(@client_300, name: 'EG', enclosureCount: 3)
+    end
+
+    it 'it adds the LIG to each enclosure when no enclosureIndex is specified' do
+      @item.add_logical_interconnect_group(@lig)
+      bays_with_lig = @item['interconnectBayMappings'].find_all { |i| i['logicalInterconnectGroupUri'] == @lig['uri'] }
+      bays_map = bays_with_lig.map { |i| [i['enclosureIndex'], i['interconnectBay']] }
+      expect(bays_map).to include([1, 1])
+      expect(bays_map).to include([1, 4])
+      expect(bays_map).to include([2, 1])
+      expect(bays_map).to include([2, 4])
+      expect(bays_map).to include([3, 1])
+      expect(bays_map).to include([3, 4])
+    end
+
+    it 'it adds the LIG to only the enclosure the enclosureIndex that is specified' do
+      @item.add_logical_interconnect_group(@lig, 2)
+      bays_with_lig = @item['interconnectBayMappings'].find_all { |i| i['logicalInterconnectGroupUri'] == @lig['uri'] }
+      bays_map = bays_with_lig.map { |i| [i['enclosureIndex'], i['interconnectBay']] }
+      expect(bays_map).to_not include([1, 1])
+      expect(bays_map).to include([2, 1])
+      expect(bays_map).to include([2, 4])
+      expect(bays_map).to_not include([3, 4])
     end
   end
 end
