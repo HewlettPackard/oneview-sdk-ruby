@@ -17,7 +17,10 @@ RSpec.describe klass, integration_i3s: true, type: DELETE do
 
   describe '#delete' do
     it 'removes a golden image' do
-
+      item = klass.find_by($client_i3s_300, name: 'Golden_Image_1_Updated').first
+      expect(item['uri']).to be
+      expect { item.delete }.not_to raise_error
+      expect(item.retrieve!).to eq(false)
     end
   end
 end

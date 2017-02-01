@@ -11,6 +11,7 @@
 
 require_relative 'resource'
 require 'net/http/post/multipart'
+require 'byebug'
 
 module OneviewSDK
   module ImageStreamer
@@ -18,7 +19,7 @@ module OneviewSDK
       # Golden Image resource implementation for Image Streamer
       class GoldenImage < Resource
         BASE_URI = '/rest/golden-images'.freeze
-        READ_TIMEOUT = 300 # in seconds, 5 minutes
+        READ_TIMEOUT = 30 # in seconds, 5 minutes
         ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -80,21 +81,26 @@ module OneviewSDK
           url = URI.parse(URI.escape("#{client.url}#{BASE_URI}"))
 
           File.open(file_path) do |file|
+            byebug
             req = Net::HTTP::Post::Multipart.new(
               url.path,
               { 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) },
               options
             )
 
-            http_request = Net::HTTP.new(url.host, url.port)
-            http_request.use_ssl = true
-            http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-            http_request.read_timeout = timeout
 
-            response = http_request.start do |http|
-              response = http.request(req)
-              return client.response_handler(response)
-            end
+            puts '*******************'
+            puts req.parts
+
+            # http_request = Net::HTTP.new(url.host, url.port)
+            # http_request.use_ssl = true
+            # http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            # http_request.read_timeout = timeout
+            #
+            # response = http_request.start do |http|
+            #   response = http.request(req)
+            #   return client.response_handler(response)
+            # end
           end
         end
 
