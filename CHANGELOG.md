@@ -13,7 +13,6 @@
      - Golden Image
      - OS Volumes
      - Plan Scripts
-   - Fixes for API300::Synergy::LogicalInterconnectGroup. See issue [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141)
 
 #### Bug fixes & Enhancements
 - [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
