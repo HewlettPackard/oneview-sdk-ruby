@@ -13,7 +13,10 @@
      - Golden Image
      - OS Volumes
      - Plan Scripts
-   - Fixes for API300::Synergy::LogicalInterconnectGroup. See issue [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141)
+
+#### Bug fixes & Enhancements
+- [#131](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/131) Unavailable methods can take any number of arguments
+- [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
 
 # v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:

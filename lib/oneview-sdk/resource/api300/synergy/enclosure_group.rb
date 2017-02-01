@@ -33,7 +33,7 @@ module OneviewSDK
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def set_script
+        def set_script(*)
           unavailable_method
         end
 
