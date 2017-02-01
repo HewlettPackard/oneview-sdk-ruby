@@ -42,16 +42,28 @@ RSpec.describe klass, integration_i3s: true, type: CREATE do
   #   end
   # end
 
-  describe '#add' do
-    it 'adding a golden image' do
-      options = { name: 'Golden_Image_1', description: 'Any_Description' }
-      expect { klass.add($client_i3s_300, 'spec/support/vmwareesxi6_test.zip', options) }.not_to raise_error
-      # item.retrieve!
-      # expect(item['uri']).to be
-      # expect(item['name']).to eq(options[:name])
-      # expect(item['description']).to eq(options[:description])
-      # expect(item['osVolumeURI']).to eq(options[:osVolumeURI])
-      # expect(item['buildPlanUri']).to eq(options[:buildPlanUri])
+  # describe '#add' do
+  #   it 'adding a golden image' do
+  #     options = { name: 'Golden_Image_2', description: 'Any_Description' }
+  #     expect { klass.add($client_i3s_300, 'spec/support/vmwareesxi6_test.zip', options) }.not_to raise_error
+  #     item = klass.find_by($client_i3s_300, name: 'Golden_Image_2').first
+  #     expect(item['uri']).to be
+  #     expect(item['name']).to eq(options[:name])
+  #     expect(item['description']).to eq(options[:description])
+  #   end
+  # end
+
+  # describe '#get_details_archive' do
+  #   it 'gets details of the golden image capture logs' do
+  #     item = klass.find_by($client_i3s_300, {}).first
+  #     expect { item.get_details_archive('spec/support/details_gi.log') }.not_to raise_error
+  #   end
+  # end
+
+  describe '#download' do
+    it 'downloads the content of the selected golden image as per the specified attributes' do
+      item = klass.find_by($client_i3s_300, {}).first
+      expect { item.download('spec/support/golden_image_test.zip') }.not_to raise_error
     end
   end
 end

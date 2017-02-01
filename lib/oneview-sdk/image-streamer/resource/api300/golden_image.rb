@@ -11,7 +11,7 @@
 
 require_relative 'resource'
 require 'net/http/post/multipart'
-require 'byebug'
+# require 'byebug'
 
 module OneviewSDK
   module ImageStreamer
@@ -37,12 +37,8 @@ module OneviewSDK
         # @return [True] When was saved successfully
         def get_details_archive(file_path)
           ensure_client && ensure_uri
-          url = URI.parse(URI.escape("#{@client.url}#{BASE_URI}"))
-          options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
-          Net::HTTP.start(url.host, url.port, options) do |http|
-            resp = http.get("/archive/#{@data['uri'].split('/').last}")
-            File.open(file_path, 'wb') { |file| file.write(resp.body) }
-          end
+          resp = @client.rest_api(:get, "#{BASE_URI}/archive/#{@data['uri'].split('/').last}")
+          File.open(file_path, 'wb') { |file| file.write(resp.body) }
           true
         end
 
@@ -51,12 +47,8 @@ module OneviewSDK
         # @return [True] When was saved successfully
         def download(file_path)
           ensure_client && ensure_uri
-          url = URI.parse(URI.escape("#{@client.url}#{BASE_URI}"))
-          options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
-          Net::HTTP.start(url.host, url.port, options) do |http|
-            resp = http.get("/download/#{@data['uri'].split('/').last}")
-            File.open(file_path, 'wb') { |file| file.write(resp.body) }
-          end
+          resp = @client.rest_api(:get, "#{BASE_URI}/download/#{@data['uri'].split('/').last}")
+          File.open(file_path, 'wb') { |file| file.write(resp.body) }
           true
         end
 
@@ -65,15 +57,16 @@ module OneviewSDK
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
         # @param [String] file_path
         # @param [Hash] options The
-        # @option options [String] :name The name of the Golden Image
-        # @option options [String] :description The description of the Golden Image
+        # @option data_options [String] :name The name of the Golden Image
+        # @option data_options [String] :description The description of the Golden Image
         # @param [Integer] timeout The number of seconds to wait for completing the request
-        def self.add(client, file_path, options = {}, timeout = READ_TIMEOUT)
-          options = Hash[options.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
+        def self.add(client, file_path, data_options = {}, timeout = READ_TIMEOUT)
+          data_options = Hash[data_options.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
           raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
           raise InvalidFormat, 'ERROR: File with extension not supported!' unless ACCEPTED_FORMATS.include? File.extname(file_path)
-          raise IncompleteResource, 'Please set the name of the golden image!' unless options['name']
-          raise IncompleteResource, 'Please set the description of the golden image!' unless options['description']
+          raise IncompleteResource, 'Please set the name of the golden image!' unless data_options['name']
+          raise IncompleteResource, 'Please set the description of the golden image!' unless data_options['description']
+          options = {}
           options['Content-Type'] = 'multipart/form-data'
           options['X-Api-Version'] = client.api_version.to_s
           options['auth'] = client.token
@@ -81,26 +74,21 @@ module OneviewSDK
           url = URI.parse(URI.escape("#{client.url}#{BASE_URI}"))
 
           File.open(file_path) do |file|
-            byebug
             req = Net::HTTP::Post::Multipart.new(
               url.path,
-              { 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) },
+              { 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) }.merge(data_options),
               options
             )
 
+            http_request = Net::HTTP.new(url.host, url.port)
+            http_request.use_ssl = true
+            http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            http_request.read_timeout = timeout
 
-            puts '*******************'
-            puts req.parts
-
-            # http_request = Net::HTTP.new(url.host, url.port)
-            # http_request.use_ssl = true
-            # http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-            # http_request.read_timeout = timeout
-            #
-            # response = http_request.start do |http|
-            #   response = http.request(req)
-            #   return client.response_handler(response)
-            # end
+            http_request.start do |http|
+              response = http.request(req)
+              return client.response_handler(response)
+            end
           end
         end
 
