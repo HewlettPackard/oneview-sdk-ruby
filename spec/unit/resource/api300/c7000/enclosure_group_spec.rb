@@ -89,5 +89,12 @@ RSpec.describe klass do
       expect(bays_map).to include([2, 4])
       expect(bays_map).to_not include([3, 4])
     end
+
+    it 'raises an error if the LIG cannot be retrieved' do
+      @lig['uri'] = nil
+      expect(@lig).to receive(:retrieve!).and_return false
+      expect { @item.add_logical_interconnect_group(@lig) }
+        .to raise_error(OneviewSDK::NotFound, /LIG not found/)
+    end
   end
 end

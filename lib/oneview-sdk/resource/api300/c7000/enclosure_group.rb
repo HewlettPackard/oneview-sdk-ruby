@@ -34,9 +34,11 @@ module OneviewSDK
         # Adds the logical interconnect group
         # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
         # @param [Integer] enclosureIndex Enclosure index of bay to add LIG to. If nil, interconnects will be added for all enclosures
+        # @raise [OneviewSDK::NotFound] if the LIG uri is not set and cannot be retrieved
         # @return [OneviewSDK::EnclosureGroup] self
         def add_logical_interconnect_group(lig, enclosureIndex = nil)
           lig.retrieve! unless lig['uri']
+          raise(NotFound, 'LIG not found!') unless lig['uri']
           lig['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
             entry['logicalLocation']['locationEntries'].each do |location|
               next unless location['type'] == 'Bay' && entry['permittedInterconnectTypeUri']
