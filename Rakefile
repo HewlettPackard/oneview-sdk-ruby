@@ -26,6 +26,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.rspec_opts = def_spec_options
   spec.rspec_opts << ' --tag ~integration'
   spec.rspec_opts << ' --tag ~system'
+  spec.rspec_opts << ' --tag ~integration_i3s'
 end
 
 desc 'Run integration tests only'
@@ -207,4 +208,50 @@ task 'spec:integration:delete:api_version', [:ver] do |_t, spec|
   spec_pattern = 'spec/integration/resource/api200/**/*delete_spec.rb' if version.to_s == '200'
   Rake::Task[:rubocop].invoke
   Rake::Task['spec:integration'].invoke
+end
+
+desc 'Run rubocop & integration tests for Image Streamer.'
+RSpec::Core::RakeTask.new('spec:integration:i3s') do |spec|
+  Rake::Task[:rubocop].invoke
+  spec.pattern = spec_pattern
+  spec.rspec_opts = def_int_spec_options
+  spec.rspec_opts << ' --tag integration_i3s'
+end
+
+desc 'Run rubocop & integration creation tests for Image Streamer only'
+RSpec::Core::RakeTask.new('spec:integration:i3s:create') do |spec|
+  Rake::Task[:rubocop].invoke
+  spec.pattern = 'spec/**/*create_spec.rb'
+  spec.rspec_opts = def_int_spec_options
+  spec.rspec_opts << ' --tag integration_i3s'
+end
+
+desc 'Run rubocop & integration update tests for Image Streamer only'
+RSpec::Core::RakeTask.new('spec:integration:i3s:update') do |spec|
+  Rake::Task[:rubocop].invoke
+  spec.pattern = 'spec/**/*update_spec.rb'
+  spec.rspec_opts = def_int_spec_options
+  spec.rspec_opts << ' --tag integration_i3s'
+end
+
+desc 'Run rubocop & integration deletion tests for Image Streamer only'
+RSpec::Core::RakeTask.new('spec:integration:i3s:delete') do |spec|
+  Rake::Task[:rubocop].invoke
+  spec.pattern = 'spec/**/*delete_spec.rb'
+  spec.rspec_opts = def_int_spec_options
+  spec.rspec_opts << ' --tag integration_i3s'
+end
+
+desc 'Run rubocop & integration tests for specified API version of Image Streamer. Default: 300'
+task 'spec:integration:i3s:api_version', [:ver] do |_t, spec|
+  version = spec['ver'] || 300
+  spec_pattern = "spec/integration/image-streamer/api#{version}/**/*_spec.rb"
+  Rake::Task['spec:integration:i3s'].invoke
+end
+
+desc 'Run rubocop & integration tests for Image Streamer & specified path'
+task 'test:i3s:path', [:path] do |_t, spec|
+  spec_pattern = spec['path']
+  Rake::Task[:rubocop].invoke
+  Rake::Task['spec:integration:i3s'].invoke
 end
