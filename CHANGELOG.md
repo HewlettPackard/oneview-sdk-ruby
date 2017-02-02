@@ -1,4 +1,13 @@
 # Unreleased Changes
+
+## Suggested release: v4.0.0
+
+#### Bug fixes
+- Fixed issue #132 get_default_settings in API200 is currently an instance method, but it should be a class method
+
+#### Breaking changes:
+- Fixed issue #93 Logical Switch refresh conflict
+
 #### Design changes:
    - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
      - Artifacts Bundle
@@ -7,6 +16,7 @@
      - Golden Image
      - OS Volumes
      - Plan Scripts
+   - Fixes for API300::Synergy::LogicalInterconnectGroup. See issue [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141)
 
 # v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:

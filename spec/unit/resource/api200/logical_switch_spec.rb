@@ -38,11 +38,11 @@ RSpec.describe OneviewSDK::LogicalSwitch do
     end
   end
 
-  describe '#refresh' do
-    it 'Refresh' do
+  describe '#refresh_state' do
+    it 'Refresh logical switch' do
       item = OneviewSDK::LogicalSwitch.new(@client, uri: '/rest/fake')
       expect(@client).to receive(:rest_put).with("#{item['uri']}/refresh").and_return(FakeResponse.new({}))
-      item.refresh
+      item.refresh_state
     end
   end
 
