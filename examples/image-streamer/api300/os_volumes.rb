@@ -29,17 +29,5 @@ puts "\n#Os Volume with id #{item2['uri']} was found."
 # Gets the details of the archived os volume
 puts "\n#Gets the details of the archived os volume with id #{item2['uri']} and name #{item2['name']}:"
 details = item2.get_details_archive
+puts "\n#The details of the archived os volume with name #{item2['name']} retrieved successfully."
 puts details
-# puts "\n#Plan script updated successfully with id #{item2['uri']} and new name #{item2['name']}."
-
-# # Updates a plan script
-# puts "\n#Retrieves the modified contents of the selected Plan Script with id #{item2['uri']} and name #{item2['name']}:"
-# differences = item2.retrieve_differences
-# puts "\n#Differences retrieved:"
-# differences.each { |d| puts "  #{d}" }
-# puts "\n#Plan script updated successfully with id #{item2['uri']} and new name #{item2['name']}."
-#
-# # Removes a plan script
-# puts "\n#Removing a plan script with id #{item2['uri']} and name #{item2['name']}:"
-# item2.delete
-# puts "\n#Plan script with id #{item2['uri']} and name #{item2['name']} removed successfully."
