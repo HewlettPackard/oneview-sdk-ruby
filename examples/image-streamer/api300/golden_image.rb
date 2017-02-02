@@ -12,7 +12,11 @@
 require_relative '../../_client_i3s' # Gives access to @client
 
 # Example: Create a golden image for an API300 Image Streamer
-# NOTE: This will create a plan script named 'Golden_Image_1', then delete it.
+# NOTE: This will create a golden images named like 'Golden_Image_1' and 'Golden_Image_2', then delete it.
+# NOTE: You'll need to add the following instance variables to the _client_i3s.rb file with valid URIs for your environment:
+#   @golden_image_download_path
+#   @golden_image_upload_path
+#   @golden_image_log_path
 
 os_volumes = OneviewSDK::ImageStreamer::API300::OsVolumes.find_by($client_i3s_300, {}).first
 build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by($client_i3s_300, oeBuildPlanType: 'capture').first
@@ -44,14 +48,41 @@ puts "\n#Gets a golden image by id #{id}:"
 item2 = OneviewSDK::ImageStreamer::API300::GoldenImage.find_by(@client, uri: id).first
 puts "\n#Golden Image with id #{item2['uri']} was found."
 
-# Updates a golden image
-puts "\n#Updating a golden image with id #{item2['uri']} and name #{item2['name']}:"
-item2['name'] = 'Golden_Image_Updated'
-item2.update
-item2.retrieve!
-puts "\n#Golden Image updated successfully with id #{item2['uri']} and new name #{item2['name']}."
+# Gets a golden image by name
+puts "\n#Gets a golden image by name #{options[:name]}:"
+item3 = OneviewSDK::ImageStreamer::API300::GoldenImage.find_by(@client, name: options[:name]).first
+puts "\n#Golden Image with name #{item2['name']} was found."
 
-# Removes a golden image
-puts "\n#Removing a golden image with id #{item2['uri']} and name #{item2['name']}:"
-item2.delete
-puts "\n#Golden Image with id #{item2['uri']} and name #{item2['name']} removed successfully."
+# Updates a golden image
+puts "\n#Updating a golden image with id #{item3['uri']} and name #{item3['name']}:"
+item3['name'] = 'Golden_Image_Updated'
+item3.update
+item3.retrieve!
+puts "\n#Golden Image updated successfully with id #{item3['uri']} and new name #{item3['name']}."
+
+# Gets details of the golden image capture logs
+puts "\nGetting details of the golden image capture logs with id #{item3['uri']} and name #{item3['name']}"
+item3.get_details_archive(@golden_image_log_path)
+puts "\nDetails of the golden image save successfully."
+
+# Adds a golden image resource from the file that is uploaded from a local drive
+puts "\nAdds a golden image resource from the file that is uploaded from a local drive"
+options2 = { name: 'Golden_Image_2', description: 'Any_Description' }
+puts "\nAdding a golden image with name #{options2[:name]}."
+OneviewSDK::ImageStreamer::API300::GoldenImage.add(@client, @golden_image_upload_path, options2)
+# Retrieves a golden image added
+item4 = OneviewSDK::ImageStreamer::API300::GoldenImage.find_by(@client, name: options2[:name]).first
+puts "\nGolden Image with uri #{item4['uri']} and name #{item4['name']} added successfully."
+
+# Downloads the content of the selected golden image
+puts "\nDownloads the content of the selected golden image with id #{item3['uri']} and name #{item3['name']}"
+item3.download(@golden_image_download_path)
+puts "\nDownload done successfully."
+
+# Removes all golden images
+puts "\n#Removing a golden image with id #{item3['uri']} and name #{item3['name']}:"
+item3.delete
+puts "\n#Golden Image with id #{item3['uri']} and name #{item3['name']} was removed successfully."
+puts "\n#Removing a golden image with id #{item4['uri']} and name #{item4['name']}:"
+item4.delete
+puts "\n#Golden Image with id #{item4['uri']} and name #{item4['name']} was removed successfully."

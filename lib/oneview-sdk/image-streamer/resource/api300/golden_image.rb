@@ -47,8 +47,31 @@ module OneviewSDK
         # @return [True] When was saved successfully
         def download(file_path)
           ensure_client && ensure_uri
-          resp = @client.rest_api(:get, "#{BASE_URI}/download/#{@data['uri'].split('/').last}")
-          File.open(file_path, 'wb') { |file| file.write(resp.body) }
+          uri = URI.parse(URI.escape("#{client.url}#{BASE_URI}/download/#{@data['uri'].split('/').last}"))
+          req = Net::HTTP::Get.new(uri.request_uri)
+
+          options = {}
+          options['Content-Type'] = 'application/json'
+          options['X-Api-Version'] = @client.api_version.to_s
+          options['auth'] = @client.token
+          options.each do |key, val|
+            req[key] = val
+          end
+
+          http_request = Net::HTTP.new(uri.host, uri.port)
+          http_request.use_ssl = true
+          http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+          http_request.start do |http|
+            http.request(req) do |res|
+              puts '*******************'
+              File.open(file_path, 'wb') do |file|
+                res.read_body do |segment|
+                  file.write(segment)
+                end
+              end
+            end
+          end
           true
         end
 
