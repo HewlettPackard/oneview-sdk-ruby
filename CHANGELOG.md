@@ -5,6 +5,9 @@
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to features:
    - Scope
 
+#### Bug fixes
+- Fixed issue #132 get_default_settings in API200 is currently an instance method, but it should be a class method
+
 #### Breaking changes:
 - Fixed issue #93 Logical Switch refresh conflict
 

@@ -1,0 +1,15 @@
+require_relative './../lib/oneview-sdk/image_streamer'
+require 'pry'
+
+# Client for the Image Streamer
+@client = OneviewSDK::ImageStreamer::Client.new(
+  url: 'https://i3s.example.com', # or set ENV['I3S_URL']
+  token: 'token_oneview', # or set ENV['I3S_TOKEN']
+  ssl_enabled: false
+)
+## This setting allows the SDK to flush messages to the screen as it is being run.
+#  # It defaults to true when a client is created, and can be set to false in order
+#  # to only flush at the end of execution.
+# STDOUT.sync = false
+
+puts "Connected to Image Streamer at #{@client.url}\n\n"
