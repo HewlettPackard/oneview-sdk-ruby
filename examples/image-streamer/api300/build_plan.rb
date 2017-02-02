@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+-47++# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 require_relative '../../_client_i3s' # Gives access to @client
 
 # Example: Create a build plan for an API300 Image Streamer
-# NOTE: This will create a plan script named 'Build_Plan_1', then delete it.
+# NOTE: This will create a build plan named 'Build_Plan_1', then delete it.
 options = {
   name: 'Build_Plan_1',
   oeBuildPlanType: 'Deploy'
