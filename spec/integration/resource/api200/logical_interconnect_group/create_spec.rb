@@ -131,6 +131,14 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'default settings' do
+      default_settings = OneviewSDK::LogicalInterconnectGroup.get_default_settings($client)
+      expect(default_settings).to be
+      expect(default_settings['type']).to eq('InterconnectSettingsV3')
+      expect(default_settings['uri']).to_not be
+      expect(default_settings['ethernetSettings']['uri']).to match(/ethernetSettings/)
+    end
+
+    it 'default settings from the lig instance' do
       default_settings = @item.get_default_settings
       expect(default_settings).to be
       expect(default_settings['type']).to eq('InterconnectSettingsV3')

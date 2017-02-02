@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = OneviewSDK::LogicalInterconnectGroup.new(@client)
+      item = described_class.new(@client)
       expect(item['enclosureType']).to eq('C7000')
       expect(item['state']).to eq('Active')
       expect(item['uplinkSets']).to eq([])
@@ -16,9 +16,17 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     end
   end
 
+  describe '::get_default_settings' do
+    it 'should get the default settings' do
+      expect(@client).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', @client.api_version)
+        .and_return(FakeResponse.new)
+      expect(OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client)).to be
+    end
+  end
+
   describe '#add_interconnect' do
     before :each do
-      @item = OneviewSDK::LogicalInterconnectGroup.new(@client)
+      @item = described_class.new(@client)
       @type = 'HP VC FlexFabric-20/40 F8 Module'
     end
 
@@ -40,7 +48,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
   describe '#add_uplink_set' do
     it 'adds it to the \'uplinkSets\' data attribute' do
-      item = OneviewSDK::LogicalInterconnectGroup.new(@client)
+      item = described_class.new(@client)
       uplink = OneviewSDK::UplinkSet.new(@client)
       item.add_uplink_set(uplink)
       expect(item['uplinkSets'].size).to eq(1)
@@ -50,7 +58,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
   describe '#get_default_settings' do
     it 'should get the default settings' do
-      item = OneviewSDK::LogicalInterconnectGroup.new(@client, uri: '/rest/fake')
+      item = described_class.new(@client, uri: '/rest/fake')
       expect(@client).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', item.api_version)
         .and_return(FakeResponse.new)
       expect(item.get_default_settings).to be
@@ -59,7 +67,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
   describe '#get_settings' do
     it 'should get the settings' do
-      item = OneviewSDK::LogicalInterconnectGroup.new(@client, uri: '/rest/fake')
+      item = described_class.new(@client, uri: '/rest/fake')
       expect(@client).to receive(:rest_get).with('/rest/fake/settings', item.api_version)
         .and_return(FakeResponse.new)
       expect(item.get_settings).to be
