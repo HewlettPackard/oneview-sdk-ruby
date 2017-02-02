@@ -1,4 +1,5 @@
 I3S_DEPENDENCIES = {
+  BuildPlan: [:PlanScripts],
   PlanScripts: []
 }.freeze
 
@@ -28,4 +29,5 @@ PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze
 # Build Plan
 BUILD_PLAN1_NAME = 'Build_Plan_1'.freeze
 BUILD_PLAN2_NAME = 'Build_Plan_2'.freeze
+BUILD_PLAN3_NAME = 'Build_Plan_3'.freeze
 BUILD_PLAN1_NAME_UPDATED = 'Build_Plan_1_Updated'.freeze

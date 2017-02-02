@@ -30,6 +30,20 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
     end
 
+    it 'creates a build plan with capture type' do
+      options = {
+        name: BUILD_PLAN2_NAME,
+        oeBuildPlanType: 'Capture'
+      }
+
+      item = klass.new($client_i3s_300, options)
+      expect { item.create! }.not_to raise_error
+      item.retrieve!
+      expect(item['uri']).to be
+      expect(item['name']).to eq(options[:name])
+      expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
+    end
+
     it 'creates a build plan with build step' do
       plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by($client_i3s_300, name: PLAN_SCRIPT1_NAME).first
 
@@ -43,7 +57,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       ]
 
       options = {
-        name: BUILD_PLAN2_NAME,
+        name: BUILD_PLAN3_NAME,
         oeBuildPlanType: 'deploy'
       }
 
