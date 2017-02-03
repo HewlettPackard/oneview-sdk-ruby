@@ -41,8 +41,7 @@ module OneviewSDK
       STDOUT.sync = true
       @logger = options[:logger] || Logger.new(STDOUT)
       [:debug, :info, :warn, :error, :level=].each { |m| raise InvalidClient, "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
-      @log_level = options[:log_level] || :info
-      @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
+      self.log_level = options[:log_level] || :info
       @print_wait_dots = options.fetch(:print_wait_dots, false)
       @url = options[:url] || ENV['ONEVIEWSDK_URL']
       raise InvalidClient, 'Must set the url option' unless @url
@@ -71,6 +70,11 @@ module OneviewSDK
       @password = options[:password] || ENV['ONEVIEWSDK_PASSWORD']
       raise InvalidClient, 'Must set user & password options or token option' unless @password
       @token = login
+    end
+
+    def log_level=(level)
+      @logger.level = @logger.class.const_get(level.upcase) rescue level
+      @log_level = level
     end
 
     # Tells OneView to create the resource using the current attribute data
