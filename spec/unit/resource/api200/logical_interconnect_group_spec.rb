@@ -16,6 +16,14 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     end
   end
 
+  describe '::get_default_settings' do
+    it 'should get the default settings' do
+      expect(@client).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', @client.api_version)
+        .and_return(FakeResponse.new)
+      expect(OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client)).to be
+    end
+  end
+
   describe '#add_interconnect' do
     before :each do
       @item = described_class.new(@client)
