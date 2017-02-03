@@ -1,5 +1,8 @@
 I3S_DEPENDENCIES = {
-  PlanScripts: []
+  BuildPlan: [:PlanScripts],
+  GoldenImage: [:OsVolumes, :BuildPlan],
+  PlanScripts: [],
+  OsVolumes: []
 }.freeze
 
 I3S_SEQ = I3S_DEPENDENCIES.tsort
@@ -24,3 +27,8 @@ end
 # Plan Scripts
 PLAN_SCRIPT1_NAME = 'Plan_Script_1'.freeze
 PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze
+
+# Golden Image
+GOLDEN_IMAGE1_NAME = 'Golden_Image_1'.freeze
+GOLDEN_IMAGE2_NAME = 'Golden_Image_2'.freeze
+GOLDEN_IMAGE1_NAME_UPDATE = 'Golden_Image_1_Updated'.freeze

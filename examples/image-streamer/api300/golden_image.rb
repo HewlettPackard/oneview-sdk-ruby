@@ -18,8 +18,8 @@ require_relative '../../_client_i3s' # Gives access to @client
 #   @golden_image_upload_path
 #   @golden_image_log_path
 
-os_volumes = OneviewSDK::ImageStreamer::API300::OsVolumes.find_by($client_i3s_300, {}).first
-build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by($client_i3s_300, oeBuildPlanType: 'capture').first
+os_volumes = OneviewSDK::ImageStreamer::API300::OsVolumes.find_by(@client, {}).first
+build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by(@client, oeBuildPlanType: 'capture').first
 
 options = {
   type: 'GoldenImage',

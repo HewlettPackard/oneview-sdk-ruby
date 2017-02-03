@@ -11,7 +11,6 @@
 
 require_relative 'resource'
 require 'net/http/post/multipart'
-# require 'byebug'
 
 module OneviewSDK
   module ImageStreamer
@@ -19,7 +18,7 @@ module OneviewSDK
       # Golden Image resource implementation for Image Streamer
       class GoldenImage < Resource
         BASE_URI = '/rest/golden-images'.freeze
-        READ_TIMEOUT = 30 # in seconds, 5 minutes
+        READ_TIMEOUT = 300 # in seconds, 5 minutes
         ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -64,7 +63,6 @@ module OneviewSDK
 
           http_request.start do |http|
             http.request(req) do |res|
-              puts '*******************'
               File.open(file_path, 'wb') do |file|
                 res.read_body do |segment|
                   file.write(segment)
@@ -83,6 +81,7 @@ module OneviewSDK
         # @option data_options [String] :name The name of the Golden Image
         # @option data_options [String] :description The description of the Golden Image
         # @param [Integer] timeout The number of seconds to wait for completing the request
+        # @return [Hash] hash with a String
         def self.add(client, file_path, data_options = {}, timeout = READ_TIMEOUT)
           data_options = Hash[data_options.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
           raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
