@@ -2,6 +2,9 @@
 
 ## Suggested release: v4.0.0
 
+#### Bug fixes
+- Fixed issue #132 get_default_settings in API200 is currently an instance method, but it should be a class method
+
 #### Breaking changes:
 - Fixed issue #93 Logical Switch refresh conflict
 
@@ -17,6 +20,8 @@
 #### Bug fixes & Enhancements
 - [#131](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/131) Unavailable methods can take any number of arguments
 - [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
+- [#142](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/142) EnclosureGroup should raise error in `#add_logical_interconnect_group` if LIG could not be retrieved
+- [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
 
 # v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:

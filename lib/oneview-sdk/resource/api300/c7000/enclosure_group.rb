@@ -26,11 +26,64 @@ module OneviewSDK
           # Default values:
           @data['type'] ||= 'EnclosureGroupV300'
           @data['stackingMode'] ||= 'Enclosure'
+          @data['enclosureCount'] ||= 1
           @data['interconnectBayMappingCount'] ||= 8
-          create_interconnect_bay_mapping unless @data['interconnectBayMappings']
           super
         end
 
+        # Adds the logical interconnect group
+        # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
+        # @param [Integer] enclosureIndex Enclosure index of bay to add LIG to. If nil, interconnects will be added for all enclosures
+        # @raise [OneviewSDK::NotFound] if the LIG uri is not set and cannot be retrieved
+        # @return [OneviewSDK::API300::C7000::EnclosureGroup] self
+        def add_logical_interconnect_group(lig, enclosureIndex = nil)
+          lig.retrieve! unless lig['uri']
+          raise(NotFound, "The logical interconnect group #{lig['name']} was not found") unless lig['uri']
+          lig['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
+            entry['logicalLocation']['locationEntries'].each do |location|
+              next unless location['type'] == 'Bay' && entry['permittedInterconnectTypeUri']
+              add_lig_to_bay(location['relativeValue'], lig, enclosureIndex)
+            end
+          end
+          self
+        end
+
+        # Creates the interconnect bay mapping
+        # @return [OneviewSDK::API300::C7000::EnclosureGroup] self
+        def create_interconnect_bay_mapping
+          @data['interconnectBayMappings'] = []
+          1.upto(@data['enclosureCount']) do |enclosureIndex|
+            1.upto(@data['interconnectBayMappingCount']) do |bay_number|
+              entry = {
+                'enclosureIndex' => enclosureIndex,
+                'interconnectBay' => bay_number,
+                'logicalInterconnectGroupUri' => nil
+              }
+              @data['interconnectBayMappings'] << entry
+            end
+          end
+          self
+        end
+
+        private
+
+        # Add logical interconnect group to bay
+        # @param [Integer] bay Bay number
+        # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
+        # @param [Integer] enclosureIndex Enclosure index of bay to add LIG to. If nil, interconnects will be added for all enclosures
+        def add_lig_to_bay(bay, lig, enclosureIndex)
+          @data['interconnectBayMappings'].each do |location|
+            next unless location['interconnectBay'] == bay
+            if enclosureIndex
+              next unless location['enclosureIndex'] == enclosureIndex
+              location['logicalInterconnectGroupUri'] = lig['uri']
+              location['enclosureIndex'] = enclosureIndex
+              break
+            else
+              location['logicalInterconnectGroupUri'] = lig['uri']
+            end
+          end
+        end
       end
     end
   end
