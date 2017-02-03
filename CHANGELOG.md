@@ -21,6 +21,7 @@
 - [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
 - [#142](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/142) EnclosureGroup should raise error in `#add_logical_interconnect_group` if LIG could not be retrieved
 - [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
+- [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
 
 # v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
