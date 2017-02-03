@@ -94,7 +94,7 @@ RSpec.describe klass do
       @lig['uri'] = nil
       expect(@lig).to receive(:retrieve!).and_return false
       expect { @item.add_logical_interconnect_group(@lig) }
-        .to raise_error(OneviewSDK::NotFound, /LIG not found/)
+        .to raise_error(OneviewSDK::NotFound, /not found/)
     end
   end
 end

@@ -38,7 +38,7 @@ module OneviewSDK
         # @return [OneviewSDK::API300::C7000::EnclosureGroup] self
         def add_logical_interconnect_group(lig, enclosureIndex = nil)
           lig.retrieve! unless lig['uri']
-          raise(NotFound, 'LIG not found!') unless lig['uri']
+          raise(NotFound, "The logical interconnect group #{lig['name']} was not found") unless lig['uri']
           lig['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
             entry['logicalLocation']['locationEntries'].each do |location|
               next unless location['type'] == 'Bay' && entry['permittedInterconnectTypeUri']
