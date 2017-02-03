@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/enclosure_group'
+require_relative '../c7000/enclosure_group'
 
 module OneviewSDK
   module API300
     module Synergy
       # Enclosure group resource implementation on API300 Synergy
-      class EnclosureGroup < OneviewSDK::API200::EnclosureGroup
+      class EnclosureGroup < OneviewSDK::API300::C7000::EnclosureGroup
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -24,8 +24,6 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
-          @data['type'] ||= 'EnclosureGroupV300'
-          @data['stackingMode'] ||= 'Enclosure'
           @data['ipAddressingMode'] ||= 'DHCP'
           @data['interconnectBayMappingCount'] ||= 6
           super
@@ -36,7 +34,6 @@ module OneviewSDK
         def set_script
           unavailable_method
         end
-
       end
     end
   end
