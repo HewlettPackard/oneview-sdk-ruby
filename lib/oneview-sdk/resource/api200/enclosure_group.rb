@@ -49,16 +49,21 @@ module OneviewSDK
 
       # Adds the logical interconnect group
       # @param [OneviewSDK::LogicalInterconnectGroup] lig Logical Interconnect Group
+      # @raise [OneviewSDK::NotFound] if the LIG uri is not set and cannot be retrieved
+      # @return [OneviewSDK::EnclosureGroup] self
       def add_logical_interconnect_group(lig)
         lig.retrieve! unless lig['uri']
+        raise(NotFound, "The logical interconnect group #{lig['name']} was not found.") unless lig['uri']
         lig['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
           entry['logicalLocation']['locationEntries'].each do |location|
             add_lig_to_bay(location['relativeValue'], lig) if location['type'] == 'Bay' && entry['permittedInterconnectTypeUri']
           end
         end
+        self
       end
 
       # Creates the interconnect bay mapping
+      # @return [OneviewSDK::EnclosureGroup] self
       def create_interconnect_bay_mapping
         @data['interconnectBayMappings'] = []
         1.upto(@data['interconnectBayMappingCount']) do |bay_number|
@@ -68,6 +73,7 @@ module OneviewSDK
           }
           @data['interconnectBayMappings'] << entry
         end
+        self
       end
 
       private
