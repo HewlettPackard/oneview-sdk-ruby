@@ -15,14 +15,14 @@ require_relative '../../_client_i3s' # Gives access to @client
 # NOTE: You must have one os volume.
 
 # List all os volumes
-list = OneviewSDK::ImageStreamer::API300::OsVolumes.get_all(@client)
+list = OneviewSDK::ImageStreamer::API300::OSVolumes.get_all(@client)
 puts "\n#Listing all:"
 list.each { |p| puts "  #{p['name']}" }
 
 id = list.first['uri']
 # Gets an os volume by id
 puts "\n#Gets an os volume by id #{id}:"
-item2 = OneviewSDK::ImageStreamer::API300::OsVolumes.find_by(@client, uri: id).first
+item2 = OneviewSDK::ImageStreamer::API300::OSVolumes.find_by(@client, uri: id).first
 puts "\n#Os Volume with id #{item2['uri']} was found."
 
 

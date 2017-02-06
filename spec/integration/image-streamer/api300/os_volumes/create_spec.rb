@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::ImageStreamer::API300::OsVolumes
+klass = OneviewSDK::ImageStreamer::API300::OSVolumes
 RSpec.describe klass, integration_i3s: true, type: CREATE do
   include_context 'integration i3s api300 context'
 
