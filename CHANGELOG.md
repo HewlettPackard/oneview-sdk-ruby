@@ -1,6 +1,9 @@
 # Unreleased Changes
 
 ## Suggested release: v4.0.0
+Added full support to Image Streamer Rest API version 300:
+   - Golden Image
+   - Plan Scripts
 
 #### Bug fixes
 - Fixed issue #132 get_default_settings in API200 is currently an instance method, but it should be a class method
