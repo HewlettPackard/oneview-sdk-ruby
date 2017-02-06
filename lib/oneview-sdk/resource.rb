@@ -323,6 +323,15 @@ module OneviewSDK
       true
     end
 
+    # Fail unless all uri of resources is set.
+    def get_and_ensure_uri_for(resources)
+      uris = resources.map do |resource|
+        resource.ensure_uri
+        resource['uri']
+      end
+      uris
+    end
+
     # Fail for methods that are not available for one resource
     def unavailable_method
       raise MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"

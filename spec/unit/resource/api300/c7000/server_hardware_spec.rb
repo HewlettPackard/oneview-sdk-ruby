@@ -330,7 +330,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
     let(:scope_clean) { OneviewSDK::API300::Synergy::Scope.new(@client_300) }
 
     describe '#add_scope' do
-      context 'when scope has not uri' do
+      context 'when scope has no URI' do
         it { expect { @item.add_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
       end
 
@@ -341,7 +341,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
     end
 
     describe '#replace_scopes' do
-      context 'when scope has not uri' do
+      context 'when scope has no URI' do
         it { expect { @item.replace_scopes(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
       end
 
@@ -352,7 +352,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
     end
 
     describe '#remove_scope' do
-      context 'when scope has not uri' do
+      context 'when scope has no URI' do
         it { expect { @item.remove_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
       end
 

@@ -44,7 +44,7 @@ enclosure.refresh
 puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
 
 puts "\nReplacing resources from the '#{scope['name']}'"
-scope.change_resources_assignments(add_resources: [server_hardware], remove_resources: [enclosure])
+scope.change_resource_assignments(add_resources: [server_hardware], remove_resources: [enclosure])
 server_hardware.refresh
 enclosure.refresh
 puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']

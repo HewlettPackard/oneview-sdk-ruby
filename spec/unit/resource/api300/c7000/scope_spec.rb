@@ -101,26 +101,26 @@ RSpec.describe OneviewSDK::API300::C7000::Scope do
     end
   end
 
-  describe '#change_resources_assignments' do
+  describe '#change_resource_assignments' do
 
-    context 'when called and scope has not uri' do
+    context 'when called and scope has no URI' do
       let(:invalid_scope) { described_class.new(@client_300) }
 
-      it { expect { invalid_scope.change_resources_assignments(add_resources: [resource_1]) }.to raise_error(OneviewSDK::IncompleteResource) }
+      it { expect { invalid_scope.change_resource_assignments(add_resources: [resource_1]) }.to raise_error(OneviewSDK::IncompleteResource) }
       it do
         expect do
-          invalid_scope.change_resources_assignments(add_resources: [resource_1])
+          invalid_scope.change_resource_assignments(add_resources: [resource_1])
         end.to raise_error(/Please set uri attribute before interacting with this resource/)
       end
     end
 
-    context 'when called and resource argument has not uri' do
+    context 'when called and resource argument has no URI' do
       let(:invalid_resource) { OneviewSDK::API300::C7000::ServerHardware.new(@client_300) }
 
-      it { expect { scope.change_resources_assignments(add_resources: [invalid_resource]) }.to raise_error(OneviewSDK::IncompleteResource) }
+      it { expect { scope.change_resource_assignments(add_resources: [invalid_resource]) }.to raise_error(OneviewSDK::IncompleteResource) }
       it do
         expect do
-          scope.change_resources_assignments(add_resources: [invalid_resource])
+          scope.change_resource_assignments(add_resources: [invalid_resource])
         end.to raise_error(/Please set uri attribute before interacting with this resource/)
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe OneviewSDK::API300::C7000::Scope do
       it 'should not call remote rest api' do
         expect(@client_300).to_not receive(:rest_patch)
         expect(@client_300).to_not receive(:response_handler)
-        scope.change_resources_assignments
+        scope.change_resource_assignments
       end
     end
 
@@ -143,7 +143,7 @@ RSpec.describe OneviewSDK::API300::C7000::Scope do
       ).and_return(fake_response)
       expect(@client_300).to receive(:response_handler).with(fake_response)
 
-      expect(scope.change_resources_assignments(add_resources: [resource_1], remove_resources: [resource_2])).to eq(scope)
+      expect(scope.change_resource_assignments(add_resources: [resource_1], remove_resources: [resource_2])).to eq(scope)
     end
   end
 

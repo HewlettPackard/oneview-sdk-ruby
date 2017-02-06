@@ -38,7 +38,7 @@ module OneviewSDK
           set_all(attributes)
           ensure_client && ensure_uri
           options = {
-            'If-Match' => @data['eTag'],
+            'If-Match' => @data.delete('eTag'),
             'body' => @data
           }
           response = @client.rest_put(@data['uri'], options, @api_version)
@@ -57,39 +57,34 @@ module OneviewSDK
         end
 
         # Adds resource assignments
-        # @param [Array] resources The array of resources (or resources separated by comma)
+        # @param [Array] *resources The array of resources (or any number of resources separated by comma)
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
         def set_resources(*resources)
-          change_resources_assignments(add_resources: resources.flatten)
+          change_resource_assignments(add_resources: resources.flatten)
         end
 
         # Removes resource assignments
-        # @param [Array|Strings] resources The array of resources (or resources separated by comma)
+        # @param [Array] *resources The array of resources (or any number of resources separated by comma)
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
         def unset_resources(*resources)
-          change_resources_assignments(remove_resources: resources.flatten)
+          change_resource_assignments(remove_resources: resources.flatten)
         end
 
         # Modifies scope membership by adding or removing resource assignments
-        # @param [Array|Strings] resources The array of resources (or resources separated by comma)
+        # @param [Array] resources The array of resources (or any number of resources separated by comma)
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
-        def change_resources_assignments(add_resources: [], remove_resources: [])
-          return if add_resources.empty? && remove_resources.empty?
-          ensure_uri && ensure_client
-          add_uris = add_resources.map do |resource|
-            resource.ensure_uri
-            resource['uri']
+        def change_resource_assignments(add_resources: [], remove_resources: [])
+          if !add_resources.empty? || !remove_resources.empty?
+            ensure_uri && ensure_client
+            add_uris = get_and_ensure_uri_for(add_resources)
+            remove_uris = get_and_ensure_uri_for(remove_resources)
+            body = {
+              'addedResourceUris' => add_uris,
+              'removedResourceUris' => remove_uris
+            }
+            response = @client.rest_patch(@data['uri'] + '/resource-assignments', 'body' => body)
+            @client.response_handler(response)
           end
-          remove_uris = remove_resources.map do |resource|
-            resource.ensure_uri
-            resource['uri']
-          end
-          body = {
-            'addedResourceUris' => add_uris,
-            'removedResourceUris' => remove_uris
-          }
-          response = @client.rest_patch(@data['uri'] + '/resource-assignments', 'body' => body)
-          @client.response_handler(response)
           self
         end
       end

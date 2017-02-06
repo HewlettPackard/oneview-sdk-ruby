@@ -9,6 +9,7 @@ Metrics/ClassLength:
   Max: 200
   Exclude:
     - 'lib/oneview-sdk/cli.rb'
+    - 'lib/oneview-sdk/resource.rb'
 
 Metrics/LineLength:
   Max: 150

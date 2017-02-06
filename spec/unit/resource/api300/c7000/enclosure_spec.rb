@@ -273,7 +273,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     subject(:enclosure) { described_class.new(@client_300, uri: 'enclosures/UID-001') }
 
     describe '#add_scope' do
-      context 'when scope has not uri' do
+      context 'when scope has no URI' do
         it { expect { enclosure.add_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
       end
 
@@ -284,7 +284,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     end
 
     describe '#replace_scopes' do
-      context 'when scope has not uri' do
+      context 'when scope has no URI' do
         it { expect { enclosure.replace_scopes(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
       end
 
@@ -295,7 +295,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     end
 
     describe '#remove_scope' do
-      context 'when scope has not uri' do
+      context 'when scope has no URI' do
         it { expect { enclosure.remove_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
       end
 

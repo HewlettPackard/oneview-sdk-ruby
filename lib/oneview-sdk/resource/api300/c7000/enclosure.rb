@@ -39,22 +39,25 @@ module OneviewSDK
 
         # Remove one scope from the enclosure
         # @param [OneviewSDK::API300::C7000::Scope] scope The scope resource
+        # @return [Boolean] True if the scope was deleted and false if enclosure has not the scope
         # @raise [OneviewSDK::IncompleteResource] if the uri of scope is not set
         def remove_scope(scope)
           scope.ensure_uri
           scope_index = @data['scopeUris'].find_index { |uri| uri == scope['uri'] }
-          patch('remove', "/scopeUris/#{scope_index}", nil) if scope_index
+          if scope_index
+            patch('remove', "/scopeUris/#{scope_index}", nil)
+            true
+          else
+            false
+          end
         end
 
         # Change the list of scopes in the enclosure
         # @param [Array[OneviewSDK::API300::C7000::Scope]] scopes The scopes list (or scopes separeted by comma)
         # @raise [OneviewSDK::IncompleteResource] if the uri of each scope is not set
         def replace_scopes(*scopes)
-          scopes = scopes.flatten
-          uris = scopes.map do |scope|
-            scope.ensure_uri
-            scope['uri']
-          end
+          scopes.flatten!
+          uris = get_and_ensure_uri_for(scopes)
           patch('replace', '/scopeUris', uris)
         end
       end
