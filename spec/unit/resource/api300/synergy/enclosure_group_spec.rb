@@ -13,6 +13,10 @@ RSpec.describe klass do
       it 'sets the defaults correctly' do
         item = klass.new(@client_300)
         expect(item[:type]).to eq('EnclosureGroupV300')
+        expect(item[:stackingMode]).to eq('Enclosure')
+        expect(item[:ipAddressingMode]).to eq('DHCP')
+        expect(item[:enclosureCount]).to eq(1)
+        expect(item[:interconnectBayMappingCount]).to eq(6)
       end
     end
   end
@@ -35,6 +39,15 @@ RSpec.describe klass do
     it 'returns method unavailable for the set_script method' do
       item = klass.new(@client_300, uri: '/rest/fake')
       expect { item.set_script }.to raise_error(/The method #set_script is unavailable for this resource/)
+    end
+  end
+
+  describe '#create_interconnect_bay_mapping' do
+    it 'creates entries for each bay in each enclosure' do
+      item = klass.new(@client_300, name: 'EG', enclosureCount: 3)
+      expect(item['interconnectBayMappings'].size).to eq(18)
+      expect(item['interconnectBayMappings'].first['enclosureIndex']).to eq(1)
+      expect(item['interconnectBayMappings'].first['interconnectBay']).to eq(1)
     end
   end
 end

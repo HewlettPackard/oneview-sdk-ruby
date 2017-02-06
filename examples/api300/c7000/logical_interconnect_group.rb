@@ -18,7 +18,7 @@ type = 'Logical Interconnect Group'
 options = {
   name: 'ONEVIEW_SDK_TEST_LIG',
   enclosureType: 'C7000',
-  type: 'logical-interconnect-groupV3'
+  type: 'logical-interconnect-groupV300'
 }
 
 HP_VC_FF_24_MODEL = 'HP VC FlexFabric 10Gb/24-Port Module'.freeze
@@ -37,7 +37,7 @@ eth1_options = {
   smartLink:  false,
   privateNetwork:  false,
   connectionTemplateUri:  nil,
-  type:  'ethernet-networkV3'
+  type:  'ethernet-networkV300'
 }
 
 eth2_options = {
@@ -47,7 +47,7 @@ eth2_options = {
   smartLink:  false,
   privateNetwork:  false,
   connectionTemplateUri:  nil,
-  type:  'ethernet-networkV3'
+  type:  'ethernet-networkV300'
 }
 
 eth01 = OneviewSDK::API300::C7000::EthernetNetwork.new(@client, eth1_options)
@@ -111,7 +111,7 @@ OneviewSDK::API300::C7000::LogicalInterconnectGroup.find_by(@client, {}).each do
 end
 
 puts '## Listing default settings ##'
-puts lig.get_default_settings
+puts OneviewSDK::API300::C7000::LogicalInterconnectGroup.get_default_settings(@client)
 
 puts '## Listing this LIG settings ##'
 puts lig.get_settings

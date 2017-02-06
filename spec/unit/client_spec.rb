@@ -64,6 +64,16 @@ RSpec.describe OneviewSDK::Client do
       expect(client.logger.level).to eq(3)
     end
 
+    it 'allows the log level to be set again' do
+      options = { url: 'https://oneview.example.com', password: 'secret123', log_level: :error }
+      client = OneviewSDK::Client.new(options)
+      expect(client.log_level).to eq(:error)
+      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
+      client.log_level = :warn
+      expect(client.log_level).to eq(:warn)
+      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
+    end
+
     it 'picks the lower of the default api version and appliance api version' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(120)
       options = { url: 'https://oneview.example.com', token: 'token123' }
