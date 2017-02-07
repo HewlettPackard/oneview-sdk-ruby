@@ -44,12 +44,9 @@ module OneviewSDK
         def remove_scope(scope)
           scope.ensure_uri
           scope_index = @data['scopeUris'].find_index { |uri| uri == scope['uri'] }
-          if scope_index
-            patch('remove', "/scopeUris/#{scope_index}", nil)
-            true
-          else
-            false
-          end
+          return false unless scope_index
+          patch('remove', "/scopeUris/#{scope_index}", nil)
+          true
         end
 
         # Change the list of scopes in the enclosure
