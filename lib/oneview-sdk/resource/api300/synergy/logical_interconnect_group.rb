@@ -34,6 +34,7 @@ module OneviewSDK
           @data['interconnectBaySet'] ||= 1
           @data['interconnectMapTemplate'] ||= {}
           @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] ||= []
+          @data['redundancyType'] ||= 'Redundant'
         end
 
         # Get the logical interconnect group default settings
@@ -66,22 +67,24 @@ module OneviewSDK
         # Adds an interconnect
         # @param [Fixnum] bay Bay number
         # @param [String] type Interconnect type
+        # @param [String, OneviewSDK::LogicalDownlink] logical_downlink Name of logical downlink or LogicalDownlink object
+        # @return [Hash] interconnectMapEntryTemplates entry that was added
         # @raise [StandardError] if a invalid type is given then raises an error
-        def add_interconnect(bay, type, logical_downlink = nil, enclosure_index = 1)
-          parse_interconnect_map_template(bay, enclosure_index)
-          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
-            # Default value in case of no specified logical downlink
-            entry['logicalDownlinkUri'] = nil
-            if logical_downlink
-              ld = OneviewSDK::API300::Synergy::LogicalDownlink.find_by(@client, name: logical_downlink).first['uri']
-              entry['logicalDownlinkUri'] = ld
-            end
-            entry['logicalLocation']['locationEntries'].each do |location|
-              if location['type'] == 'Bay' && location['relativeValue'] == bay
-                entry['permittedInterconnectTypeUri'] = OneviewSDK::API300::Synergy::Interconnect.get_type(@client, type)['uri']
-              end
+        def add_interconnect(bay, type, logical_downlink = nil, enclosure_index = nil)
+          enclosure_index ||= type.include?('Virtual Connect SE 16Gb FC Module') ? -1 : 1
+          entry = parse_interconnect_map_template(bay, enclosure_index)
+          entry['logicalDownlinkUri'] ||= nil # Default value in case of no specified logical downlink
+          if logical_downlink
+            ld = logical_downlink if logical_downlink.class < OneviewSDK::Resource
+            ld ||= OneviewSDK::API300::Synergy::LogicalDownlink.find_by(@client, name: logical_downlink).first
+            entry['logicalDownlinkUri'] = ld['uri']
+          end
+          entry['logicalLocation']['locationEntries'].each do |location|
+            if location['type'] == 'Bay' && location['relativeValue'] == bay
+              entry['permittedInterconnectTypeUri'] = OneviewSDK::API300::Synergy::Interconnect.get_type(@client, type)['uri']
             end
           end
+          entry
         rescue StandardError
           raise 'Interconnect type or Logical Downlink not found!'
         end
@@ -89,29 +92,27 @@ module OneviewSDK
         private
 
         # Parse interconnect map template structure for specified bay
+        # @return the entry that was added (or already existed)
         def parse_interconnect_map_template(bay, enclosure_index)
           entry = {
             'logicalLocation' => {
               'locationEntries' => [
                 { 'relativeValue' => bay, 'type' => 'Bay' },
-                { 'relativeValue' => 1, 'type' => 'Enclosure' }
+                { 'relativeValue' => enclosure_index, 'type' => 'Enclosure' }
               ]
             },
             'enclosureIndex' => enclosure_index,
             'permittedInterconnectTypeUri' => nil
           }
 
-          # If no interconnect map entry templates exist yet, add the specified entry
-          first_run = @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].empty?
-          return @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry if first_run
-
-          # Verifies if the bay specified in the entry is already added, otherwise adds it
-          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |single_entry|
-            single_entry['logicalLocation']['locationEntries'].each do |location|
-              return true if location['type'] == 'Bay' && location['relativeValue'] == bay
-            end
+          # Add the interconnect if it is not already specified
+          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |temp|
+            same_bay = temp['logicalLocation']['locationEntries'].include? entry['logicalLocation']['locationEntries'][0]
+            same_enc = temp['logicalLocation']['locationEntries'].include? entry['logicalLocation']['locationEntries'][1]
+            return temp if same_bay && same_enc
           end
           @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry
+          entry
         end
       end
     end

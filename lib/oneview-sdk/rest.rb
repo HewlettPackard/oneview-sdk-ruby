@@ -26,9 +26,10 @@ module OneviewSDK
     # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
     # @option options [Integer] :auth (client.token) Authentication token to use for this request
     # @param [Integer] api_ver The api version to use when interracting with this resource
+    # @param [Integer] redirect_limit Number of redirects it is allowed to follow
     # @raise [OpenSSL::SSL::SSLError] if SSL validation of OneView instance's certificate failed
     # @return [NetHTTPResponse] Response object
-    def rest_api(type, path, options = {}, api_ver = @api_version)
+    def rest_api(type, path, options = {}, api_ver = @api_version, redirect_limit = 3)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
       raise InvalidRequest, 'Must specify path' unless path
 
@@ -42,9 +43,13 @@ module OneviewSDK
       http.read_timeout = @timeout if @timeout # Timeout for a request
       http.open_timeout = @timeout if @timeout # Timeout for a connection
 
-      request = build_request(type, uri, options, api_ver)
+      request = build_request(type, uri, options.dup, api_ver)
       response = http.request(request)
       @logger.debug "  Response: Code=#{response.code}. Headers=#{response.to_hash}\n  Body=#{response.body}"
+      if response.class <= Net::HTTPRedirection && redirect_limit > 0 && response['location']
+        @logger.debug "Redirecting to #{response['location']}"
+        return rest_api(type, response['location'], options, api_ver, redirect_limit - 1)
+      end
       response
     rescue OpenSSL::SSL::SSLError => e
       msg = 'SSL verification failed for request. Please either:'

@@ -1,17 +1,11 @@
 # Unreleased Changes
-**Proposed Version:** v3.1.0
 
- 1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
-   - Interconnect
-   - Logical Interconnect
-   - Uplink Set
-   - Volume attachment
-   - Unmanaged devices
+## Suggested release: v4.0.0
 
- 2. Bug fixes:
-    - Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
+#### Breaking changes:
+- [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
 
- 3. Design changes:
+#### Design changes:
    - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
      - Artifacts Bundle
      - Build Plan
@@ -20,7 +14,30 @@
      - OS Volumes
      - Plan Scripts
 
-### Features supported
+#### Bug fixes & Enhancements:
+- [#131](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/131) Unavailable methods can take any number of arguments
+- [#132](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/132) Fixed get_default_settings in API200; was an instance method, now a class method
+- [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
+- [#142](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/142) EnclosureGroup should raise error in `#add_logical_interconnect_group` if LIG could not be retrieved
+- [#145](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/145) REST methods now handle redirects
+- [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
+- [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
+
+#### New Resources:
+- User
+
+# v3.1.0
+Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
+   - Interconnect
+   - Logical Interconnect
+   - Uplink Set
+   - Volume attachment
+   - Unmanaged devices
+
+#### Bug fixes
+- Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
+
+#### Features supported
 - Connection template
 - Datacenter
 - Enclosure

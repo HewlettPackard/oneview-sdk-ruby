@@ -16,14 +16,17 @@ require_relative '../../_client' # Gives access to @client
 type = 'enclosure group'
 options = {
   name: 'OneViewSDK Test Enclosure Group',
-  interconnectBayMappingCount: 6
+  interconnectBayMappingCount: 6,
+  enclosureCount: 3
 }
 
 item = OneviewSDK::API300::Synergy::EnclosureGroup.new(@client, options)
 
-# Adds a logical interconnect group to the enclosure group
-lig = OneviewSDK::API300::Synergy::LogicalInterconnectGroup.find_by(@client, {}).first
-item.add_logical_interconnect_group(lig)
+# Adds interconnects from 2 logical interconnect groups to the enclosure group
+lig = OneviewSDK::API300::Synergy::LogicalInterconnectGroup.get_all(@client)[0]
+lig2 = OneviewSDK::API300::Synergy::LogicalInterconnectGroup.get_all(@client)[1]
+item.add_logical_interconnect_group(lig)     # Add interconnects to all enclosures
+item.add_logical_interconnect_group(lig2, 3) # Add interconnects only to enclosure 3
 
 item.create!
 puts "\nCreated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"

@@ -19,19 +19,19 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     end
 
     it 'respects the token environment variable' do
-      ENV['ONEVIEWSDK_I3S_TOKEN'] = 'secret456'
+      ENV['I3S_TOKEN'] = 'secret456'
       client = OneviewSDK::ImageStreamer::Client.new(url: 'https://oneview.example.com')
       expect(client.token).to eq('secret456')
     end
 
     it 'respects the ssl environment variable' do
-      ENV['ONEVIEWSDK_I3S_SSL_ENABLED'] = 'false'
+      ENV['I3S_SSL_ENABLED'] = 'false'
       client = OneviewSDK::ImageStreamer::Client.new(url: 'https://oneview.example.com', token: 'secret123')
       expect(client.ssl_enabled).to eq(false)
     end
 
     it 'requires a valid ssl environment variable value' do
-      ENV['ONEVIEWSDK_I3S_SSL_ENABLED'] = 'bad'
+      ENV['I3S_SSL_ENABLED'] = 'bad'
       options = { url: 'https://oneview.example.com', token: 'secret123' }
       expect { OneviewSDK::ImageStreamer::Client.new(options) }.to output(/Unrecognized ssl_enabled value/).to_stdout_from_any_process
     end
@@ -41,6 +41,16 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
       client = OneviewSDK::ImageStreamer::Client.new(options)
       expect(client.log_level).to eq(:error)
       expect(client.logger.level).to eq(3)
+    end
+
+    it 'allows the log level to be set again' do
+      options = { url: 'https://oneview.example.com', token: 'secret123', log_level: :error }
+      client = OneviewSDK::ImageStreamer::Client.new(options)
+      expect(client.log_level).to eq(:error)
+      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
+      client.log_level = :warn
+      expect(client.log_level).to eq(:warn)
+      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
     end
 
     it 'picks the lower of the default api version and appliance api version' do
