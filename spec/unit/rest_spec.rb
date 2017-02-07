@@ -39,10 +39,13 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'supports following redirects' do
-      response1 = FakeResponse.new({ name: 'New' }, 301, location: path)
-      response2 = FakeResponse.new({ name: 'New' }, 200, location: path)
-      allow_any_instance_of(Net::HTTP).to receive(:request).and_return(response1)
-      allow_any_instance_of(Net::HTTP).to receive(:request).and_return(response2)
+      http = Net::HTTP.new('oneview.example.com', 443) # Needed to mock multiple method calls
+      expect(Net::HTTP).to receive(:new).twice.and_return(http)
+      response1 = FakeResponse.new({ name: 'New' }, 301, 'location' => path)
+      expect(response1).to receive(:class).and_return(Net::HTTPRedirection) # Simulate 301 on first request
+      response2 = FakeResponse.new({ name: 'New' }, 200)
+      expect(http).to receive(:request).ordered.and_return(response1)
+      expect(http).to receive(:request).ordered.and_return(response2)
       r = @client.rest_api(:get, path)
       expect(r).to eq(response2)
     end
