@@ -210,8 +210,18 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it "calls the correct resource's get_all method" do
-      expect(OneviewSDK::ServerProfile).to receive(:get_all).with(@client)
+      expect(OneviewSDK::API200::ServerProfile).to receive(:get_all).with(@client)
       @client.get_all('ServerProfiles')
+    end
+
+    it 'accepts API version and variant parameters' do
+      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).with(@client)
+      @client.get_all('ServerProfiles', 300, 'Synergy')
+    end
+
+    it 'accepts symbols instead of strings' do
+      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).with(@client)
+      @client.get_all(:ServerProfiles, 300, :Synergy)
     end
 
     it 'fails when a bogus resource type is given' do

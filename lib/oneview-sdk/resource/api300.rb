@@ -22,7 +22,7 @@ module OneviewSDK
     # @param [String] variant Variant (C7000 or Synergy)
     # @return [Class] Resource class or nil if not found
     def self.resource_named(type, variant = @variant)
-      raise "API300 variant #{variant} is not supported!" unless SUPPORTED_VARIANTS.include?(variant)
+      raise "API300 variant #{variant} is not supported!" unless SUPPORTED_VARIANTS.include?(variant.to_s)
       new_type = type.to_s.downcase.gsub(/[ -_]/, '')
       api_module = OneviewSDK::API300.const_get(variant)
       api_module.constants.each do |c|
