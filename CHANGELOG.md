@@ -3,7 +3,7 @@
 ## Suggested release: v4.0.0
 
 #### Breaking changes:
-- Fixed issue #93 Logical Switch refresh conflict
+- [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
 
 #### Design changes:
    - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
@@ -23,6 +23,9 @@
 - [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
 - [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
 - Support API modules & variants with the CLI
+
+#### New Resources:
+- User
 
 # v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
