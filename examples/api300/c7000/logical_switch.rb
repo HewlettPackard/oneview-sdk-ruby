@@ -11,6 +11,14 @@
 
 require_relative '../../_client'
 
+OneviewSDK::API300::C7000::Scope.get_all(@client).each(&:delete)
+
+# Scopes
+scope_1 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 1')
+scope_1.create
+scope_2 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 2')
+scope_2.create
+
 # SSH Credential
 ssh_credentials = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSSH.new(@logical_switch_ssh_user, @logical_switch_ssh_password)
 
@@ -43,8 +51,40 @@ end
 
 # Retrieves a specific Internal Link Set
 internal_link_set = OneviewSDK::API300::C7000::LogicalSwitch.get_internal_link_set(@client, 'ils1')
-puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}"
+puts "Internal Link Set #{internal_link_set['name']} URI=#{internal_link_set['uri']}" if internal_link_set
 
 puts 'Reclaiming the top-of-rack switches in a logical switch'
 logical_switch.refresh_state
 puts 'Action done Successfully!'
+
+puts "\nAdding the '#{scope_1['name']}' with URI='#{scope_1['uri']}' in the logical switch"
+logical_switch.add_scope(scope_1)
+logical_switch.refresh
+puts "Listing logical_switch['scopeUris']:"
+puts logical_switch['scopeUris'].to_s
+
+puts "\nReplacing scopes to '#{scope_1['name']}' with URI='#{scope_1['uri']}' and '#{scope_2['name']}' with URI='#{scope_2['uri']}'"
+logical_switch.replace_scopes(scope_1, scope_2)
+logical_switch.refresh
+puts "Listing logical_switch['scopeUris']:"
+puts logical_switch['scopeUris'].to_s
+
+puts "\nRemoving scope with URI='#{scope_1['uri']}' from the logical switch"
+logical_switch.remove_scope(scope_1)
+logical_switch.refresh
+puts "Listing logical_switch['scopeUris']:"
+puts logical_switch['scopeUris'].to_s
+
+puts "\nRemoving scope with URI='#{scope_2['uri']}' from the logical switch"
+logical_switch.remove_scope(scope_2)
+logical_switch.refresh
+puts "Listing logical_switch['scopeUris']:"
+puts logical_switch['scopeUris'].to_s
+
+puts "\nDeleting the logical switch"
+logical_switch.delete
+puts 'Logical switch deleted successfully' unless logical_switch.retrieve!
+
+# Delete the scopes
+scope_1.delete
+scope_2.delete

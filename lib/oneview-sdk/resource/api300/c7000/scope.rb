@@ -76,8 +76,8 @@ module OneviewSDK
         def change_resource_assignments(add_resources: [], remove_resources: [])
           if !add_resources.empty? || !remove_resources.empty?
             ensure_uri && ensure_client
-            add_uris = get_and_ensure_uri_for(add_resources)
-            remove_uris = get_and_ensure_uri_for(remove_resources)
+            add_uris = get_and_ensure_uri(add_resources)
+            remove_uris = get_and_ensure_uri(remove_resources)
             body = {
               'addedResourceUris' => add_uris,
               'removedResourceUris' => remove_uris
@@ -86,6 +86,55 @@ module OneviewSDK
             @client.response_handler(response)
           end
           self
+        end
+
+        # Helper methods for add, remove and replace scopes from the another resources
+        module ScopeHelperMethods
+          # Performs a specific patch operation for the given server.
+          # If the server supports the particular operation, the operation is performed
+          # and a response is returned to the caller with the results.
+          # @param [String] operation The operation to be performed
+          # @param [String] path The path of operation
+          # @param [String] value The value
+          # @note This attribute is subject to incompatible changes in future release versions, including redefinition or removal.
+          def patch(operation, path, value = nil)
+            ensure_client && ensure_uri
+            body = {
+              'op' => operation,
+              'path' => path,
+              'value' => value
+            }
+            response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
+            @client.response_handler(response)
+          end
+
+          # Add one scope to the resource
+          # @param [OneviewSDK::API300::C7000::Scope] scope The scope resource
+          # @raise [OneviewSDK::IncompleteResource] if the uri of scope is not set
+          def add_scope(scope)
+            scope.ensure_uri
+            patch('add', '/scopeUris/-', scope['uri'])
+          end
+
+          # Remove one scope from the resource
+          # @param [OneviewSDK::API300::C7000::Scope] scope The scope resource
+          # @return [Boolean] True if the scope was deleted and false if enclosure has not the scope
+          # @raise [OneviewSDK::IncompleteResource] if the uri of scope is not set
+          def remove_scope(scope)
+            scope.ensure_uri
+            scope_index = @data['scopeUris'].find_index { |uri| uri == scope['uri'] }
+            return false unless scope_index
+            patch('remove', "/scopeUris/#{scope_index}", nil)
+            true
+          end
+
+          # Change the list of scopes in the resource
+          # @param [Array<OneviewSDK::API300::C7000::Scope>] scopes The scopes list (or scopes separeted by comma)
+          # @raise [OneviewSDK::IncompleteResource] if the uri of each scope is not set
+          def replace_scopes(*scopes)
+            uris = get_and_ensure_uri(scopes.flatten)
+            patch('replace', '/scopeUris', uris)
+          end
         end
       end
     end

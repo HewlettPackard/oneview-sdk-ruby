@@ -10,12 +10,15 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/logical_switch'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module C7000
       # Logical switch resource implementation for API300 C7000
       class LogicalSwitch < OneviewSDK::API200::LogicalSwitch
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
+
         INTERNAL_LINK_SET_URI = '/rest/internal-link-sets'.freeze
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -26,6 +29,7 @@ module OneviewSDK
           @data ||= {}
           # Default values:
           @data['type'] ||= 'logical-switchV300'
+          @data['scopeUris'] ||= []
           super
         end
 
@@ -44,6 +48,15 @@ module OneviewSDK
         def self.get_internal_link_set(client, name)
           results = get_internal_link_sets(client)
           results.find { |internal_link_set| internal_link_set['name'] == name }
+        end
+
+        # Updates scopes uris of a given logical switch resource
+        # @param [String] operation The type of operation: one of "add", "remove" or "replace".
+        # @param [String] path The path operation for use. The exact meaning depends on the type of operation.
+        # @param [String] value The value to add or replace for "add" and "replace" operations. Not used by "remove".
+        # @note This attribute is subject to incompatible changes in future release versions, including redefinition or removal.
+        def patch(operation, path, value = nil)
+          super
         end
       end
     end
