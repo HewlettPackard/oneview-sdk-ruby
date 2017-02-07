@@ -14,8 +14,8 @@ require_relative 'resource'
 module OneviewSDK
   module ImageStreamer
     module API300
-      # OS Volumes resource implementation for Image Streamer
-      class OSVolumes < Resource
+      # OS Volume resource implementation for Image Streamer
+      class OSVolume < Resource
         BASE_URI = '/rest/os-volumes'.freeze
 
         # Method is not available
