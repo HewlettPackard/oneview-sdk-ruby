@@ -13,8 +13,16 @@ require_relative '../../_client_i3s' # Gives access to @client
 
 # Example: Create a build plan for an API300 Image Streamer
 # NOTE: This will create a build plan named 'Build_Plan_1', then delete it.
+# NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
+#   @plan_script_name
+
 options = {
   name: 'Build_Plan_1',
+  oeBuildPlanType: 'Deploy'
+}
+
+options2 = {
+  name: 'Build_Plan_2',
   oeBuildPlanType: 'Deploy'
 }
 
@@ -25,6 +33,24 @@ item.create!
 item.retrieve!
 puts "\n#Build plan with name #{item['name']} and uri #{item['uri']} created successfully."
 
+# Creating a build plan with build steps
+item2 = OneviewSDK::ImageStreamer::API300::BuildPlan.new(@client, options2)
+plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by($client_i3s_300, name: @plan_script_name).first
+
+build_step = [
+  {
+    serialNumber: '1',
+    parameters: 'anystring',
+    planScriptName: 'Plan_Script_1',
+    planScriptUri: plan_script['uri']
+  }
+]
+item2.set_build_step(build_step)
+puts "\n#Creating a build plan with name #{options2[:name]}."
+item2.create!
+item2.retrieve!
+puts "\n#Build plan with name #{item2['name']} and uri #{item2['uri']} created successfully."
+
 # List all builds
 list = OneviewSDK::ImageStreamer::API300::BuildPlan.get_all(@client)
 puts "\n#Listing all:"
@@ -33,17 +59,21 @@ list.each { |p| puts "  #{p['name']}" }
 id = list.first['uri']
 # Gets a build plan by id
 puts "\n#Gets a build plan by id #{id}:"
-item2 = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by(@client, uri: id).first
-puts "\n#Build Plan with id #{item2['uri']} was found."
+item3 = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by(@client, uri: id).first
+puts "\n#Build Plan with id #{item3['uri']} was found."
 
 # Updates a build plan
-puts "\n#Updating a build plan with id #{item2['uri']} and name #{item2['name']}:"
-item2['name'] = 'Build_Plan_Updated'
-item2.update
-item2.retrieve!
-puts "\n#Build Plan updated successfully with id #{item2['uri']} and new name #{item2['name']}."
+item4 = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by(@client, name: 'Build_Plan_1').first
+puts "\n#Updating a build plan with id #{item4['uri']} and name #{item4['name']}:"
+item4['name'] = 'Build_Plan_Updated'
+item4.update
+item4.retrieve!
+puts "\n#Build Plan updated successfully with id #{item4['uri']} and new name #{item4['name']}."
 
-# Removes a build plan
+# Removes all build plan
 puts "\n#Removing a build plan with id #{item2['uri']} and name #{item2['name']}:"
 item2.delete
 puts "\n#Build plan with id #{item2['uri']} and name #{item2['name']} removed successfully."
+puts "\n#Removing a build plan with id #{item4['uri']} and name #{item4['name']}:"
+item4.delete
+puts "\n#Build plan with id #{item4['uri']} and name #{item4['name']} removed successfully."

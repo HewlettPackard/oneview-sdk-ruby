@@ -13,3 +13,6 @@ require 'pry'
 # STDOUT.sync = false
 
 puts "Connected to Image Streamer at #{@client.url}\n\n"
+
+# Instance variables for examples:
+@plan_script_name = 'Plan_Script_1'
