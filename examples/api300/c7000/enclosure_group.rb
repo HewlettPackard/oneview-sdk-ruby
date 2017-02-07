@@ -22,7 +22,7 @@ options = {
 item = OneviewSDK::API300::C7000::EnclosureGroup.new(@client, options)
 
 # Adds a logical interconnect group to the enclosure group
-lig = OneviewSDK::API300::C7000::LogicalInterconnectGroup.find_by(@client, {}).first
+lig = OneviewSDK::API300::C7000::LogicalInterconnectGroup.get_all(@client).first
 item.add_logical_interconnect_group(lig)
 
 item.create!

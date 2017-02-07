@@ -111,7 +111,7 @@ OneviewSDK::LogicalInterconnectGroup.find_by(@client, {}).each do |r|
 end
 
 puts '## Listing default settings ##'
-puts lig.get_default_settings
+puts OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client)
 
 puts '## Listing this LIG settings ##'
 puts lig.get_settings
