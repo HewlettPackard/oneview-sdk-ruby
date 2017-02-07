@@ -62,7 +62,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       }
 
       item = klass.new($client_i3s_300, options)
-      item.set_build_step(build_step)
+      item.set_build_steps(build_step)
       item.expect(item['build_step']).to eq(build_step)
 
       expect { item.create! }.not_to raise_error
@@ -90,7 +90,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       }
 
       item = klass.new($client_i3s_300, options)
-      item.set_build_step(build_step)
+      item.set_build_steps(build_step)
       item.expect(item['build_step']).to eq(build_step)
 
       expect { item.create! }.not_to raise_error

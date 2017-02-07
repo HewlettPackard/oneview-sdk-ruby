@@ -45,7 +45,7 @@ build_step = [
     planScriptUri: plan_script['uri']
   }
 ]
-item2.set_build_step(build_step)
+item2.set_build_steps(build_step)
 puts "\n#Creating a build plan with name #{options2[:name]}."
 item2.create!
 item2.retrieve!

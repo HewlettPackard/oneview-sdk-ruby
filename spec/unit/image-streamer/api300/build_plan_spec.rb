@@ -11,7 +11,7 @@ RSpec.describe klass do
     end
   end
 
-  describe '#set_build_step' do
+  describe '#set_build_steps' do
     it 'raises exception when build step without planScriptUri attribute' do
       options = [
         {
@@ -22,7 +22,7 @@ RSpec.describe klass do
       ]
 
       item = klass.new(@client_i3s_300)
-      expect { item.set_build_step(options) }.to raise_error(OneviewSDK::IncompleteResource, /Please set the planScriptUri/)
+      expect { item.set_build_steps(options) }.to raise_error(OneviewSDK::IncompleteResource, /Please set the planScriptUri/)
     end
 
     it 'raises exception with nonexistent plan script ' do
@@ -36,8 +36,8 @@ RSpec.describe klass do
       ]
 
       item = klass.new(@client_i3s_300)
-      expect(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:find_by).and_return('')
-      expect { item.set_build_step(options) }.to raise_error(OneviewSDK::IncompleteResource, /could not be found!/)
+      expect(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:find_by).and_return([''])
+      expect { item.set_build_steps(options) }.to raise_error(OneviewSDK::IncompleteResource, /could not be found!/)
     end
 
     it 'creates a build plan with build step' do
@@ -51,8 +51,8 @@ RSpec.describe klass do
       ]
       item = klass.new(@client_i3s_300)
       expect(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:find_by)
-        .and_return('uri' => 'rest/plan-scripts/fake', 'customAttributes' => [])
-      item.set_build_step(options)
+        .and_return(['uri' => 'rest/plan-scripts/fake', 'customAttributes' => []])
+      item.set_build_steps(options)
       expect(item['buildStep']).to_not be_empty
       expect(item['buildStep'].first[:serialNumber]).to eq('1')
       expect(item['buildStep'].first[:parameters]).to eq('anystring')

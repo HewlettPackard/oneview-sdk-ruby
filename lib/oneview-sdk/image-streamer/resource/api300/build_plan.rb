@@ -31,7 +31,7 @@ module OneviewSDK
 
         # Build step of the build plan.
         # @param build_step [Array]  The Build step array of the build plan
-        def set_build_step(build_step = [])
+        def set_build_steps(build_step = [])
           set('buildStep', build_step)
           @data['buildStep'].each do |step|
             step = Hash[step.map { |k, v| [k.to_s, v] }]
@@ -45,7 +45,7 @@ module OneviewSDK
         # Sets the custom attributes.
         # @param [String]  plan_script_uri uri of the plan script
         def set_custom_attributes(plan_script_uri)
-          plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by(@client, uri: plan_script_uri)
+          plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by(@client, uri: plan_script_uri).first
           raise IncompleteResource, "The plan script with uri #{plan_script_uri} could not be found!" unless plan_script['uri']
           @data['customAttributes'].merge(plan_script['customAttributes']) unless plan_script['customAttributes'].empty?
         end
