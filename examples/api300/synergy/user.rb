@@ -12,7 +12,7 @@
 require_relative '../../_client' # Gives access to @client
 
 # Example: Create a user
-# NOTE: This will create a user accound named 'testUser', then delete it.
+# NOTE: This will create a user account named 'testUser', then delete it.
 options = {
   userName:  'testUser',
   password: 'secret123',
