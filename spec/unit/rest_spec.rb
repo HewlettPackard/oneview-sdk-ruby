@@ -44,8 +44,7 @@ RSpec.describe OneviewSDK::Client do
       response1 = FakeResponse.new({ name: 'New' }, 301, 'location' => path)
       expect(response1).to receive(:class).and_return(Net::HTTPRedirection) # Simulate 301 on first request
       response2 = FakeResponse.new({ name: 'New' }, 200)
-      expect(http).to receive(:request).ordered.and_return(response1)
-      expect(http).to receive(:request).ordered.and_return(response2)
+      expect(http).to receive(:request).and_return(response1, response2)
       r = @client.rest_api(:get, path)
       expect(r).to eq(response2)
     end
