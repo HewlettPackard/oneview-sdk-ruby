@@ -37,6 +37,34 @@ RSpec.describe OneviewSDK::Client do
       expect_any_instance_of(Net::HTTP).to receive(:open_timeout=).with(5).and_call_original
       client.rest_api(:get, path)
     end
+
+    it 'supports following redirects' do
+      http = Net::HTTP.new('oneview.example.com', 443) # Needed to mock multiple method calls
+      expect(Net::HTTP).to receive(:new).twice.and_return(http)
+      response1 = FakeResponse.new({ name: 'New' }, 301, 'location' => path)
+      expect(response1).to receive(:class).and_return(Net::HTTPRedirection) # Simulate 301 on first request
+      response2 = FakeResponse.new({ name: 'New' }, 200)
+      expect(http).to receive(:request).and_return(response1, response2)
+      r = @client.rest_api(:get, path)
+      expect(r).to eq(response2)
+    end
+
+    it 'follows a limited number of redirects' do
+      response = FakeResponse.new({ name: 'New' }, 301, 'location' => path)
+      allow(response.class).to receive(:<=).with(Net::HTTPRedirection).and_return(true)
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_return(response)
+      expect(@client).to receive(:rest_api).exactly(4).times.and_call_original
+      r = @client.rest_api(:get, path)
+      expect(r).to eq(response)
+    end
+
+    it 'only follows redirects if there is a location header' do
+      response = FakeResponse.new({ name: 'New' }, 301)
+      allow(response.class).to receive(:<=).with(Net::HTTPRedirection).and_return(true)
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_return(response)
+      expect(@client).to receive(:rest_api).once.and_call_original
+      @client.rest_api(:get, path)
+    end
   end
 
   describe '#rest_get' do
