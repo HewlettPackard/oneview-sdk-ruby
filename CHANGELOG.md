@@ -2,9 +2,6 @@
 
 ## Suggested release: v4.0.0
 
-#### Bug fixes
-- Fixed issue #132 get_default_settings in API200 is currently an instance method, but it should be a class method
-
 #### Breaking changes:
 - Fixed issue #93 Logical Switch refresh conflict
 
@@ -17,7 +14,8 @@
      - OS Volumes
      - Plan Scripts
 
-#### Bug fixes & Enhancements
+#### Bug fixes & Enhancements:
+- [#132](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/132) Made get_default_settings in API200 a class method instead of an instance method
 - [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
 - [#142](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/142) EnclosureGroup should raise error in `#add_logical_interconnect_group` if LIG could not be retrieved
 - [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
