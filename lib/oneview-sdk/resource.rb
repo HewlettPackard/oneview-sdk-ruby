@@ -323,7 +323,10 @@ module OneviewSDK
       true
     end
 
-    # Fail unless all uri of resources is set.
+    # Gets all the URIs for the specified resources
+    # @param [Array<OneviewSDK::Resource>] resources The list of resources
+    # @return [Array<String>] List of uris
+    # @raise IncompleteResource if 'uri' is not set for each resource.
     def get_and_ensure_uri_for(resources)
       uris = resources.map do |resource|
         resource.ensure_uri
