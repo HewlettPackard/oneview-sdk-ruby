@@ -28,19 +28,19 @@ module OneviewSDK
 
         # Method is unavailable
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def create
+        def create(*)
           unavailable_method
         end
 
         # Method is unavailable
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def delete
+        def delete(*)
           unavailable_method
         end
 
         # Method is unavailable
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def update
+        def update(*)
           unavailable_method
         end
 

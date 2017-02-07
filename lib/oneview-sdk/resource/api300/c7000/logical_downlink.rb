@@ -19,13 +19,13 @@ module OneviewSDK
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def self.get_without_ethernet
+        def self.get_without_ethernet(*)
           raise MethodUnavailable, 'The method #self.get_without_ethernet is unavailable for this resource'
         end
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def get_without_ethernet
+        def get_without_ethernet(*)
           unavailable_method
         end
       end
