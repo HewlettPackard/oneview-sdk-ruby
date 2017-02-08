@@ -62,7 +62,7 @@ puts "\n#Golden Image updated successfully with id #{item3['uri']} and new name 
 
 # Gets details of the golden image capture logs
 puts "\nGetting details of the golden image capture logs with id #{item3['uri']} and name #{item3['name']}"
-item3.get_details_archive(@golden_image_log_path)
+item3.download_details_archive(@golden_image_log_path)
 puts "\nDetails of the golden image save successfully."
 
 # Adds a golden image resource from the file that is uploaded from a local drive

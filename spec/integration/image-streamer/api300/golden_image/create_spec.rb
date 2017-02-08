@@ -55,15 +55,15 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
     end
   end
 
-  describe '#get_details_archive' do
+  describe '#download_details_archive' do
     it 'raises exception when uri is empty' do
       item = klass.new($client_i3s_300)
-      expect { item.get_details_archive(golden_image_log_path) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
+      expect { item.download_details_archive(golden_image_log_path) }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
     it 'gets details of the golden image capture logs' do
       item = klass.find_by($client_i3s_300, name: GOLDEN_IMAGE1_NAME).first
-      expect { item.get_details_archive(golden_image_log_path) }.not_to raise_error
+      expect { item.download_details_archive(golden_image_log_path) }.not_to raise_error
     end
   end
 
