@@ -9,25 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/enclosure'
+require_relative '../c7000/enclosure'
 
 module OneviewSDK
   module API300
     module Synergy
       # Enclosure resource implementation for API300 Synergy
-      class Enclosure < OneviewSDK::API200::Enclosure
-
-        # Create a resource object, associate it with a client, and set its properties.
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [Hash] params The options for this resource (key-value pairs)
-        # @param [Integer] api_ver The api version to use when interracting with this resource.
-        # @note Renames the enclosures only if @data['name']. Pattern used is: <@data['name']>+<1..number of enclosures added>.
-        def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
-          # Default values:
-          @data['type'] ||= 'EnclosureV300'
-          super
-        end
+      class Enclosure < OneviewSDK::API300::C7000::Enclosure
 
         # Claim/configure the enclosure and its components to the appliance
         # @note Calls the update_enclosure_names method to set the enclosure names
@@ -46,30 +34,15 @@ module OneviewSDK
           OneviewSDK::API300::Synergy::Enclosure.update_enclosure_names(@client, @data['hostname'], @data['name'])
         end
 
-        # Update specific attributes of a given enclosure
-        # @param [String] operation Operation to be performed
-        # @param [String] path Path
-        # @param [String] value Value
-        def patch(operation, path, value = nil)
-          ensure_client && ensure_uri
-          body = if value
-                   { op: operation, path: path, value: value }
-                 else
-                   { op: operation, path: path }
-                 end
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
-        end
-
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def set_environmental_configuration
+        def set_environmental_configuration(*)
           unavailable_method
         end
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def set_enclosure_group
+        def set_enclosure_group(*)
           unavailable_method
         end
 
