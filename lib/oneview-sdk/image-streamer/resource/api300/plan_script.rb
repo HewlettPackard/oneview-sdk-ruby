@@ -14,8 +14,8 @@ require_relative 'resource'
 module OneviewSDK
   module ImageStreamer
     module API300
-      # Plan Scripts resource implementation for Image Streamer
-      class PlanScripts < Resource
+      # Plan Script resource implementation for Image Streamer
+      class PlanScript < Resource
         BASE_URI = '/rest/plan-scripts'.freeze
 
         # Create a resource object, associate it with a client, and set its properties.

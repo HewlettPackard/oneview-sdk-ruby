@@ -22,21 +22,21 @@ options = {
 }
 
 # Creating a plan script
-item = OneviewSDK::ImageStreamer::API300::PlanScripts.new(@client, options)
+item = OneviewSDK::ImageStreamer::API300::PlanScript.new(@client, options)
 puts "\n#Creating a plan script with name #{options[:name]}."
 item.create!
 item.retrieve!
 puts "\n#Plan script with name #{item['name']} and uri #{item['uri']} created successfully."
 
 # List all plan scripts
-list = OneviewSDK::ImageStreamer::API300::PlanScripts.get_all(@client)
+list = OneviewSDK::ImageStreamer::API300::PlanScript.get_all(@client)
 puts "\n#Listing all:"
 list.each { |p| puts "  #{p['name']}" }
 
 id = list.first['uri']
 # Gets a plan script by id
 puts "\n#Gets a plan script by id #{id}:"
-item2 = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by(@client, uri: id).first
+item2 = OneviewSDK::ImageStreamer::API300::PlanScript.find_by(@client, uri: id).first
 puts "\n#Plan Script with id #{item2['uri']} was found."
 
 # Updates a plan script
