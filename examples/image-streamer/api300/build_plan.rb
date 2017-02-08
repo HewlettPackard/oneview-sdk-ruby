@@ -35,7 +35,7 @@ puts "\n#Build plan with name #{item['name']} and uri #{item['uri']} created suc
 
 # Creating a build plan with build steps
 item2 = OneviewSDK::ImageStreamer::API300::BuildPlan.new(@client, options2)
-plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by($client_i3s_300, name: @plan_script_name).first
+plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by($client_i3s_300, name: @plan_script_name).first
 
 build_step = [
   {

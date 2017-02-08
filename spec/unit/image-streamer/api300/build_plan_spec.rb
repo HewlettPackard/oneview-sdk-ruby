@@ -36,7 +36,7 @@ RSpec.describe klass do
       ]
 
       item = klass.new(@client_i3s_300)
-      expect(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:find_by).and_return([])
+      expect(OneviewSDK::ImageStreamer::API300::PlanScript).to receive(:find_by).and_return([])
       expect { item.set_build_steps(options) }.to raise_error(OneviewSDK::IncompleteResource, /could not be found!/)
     end
 
@@ -50,7 +50,7 @@ RSpec.describe klass do
         }
       ]
       item = klass.new(@client_i3s_300)
-      expect(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:find_by)
+      expect(OneviewSDK::ImageStreamer::API300::PlanScript).to receive(:find_by)
         .and_return(['uri' => 'rest/plan-scripts/fake', 'customAttributes' => []])
       item.set_build_steps(options)
       expect(item['buildStep']).to_not be_empty

@@ -45,7 +45,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
     end
 
     it 'creates a build plan with build step' do
-      plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by($client_i3s_300, name: PLAN_SCRIPT1_NAME).first
+      plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by($client_i3s_300, name: PLAN_SCRIPT1_NAME).first
 
       build_step = [
         {
@@ -73,7 +73,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
     end
 
     it 'creates a build plan with build step and custom attributes' do
-      plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by($client_i3s_300, name: PLAN_SCRIPT2_NAME).first
+      plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by($client_i3s_300, name: PLAN_SCRIPT2_NAME).first
 
       build_step = [
         {

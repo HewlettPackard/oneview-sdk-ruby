@@ -1,6 +1,7 @@
 I3S_DEPENDENCIES = {
-  BuildPlan: [:PlanScripts],
-  PlanScripts: []
+  BuildPlan: [:PlanScript],
+  OSVolume: [],
+  PlanScript: []
 }.freeze
 
 I3S_SEQ = I3S_DEPENDENCIES.tsort
@@ -22,7 +23,7 @@ end
 
 # Resource Names:
 
-# Plan Scripts
+# Plan Script
 PLAN_SCRIPT1_NAME = 'Plan_Script_1'.freeze
 PLAN_SCRIPT2_NAME = 'Plan_Script_2'.freeze
 PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze

@@ -45,7 +45,7 @@ module OneviewSDK
         # Sets the custom attributes.
         # @param [String]  plan_script_uri uri of the plan script
         def set_custom_attributes(plan_script_uri)
-          plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.find_by(@client, uri: plan_script_uri).first
+          plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by(@client, uri: plan_script_uri).first
           raise IncompleteResource, "The plan script with uri #{plan_script_uri} could not be found!" unless plan_script
           @data['customAttributes'].merge(plan_script['customAttributes']) unless plan_script['customAttributes'].empty?
         end

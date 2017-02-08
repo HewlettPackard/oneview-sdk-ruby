@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::ImageStreamer::API300::PlanScripts
+klass = OneviewSDK::ImageStreamer::API300::PlanScript
 RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(klass) do
   include_context 'integration i3s api300 context'
 

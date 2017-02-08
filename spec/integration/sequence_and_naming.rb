@@ -41,6 +41,7 @@ DEPENDENCIES = {
   SASInterconnect: [:SASLogicalInterconnect],
   SASLogicalInterconnect: [:Enclosure],
   SASLogicalInterconnectGroup: [],
+  Scope: [],
   ServerHardware: [:ServerHardwareType],
   ServerHardwareType: [:Enclosure],
   ServerProfile: [:ServerHardware, :Enclosure, :ServerProfileTemplate],
@@ -50,6 +51,7 @@ DEPENDENCIES = {
   Switch: [:LogicalSwitch],
   UnmanagedDevice: [],
   UplinkSet: [:LogicalInterconnectGroup, :LogicalInterconnect],
+  User: [],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
   VolumeTemplate: [:StoragePool]
@@ -225,3 +227,6 @@ INTERCONNECT_3_NAME = "#{ENCLOSURE_1}, interconnect 5".freeze
 
 # SAS Interconnect
 SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
+
+# USER
+USER_NAME = 'TestUser'.freeze

@@ -1,7 +1,7 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -9,14 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative 'resource'
+require_relative '../../api200/user'
 
 module OneviewSDK
-  module ImageStreamer
-    module API300
-      # Deployment Plans resource implementation for Image Streamer
-      class DeploymentPlans < Resource
-        BASE_URI = '/rest/deployment-plans'.freeze
+  module API300
+    module C7000
+      # User resource implementation for API300 C7000
+      class User < OneviewSDK::API200::User
       end
     end
   end
