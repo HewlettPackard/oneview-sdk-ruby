@@ -323,4 +323,49 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
       expect(@item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
     end
   end
+
+  context 'adding, removing and replacing scope' do
+    let(:scope) { OneviewSDK::API300::Synergy::Scope.new(@client_300, uri: 'scopes/UID-111') }
+    let(:scope_2) { OneviewSDK::API300::Synergy::Scope.new(@client_300, uri: 'scopes/UID-222') }
+    let(:scope_clean) { OneviewSDK::API300::Synergy::Scope.new(@client_300) }
+
+    describe '#add_scope' do
+      context 'when scope has no URI' do
+        it { expect { @item.add_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+
+      it 'should call patch method' do
+        expect(@item).to receive(:patch).with('add', '/scopeUris/-', scope['uri'])
+        @item.add_scope(scope)
+      end
+    end
+
+    describe '#replace_scopes' do
+      context 'when scope has no URI' do
+        it { expect { @item.replace_scopes(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+
+      it 'should replace the list of scopes' do
+        expect(@item).to receive(:patch).with('replace', '/scopeUris', [scope['uri'], scope_2['uri']])
+        @item.replace_scopes(scope, scope_2)
+      end
+    end
+
+    describe '#remove_scope' do
+      context 'when scope has no URI' do
+        it { expect { @item.remove_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+
+      it 'should remove scope' do
+        @item.data['scopeUris'] << 'scopes/UID-111'
+        @item.data['scopeUris'] << 'scopes/UID-222'
+
+        expect(@item).to receive(:patch).with('remove', '/scopeUris/1', nil)
+        @item.remove_scope(scope_2)
+
+        expect(@item).to receive(:patch).with('remove', '/scopeUris/0', nil)
+        @item.remove_scope(scope)
+      end
+    end
+  end
 end
