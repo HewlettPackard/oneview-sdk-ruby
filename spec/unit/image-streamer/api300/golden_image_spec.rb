@@ -15,22 +15,22 @@ RSpec.describe klass do
     it 'generates exception when setting a nonexistent os volume' do
       item = klass.new(@client_i3s_300)
       data = { 'name' => 'volume1' }
-      expect(OneviewSDK::ImageStreamer::API300::OsVolumes).to receive(:find_by).and_return([instance_double('bp', 'data' => data)])
-      expect { item.set_os_volume(OneviewSDK::ImageStreamer::API300::OsVolumes.new(@client_i3s_300, name: 'volume1')) }
+      expect(OneviewSDK::ImageStreamer::API300::OSVolume).to receive(:find_by).and_return([instance_double('bp', 'data' => data)])
+      expect { item.set_os_volume(OneviewSDK::ImageStreamer::API300::OSVolume.new(@client_i3s_300, name: 'volume1')) }
         .to raise_error(OneviewSDK::NotFound, /The os volume was not found/)
     end
 
     it 'sets an os volume successfully' do
-      os_volume = OneviewSDK::ImageStreamer::API300::OsVolumes.new(@client_i3s_300, uri: 'rest/os-volumes/fake')
+      os_volume = OneviewSDK::ImageStreamer::API300::OSVolume.new(@client_i3s_300, uri: 'rest/os-volumes/fake')
       item = klass.new(@client_i3s_300)
       expect { item.set_os_volume(os_volume) }.not_to raise_error
       expect(item['osVolumeURI']).to eq('rest/os-volumes/fake')
     end
 
     it 'sets an os volume with name attribute successfully' do
-      os_volume = OneviewSDK::ImageStreamer::API300::OsVolumes.new(@client_i3s_300, name: 'volume1')
+      os_volume = OneviewSDK::ImageStreamer::API300::OSVolume.new(@client_i3s_300, name: 'volume1')
       data = { 'name' => 'volume', 'uri' => 'rest/os-volumes/fake' }
-      expect(OneviewSDK::ImageStreamer::API300::OsVolumes).to receive(:find_by).and_return([instance_double('bp', 'data' => data)])
+      expect(OneviewSDK::ImageStreamer::API300::OSVolume).to receive(:find_by).and_return([instance_double('bp', 'data' => data)])
       item = klass.new(@client_i3s_300)
       expect { item.set_os_volume(os_volume) }.not_to raise_error
       expect(item['osVolumeURI']).to eq('rest/os-volumes/fake')

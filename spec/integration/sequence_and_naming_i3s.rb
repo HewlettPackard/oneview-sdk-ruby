@@ -1,5 +1,5 @@
 I3S_DEPENDENCIES = {
-  BuildPlan: [:PlanScripts],
+  BuildPlan: [:PlanScript],
   GoldenImage: [:OSVolume, :BuildPlan],
   OSVolume: [],
   PlanScript: []

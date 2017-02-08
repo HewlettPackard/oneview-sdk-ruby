@@ -18,7 +18,7 @@ require_relative '../../_client_i3s' # Gives access to @client
 #   @golden_image_upload_path
 #   @golden_image_log_path
 
-os_volumes = OneviewSDK::ImageStreamer::API300::OsVolumes.find_by(@client, {}).first
+os_volume = OneviewSDK::ImageStreamer::API300::OSVolume.find_by(@client, {}).first
 build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by(@client, oeBuildPlanType: 'capture').first
 
 options = {
@@ -30,7 +30,7 @@ options = {
 
 # Creating a golden image
 item = OneviewSDK::ImageStreamer::API300::GoldenImage.new(@client, options)
-item.set_os_volume(os_volumes)
+item.set_os_volume(os_volume)
 item.set_build_plan(build_plan)
 puts "\n#Creating a golden image with name #{options[:name]}."
 item.create!

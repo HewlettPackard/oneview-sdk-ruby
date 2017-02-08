@@ -21,7 +21,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
 
   describe '#create' do
     it 'creates a golden image' do
-      os_volumes = OneviewSDK::ImageStreamer::API300::OsVolumes.find_by($client_i3s_300, {}).first
+      os_volume = OneviewSDK::ImageStreamer::API300::OSVolume.find_by($client_i3s_300, {}).first
       build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by($client_i3s_300, oeBuildPlanType: 'capture').first
 
       options = {
@@ -32,14 +32,14 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       }
 
       item = klass.new($client_i3s_300, options)
-      item.set_os_volume(os_volumes)
+      item.set_os_volume(os_volume)
       item.set_build_plan(build_plan)
       expect { item.create! }.not_to raise_error
       item.retrieve!
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
-      expect(item['osVolumeURI']).to eq(os_volumes['uri'])
+      expect(item['osVolumeURI']).to eq(os_volume['uri'])
       expect(item['buildPlanUri']).to eq(build_plan['uri'])
     end
   end
