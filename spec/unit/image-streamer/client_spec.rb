@@ -43,16 +43,6 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
       expect(client.logger.level).to eq(3)
     end
 
-    it 'allows the log level to be set again' do
-      options = { url: 'https://oneview.example.com', token: 'secret123', log_level: :error }
-      client = OneviewSDK::ImageStreamer::Client.new(options)
-      expect(client.log_level).to eq(:error)
-      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
-      client.log_level = :warn
-      expect(client.log_level).to eq(:warn)
-      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
-    end
-
     it 'picks the lower of the default api version and appliance api version' do
       allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_i3s_api_version).and_return(120)
       options = { url: 'https://oneview.example.com', token: 'token123' }
@@ -110,6 +100,39 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
       expect(OneviewSDK::ImageStreamer).to receive(:api_version_updated?).and_return false
       expect(OneviewSDK::ImageStreamer).to receive(:api_version=).with(300).and_return true
       OneviewSDK::ImageStreamer::Client.new(url: 'https://oneview.example.com', token: 'token123', api_version: 300)
+    end
+  end
+
+  describe 'attributes' do
+    include_context 'shared context'
+
+    it 'allows the url to be re-set' do
+      @client_i3s_300.url = 'https://new-url.example.com'
+      expect(@client_i3s_300.url).to eq('https://new-url.example.com')
+    end
+
+    it 'allows the token to be re-set' do
+      @client_i3s_300.token = 'updatedToken'
+      expect(@client_i3s_300.token).to eq('updatedToken')
+    end
+
+    it 'allows the log level to be re-set' do
+      expect(@client_i3s_300.log_level).to_not eq(:error)
+      @client_i3s_300.log_level = :error
+      expect(@client_i3s_300.log_level).to eq(:error)
+      expect(@client_i3s_300.logger.level).to eq(Logger.const_get(:ERROR))
+    end
+
+    it 'does not allow the user to be set manually' do
+      expect { @client_i3s_300.user = 'new' }.to raise_error(NoMethodError, /undefined method/)
+    end
+
+    it 'does not allow the password to be set manually' do
+      expect { @client_i3s_300.password = 'new' }.to raise_error(NoMethodError, /undefined method/)
+    end
+
+    it 'does not allow the max_api_version to be set manually' do
+      expect { @client_i3s_300.max_api_version = 1 }.to raise_error(NoMethodError, /undefined method/)
     end
   end
 
@@ -174,6 +197,14 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
 
     it 'fails when a bogus resource type is given' do
       expect { @client_i3s_300.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
+    end
+  end
+
+  describe '#refresh_login' do
+    include_context 'shared context'
+
+    it 'is not defined' do
+      expect { @client_i3s_300.refresh_login }.to raise_error(NoMethodError, /undefined method/)
     end
   end
 
