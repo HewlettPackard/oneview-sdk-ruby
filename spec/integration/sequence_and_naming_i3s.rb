@@ -1,5 +1,5 @@
 I3S_DEPENDENCIES = {
-  PlanScripts: []
+  PlanScript: []
 }.freeze
 
 I3S_SEQ = I3S_DEPENDENCIES.tsort
