@@ -1,4 +1,5 @@
 I3S_DEPENDENCIES = {
+  OSVolume: [],
   PlanScripts: []
 }.freeze
 

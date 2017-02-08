@@ -1,6 +1,9 @@
 # Unreleased Changes
 
 ## Suggested release: v4.0.0
+Added full support to Image Streamer Rest API version 300:
+   - Plan Scripts
+   - OS Volumes
 
 #### Breaking changes:
 - [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
