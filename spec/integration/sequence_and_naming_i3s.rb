@@ -2,7 +2,7 @@ I3S_DEPENDENCIES = {
   BuildPlan: [:PlanScripts],
   GoldenImage: [:OSVolume, :BuildPlan],
   OSVolume: [],
-  PlanScripts: []
+  PlanScript: []
 }.freeze
 
 I3S_SEQ = I3S_DEPENDENCIES.tsort

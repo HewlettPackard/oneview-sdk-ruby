@@ -191,8 +191,8 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     include_context 'shared context'
 
     it "calls the correct resource's get_all method" do
-      expect(OneviewSDK::ImageStreamer::DeploymentPlans).to receive(:get_all).with(@client_i3s_300)
-      @client_i3s_300.get_all('DeploymentPlans')
+      expect(OneviewSDK::ImageStreamer::DeploymentPlan).to receive(:get_all).with(@client_i3s_300)
+      @client_i3s_300.get_all('DeploymentPlan')
     end
 
     it 'fails when a bogus resource type is given' do
