@@ -156,10 +156,34 @@ RSpec.describe klass do
       expect { item.download('path fake') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 
+    it 'raises an exception when an error occurs of the unauthorized type' do
+      item = klass.new(@client_i3s_300, uri: '/rest/fake')
+      res = FakeResponse.new('res', 401)
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_yield(res)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      expect { item.download('path fake') }.to raise_error(OneviewSDK::Unauthorized, /401/)
+    end
+
+    it 'raises an exception when an error occurs of the NotFound type' do
+      item = klass.new(@client_i3s_300, uri: '/rest/fake')
+      res = FakeResponse.new('res', 404)
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_yield(res)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      expect { item.download('path fake') }.to raise_error(OneviewSDK::NotFound, /404/)
+    end
+
+    it 'raises an exception when an error occurs of request' do
+      item = klass.new(@client_i3s_300, uri: '/rest/fake')
+      res = FakeResponse.new('res', 500)
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_yield(res)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      expect { item.download('path fake') }.to raise_error(OneviewSDK::RequestError, /500/)
+    end
+
     it 'Downloads the content of the selected golden image' do
       file = double('file like object')
       item = klass.new(@client_i3s_300, uri: '/rest/fake')
-      res = FakeResponse.new('res', 300)
+      res = FakeResponse.new('res', 200)
       allow_any_instance_of(Net::HTTP).to receive(:request).and_yield(res)
       allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
       allow(res).to receive(:read_body).and_yield(res.body)
