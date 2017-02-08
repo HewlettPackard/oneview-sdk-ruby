@@ -63,7 +63,7 @@ RSpec.describe klass do
 
   describe '#add' do
     it 'raises an exception when file does not exist' do
-      expect { klass.add(@client_i3s_300, 'file.zip') }.to raise_error(OneviewSDK::NotFound, //)
+      expect { klass.add(@client_i3s_300, 'file.zip', {}) }.to raise_error(OneviewSDK::NotFound, //)
     end
 
     it 'raises an exception when name of the golden image is not informed with hash keys symbols' do
@@ -92,7 +92,7 @@ RSpec.describe klass do
 
     it 'raises an exception when file with extension unsupported' do
       allow(File).to receive(:file?).and_return(true)
-      expect { klass.add(@client_i3s_300, 'file.fake') }.to raise_error(OneviewSDK::InvalidFormat, /File with extension/)
+      expect { klass.add(@client_i3s_300, 'file.fake', {}) }.to raise_error(OneviewSDK::InvalidFormat, /File with extension/)
     end
 
     it 'should use default http read_timeout when new value is not passed as parameter' do
