@@ -4,6 +4,7 @@
 
 #### Breaking changes:
 - [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
+- [#134](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/134) Remove API300::Synergy::LogicalSwitchGroup resource, which is not defined in the API
 
 #### Design changes:
    - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
