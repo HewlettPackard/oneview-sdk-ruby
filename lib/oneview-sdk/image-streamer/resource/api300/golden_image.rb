@@ -18,6 +18,7 @@ module OneviewSDK
       # Golden Image resource implementation for Image Streamer
       class GoldenImage < Resource
         BASE_URI = '/rest/golden-images'.freeze
+        READ_TIMEOUT = 300 # in seconds, 5 minutes
         ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -43,7 +44,7 @@ module OneviewSDK
         # Downloads the content of the selected golden image as per the specified attributes.
         # @param [String] file_path
         # @return [True] When was saved successfully
-        def download(file_path)
+        def download(file_path, timeout = READ_TIMEOUT)
           ensure_client && ensure_uri
           uri = URI.parse(URI.escape("#{client.url}#{BASE_URI}/download/#{@data['uri'].split('/').last}"))
           req = Net::HTTP::Get.new(uri.request_uri)
@@ -59,6 +60,7 @@ module OneviewSDK
           http_request = Net::HTTP.new(uri.host, uri.port)
           http_request.use_ssl = true
           http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          http_request.read_timeout = timeout
 
           http_request.start do |http|
             http.request(req) do |res|
@@ -79,8 +81,9 @@ module OneviewSDK
         # @param [Hash] options The
         # @option data_options [String] :name The name of the Golden Image
         # @option data_options [String] :description The description of the Golden Image
+        # @param [Integer] timeout The number of seconds to wait for completing the request
         # @return [Hash] hash with a String
-        def self.add(client, file_path, data_options = {})
+        def self.add(client, file_path, data_options = {}, timeout = READ_TIMEOUT)
           data_options = Hash[data_options.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
           raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
           raise InvalidFormat, 'ERROR: File with extension not supported!' unless ACCEPTED_FORMATS.include? File.extname(file_path)
@@ -103,6 +106,7 @@ module OneviewSDK
             http_request = Net::HTTP.new(url.host, url.port)
             http_request.use_ssl = true
             http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            http_request.read_timeout = timeout
 
             http_request.start do |http|
               response = http.request(req)
@@ -116,8 +120,6 @@ module OneviewSDK
         # @raise [OneviewSDK::NotFound] if the os volume uri is not set and cannot be retrieved
         def set_os_volume(os_volume)
           os_volume.retrieve! unless os_volume['uri']
-          # puts '**********'
-          # puts os_volume.inspect
           raise NotFound, 'The os volume was not found!' unless os_volume['uri']
           set('osVolumeURI', os_volume['uri'])
         end

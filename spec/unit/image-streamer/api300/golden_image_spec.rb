@@ -95,6 +95,32 @@ RSpec.describe klass do
       expect { klass.add(@client_i3s_300, 'file.fake') }.to raise_error(OneviewSDK::InvalidFormat, /File with extension/)
     end
 
+    it 'should use default http read_timeout when new value is not passed as parameter' do
+      options = { name: 'image1', description: 'anything' }
+      allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
+      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
+      http_fake = spy('http')
+      allow(Net::HTTP).to receive(:new).and_return(http_fake)
+      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:response_handler)
+        .and_return(FakeResponse.new)
+      klass.add(@client_i3s_300, 'file.zip', options)
+      expect(http_fake).to have_received(:read_timeout=).with(klass::READ_TIMEOUT)
+    end
+
+    it 'should use value of http read_timeout passed as parameter' do
+      options = { name: 'image1', description: 'anything' }
+      allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
+      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
+      http_fake = spy('http')
+      allow(Net::HTTP).to receive(:new).and_return(http_fake)
+      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:response_handler)
+        .and_return(FakeResponse.new)
+      klass.add(@client_i3s_300, 'file.zip', options, 600)
+      expect(http_fake).to have_received(:read_timeout=).with(600)
+    end
+
     it 'upload of the golden image file' do
       options = { name: 'image1', description: 'anything' }
       allow_any_instance_of(Net::HTTP).to receive(:request).and_return(FakeResponse.new({}, 300))
