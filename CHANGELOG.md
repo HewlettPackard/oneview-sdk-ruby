@@ -24,6 +24,7 @@
 - [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
 
 #### New Resources:
+- Scope
 - User
 
 # v3.1.0
