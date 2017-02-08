@@ -1,6 +1,9 @@
 # Unreleased Changes
 
 ## Suggested release: v4.0.0
+Added full support to Image Streamer Rest API version 300:
+   - Plan Scripts
+   - OS Volumes
 
 #### Breaking changes:
 - [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
@@ -22,9 +25,11 @@
 - [#145](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/145) REST methods now handle redirects
 - [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
 - [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
+- [#161](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/161) Allow client attributes to be set after initialization, and token to be refreshed
 - Client #get_all method now supports an (optional) variant parameter
 
 #### New Resources:
+- Scope
 - User
 
 # v3.1.0

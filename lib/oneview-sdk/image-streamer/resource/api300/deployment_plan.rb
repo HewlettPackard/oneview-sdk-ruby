@@ -14,8 +14,8 @@ require_relative 'resource'
 module OneviewSDK
   module ImageStreamer
     module API300
-      # Deployment Plans resource implementation for Image Streamer
-      class DeploymentPlans < Resource
+      # Deployment Plan resource implementation for Image Streamer
+      class DeploymentPlan < Resource
         BASE_URI = '/rest/deployment-plans'.freeze
       end
     end

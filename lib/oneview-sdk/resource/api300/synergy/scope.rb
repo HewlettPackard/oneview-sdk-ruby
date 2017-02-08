@@ -9,14 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative 'resource'
+require_relative '../c7000/scope'
 
 module OneviewSDK
-  module ImageStreamer
-    module API300
-      # OS Volumes resource implementation for Image Streamer
-      class OsVolumes < Resource
-        BASE_URI = '/rest/os-volumes'.freeze
+  module API300
+    module Synergy
+      # Scope resource implementation for API300 Synergy
+      class Scope < OneviewSDK::API300::C7000::Scope
       end
     end
   end

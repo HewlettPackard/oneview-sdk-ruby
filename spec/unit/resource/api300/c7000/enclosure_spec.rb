@@ -216,13 +216,6 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
       expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
       expect(item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
     end
-
-    it 'does a PATCH to the enclosure uri with 2 parameters' do
-      item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
-      data = { 'body' => [{ op: 'operation', path: '/path' }] }
-      expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Op'))
-      expect(item.patch('operation', '/path')).to eq('key' => 'Op')
-    end
   end
 
   describe '#convert_time' do
@@ -273,5 +266,49 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     end
   end
 
-  describe
+  context 'adding, removing and replacing scope' do
+    let(:scope) { OneviewSDK::API300::Synergy::Scope.new(@client_300, uri: 'scopes/UID-111') }
+    let(:scope_2) { OneviewSDK::API300::Synergy::Scope.new(@client_300, uri: 'scopes/UID-222') }
+    let(:scope_clean) { OneviewSDK::API300::Synergy::Scope.new(@client_300) }
+    subject(:enclosure) { described_class.new(@client_300, uri: 'enclosures/UID-001') }
+
+    describe '#add_scope' do
+      context 'when scope has no URI' do
+        it { expect { enclosure.add_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+
+      it 'should call patch method' do
+        expect(enclosure).to receive(:patch).with('add', '/scopeUris/-', scope['uri'])
+        enclosure.add_scope(scope)
+      end
+    end
+
+    describe '#replace_scopes' do
+      context 'when scope has no URI' do
+        it { expect { enclosure.replace_scopes(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+
+      it 'should replace the list of scopes' do
+        expect(enclosure).to receive(:patch).with('replace', '/scopeUris', [scope['uri'], scope_2['uri']])
+        enclosure.replace_scopes(scope, scope_2)
+      end
+    end
+
+    describe '#remove_scope' do
+      context 'when scope has no URI' do
+        it { expect { enclosure.remove_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+
+      it 'should remove scope' do
+        enclosure.data['scopeUris'] << 'scopes/UID-111'
+        enclosure.data['scopeUris'] << 'scopes/UID-222'
+
+        expect(enclosure).to receive(:patch).with('remove', '/scopeUris/1', nil)
+        enclosure.remove_scope(scope_2)
+
+        expect(enclosure).to receive(:patch).with('remove', '/scopeUris/0', nil)
+        enclosure.remove_scope(scope)
+      end
+    end
+  end
 end

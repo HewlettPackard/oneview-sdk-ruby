@@ -64,16 +64,6 @@ RSpec.describe OneviewSDK::Client do
       expect(client.logger.level).to eq(3)
     end
 
-    it 'allows the log level to be set again' do
-      options = { url: 'https://oneview.example.com', password: 'secret123', log_level: :error }
-      client = OneviewSDK::Client.new(options)
-      expect(client.log_level).to eq(:error)
-      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
-      client.log_level = :warn
-      expect(client.log_level).to eq(:warn)
-      expect(client.logger.level).to eq(Logger.const_get(client.log_level.upcase))
-    end
-
     it 'picks the lower of the default api version and appliance api version' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(120)
       options = { url: 'https://oneview.example.com', token: 'token123' }
@@ -130,6 +120,41 @@ RSpec.describe OneviewSDK::Client do
       expect(OneviewSDK).to receive(:api_version_updated?).and_return false
       expect(OneviewSDK).to receive(:api_version=).with(200).and_return true
       OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'token123', api_version: 200)
+    end
+  end
+
+  describe 'attributes' do
+    include_context 'shared context'
+
+    it 'allows the url to be re-set' do
+      @client.url = 'https://new-url.example.com'
+      expect(@client.url).to eq('https://new-url.example.com')
+    end
+
+    it 'allows the user to be re-set' do
+      @client.user = 'updatedUser'
+      expect(@client.user).to eq('updatedUser')
+    end
+
+    it 'allows the password to be re-set' do
+      @client.password = 'updatedPassword'
+      expect(@client.password).to eq('updatedPassword')
+    end
+
+    it 'allows the token to be re-set' do
+      @client.token = 'updatedToken'
+      expect(@client.token).to eq('updatedToken')
+    end
+
+    it 'allows the log level to be re-set' do
+      expect(@client.log_level).to_not eq(:error)
+      @client.log_level = :error
+      expect(@client.log_level).to eq(:error)
+      expect(@client.logger.level).to eq(Logger.const_get(:ERROR))
+    end
+
+    it 'does not allow the max_api_version to be set manually' do
+      expect { @client.max_api_version = 1 }.to raise_error(NoMethodError, /undefined method/)
     end
   end
 
@@ -226,6 +251,18 @@ RSpec.describe OneviewSDK::Client do
 
     it 'fails when a bogus resource type is given' do
       expect { @client.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
+    end
+  end
+
+  describe '#refresh_login' do
+    include_context 'shared context'
+
+    it 'refreshes the token and max_api_version' do
+      expect(@client).to receive(:appliance_api_version).and_return(250)
+      expect(@client).to receive(:login).and_return('newToken')
+      @client.refresh_login
+      expect(@client.max_api_version).to eq(250)
+      expect(@client.token).to eq('newToken')
     end
   end
 
