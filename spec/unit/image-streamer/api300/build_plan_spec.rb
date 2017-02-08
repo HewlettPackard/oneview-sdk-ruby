@@ -36,7 +36,7 @@ RSpec.describe klass do
       ]
 
       item = klass.new(@client_i3s_300)
-      expect(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:find_by).and_return([''])
+      expect(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:find_by).and_return([])
       expect { item.set_build_steps(options) }.to raise_error(OneviewSDK::IncompleteResource, /could not be found!/)
     end
 
