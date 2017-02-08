@@ -16,7 +16,10 @@ module OneviewSDK
     # The client defines the connection to the Image Streamer server and handles communication with it.
     class Client < OneviewSDK::Client
       undef :user
+      undef :user=
       undef :password
+      undef :password=
+      undef :refresh_login
 
       # Creates client object, establish connection, and set up logging and api version.
       # @param [Hash] options the options to configure the client
