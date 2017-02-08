@@ -65,7 +65,7 @@ module OneviewSDK
 
           http_request.start do |http|
             http.request(req) do |res|
-              client.response_handler(res) unless res.code.between?(200, 204)
+              client.response_handler(res) unless res.code.to_i.between?(200, 204)
               File.open(file_path, 'wb') do |file|
                 res.read_body do |segment|
                   file.write(segment)
