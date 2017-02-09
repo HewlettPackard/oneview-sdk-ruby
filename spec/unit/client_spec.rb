@@ -252,6 +252,14 @@ RSpec.describe OneviewSDK::Client do
     it 'fails when a bogus resource type is given' do
       expect { @client.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
     end
+
+    it 'fails when a bogus API version is given' do
+      expect { @client.get_all('ServerProfiles', 100) }.to raise_error(OneviewSDK::UnsupportedVersion, /version 100 is not supported/)
+    end
+
+    it 'fails when a bogus variant is given' do
+      expect { @client.get_all('ServerProfiles', 300, 'Bogus') }.to raise_error(/variant 'Bogus' is not supported/)
+    end
   end
 
   describe '#refresh_login' do
