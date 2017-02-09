@@ -17,10 +17,10 @@ RSpec.describe klass, integration_i3s: true, type: DELETE, sequence: i3s_rseq(kl
 
   describe '#delete' do
     it 'removes all golden images' do
-      item = klass.find_by($client_i3s_300, name: GOLDEN_IMAGE1_NAME_UPDATE).first
+      item = klass.find_by($client_i3s_300, name: GOLDEN_IMAGE1_NAME).first
       item2 = klass.find_by($client_i3s_300, name: GOLDEN_IMAGE2_NAME).first
-      expect(item['uri']).to be
-      expect(item2['uri']).to be
+      expect(item).to be
+      expect(item2).to be
       expect { item.delete }.not_to raise_error
       expect(item.retrieve!).to eq(false)
       expect { item2.delete }.not_to raise_error

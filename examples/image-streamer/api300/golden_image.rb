@@ -12,7 +12,7 @@
 require_relative '../../_client_i3s' # Gives access to @client
 
 # Example: Create a golden image for an API300 Image Streamer
-# NOTE: This will create a golden images named like 'Golden_Image_1' and 'Golden_Image_2', then delete it.
+# NOTE: This will create a golden images named 'Golden_Image_1' and 'Golden_Image_2', and then, it will delete them.
 # NOTE: You'll need to add the following instance variables to the _client_i3s.rb file with valid URIs for your environment:
 #   @golden_image_download_path
 #   @golden_image_upload_path
@@ -69,9 +69,7 @@ puts "\nDetails of the golden image save successfully."
 puts "\nAdds a golden image resource from the file that is uploaded from a local drive"
 options2 = { name: 'Golden_Image_2', description: 'Any_Description' }
 puts "\nAdding a golden image with name #{options2[:name]}."
-OneviewSDK::ImageStreamer::API300::GoldenImage.add(@client, @golden_image_upload_path, options2)
-# Retrieves a golden image added
-item4 = OneviewSDK::ImageStreamer::API300::GoldenImage.find_by(@client, name: options2[:name]).first
+item4 = OneviewSDK::ImageStreamer::API300::GoldenImage.add(@client, @golden_image_upload_path, options2)
 puts "\nGolden Image with uri #{item4['uri']} and name #{item4['name']} added successfully."
 
 # Downloads the content of the selected golden image

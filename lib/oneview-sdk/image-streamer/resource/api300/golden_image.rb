@@ -84,7 +84,7 @@ module OneviewSDK
         # @option data_options [String] :name The name of the Golden Image (required)
         # @option data_options [String] :description The description of the Golden Image (required)
         # @param [Integer] timeout The number of seconds to wait for the request to complete
-        # @return [Hash] hash with a String
+        # @return [OneviewSDK::ImageStreamer::API300::GoldenImage] if the upload was successful, return a GoldenImage object
         def self.add(client, file_path, data_options, timeout = READ_TIMEOUT)
           data_options = Hash[data_options.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
           raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
@@ -115,7 +115,8 @@ module OneviewSDK
 
             http_request.start do |http|
               response = http.request(req)
-              return client.response_handler(response)
+              data = client.response_handler(response)
+              return OneviewSDK::ImageStreamer::API300::GoldenImage.new(client, data)
             end
           end
         end

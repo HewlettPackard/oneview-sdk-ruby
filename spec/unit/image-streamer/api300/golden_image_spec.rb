@@ -125,11 +125,14 @@ RSpec.describe klass do
       options = { name: 'image1', description: 'anything' }
       allow_any_instance_of(Net::HTTP).to receive(:request).and_return(FakeResponse.new({}, 300))
       allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
-      allow(@client_i3s_300).to receive(:response_handler).and_return('fake')
+      allow(@client_i3s_300).to receive(:response_handler).and_return(klass.new(@client_i3s_300, name: 'fake', uri: 'rest/fake/1'))
       allow(File).to receive(:file?).and_return(true)
       allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
-      expect(klass.add(@client_i3s_300, 'file.zip', options)).to eq('fake')
+      item = klass.add(@client_i3s_300, 'file.zip', options)
+      expect(item).to be_an_instance_of(klass)
+      expect(item['name']).to eq('fake')
+      expect(item['uri']).to eq('rest/fake/1')
     end
   end
 

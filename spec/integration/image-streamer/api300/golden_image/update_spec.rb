@@ -18,11 +18,15 @@ RSpec.describe klass, integration_i3s: true, type: UPDATE do
   describe '#update' do
     it 'updates the name of the golden image' do
       item = klass.find_by($client_i3s_300, name: GOLDEN_IMAGE1_NAME).first
-      expect(item['uri']).to be
+      expect(item).to be
       item['name'] = GOLDEN_IMAGE1_NAME_UPDATE
       expect { item.update }.not_to raise_error
       item.retrieve!
       expect(item['name']).to eq(GOLDEN_IMAGE1_NAME_UPDATE)
+      item['name'] = GOLDEN_IMAGE1_NAME
+      expect { item.update }.not_to raise_error
+      item.retrieve!
+      expect(item['name']).to eq(GOLDEN_IMAGE1_NAME)
     end
   end
 end

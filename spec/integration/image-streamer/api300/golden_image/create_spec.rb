@@ -47,8 +47,9 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
   describe '#add' do
     it 'adding a golden image' do
       options = { name: GOLDEN_IMAGE2_NAME, description: 'Any_Description' }
-      expect { klass.add($client_i3s_300, golden_image_upload_path, options) }.not_to raise_error
-      item = klass.find_by($client_i3s_300, name: GOLDEN_IMAGE2_NAME).first
+      item = nil
+      expect { item = klass.add($client_i3s_300, golden_image_upload_path, options) }.not_to raise_error
+      expect(item).to be_an_instance_of(klass)
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
