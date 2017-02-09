@@ -26,7 +26,9 @@ module OneviewSDK
           super
           # Default values:
           @data['type'] ||= 'OeBuildPlan'
+          puts 'e o que mah'
           @data['customAttributes'] ||= []
+          puts @data['type']
         end
 
         # Build step of the build plan.
@@ -47,6 +49,10 @@ module OneviewSDK
         def set_custom_attributes(plan_script_uri)
           plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by(@client, uri: plan_script_uri).first
           raise IncompleteResource, "The plan script with uri #{plan_script_uri} could not be found!" unless plan_script
+          puts '****************'
+          puts @data['customAttributes']
+          puts '****************'
+          puts plan_script['customAttributes']
           @data['customAttributes'].merge(plan_script['customAttributes']) unless plan_script['customAttributes'].empty?
         end
       end

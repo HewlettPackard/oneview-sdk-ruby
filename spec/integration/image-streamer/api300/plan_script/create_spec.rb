@@ -37,15 +37,12 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
     end
 
     it 'creates a plan script with custom attributes' do
-      custom_attributes = '[{ "name": "DomainName", "value": "vse.rdlabs.hpecorp.net\" }]'
-
       options = {
         description: 'Description of this plan script',
         name: PLAN_SCRIPT2_NAME,
         hpProvided: false,
         planType: 'deploy',
-        content: 'f',
-        customAttributes: custom_attributes
+        content: 'esxcli system hostname set --domain "@DomainName@"'
       }
 
       item = klass.new($client_i3s_300, options)
@@ -57,7 +54,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['hpProvided']).to be options[:hpProvided]
       expect(item['planType']).to eq(options[:planType])
       expect(item['content']).to eq(options[:content])
-      expect(item['customAttributes']).to eq(options[:customAttributes])
+      expect(item['customAttributes']).to eq('[{"name":"DomainName","value":""}]')
     end
   end
 

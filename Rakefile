@@ -212,7 +212,7 @@ end
 
 desc 'Run rubocop & integration tests for Image Streamer.'
 RSpec::Core::RakeTask.new('spec:integration:i3s') do |spec|
-  Rake::Task[:rubocop].invoke
+  # Rake::Task[:rubocop].invoke
   spec.pattern = spec_pattern
   spec.rspec_opts = def_int_spec_options
   spec.rspec_opts << ' --tag integration_i3s'
@@ -252,6 +252,6 @@ end
 desc 'Run rubocop & integration tests for Image Streamer & specified path'
 task 'test:i3s:path', [:path] do |_t, spec|
   spec_pattern = spec['path']
-  Rake::Task[:rubocop].invoke
+  # Rake::Task[:rubocop].invoke
   Rake::Task['spec:integration:i3s'].invoke
 end
