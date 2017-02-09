@@ -26,6 +26,7 @@ Added full support to Image Streamer Rest API version 300:
 - [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
 - [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
 - [#161](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/161) Allow client attributes to be set after initialization, and token to be refreshed
+- Client #get_all method now supports an (optional) variant parameter
 - Support API modules & variants with the CLI
 
 #### New Resources:
