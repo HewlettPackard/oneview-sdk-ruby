@@ -14,9 +14,9 @@ require_relative 'resource'
 module OneviewSDK
   module ImageStreamer
     module API300
-      # OS Volumes resource implementation for Image Streamer
-      class OsVolumes < Resource
-        BASE_URI = '/rest/os-volumes'.freeze
+      # Deployment Plan resource implementation for Image Streamer
+      class DeploymentPlan < Resource
+        BASE_URI = '/rest/deployment-plans'.freeze
       end
     end
   end

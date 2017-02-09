@@ -11,16 +11,14 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::ImageStreamer::API300::PlanScripts
+klass = OneviewSDK::ImageStreamer::API300::OSVolume
 RSpec.describe klass, integration_i3s: true, type: DELETE do
   include_context 'integration i3s api300 context'
 
   describe '#delete' do
-    it 'removes a plan script' do
-      item = klass.find_by($client_i3s_300, name: PLAN_SCRIPT1_NAME_UPDATE).first
-      expect(item['uri']).to be
-      expect { item.delete }.not_to raise_error
-      expect(item.retrieve!).to eq(false)
+    it 'raises MethodUnavailable' do
+      item = klass.new($client_i3s_300)
+      expect { item.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
 end
