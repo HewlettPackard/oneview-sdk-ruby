@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@ module OneviewSDK
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def create
+        def create(*)
           unavailable_method
         end
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def update
+        def update(*)
           unavailable_method
         end
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def delete
+        def delete(*)
           unavailable_method
         end
       end

@@ -16,13 +16,20 @@ module OneviewSDK
   module FileUploadHelper
     READ_TIMEOUT = 300 # in seconds, 5 minutes
 
-    def upload_file(client, file_path, body_params = {}, timeout = READ_TIMEOUT)
+    # Uploads a file
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [String] file_path
+    # @param [String] uri The uri starting with "/"
+    # @param [Hash] body_params The params to append to body of http request. Default is {}.
+    # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
+    # @return [OneviewSDK::Resource] if the upload was sucessful, return a Resource object
+    def self.upload_file(client, file_path, uri, body_params = {}, timeout = READ_TIMEOUT)
       raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
       options = {}
       options['Content-Type'] = 'multipart/form-data'
       options['X-Api-Version'] = client.api_version.to_s
       options['auth'] = client.token
-      url = URI.parse(URI.escape("#{client.url}#{self::BASE_URI}"))
+      url = URI.parse(URI.escape("#{client.url}#{uri}"))
 
       File.open(file_path) do |file|
         body_params.merge!({ 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) })
@@ -42,6 +49,9 @@ module OneviewSDK
           return client.response_handler(response)
         end
       end
+    end
+
+    def download_file
     end
   end
 end

@@ -11,6 +11,7 @@
 
 require_relative 'client'
 require_relative 'image-streamer/client'
+require 'net/http/post/multipart'
 
 # OneviewSDK Resources
 module OneviewSDK
@@ -18,6 +19,7 @@ module OneviewSDK
   class Resource
     BASE_URI = '/rest'.freeze
     UNIQUE_IDENTIFIERS = %w(name uri).freeze # Ordered list of unique attributes to search by
+    READ_TIMEOUT = 300 # in seconds (5 minutes)
 
     attr_accessor \
       :client,
@@ -307,6 +309,46 @@ module OneviewSDK
         query_path.concat("&#{new_key}=#{v}")
       end
       query_path.sub('?&', '?')
+    end
+
+    # Upload a file from the specified local file path.
+    # @param [OneviewSDK::Client] client The client object for the Oneview or Image Streamer appliance
+    # @param [String] file_path
+    # @param [Hash] body_params The parameters passed in the request
+    # @param [String] uri URI of the endpoint
+    # @param [Integer] timeout The number of seconds to wait for the request to complete
+    # @return [Hash] The hash with response
+    def self.upload_file(client, file_path, uri = self::BASE_URI, body_params = {}, timeout = READ_TIMEOUT)
+      body_params = Hash[body_params.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
+      raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
+      options = {}
+      options['Content-Type'] = 'multipart/form-data'
+      options['X-Api-Version'] = client.api_version.to_s
+      options['auth'] = client.token
+      url = URI.parse(URI.escape("#{client.url}#{uri}"))
+
+      File.open(file_path) do |file|
+        body_params.merge!({ 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) })
+        req = Net::HTTP::Post::Multipart.new(
+          url.path,
+          body_params,
+          options
+        )
+
+        http_request = Net::HTTP.new(url.host, url.port)
+        http_request.use_ssl = true if url.scheme == 'https'
+        if client.ssl_enabled
+          http_request.cert_store = client.cert_store if client.cert_store
+        else
+          http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        end
+        http_request.read_timeout = timeout
+
+        http_request.start do |http|
+          response = http.request(req)
+          return client.response_handler(response)
+        end
+      end
     end
 
     protected
