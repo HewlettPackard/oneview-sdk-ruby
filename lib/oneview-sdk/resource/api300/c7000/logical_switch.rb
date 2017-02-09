@@ -49,15 +49,6 @@ module OneviewSDK
           results = get_internal_link_sets(client)
           results.find { |internal_link_set| internal_link_set['name'] == name }
         end
-
-        # Updates scopes uris of a given logical switch resource
-        # @param [String] operation The type of operation: one of "add", "remove" or "replace".
-        # @param [String] path The path operation for use. The exact meaning depends on the type of operation.
-        # @param [String] value The value to add or replace for "add" and "replace" operations. Not used by "remove".
-        # @note This attribute is subject to incompatible changes in future release versions, including redefinition or removal.
-        def patch(operation, path, value = nil)
-          super
-        end
       end
     end
   end
