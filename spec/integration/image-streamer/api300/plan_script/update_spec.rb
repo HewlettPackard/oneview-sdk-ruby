@@ -23,6 +23,10 @@ RSpec.describe klass, integration_i3s: true, type: UPDATE do
       expect { item.update }.not_to raise_error
       item.retrieve!
       expect(item['name']).to eq(PLAN_SCRIPT1_NAME_UPDATE)
+      item['name'] = PLAN_SCRIPT1_NAME
+      expect { item.update }.not_to raise_error
+      item.retrieve!
+      expect(item['name']).to eq(PLAN_SCRIPT1_NAME)
     end
   end
 end

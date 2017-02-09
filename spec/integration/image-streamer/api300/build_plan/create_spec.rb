@@ -58,11 +58,11 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
 
       options = {
         name: BUILD_PLAN3_NAME,
-        oeBuildPlanType: 'deploy'
+        oeBuildPlanType: 'deploy',
+        buildStep: build_step
       }
 
       item = klass.new($client_i3s_300, options)
-      item.set_build_steps(build_step)
       expect(item['buildStep']).to eq(build_step)
 
       expect { item.create! }.not_to raise_error
@@ -86,13 +86,11 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
 
       options = {
         name: BUILD_PLAN4_NAME,
-        oeBuildPlanType: 'deploy'
+        oeBuildPlanType: 'deploy',
+        buildStep: build_step
       }
 
       item = klass.new($client_i3s_300, options)
-      item.set_build_steps(build_step)
-      expect(item['buildStep']).to eq(build_step)
-
       expect { item.create! }.not_to raise_error
       item.retrieve!
       expect(item['uri']).to be

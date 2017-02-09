@@ -27,12 +27,6 @@ module OneviewSDK
           # Default values:
           @data['type'] ||= 'OeBuildPlan'
         end
-
-        # Build step of the build plan.
-        # @param build_step [Array]  The Build step array of the build plan
-        def set_build_steps(build_step = [])
-          set('buildStep', build_step)
-        end
       end
     end
   end

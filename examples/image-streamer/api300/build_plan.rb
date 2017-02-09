@@ -21,9 +21,21 @@ options = {
   oeBuildPlanType: 'Deploy'
 }
 
+plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by(@client, name: @plan_script_name).first
+
+build_step = [
+  {
+    serialNumber: '1',
+    parameters: 'anystring',
+    planScriptName: 'Plan_Script_1',
+    planScriptUri: plan_script['uri']
+  }
+]
+
 options2 = {
   name: 'Build_Plan_2',
-  oeBuildPlanType: 'Deploy'
+  oeBuildPlanType: 'Deploy',
+  buildStep: build_step
 }
 
 # Creating a build plan
@@ -35,17 +47,7 @@ puts "\n#Build plan with name #{item['name']} and uri #{item['uri']} created suc
 
 # Creating a build plan with build steps
 item2 = OneviewSDK::ImageStreamer::API300::BuildPlan.new(@client, options2)
-plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by(@client, name: @plan_script_name).first
 
-build_step = [
-  {
-    serialNumber: '1',
-    parameters: 'anystring',
-    planScriptName: 'Plan_Script_1',
-    planScriptUri: plan_script['uri']
-  }
-]
-item2.set_build_steps(build_step)
 puts "\n#Creating a build plan with name #{options2[:name]}."
 item2.create!
 item2.retrieve!

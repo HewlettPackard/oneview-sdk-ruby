@@ -10,24 +10,4 @@ RSpec.describe klass do
       expect(item['type']).to eq('OeBuildPlan')
     end
   end
-
-  describe '#set_build_steps' do
-    it 'creates a build plan with build step' do
-      options = [
-        {
-          serialNumber: '1',
-          parameters: 'anystring',
-          planScriptName: 'planScript1',
-          planScriptUri: 'rest/plan-scripts/fake'
-        }
-      ]
-      item = klass.new(@client_i3s_300)
-      item.set_build_steps(options)
-      expect(item['buildStep']).to_not be_empty
-      expect(item['buildStep'].first[:serialNumber]).to eq('1')
-      expect(item['buildStep'].first[:parameters]).to eq('anystring')
-      expect(item['buildStep'].first[:planScriptName]).to eq('planScript1')
-      expect(item['buildStep'].first[:planScriptUri]).to eq('rest/plan-scripts/fake')
-    end
-  end
 end

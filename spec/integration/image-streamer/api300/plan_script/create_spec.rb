@@ -31,7 +31,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
-      expect(item['hpProvided']).to be options[:hpProvided]
+      expect(item['hpProvided']).to eq(options[:hpProvided])
       expect(item['planType']).to eq(options[:planType])
       expect(item['content']).to eq(options[:content])
     end
@@ -51,7 +51,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
-      expect(item['hpProvided']).to be options[:hpProvided]
+      expect(item['hpProvided']).to eq(options[:hpProvided])
       expect(item['planType']).to eq(options[:planType])
       expect(item['content']).to eq(options[:content])
       expect(item['customAttributes']).to eq('[{"name":"DomainName","value":""}]')
