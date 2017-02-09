@@ -327,7 +327,7 @@ module OneviewSDK
     # @param [Array<OneviewSDK::Resource>] resources The list of resources
     # @return [Array<String>] List of uris
     # @raise IncompleteResource if 'uri' is not set for each resource.
-    def get_and_ensure_uri(resources)
+    def ensure_and_get_uris(resources)
       resources.map do |resource|
         resource.ensure_uri
         resource['uri']

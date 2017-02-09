@@ -76,8 +76,8 @@ module OneviewSDK
         def change_resource_assignments(add_resources: [], remove_resources: [])
           if !add_resources.empty? || !remove_resources.empty?
             ensure_uri && ensure_client
-            add_uris = get_and_ensure_uri(add_resources)
-            remove_uris = get_and_ensure_uri(remove_resources)
+            add_uris = ensure_and_get_uris(add_resources)
+            remove_uris = ensure_and_get_uris(remove_resources)
             body = {
               'addedResourceUris' => add_uris,
               'removedResourceUris' => remove_uris
@@ -132,7 +132,7 @@ module OneviewSDK
           # @param [Array<OneviewSDK::API300::C7000::Scope>] scopes The scopes list (or scopes separeted by comma)
           # @raise [OneviewSDK::IncompleteResource] if the uri of each scope is not set
           def replace_scopes(*scopes)
-            uris = get_and_ensure_uri(scopes.flatten)
+            uris = ensure_and_get_uris(scopes.flatten)
             patch('replace', '/scopeUris', uris)
           end
         end
