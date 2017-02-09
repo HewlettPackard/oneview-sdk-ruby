@@ -16,33 +16,33 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
   include_context 'integration i3s api300 context'
 
   describe '#create' do
-    # it 'creates a build plan' do
-    #   options = {
-    #     name: BUILD_PLAN1_NAME,
-    #     oeBuildPlanType: 'deploy'
-    #   }
-    #
-    #   item = klass.new($client_i3s_300, options)
-    #   expect { item.create! }.not_to raise_error
-    #   item.retrieve!
-    #   expect(item['uri']).to be
-    #   expect(item['name']).to eq(options[:name])
-    #   expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
-    # end
+    it 'creates a build plan' do
+      options = {
+        name: BUILD_PLAN1_NAME,
+        oeBuildPlanType: 'deploy'
+      }
 
-    # it 'creates a build plan with capture type' do
-    #   options = {
-    #     name: BUILD_PLAN2_NAME,
-    #     oeBuildPlanType: 'capture'
-    #   }
-    #
-    #   item = klass.new($client_i3s_300, options)
-    #   expect { item.create! }.not_to raise_error
-    #   item.retrieve!
-    #   expect(item['uri']).to be
-    #   expect(item['name']).to eq(options[:name])
-    #   expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
-    # end
+      item = klass.new($client_i3s_300, options)
+      expect { item.create! }.not_to raise_error
+      item.retrieve!
+      expect(item['uri']).to be
+      expect(item['name']).to eq(options[:name])
+      expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
+    end
+
+    it 'creates a build plan with capture type' do
+      options = {
+        name: BUILD_PLAN2_NAME,
+        oeBuildPlanType: 'capture'
+      }
+
+      item = klass.new($client_i3s_300, options)
+      expect { item.create! }.not_to raise_error
+      item.retrieve!
+      expect(item['uri']).to be
+      expect(item['name']).to eq(options[:name])
+      expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
+    end
 
     it 'creates a build plan with build step' do
       plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by($client_i3s_300, name: PLAN_SCRIPT1_NAME).first
@@ -63,7 +63,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
 
       item = klass.new($client_i3s_300, options)
       item.set_build_steps(build_step)
-      item.expect(item['build_step']).to eq(build_step)
+      expect(item['buildStep']).to eq(build_step)
 
       expect { item.create! }.not_to raise_error
       item.retrieve!
@@ -72,32 +72,33 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
     end
 
-    # it 'creates a build plan with build step and custom attributes' do
-    #   plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by($client_i3s_300, name: PLAN_SCRIPT2_NAME).first
-    #
-    #   build_step = [
-    #     {
-    #       serialNumber: '1',
-    #       parameters: 'anystring',
-    #       planScriptName: PLAN_SCRIPT2_NAME,
-    #       planScriptUri: plan_script['uri']
-    #     }
-    #   ]
-    #
-    #   options = {
-    #     name: BUILD_PLAN4_NAME,
-    #     oeBuildPlanType: 'deploy'
-    #   }
-    #
-    #   item = klass.new($client_i3s_300, options)
-    #   item.set_build_steps(build_step)
-    #   item.expect(item['build_step']).to eq(build_step)
-    #
-    #   expect { item.create! }.not_to raise_error
-    #   item.retrieve!
-    #   expect(item['uri']).to be
-    #   expect(item['name']).to eq(options[:name])
-    #   expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
-    # end
+    it 'creates a build plan with build step and custom attributes' do
+      plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by($client_i3s_300, name: PLAN_SCRIPT2_NAME).first
+
+      build_step = [
+        {
+          serialNumber: '1',
+          parameters: 'anystring',
+          planScriptName: PLAN_SCRIPT2_NAME,
+          planScriptUri: plan_script['uri']
+        }
+      ]
+
+      options = {
+        name: BUILD_PLAN4_NAME,
+        oeBuildPlanType: 'deploy'
+      }
+
+      item = klass.new($client_i3s_300, options)
+      item.set_build_steps(build_step)
+      expect(item['buildStep']).to eq(build_step)
+
+      expect { item.create! }.not_to raise_error
+      item.retrieve!
+      expect(item['uri']).to be
+      expect(item['name']).to eq(options[:name])
+      expect(item['oeBuildPlanType']).to eq(options[:oeBuildPlanType])
+      expect(item['customAttributes']).not_to be_empty
+    end
   end
 end
