@@ -24,6 +24,7 @@ Added full support to Image Streamer Rest API version 300:
 - [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
 - [#142](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/142) EnclosureGroup should raise error in `#add_logical_interconnect_group` if LIG could not be retrieved
 - [#145](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/145) REST methods now handle redirects
+- [#147](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/147) [API300] Missing #patch in Logical Switch
 - [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
 - [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
 - [#161](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/161) Allow client attributes to be set after initialization, and token to be refreshed

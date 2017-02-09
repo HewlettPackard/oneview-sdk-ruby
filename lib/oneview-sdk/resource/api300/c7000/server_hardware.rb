@@ -10,12 +10,14 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/server_hardware'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module C7000
       # Server Hardware resource implementation on API300 C7000
       class ServerHardware < OneviewSDK::API200::ServerHardware
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -57,52 +59,6 @@ module OneviewSDK
             uri = body['nextPageUri']
           end
           results
-        end
-
-        # Performs a specific patch operation for the given server.
-        # If the server supports the particular operation, the operation is performed
-        # and a response is returned to the caller with the results.
-        # @param [String] operation The operation to be performed
-        # @param [String] path The path of operation
-        # @param [String] value The value
-        def patch(operation, path, value = nil)
-          ensure_client && ensure_uri
-          body = if value
-                   { op: operation, path: path, value: value }
-                 else
-                   { op: operation, path: path }
-                 end
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
-        end
-
-        # Add one scope to the enclosure
-        # @param [OneviewSDK::API300::C7000::Scope] scope The scope resource
-        # @raise [OneviewSDK::IncompleteResource] if the uri of scope is not set
-        def add_scope(scope)
-          scope.ensure_uri
-          patch('add', '/scopeUris/-', scope['uri'])
-        end
-
-        # Remove one scope from the enclosure
-        # @param [OneviewSDK::API300::C7000::Scope] scope The scope resource
-        # @return [Boolean] True if the scope was deleted and false if enclosure has not the scope
-        # @raise [OneviewSDK::IncompleteResource] if the uri of scope is not set
-        def remove_scope(scope)
-          scope.ensure_uri
-          scope_index = @data['scopeUris'].find_index { |uri| uri == scope['uri'] }
-          return false unless scope_index
-          patch('remove', "/scopeUris/#{scope_index}", nil)
-          true
-        end
-
-        # Change the list of scopes in the enclosure
-        # @param [Array[OneviewSDK::API300::C7000::Scope]] scopes The scopes list (or scopes separeted by comma)
-        # @raise [OneviewSDK::IncompleteResource] if the uri of each scope is not set
-        def replace_scopes(*scopes)
-          scopes.flatten!
-          uris = get_and_ensure_uri_for(scopes)
-          patch('replace', '/scopeUris', uris)
         end
 
         private
