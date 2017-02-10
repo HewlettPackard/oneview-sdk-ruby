@@ -133,11 +133,12 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
         '/rest/logical-switches',
         {
           'body' => {
+            'logicalSwitchCredentials' => [],
             'logicalSwitch' => {
               'type' => 'logical-switchV300',
+              'scopeUris' => [],
               'switchCredentialConfiguration' => []
-            },
-            'logicalSwitchCredentials' => []
+            }
           }
         },
         300
@@ -154,20 +155,6 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
         '/rest/logical-switches',
         {
           'body' => {
-            'logicalSwitch' => {
-              'type' => 'logical-switchV300',
-              'switchCredentialConfiguration' => [
-                {
-                  'snmpPort' => 161,
-                  'snmpV3Configuration' => nil,
-                  'snmpV1Configuration' => {
-                    'communityString' => 'public'
-                  },
-                  'logicalSwitchManagementHost' => '127.0.0.1',
-                  'snmpVersion' => 'SNMPv1'
-                }
-              ]
-            },
             'logicalSwitchCredentials' => [
               {
                 'connectionProperties' => [
@@ -185,7 +172,22 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
                   }
                 ]
               }
-            ]
+            ],
+            'logicalSwitch' => {
+              'type' => 'logical-switchV300',
+              'scopeUris' => [],
+              'switchCredentialConfiguration' => [
+                {
+                  'snmpPort' => 161,
+                  'snmpV3Configuration' => nil,
+                  'snmpV1Configuration' => {
+                    'communityString' => 'public'
+                  },
+                  'logicalSwitchManagementHost' => '127.0.0.1',
+                  'snmpVersion' => 'SNMPv1'
+                }
+              ]
+            }
           }
         },
         300
@@ -206,22 +208,6 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
         '/rest/logical-switches',
         {
           'body' => {
-            'logicalSwitch' => {
-              'type' => 'logical-switchV300',
-              'switchCredentialConfiguration' => [
-                {
-                  'snmpPort' => 161,
-                  'snmpV3Configuration' => {
-                    'securityLevel' => 'AuthPrivacy',
-                    'privacyProtocol' => 'AES128',
-                    'authorizationProtocol' => 'MD5'
-                  },
-                  'snmpV1Configuration' => nil,
-                  'logicalSwitchManagementHost' => '127.0.0.1',
-                  'snmpVersion' => 'SNMPv3'
-                }
-              ]
-            },
             'logicalSwitchCredentials' => [
               {
                 'connectionProperties' => [
@@ -257,12 +243,105 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
                   }
                 ]
               }
-            ]
+            ],
+            'logicalSwitch' => {
+              'type' => 'logical-switchV300',
+              'scopeUris' => [],
+              'switchCredentialConfiguration' => [
+                {
+                  'snmpPort' => 161,
+                  'snmpV3Configuration' => {
+                    'securityLevel' => 'AuthPrivacy',
+                    'privacyProtocol' => 'AES128',
+                    'authorizationProtocol' => 'MD5'
+                  },
+                  'snmpV1Configuration' => nil,
+                  'logicalSwitchManagementHost' => '127.0.0.1',
+                  'snmpVersion' => 'SNMPv3'
+                }
+              ]
+            }
           }
         },
         300
       ).and_return(FakeResponse.new({}))
       logical_switch.create
+    end
+  end
+
+  describe '#patch' do
+    subject(:logical_switch) { OneviewSDK::API300::C7000::LogicalSwitch.new(@client_300, uri: 'logical-switches/UUID-111') }
+
+    before do
+      allow_any_instance_of(OneviewSDK::API300::C7000::LogicalSwitch).to receive(:ensure_client).and_return(true)
+      allow_any_instance_of(OneviewSDK::API300::C7000::LogicalSwitch).to receive(:ensure_uri).and_return(true)
+    end
+
+    context 'with 3 parameters' do
+      it 'should call rest api correctly' do
+        expected_body = [{
+          'op' => 'replace',
+          'path' => '/url_to_replace',
+          'value' => ['/uri_value']
+        }]
+        expect(@client_300).to receive(:rest_patch).with('logical-switches/UUID-111', { 'body' => expected_body }, 300).and_return(FakeResponse.new)
+        expect(@client_300).to receive(:response_handler)
+        logical_switch.patch('replace', '/url_to_replace', ['/uri_value'])
+      end
+    end
+
+    context 'with 2 parameters' do
+      it 'should call rest api correctly' do
+        expected_body = [{
+          'op' => 'remove',
+          'path' => '/url_to_remove',
+          'value' => nil
+        }]
+        expect(@client_300).to receive(:rest_patch).with('logical-switches/UUID-111', { 'body' => expected_body }, 300).and_return(FakeResponse.new)
+        expect(@client_300).to receive(:response_handler)
+        logical_switch.patch('remove', '/url_to_remove')
+      end
+    end
+  end
+
+  context 'adding, removing, replacing and testing scopes' do
+    let(:scope) { OneviewSDK::API300::Synergy::Scope.new(@client_300, uri: 'scopes/UID-111') }
+    let(:scope_2) { OneviewSDK::API300::Synergy::Scope.new(@client_300, uri: 'scopes/UID-222') }
+    let(:scope_clean) { OneviewSDK::API300::Synergy::Scope.new(@client_300) }
+    subject(:logical_switch) { described_class.new(@client_300, uri: 'logical-switches/UID-001') }
+
+    describe '#add_scope' do
+      context 'when scope has no URI' do
+        it { expect { logical_switch.add_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+      it 'should call patch method' do
+        expect(logical_switch).to receive(:patch).with('add', '/scopeUris/-', scope['uri'])
+        logical_switch.add_scope(scope)
+      end
+    end
+
+    describe '#replace_scopes' do
+      context 'when scope has no URI' do
+        it { expect { logical_switch.replace_scopes(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+      it 'should replace the list of scopes' do
+        expect(logical_switch).to receive(:patch).with('replace', '/scopeUris', [scope['uri'], scope_2['uri']])
+        logical_switch.replace_scopes(scope, scope_2)
+      end
+    end
+
+    describe '#remove_scope' do
+      context 'when scope has no URI' do
+        it { expect { logical_switch.remove_scope(scope_clean) }.to raise_error(OneviewSDK::IncompleteResource) }
+      end
+      it 'should remove scope' do
+        logical_switch.data['scopeUris'] << 'scopes/UID-111'
+        logical_switch.data['scopeUris'] << 'scopes/UID-222'
+        expect(logical_switch).to receive(:patch).with('remove', '/scopeUris/1', nil)
+        logical_switch.remove_scope(scope_2)
+        expect(logical_switch).to receive(:patch).with('remove', '/scopeUris/0', nil)
+        logical_switch.remove_scope(scope)
+      end
     end
   end
 end

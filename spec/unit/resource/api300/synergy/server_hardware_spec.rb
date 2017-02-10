@@ -318,7 +318,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerHardware do
     end
 
     it 'does a patch to the server hardware uri' do
-      data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
+      data = { 'body' => [{ 'op' => 'operation', 'path' => '/path', 'value' => 'val' }] }
       expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, @item.api_version).and_return(FakeResponse.new(key: 'Val'))
       expect(@item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
     end

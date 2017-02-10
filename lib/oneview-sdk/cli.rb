@@ -50,19 +50,25 @@ module OneviewSDK
       end
     end
 
+    SUPPORTED_VARIANTS = OneviewSDK::API300::SUPPORTED_VARIANTS
+
     class_option :ssl_verify,
       type: :boolean,
       desc: 'Enable/Disable SSL verification for requests. Can also use ENV[\'ONEVIEWSDK_SSL_ENABLED\']',
       default: nil
 
     class_option :url,
-      desc: 'URL of OneView appliance. Can also use ENV[\'ONEVIEWSDK_URL\']',
+      desc: "URL of OneView appliance. Uses ENV['ONEVIEWSDK_URL']",
       aliases: '-u'
 
     class_option :api_version,
       type: :numeric,
       banner: 'VERSION',
-      desc: 'API version to use'
+      desc: "API version to use. Uses ENV['ONEVIEWSDK_API_VERSION']"
+
+    class_option :variant,
+      desc: "API variant to use. Uses ENV['ONEVIEWSDK_VARIANT']",
+      enum: SUPPORTED_VARIANTS
 
     class_option :log_level,
       desc: 'Log level to use',
@@ -435,6 +441,7 @@ module OneviewSDK
       client_params['url'] ||= @options['url'] if @options['url']
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
       client_params['api_version'] ||= @options['api_version'].to_i if @options['api_version']
+      client_params['api_version'] ||= ENV['ONEVIEWSDK_API_VERSION'].to_i if ENV['ONEVIEWSDK_API_VERSION']
       @client = OneviewSDK::Client.new(client_params)
     rescue StandardError => e
       raise e if throw_errors
@@ -444,25 +451,33 @@ module OneviewSDK
 
     # Get resource class from given string
     def parse_type(type)
-      api_ver = (@options['api_version'] || OneviewSDK.api_version).to_i
+      api_ver = (@options['api_version'] || ENV['ONEVIEWSDK_API_VERSION'] || OneviewSDK.api_version).to_i
       unless OneviewSDK::SUPPORTED_API_VERSIONS.include?(api_ver)
         # Find and use the best available match for the desired API version (round down to nearest)
         valid_api_ver = OneviewSDK::SUPPORTED_API_VERSIONS.select { |x| x <= api_ver }.max || OneviewSDK::SUPPORTED_API_VERSIONS.min
         puts "WARNING: Module API version #{api_ver} is not supported. Using #{valid_api_ver}"
         api_ver = valid_api_ver
       end
-      r = OneviewSDK.resource_named(type, api_ver)
-      r ||= OneviewSDK.resource_named(type) unless api_ver == OneviewSDK.api_version # Try default API version as last resort
+      variant = @options['variant'] || ENV['ONEVIEWSDK_VARIANT']
+      variant ||= OneviewSDK::API300.variant if api_ver == 300
+      if variant && !SUPPORTED_VARIANTS.include?(variant)
+        fail_nice "Variant '#{variant}' is not supported. Try one of #{SUPPORTED_VARIANTS}"
+      end
+      r = OneviewSDK.resource_named(type, api_ver, variant)
+      # Try default API version as last resort
+      r ||= OneviewSDK.resource_named(type, OneviewSDK.api_version, variant) unless api_ver == OneviewSDK.api_version
       return r if r
       valid_classes = []
       api_module = OneviewSDK.const_get("API#{api_ver}")
+      api_module = api_module.const_get(variant.to_s) unless api_ver.to_i == 200
       api_module.constants.each do |c|
         klass = api_module.const_get(c)
         next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
         valid_classes.push(klass.name.split('::').last)
       end
       vc = valid_classes.sort_by!(&:downcase).join("\n  ")
-      fail_nice("Invalid resource type: '#{type}'.  Valid options for API version #{api_ver} are:\n  #{vc}")
+      var = variant ? " (variant #{variant})" : ''
+      fail_nice("Invalid resource type: '#{type}'.  Valid options for API version #{api_ver}#{var} are:\n  #{vc}")
     end
 
     # Parse options hash from input. Handles chaining and keywords such as true/false & nil

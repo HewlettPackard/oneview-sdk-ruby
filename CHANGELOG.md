@@ -1,36 +1,42 @@
 # Unreleased Changes
 
-## Suggested release: v4.0.0
+## Suggested release: v4.1.0
+
+#### New Resources:
 Added full support to Image Streamer Rest API version 300:
    - Build Plan
    - OS Volumes
    - Plan Scripts
 
+# v4.0.0
+
 #### Breaking changes:
 - [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
-
-#### Design changes:
-   - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
-     - Artifacts Bundle
-     - Build Plan
-     - Deployment Plans
-     - Golden Image
-     - OS Volumes
-     - Plan Scripts
+- [#134](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/134) Remove API300::Synergy::LogicalSwitchGroup resource, which is not defined in the API
 
 #### Bug fixes & Enhancements:
 - [#131](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/131) Unavailable methods can take any number of arguments
-- [#132](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/132) Fixed get_default_settings in API200; was an instance method, now a class method
+- [#132](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/132) Made get_default_settings in API200 a class method instead of an instance method
 - [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
 - [#142](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/142) EnclosureGroup should raise error in `#add_logical_interconnect_group` if LIG could not be retrieved
 - [#145](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/145) REST methods now handle redirects
+- [#147](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/147) [API300] Missing #patch in Logical Switch
 - [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
 - [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
 - [#161](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/161) Allow client attributes to be set after initialization, and token to be refreshed
+- Client #get_all method now supports an (optional) variant parameter
+- Support API modules & variants with the CLI
 
 #### New Resources:
 - Scope
 - User
+- Image Streamer API v300 Resources (experimental):
+  - OS Volume
+  - Plan Script
+  - Artifacts Bundle (unimplemented)
+  - Build Plan (unimplemented)
+  - Deployment Plan (unimplemented)
+  - Golden Image (unimplemented)
 
 # v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
