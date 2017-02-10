@@ -6,8 +6,9 @@
 Added full support to Image Streamer Rest API version 300:
    - Build Plan
    - Deployment Plans
-   - Plan Scripts
+   - Golden Image
    - OS Volumes
+   - Plan Scripts
 
 # v4.0.0
 
