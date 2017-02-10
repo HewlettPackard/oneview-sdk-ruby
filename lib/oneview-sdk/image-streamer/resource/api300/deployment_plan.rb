@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -17,6 +17,16 @@ module OneviewSDK
       # Deployment Plan resource implementation for Image Streamer
       class DeploymentPlan < Resource
         BASE_URI = '/rest/deployment-plans'.freeze
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          super
+          # Default values:
+          @data['type'] ||= 'OEDeploymentPlan'
+        end
       end
     end
   end

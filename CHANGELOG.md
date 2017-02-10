@@ -2,6 +2,7 @@
 
 ## Suggested release: v4.0.0
 Added full support to Image Streamer Rest API version 300:
+   - Deployment Plans
    - Plan Scripts
    - OS Volumes
 
