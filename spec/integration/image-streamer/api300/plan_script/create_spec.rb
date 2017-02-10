@@ -31,9 +31,30 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
-      expect(item['hpProvided']).to be options[:hpProvided]
+      expect(item['hpProvided']).to eq(options[:hpProvided])
       expect(item['planType']).to eq(options[:planType])
       expect(item['content']).to eq(options[:content])
+    end
+
+    it 'creates a plan script with custom attributes' do
+      options = {
+        description: 'Description of this plan script',
+        name: PLAN_SCRIPT2_NAME,
+        hpProvided: false,
+        planType: 'deploy',
+        content: 'esxcli system hostname set --domain "@DomainName@"'
+      }
+
+      item = klass.new($client_i3s_300, options)
+      expect { item.create! }.not_to raise_error
+      item.retrieve!
+      expect(item['uri']).to be
+      expect(item['name']).to eq(options[:name])
+      expect(item['description']).to eq(options[:description])
+      expect(item['hpProvided']).to eq(options[:hpProvided])
+      expect(item['planType']).to eq(options[:planType])
+      expect(item['content']).to eq(options[:content])
+      expect(item['customAttributes']).to eq('[{"name":"DomainName","value":""}]')
     end
   end
 
