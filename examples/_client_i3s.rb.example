@@ -15,9 +15,9 @@ require 'pry'
 puts "Connected to Image Streamer at #{@client.url}\n\n"
 
 # Instance variables for examples:
-# @build_plan_name = 'Build_Plan_Name'
-# @golden_image_name = 'Golden_Image_Name'
+# @build_plan_name = 'Build_Plan_1'
+# @golden_image_name = 'Golden_Image_1'
 # @golden_image_download_path = 'golden_image_demo.zip'
 # @golden_image_upload_path = 'vmwareesxi6_demo.zip'
 # @golden_image_log_path = 'details_gi.log'
-# @plan_script_name = 'Plan_Script_Name'
+# @plan_script_name = 'Plan_Script_1'

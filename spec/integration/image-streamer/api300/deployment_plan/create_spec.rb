@@ -35,7 +35,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
-      expect(item['hpProvided']).to be options[:hpProvided]
+      expect(item['hpProvided']).to eq(options[:hpProvided])
       expect(item['oeBuildPlanURI']).to eq(@build_plan['uri'])
     end
 
@@ -54,7 +54,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
-      expect(item['hpProvided']).to be options[:hpProvided]
+      expect(item['hpProvided']).to eq(options[:hpProvided])
       expect(item['oeBuildPlanURI']).to eq(@build_plan['uri'])
       expect(item['goldenImageURI']).to eq(@golden_image['uri'])
     end
@@ -75,7 +75,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect(item['uri']).to be
       expect(item['name']).to eq(options[:name])
       expect(item['description']).to eq(options[:description])
-      expect(item['hpProvided']).to be options[:hpProvided]
+      expect(item['hpProvided']).to eq(options[:hpProvided])
       expect(item['oeBuildPlanURI']).to eq(build_plan['uri'])
       expect(item['customAttributes'].first['name']).to eq(options[:customAttributes].first['name'])
       expect(item['customAttributes'].first['type']).to eq(options[:customAttributes].first['type'])
