@@ -10,12 +10,15 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/logical_switch'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module C7000
       # Logical switch resource implementation for API300 C7000
       class LogicalSwitch < OneviewSDK::API200::LogicalSwitch
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
+
         INTERNAL_LINK_SET_URI = '/rest/internal-link-sets'.freeze
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -26,6 +29,7 @@ module OneviewSDK
           @data ||= {}
           # Default values:
           @data['type'] ||= 'logical-switchV300'
+          @data['scopeUris'] ||= []
           super
         end
 

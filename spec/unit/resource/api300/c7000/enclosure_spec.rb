@@ -212,7 +212,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
 
     it 'does a PATCH to the enclosure uri with all parameters' do
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
+      data = { 'body' => [{ 'op' => 'operation', 'path' => '/path', 'value' => 'val' }] }
       expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
       expect(item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
     end

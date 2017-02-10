@@ -11,20 +11,28 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::ImageStreamer::API300::PlanScript
-RSpec.describe klass, integration_i3s: true, type: DELETE do
+klass = OneviewSDK::ImageStreamer::API300::BuildPlan
+RSpec.describe klass, integration_i3s: true, type: DELETE, sequence: i3s_rseq(klass) do
   include_context 'integration i3s api300 context'
 
   describe '#delete' do
-    it 'removes all plan scripts' do
-      item = klass.find_by($client_i3s_300, name: PLAN_SCRIPT1_NAME).first
+    it 'removes a plan script' do
+      item = klass.find_by($client_i3s_300, name: BUILD_PLAN1_NAME_UPDATED).first
+      item2 = klass.find_by($client_i3s_300, name: BUILD_PLAN2_NAME).first
+      item3 = klass.find_by($client_i3s_300, name: BUILD_PLAN3_NAME).first
+      item4 = klass.find_by($client_i3s_300, name: BUILD_PLAN4_NAME).first
       expect(item).to be
-      item2 = klass.find_by($client_i3s_300, name: PLAN_SCRIPT2_NAME).first
       expect(item2).to be
+      expect(item3).to be
+      expect(item4).to be
       expect { item.delete }.not_to raise_error
       expect(item.retrieve!).to eq(false)
       expect { item2.delete }.not_to raise_error
       expect(item2.retrieve!).to eq(false)
+      expect { item3.delete }.not_to raise_error
+      expect(item3.retrieve!).to eq(false)
+      expect { item4.delete }.not_to raise_error
+      expect(item4.retrieve!).to eq(false)
     end
   end
 end
