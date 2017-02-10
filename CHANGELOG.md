@@ -4,6 +4,7 @@
 
 #### New Resources:
 Added full support to Image Streamer Rest API version 300:
+   - Build Plan
    - Deployment Plans
    - Plan Scripts
    - OS Volumes

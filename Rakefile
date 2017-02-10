@@ -252,6 +252,5 @@ end
 desc 'Run rubocop & integration tests for Image Streamer & specified path'
 task 'test:i3s:path', [:path] do |_t, spec|
   spec_pattern = spec['path']
-  Rake::Task[:rubocop].invoke
   Rake::Task['spec:integration:i3s'].invoke
 end

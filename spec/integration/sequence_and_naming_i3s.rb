@@ -1,7 +1,7 @@
 I3S_DEPENDENCIES = {
   BuildPlan: [:PlanScript],
   DeploymentPlan: [:BuildPlan, :GoldenImage],
-  GoldenImage: [:OSVolume, :BuildPlan],
+  GoldenImage: [:BuildPlan, :OSVolume],
   OSVolume: [],
   PlanScript: []
 }.freeze
@@ -25,7 +25,7 @@ end
 
 # Resource Names:
 
-# Plan Scripts
+# Plan Script
 PLAN_SCRIPT1_NAME = 'Plan_Script_1'.freeze
 PLAN_SCRIPT2_NAME = 'Plan_Script_2'.freeze
 PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze
