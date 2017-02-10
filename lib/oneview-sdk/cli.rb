@@ -114,7 +114,7 @@ module OneviewSDK
     # Show environment variables for oneview-sdk-ruby
     def env
       data = {}
-      OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] unless k.include?('I3S') }
+      OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
       if @options['format'] == 'human'
         data.each do |key, value|
           value = "'#{value}'" if value && !%w(true false).include?(value)

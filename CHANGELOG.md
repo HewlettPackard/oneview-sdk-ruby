@@ -1,22 +1,10 @@
 # Unreleased Changes
 
-## Suggested release: v4.0.0
-Added full support to Image Streamer Rest API version 300:
-   - Plan Scripts
-   - OS Volumes
+# v4.0.0
 
 #### Breaking changes:
 - [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
 - [#134](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/134) Remove API300::Synergy::LogicalSwitchGroup resource, which is not defined in the API
-
-#### Design changes:
-   - Architecture for future Image Streamer support. **Unimplemented** features to support in the future:
-     - Artifacts Bundle
-     - Build Plan
-     - Deployment Plans
-     - Golden Image
-     - OS Volumes
-     - Plan Scripts
 
 #### Bug fixes & Enhancements:
 - [#131](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/131) Unavailable methods can take any number of arguments
@@ -34,6 +22,13 @@ Added full support to Image Streamer Rest API version 300:
 #### New Resources:
 - Scope
 - User
+- Image Streamer API v300 Resources (experimental):
+  - OS Volume
+  - Plan Script
+  - Artifacts Bundle (unimplemented)
+  - Build Plan (unimplemented)
+  - Deployment Plan (unimplemented)
+  - Golden Image (unimplemented)
 
 # v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
