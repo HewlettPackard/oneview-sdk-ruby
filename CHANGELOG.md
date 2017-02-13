@@ -9,6 +9,9 @@ Added full support to Image Streamer Rest API version 300:
    - OS Volumes
    - Plan Scripts
 
+#### Bug fixes & Enhancements:
+ - [#116](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
+
 # v4.0.0
 
 #### Breaking changes:
