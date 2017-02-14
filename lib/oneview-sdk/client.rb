@@ -157,6 +157,21 @@ module OneviewSDK
       self
     end
 
+    # Creates the image streamer client object.
+    # @param [Hash] options the options to configure the client
+    # @option options [Logger] :logger (Logger.new(STDOUT)) Logger object to use.
+    #   Must implement debug(String), info(String), warn(String), error(String), & level=
+    # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
+    # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on the tasks to complete.
+    # @option options [String] :url URL of Image Streamer
+    # @option options [Integer] :api_version (300) This is the API version to use by default for requests
+    # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['I3S_SSL_ENABLED']
+    # @option options [Integer] :timeout (nil) Override the default request timeout value
+    # @return [OneviewSDK::ImageStreamer::Client] New instance of image streamer client
+    def new_i3s_client(options = {})
+      OneviewSDK::ImageStreamer::Client.new(options.merge(token: @token))
+    end
+
 
     private
 

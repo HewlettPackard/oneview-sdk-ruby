@@ -60,6 +60,19 @@ i3s_client = OneviewSDK::ImageStreamer::Client.new(
 )
 ```
 
+You can also create the i3s client through the Oneview client instance.
+```ruby
+# Create an Image Streamer client object through the Oneview client object:
+require 'oneview-sdk'
+i3s_client = client.new_i3s_client(
+  url: 'https://image-streamer.example.com',
+  ssl_enabled: true,                  # This is the default and strongly encouraged
+  logger: Logger.new(STDOUT),         # This is the default
+  log_level: :info,                   # This is the default
+  api_version: 300                    # Defaults to minimum of 300 and appliance's max API version
+)
+```
+
 ##### Environment Variables
 
 You can also set many of the client attributes using environment variables. To set these variables in bash:

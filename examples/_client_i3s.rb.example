@@ -1,4 +1,5 @@
 require_relative './../lib/oneview-sdk/image_streamer'
+require_relative './../lib/oneview-sdk'
 require 'pry'
 
 # Client for the Image Streamer
@@ -7,6 +8,20 @@ require 'pry'
   token: 'token_oneview', # or set ENV['I3S_TOKEN']
   ssl_enabled: false
 )
+
+# Another way to instantiate the i3s client. Uncomment the creation of onv_client and @client instances.
+# onv_client = OneviewSDK::Client.new(
+#   url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
+#   user: 'Administrator', # or set ENV['ONEVIEWSDK_USER']
+#   password: 'secret123', # or set ENV['ONEVIEWSDK_PASSWORD']
+#   ssl_enabled: false
+# )
+
+# @client = onv_client.new_i3s_client(
+#   url: ''https://i3s.example.com', # or set ENV['I3S_URL']
+#   ssl_enabled: false
+# )
+
 ## This setting allows the SDK to flush messages to the screen as it is being run.
 #  # It defaults to true when a client is created, and can be set to false in order
 #  # to only flush at the end of execution.

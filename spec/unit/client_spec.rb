@@ -312,4 +312,90 @@ RSpec.describe OneviewSDK::Client do
       end
     end
   end
+
+  describe '#new_i3s_client' do
+    it 'creates a client i3s' do
+      options = { url: 'https://oneview.example.com', token: 'token123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('token123')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('token123')
+    end
+
+    it 'creates a client i3s with oneview client created by user and password' do
+      options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('secretToken')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secretToken')
+    end
+
+    it 'creates a client i3s passing a token, but should use the oneview client' do
+      options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('secretToken')
+
+      i3s_options = { url: 'https://imagestreamer.example.com', token: 'token123' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secretToken')
+    end
+
+    it 'creates a client i3s passing the api version' do
+      options = { url: 'https://oneview.example.com', token: 'token123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('token123')
+      expect(client.api_version).to eq(200)
+
+      i3s_options = { url: 'https://imagestreamer.example.com', api_version: 300 }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('token123')
+      expect(i3s_client.api_version).to eq(300)
+    end
+
+    it 'creates an i3s client with oneview client and its specific version' do
+      options = { url: 'https://oneview.example.com', token: 'token123', api_version: 300 }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('token123')
+      expect(client.api_version).to eq(300)
+
+      i3s_options = { url: 'https://imagestreamer.example.com', api_version: 300 }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('token123')
+      expect(i3s_client.api_version).to eq(300)
+    end
+
+    it 'creates an i3s client with oneview client created with respects credential environment variables' do
+      ENV['ONEVIEWSDK_USER'] = 'Admin'
+      ENV['ONEVIEWSDK_PASSWORD'] = 'secret456'
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com')
+      expect(client.user).to eq('Admin')
+      expect(client.password).to eq('secret456')
+      expect(client.token).to eq('secretToken')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secretToken')
+    end
+
+    it 'creates an i3s client with oneview client created with respects the token environment variable' do
+      ENV['ONEVIEWSDK_TOKEN'] = 'secret456'
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com')
+      expect(client.token).to eq('secret456')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secret456')
+    end
+  end
 end
