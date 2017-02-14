@@ -13,3 +13,9 @@ require 'pry'
 # STDOUT.sync = false
 
 puts "Connected to Image Streamer at #{@client.url}\n\n"
+
+# Instance variables for examples:
+# @golden_image_download_path = 'golden_image_demo.zip'
+# @golden_image_upload_path = 'vmwareesxi6_demo.zip'
+# @golden_image_log_path = 'details_gi.log'
+# @plan_script_name = 'Plan_Script_Name'

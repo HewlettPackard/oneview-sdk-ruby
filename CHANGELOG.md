@@ -1,5 +1,14 @@
 # Unreleased Changes
 
+## Suggested release: v4.1.0
+
+#### New Resources:
+Added full support to Image Streamer Rest API version 300:
+   - Build Plan
+   - Golden Image
+   - OS Volumes
+   - Plan Scripts
+
 # v4.0.0
 
 #### Breaking changes:
