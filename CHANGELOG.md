@@ -9,6 +9,9 @@ Added full support to Image Streamer Rest API version 300:
    - OS Volumes
    - Plan Scripts
 
+#### Bug fixes & Enhancements:
+- Add client destroy_session method and domain attribute
+
 # v4.0.0
 
 #### Breaking changes:
