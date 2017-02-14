@@ -9,6 +9,9 @@ Added full support to Image Streamer Rest API version 300:
    - OS Volumes
    - Plan Scripts
 
+#### Bug fixes & Enhancements:
+ - [#135](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/135) Firmware Bundle timeout does not give proper instructions for user post failure
+
 # v4.0.0
 
 #### Breaking changes:

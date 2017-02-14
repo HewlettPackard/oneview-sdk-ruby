@@ -45,9 +45,15 @@ module OneviewSDK
           http_request.read_timeout = timeout
 
           http_request.start do |http|
-            response = http.request(req)
-            data = client.response_handler(response)
-            return OneviewSDK::FirmwareDriver.new(client, data)
+            begin
+              response = http.request(req)
+              data = client.response_handler(response)
+              return OneviewSDK::FirmwareDriver.new(client, data)
+            rescue Net::ReadTimeout
+              raise "The connection was closed because the timeout of #{timeout} seconds has expired."\
+                'You can specify the timeout in seconds by passing the timeout on the method call.'\
+                'If the firmware is corrupted in the search appliance, you should clean it.'
+            end
           end
         end
       end
