@@ -9,6 +9,9 @@ Added full support to Image Streamer Rest API version 300:
    - OS Volumes
    - Plan Scripts
 
+#### Bug fixes & Enhancements:
+ - [#174](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/174) I3S - Integration test for Build Plan failing
+
 # v4.0.0
 
 #### Breaking changes:
