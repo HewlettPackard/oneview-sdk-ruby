@@ -36,6 +36,7 @@ client = OneviewSDK::Client.new(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
+  domain: 'LOCAL',                    # This is the default
   api_version: 200                    # Defaults to minimum of 200 and appliance's max API version
 )
 ```
@@ -67,6 +68,7 @@ You can also set many of the client attributes using environment variables. To s
 ```bash
 # OneView client options:
 export ONEVIEWSDK_URL='https://oneview.example.com'
+export ONEVIEWSDK_DOMAIN='LOCAL'
 # You can set the token if you know it, or set the user and password to generate one:
 export ONEVIEWSDK_TOKEN='xxxx...'
 export ONEVIEWSDK_USER='Administrator'
