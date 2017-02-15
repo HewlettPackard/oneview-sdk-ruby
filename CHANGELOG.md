@@ -10,7 +10,7 @@ Added full support to Image Streamer Rest API version 300:
    - Plan Scripts
 
 #### Bug fixes & Enhancements:
-- Add client destroy_session method and domain attribute
+- [#178](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/178) Add client destroy_session method and domain attribute
 
 # v4.0.0
 
