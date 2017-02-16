@@ -52,7 +52,8 @@ module OneviewSDK
             rescue Net::ReadTimeout
               raise "The connection was closed because the timeout of #{timeout} seconds has expired."\
                 'You can specify the timeout in seconds by passing the timeout on the method call.'\
-                'If the firmware is corrupted in the search appliance, you should clean it.'
+                'Interrupted firmware uploads may result in corrupted firmware remaining in the appliance.'\
+                'HPE recommends checking the appliance for corrupted firmware and removing it.'
             end
           end
         end
