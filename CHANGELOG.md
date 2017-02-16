@@ -9,6 +9,9 @@ Added full support to Image Streamer Rest API version 300:
    - OS Volumes
    - Plan Scripts
 
+#### Bug fixes & Enhancements:
+- Give custom exception classes a data attribute for more error context
+
 # v4.0.0
 
 #### Breaking changes:

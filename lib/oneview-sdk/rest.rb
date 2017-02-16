@@ -133,8 +133,7 @@ module OneviewSDK
     #   If an asynchronous task was started, this waits for it to complete.
     # @param [HTTPResponse] response HTTP response
     # @param [Boolean] wait_on_task Wait on task (or just return task details)
-    # @raise [StandardError] if the request failed
-    # @raise [StandardError] if a task was returned that did not complete successfully
+    # @raise [OneviewSDK::OVError] if the request failed or a task did not complete successfully
     # @return [Hash] The parsed JSON body
     def response_handler(response, wait_on_task = true)
       case response.code.to_i
@@ -158,13 +157,13 @@ module OneviewSDK
       when RESPONSE_CODE_NO_CONTENT # Synchronous delete
         return {}
       when RESPONSE_CODE_BAD_REQUEST
-        raise BadRequest, "400 BAD REQUEST #{response.body}"
+        BadRequest.raise! "400 BAD REQUEST #{response.body}", response
       when RESPONSE_CODE_UNAUTHORIZED
-        raise Unauthorized, "401 UNAUTHORIZED #{response.body}"
+        Unauthorized.raise! "401 UNAUTHORIZED #{response.body}", response
       when RESPONSE_CODE_NOT_FOUND
-        raise NotFound, "404 NOT FOUND #{response.body}"
+        NotFound.raise! "404 NOT FOUND #{response.body}", response
       else
-        raise RequestError, "#{response.code} #{response.body}"
+        RequestError.raise! "#{response.code} #{response.body}", response
       end
     end
 

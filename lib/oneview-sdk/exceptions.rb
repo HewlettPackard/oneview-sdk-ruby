@@ -1,7 +1,7 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2016-2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -11,45 +11,65 @@
 
 # Contains all the custom Exception classes
 module OneviewSDK
-  class ConnectionError < StandardError # Cannot connect to client/resource
+  # Error class allowing storage of a data attribute
+  class OVError < ::StandardError
+    attr_accessor :data
+
+    def initialize(msg = nil, data = nil)
+      @data = data
+      super(msg)
+    end
+
+    # Shorthand method to raise an error.
+    # @example
+    #   OneviewSDK::OVError.raise! 'Message', { data: 'stuff' }
+    def self.raise!(msg = nil, data = nil)
+      raise new(msg, data)
+    end
   end
 
-  class InvalidURL < StandardError # URL is invalid
+  class ConnectionError < OVError # Cannot connect to client/resource
   end
 
-  class InvalidClient < StandardError # Client configuration is invalid
+  class InvalidURL < OVError # URL is invalid
   end
 
-  class InvalidResource < StandardError # Failed resource validations
+  class InvalidClient < OVError # Client configuration is invalid
   end
 
-  class IncompleteResource < StandardError # Missing required resource data to complete action
+  class InvalidResource < OVError # Failed resource validations
   end
 
-  class MethodUnavailable < StandardError # Resource does not support this method
+  class IncompleteResource < OVError # Missing required resource data to complete action
   end
 
-  class UnsupportedVersion < StandardError # Resource not supported on this API version
+  class MethodUnavailable < OVError # Resource does not support this method
   end
 
-  class InvalidRequest < StandardError # Could not make request
+  class UnsupportedVariant < OVError # Variant is not supported
   end
 
-  class BadRequest < StandardError # 400
+  class UnsupportedVersion < OVError # Resource not supported on this API version
   end
 
-  class Unauthorized < StandardError # 401
+  class InvalidRequest < OVError # Could not make request
   end
 
-  class NotFound < StandardError # 404
+  class BadRequest < OVError # 400
   end
 
-  class RequestError < StandardError # Other bad response codes
+  class Unauthorized < OVError # 401
   end
 
-  class TaskError < StandardError # Task ended in a bad state
+  class NotFound < OVError # 404
   end
 
-  class InvalidFormat < StandardError # File format is invalid
+  class RequestError < OVError # Other bad response codes
+  end
+
+  class TaskError < OVError # Task ended in a bad state
+  end
+
+  class InvalidFormat < OVError # File format is invalid
   end
 end
