@@ -1,6 +1,7 @@
 # oneview-sdk for Ruby
+[![Build Status](https://travis-ci.org/HewlettPackard/oneview-sdk-ruby.svg?branch=master)](https://travis-ci.org/HewlettPackard/oneview-sdk-ruby)
 [![Gem Version](https://badge.fury.io/rb/oneview-sdk.svg)](https://badge.fury.io/rb/oneview-sdk)
-
+[![Yard Docs](https://img.shields.io/badge/yard-docs-yellow.svg)](http://www.rubydoc.info/gems/oneview-sdk)
 
 The OneView SDK provides a Ruby library to easily interact with HPE OneView and Image Streamer APIs. The Ruby SDK enables developers to easily build integrations and scalable solutions with HPE OneView and Image Streamer.
 
