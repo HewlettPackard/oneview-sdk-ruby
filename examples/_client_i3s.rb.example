@@ -9,15 +9,15 @@ require 'pry'
   ssl_enabled: false
 )
 
-# Another way to instantiate the i3s client. Uncomment the creation of onv_client and @client instances.
-# onv_client = OneviewSDK::Client.new(
+# Another way to instantiate the i3s client. Uncomment the creation of ov_client and @client instances.
+# ov_client = OneviewSDK::Client.new(
 #   url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
 #   user: 'Administrator', # or set ENV['ONEVIEWSDK_USER']
 #   password: 'secret123', # or set ENV['ONEVIEWSDK_PASSWORD']
 #   ssl_enabled: false
 # )
 
-# @client = onv_client.new_i3s_client(
+# @client = ov_client.new_i3s_client(
 #   url: ''https://i3s.example.com', # or set ENV['I3S_URL']
 #   ssl_enabled: false
 # )
