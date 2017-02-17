@@ -97,10 +97,10 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
 
     context 'when plan script param can be retrieved' do
       it 'should add it correctly to the plan scripts set' do
-        resource_1 = OneviewSDK::ImageStreamer::API300::PlanScripts.new(@client_i3s_300)
-        resource_2 = OneviewSDK::ImageStreamer::API300::PlanScripts.new(@client_i3s_300)
+        resource_1 = OneviewSDK::ImageStreamer::API300::PlanScript.new(@client_i3s_300)
+        resource_2 = OneviewSDK::ImageStreamer::API300::PlanScript.new(@client_i3s_300)
 
-        allow_any_instance_of(OneviewSDK::ImageStreamer::API300::PlanScripts).to receive(:retrieve!).and_return(true)
+        allow_any_instance_of(OneviewSDK::ImageStreamer::API300::PlanScript).to receive(:retrieve!).and_return(true)
         allow(resource_1).to receive(:[]).with('uri').and_return('/rest/plan_script/1')
         allow(resource_2).to receive(:[]).with('uri').and_return('/rest/plan_script/2')
 
@@ -120,10 +120,10 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
 
     context 'when plan script param can not be retrieved' do
       it 'should throw exception with correct message' do
-        plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.new(@client_i3s_300)
+        plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.new(@client_i3s_300)
         allow(plan_script).to receive(:retrieve!).and_return(false)
 
-        expected_message = /The resource OneviewSDK::ImageStreamer::API300::PlanScripts can not be retrieved. Ensure it have a valid URI./
+        expected_message = /The resource OneviewSDK::ImageStreamer::API300::PlanScript can not be retrieved. Ensure it have a valid URI./
         expect { artifact_bundle.add_plan_script(plan_script) }.to raise_error(expected_message)
         expect(artifact_bundle['planScripts']).to be_empty
       end
@@ -134,10 +134,10 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
 
     context 'when deployment plan param can be retrieved' do
       it 'should add it correctly to the deployment plans set' do
-        resource_1 = OneviewSDK::ImageStreamer::API300::DeploymentPlans.new(@client_i3s_300)
-        resource_2 = OneviewSDK::ImageStreamer::API300::DeploymentPlans.new(@client_i3s_300)
+        resource_1 = OneviewSDK::ImageStreamer::API300::DeploymentPlan.new(@client_i3s_300)
+        resource_2 = OneviewSDK::ImageStreamer::API300::DeploymentPlan.new(@client_i3s_300)
 
-        allow_any_instance_of(OneviewSDK::ImageStreamer::API300::DeploymentPlans).to receive(:retrieve!).and_return(true)
+        allow_any_instance_of(OneviewSDK::ImageStreamer::API300::DeploymentPlan).to receive(:retrieve!).and_return(true)
         allow(resource_1).to receive(:[]).with('uri').and_return('/rest/deployment_plan/1')
         allow(resource_2).to receive(:[]).with('uri').and_return('/rest/deployment_plan/2')
 
@@ -157,10 +157,10 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
 
     context 'when deployment plan param can not be retrieved' do
       it 'should throw exception with correct message' do
-        deployment_plan = OneviewSDK::ImageStreamer::API300::DeploymentPlans.new(@client_i3s_300)
+        deployment_plan = OneviewSDK::ImageStreamer::API300::DeploymentPlan.new(@client_i3s_300)
         allow(deployment_plan).to receive(:retrieve!).and_return(false)
 
-        expected_message = /The resource OneviewSDK::ImageStreamer::API300::DeploymentPlans can not be retrieved. Ensure it have a valid URI./
+        expected_message = /The resource OneviewSDK::ImageStreamer::API300::DeploymentPlan can not be retrieved. Ensure it have a valid URI./
         expect do
           artifact_bundle.add_deployment_plan(deployment_plan)
         end.to raise_error(expected_message)
@@ -293,9 +293,10 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
     end
 
     context 'when uri is not set' do
-      it 'should throw IncompleteResource error'
-      expect(artifact_bundle).to receive(:ensure_uri).and_return(false)
-      expect { artifact_bundle.update_name('New Name') }.to raise_error(OneviewSDK::IncompleteResource)
+      it 'should throw IncompleteResource error' do
+        item = described_class.new(@client_i3s_300, {})
+        expect { item.update_name('New Name') }.to raise_error(OneviewSDK::IncompleteResource)
+      end
     end
   end
 
@@ -304,6 +305,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
       it 'should call rest api correctly' do
         expected_uri = '/rest/artifact-bundles/UUID-111?extract=true&forceImport=true' # forceImport is true
         expect(@client_i3s_300).to receive(:rest_put).with(expected_uri, 'Content-Type' => 'text/plain')
+        expect(@client_i3s_300).to receive(:response_handler).and_return(FakeResponse.new)
         expect(artifact_bundle.extract).to eq(true)
       end
     end
@@ -312,35 +314,33 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
       it 'should call rest api correctly' do
         expected_uri = '/rest/artifact-bundles/UUID-111?extract=true&forceImport=false' # forceImport is false
         expect(@client_i3s_300).to receive(:rest_put).with(expected_uri, 'Content-Type' => 'text/plain')
-        expect(artifact_bundle.extract).to eq(true)
+        expect(@client_i3s_300).to receive(:response_handler).and_return(FakeResponse.new)
+        expect(artifact_bundle.extract(false)).to eq(true)
       end
     end
 
     context 'when uri is not set' do
-      it 'should throw IncompleteResource error'
-      expect(artifact_bundle).to receive(:ensure_uri).and_return(false)
-      expect { artifact_bundle.extract }.to raise_error(OneviewSDK::IncompleteResource)
+      it 'should throw IncompleteResource error' do
+        item = described_class.new(@client_i3s_300, {})
+        expect { item.extract }.to raise_error(OneviewSDK::IncompleteResource)
+      end
     end
   end
 
   describe '#download' do
     it 'should call download_file of FileUploadHelper' do
-      fake_response = spy('http_response')
-      params = { 'body' => { 'name' => 'New Name', 'type' => 'ArtifactsBundle' } }
-      expect(@client_i3s_300).to receive(:rest_put).with('/rest/artifact-bundles/UUID-111', params).and_return(fake_response)
-      expect(@client_i3s_300).to receive(:response_handler).with(fake_response)
-
-      result = artifact_bundle.update_name('New Name')
-
+      options = { 'downloadURI' => '/rest/artifact-bundles/backups/archive/UUID-1' }
+      artifact_backup = OneviewSDK::ImageStreamer::API300::ArtifactBundle.new(@client_i3s_300, options)
+      expect(OneviewSDK::FileUploadHelper).to receive(:download_file)
+        .with(@client_i3s_300, options['downloadURI'], 'path_to/file.zip').and_return(true)
+      result = artifact_backup.download('path_to/file.zip')
       expect(result).to eq(true)
-      expect(artifact_bundle['name']).to eq('New Name')
-
-      OneviewSDK::FileUploadHelper.download_file(@client, @data['downloadURI'], local_drive_path)
     end
 
     context 'when downloadURI is not set' do
-      it 'should throw IncompleteResource error'
-      expect { artifact_bundle.download('path_to/file.zip') }.to raise_error(OneviewSDK::IncompleteResource)
+      it 'should throw IncompleteResource error' do
+        expect { artifact_bundle.download('path_to/file.zip') }.to raise_error(OneviewSDK::IncompleteResource)
+      end
     end
   end
 end

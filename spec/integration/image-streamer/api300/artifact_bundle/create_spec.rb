@@ -18,8 +18,8 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
   let(:artifact_bundle_file_path) { '/tmp/artifact_bundle.zip' }
   let(:backup_bundle_file_path) { '/tmp/backup_bundle.zip' }
   let(:deployment_group) { OneviewSDK::ImageStreamer::API300::DeploymentGroup.get_all($client_i3s_300).first }
-  let(:deployment_plan) { OneviewSDK::ImageStreamer::API300::DeploymentPlans.get_all($client_i3s_300).first }
-  let(:plan_script) { OneviewSDK::ImageStreamer::API300::PlanScripts.get_all($client_i3s_300).first }
+  let(:deployment_plan) { OneviewSDK::ImageStreamer::API300::DeploymentPlan.get_all($client_i3s_300).first }
+  let(:plan_script) { OneviewSDK::ImageStreamer::API300::PlanScript.get_all($client_i3s_300).first }
 
   describe '#create' do
     it 'should create a artifact bundle' do

@@ -40,6 +40,20 @@ RSpec.describe OneviewSDK::FileUploadHelper do
         .with('/uri-file-upload', { 'file' => 'Fake_File_IO' }, expected_options)
       expect(http_fake).to have_received(:read_timeout=).with(600)
     end
+
+    it 'upload a file' do
+      options = { name: 'fake', description: 'anything' }
+      fake_response = FakeResponse.new(name: 'fake', uri: 'rest/fake/1')
+      expected_result = { name: 'fake', description: 'anything', uri: 'rest/fake/1' }
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_return(fake_response)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      allow(@client_i3s_300).to receive(:response_handler).with(fake_response).and_return(expected_result)
+      allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
+      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
+      result = OneviewSDK::FileUploadHelper.upload_file(@client_i3s_300, 'file.zip', 'rest/fake/1', options)
+      expect(result).to eq(expected_result)
+    end
   end
 
   describe '::download_file' do

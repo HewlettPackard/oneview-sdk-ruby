@@ -4,10 +4,11 @@
 
 #### New Resources:
 Added full support to Image Streamer Rest API version 300:
+   - Artifact Bundle
    - Build Plan
    - Golden Image
-   - OS Volumes
-   - Plan Scripts
+   - OS Volume
+   - Plan Script
 
 # v4.0.0
 

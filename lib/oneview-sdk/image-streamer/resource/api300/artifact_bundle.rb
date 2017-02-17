@@ -136,7 +136,7 @@ module OneviewSDK
         end
 
         # Add a Plan Script to this ArtifactBundle
-        # @param [OneviewSDK::ImageStreamer::API300::PlanScripts] resource The PlanScripts resource with uri
+        # @param [OneviewSDK::ImageStreamer::API300::PlanScript] resource The PlanScripts resource with uri
         # @param [TrueClass, FalseClass] read_only Indicates whether the PlanScripts will be readonly in artifact bundle package
         # @raise [RuntimeError] if the PlanScripts uri is not set or it is not valid
         def add_plan_script(resource, read_only = true)

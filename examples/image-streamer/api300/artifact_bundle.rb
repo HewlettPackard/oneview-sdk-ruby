@@ -17,7 +17,7 @@ require_relative '../../_client_i3s' # Gives access to @client
 # NOTE: It is needed a DeploymentGroup and a PlanScript previously created
 
 deployment_group = OneviewSDK::ImageStreamer::API300::DeploymentGroup.get_all(@client).first
-plan_script = OneviewSDK::ImageStreamer::API300::PlanScripts.get_all(@client).first
+plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.get_all(@client).first
 
 options = {
   name: 'ArtifactBundle Name',
@@ -32,7 +32,7 @@ puts "Artifact Bundle with name #{item['name']} and uri #{item['uri']} created s
 puts 'Data:', item.data
 
 puts "\nUpdating the name of the artifact bundle"
-item.update_name(item + ' Updated')
+item.update_name("#{item['name']}_Updated")
 puts "Artifact Bundle with name #{item['name']} and uri #{item['uri']} updated successfully."
 
 puts "\nListing all artifact bundles"
@@ -51,20 +51,20 @@ puts "Artifact Bundle with name #{item_uploaded['name']} and uri #{item_uploaded
 puts "\nExtracting artifact bundle uploaded"
 puts 'Artifact Bundle extracted successfully.' if item_uploaded.extract
 
-# puts "\nCreating a backup associated to deployment group with name='#{deployment_group['name']}' and uri='#{deployment_group['uri']}'"
-# puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.create_backup(@client, deployment_group)
+puts "\nCreating a backup associated to deployment group with name='#{deployment_group['name']}' and uri='#{deployment_group['uri']}'"
+puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.create_backup(@client, deployment_group)
 
 puts "\nListing backups"
-backups = OneviewSDK::ImageStreamer::API300::ArtifactBundle.get_backups
-backups.each { |item| puts item['name'] }
+backups = OneviewSDK::ImageStreamer::API300::ArtifactBundle.get_backups(@client)
+backups.each { |bkp| puts bkp['name'] }
 
 backup_download_path = '/tmp/backup-bundle.zip'
 puts "\nDownloading backup bundle file and saving at #{backup_download_path}"
-OneviewSDK::ImageStreamer::API300::ArtifactBundle.download_backup(backup_download_path)
+OneviewSDK::ImageStreamer::API300::ArtifactBundle.download_backup(@client, backup_download_path, item)
 puts 'Downloaded successfully.' if File.exist?(backup_download_path)
 
-# puts "\nUploading backup bundle"
-# puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.create_backup_from_file(@client, backup_download_path, 'Backup Bundle Uploaded')
+puts "\nUploading backup bundle"
+puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.create_backup_from_file(@client, backup_download_path, 'Backup Bundle Uploaded')
 
 puts "\nDeleting the artifact bundles"
 item.delete
