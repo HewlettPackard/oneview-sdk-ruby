@@ -23,11 +23,13 @@ module OneviewSDK
         def create(*)
           unavailable_method
         end
+
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
         def update(*)
           unavailable_method
         end
+
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
         def delete(*)

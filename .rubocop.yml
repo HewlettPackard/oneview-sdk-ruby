@@ -9,6 +9,7 @@ Metrics/ClassLength:
   Max: 200
   Exclude:
     - 'lib/oneview-sdk/cli.rb'
+    - 'lib/oneview-sdk/resource.rb'
 
 Metrics/LineLength:
   Max: 150
@@ -17,7 +18,7 @@ Metrics/ModuleLength:
   Max: 150
 
 Style/GlobalVars:
-  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300]
+  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $config_300]
 
 Style/IndentationWidth:
   Width: 2

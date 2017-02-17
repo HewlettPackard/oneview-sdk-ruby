@@ -1,5 +1,7 @@
 I3S_DEPENDENCIES = {
-  PlanScripts: []
+  PlanScripts: [],
+  DeploymentGroup: [],
+  ArtifactBundle: [:DeploymentGroup]
 }.freeze
 
 I3S_SEQ = I3S_DEPENDENCIES.tsort
@@ -24,3 +26,10 @@ end
 # Plan Scripts
 PLAN_SCRIPT1_NAME = 'Plan_Script_1'.freeze
 PLAN_SCRIPT1_NAME_UPDATE = 'Plan_Script_1_Updated'.freeze
+
+# Artifact Bundle
+ARTIFACT_BUNDLE1_NAME = 'Artifact_Bundle_1'.freeze
+ARTIFACT_BUNDLE2_NAME = 'Artifact_Bundle_ReadOnly'.freeze
+
+# Deployment Plans
+DEPLOYMENT_PLAN1_NAME = 'CLRM_DP_withoutpwd'.freeze

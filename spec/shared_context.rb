@@ -51,7 +51,9 @@ end
 RSpec.shared_context 'integration i3s api300 context', a: :b do
   before :all do
     integration_context_i3s
-    $client_i3s_300 ||= OneviewSDK::ImageStreamer::Client.new($config_i3s.merge(api_version: 300))
+    client_300 = OneviewSDK::Client.new($config_300.merge(api_version: 300))
+    attrs_client_i3s = $config_i3s.merge(api_version: 300, token: client_300.token)
+    $client_i3s_300 ||= OneviewSDK::ImageStreamer::Client.new(attrs_client_i3s)
   end
 
   integration_context_debugging
@@ -125,17 +127,21 @@ end
 #   spec/integration/i3s_config.json
 def integration_context_i3s
   default_config = 'spec/integration/i3s_config.json'
+  default_config_300 = 'spec/integration/one_view_config.json'
   @config_path_i3s ||= ENV['I3S_INTEGRATION_CONFIG'] || default_config
+  @config_path_300 ||= ENV['ONEVIEWSDK_INTEGRATION_CONFIG'] || default_config_300
   # Ensure config & secrets files exist
-  unless File.file?(@config_path_i3s)
+  unless File.file?(@config_path_i3s) || File.file?(@config_path_300)
     STDERR.puts "\n\n"
     STDERR.puts 'ERROR: Integration config i3s file not found' unless File.file?(@config_path_i3s)
+    STDERR.puts 'ERROR: Integration config for api 300 file not found' unless File.file?(@config_path_300)
     STDERR.puts "\n\n"
     exit!
   end
 
   # Creates the global config variable
   $config_i3s ||= OneviewSDK::Config.load(@config_path_i3s)
+  $config_300 ||= OneviewSDK::Config.load(@config_path_300)
 end
 
 # For debugging only: Shows test metadata without actually running the tests
