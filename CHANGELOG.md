@@ -6,6 +6,7 @@
 Added full support to Image Streamer Rest API version 300:
    - Artifact Bundle
    - Build Plan
+   - Deployment Group
    - Golden Image
    - OS Volume
    - Plan Script

@@ -12,33 +12,13 @@
 require 'spec_helper'
 
 klass = OneviewSDK::ImageStreamer::API300::DeploymentGroup
-RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(klass) do
+RSpec.describe klass, integration_i3s: true, type: DELETE, sequence: i3s_rseq(klass) do
   include_context 'integration i3s api300 context'
 
-  subject(:item) { klass.get_all($client_i3s_300).first }
-
-  describe '::get_all' do
-    it 'should get all deployment groups' do
-      items = klass.get_all($client_i3s_300)
-      expect(items).not_to be_empty
-    end
-  end
-
-  describe '#create' do
-    it 'should throw unavailable method error' do
-      expect { item.create }.to raise_error(OneviewSDK::MethodUnavailable)
-    end
-  end
-
-  describe '#update' do
-    it 'should throw unavailable method error' do
-      expect { item.update }.to raise_error(OneviewSDK::MethodUnavailable)
-    end
-  end
-
   describe '#delete' do
-    it 'should throw unavailable method error' do
-      expect { item.delete }.to raise_error(OneviewSDK::MethodUnavailable)
+    it 'raises MethodUnavailable' do
+      item = klass.new($client_i3s_300)
+      expect { item.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
 end
