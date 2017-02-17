@@ -17,8 +17,9 @@ require_relative 'ssl_helper'
 module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
-    attr_reader :url, :user, :token, :password, :max_api_version
-    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
+    attr_reader :max_api_version
+    attr_accessor :url, :user, :token, :password, :ssl_enabled, :api_version, \
+                  :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
     include Rest
 
@@ -108,12 +109,14 @@ module OneviewSDK
     # Get array of all resources of a specified type
     # @param [String] type Resource type
     # @param [Integer] api_ver API module version to fetch resources from
+    # @param [String] variant API module variant to fetch resource from
     # @return [Array<Resource>] Results
     # @example Get all Ethernet Networks
     #   networks = @client.get_all('EthernetNetworks')
+    #   synergy_networks = @client.get_all('EthernetNetworks', 300, 'Synergy')
     # @raise [TypeError] if the type is invalid
-    def get_all(type, api_ver = @api_version)
-      klass = OneviewSDK.resource_named(type, api_ver)
+    def get_all(type, api_ver = @api_version, variant = nil)
+      klass = OneviewSDK.resource_named(type, api_ver, variant)
       raise TypeError, "Invalid resource type '#{type}'. OneviewSDK::API#{api_ver} does not contain a class like it." unless klass
       klass.get_all(self)
     end
@@ -145,6 +148,15 @@ module OneviewSDK
       end
     end
 
+    # Refresh the client's session token & max_api_version.
+    # Call this after a token expires or the user and/or password is updated on the client object.
+    # @return [OneviewSDK::Client] self
+    def refresh_login
+      @max_api_version = appliance_api_version
+      @token = login
+      self
+    end
+
 
     private
 
@@ -161,7 +173,7 @@ module OneviewSDK
       OneviewSDK::DEFAULT_API_VERSION
     end
 
-    # Log in to OneView appliance and set max_api_version
+    # Log in to OneView appliance and return the session token
     def login(retries = 2)
       options = {
         'body' => {

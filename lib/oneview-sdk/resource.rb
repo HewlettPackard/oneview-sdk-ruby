@@ -324,6 +324,17 @@ module OneviewSDK
       true
     end
 
+    # Gets all the URIs for the specified resources
+    # @param [Array<OneviewSDK::Resource>] resources The list of resources
+    # @return [Array<String>] List of uris
+    # @raise IncompleteResource if 'uri' is not set for each resource.
+    def ensure_and_get_uris(resources)
+      resources.map do |resource|
+        resource.ensure_uri
+        resource['uri']
+      end
+    end
+
     # Fail for methods that are not available for one resource
     def unavailable_method
       raise MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"

@@ -41,6 +41,7 @@ DEPENDENCIES = {
   SASInterconnect: [:SASLogicalInterconnect],
   SASLogicalInterconnect: [:Enclosure],
   SASLogicalInterconnectGroup: [],
+  Scope: [],
   ServerHardware: [:ServerHardwareType],
   ServerHardwareType: [:Enclosure],
   ServerProfile: [:ServerHardware, :Enclosure, :ServerProfileTemplate],
