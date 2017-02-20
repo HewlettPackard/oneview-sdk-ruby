@@ -12,7 +12,7 @@
 require_relative '../../_client_i3s' # Gives access to @client
 
 # Example: Create a build plan for an API300 Image Streamer
-# NOTE: This will create three things with the following names 'Build_Plan_1', 'Build_Plan_2' and 'Build_Plan_3', then delete them.
+# NOTE: This will create three build plans with the following names 'Build_Plan_1', 'Build_Plan_2' and 'Build_Plan_3', then delete them.
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #   @plan_script1_name
 #   @plan_script2_name (plan script with build step and custom attributes)
