@@ -27,7 +27,7 @@ build_step = [
   {
     serialNumber: '1',
     parameters: 'anystring',
-    planScriptName: 'Plan_Script_1',
+    planScriptName: @plan_script_name,
     planScriptUri: plan_script['uri']
   }
 ]
