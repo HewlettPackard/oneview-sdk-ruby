@@ -18,7 +18,6 @@ module OneviewSDK
   class Resource
     BASE_URI = '/rest'.freeze
     UNIQUE_IDENTIFIERS = %w(name uri).freeze # Ordered list of unique attributes to search by
-    READ_TIMEOUT = 300 # in seconds (5 minutes)
 
     attr_accessor \
       :client,

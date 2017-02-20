@@ -60,11 +60,11 @@ backups.each { |bkp| puts bkp['name'] }
 
 backup_download_path = '/tmp/backup-bundle.zip'
 puts "\nDownloading backup bundle file and saving at #{backup_download_path}"
-OneviewSDK::ImageStreamer::API300::ArtifactBundle.download_backup(@client, backup_download_path, item)
+OneviewSDK::ImageStreamer::API300::ArtifactBundle.download_backup(@client, backup_download_path, backups.first)
 puts 'Downloaded successfully.' if File.exist?(backup_download_path)
 
 puts "\nUploading backup bundle"
-puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.create_backup_from_file(@client, backup_download_path, 'Backup Bundle Uploaded')
+puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.create_backup_from_file!(@client, deployment_group, backup_download_path, 'Backup Bundle')
 
 puts "\nDeleting the artifact bundles"
 item.delete

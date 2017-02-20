@@ -10,7 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'resource'
-require_relative '../../../file_upload_helper'
+require_relative '../../../rest'
 
 module OneviewSDK
   module ImageStreamer
@@ -40,9 +40,9 @@ module OneviewSDK
         # @param [String] artifact_name The name for the artifact that will be created
         # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
         # @return [OneviewSDK::ImageStreamer::API300::ArtifactBundle] if the upload was sucessful, return a ArtifactBundle object
-        def self.create_from_file(client, file_path, artifact_name, timeout = OneviewSDK::FileUploadHelper::READ_TIMEOUT)
+        def self.create_from_file(client, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
           params = { 'name' => artifact_name }
-          body = OneviewSDK::FileUploadHelper.upload_file(client, file_path, BASE_URI, params, timeout)
+          body = client.upload_file(file_path, BASE_URI, params, timeout)
           ArtifactBundle.new(client, body)
         end
 
@@ -58,7 +58,7 @@ module OneviewSDK
         # Creates a backup bundle with all the artifacts present on the appliance.
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
         # @param [DeploymentGroup] deployment_group The DeploymentGroup with name or uri
-        # @return [Hash] Hash of backup result
+        # @return [Hash] The result hash with DeploymentGroup data
         def self.create_backup(client, deployment_group)
           ensure_resource!(deployment_group)
           response = client.rest_post(BACKUPS_URI, 'body' => { 'deploymentGroupURI' => deployment_group['uri'] })
@@ -71,11 +71,11 @@ module OneviewSDK
         # @param [String] file_path
         # @param [String] artifact_name The name for the artifact that will be created
         # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
-        # @return [Hash] Hash of backup result
-        def self.create_backup_from_file!(client, deployment_group, file_path, artifact_name, timeout = READ_TIMEOUT)
+        # @return [Hash] The result hash with DeploymentGroup data
+        def self.create_backup_from_file!(client, deployment_group, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
           ensure_resource!(deployment_group)
           params = { 'name' => artifact_name, 'deploymentGrpUri' => deployment_group['uri'] }
-          OneviewSDK::FileUploadHelper.upload_file(client, file_path, BACKUPS_ARCHIVE_URI, params, timeout)
+          client.upload_file(file_path, BACKUPS_ARCHIVE_URI, params, timeout)
         end
 
         # Download the backup bundle
@@ -85,7 +85,7 @@ module OneviewSDK
         # @return [Boolean] true if backup was downloaded
         def self.download_backup(client, local_drive_path, artifact_bundle_backup)
           raise IncompleteResource, "Missing required attribute 'downloadURI'" unless artifact_bundle_backup['downloadURI']
-          OneviewSDK::FileUploadHelper.download_file(client, artifact_bundle_backup['downloadURI'], local_drive_path)
+          client.download_file(artifact_bundle_backup['downloadURI'], local_drive_path)
         end
 
         # Method is not available
@@ -124,7 +124,7 @@ module OneviewSDK
         # @return [Boolean] if file was downloaded
         def download(local_drive_path)
           raise IncompleteResource, "Missing required attribute 'downloadURI'" unless @data['downloadURI']
-          OneviewSDK::FileUploadHelper.download_file(@client, @data['downloadURI'], local_drive_path)
+          client.download_file(@data['downloadURI'], local_drive_path)
         end
 
         # Add a Build Plan to this ArtifactBundle

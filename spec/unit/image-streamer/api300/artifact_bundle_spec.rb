@@ -208,8 +208,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
     it 'should call a upload_file from FileUploadHelper' do
       fake_response = { 'name' => 'Artifact Name' }
 
-      expect(OneviewSDK::FileUploadHelper).to receive(:upload_file)
-        .with(@client_i3s_300, 'file.zip', '/rest/artifact-bundles', { 'name' => 'Artifact Name' }, 500)
+      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles', { 'name' => 'Artifact Name' }, 500)
         .and_return(fake_response)
 
       result = described_class.create_from_file(@client_i3s_300, 'file.zip', 'Artifact Name', 500)
@@ -248,26 +247,24 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
   end
 
   describe '::create_backup_from_file!' do
-    it 'should call FileUploadHelper' do
+    it 'should call @client.upload_file' do
       deployment_group = OneviewSDK::ImageStreamer::API300::DeploymentGroup.new(@client_i3s_300, uri: '/rest/deployment-groups/1')
 
 
       params = { 'name' => 'Artifact Name', 'deploymentGrpUri' => '/rest/deployment-groups/1' }
       expect(deployment_group).to receive(:retrieve!).and_return(true)
-      expect(OneviewSDK::FileUploadHelper).to receive(:upload_file)
-        .with(@client_i3s_300, 'file.zip', '/rest/artifact-bundles/backups/archive', params, 300)
+      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles/backups/archive', params, 300)
 
       described_class.create_backup_from_file!(@client_i3s_300, deployment_group, 'file.zip', 'Artifact Name')
     end
   end
 
   describe '::download_backup' do
-    it 'should call FileUploadHelper' do
+    it 'should call @client.download_file' do
       options = { 'downloadURI' => '/rest/artifact-bundles/backups/archive/UUID-1' }
       artifact_backup = OneviewSDK::ImageStreamer::API300::ArtifactBundle.new(@client_i3s_300, options)
 
-      expect(OneviewSDK::FileUploadHelper).to receive(:download_file)
-        .with(@client_i3s_300, '/rest/artifact-bundles/backups/archive/UUID-1', 'path_to/file.zip')
+      expect(@client_i3s_300).to receive(:download_file).with('/rest/artifact-bundles/backups/archive/UUID-1', 'path_to/file.zip')
 
       described_class.download_backup(@client_i3s_300, 'path_to/file.zip', artifact_backup)
     end
@@ -328,11 +325,10 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
   end
 
   describe '#download' do
-    it 'should call download_file of FileUploadHelper' do
+    it 'should call @client.download_file' do
       options = { 'downloadURI' => '/rest/artifact-bundles/backups/archive/UUID-1' }
       artifact_backup = OneviewSDK::ImageStreamer::API300::ArtifactBundle.new(@client_i3s_300, options)
-      expect(OneviewSDK::FileUploadHelper).to receive(:download_file)
-        .with(@client_i3s_300, options['downloadURI'], 'path_to/file.zip').and_return(true)
+      expect(@client_i3s_300).to receive(:download_file).with(options['downloadURI'], 'path_to/file.zip').and_return(true)
       result = artifact_backup.download('path_to/file.zip')
       expect(result).to eq(true)
     end
