@@ -12,6 +12,7 @@ Added full support to Image Streamer Rest API version 300:
 
 #### Bug fixes & Enhancements:
  - [#166](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/166) I3S - Simplify login to i3s through oneview client
+ - [#146](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/146) Why is Switch the only resource that directly implements #set_scope_uris?
 
 # v4.0.0
 
