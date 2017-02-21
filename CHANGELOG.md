@@ -7,9 +7,13 @@ Added full support to Image Streamer Rest API version 300:
    - Artifact Bundle
    - Build Plan
    - Deployment Group
+   - Deployment Plan
    - Golden Image
    - OS Volume
    - Plan Script
+
+#### Bug fixes & Enhancements:
+ - [#166](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/166) I3S - Simplify login to i3s through oneview client
 
 # v4.0.0
 
