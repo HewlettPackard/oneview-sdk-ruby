@@ -10,20 +10,20 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/switch'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module C7000
       # Switch resource implementation
       class Switch < OneviewSDK::API200::Switch
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
 
         # Updates the scope URIs of a specific switch
         # @param [Array] scope_uris Array of scope uri strings
+        # @deprecated Use {#add_scope}, {#remove_scope}, and {#replace_scopes} instead.
         def set_scope_uris(scope_uris)
-          ensure_client && ensure_uri
-          body = { op: 'replace', path: '/scopeUris', value: scope_uris }
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
+          patch('replace', '/scopeUris', scope_uris)
         end
       end
     end

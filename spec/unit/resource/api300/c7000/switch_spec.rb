@@ -71,7 +71,7 @@ RSpec.describe OneviewSDK::API300::C7000::Switch do
   describe '#set_scope_uris' do
     it 'does a PATCH containing the scope uris to a switch' do
       item = described_class.new(@client_300, uri: '/rest/fake')
-      data = { 'body' => [{ op: 'replace', path: '/scopeUris', value: ['/rest/scopes/fee00629-9931-426d-8771-a597917eb9d2'] }] }
+      data = { 'body' => [{ 'op' => 'replace', 'path' => '/scopeUris', 'value' => ['/rest/scopes/fee00629-9931-426d-8771-a597917eb9d2'] }] }
       expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
       expect(item.set_scope_uris(['/rest/scopes/fee00629-9931-426d-8771-a597917eb9d2'])).to eq('key' => 'Val')
     end
