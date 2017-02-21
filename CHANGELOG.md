@@ -14,6 +14,9 @@ Added full support to Image Streamer Rest API version 300:
  - [#166](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/166) I3S - Simplify login to i3s through oneview client
  - [#146](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/146) Why is Switch the only resource that directly implements #set_scope_uris?
 
+#### Bug fixes & Enhancements:
+ - [#135](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/135) Firmware Bundle timeout does not give proper instructions for user post failure
+
 # v4.0.0
 
 #### Breaking changes:
