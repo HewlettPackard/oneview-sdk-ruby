@@ -13,6 +13,7 @@ require 'uri'
 require 'net/http'
 require 'openssl'
 require 'json'
+require 'net/http/post/multipart'
 
 module OneviewSDK
   # Contains all of the methods for making API REST calls
@@ -129,7 +130,7 @@ module OneviewSDK
     # @param [Hash] body_params The params to append to body of http request. Default is {}.
     # @option body_params [String] 'name' The name to show (when resource accepts a name)
     # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
-    # @return [OneviewSDK::Resource] if the upload was sucessful, return a Resource object
+    # @return [Hash] The parsed JSON body of response
     def upload_file(file_path, uri, body_params = {}, timeout = READ_TIMEOUT)
       raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
       options = {
@@ -137,22 +138,31 @@ module OneviewSDK
         'X-Api-Version' => @api_version.to_s,
         'auth' => @token
       }
-      url = URI.parse(URI.escape("#{@url}#{uri}"))
+      final_uri = URI.parse(URI.escape("#{@url}#{uri}"))
 
       File.open(file_path) do |file|
         name_to_show = body_params.delete('name') || body_params.delete(:name)
-        name_to_show = name_to_show ? name_to_show + File.extname('/tmp/artifact_bundle.zip') : File.basename(file_path)
+        if name_to_show && !name_to_show.empty?
+          name_to_show.chomp!(File.extname(name_to_show)) unless File.extname(name_to_show).empty?
+          name_to_show += File.extname(file_path)
+        else
+          name_to_show = File.basename(file_path)
+        end
+
         body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
         req = Net::HTTP::Post::Multipart.new(
-          url.path,
+          final_uri.path,
           body_params,
           options
         )
 
-        http_request = Net::HTTP.new(url.host, url.port)
-        http_request.use_ssl = true
-        http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        http_request = Net::HTTP.new(final_uri.host, final_uri.port)
         http_request.read_timeout = timeout
+        http_request.use_ssl = true if final_uri.scheme == 'https'
+        if @ssl_enabled
+          http_request.cert_store = @cert_store if @cert_store
+        else http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        end
 
         http_request.start do |http|
           response = http.request(req)

@@ -24,8 +24,6 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
 
   describe '::get_all' do
     it 'should get all deployment groups' do
-      puts '#################'
-      puts $client_i3s_300.inspect
       items = klass.find_by($client_i3s_300, {})
       expect(items).not_to be_empty
     end

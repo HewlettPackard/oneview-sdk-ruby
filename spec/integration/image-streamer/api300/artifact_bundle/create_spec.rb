@@ -15,11 +15,14 @@ klass = OneviewSDK::ImageStreamer::API300::ArtifactBundle
 RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(klass) do
   include_context 'integration i3s api300 context'
 
-  let(:artifact_bundle_file_path) { '/tmp/artifact_bundle.zip' }
-  let(:backup_bundle_file_path) { '/tmp/backup_bundle.zip' }
   let(:deployment_group) { OneviewSDK::ImageStreamer::API300::DeploymentGroup.get_all($client_i3s_300).first }
   let(:deployment_plan) { OneviewSDK::ImageStreamer::API300::DeploymentPlan.get_all($client_i3s_300).first }
   let(:plan_script) { OneviewSDK::ImageStreamer::API300::PlanScript.get_all($client_i3s_300).first }
+
+  before(:all) do
+    @artifact_bundle_file_path = Tempfile.new(['artifact_bundle', '.zip']).path
+    @backup_bundle_file_path = Tempfile.new(['backup_bundle', '.zip']).path
+  end
 
   describe '#create' do
     it 'should create a artifact bundle' do
@@ -49,8 +52,8 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
   describe '#download' do
     it 'should download the artifact bundle' do
       created_item = OneviewSDK::ImageStreamer::API300::ArtifactBundle.find_by($client_i3s_300, name: ARTIFACT_BUNDLE2_NAME).first
-      expect { created_item.download(artifact_bundle_file_path) }.not_to raise_error
-      expect(File.exist?(artifact_bundle_file_path)).to eq(true)
+      expect { created_item.download(@artifact_bundle_file_path) }.not_to raise_error
+      expect(File.exist?(@artifact_bundle_file_path)).to eq(true)
     end
   end
 
@@ -59,7 +62,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       item = OneviewSDK::ImageStreamer::API300::ArtifactBundle.find_by($client_i3s_300, name: ARTIFACT_BUNDLE2_NAME).first
       item.delete
 
-      created_item = klass.create_from_file($client_i3s_300, artifact_bundle_file_path, ARTIFACT_BUNDLE2_NAME)
+      created_item = klass.create_from_file($client_i3s_300, @artifact_bundle_file_path, ARTIFACT_BUNDLE2_NAME)
       item = OneviewSDK::ImageStreamer::API300::ArtifactBundle.find_by($client_i3s_300, name: ARTIFACT_BUNDLE2_NAME).first
 
       expect(created_item).to be
@@ -97,14 +100,14 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
   describe '::download_backup' do
     it 'should download a backup file' do
       artifact_bundle_backup = klass.get_backups($client_i3s_300).first
-      expect { klass.download_backup($client_i3s_300, backup_bundle_file_path, artifact_bundle_backup) }.not_to raise_error
-      expect(File.exist?(artifact_bundle_file_path)).to eq(true)
+      expect { klass.download_backup($client_i3s_300, @backup_bundle_file_path, artifact_bundle_backup) }.not_to raise_error
+      expect(File.exist?(@artifact_bundle_file_path)).to eq(true)
     end
   end
 
   describe '::create_backup_from_file!' do
     it 'should create a backup from local file and extract it' do
-      expect { klass.create_backup_from_file!($client_i3s_300, deployment_group, backup_bundle_file_path, 'ArtifactBundleBackup') }.not_to raise_error
+      expect { klass.create_backup_from_file!($client_i3s_300, deployment_group, @backup_bundle_file_path, 'BundleBackup') }.not_to raise_error
     end
   end
 end

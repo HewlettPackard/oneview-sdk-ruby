@@ -9,6 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
+require 'tempfile'
 require_relative '../../_client_i3s' # Gives access to @client
 
 # Example:
@@ -39,7 +40,8 @@ puts "\nListing all artifact bundles"
 all_items = OneviewSDK::ImageStreamer::API300::ArtifactBundle.get_all(@client)
 all_items.each { |each_item| puts each_item['name'] }
 
-download_path = '/tmp/artifact-bundle.zip'
+download_file = Tempfile.new(['artifact-bundle', '.zip'])
+download_path = download_file.path
 puts "\nDownloading artifact bundle file and saving at #{download_path}"
 item.download(download_path)
 puts 'Downloaded successfully.' if File.exist?(download_path)
@@ -58,7 +60,8 @@ puts "\nListing backups"
 backups = OneviewSDK::ImageStreamer::API300::ArtifactBundle.get_backups(@client)
 backups.each { |bkp| puts bkp['name'] }
 
-backup_download_path = '/tmp/backup-bundle.zip'
+backup_download_file = Tempfile.new(['backup-bundle', '.zip'])
+backup_download_path = backup_download_file.path
 puts "\nDownloading backup bundle file and saving at #{backup_download_path}"
 OneviewSDK::ImageStreamer::API300::ArtifactBundle.download_backup(@client, backup_download_path, backups.first)
 puts 'Downloaded successfully.' if File.exist?(backup_download_path)

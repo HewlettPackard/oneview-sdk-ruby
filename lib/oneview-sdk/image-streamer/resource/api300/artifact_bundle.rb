@@ -10,7 +10,6 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'resource'
-require_relative '../../../rest'
 
 module OneviewSDK
   module ImageStreamer
@@ -50,9 +49,7 @@ module OneviewSDK
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
         # @return [Array<ArtifactBundle>] Array of ArtifactBundle
         def self.get_backups(client)
-          response = client.rest_get(BACKUPS_URI)
-          body = client.response_handler(response)
-          body['members'].map { |attrs| ArtifactBundle.new(client, attrs) }
+          find_by(client, {}, BACKUPS_URI)
         end
 
         # Creates a backup bundle with all the artifacts present on the appliance.
@@ -96,7 +93,7 @@ module OneviewSDK
 
         # Update the name of Artifact Bundle
         # @param [String] new_name Name to update the Artifact Bundle
-        # @return [Boolean] if name was updated
+        # @return [Boolean] true if name was updated
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
         def update_name(new_name)
           ensure_uri
@@ -106,10 +103,10 @@ module OneviewSDK
           true
         end
 
-        # Extracts the exisiting backup bundle on the appliance and creates all the artifacts.
+        # Extracts the existing backup bundle on the appliance and creates all the artifacts.
         #   If there are any artifacts existing, they will be removed before the extract operation.
         # @param [Boolean] force Forces the extract operation even when there are any conflicts
-        # @return [Boolean] if name was extracted
+        # @return [Boolean] true if backup bundle was extracted
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
         def extract(force = true)
           ensure_uri
@@ -121,7 +118,7 @@ module OneviewSDK
 
         # Downloads the content of the selected artifact bundle to the admin's local drive.
         # @param [String] local_drive_path Path to save file downloaded
-        # @return [Boolean] if file was downloaded
+        # @return [Boolean] true if the file was downloaded
         def download(local_drive_path)
           raise IncompleteResource, "Missing required attribute 'downloadURI'" unless @data['downloadURI']
           client.download_file(@data['downloadURI'], local_drive_path)
@@ -160,7 +157,7 @@ module OneviewSDK
         end
 
         def self.ensure_resource!(resource)
-          raise "The resource #{resource.class} can not be retrieved. Ensure it have a valid URI." unless resource.retrieve!
+          raise IncompleteResource, "The resource #{resource.class} can not be retrieved. Ensure it can be retrieved." unless resource.retrieve!
         end
 
         private

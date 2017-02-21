@@ -86,7 +86,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
         build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.new(@client_i3s_300)
         allow(build_plan).to receive(:retrieve!).and_return(false)
 
-        expected_message = /The resource OneviewSDK::ImageStreamer::API300::BuildPlan can not be retrieved. Ensure it have a valid URI./
+        expected_message = /The resource OneviewSDK::ImageStreamer::API300::BuildPlan can not be retrieved. Ensure it can be retrieved./
         expect { artifact_bundle.add_build_plan(build_plan) }.to raise_error(expected_message)
         expect(artifact_bundle['buildPlans']).to be_empty
       end
@@ -123,7 +123,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
         plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.new(@client_i3s_300)
         allow(plan_script).to receive(:retrieve!).and_return(false)
 
-        expected_message = /The resource OneviewSDK::ImageStreamer::API300::PlanScript can not be retrieved. Ensure it have a valid URI./
+        expected_message = /The resource OneviewSDK::ImageStreamer::API300::PlanScript can not be retrieved. Ensure it can be retrieved./
         expect { artifact_bundle.add_plan_script(plan_script) }.to raise_error(expected_message)
         expect(artifact_bundle['planScripts']).to be_empty
       end
@@ -160,7 +160,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
         deployment_plan = OneviewSDK::ImageStreamer::API300::DeploymentPlan.new(@client_i3s_300)
         allow(deployment_plan).to receive(:retrieve!).and_return(false)
 
-        expected_message = /The resource OneviewSDK::ImageStreamer::API300::DeploymentPlan can not be retrieved. Ensure it have a valid URI./
+        expected_message = /The resource OneviewSDK::ImageStreamer::API300::DeploymentPlan can not be retrieved. Ensure it can be retrieved./
         expect do
           artifact_bundle.add_deployment_plan(deployment_plan)
         end.to raise_error(expected_message)
@@ -198,7 +198,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
         golden_image = OneviewSDK::ImageStreamer::API300::GoldenImage.new(@client_i3s_300)
         allow(golden_image).to receive(:retrieve!).and_return(false)
 
-        expected_message = /The resource OneviewSDK::ImageStreamer::API300::GoldenImage can not be retrieved. Ensure it have a valid URI./
+        expected_message = /The resource OneviewSDK::ImageStreamer::API300::GoldenImage can not be retrieved. Ensure it can be retrieved./
         expect { artifact_bundle.add_golden_image(golden_image) }.to raise_error(expected_message)
       end
     end
