@@ -16,9 +16,6 @@ module OneviewSDK
   module ImageStreamer
     module API300
       # Golden Image resource implementation for Image Streamer
-      # @note This resource is unimplemented/unfinished at this point, so use at your own risk.
-      #   This resource is subject to change drastically in the near future without a major version
-      #   bump, which may break your code.
       class GoldenImage < Resource
         BASE_URI = '/rest/golden-images'.freeze
         READ_TIMEOUT = 300 # in seconds (5 minutes)

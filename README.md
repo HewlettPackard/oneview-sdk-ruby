@@ -1,6 +1,10 @@
 # oneview-sdk for Ruby
 [![Gem Version](https://badge.fury.io/rb/oneview-sdk.svg)](https://badge.fury.io/rb/oneview-sdk)
+[![Yard Docs](https://img.shields.io/badge/yard-docs-yellow.svg)](http://www.rubydoc.info/gems/oneview-sdk)
 
+[![Build Status](https://travis-ci.org/HewlettPackard/oneview-sdk-ruby.svg?branch=master)](https://travis-ci.org/HewlettPackard/oneview-sdk-ruby)
+[![Coverage Status](https://coveralls.io/repos/github/HewlettPackard/oneview-sdk-ruby/badge.svg?branch=master)](https://coveralls.io/github/HewlettPackard/oneview-sdk-ruby?branch=master)
+[![Code Climate](https://codeclimate.com/github/HewlettPackard/oneview-sdk-ruby/badges/gpa.svg)](https://codeclimate.com/github/HewlettPackard/oneview-sdk-ruby)
 
 The OneView SDK provides a Ruby library to easily interact with HPE OneView and Image Streamer APIs. The Ruby SDK enables developers to easily build integrations and scalable solutions with HPE OneView and Image Streamer.
 
@@ -54,6 +58,19 @@ require 'oneview-sdk'
 i3s_client = OneviewSDK::ImageStreamer::Client.new(
   url: 'https://image-streamer.example.com',
   token: 'xxxx...',                   # Required. Note that you cannot pass the user & password options
+  ssl_enabled: true,                  # This is the default and strongly encouraged
+  logger: Logger.new(STDOUT),         # This is the default
+  log_level: :info,                   # This is the default
+  api_version: 300                    # Defaults to minimum of 300 and appliance's max API version
+)
+```
+
+You can also create the i3s client through the Oneview client instance.
+```ruby
+# Create an Image Streamer client object through the Oneview client object:
+require 'oneview-sdk'
+i3s_client = client.new_i3s_client(
+  url: 'https://image-streamer.example.com',
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default

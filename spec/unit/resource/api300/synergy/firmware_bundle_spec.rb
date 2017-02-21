@@ -42,5 +42,14 @@ RSpec.describe OneviewSDK::API300::Synergy::FirmwareBundle do
       described_class.add(@client, 'file.tar', 600)
       expect(http_fake).to have_received(:read_timeout=).with(600)
     end
+
+    it 'raises an exception when timeout expire' do
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_raise(Net::ReadTimeout)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:open).with('file.tar').and_yield('FAKE FILE CONTENT')
+      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
+      expect { described_class.add(@client, 'file.tar') }.to raise_error(/The connection was closed/)
+    end
   end
 end

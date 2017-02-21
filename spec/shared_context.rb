@@ -51,8 +51,10 @@ end
 # Context for Image Streamer API300 integration testing:
 RSpec.shared_context 'integration i3s api300 context', a: :b do
   before :all do
+    integration_context
     integration_context_i3s
-    $client_i3s_300 ||= OneviewSDK::ImageStreamer::Client.new($config_i3s.merge(api_version: 300))
+    oneview_client ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 300))
+    $client_i3s_300 ||= oneview_client.new_i3s_client($config_i3s.merge(api_version: 300))
   end
 
   integration_context_debugging
