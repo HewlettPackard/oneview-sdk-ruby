@@ -28,7 +28,7 @@ module OneviewSDK
       # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
       # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on the tasks to complete.
       # @option options [String] :url URL of Image Streamer
-      # @option options [String] :token (ENV['I3S_TOKEN']) The token to use for authentication with Image Streamer
+      # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) The token to use for authentication
       # @option options [Integer] :api_version (300) This is the API version to use by default for requests
       # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['I3S_SSL_ENABLED']
       # @option options [Integer] :timeout (nil) Override the default request timeout value
@@ -60,8 +60,8 @@ module OneviewSDK
         @ssl_enabled = options[:ssl_enabled] unless options[:ssl_enabled].nil?
         @timeout = options[:timeout] unless options[:timeout].nil?
         @cert_store = OneviewSDK::SSLHelper.load_trusted_certs if @ssl_enabled
-        raise InvalidClient, 'Must set token option' unless options[:token] || ENV['I3S_TOKEN']
-        @token = options[:token] || ENV['I3S_TOKEN']
+        raise InvalidClient, 'Must set token option' unless options[:token] || ENV['ONEVIEWSDK_TOKEN']
+        @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
       end
 
       # Get array of all resources of a specified type

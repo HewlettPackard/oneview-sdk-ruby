@@ -46,11 +46,6 @@ RSpec.describe OneviewSDK::Cli do
       expect { command }.to output(%r{I3S_URL\s+=\s'https:\/\/i3s\.example\.com'}).to_stdout_from_any_process
     end
 
-    it 'shows I3S_TOKEN when set' do
-      ENV['I3S_TOKEN'] = 'secret789'
-      expect { command }.to output(/I3S_TOKEN\s+=\s'secret789'/).to_stdout_from_any_process
-    end
-
     it 'shows I3S_SSL_ENABLED as nil' do
       expect { command }.to output(/I3S_SSL_ENABLED\s+=\snil/).to_stdout_from_any_process
     end
