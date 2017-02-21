@@ -3,7 +3,7 @@ require_relative './../spec_helper'
 # Tests for custom exception classes
 
 classes = [
-  OneviewSDK::OVError,
+  OneviewSDK::OneViewError,
   OneviewSDK::ConnectionError,
   OneviewSDK::InvalidURL,
   OneviewSDK::InvalidClient,
@@ -30,6 +30,17 @@ classes.each do |klass|
       e = klass.new('Msg', key: :val)
       expect(e.message).to eq('Msg')
       expect(e.data).to eq(key: :val)
+    end
+
+    it 'has a default message' do
+      e = klass.new
+      expect(e.message).to be_a(String)
+      expect(e.message.empty?).to be false
+      if klass == OneviewSDK::OneViewError
+        expect(e.message).to eq('(No message)')
+      else
+        expect(e.message).to_not eq('(No message)')
+      end
     end
 
     it 'has a shorthand raise! method' do

@@ -133,7 +133,7 @@ module OneviewSDK
     #   If an asynchronous task was started, this waits for it to complete.
     # @param [HTTPResponse] response HTTP response
     # @param [Boolean] wait_on_task Wait on task (or just return task details)
-    # @raise [OneviewSDK::OVError] if the request failed or a task did not complete successfully
+    # @raise [OneviewSDK::OneViewError] if the request failed or a task did not complete successfully
     # @return [Hash] The parsed JSON body
     def response_handler(response, wait_on_task = true)
       case response.code.to_i

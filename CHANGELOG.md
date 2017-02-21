@@ -10,7 +10,7 @@ Added full support to Image Streamer Rest API version 300:
    - Plan Scripts
 
 #### Bug fixes & Enhancements:
-- Give custom exception classes a data attribute for more error context
+- Give custom exception classes a data attribute for more error context and default message
 
 # v4.0.0
 
