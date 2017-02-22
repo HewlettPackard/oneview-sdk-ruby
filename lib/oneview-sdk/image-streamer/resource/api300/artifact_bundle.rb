@@ -16,6 +16,7 @@ module OneviewSDK
     module API300
       # Artifacts Bundle resource implementation for Image Streamer
       class ArtifactBundle < Resource
+        ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
 
         BASE_URI = '/rest/artifact-bundles'.freeze
         BACKUPS_URI = "#{BASE_URI}/backups".freeze
@@ -35,11 +36,12 @@ module OneviewSDK
 
         # Creates an artifacts bundle resource from the file that is uploaded from admin's local drive
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
-        # @param [String] file_path
+        # @param [String] file_path The file path with file extension
         # @param [String] artifact_name The name for the artifact that will be created
         # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
         # @return [OneviewSDK::ImageStreamer::API300::ArtifactBundle] if the upload was sucessful, return a ArtifactBundle object
         def self.create_from_file(client, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
+          ensure_file_path_extension!(file_path)
           params = { 'name' => artifact_name }
           body = client.upload_file(file_path, BASE_URI, params, timeout)
           ArtifactBundle.new(client, body)
@@ -65,11 +67,12 @@ module OneviewSDK
         # Creates a backup bundle from the zip file
         #   If there are any artifacts existing, they will be removed before the extract operation.
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
-        # @param [String] file_path
+        # @param [String] file_path The file path with file extension
         # @param [String] artifact_name The name for the artifact that will be created
         # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
         # @return [Hash] The result hash with DeploymentGroup data
         def self.create_backup_from_file!(client, deployment_group, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
+          ensure_file_path_extension!(file_path)
           ensure_resource!(deployment_group)
           params = { 'name' => artifact_name, 'deploymentGrpUri' => deployment_group['uri'] }
           client.upload_file(file_path, BACKUPS_ARCHIVE_URI, params, timeout)
@@ -158,6 +161,10 @@ module OneviewSDK
 
         def self.ensure_resource!(resource)
           raise IncompleteResource, "The resource #{resource.class} can not be retrieved. Ensure it can be retrieved." unless resource.retrieve!
+        end
+
+        def self.ensure_file_path_extension!(file_path)
+          raise InvalidFormat, "File extension should be #{ACCEPTED_FORMATS}" unless ACCEPTED_FORMATS.include?(File.extname(file_path))
         end
 
         private

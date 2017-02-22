@@ -21,6 +21,10 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
     end
   end
 
+  describe '::ACCEPTED_FORMATS' do
+    it { expect(described_class::ACCEPTED_FORMATS).to eq(['.zip', '.ZIP']) }
+  end
+
   describe '#initialize' do
     context 'without values' do
       it 'should init with default values' do
@@ -216,6 +220,15 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
       expect(result.class).to eq(described_class)
       expect(result['name']).to eq('Artifact Name')
     end
+
+    context 'when upload a file with wrong extension' do
+      it 'should throw invalid format error' do
+        expected_message = 'File extension should be [".zip", ".ZIP"]'
+        expect do
+          described_class.create_from_file(@client_i3s_300, 'file', 'Artifact Name', 500)
+        end.to raise_error(OneviewSDK::InvalidFormat, expected_message)
+      end
+    end
   end
 
   describe '::get_backups' do
@@ -247,15 +260,23 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
   end
 
   describe '::create_backup_from_file!' do
+    let(:deployment_group) { OneviewSDK::ImageStreamer::API300::DeploymentGroup.new(@client_i3s_300, uri: '/rest/deployment-groups/1') }
+
     it 'should call @client.upload_file' do
-      deployment_group = OneviewSDK::ImageStreamer::API300::DeploymentGroup.new(@client_i3s_300, uri: '/rest/deployment-groups/1')
-
-
       params = { 'name' => 'Artifact Name', 'deploymentGrpUri' => '/rest/deployment-groups/1' }
       expect(deployment_group).to receive(:retrieve!).and_return(true)
       expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles/backups/archive', params, 300)
 
       described_class.create_backup_from_file!(@client_i3s_300, deployment_group, 'file.zip', 'Artifact Name')
+    end
+
+    context 'when upload a file with wrong extension' do
+      it 'should throw invalid format error' do
+        expected_message = 'File extension should be [".zip", ".ZIP"]'
+        expect do
+          described_class.create_backup_from_file!(@client_i3s_300, deployment_group, 'file', 'Name')
+        end.to raise_error(OneviewSDK::InvalidFormat, expected_message)
+      end
     end
   end
 

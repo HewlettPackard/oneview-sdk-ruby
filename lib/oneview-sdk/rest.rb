@@ -186,8 +186,11 @@ module OneviewSDK
       req = Net::HTTP::Get.new(url.request_uri, options)
 
       http_request = Net::HTTP.new(url.host, url.port)
-      http_request.use_ssl = true
-      http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      http_request.use_ssl = true if url.scheme == 'https'
+      if @ssl_enabled
+        http_request.cert_store = @cert_store if @cert_store
+      else http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
 
       http_request.start do |http|
         http.request(req) do |res|
