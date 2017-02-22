@@ -11,10 +11,11 @@ Added full support to Image Streamer Rest API version 300:
    - Plan Script
 
 #### Bug fixes & Enhancements:
- - [#135](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/135) Firmware Bundle timeout does not give proper instructions for user post failure
- - [#146](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/146) Why is Switch the only resource that directly implements #set_scope_uris?
- - [#166](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/166) I3S - Simplify login to i3s through oneview client
- - [#183](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/183) Image Streamer Client cannot be created with the OneView environment variables
+- [#135](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/135) Firmware Bundle timeout does not give proper instructions for user post failure
+- [#146](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/146) Why is Switch the only resource that directly implements #set_scope_uris?
+- [#166](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/166) I3S - Simplify login to i3s through oneview client
+- Give custom exception classes a data attribute for more error context and default message
+- [#183](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/183) Image Streamer Client cannot be created with the OneView environment variables
 
 # v4.0.0
 

@@ -37,8 +37,10 @@ module OneviewSDK
   # Set the default API version
   def self.api_version=(version)
     version = version.to_i rescue version
-    raise "API version #{version} is not supported!" unless SUPPORTED_API_VERSIONS.include?(version)
-    raise "The module for API version #{@api_version} is undefined" unless constants.include?("API#{@api_version}".to_sym)
+    raise UnsupportedVersion, "API version #{version} is not supported!"\
+      unless SUPPORTED_API_VERSIONS.include?(version)
+    raise UnsupportedVariant, "The module for API version #{@api_version} is undefined"\
+      unless constants.include?("API#{@api_version}".to_sym)
     @api_version_updated = true
     @api_version = version
   end

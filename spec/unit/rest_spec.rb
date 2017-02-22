@@ -152,17 +152,29 @@ RSpec.describe OneviewSDK::Client do
 
     it 'raises an error for 400 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 400)
-      expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::BadRequest, /400 BAD REQUEST.*Blah/)
+      expect { @client.response_handler(resp) }.to raise_error { |e|
+        expect(e).to be_a(OneviewSDK::BadRequest)
+        expect(e.message).to match(/400 BAD REQUEST.*Blah/)
+        expect(e.data).to eq(resp)
+      }
     end
 
     it 'raises an error for 401 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 401)
-      expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::Unauthorized, /401 UNAUTHORIZED.*Blah/)
+      expect { @client.response_handler(resp) }.to raise_error { |e|
+        expect(e).to be_a(OneviewSDK::Unauthorized)
+        expect(e.message).to match(/401 UNAUTHORIZED.*Blah/)
+        expect(e.data).to eq(resp)
+      }
     end
 
     it 'raises an error for 404 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 404)
-      expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::NotFound, /404 NOT FOUND.*Blah/)
+      expect { @client.response_handler(resp) }.to raise_error { |e|
+        expect(e).to be_a(OneviewSDK::NotFound)
+        expect(e.message).to match(/404 NOT FOUND.*Blah/)
+        expect(e.data).to eq(resp)
+      }
     end
 
     it 'raises an error for undefined status codes' do
