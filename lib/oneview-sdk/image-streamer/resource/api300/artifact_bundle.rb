@@ -175,16 +175,22 @@ module OneviewSDK
           add_resource(resource, 'goldenImages', read_only)
         end
 
+        # Fail unless resource can be retrieved
         def self.ensure_resource!(resource)
           raise IncompleteResource, "The resource #{resource.class} can not be retrieved. Ensure it can be retrieved." unless resource.retrieve!
         end
 
+        # Fail unless file extension of file_path is in ACCEPTED_FORMATS array
         def self.ensure_file_path_extension!(file_path)
           raise InvalidFormat, "File extension should be #{ACCEPTED_FORMATS}" unless ACCEPTED_FORMATS.include?(File.extname(file_path))
         end
 
         private
 
+        # Add resource data to data hash
+        # @param [OneviewSDK::Resource] resource The resource with uri
+        # @param [String] key_name The hash key of data hash
+        # @param [TrueClass, FalseClass] read_only The value of readOnly attribute
         def add_resource(resource, key_name, read_only)
           self.class.ensure_resource!(resource)
           @data[key_name] << { 'resourceUri' => resource['uri'], 'readOnly' => read_only }
