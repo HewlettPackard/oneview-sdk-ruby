@@ -22,7 +22,7 @@ module OneviewSDK
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @param [String] file_path
       # @param [Integer] timeout The number of seconds to wait for completing the request
-      # @return [OneviewSDK::FirmwareDriver] if the upload was sucessful, return a FirmwareDriver object
+      # @return [OneviewSDK::FirmwareDriver] if the upload was successful, return a FirmwareDriver object
       def self.add(client, file_path, timeout = READ_TIMEOUT)
         raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
         options = {}

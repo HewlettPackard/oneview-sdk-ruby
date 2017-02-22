@@ -25,7 +25,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
   end
 
   describe '#create' do
-    it 'should create a artifact bundle' do
+    it 'should create an artifact bundle' do
       options = {
         name: ARTIFACT_BUNDLE1_NAME,
         description: 'Description of ArtifactBundle'
@@ -58,7 +58,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
   end
 
   describe '::create_from_file' do
-    it 'should create a artifact bundle' do
+    it 'should create an artifact bundle' do
       item = OneviewSDK::ImageStreamer::API300::ArtifactBundle.find_by($client_i3s_300, name: ARTIFACT_BUNDLE2_NAME).first
       item.delete
 

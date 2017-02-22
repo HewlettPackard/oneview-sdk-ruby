@@ -34,12 +34,12 @@ module OneviewSDK
           @data['goldenImages']    ||= []
         end
 
-        # Creates an artifacts bundle resource from the file that is uploaded from admin's local drive
+        # Creates an artifact bundle resource from the file that is uploaded from admin's local drive
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
         # @param [String] file_path The file path with file extension
         # @param [String] artifact_name The name for the artifact that will be created
         # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
-        # @return [OneviewSDK::ImageStreamer::API300::ArtifactBundle] if the upload was sucessful, return a ArtifactBundle object
+        # @return [OneviewSDK::ImageStreamer::API300::ArtifactBundle] if the upload was successful, return a ArtifactBundle object
         def self.create_from_file(client, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
           ensure_file_path_extension!(file_path)
 

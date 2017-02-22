@@ -35,17 +35,8 @@ module OneviewSDK
     def rest_api(type, path, options = {}, api_ver = @api_version, redirect_limit = 3)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
       raise InvalidRequest, 'Must specify path' unless path
-
       uri = URI.parse(URI.escape(@url + path))
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true if uri.scheme == 'https'
-      if @ssl_enabled
-        http.cert_store = @cert_store if @cert_store
-      else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-      http.read_timeout = @timeout if @timeout # Timeout for a request
-      http.open_timeout = @timeout if @timeout # Timeout for a connection
-
+      http = build_http_object(uri)
       request = build_request(type, uri, options.dup, api_ver)
       response = http.request(request)
       @logger.debug "  Response: Code=#{response.code}. Headers=#{response.to_hash}\n  Body=#{response.body}"
@@ -126,36 +117,32 @@ module OneviewSDK
 
     # Uploads a file to a specific uri
     # @param [String] file_path
-    # @param [String] uri The uri starting with "/"
+    # @param [String] path The url path starting with "/"
     # @param [Hash] body_params The params to append to body of http request. Default is {}.
     # @option body_params [String] 'name' The name to show (when resource accepts a name)
     # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
     # @return [Hash] The parsed JSON body of response
-    def upload_file(file_path, uri, body_params = {}, timeout = READ_TIMEOUT)
+    def upload_file(file_path, path, body_params = {}, timeout = READ_TIMEOUT)
       raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
       options = {
         'Content-Type' => 'multipart/form-data',
         'X-Api-Version' => @api_version.to_s,
         'auth' => @token
       }
-      final_uri = URI.parse(URI.escape("#{@url}#{uri}"))
 
       File.open(file_path) do |file|
         name_to_show = body_params.delete('name') || body_params.delete(:name) || File.basename(file_path)
         body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
+
+        uri = URI.parse(URI.escape(@url + path))
+        http_request = build_http_object(uri)
+        http_request.read_timeout = timeout
+
         req = Net::HTTP::Post::Multipart.new(
-          final_uri.path,
+          uri.path,
           body_params,
           options
         )
-
-        http_request = Net::HTTP.new(final_uri.host, final_uri.port)
-        http_request.read_timeout = timeout
-        http_request.use_ssl = true if final_uri.scheme == 'https'
-        if @ssl_enabled
-          http_request.cert_store = @cert_store if @cert_store
-        else http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        end
 
         http_request.start do |http|
           response = http.request(req)
@@ -165,25 +152,13 @@ module OneviewSDK
     end
 
     # Download a file from a specific uri
-    # @param [String] uri The uri starting with "/"
+    # @param [String] path The url path starting with "/"
     # @param [String] local_drive_path Path to save file downloaded
     # @return [Boolean] if file was downloaded
-    def download_file(uri, local_drive_path)
-      options = {
-        'Content-Type' => 'application/json',
-        'X-Api-Version' => @api_version.to_s,
-        'auth' => @token
-      }
-
-      url = URI.parse(URI.escape("#{@url}#{uri}"))
-      req = Net::HTTP::Get.new(url.request_uri, options)
-
-      http_request = Net::HTTP.new(url.host, url.port)
-      http_request.use_ssl = true if url.scheme == 'https'
-      if @ssl_enabled
-        http_request.cert_store = @cert_store if @cert_store
-      else http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
+    def download_file(path, local_drive_path)
+      uri = URI.parse(URI.escape(@url + path))
+      http_request = build_http_object(uri)
+      req = build_request(:get, uri, {}, @api_version.to_s)
 
       http_request.start do |http|
         http.request(req) do |res|
@@ -247,6 +222,19 @@ module OneviewSDK
 
 
     private
+
+    # Builds a http object using the data given
+    def build_http_object(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true if uri.scheme == 'https'
+      if @ssl_enabled
+        http.cert_store = @cert_store if @cert_store
+      else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+      http.read_timeout = @timeout if @timeout # Timeout for a request
+      http.open_timeout = @timeout if @timeout # Timeout for a connection
+      http
+    end
 
     # Builds a request object using the data given
     def build_request(type, uri, options, api_ver)

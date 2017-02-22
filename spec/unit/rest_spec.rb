@@ -298,8 +298,7 @@ RSpec.describe OneviewSDK::Client do
       expect(http_response_fake).to receive(:read_body).and_yield(stream_fake)
       expect(file_fake).to receive(:write).with(stream_fake)
 
-      expect(Net::HTTP::Get).to receive(:new)
-        .with('/file-download-uri', 'Content-Type' => 'application/json', 'X-Api-Version' => @client.api_version.to_s, 'auth' => @client.token)
+      expect(@client).to receive(:build_request)
       expect(@client).not_to receive(:response_handler)
 
       result = @client.download_file('/file-download-uri', 'file.zip')
@@ -317,6 +316,45 @@ RSpec.describe OneviewSDK::Client do
         allow(http_response_fake).to receive(:code).and_return(400) # != 200..204
 
         expect { @client.download_file('/file-download-uri', 'file.zip') }.to raise_error(OneviewSDK::BadRequest)
+      end
+    end
+  end
+
+  describe '#build_http_object' do
+    context 'with ssl enabled and timeout variable defined' do
+      it 'should create a http object with valid data' do
+        uri = URI.parse('https://localhost:1000')
+        @client.ssl_enabled = true
+        @client.cert_store = 'some_certificate'
+        @client.timeout = 300
+
+        http = @client.send(:build_http_object, uri)
+
+        expect(http.address).to eq('localhost')
+        expect(http.port).to eq(1000)
+        expect(http.read_timeout).to eq(300)
+        expect(http.open_timeout).to eq(300)
+        expect(http.verify_mode).not_to eq(OpenSSL::SSL::VERIFY_NONE)
+        expect(http.cert_store).to eq('some_certificate')
+        expect(http.use_ssl?).to eq(true)
+      end
+    end
+
+    context 'without ssl enabled and timeout variable defined' do
+      it 'should create a http object with valid data' do
+        http_default = Net::HTTP.new('http://localhost')
+        uri = URI.parse('http://localhost:1000')
+        @client.ssl_enabled = false
+
+        http = @client.send(:build_http_object, uri)
+
+        expect(http.address).to eq('localhost')
+        expect(http.port).to eq(1000)
+        expect(http.read_timeout).to eq(http_default.read_timeout)
+        expect(http.open_timeout).to eq(http_default.open_timeout)
+        expect(http.verify_mode).to eq(OpenSSL::SSL::VERIFY_NONE)
+        expect(http.cert_store).to eq(http_default.cert_store)
+        expect(http.use_ssl?).to eq(false)
       end
     end
   end
