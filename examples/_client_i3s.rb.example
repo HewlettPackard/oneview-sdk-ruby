@@ -5,7 +5,7 @@ require 'pry'
 # Client for the Image Streamer
 @client = OneviewSDK::ImageStreamer::Client.new(
   url: 'https://i3s.example.com', # or set ENV['I3S_URL']
-  token: 'token_oneview', # or set ENV['I3S_TOKEN']
+  token: 'token_oneview', # or set ENV['ONEVIEWSDK_TOKEN']
   ssl_enabled: false
 )
 

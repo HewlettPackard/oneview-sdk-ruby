@@ -19,7 +19,7 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     end
 
     it 'respects the token environment variable' do
-      ENV['I3S_TOKEN'] = 'secret456'
+      ENV['ONEVIEWSDK_TOKEN'] = 'secret456'
       client = OneviewSDK::ImageStreamer::Client.new(url: 'https://oneview.example.com')
       expect(client.token).to eq('secret456')
     end

@@ -93,7 +93,6 @@ export ONEVIEWSDK_SSL_ENABLED=false
 
 # Image Streamer (I3S) client options:
 export I3S_URL='https://image-streamer.example.com'
-export I3S_TOKEN='xxxx...'
 export I3S_SSL_ENABLED=false
 # NOTE: Disabling SSL is strongly discouraged. Please see the CLI section for import instructions.
 ```
@@ -106,6 +105,16 @@ Then you can leave out these options from your config, enabling you to just do:
 require 'oneview-sdk'
 client = OneviewSDK::Client.new
 # and/or
+i3s_client = OneviewSDK::ImageStreamer::Client.new
+```
+
+You can create the i3s client with environment variables in the following ways:
+```ruby
+require 'oneview-sdk'
+# Uses this way when you set ONEVIEWSDK_USER and ONEVIEWSDK_PASSWORD to create Oneview client
+client = OneviewSDK::Client.new
+i3s_client = client.new_i3s_client # Returns an instance of i3s client
+# or uses this way when you set ONEVIEWSDK_TOKEN
 i3s_client = OneviewSDK::ImageStreamer::Client.new
 ```
 
