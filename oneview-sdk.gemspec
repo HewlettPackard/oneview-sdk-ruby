@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0.0'
   spec.add_development_dependency 'rubocop', '= 0.42.0'
   spec.add_development_dependency 'byebug'
-
 end

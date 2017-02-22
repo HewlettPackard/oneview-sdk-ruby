@@ -9,4 +9,4 @@ before_install: gem update bundler
 script:
   - rake build
   - rake test
-
+  - bundle exec codeclimate-test-reporter
