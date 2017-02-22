@@ -60,7 +60,7 @@ module OneviewSDK
           type: 'ExtraUnmanagedStorageVolumes',
           resourceUri: resource['uri']
         }
-        response = client.rest_post(BASE_URI + '/repair', 'body' => requestBody)
+        response = client.rest_post(BASE_URI + '/repair', { 'Accept-Language' => 'en_US', 'body' => requestBody }, client.api_version)
         client.response_handler(response)
       end
 

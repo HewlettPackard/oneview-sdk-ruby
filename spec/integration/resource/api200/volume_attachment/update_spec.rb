@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::VolumeAttachment, integration: true, type: UPDATE do
+klass = OneviewSDK::VolumeAttachment
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration context'
 
   describe '#update' do
@@ -17,7 +18,7 @@ RSpec.describe OneviewSDK::VolumeAttachment, integration: true, type: UPDATE do
   end
 
   describe '::remove_extra_unmanaged_volume' do
-    it 'should remove extra presentations from a specific server profile (Fail/Bug: occurs error on the http method of ruby)' do
+    it 'should remove extra presentations from a specific server profile' do
       server_profile = OneviewSDK::ServerProfile.find_by($client, name: SERVER_PROFILE_NAME).first
       expect { klass.remove_extra_unmanaged_volume($client, server_profile) }.to_not raise_error
     end

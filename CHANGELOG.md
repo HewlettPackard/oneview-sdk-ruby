@@ -11,6 +11,7 @@ Added full support to Image Streamer Rest API version 300:
    - Plan Script
 
 #### Bug fixes & Enhancements:
+ - [#116](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
 - [#135](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/135) Firmware Bundle timeout does not give proper instructions for user post failure
 - [#146](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/146) Why is Switch the only resource that directly implements #set_scope_uris?
 - [#166](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/166) I3S - Simplify login to i3s through oneview client
