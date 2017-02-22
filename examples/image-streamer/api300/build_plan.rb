@@ -31,7 +31,7 @@ build_step = [
   {
     serialNumber: '1',
     parameters: 'anystring',
-    planScriptName: @plan_script_name,
+    planScriptName: @plan_script1_name,
     planScriptUri: plan_script['uri']
   }
 ]
@@ -40,7 +40,7 @@ build_step2 = [
   {
     serialNumber: '1',
     parameters: 'anystring',
-    planScriptName: 'Plan_Script_2',
+    planScriptName: @plan_script2_name,
     planScriptUri: plan_script2['uri']
   }
 ]
