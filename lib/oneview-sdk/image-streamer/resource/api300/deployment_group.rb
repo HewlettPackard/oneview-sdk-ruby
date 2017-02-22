@@ -14,12 +14,27 @@ require_relative 'resource'
 module OneviewSDK
   module ImageStreamer
     module API300
-      # Artifacts Bundle resource implementation for Image Streamer
-      # @note This resource is unimplemented/unfinished at this point, so use at your own risk.
-      #   This resource is subject to change drastically in the near future without a major version
-      #   bump, which may break your code.
-      class ArtifactsBundle < Resource
-        BASE_URI = '/rest/artifact-bundles'.freeze
+      # Deployment Group resource implementation for Image Streamer
+      class DeploymentGroup < Resource
+        BASE_URI = '/rest/deployment-groups'.freeze
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def create(*)
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def update(*)
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def delete(*)
+          unavailable_method
+        end
       end
     end
   end

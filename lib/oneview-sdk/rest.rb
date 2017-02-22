@@ -13,10 +13,13 @@ require 'uri'
 require 'net/http'
 require 'openssl'
 require 'json'
+require 'net/http/post/multipart'
 
 module OneviewSDK
   # Contains all of the methods for making API REST calls
   module Rest
+    READ_TIMEOUT = 300 # in seconds, 5 minutes
+
     # Makes a restful API request to OneView
     # @param [Symbol] type The rest method/type Options: [:get, :post, :delete, :patch, :put]
     # @param [String] path The path for the request. Usually starts with "/rest/"
@@ -32,17 +35,8 @@ module OneviewSDK
     def rest_api(type, path, options = {}, api_ver = @api_version, redirect_limit = 3)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
       raise InvalidRequest, 'Must specify path' unless path
-
       uri = URI.parse(URI.escape(@url + path))
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true if uri.scheme == 'https'
-      if @ssl_enabled
-        http.cert_store = @cert_store if @cert_store
-      else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-      http.read_timeout = @timeout if @timeout # Timeout for a request
-      http.open_timeout = @timeout if @timeout # Timeout for a connection
-
+      http = build_http_object(uri)
       request = build_request(type, uri, options.dup, api_ver)
       response = http.request(request)
       @logger.debug "  Response: Code=#{response.code}. Headers=#{response.to_hash}\n  Body=#{response.body}"
@@ -121,6 +115,64 @@ module OneviewSDK
       rest_api(:delete, path, options, api_ver)
     end
 
+    # Uploads a file to a specific uri
+    # @param [String] file_path
+    # @param [String] path The url path starting with "/"
+    # @param [Hash] body_params The params to append to body of http request. Default is {}.
+    # @option body_params [String] 'name' The name to show (when resource accepts a name)
+    # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
+    # @return [Hash] The parsed JSON body of response
+    def upload_file(file_path, path, body_params = {}, timeout = READ_TIMEOUT)
+      raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
+      options = {
+        'Content-Type' => 'multipart/form-data',
+        'X-Api-Version' => @api_version.to_s,
+        'auth' => @token
+      }
+
+      File.open(file_path) do |file|
+        name_to_show = body_params.delete('name') || body_params.delete(:name) || File.basename(file_path)
+        body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
+
+        uri = URI.parse(URI.escape(@url + path))
+        http_request = build_http_object(uri)
+        http_request.read_timeout = timeout
+
+        req = Net::HTTP::Post::Multipart.new(
+          uri.path,
+          body_params,
+          options
+        )
+
+        http_request.start do |http|
+          response = http.request(req)
+          return response_handler(response)
+        end
+      end
+    end
+
+    # Download a file from a specific uri
+    # @param [String] path The url path starting with "/"
+    # @param [String] local_drive_path Path to save file downloaded
+    # @return [Boolean] if file was downloaded
+    def download_file(path, local_drive_path)
+      uri = URI.parse(URI.escape(@url + path))
+      http_request = build_http_object(uri)
+      req = build_request(:get, uri, {}, @api_version.to_s)
+
+      http_request.start do |http|
+        http.request(req) do |res|
+          response_handler(res) unless res.code.to_i.between?(200, 204)
+          File.open(local_drive_path, 'wb') do |file|
+            res.read_body do |segment|
+              file.write(segment)
+            end
+          end
+        end
+      end
+      true
+    end
+
     RESPONSE_CODE_OK           = 200
     RESPONSE_CODE_CREATED      = 201
     RESPONSE_CODE_ACCEPTED     = 202
@@ -169,6 +221,19 @@ module OneviewSDK
 
 
     private
+
+    # Builds a http object using the data given
+    def build_http_object(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true if uri.scheme == 'https'
+      if @ssl_enabled
+        http.cert_store = @cert_store if @cert_store
+      else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+      http.read_timeout = @timeout if @timeout # Timeout for a request
+      http.open_timeout = @timeout if @timeout # Timeout for a connection
+      http
+    end
 
     # Builds a request object using the data given
     def build_request(type, uri, options, api_ver)
