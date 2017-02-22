@@ -31,7 +31,8 @@ module OneviewSDK
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
-      raise InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client) || client.is_a?(OneviewSDK::ImageStreamer::Client)
+      raise InvalidClient, 'Must specify a valid client'\
+        unless client.is_a?(OneviewSDK::Client) || client.is_a?(OneviewSDK::ImageStreamer::Client)
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
@@ -364,9 +365,8 @@ module OneviewSDK
   # @param [String] variant API module variant to fetch resource from
   # @return [Class] Resource class or nil if not found
   def self.resource_named(type, api_ver = @api_version, variant = nil)
-    unless SUPPORTED_API_VERSIONS.include?(api_ver)
-      raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"
-    end
+    raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"\
+      unless SUPPORTED_API_VERSIONS.include?(api_ver)
     api_module = OneviewSDK.const_get("API#{api_ver}")
     variant ? api_module.resource_named(type, variant) : api_module.resource_named(type)
   end

@@ -11,6 +11,8 @@
 
 require_relative '../../_client' # Gives access to @client
 
+# NOTE: It is needed have a Switch created previously.
+
 # Retrieves all switch types from the Appliance
 OneviewSDK::API300::C7000::Switch.get_types(@client).each do |type|
   puts "Switch Type: #{type['name']}\nURI: #{type['uri']}\n\n"
@@ -19,3 +21,35 @@ end
 # Retrieves switch type by name
 item = OneviewSDK::API300::C7000::Switch.get_type(@client, 'Cisco Nexus 50xx')
 puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"
+
+# Retrieves switch type by name
+item = OneviewSDK::API300::C7000::Switch.get_type(@client, 'Cisco Nexus 50xx')
+puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"
+
+# Create Scopes
+scope_1 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 1')
+scope_1.create
+scope_2 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 2')
+scope_2.create
+
+item = OneviewSDK::API300::C7000::Switch.get_all(@client).first
+
+puts "\nAdding scopes"
+item.add_scope(scope_1)
+item.retrieve!
+puts 'Scopes:', item['scopeUris']
+
+puts "\nReplacing scopes"
+item.replace_scopes(scope_2)
+item.retrieve!
+puts 'Scopes:', item['scopeUris']
+
+puts "\nRemoving scopes"
+item.remove_scope(scope_1)
+item.remove_scope(scope_2)
+item.retrieve!
+puts 'Scopes:', item['scopeUris']
+
+# Delete scopes
+scope_1.delete
+scope_2.delete

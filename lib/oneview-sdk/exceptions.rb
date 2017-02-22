@@ -1,7 +1,7 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2016-2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -11,45 +11,81 @@
 
 # Contains all the custom Exception classes
 module OneviewSDK
-  class ConnectionError < StandardError # Cannot connect to client/resource
+  # Error class allowing storage of a data attribute
+  class OneViewError < ::StandardError
+    attr_accessor :data
+    MESSAGE = '(No message)'.freeze
+
+    def initialize(msg = self.class::MESSAGE, data = nil)
+      @data = data
+      super(msg)
+    end
+
+    # Shorthand method to raise an error.
+    # @example
+    #   OneviewSDK::OneViewError.raise! 'Message', { data: 'stuff' }
+    def self.raise!(msg = self::MESSAGE, data = nil)
+      raise new(msg, data)
+    end
   end
 
-  class InvalidURL < StandardError # URL is invalid
+  class ConnectionError < OneViewError # Cannot connect to client/resource
+    MESSAGE = 'Cannot connect to client/resource'.freeze
   end
 
-  class InvalidClient < StandardError # Client configuration is invalid
+  class InvalidURL < OneViewError # URL is invalid
+    MESSAGE = 'URL is invalid'.freeze
   end
 
-  class InvalidResource < StandardError # Failed resource validations
+  class InvalidClient < OneViewError # Client configuration is invalid
+    MESSAGE = 'Client configuration is invalid'.freeze
   end
 
-  class IncompleteResource < StandardError # Missing required resource data to complete action
+  class InvalidResource < OneViewError # Failed resource validations
+    MESSAGE = 'Failed resource validations'.freeze
   end
 
-  class MethodUnavailable < StandardError # Resource does not support this method
+  class IncompleteResource < OneViewError # Missing required resource data to complete action
+    MESSAGE = 'Missing required resource data to complete action'.freeze
   end
 
-  class UnsupportedVersion < StandardError # Resource not supported on this API version
+  class MethodUnavailable < OneViewError # Resource does not support this method
+    MESSAGE = 'Resource does not support this method'.freeze
   end
 
-  class InvalidRequest < StandardError # Could not make request
+  class UnsupportedVariant < OneViewError # Variant is not supported
+    MESSAGE = 'Variant is not supported'.freeze
   end
 
-  class BadRequest < StandardError # 400
+  class UnsupportedVersion < OneViewError # Resource not supported on this API version
+    MESSAGE = 'Resource not supported on this API version'.freeze
   end
 
-  class Unauthorized < StandardError # 401
+  class InvalidRequest < OneViewError # Could not make request
+    MESSAGE = 'Could not make request'.freeze
   end
 
-  class NotFound < StandardError # 404
+  class BadRequest < OneViewError # 400
+    MESSAGE = '400'.freeze
   end
 
-  class RequestError < StandardError # Other bad response codes
+  class Unauthorized < OneViewError # 401
+    MESSAGE = '401'.freeze
   end
 
-  class TaskError < StandardError # Task ended in a bad state
+  class NotFound < OneViewError # 404
+    MESSAGE = '404'.freeze
   end
 
-  class InvalidFormat < StandardError # File format is invalid
+  class RequestError < OneViewError # Other bad response codes
+    MESSAGE = 'Bad response code'.freeze
+  end
+
+  class TaskError < OneViewError # Task ended in a bad state
+    MESSAGE = 'Task ended in a bad state'.freeze
+  end
+
+  class InvalidFormat < OneViewError # File format is invalid
+    MESSAGE = 'File format is invalid'.freeze
   end
 end
