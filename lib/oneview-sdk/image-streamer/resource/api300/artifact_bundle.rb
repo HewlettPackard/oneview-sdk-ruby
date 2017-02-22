@@ -42,7 +42,15 @@ module OneviewSDK
         # @return [OneviewSDK::ImageStreamer::API300::ArtifactBundle] if the upload was sucessful, return a ArtifactBundle object
         def self.create_from_file(client, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
           ensure_file_path_extension!(file_path)
-          params = { 'name' => artifact_name }
+
+          file_name = artifact_name.dup
+          if file_name && !file_name.empty?
+            file_name += File.extname(file_path)
+          else
+            file_name = File.basename(file_path)
+          end
+
+          params = { 'name' => file_name }
           body = client.upload_file(file_path, BASE_URI, params, timeout)
           ArtifactBundle.new(client, body)
         end
@@ -72,9 +80,17 @@ module OneviewSDK
         # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
         # @return [Hash] The result hash with DeploymentGroup data
         def self.create_backup_from_file!(client, deployment_group, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
-          ensure_file_path_extension!(file_path)
           ensure_resource!(deployment_group)
-          params = { 'name' => artifact_name, 'deploymentGrpUri' => deployment_group['uri'] }
+          ensure_file_path_extension!(file_path)
+
+          file_name = artifact_name.dup
+          if file_name && !file_name.empty?
+            file_name += File.extname(file_path)
+          else
+            file_name = File.basename(file_path)
+          end
+
+          params = { 'name' => file_name, 'deploymentGrpUri' => deployment_group['uri'] }
           client.upload_file(file_path, BACKUPS_ARCHIVE_URI, params, timeout)
         end
 

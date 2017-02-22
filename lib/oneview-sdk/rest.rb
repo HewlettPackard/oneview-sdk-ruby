@@ -141,14 +141,7 @@ module OneviewSDK
       final_uri = URI.parse(URI.escape("#{@url}#{uri}"))
 
       File.open(file_path) do |file|
-        name_to_show = body_params.delete('name') || body_params.delete(:name)
-        if name_to_show && !name_to_show.empty?
-          name_to_show.chomp!(File.extname(name_to_show)) unless File.extname(name_to_show).empty?
-          name_to_show += File.extname(file_path)
-        else
-          name_to_show = File.basename(file_path)
-        end
-
+        name_to_show = body_params.delete('name') || body_params.delete(:name) || File.basename(file_path)
         body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
         req = Net::HTTP::Post::Multipart.new(
           final_uri.path,
