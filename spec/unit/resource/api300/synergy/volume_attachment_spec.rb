@@ -16,12 +16,11 @@ RSpec.describe OneviewSDK::API300::Synergy::VolumeAttachment do
 
   describe 'Unmanaged Storage volumes' do
     it 'remove' do
+      options = { type: 'ExtraUnmanagedStorageVolumes', resourceUri: '/rest/server-profiles/1' }
       expect(@client_300).to receive(:rest_post).with(
         '/rest/storage-volume-attachments/repair',
-        'body' => {
-          type: 'ExtraUnmanagedStorageVolumes',
-          resourceUri: '/rest/server-profiles/1'
-        }
+        { 'Accept-Language' => 'en_US', 'body' => options },
+        @client_300.api_version
       ).and_return(FakeResponse.new({}))
       OneviewSDK::API300::Synergy::VolumeAttachment.remove_extra_unmanaged_volume(@client_300, 'uri' => '/rest/server-profiles/1')
     end
