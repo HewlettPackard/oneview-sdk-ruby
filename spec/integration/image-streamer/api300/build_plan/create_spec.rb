@@ -75,6 +75,9 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
     it 'creates a build plan with build step and custom attributes' do
       plan_script = OneviewSDK::ImageStreamer::API300::PlanScript.find_by($client_i3s_300, name: PLAN_SCRIPT2_NAME).first
 
+      custom_attributes = JSON.parse(plan_script['customAttributes'])
+      custom_attributes.replace([custom_attributes[0].merge('type' => 'String')])
+
       build_step = [
         {
           serialNumber: '1',
@@ -87,7 +90,8 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       options = {
         name: BUILD_PLAN4_NAME,
         oeBuildPlanType: 'deploy',
-        buildStep: build_step
+        buildStep: build_step,
+        customAttributes: custom_attributes
       }
 
       item = klass.new($client_i3s_300, options)

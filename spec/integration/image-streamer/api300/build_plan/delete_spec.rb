@@ -16,8 +16,8 @@ RSpec.describe klass, integration_i3s: true, type: DELETE, sequence: i3s_rseq(kl
   include_context 'integration i3s api300 context'
 
   describe '#delete' do
-    it 'removes a plan script' do
-      item = klass.find_by($client_i3s_300, name: BUILD_PLAN1_NAME_UPDATED).first
+    it 'removes all build plans' do
+      item = klass.find_by($client_i3s_300, name: BUILD_PLAN1_NAME).first
       item2 = klass.find_by($client_i3s_300, name: BUILD_PLAN2_NAME).first
       item3 = klass.find_by($client_i3s_300, name: BUILD_PLAN3_NAME).first
       item4 = klass.find_by($client_i3s_300, name: BUILD_PLAN4_NAME).first
