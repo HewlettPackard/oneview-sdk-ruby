@@ -432,4 +432,4 @@ First run `$ bundle` (requires the bundler gem), then...
 Note: run `$ rake -T` to get a list of all the available rake tasks.
 
 ## Authors
-See the [contributors graph](graphs/contributors)
+See the [contributors graph](https://github.com/HewlettPackard/oneview-sdk-ruby/graphs/contributors)
