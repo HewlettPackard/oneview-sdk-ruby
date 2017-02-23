@@ -1,10 +1,17 @@
 require 'pry'
 require 'simplecov'
+require 'coveralls'
 
 client_files = %w(client.rb rest.rb config_loader.rb ssl_helper.rb image-streamer/client.rb)
 resource_path = 'lib/oneview-sdk/resource'
 image_streamer_path = 'lib/oneview-sdk/image-streamer/resource'
 
+Coveralls.wear!
+
+SimpleCov.formatters = [
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
 SimpleCov.profiles.define 'unit' do
   add_filter 'spec/'
   add_group 'Client', client_files
