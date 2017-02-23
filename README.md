@@ -106,17 +106,17 @@ Then you can leave out these options from your config, enabling you to just do:
 ```ruby
 require 'oneview-sdk'
 client = OneviewSDK::Client.new
-# and/or
-i3s_client = OneviewSDK::ImageStreamer::Client.new
 ```
 
 You can create the i3s client with environment variables in the following ways:
 ```ruby
 require 'oneview-sdk'
-# Uses this way when you set ONEVIEWSDK_USER and ONEVIEWSDK_PASSWORD to create Oneview client
+# Note: Both options require the I3S_URL environment variable to be set.
+# This way uses the ONEVIEWSDK_URL, ONEVIEWSDK_USER and ONEVIEWSDK_PASSWORD environment variables to generate a token:
 client = OneviewSDK::Client.new
-i3s_client = client.new_i3s_client # Returns an instance of i3s client
-# or uses this way when you set ONEVIEWSDK_TOKEN
+i3s_client = client.new_i3s_client
+
+# This way uses the ONEVIEWSDK_TOKEN environment variable directly:
 i3s_client = OneviewSDK::ImageStreamer::Client.new
 ```
 
@@ -180,7 +180,7 @@ OneviewSDK.api_version = 300
 OneviewSDK.api_version                  # 300
 OneviewSDK.api_version_updated?         # true
 
-# The API200 module has only 1 variant, but API300 has 2 (C7000 & Synergy):
+# The API200 module has no variants, but API300 has 2 (C7000 & Synergy):
 OneviewSDK::API300::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
 OneviewSDK::API300::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API300.variant              # 'C7000'
