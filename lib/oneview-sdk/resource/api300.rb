@@ -27,7 +27,7 @@ module OneviewSDK
       api_module = OneviewSDK::API300.const_get(variant)
       api_module.constants.each do |c|
         klass = api_module.const_get(c)
-        next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
+        next unless klass.is_a?(Class)
         name = klass.name.split('::').last.downcase.delete('_').delete('-')
         return klass if new_type =~ /^#{name}[s]?$/
       end

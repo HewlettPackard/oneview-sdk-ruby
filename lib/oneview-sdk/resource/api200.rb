@@ -21,7 +21,7 @@ module OneviewSDK
       new_type = type.to_s.downcase.gsub(/[ -_]/, '')
       constants.each do |c|
         klass = const_get(c)
-        next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
+        next unless klass.is_a?(Class)
         name = klass.name.split('::').last.downcase.delete('_').delete('-')
         return klass if new_type =~ /^#{name}[s]?$/
       end
