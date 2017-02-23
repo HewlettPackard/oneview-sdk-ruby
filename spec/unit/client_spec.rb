@@ -31,6 +31,12 @@ RSpec.describe OneviewSDK::Client do
       expect(client.user).to eq('Administrator')
     end
 
+    it 'sets the domain to "LOCAL" by default' do
+      options = { url: 'https://oneview.example.com', token: 'secret123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.domain).to eq('LOCAL')
+    end
+
     it 'respects credential environment variables' do
       ENV['ONEVIEWSDK_USER'] = 'Admin'
       ENV['ONEVIEWSDK_PASSWORD'] = 'secret456'
@@ -43,6 +49,12 @@ RSpec.describe OneviewSDK::Client do
       ENV['ONEVIEWSDK_TOKEN'] = 'secret456'
       client = OneviewSDK::Client.new(url: 'https://oneview.example.com')
       expect(client.token).to eq('secret456')
+    end
+
+    it 'respects the domain environment variable' do
+      ENV['ONEVIEWSDK_DOMAIN'] = 'Other'
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'secret123')
+      expect(client.domain).to eq('Other')
     end
 
     it 'respects the ssl environment variable' do
@@ -271,6 +283,15 @@ RSpec.describe OneviewSDK::Client do
       @client.refresh_login
       expect(@client.max_api_version).to eq(250)
       expect(@client.token).to eq('newToken')
+    end
+  end
+
+  describe '#destroy_session' do
+    include_context 'shared context'
+
+    it 'makes a REST call to destroy the session' do
+      expect(@client).to receive(:rest_delete).with('/rest/login-sessions').and_return(FakeResponse.new)
+      expect(@client.destroy_session).to eq(@client)
     end
   end
 

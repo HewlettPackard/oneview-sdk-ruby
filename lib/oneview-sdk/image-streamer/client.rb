@@ -19,7 +19,10 @@ module OneviewSDK
       undef :user=
       undef :password
       undef :password=
+      undef :domain
+      undef :domain=
       undef :refresh_login
+      undef :destroy_session
 
       # Creates client object, establish connection, and set up logging and api version.
       # @param [Hash] options the options to configure the client

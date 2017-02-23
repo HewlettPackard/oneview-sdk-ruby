@@ -1,7 +1,7 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2016-2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -18,7 +18,7 @@ module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
     attr_reader :max_api_version
-    attr_accessor :url, :user, :token, :password, :ssl_enabled, :api_version, \
+    attr_accessor :url, :user, :token, :password, :domain, :ssl_enabled, :api_version, \
                   :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
     include Rest
@@ -32,6 +32,7 @@ module OneviewSDK
     # @option options [String] :url URL of OneView appliance
     # @option options [String] :user ('Administrator') The username to use for authentication with the OneView appliance
     # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) The password to use for authentication with OneView appliance
+    # @option options [String] :domain ('LOCAL') The name of the domain directory used for authentication
     # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) The token to use for authentication with OneView appliance
     #   Use the token or the username and password (not both). The token has precedence.
     # @option options [Integer] :api_version (200) This is the API version to use by default for requests
@@ -65,12 +66,12 @@ module OneviewSDK
       @timeout = options[:timeout] unless options[:timeout].nil?
       @cert_store = OneviewSDK::SSLHelper.load_trusted_certs if @ssl_enabled
       @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
-      return if @token
-      @logger.warn 'User option not set. Using default (Administrator)' unless options[:user] || ENV['ONEVIEWSDK_USER']
+      @logger.warn 'User option not set. Using default (Administrator)' unless @token || options[:user] || ENV['ONEVIEWSDK_USER']
       @user = options[:user] || ENV['ONEVIEWSDK_USER'] || 'Administrator'
       @password = options[:password] || ENV['ONEVIEWSDK_PASSWORD']
-      raise InvalidClient, 'Must set user & password options or token option' unless @password
-      @token = login
+      raise InvalidClient, 'Must set user & password options or token option' unless @token || @password
+      @domain = options[:domain] || ENV['ONEVIEWSDK_DOMAIN'] || 'LOCAL'
+      @token ||= login
     end
 
     def log_level=(level)
@@ -157,6 +158,15 @@ module OneviewSDK
       self
     end
 
+    # Delete the session on the appliance, invalidating the client's token.
+    # To generate a new token after calling this method, use the refresh_login method.
+    # Call this after a token expires or the user and/or password is updated on the client object.
+    # @return [OneviewSDK::Client] self
+    def destroy_session
+      response_handler(rest_delete('/rest/login-sessions'))
+      self
+    end
+
     # Creates the image streamer client object.
     # @param [Hash] options the options to configure the client
     # @option options [Logger] :logger (Logger.new(STDOUT)) Logger object to use.
@@ -194,7 +204,7 @@ module OneviewSDK
         'body' => {
           'userName' => @user,
           'password' => @password,
-          'authLoginDomain' => 'LOCAL'
+          'authLoginDomain' => @domain
         }
       }
       response = rest_post('/rest/login-sessions', options)
