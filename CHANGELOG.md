@@ -1,6 +1,7 @@
 # Unreleased Changes
+(none)
 
-## Suggested release: v4.1.0
+# v4.1.0
 
 #### New Resources:
 Added full support to Image Streamer Rest API version 300:

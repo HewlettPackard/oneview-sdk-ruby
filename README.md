@@ -8,14 +8,11 @@
 
 The OneView SDK provides a Ruby library to easily interact with HPE OneView and Image Streamer APIs. The Ruby SDK enables developers to easily build integrations and scalable solutions with HPE OneView and Image Streamer.
 
-Note that currently the Image Streamer resources are a work in progress, so should be treated as experimental.
-Many of these resources are unimplemented, and all are subject to change in ways that are incompatible with current usage & docs.
-
 ## Installation
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk', '~> 4.0'
+  gem 'oneview-sdk', '~> 4.1'
   ```
 
   Then run `$ bundle install`
@@ -112,6 +109,7 @@ You can create the i3s client with environment variables in the following ways:
 ```ruby
 require 'oneview-sdk'
 # Note: Both options require the I3S_URL environment variable to be set.
+
 # This way uses the ONEVIEWSDK_URL, ONEVIEWSDK_USER and ONEVIEWSDK_PASSWORD environment variables to generate a token:
 client = OneviewSDK::Client.new
 i3s_client = client.new_i3s_client
@@ -434,7 +432,4 @@ First run `$ bundle` (requires the bundler gem), then...
 Note: run `$ rake -T` to get a list of all the available rake tasks.
 
 ## Authors
- - Jared Smartt - [@jsmartt](https://github.com/jsmartt)
- - Henrique Diomede - [@hdiomede](https://github.com/hdiomede)
- - Thiago Miotto - [@tmiotto](https://github.com/tmiotto)
- - Ricardo Piantola - [@piantola](https://github.com/piantola)
+See the [contributors graph](graphs/contributors)
