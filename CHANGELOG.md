@@ -20,6 +20,7 @@ Added full support to Image Streamer Rest API version 300:
 - Give custom exception classes a data attribute for more error context and default message
 - [#174](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/174) I3S - Integration test for Build Plan failing
 - [#183](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/183) Image Streamer Client cannot be created with the OneView environment variables
+- [#184](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/184) Coveralls badge showing coverage as unknown
 
 # v4.0.0
 
