@@ -472,7 +472,7 @@ module OneviewSDK
       api_module = api_module.const_get(variant.to_s) unless api_ver.to_i == 200
       api_module.constants.each do |c|
         klass = api_module.const_get(c)
-        next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
+        next unless klass.is_a?(Class) && klass.respond_to?(:find_by)
         valid_classes.push(klass.name.split('::').last)
       end
       vc = valid_classes.sort_by!(&:downcase).join("\n  ")
