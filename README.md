@@ -104,8 +104,6 @@ Then you can leave out these options from your config, enabling you to just do:
 ```ruby
 require 'oneview-sdk'
 client = OneviewSDK::Client.new
-# and/or
-i3s_client = OneviewSDK::ImageStreamer::Client.new
 ```
 
 You can create the i3s client with environment variables in the following ways:
