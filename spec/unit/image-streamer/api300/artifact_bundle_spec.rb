@@ -291,6 +291,49 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
     end
   end
 
+  describe '::extract_backup' do
+    it 'should call rest api correctly' do
+      deployment_group = OneviewSDK::ImageStreamer::API300::DeploymentGroup.new(@client_i3s_300, uri: '/rest/deployment-groups/1')
+      artifact_backup = OneviewSDK::ImageStreamer::API300::ArtifactBundle.new(@client_i3s_300, uri: '/rest/artifact-bundles/UUID-1')
+      expected_params = { 'body' => { 'deploymentGroupURI' => '/rest/deployment-groups/1' } }
+      fake_response = spy('http_response')
+      expect(deployment_group).to receive(:retrieve!).and_return(true)
+      expect(@client_i3s_300).to receive(:rest_put).with('/rest/artifact-bundles/backups/UUID-1', expected_params).and_return(fake_response)
+      expect(@client_i3s_300).to receive(:response_handler).with(fake_response)
+
+      result = described_class.extract_backup(@client_i3s_300, deployment_group, artifact_backup)
+
+      expect(result).to eq(true)
+    end
+
+    context 'when bundle backup has not uri' do
+      it 'should throw IncompleteResource error' do
+        deployment_group = OneviewSDK::ImageStreamer::API300::DeploymentGroup.new(@client_i3s_300, uri: '/rest/deployment-groups/1')
+        allow(deployment_group).to receive(:retrieve!).and_return(true)
+        artifact_backup = OneviewSDK::ImageStreamer::API300::ArtifactBundle.new(@client_i3s_300)
+
+        expect do
+          described_class.extract_backup(@client_i3s_300, deployment_group, artifact_backup)
+        end.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute 'uri' of backup bundle/)
+      end
+    end
+
+    context 'when deployment group can not be retrieved' do
+      it 'should throw IncompleteResource error' do
+        deployment_group = OneviewSDK::ImageStreamer::API300::DeploymentGroup.new(@client_i3s_300)
+        allow(deployment_group).to receive(:retrieve!).and_return(false)
+        artifact_backup = OneviewSDK::ImageStreamer::API300::ArtifactBundle.new(@client_i3s_300, uri: '/rest/artifact-bundles/UUID-1')
+
+        expect do
+          described_class.extract_backup(@client_i3s_300, deployment_group, artifact_backup)
+        end.to raise_error(
+          OneviewSDK::IncompleteResource,
+          /The resource OneviewSDK::ImageStreamer::API300::DeploymentGroup can not be retrieved. Ensure it can be retrieved./
+        )
+      end
+    end
+  end
+
   describe '#update' do
     it 'should throw unavailable method error' do
       expect { artifact_bundle.update }.to raise_error(OneviewSDK::MethodUnavailable)

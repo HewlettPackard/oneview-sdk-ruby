@@ -110,4 +110,11 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
       expect { klass.create_backup_from_file!($client_i3s_300, deployment_group, @backup_bundle_file_path, 'BundleBackup') }.not_to raise_error
     end
   end
+
+  describe '::extract_backup' do
+    it 'should extract the backup created' do
+      artifact_bundle_backup = klass.get_backups($client_i3s_300).first
+      expect { klass.extract_backup($client_i3s_300, deployment_group, artifact_bundle_backup) }.not_to raise_error
+    end
+  end
 end

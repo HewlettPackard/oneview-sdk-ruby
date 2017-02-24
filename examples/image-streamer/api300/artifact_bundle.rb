@@ -69,6 +69,11 @@ puts 'Downloaded successfully.' if File.exist?(backup_download_path)
 puts "\nUploading backup bundle"
 puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.create_backup_from_file!(@client, deployment_group, backup_download_path, 'Backup Bundle')
 
+puts "\nExtracting backup bundle uploaded"
+backup = OneviewSDK::ImageStreamer::API300::ArtifactBundle.get_backups(@client).first
+puts OneviewSDK::ImageStreamer::API300::ArtifactBundle.extract_backup(@client, deployment_group, backup)
+puts 'Backup extracted successfully'
+
 puts "\nDeleting the artifact bundles"
 item.delete
 item_uploaded.delete

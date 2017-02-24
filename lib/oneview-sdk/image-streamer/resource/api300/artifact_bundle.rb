@@ -72,7 +72,7 @@ module OneviewSDK
           client.response_handler(response)
         end
 
-        # Creates a backup bundle from the zip file
+        # Creates a backup bundle from the zip file and extract all the artifacts present in the uploaded file
         #   If there are any artifacts existing, they will be removed before the extract operation.
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
         # @param [String] file_path The file path with file extension
@@ -97,11 +97,26 @@ module OneviewSDK
         # Download the backup bundle
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
         # @param [String] local_drive_path The path where file will be saved
-        # @param [String] artifact_bundle_backup The backup ArtifactBundle with 'downloadURI'
+        # @param [ArtifactBundle] bundle_backup The backup ArtifactBundle with 'downloadURI'
         # @return [Boolean] true if backup was downloaded
-        def self.download_backup(client, local_drive_path, artifact_bundle_backup)
-          raise IncompleteResource, "Missing required attribute 'downloadURI'" unless artifact_bundle_backup['downloadURI']
-          client.download_file(artifact_bundle_backup['downloadURI'], local_drive_path)
+        def self.download_backup(client, local_drive_path, bundle_backup)
+          raise IncompleteResource, "Missing required attribute 'downloadURI'" unless bundle_backup['downloadURI']
+          client.download_file(bundle_backup['downloadURI'], local_drive_path)
+        end
+
+        # Extracts the existing backup bundle on the appliance and creates all the artifacts.
+        #   If there are any artifacts existing, they will be removed before the extract operation.
+        # @param [DeploymentGroup] deployment_group The DeploymentGroup with 'name' or 'uri'
+        # @param [ArtifactBundle] bundle_backup The backup ArtifactBundle with 'uri'
+        # @return [Boolean] true if backup bundle was extracted
+        # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
+        def self.extract_backup(client, deployment_group, bundle_backup)
+          ensure_resource!(deployment_group)
+          raise IncompleteResource, "Missing required attribute 'uri' of backup bundle" unless bundle_backup['uri']
+          id = bundle_backup['uri'].split('/').last
+          response = client.rest_put("#{BACKUPS_URI}/#{id}", 'body' => { 'deploymentGroupURI' => deployment_group['uri'] })
+          client.response_handler(response)
+          true
         end
 
         # Method is not available
@@ -122,10 +137,9 @@ module OneviewSDK
           true
         end
 
-        # Extracts the existing backup bundle on the appliance and creates all the artifacts.
-        #   If there are any artifacts existing, they will be removed before the extract operation.
+        # Extracts the artifact bundle and creates the artifacts on the appliance
         # @param [Boolean] force Forces the extract operation even when there are any conflicts
-        # @return [Boolean] true if backup bundle was extracted
+        # @return [Boolean] true if artifact bundle was extracted
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
         def extract(force = true)
           ensure_uri
