@@ -62,10 +62,6 @@ RSpec.describe klass do
   end
 
   describe '#add' do
-    it 'raises an exception when file does not exist' do
-      expect { klass.add(@client_i3s_300, 'file.zip', {}) }.to raise_error(OneviewSDK::NotFound, //)
-    end
-
     it 'raises an exception when name of the golden image is not informed with hash keys symbols' do
       allow(File).to receive(:file?).and_return(true)
       options = { description: 'anything' }
@@ -97,28 +93,18 @@ RSpec.describe klass do
 
     it 'should use default http read_timeout when new value is not passed as parameter' do
       options = { name: 'image1', description: 'anything' }
-      allow(File).to receive(:file?).and_return(true)
-      allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
-      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
-      http_fake = spy('http')
-      allow(Net::HTTP).to receive(:new).and_return(http_fake)
-      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:response_handler)
-        .and_return(FakeResponse.new)
+      expected_options = { 'body' => { 'name' => 'image1', 'description' => 'anything' } }
+      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/golden-images', expected_options, OneviewSDK::Rest::READ_TIMEOUT)
+        .and_return({})
       klass.add(@client_i3s_300, 'file.zip', options)
-      expect(http_fake).to have_received(:read_timeout=).with(klass::READ_TIMEOUT)
     end
 
     it 'should use value of http read_timeout passed as parameter' do
       options = { name: 'image1', description: 'anything' }
-      allow(File).to receive(:file?).and_return(true)
-      allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
-      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
-      http_fake = spy('http')
-      allow(Net::HTTP).to receive(:new).and_return(http_fake)
-      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:response_handler)
-        .and_return(FakeResponse.new)
+      expect_options = { 'body' => { 'name' => 'image1', 'description' => 'anything' } }
+      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/golden-images', expect_options, 600)
+        .and_return({})
       klass.add(@client_i3s_300, 'file.zip', options, 600)
-      expect(http_fake).to have_received(:read_timeout=).with(600)
     end
 
     it 'upload of the golden image file' do

@@ -1,6 +1,9 @@
 # Unreleased Changes
 (none)
 
+#### Bug fixes & Enhancements:
+- [#189](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/189) Use helper methods of Rest module for upload and download file
+
 # v4.1.0
 
 #### New Resources:

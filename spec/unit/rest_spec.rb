@@ -272,11 +272,11 @@ RSpec.describe OneviewSDK::Client do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler)
         .and_return(FakeResponse.new)
 
-      @client.upload_file('file.zip', '/uri-file-upload', { 'name' => 'TestName' }, 600)
+      @client.upload_file('file.zip', '/uri-file-upload', { 'body' => { 'name' => 'TestName' } }, 600)
 
       expected_options = { 'Content-Type' => 'multipart/form-data', 'X-Api-Version' => @client.api_version.to_s, 'auth' => @client.token }
       expect(Net::HTTP::Post::Multipart).to have_received(:new)
-        .with('/uri-file-upload', { 'file' => 'Fake_File_IO' }, expected_options)
+        .with('/uri-file-upload', { 'file' => 'Fake_File_IO', 'name' => 'TestName' }, expected_options)
       expect(http_fake).to have_received(:read_timeout=).with(600)
     end
 
@@ -292,6 +292,15 @@ RSpec.describe OneviewSDK::Client do
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
       result = @client.upload_file('file.zip', 'rest/fake/1', options)
       expect(result).to eq(expected_result)
+    end
+
+    it 'raises an exception when timeout expire' do
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_raise(Net::ReadTimeout)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:open).with('file.tar').and_yield('FAKE FILE CONTENT')
+      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
+      expect { @client.upload_file('file.tar', 'rest/fake/1') }.to raise_error(/The connection was closed/)
     end
   end
 

@@ -101,7 +101,7 @@ RSpec.describe klass, integration_i3s: true, type: CREATE, sequence: i3s_seq(kla
     it 'should download a backup file' do
       artifact_bundle_backup = klass.get_backups($client_i3s_300).first
       expect { klass.download_backup($client_i3s_300, @backup_bundle_file_path, artifact_bundle_backup) }.not_to raise_error
-      expect(File.exist?(@artifact_bundle_file_path)).to eq(true)
+      expect(File.exist?(@backup_bundle_file_path)).to eq(true)
     end
   end
 
