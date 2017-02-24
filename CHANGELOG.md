@@ -23,6 +23,7 @@ Added full support to Image Streamer Rest API version 300:
 - [#176](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/176) OneviewSDK.resource_named now finds resources that are not children of Resource
 - [#183](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/183) Image Streamer Client cannot be created with the OneView environment variables
 - [#184](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/184) Coveralls badge showing coverage as unknown
+- [#196](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/196) Missing endpoint for extract backup in Artifact Bundle
 
 # v4.0.0
 
