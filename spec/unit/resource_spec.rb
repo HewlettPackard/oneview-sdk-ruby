@@ -414,21 +414,30 @@ RSpec.describe OneviewSDK do
       expect(OneviewSDK.resource_named('FCoENetwork', 300, 'C7000')).to eq(OneviewSDK::API300::C7000::FCoENetwork)
     end
 
-    it 'ignores case' do
+    it 'gets resource classes that are not children of Resource' do
+      expect(OneviewSDK.resource_named('FirmwareBundle')).to eq(OneviewSDK::FirmwareBundle)
+      expect(OneviewSDK.resource_named('FirmwareBundle', 300)).to eq(OneviewSDK::API300::FirmwareBundle)
+    end
+
+    it 'ignores case of the resource name' do
       expect(OneviewSDK.resource_named('SERVERProfilE')).to eq(OneviewSDK::ServerProfile)
     end
 
-    it 'ignores dashes, underscores & spaces' do
+    it 'ignores dashes, underscores & spaces in the resource name' do
       expect(OneviewSDK.resource_named('se rver-prof_ile')).to eq(OneviewSDK::ServerProfile)
     end
 
-    it 'supports symbols' do
+    it 'supports resource name symbols' do
       expect(OneviewSDK.resource_named(:server_profile)).to eq(OneviewSDK::ServerProfile)
     end
 
     it 'raises an error if the api_version is not supported' do
       expect { OneviewSDK.resource_named(:server_profile, 15) }
         .to raise_error(OneviewSDK::UnsupportedVersion, /not supported/)
+    end
+
+    it 'returns nil if the resource name is not defined' do
+      expect(OneviewSDK.resource_named(:fakeResource)).to be_nil
     end
   end
 end

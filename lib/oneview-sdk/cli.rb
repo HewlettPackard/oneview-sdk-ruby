@@ -466,13 +466,13 @@ module OneviewSDK
       r = OneviewSDK.resource_named(type, api_ver, variant)
       # Try default API version as last resort
       r ||= OneviewSDK.resource_named(type, OneviewSDK.api_version, variant) unless api_ver == OneviewSDK.api_version
-      return r if r
+      return r if r && r.respond_to?(:find_by)
       valid_classes = []
       api_module = OneviewSDK.const_get("API#{api_ver}")
       api_module = api_module.const_get(variant.to_s) unless api_ver.to_i == 200
       api_module.constants.each do |c|
         klass = api_module.const_get(c)
-        next unless klass.is_a?(Class) && klass < OneviewSDK::Resource
+        next unless klass.is_a?(Class) && klass.respond_to?(:find_by)
         valid_classes.push(klass.name.split('::').last)
       end
       vc = valid_classes.sort_by!(&:downcase).join("\n  ")
