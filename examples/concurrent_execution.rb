@@ -48,13 +48,16 @@ puts 'Finished powering on all server hardware!'
 #    above, if there are 100,000 servers, it will try to power them on all at once, which
 #    may bring OneView to it's knees or cause issues on your local machine (e.g., IO or network
 #    overload). If the number of threads is indeterminate (like above where we did a get_all),
-#    batch the tasks into more manageable groups.
+#    batch the tasks into more manageable groups. You may also want to use thread pools if you
+#    will be dealing with lots of threads and/or multiple batches.
 #  - Consider how you will handle exceptions within threads. In the example above, any exception
 #    will only be raised at the point the thread is joined. If you'd like to fail immediately on
 #    any thread exception, you can set the abort_on_exception property on the thread to true.
 #  - Consider resource dependencies and the linkages between them. For example, if you are
 #    creating a volume template and volume that relies on that template, you need to make sure
 #    that any tasks to create or update the template are finished before trying to create the volume.
+#  - Consider the operations you are doing on objects in threads, and whether or not thos operations
+#    are thread-safe. In general, you should not perform multiple actions on the same object at once.
 
 
 # After reading those considerations, I might do something like this to power on my servers instead:
