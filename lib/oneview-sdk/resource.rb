@@ -262,20 +262,31 @@ module OneviewSDK
     # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes, uri = self::BASE_URI)
+      all = find_with_pagination(client, uri)
       results = []
+      all.each do |member|
+        temp = new(client, member)
+        results.push(temp) if temp.like?(attributes)
+      end
+      results
+    end
+
+    # Make a GET request to the uri, and returns an array with all results (search using resource pagination)
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [String] uri URI of the endpoint
+    # @return [Array<Hash>] Results
+    def self.find_with_pagination(client, uri)
+      all = []
       loop do
         response = client.rest_get(uri)
         body = client.response_handler(response)
         members = body['members']
         break unless members
-        members.each do |member|
-          temp = new(client, member)
-          results.push(temp) if temp.like?(attributes)
-        end
+        all.concat(members)
         break unless body['nextPageUri'] && (body['nextPageUri'] != body['uri'])
         uri = body['nextPageUri']
       end
-      results
+      all
     end
 
     # Make a GET request to the resource base uri, and returns an array with all objects of this type

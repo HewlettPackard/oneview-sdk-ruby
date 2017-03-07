@@ -344,6 +344,11 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#find_by' do
+    it 'should call #find_with_pagination with correct client and correct uri' do
+      expect(OneviewSDK::Enclosure).to receive(:find_with_pagination).with(@client, OneviewSDK::Enclosure::BASE_URI).and_return([])
+      OneviewSDK::Enclosure.find_by(@client, {})
+    end
+
     it 'returns an empty array if no results are found' do
       fake_response = FakeResponse.new(members: [])
       allow(@client).to receive(:rest_get).and_return(fake_response)
@@ -364,6 +369,61 @@ RSpec.describe OneviewSDK::Resource do
       res.each do |r|
         expect(r.class).to eq(OneviewSDK::Enclosure)
         expect(r['state']).to eq('Monitored')
+      end
+    end
+  end
+
+  describe '#find_with_pagination' do
+    it 'returns an empty array if no results are found' do
+      fake_response = FakeResponse.new(members: [])
+      allow(@client).to receive(:rest_get).and_return(fake_response)
+      res = OneviewSDK::Enclosure.find_with_pagination(@client, 'some_uri/123')
+      expect(res.size).to eq(0)
+    end
+
+    context 'when there are many pages' do
+      context "and, in the last page, body['nextPageUri'] is null" do
+        it 'should return all resources' do
+          fake_response_1 = FakeResponse.new(members: [
+            { name: 'Enc1', uri: "#{OneviewSDK::Enclosure::BASE_URI}/1" },
+            { name: 'Enc2', uri: "#{OneviewSDK::Enclosure::BASE_URI}/2" }
+          ], nextPageUri: 'page/2', uri: 'page/1')
+
+          fake_response_2 = FakeResponse.new(members: [
+            { name: 'Enc3', uri: "#{OneviewSDK::Enclosure::BASE_URI}/3" },
+            { name: 'Enc4', uri: "#{OneviewSDK::Enclosure::BASE_URI}/4" }
+          ], uri: 'page/2')
+
+          expect(@client).to receive(:rest_get).and_return(fake_response_1)
+          expect(@client).to receive(:rest_get).and_return(fake_response_2)
+          res = OneviewSDK::Enclosure.find_with_pagination(@client, 'some_uri/123')
+          expect(res.size).to eq(4)
+          res.each_with_index do |r, index|
+            expect(r['name']).to eq("Enc#{index + 1}")
+          end
+        end
+      end
+
+      context "and, in the last page, body['uri'] is equals to body['nextPageUri']" do
+        it 'should returns all resources' do
+          fake_response_1 = FakeResponse.new(members: [
+            { name: 'Enc1', uri: "#{OneviewSDK::Enclosure::BASE_URI}/1" },
+            { name: 'Enc2', uri: "#{OneviewSDK::Enclosure::BASE_URI}/2" }
+          ], nextPageUri: 'page/2', uri: 'page/1')
+
+          fake_response_2 = FakeResponse.new(members: [
+            { name: 'Enc3', uri: "#{OneviewSDK::Enclosure::BASE_URI}/3" },
+            { name: 'Enc4', uri: "#{OneviewSDK::Enclosure::BASE_URI}/4" }
+          ], nextPageUri: 'page/2', uri: 'page/2')
+
+          expect(@client).to receive(:rest_get).and_return(fake_response_1)
+          expect(@client).to receive(:rest_get).and_return(fake_response_2)
+          res = OneviewSDK::Enclosure.find_with_pagination(@client, 'some_uri/123')
+          expect(res.size).to eq(4)
+          res.each_with_index do |r, index|
+            expect(r['name']).to eq("Enc#{index + 1}")
+          end
+        end
       end
     end
   end

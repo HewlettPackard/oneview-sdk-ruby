@@ -44,21 +44,9 @@ module OneviewSDK
         # @return [Array] Array of firmware inventory
         def get_firmwares(filters = [])
           ensure_client
-          results = []
           uri = self.class::BASE_URI + '/*/firmware'
           uri_generate(uri, filters) unless filters.empty?
-          response = @client.rest_get(uri)
-          body = @client.response_handler(response)
-
-          loop do
-            members = body['members']
-            members.each do |member|
-              results.push(member)
-            end
-            break unless body['nextPageUri']
-            uri = body['nextPageUri']
-          end
-          results
+          self.class.find_with_pagination(@client, uri)
         end
 
         private

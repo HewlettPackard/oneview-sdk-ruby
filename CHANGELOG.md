@@ -1,6 +1,9 @@
 # Unreleased Changes
 (none)
 
+#### Bug fixes & Enhancements:
+- [#201](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/201) Code to search the collection of resources (paginated search) is repeated in some resources
+
 # v4.1.0
 
 #### New Resources:
