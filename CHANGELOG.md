@@ -2,6 +2,8 @@
 (none)
 
 # v4.1.0
+#### Bug fixes & Enhancements:
+- [#202](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/202) The method #get_default_settings in LogicalInterconnectGroup is used on integration test
 
 #### New Resources:
 Added full support to Image Streamer Rest API version 300:
