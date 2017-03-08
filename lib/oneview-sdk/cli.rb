@@ -83,8 +83,8 @@ module OneviewSDK
     # Open a Ruby console with a connection to OneView
     def console
       client_setup({}, true, true)
-      puts "Console Connected to #{@client.url}"
-      puts "HINT: The @client object is available to you\n\n"
+      puts "Console Connected to #{@client_200.url}"
+      puts "HINT: The @client_200 object is available to you\n\n"
     rescue
       puts "WARNING: Couldn't connect to #{@options['url'] || ENV['ONEVIEWSDK_URL']}\n\n"
     ensure
@@ -92,7 +92,7 @@ module OneviewSDK
       Pry.config.prompt = proc { '> ' }
       Pry.plugins['stack_explorer'] && Pry.plugins['stack_explorer'].disable!
       Pry.plugins['byebug'] && Pry.plugins['byebug'].disable!
-      Pry.start(OneviewSDK::Console.new(@client))
+      Pry.start(OneviewSDK::Console.new(@client_200))
     end
 
     desc 'version', 'Print gem and OneView appliance versions'
@@ -100,7 +100,7 @@ module OneviewSDK
     def version
       puts "Gem Version: #{OneviewSDK::VERSION}"
       client_setup({ 'log_level' => :error }, true)
-      puts "OneView appliance API version at '#{@client.url}' = #{@client.max_api_version}"
+      puts "OneView appliance API version at '#{@client_200.url}' = #{@client_200.max_api_version}"
     rescue StandardError, SystemExit
       puts 'OneView appliance API version unknown'
     end
@@ -129,7 +129,7 @@ module OneviewSDK
     # Attempt authentication and return token
     def login
       client_setup
-      puts "Login Successful! Token = #{@client.token}"
+      puts "Login Successful! Token = #{@client_200.token}"
     end
 
     method_option :format,
@@ -143,7 +143,7 @@ module OneviewSDK
       resource_class = parse_type(type)
       client_setup
       data = []
-      resource_class.get_all(@client).each { |r| data.push(r[:name]) }
+      resource_class.get_all(@client_200).each { |r| data.push(r[:name]) }
       output data
     end
 
@@ -161,7 +161,7 @@ module OneviewSDK
     def show(type, name)
       resource_class = parse_type(type)
       client_setup
-      matches = resource_class.find_by(@client, name: name)
+      matches = resource_class.find_by(@client_200, name: name)
       fail_nice 'Not Found' if matches.empty?
       data = matches.first.data
       if options['attribute']
@@ -193,10 +193,10 @@ module OneviewSDK
       resource_class = parse_type(type)
       client_setup
       filter = parse_hash(options['filter'])
-      matches = resource_class.find_by(@client, filter)
+      matches = resource_class.find_by(@client_200, filter)
       if matches.empty? # Search with integers & booleans converted
         filter = parse_hash(options['filter'], true)
-        matches = resource_class.find_by(@client, filter) unless filter == options['filter']
+        matches = resource_class.find_by(@client_200, filter) unless filter == options['filter']
       end
       if options['attribute']
         data = []
@@ -241,7 +241,7 @@ module OneviewSDK
         end
       end
       data ||= {}
-      response = @client.rest_api(method, uri_copy, data)
+      response = @client_200.rest_api(method, uri_copy, data)
       if response.code.to_i.between?(200, 299)
         case @options['format']
         when 'yaml'
@@ -280,7 +280,7 @@ module OneviewSDK
       rescue JSON::ParserError => e
         fail_nice("Failed to parse json\n#{e.message}")
       end
-      matches = resource_class.find_by(@client, name: name)
+      matches = resource_class.find_by(@client_200, name: name)
       fail_nice 'Not Found' if matches.empty?
       resource = matches.first
       begin
@@ -300,7 +300,7 @@ module OneviewSDK
     def delete(type, name)
       resource_class = parse_type(type)
       client_setup
-      matches = resource_class.find_by(@client, name: name)
+      matches = resource_class.find_by(@client_200, name: name)
       fail_nice('Not Found', 2) if matches.empty?
       resource = matches.first
       return unless options['force'] || agree("Delete '#{name}'? [Y/N] ")
@@ -320,7 +320,7 @@ module OneviewSDK
     # Delete resource defined in file
     def delete_from_file(file_path)
       client_setup
-      resource = OneviewSDK::Resource.from_file(@client, file_path)
+      resource = OneviewSDK::Resource.from_file(@client_200, file_path)
       fail_nice("#{resource.class.name.split('::').last} '#{resource[:name] || resource[:uri]}' Not Found", 2) unless resource.retrieve!
       return unless options['force'] || agree("Delete '#{resource[:name]}'? [Y/N] ")
       begin
@@ -343,9 +343,9 @@ module OneviewSDK
     # Create/Update resource defined in file
     def create_from_file(file_path)
       client_setup
-      resource = OneviewSDK::Resource.from_file(@client, file_path)
+      resource = OneviewSDK::Resource.from_file(@client_200, file_path)
       fail_nice 'Failed to determine resource type!' if resource.class == OneviewSDK::Resource
-      existing_resource = resource.class.new(@client, resource.data)
+      existing_resource = resource.class.new(@client_200, resource.data)
       resource.data.delete('uri')
       if existing_resource.retrieve!
         if options['if_missing']
@@ -392,7 +392,7 @@ module OneviewSDK
       file = File.expand_path(options['path'])
       resource_class = parse_type(type)
       client_setup
-      resource = resource_class.find_by(@client, name: name).first
+      resource = resource_class.find_by(@client_200, name: name).first
       fail_nice "#{resource_class.name.split('::').last} '#{name}' not found" unless resource
       resource.to_file(file, options['format'])
       puts "Output to #{file}"
@@ -442,7 +442,7 @@ module OneviewSDK
       client_params['log_level'] ||= @options['log_level'].to_sym if @options['log_level']
       client_params['api_version'] ||= @options['api_version'].to_i if @options['api_version']
       client_params['api_version'] ||= ENV['ONEVIEWSDK_API_VERSION'].to_i if ENV['ONEVIEWSDK_API_VERSION']
-      @client = OneviewSDK::Client.new(client_params)
+      @client_200 = OneviewSDK::Client.new(client_params)
     rescue StandardError => e
       raise e if throw_errors
       fail_nice if quiet
@@ -548,7 +548,7 @@ module OneviewSDK
   # Console class
   class Console
     def initialize(client)
-      @client = client
+      @client_200 = client
     end
   end
 end

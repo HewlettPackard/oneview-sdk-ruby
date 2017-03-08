@@ -6,7 +6,7 @@ RSpec.describe klass do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      res = klass.new(@client)
+      res = klass.new(@client_200)
       expect(res[:type]).to eq('UserAndRoles')
       expect(res[:enabled]).to eq(true)
       expect(res[:roles]).to eq(['Read only'])
@@ -16,9 +16,9 @@ RSpec.describe klass do
   describe '#create' do
     before :each do
       @data = { userName: 'test', password: 'secret123' }
-      @res = klass.new(@client, @data)
+      @res = klass.new(@client_200, @data)
       fake_response = FakeResponse.new(uri: '/rest/fake')
-      allow(@client).to receive(:rest_post).and_return(fake_response)
+      allow(@client_200).to receive(:rest_post).and_return(fake_response)
     end
 
     it 'sets the data returned in the reponse' do
@@ -35,7 +35,7 @@ RSpec.describe klass do
   describe '#update' do
     before :each do
       @data = { 'userName' => 'test', 'uri' => '/rest/fake', 'roles' => ['Read only'] }
-      @res = klass.new(@client, @data)
+      @res = klass.new(@client_200, @data)
     end
 
     it 'requires the client to be set' do
@@ -51,14 +51,14 @@ RSpec.describe klass do
     it 'removes the roles attribute from the PUT request' do
       fake_response = FakeResponse.new(roles: ['Read only'])
       data2 = { 'body' => @res.data.delete_if { |k, _v| k.to_s == 'roles' } }
-      expect(@client).to receive(:rest_put).with(klass::BASE_URI, data2, 200).and_return(fake_response)
+      expect(@client_200).to receive(:rest_put).with(klass::BASE_URI, data2, 200).and_return(fake_response)
       @res.update
     end
 
     it 'sets the roles if they do not match the response' do
       fake_response = FakeResponse.new(roles: ['Network administrator'])
       data2 = { 'body' => @res.data.select { |k, _v| k.to_s != 'roles' } }
-      expect(@client).to receive(:rest_put).with(klass::BASE_URI, data2, 200).and_return(fake_response)
+      expect(@client_200).to receive(:rest_put).with(klass::BASE_URI, data2, 200).and_return(fake_response)
       expect(@res).to receive(:set_roles).with(@res['roles']).and_return(fake_response)
       @res.update
     end
@@ -67,7 +67,7 @@ RSpec.describe klass do
   describe '#update' do
     before :each do
       @data = { 'userName' => 'test', 'uri' => '/rest/fake', 'roles' => ['Read only'] }
-      @res = klass.new(@client, @data)
+      @res = klass.new(@client_200, @data)
     end
 
     it 'requires a roles parameter' do
@@ -88,7 +88,7 @@ RSpec.describe klass do
     it 'makes a PUT call with the role data and sets the data attribute' do
       fake_response = FakeResponse.new([{ 'roleName' => 'Network administrator' }])
       data = { 'body' => [{ roleName: 'Network administrator', type: 'RoleNameDtoV2' }] }
-      expect(@client).to receive(:rest_put).with("#{@data['uri']}/roles?multiResource=true", data, 200)
+      expect(@client_200).to receive(:rest_put).with("#{@data['uri']}/roles?multiResource=true", data, 200)
         .and_return(fake_response)
       expect(@res['roles']).to eq(['Read only']) # Before
       @res.set_roles(['Network administrator'])
