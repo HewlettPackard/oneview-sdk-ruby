@@ -51,7 +51,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnectGroup do
   describe '#add_internal_network' do
     it 'adds a network' do
       item = described_class.new(@client_300)
-      network = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client, uri: '/rest/fake')
+      network = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_200, uri: '/rest/fake')
       expect(item.add_internal_network(network)).to be
       expect(item['internalNetworkUris']).to eq(['/rest/fake'])
     end

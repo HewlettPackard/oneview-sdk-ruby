@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      profile = OneviewSDK::UplinkSet.new(@client)
+      profile = OneviewSDK::UplinkSet.new(@client_200)
       expect(profile[:type]).to eq('uplink-setV3')
       expect(profile[:portConfigInfos]).to eq([])
       expect(profile[:networkUris]).to eq([])
@@ -17,7 +17,7 @@ RSpec.describe OneviewSDK::UplinkSet do
 
   describe '#add_port_config' do
     it 'updates the portConfigInfos value' do
-      item = OneviewSDK::UplinkSet.new(@client)
+      item = OneviewSDK::UplinkSet.new(@client_200)
       item.add_port_config('/rest/fake', 1000, [{ 'value' => '1', 'type' => 'Bay' }, { 'value' => '/rest/fake2', 'type' => 'Enclosure' }])
       expect(item['portConfigInfos'].size).to eq(1)
       expect(item['portConfigInfos'].first['portUri']).to eq('/rest/fake')
@@ -29,7 +29,7 @@ RSpec.describe OneviewSDK::UplinkSet do
   describe 'add elements' do
     context 'networks' do
       it 'Valid' do
-        uplink = OneviewSDK::UplinkSet.new(@client)
+        uplink = OneviewSDK::UplinkSet.new(@client_200)
         uplink.add_network(uri: '/rest/ethernet-networks')
         uplink.add_fcnetwork(uri: '/rest/fc-networks')
         uplink.add_fcoenetwork(uri: '/rest/fcoe-networks')
@@ -39,7 +39,7 @@ RSpec.describe OneviewSDK::UplinkSet do
       end
 
       it 'Incorrect' do
-        uplink = OneviewSDK::UplinkSet.new(@client)
+        uplink = OneviewSDK::UplinkSet.new(@client_200)
         expect { uplink.add_network({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
         expect { uplink.add_fcnetwork({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
         expect { uplink.add_fcoenetwork({}) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
@@ -48,13 +48,13 @@ RSpec.describe OneviewSDK::UplinkSet do
 
     context 'logical interconnects' do
       it 'Valid' do
-        uplink = OneviewSDK::UplinkSet.new(@client)
+        uplink = OneviewSDK::UplinkSet.new(@client_200)
         uplink.set_logical_interconnect(uri: '/rest/logical-interconnects')
         expect(uplink[:logicalInterconnectUri]).to eq('/rest/logical-interconnects')
       end
 
       it 'Incorrect' do
-        uplink = OneviewSDK::UplinkSet.new(@client)
+        uplink = OneviewSDK::UplinkSet.new(@client_200)
         expect { uplink.set_logical_interconnect({}) }.to raise_error(OneviewSDK::IncompleteResource, /Invalid object/)
       end
     end

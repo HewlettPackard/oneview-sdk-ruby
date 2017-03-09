@@ -15,7 +15,7 @@ RSpec.describe OneviewSDK::Cli do
     end
 
     let(:sp1) do
-      OneviewSDK::ServerProfile.new(@client, resource_data)
+      OneviewSDK::ServerProfile.new(@client_200, resource_data)
     end
 
     let(:sp_list) do

@@ -4,7 +4,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
   include_context 'shared context'
 
   before(:each) do
-    @item = OneviewSDK::ServerProfileTemplate.new(@client, name: 'server_profile_template')
+    @item = OneviewSDK::ServerProfileTemplate.new(@client_200, name: 'server_profile_template')
   end
 
   describe '#initialize' do
@@ -15,7 +15,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
   describe '#set_server_hardware_type' do
     before :each do
-      @server_hardware_type = OneviewSDK::ServerHardwareType.new(@client, name: 'server_hardware_type')
+      @server_hardware_type = OneviewSDK::ServerHardwareType.new(@client_200, name: 'server_hardware_type')
       @server_hardware_type_uri = '/rest/fake/server-hardware-types/test'
     end
 
@@ -26,7 +26,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will retrieve and set the serverHardwareTypeUri correctly' do
-      expect(@client).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
         .and_return(FakeResponse.new(members: [
             { name: 'server_hardware_type', uri: @server_hardware_type_uri },
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
@@ -36,7 +36,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will fail to put serverHardwareTypeUri since the resource does not exists' do
-      expect(@client).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
@@ -46,7 +46,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
   describe '#set_enclosure_group' do
     before :each do
-      @enclosure_group = OneviewSDK::EnclosureGroup.new(@client, name: 'enclosure_group')
+      @enclosure_group = OneviewSDK::EnclosureGroup.new(@client_200, name: 'enclosure_group')
       @enclosure_group_uri = '/rest/fake/enclosure-groups/test'
     end
 
@@ -57,7 +57,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will retrieve and set the enclosureGroupUri correctly' do
-      expect(@client).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
         .and_return(FakeResponse.new(members: [
             { name: 'enclosure_group', uri: @enclosure_group_uri },
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
@@ -67,7 +67,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will fail to put enclosureGroupUri since the resource does not exists' do
-      expect(@client).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
@@ -78,7 +78,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
   describe '#set_firmware_driver' do
     before :each do
       @firmware_uri = '/rest/fake/firmware-drivers/unit'
-      @firmware = OneviewSDK::FirmwareDriver.new(@client, name: 'unit_firmware_driver', uri: @firmware_uri)
+      @firmware = OneviewSDK::FirmwareDriver.new(@client_200, name: 'unit_firmware_driver', uri: @firmware_uri)
     end
 
     it 'will set the FirmwareDriver with options correctly' do
@@ -91,7 +91,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
   describe '#add_connection' do
     before :each do
       @item['connections'] = []
-      @network = OneviewSDK::EthernetNetwork.new(@client, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
+      @network = OneviewSDK::EthernetNetwork.new(@client_200, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
     end
 
     it 'adds simple connection' do
@@ -117,7 +117,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     describe '#remove_connection' do
       before :each do
         @item['connections'] = []
-        @network = OneviewSDK::EthernetNetwork.new(@client, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
+        @network = OneviewSDK::EthernetNetwork.new(@client_200, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
         base_uri = @network['uri']
         1.upto(5) do |count|
           @network['uri'] = "#{@network['uri']}_#{count}"
@@ -160,19 +160,19 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
   describe '#available_hardware' do
     it 'requires the serverHardwareTypeUri value to be set' do
-      expect { OneviewSDK::ServerProfileTemplate.new(@client).get_available_hardware }
+      expect { OneviewSDK::ServerProfileTemplate.new(@client_200).get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'requires the enclosureGroupUri value to be set' do
-      expect { OneviewSDK::ServerProfileTemplate.new(@client, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
+      expect { OneviewSDK::ServerProfileTemplate.new(@client_200, serverHardwareTypeUri: '/rest/fake').get_available_hardware }
         .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
     it 'calls #find_by with the serverHardwareTypeUri and enclosureGroupUri' do
-      @item = OneviewSDK::ServerProfileTemplate.new(@client, serverHardwareTypeUri: '/rest/fake', enclosureGroupUri: '/rest/fake2')
+      @item = OneviewSDK::ServerProfileTemplate.new(@client_200, serverHardwareTypeUri: '/rest/fake', enclosureGroupUri: '/rest/fake2')
       params = { state: 'NoProfileApplied', serverHardwareTypeUri: @item['serverHardwareTypeUri'], serverGroupUri: @item['enclosureGroupUri'] }
-      expect(OneviewSDK::ServerHardware).to receive(:find_by).with(@client, params).and_return([])
+      expect(OneviewSDK::ServerHardware).to receive(:find_by).with(@client_200, params).and_return([])
       expect(@item.get_available_hardware).to eq([])
     end
   end
@@ -180,8 +180,8 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
   describe '#new_profile' do
     it 'returns a profile' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new(name: 'NewProfile'))
-      expect(@client).to receive(:rest_get).with('/rest/server-profile-templates/fake/new-profile')
-      template = OneviewSDK::ServerProfileTemplate.new(@client, name: 'unit_server_profile_template')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-profile-templates/fake/new-profile')
+      template = OneviewSDK::ServerProfileTemplate.new(@client_200, name: 'unit_server_profile_template')
       template['uri'] = '/rest/server-profile-templates/fake'
       profile = template.new_profile
       expect(profile.class).to eq(OneviewSDK::ServerProfile)
@@ -190,7 +190,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
     it 'can set the name of a new profile' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new(name: 'NewProfile'))
-      template = OneviewSDK::ServerProfileTemplate.new(@client, uri: '/rest/server-profile-templates/fake')
+      template = OneviewSDK::ServerProfileTemplate.new(@client_200, uri: '/rest/server-profile-templates/fake')
       profile = template.new_profile('NewName')
       expect(profile[:name]).to eq('NewName')
     end
@@ -198,7 +198,8 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
   describe 'Volume attachment operations' do
     it 'can call the #add_volume_attachment using a specific already created Volume' do
-      volume = OneviewSDK::Volume.new(@client, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+      options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+      volume = OneviewSDK::Volume.new(@client_200, options)
       @item.add_volume_attachment(volume)
 
       expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -210,7 +211,8 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
     describe 'can call #remove_volume_attachment' do
       it 'and remove attachment with id 0' do
-        volume = OneviewSDK::Volume.new(@client, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+        options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+        volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
         va = @item.remove_volume_attachment(7)
@@ -221,7 +223,8 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
       end
 
       it 'and return nil if no attachment found' do
-        volume = OneviewSDK::Volume.new(@client, uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system')
+        options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+        volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
         va = @item.remove_volume_attachment(5)
@@ -238,7 +241,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'can call #create_volume_with_attachment and generate the data required for a new Volume with attachment' do
-      storage_pool = OneviewSDK::StoragePool.new(@client, uri: 'fake/storage-pool')
+      storage_pool = OneviewSDK::StoragePool.new(@client_200, uri: 'fake/storage-pool')
       volume_options = {
         name: 'TestVolume',
         description: 'Test Volume for Server Profile Volume Attachment',

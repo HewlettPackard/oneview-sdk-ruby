@@ -15,7 +15,7 @@ RSpec.describe OneviewSDK::PowerDevice do
   include_context 'shared context'
 
   before :each do
-    @item = OneviewSDK::PowerDevice.new(@client, uri: '/rest/fake')
+    @item = OneviewSDK::PowerDevice.new(@client_200, uri: '/rest/fake')
   end
 
   describe '#initialize' do
@@ -74,7 +74,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#add' do
     it 'Should support add' do
-      power_device = OneviewSDK::PowerDevice.new(@client, name: 'power_device', ratedCapacity: 500)
+      power_device = OneviewSDK::PowerDevice.new(@client_200, name: 'power_device', ratedCapacity: 500)
       expected_request_body = {
         'name' => 'power_device',
         'ratedCapacity' => 500,
@@ -82,7 +82,7 @@ RSpec.describe OneviewSDK::PowerDevice do
         'phaseType' => 'Unknown',
         'powerConnections' => []
       }
-      expect(@client).to receive(:rest_post).with('/rest/power-devices', { 'body' => expected_request_body }, 200)
+      expect(@client_200).to receive(:rest_post).with('/rest/power-devices', { 'body' => expected_request_body }, 200)
         .and_return(FakeResponse.new({}))
       power_device.add
     end
@@ -90,22 +90,22 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#remove' do
     it 'Should support remove' do
-      power_device = OneviewSDK::PowerDevice.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_delete).with('/rest/fake', {}, 200).and_return(FakeResponse.new({}))
+      power_device = OneviewSDK::PowerDevice.new(@client_200, uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_delete).with('/rest/fake', {}, 200).and_return(FakeResponse.new({}))
       power_device.remove
     end
   end
 
   describe '#create' do
     it 'Should raise error if used' do
-      power_device = OneviewSDK::PowerDevice.new(@client)
+      power_device = OneviewSDK::PowerDevice.new(@client_200)
       expect { power_device.create }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 
   describe '#delete' do
     it 'Should raise error if used' do
-      power_device = OneviewSDK::PowerDevice.new(@client)
+      power_device = OneviewSDK::PowerDevice.new(@client_200)
       expect { power_device.delete }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
@@ -118,15 +118,15 @@ RSpec.describe OneviewSDK::PowerDevice do
         password: 'pass',
         hostname: '/rest/fake'
       }
-      expect(@client).to receive(:rest_post).with('/rest/power-devices/discover', 'body' => options)
+      expect(@client_200).to receive(:rest_post).with('/rest/power-devices/discover', 'body' => options)
         .and_return(FakeResponse.new({}))
-      expect { OneviewSDK::PowerDevice.discover(@client, options) }.not_to raise_error
+      expect { OneviewSDK::PowerDevice.discover(@client_200, options) }.not_to raise_error
     end
   end
 
   describe '#get_power_state' do
     it 'powerState' do
-      expect(@client).to receive(:rest_get).with('/rest/fake/powerState')
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/powerState')
         .and_return(FakeResponse.new({}))
       expect { @item.get_power_state }.not_to raise_error
     end
@@ -134,7 +134,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#set_power_state' do
     it 'On|Off state given' do
-      expect(@client).to receive(:rest_put).with('/rest/fake/powerState', 'body' => { powerState: 'On' })
+      expect(@client_200).to receive(:rest_put).with('/rest/fake/powerState', 'body' => { powerState: 'On' })
         .and_return(FakeResponse.new({}))
       expect { @item.set_power_state('On') }.not_to raise_error
     end
@@ -142,14 +142,14 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#set_refresh_state' do
     it 'Refresh without changing username and password' do
-      expect(@client).to receive(:rest_put).with('/rest/fake/refreshState', 'body' => { refreshState: 'RefreshPending' })
+      expect(@client_200).to receive(:rest_put).with('/rest/fake/refreshState', 'body' => { refreshState: 'RefreshPending' })
         .and_return(FakeResponse.new({}))
       expect { @item.set_refresh_state(refreshState: 'RefreshPending') }.not_to raise_error
     end
 
     it 'Refresh providing username/password' do
       options = { refreshState: 'RefreshPending', username: 'user', password: 'pass' }
-      expect(@client).to receive(:rest_put).with('/rest/fake/refreshState', 'body' => options)
+      expect(@client_200).to receive(:rest_put).with('/rest/fake/refreshState', 'body' => options)
         .and_return(FakeResponse.new({}))
       expect { @item.set_refresh_state(refreshState: 'RefreshPending', username: 'user', password: 'pass') }.not_to raise_error
     end
@@ -157,7 +157,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#get_uid_state' do
     it 'uidState' do
-      expect(@client).to receive(:rest_get).with('/rest/fake/uidState')
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/uidState')
         .and_return(FakeResponse.new({}))
       expect { @item.get_uid_state }.not_to raise_error
     end
@@ -165,7 +165,7 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#set_uid_state' do
     it 'On|Off state' do
-      expect(@client).to receive(:rest_put).with('/rest/fake/uidState', 'body' => { uidState: 'On' })
+      expect(@client_200).to receive(:rest_put).with('/rest/fake/uidState', 'body' => { uidState: 'On' })
         .and_return(FakeResponse.new({}))
       expect { @item.set_uid_state('On') }.not_to raise_error
     end
@@ -173,29 +173,29 @@ RSpec.describe OneviewSDK::PowerDevice do
 
   describe '#utilization' do
     it 'requires a uri' do
-      expect { OneviewSDK::PowerDevice.new(@client).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::PowerDevice.new(@client_200).utilization }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'gets uri/utilization' do
-      expect(@client).to receive(:rest_get).with('/rest/fake/utilization', @item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/utilization', @item.api_version).and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization).to eq('key' => 'val')
     end
 
     it 'takes query parameters' do
-      expect(@client).to receive(:rest_get).with('/rest/fake/utilization?key=val', @item.api_version)
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/utilization?key=val', @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(key: :val)).to eq('key' => 'val')
     end
 
     it 'takes an array for the :fields query parameter' do
-      expect(@client).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', @item.api_version)
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(fields: %w(one two three))).to eq('key' => 'val')
     end
 
     it 'converts Time query parameters' do
       t = Time.now
-      expect(@client).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", @item.api_version)
+      expect(@client_200).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(startDate: t)).to eq('key' => 'val')
     end

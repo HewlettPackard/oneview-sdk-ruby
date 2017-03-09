@@ -95,7 +95,7 @@ RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
         state: 'Configured'
       }
       item = OneviewSDK::API300::Synergy::StorageSystem.new(
-        @client,
+        @client_200,
         name: 'StorageSystemName',
         credentials: {
           'ip_hostname' => '127.0.0.1',
@@ -117,7 +117,7 @@ RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
         'state' => 'Configured'
       }
       item = OneviewSDK::API300::Synergy::StorageSystem.new(
-        @client,
+        @client_200,
         'name' => 'StorageSystemName',
         'credentials' => {
           'ip_hostname' => '127.0.0.1',
@@ -131,14 +131,14 @@ RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
     it 'must not compare storage system credentials with password when compares resources ' do
       options1 = { name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin' } }
       options2 = { name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' } }
-      item1 = OneviewSDK::API300::Synergy::StorageSystem.new(@client, options1)
-      item2 = OneviewSDK::API300::Synergy::StorageSystem.new(@client, options2)
+      item1 = OneviewSDK::API300::Synergy::StorageSystem.new(@client_200, options1)
+      item2 = OneviewSDK::API300::Synergy::StorageSystem.new(@client_200, options2)
       expect(item1.like?(item2)).to eq(true)
     end
 
     it 'must not compare storage system with invalid data types' do
       options = { name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin' } }
-      item1 = OneviewSDK::API300::Synergy::StorageSystem.new(@client, options)
+      item1 = OneviewSDK::API300::Synergy::StorageSystem.new(@client_200, options)
       expect(item1.like?(credentials: true)).to eq(false)
     end
   end

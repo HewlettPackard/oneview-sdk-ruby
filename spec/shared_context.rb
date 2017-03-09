@@ -1,20 +1,20 @@
 # General context for unit testing:
 RSpec.shared_context 'shared context', a: :b do
   before :each do
-    options_120 = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', api_version: 120 }
-    @client_120 = OneviewSDK::Client.new(options_120)
+    options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
+    # Creates dynamically the variables @client_120, @client_200 and etc.
+    api_versions = [120]
+    api_versions |= OneviewSDK::SUPPORTED_API_VERSIONS
+    api_versions.each do |v|
+      instance_variable_set("@client_#{v}", OneviewSDK::Client.new(options.merge(api_version: v)))
+    end
 
-    options_200 = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
-    @client = OneviewSDK::Client.new(options_200)
-
-    options_300 = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', api_version: 300 }
-    @client_300 = OneviewSDK::Client.new(options_300)
-
-    options_500 = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123', api_version: 500 }
-    @client_500 = OneviewSDK::Client.new(options_500)
-
-    options_i3s_300 = { url: 'https://oneview.example.com', token: 'token123' }
-    @client_i3s_300 = OneviewSDK::ImageStreamer::Client.new(options_i3s_300)
+    options_i3s = { url: 'https://oneview.example.com', token: 'token123' }
+    # Creates dynamically the variables @client_i3s_300 and etc.
+    i3s_api_versions = OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS
+    i3s_api_versions.each do |v|
+      instance_variable_set("@client_i3s_#{v}", OneviewSDK::ImageStreamer::Client.new(options_i3s.merge(api_version: v)))
+    end
   end
 end
 

@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::FCoENetwork do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = described_class.new(@client)
+      item = described_class.new(@client_200)
       expect(item[:type]).to eq('fcoe-network')
       expect(item[:connectionTemplateUri]).to eq(nil)
     end
