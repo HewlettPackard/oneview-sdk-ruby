@@ -29,7 +29,7 @@ RSpec.describe OneviewSDK::API300::C7000::FirmwareBundle do
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
       http_fake = spy('http')
       allow(Net::HTTP).to receive(:new).and_return(http_fake)
-      described_class.add(@client, 'file.tar')
+      described_class.add(@client_200, 'file.tar')
       expect(http_fake).to have_received(:read_timeout=).with(described_class::READ_TIMEOUT)
     end
 
@@ -39,7 +39,7 @@ RSpec.describe OneviewSDK::API300::C7000::FirmwareBundle do
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
       http_fake = spy('http')
       allow(Net::HTTP).to receive(:new).and_return(http_fake)
-      described_class.add(@client, 'file.tar', 600)
+      described_class.add(@client_200, 'file.tar', 600)
       expect(http_fake).to have_received(:read_timeout=).with(600)
     end
 
@@ -49,7 +49,7 @@ RSpec.describe OneviewSDK::API300::C7000::FirmwareBundle do
       allow(File).to receive(:file?).and_return(true)
       allow(File).to receive(:open).with('file.tar').and_yield('FAKE FILE CONTENT')
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
-      expect { described_class.add(@client, 'file.tar') }.to raise_error(/The connection was closed/)
+      expect { described_class.add(@client_200, 'file.tar') }.to raise_error(/The connection was closed/)
     end
   end
 end

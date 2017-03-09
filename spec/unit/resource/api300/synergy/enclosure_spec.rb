@@ -167,7 +167,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
 
   describe '#set_environmental_configuration' do
     it 'does not allow the method' do
-      enclosure = OneviewSDK::API300::Synergy::Enclosure.new(@client)
+      enclosure = OneviewSDK::API300::Synergy::Enclosure.new(@client_200)
       expect { enclosure.set_environmental_configuration }
         .to raise_error(OneviewSDK::MethodUnavailable, /The method #set_environmental_configuration is unavailable for this resource/)
     end

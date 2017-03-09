@@ -41,7 +41,7 @@ RSpec.describe OneviewSDK::Cli do
     context 'with valid options' do
       before :each do
         @resource_data = { 'name' => 'Test', 'uri' => '/rest/fake' }
-        @response = [OneviewSDK::EthernetNetwork.new(@client, @resource_data)]
+        @response = [OneviewSDK::EthernetNetwork.new(@client_200, @resource_data)]
         allow(OneviewSDK::Resource).to receive(:find_by).and_return(@response)
       end
 
@@ -66,7 +66,7 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'accepts an api-version parameter: 300' do
-        @response = [OneviewSDK::API300::EthernetNetwork.new(@client, @resource_data)]
+        @response = [OneviewSDK::API300::EthernetNetwork.new(@client_200, @resource_data)]
         expect(OneviewSDK::Resource).to receive(:find_by).and_return(@response)
         expect_any_instance_of(OneviewSDK::API300::EthernetNetwork).to receive(:to_file).and_return(true)
         expect { OneviewSDK::Cli.start(['to_file', 'EthernetNetwork', 'Test', '-p', path, '--api-version', 300]) }

@@ -18,7 +18,7 @@ RSpec.describe OneviewSDK::Cli do
     context 'with valid options' do
       before :each do
         @resource_data = { 'name' => 'My', 'uri' => '/rest/fake', 'description' => 'Blah' }
-        response = [OneviewSDK::EthernetNetwork.new(@client, @resource_data)]
+        response = [OneviewSDK::EthernetNetwork.new(@client_200, @resource_data)]
         allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_return(true)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:retrieve!).and_return(true)
@@ -51,7 +51,7 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'fails if the file does not specify a name or uri' do
-        resource = OneviewSDK::Resource.new(@client)
+        resource = OneviewSDK::Resource.new(@client_200)
         allow(OneviewSDK::Resource).to receive(:from_file).and_return(resource)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:retrieve!).and_call_original
         expect(STDOUT).to receive(:puts).with(/Must set/)
