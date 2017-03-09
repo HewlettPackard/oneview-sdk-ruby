@@ -25,7 +25,7 @@ RSpec.describe OneviewSDK::Cli do
     context 'with valid options' do
       before :each do
         @resource_data = { 'name' => 'Profile1', 'uri' => '/rest/fake', 'description' => 'Blah' }
-        response = [OneviewSDK::ServerProfile.new(@client, @resource_data)]
+        response = [OneviewSDK::ServerProfile.new(@client_200, @resource_data)]
         allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_return(true)
         allow_any_instance_of(HighLine).to receive(:agree).and_return(true)

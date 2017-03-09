@@ -16,7 +16,7 @@ RSpec.describe OneviewSDK::Datacenter do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      datacenter = OneviewSDK::Datacenter.new(@client)
+      datacenter = OneviewSDK::Datacenter.new(@client_200)
       expect(datacenter['contents']).to eq([])
     end
   end
@@ -28,8 +28,8 @@ RSpec.describe OneviewSDK::Datacenter do
         width: 5000,
         depth: 5000
       }
-      item = OneviewSDK::Datacenter.new(@client, options)
-      expect(@client).to receive(:rest_post).with(
+      item = OneviewSDK::Datacenter.new(@client_200, options)
+      expect(@client_200).to receive(:rest_post).with(
         '/rest/datacenters',
         { 'body' => { 'name' => 'Datacenter', 'width' => 5000, 'depth' => 5000, 'contents' => [] } },
         item.api_version
@@ -40,15 +40,15 @@ RSpec.describe OneviewSDK::Datacenter do
 
   describe '#remove' do
     it 'Should support remove' do
-      datacenter = OneviewSDK::Datacenter.new(@client, uri: '/rest/datacenters/100')
-      expect(@client).to receive(:rest_delete).with('/rest/datacenters/100', {}, 200).and_return(FakeResponse.new({}))
+      datacenter = OneviewSDK::Datacenter.new(@client_200, uri: '/rest/datacenters/100')
+      expect(@client_200).to receive(:rest_delete).with('/rest/datacenters/100', {}, 200).and_return(FakeResponse.new({}))
       datacenter.remove
     end
   end
 
   describe '#add_rack' do
     before :each do
-      @datacenter = OneviewSDK::Datacenter.new(@client)
+      @datacenter = OneviewSDK::Datacenter.new(@client_200)
     end
 
     it 'Add one rack without rotation' do
@@ -75,7 +75,7 @@ RSpec.describe OneviewSDK::Datacenter do
 
   describe '#remove_rack' do
     before :each do
-      @datacenter = OneviewSDK::Datacenter.new(@client)
+      @datacenter = OneviewSDK::Datacenter.new(@client_200)
     end
 
     it 'Remove rack from empty list' do
@@ -97,12 +97,12 @@ RSpec.describe OneviewSDK::Datacenter do
 
   describe 'undefined methods' do
     it 'does not allow the create action' do
-      datacenter = OneviewSDK::Datacenter.new(@client)
+      datacenter = OneviewSDK::Datacenter.new(@client_200)
       expect { datacenter.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
 
     it 'does not allow the delete action' do
-      datacenter = OneviewSDK::Datacenter.new(@client)
+      datacenter = OneviewSDK::Datacenter.new(@client_200)
       expect { datacenter.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
