@@ -5,6 +5,7 @@
 (none)
 
 #### Bug fixes & Enhancements:
+- [#201](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/201) Code to search the collection of resources (paginated search) is repeated in some resources
 - [#119](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
 
 #### Design changes:
