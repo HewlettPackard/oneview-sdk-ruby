@@ -3,14 +3,15 @@ RSpec.shared_context 'shared context', a: :b do
   before :each do
     options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
     # Creates dynamically the variables @client_120, @client_200 and etc.
-    api_versions = [120, 200, 300, 500]
+    api_versions = [120]
+    api_versions |= OneviewSDK::SUPPORTED_API_VERSIONS
     api_versions.each do |v|
       instance_variable_set("@client_#{v}", OneviewSDK::Client.new(options.merge(api_version: v)))
     end
 
     options_i3s = { url: 'https://oneview.example.com', token: 'token123' }
     # Creates dynamically the variables @client_i3s_300 and etc.
-    i3s_api_versions = [300]
+    i3s_api_versions = OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS
     i3s_api_versions.each do |v|
       instance_variable_set("@client_i3s_#{v}", OneviewSDK::ImageStreamer::Client.new(options_i3s.merge(api_version: v)))
     end
