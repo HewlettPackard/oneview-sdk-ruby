@@ -118,20 +118,26 @@ module OneviewSDK
     # Uploads a file to a specific uri
     # @param [String] file_path
     # @param [String] path The url path starting with "/"
-    # @param [Hash] body_params The params to append to body of http request. Default is {}.
-    # @option body_params [String] 'name' The name to show (when resource accepts a name)
+    # @param [Hash] options The options for the request. Default is {}.
+    # @option options [String] :body Hash to be converted into json and set as the request body
+    # @option options [String] :header Hash to be converted into json and set as the request header
+    # @option options [String] :file_name String that defines the new file name
     # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
     # @return [Hash] The parsed JSON body of response
-    def upload_file(file_path, path, body_params = {}, timeout = READ_TIMEOUT)
+    def upload_file(file_path, path, options = {}, timeout = READ_TIMEOUT)
       raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
-      options = {
+      options = Hash[options.map { |k, v| [k.to_s, v] }]
+      body_params = options['body'] || {}
+      headers_params = options['header'] || {}
+      headers = {
         'Content-Type' => 'multipart/form-data',
         'X-Api-Version' => @api_version.to_s,
         'auth' => @token
       }
+      headers.merge!(headers_params)
 
       File.open(file_path) do |file|
-        name_to_show = body_params.delete('name') || body_params.delete(:name) || File.basename(file_path)
+        name_to_show = options['file_name'] || File.basename(file_path)
         body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
 
         uri = URI.parse(URI.escape(@url + path))
@@ -141,12 +147,19 @@ module OneviewSDK
         req = Net::HTTP::Post::Multipart.new(
           uri.path,
           body_params,
-          options
+          headers
         )
 
         http_request.start do |http|
-          response = http.request(req)
-          return response_handler(response)
+          begin
+            response = http.request(req)
+            return response_handler(response)
+          rescue Net::ReadTimeout
+            raise "The connection was closed because the timeout of #{timeout} seconds has expired."\
+              'You can specify the timeout in seconds by passing the timeout on the method call.'\
+              'Interrupted file uploads may result in corrupted file remaining in the appliance.'\
+              'HPE recommends checking the appliance for corrupted file and removing it.'
+          end
         end
       end
     end

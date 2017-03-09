@@ -210,15 +210,15 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
 
   describe '::create_from_file' do
     it 'should call a upload_file from FileUploadHelper' do
-      fake_response = { 'name' => 'Artifact Name' }
+      fake_response = { 'name' => 'ArtifactName' }
 
-      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles', { 'name' => 'Artifact_Name.zip' }, 500)
+      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles', { 'file_name' => 'ArtifactName.zip' }, 500)
         .and_return(fake_response)
 
-      result = described_class.create_from_file(@client_i3s_300, 'file.zip', 'Artifact_Name', 500)
+      result = described_class.create_from_file(@client_i3s_300, 'file.zip', 'ArtifactName', 500)
 
       expect(result.class).to eq(described_class)
-      expect(result['name']).to eq('Artifact Name')
+      expect(result['name']).to eq('ArtifactName')
     end
 
     context 'when upload a file with wrong extension' do
@@ -264,8 +264,8 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
     before { expect(deployment_group).to receive(:retrieve!).and_return(true) }
 
     it 'should call @client.upload_file' do
-      params = { 'name' => 'Artifact_Name.zip', 'deploymentGrpUri' => '/rest/deployment-groups/1' }
-      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles/backups/archive', params, 300)
+      options = { 'file_name' => 'Artifact_Name.zip', 'body' => { 'deploymentGrpUri' => '/rest/deployment-groups/1' } }
+      expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles/backups/archive', options, 300)
 
       described_class.create_backup_from_file!(@client_i3s_300, deployment_group, 'file.zip', 'Artifact_Name')
     end

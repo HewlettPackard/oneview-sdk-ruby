@@ -10,7 +10,6 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'resource'
-require 'net/http/post/multipart'
 
 module OneviewSDK
   module ImageStreamer
@@ -18,7 +17,6 @@ module OneviewSDK
       # Golden Image resource implementation for Image Streamer
       class GoldenImage < Resource
         BASE_URI = '/rest/golden-images'.freeze
-        READ_TIMEOUT = 300 # in seconds (5 minutes)
         ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -44,36 +42,10 @@ module OneviewSDK
         # Downloads the content of the selected golden image to the specified file path.
         # @param [String] file_path
         # @param [Integer] timeout The number of seconds to wait for the request to complete
-        # @return [True] When was saved successfully
-        def download(file_path, timeout = READ_TIMEOUT)
+        # @return [True] When it was saved successfully
+        def download(file_path)
           ensure_client && ensure_uri
-          uri = URI.parse(URI.escape("#{client.url}#{BASE_URI}/download/#{@data['uri'].split('/').last}"))
-          req = Net::HTTP::Get.new(uri.request_uri)
-
-          options = {}
-          options['Content-Type'] = 'application/json'
-          options['X-Api-Version'] = @client.api_version.to_s
-          options['auth'] = @client.token
-          options.each do |key, val|
-            req[key] = val
-          end
-
-          http_request = Net::HTTP.new(uri.host, uri.port)
-          http_request.use_ssl = true
-          http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          http_request.read_timeout = timeout
-
-          http_request.start do |http|
-            http.request(req) do |res|
-              client.response_handler(res) unless res.code.to_i.between?(200, 204)
-              File.open(file_path, 'wb') do |file|
-                res.read_body do |segment|
-                  file.write(segment)
-                end
-              end
-            end
-          end
-          true
+          client.download_file("#{BASE_URI}/download/#{@data['uri'].split('/').last}", file_path)
         end
 
         # Upload a golden image from the specified local file path.
@@ -85,40 +57,13 @@ module OneviewSDK
         # @option data_options [String] :description The description of the Golden Image (required)
         # @param [Integer] timeout The number of seconds to wait for the request to complete
         # @return [OneviewSDK::ImageStreamer::API300::GoldenImage] if the upload was successful, return a GoldenImage object
-        def self.add(client, file_path, data_options, timeout = READ_TIMEOUT)
+        def self.add(client, file_path, data_options, timeout = OneviewSDK::Rest::READ_TIMEOUT)
           data_options = Hash[data_options.map { |k, v| [k.to_s, v] }] # Convert symbols hash keys to string
-          raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
           raise InvalidFormat, 'ERROR: File with extension not supported!' unless ACCEPTED_FORMATS.include? File.extname(file_path)
           raise IncompleteResource, 'Please set the name of the golden image!' unless data_options['name']
           raise IncompleteResource, 'Please set the description of the golden image!' unless data_options['description']
-          options = {}
-          options['Content-Type'] = 'multipart/form-data'
-          options['X-Api-Version'] = client.api_version.to_s
-          options['auth'] = client.token
-          options['file'] = File.basename(file_path)
-          url = URI.parse(URI.escape("#{client.url}#{BASE_URI}"))
-
-          File.open(file_path) do |file|
-            req = Net::HTTP::Post::Multipart.new(
-              url.path,
-              { 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) }.merge(data_options),
-              options
-            )
-
-            http_request = Net::HTTP.new(url.host, url.port)
-            http_request.use_ssl = true if url.scheme == 'https'
-            if client.ssl_enabled
-              http_request.cert_store = client.cert_store if client.cert_store
-            else http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-            end
-            http_request.read_timeout = timeout
-
-            http_request.start do |http|
-              response = http.request(req)
-              data = client.response_handler(response)
-              return OneviewSDK::ImageStreamer::API300::GoldenImage.new(client, data)
-            end
-          end
+          data = client.upload_file(file_path, BASE_URI, { 'body' => data_options }, timeout)
+          GoldenImage.new(client, data)
         end
 
         # Sets the OS volume
