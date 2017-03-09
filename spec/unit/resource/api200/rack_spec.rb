@@ -16,7 +16,7 @@ RSpec.describe OneviewSDK::Rack do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      rack = OneviewSDK::Rack.new(@client)
+      rack = OneviewSDK::Rack.new(@client_200)
       expect(rack['rackMounts']).to eq([])
     end
   end
@@ -27,22 +27,22 @@ RSpec.describe OneviewSDK::Rack do
         { name: 'name1', uri: 'uri1', serialNumber: 'sn1' },
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2' }
       ])
-      allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
     end
 
     it 'retrieves by name' do
-      expect(described_class.new(@client, name: 'name1').retrieve!).to be true
-      expect(described_class.new(@client, name: 'fake').retrieve!).to be false
+      expect(described_class.new(@client_200, name: 'name1').retrieve!).to be true
+      expect(described_class.new(@client_200, name: 'fake').retrieve!).to be false
     end
 
     it 'retrieves by uri' do
-      expect(described_class.new(@client, uri: 'uri1').retrieve!).to be true
-      expect(described_class.new(@client, uri: 'fake').retrieve!).to be false
+      expect(described_class.new(@client_200, uri: 'uri1').retrieve!).to be true
+      expect(described_class.new(@client_200, uri: 'fake').retrieve!).to be false
     end
 
     it 'retrieves by serialNumber' do
-      expect(described_class.new(@client, serialNumber: 'sn1').retrieve!).to be true
-      expect(described_class.new(@client, serialNumber: 'fake').retrieve!).to be false
+      expect(described_class.new(@client_200, serialNumber: 'sn1').retrieve!).to be true
+      expect(described_class.new(@client_200, serialNumber: 'fake').retrieve!).to be false
     end
   end
 
@@ -52,29 +52,29 @@ RSpec.describe OneviewSDK::Rack do
         { name: 'name1', uri: 'uri1', serialNumber: 'sn1' },
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2' }
       ])
-      allow(@client).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
     end
 
     it 'finds it by name' do
-      expect(described_class.new(@client, name: 'name1').exists?).to be true
-      expect(described_class.new(@client, name: 'fake').exists?).to be false
+      expect(described_class.new(@client_200, name: 'name1').exists?).to be true
+      expect(described_class.new(@client_200, name: 'fake').exists?).to be false
     end
 
     it 'finds it by uri' do
-      expect(described_class.new(@client, uri: 'uri1').exists?).to be true
-      expect(described_class.new(@client, uri: 'fake').exists?).to be false
+      expect(described_class.new(@client_200, uri: 'uri1').exists?).to be true
+      expect(described_class.new(@client_200, uri: 'fake').exists?).to be false
     end
 
     it 'finds it by serialNumber' do
-      expect(described_class.new(@client, serialNumber: 'sn1').exists?).to be true
-      expect(described_class.new(@client, serialNumber: 'fake').exists?).to be false
+      expect(described_class.new(@client_200, serialNumber: 'sn1').exists?).to be true
+      expect(described_class.new(@client_200, serialNumber: 'fake').exists?).to be false
     end
   end
 
   describe '#add' do
     it 'Should support add' do
-      rack = OneviewSDK::Rack.new(@client, uri: '/rest/racks')
-      expect(@client).to receive(:rest_post).with('/rest/racks', { 'body' => { 'uri' => '/rest/racks', 'rackMounts' => [] } }, 200)
+      rack = OneviewSDK::Rack.new(@client_200, uri: '/rest/racks')
+      expect(@client_200).to receive(:rest_post).with('/rest/racks', { 'body' => { 'uri' => '/rest/racks', 'rackMounts' => [] } }, 200)
         .and_return(FakeResponse.new({}))
       rack.add
     end
@@ -82,26 +82,26 @@ RSpec.describe OneviewSDK::Rack do
 
   describe '#remove' do
     it 'Should support remove' do
-      rack = OneviewSDK::Rack.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_delete).with('/rest/fake', {}, 200).and_return(FakeResponse.new({}))
+      rack = OneviewSDK::Rack.new(@client_200, uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_delete).with('/rest/fake', {}, 200).and_return(FakeResponse.new({}))
       rack.remove
     end
   end
 
   describe '#add_rack_resource' do
     before :each do
-      @rack = OneviewSDK::Rack.new(@client)
+      @rack = OneviewSDK::Rack.new(@client_200)
     end
 
     it 'Add one resource' do
-      enclosure1 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake')
+      enclosure1 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake')
       @rack.add_rack_resource(enclosure1)
       expect(@rack['rackMounts'].first['mountUri']).to eq(enclosure1['uri'])
       expect(@rack['rackMounts'].first['location']).to eq('CenterFront')
     end
 
     it 'Add one resource with options' do
-      enclosure1 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake')
+      enclosure1 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake')
       @rack.add_rack_resource(enclosure1, location: 'Left', topUSlot: 20, uHeight: 10)
       expect(@rack['rackMounts'].first['mountUri']).to eq(enclosure1['uri'])
       expect(@rack['rackMounts'].first['location']).to eq('Left')
@@ -110,7 +110,7 @@ RSpec.describe OneviewSDK::Rack do
     end
 
     it 'Add existing resource and update attributes' do
-      enclosure1 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake')
+      enclosure1 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake')
       @rack.add_rack_resource(enclosure1, location: 'Left', topUSlot: 20, uHeight: 10)
       expect(@rack['rackMounts'].first['mountUri']).to eq(enclosure1['uri'])
       expect(@rack['rackMounts'].first['location']).to eq('Left')
@@ -128,8 +128,8 @@ RSpec.describe OneviewSDK::Rack do
     end
 
     it 'Add multiple resources' do
-      enclosure1 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake1')
-      enclosure2 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake2')
+      enclosure1 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake1')
+      enclosure2 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake2')
       @rack.add_rack_resource(enclosure1)
       @rack.add_rack_resource(enclosure2)
 
@@ -142,17 +142,17 @@ RSpec.describe OneviewSDK::Rack do
 
   describe '#remove_rack_resource' do
     before :each do
-      @rack = OneviewSDK::Rack.new(@client)
+      @rack = OneviewSDK::Rack.new(@client_200)
     end
 
     it 'Remove one resource' do
-      enclosure1 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake')
+      enclosure1 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake')
       @rack.add_rack_resource(enclosure1)
     end
 
     it 'Remove only one resource' do
-      enclosure1 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake1')
-      enclosure2 = OneviewSDK::Enclosure.new(@client, uri: '/rest/enclosures/fake2')
+      enclosure1 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake1')
+      enclosure2 = OneviewSDK::Enclosure.new(@client_200, uri: '/rest/enclosures/fake2')
       @rack.add_rack_resource(enclosure1)
       @rack.add_rack_resource(enclosure2)
       @rack.remove_rack_resource(enclosure2)
@@ -166,22 +166,22 @@ RSpec.describe OneviewSDK::Rack do
 
   describe '#create' do
     it 'Should raise error if used' do
-      rack = OneviewSDK::Rack.new(@client)
+      rack = OneviewSDK::Rack.new(@client_200)
       expect { rack.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
   end
 
   describe '#delete' do
     it 'Should raise error if used' do
-      rack = OneviewSDK::Rack.new(@client)
+      rack = OneviewSDK::Rack.new(@client_200)
       expect { rack.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
 
   describe '#get_device_topology' do
     it 'Device topology' do
-      rack = OneviewSDK::Rack.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_get).with('/rest/fake/deviceTopology').and_return(FakeResponse.new({}))
+      rack = OneviewSDK::Rack.new(@client_200, uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/deviceTopology').and_return(FakeResponse.new({}))
       rack.get_device_topology
     end
   end

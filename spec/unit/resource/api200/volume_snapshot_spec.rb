@@ -13,14 +13,14 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
 
   describe '#initialize' do
     it 'sets the type correctly' do
-      template = OneviewSDK::VolumeSnapshot.new(@client)
+      template = OneviewSDK::VolumeSnapshot.new(@client_200)
       expect(template[:type]).to eq('Snapshot')
     end
   end
 
   describe 'undefined methods' do
     before :each do
-      @item = OneviewSDK::VolumeSnapshot.new(@client, {})
+      @item = OneviewSDK::VolumeSnapshot.new(@client_200, {})
     end
 
     it 'does not allow the create action' do
@@ -35,17 +35,17 @@ RSpec.describe OneviewSDK::VolumeSnapshot do
 
   describe 'helpers' do
     before :each do
-      @item = OneviewSDK::VolumeSnapshot.new(@client, options)
+      @item = OneviewSDK::VolumeSnapshot.new(@client_200, options)
     end
 
     describe '#set_volume' do
       it 'sets the storageVolumeUri' do
-        @item.set_volume(OneviewSDK::Volume.new(@client, uri: '/rest/storage-volumes/fake'))
+        @item.set_volume(OneviewSDK::Volume.new(@client_200, uri: '/rest/storage-volumes/fake'))
         expect(@item['storageVolumeUri']).to eq('/rest/storage-volumes/fake')
       end
 
       it 'requires a storage_volume with a uri' do
-        vol = OneviewSDK::Volume.new(@client)
+        vol = OneviewSDK::Volume.new(@client_200)
         expect { @item.set_volume(vol) }.to raise_error(OneviewSDK::IncompleteResource, /Must set/)
       end
     end

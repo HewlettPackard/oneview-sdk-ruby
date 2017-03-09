@@ -25,7 +25,7 @@ RSpec.describe OneviewSDK::Cli do
 
     before :each do
       @resource_data = { 'name' => 'Profile1', 'uri' => '/rest/fake', 'description' => 'Blah' }
-      response = [OneviewSDK::Resource.new(@client, @resource_data)]
+      response = [OneviewSDK::Resource.new(@client_200, @resource_data)]
       allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
     end
 

@@ -1,5 +1,15 @@
 # Unreleased Changes
+## Suggested release: v5.0.0
+
+#### New Resources:
 (none)
+
+#### Bug fixes & Enhancements:
+- [#201](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/201) Code to search the collection of resources (paginated search) is repeated in some resources
+- [#119](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
+
+#### Design changes:
+   - Architecture for future API500 support. Features for API500 are not yet supported.
 
 # v4.1.0
 #### Bug fixes & Enhancements:
