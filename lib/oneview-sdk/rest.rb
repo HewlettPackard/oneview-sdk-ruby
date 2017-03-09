@@ -126,9 +126,9 @@ module OneviewSDK
     # @return [Hash] The parsed JSON body of response
     def upload_file(file_path, path, options = {}, timeout = READ_TIMEOUT)
       raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
-      options = options.dup
-      body_params = options.delete('body') || options.delete(:body) || {}
-      headers_params = options.delete('header') || options.delete(:header) || {}
+      options = Hash[options.map { |k, v| [k.to_s, v] }]
+      body_params = options['body'] || {}
+      headers_params = options['header'] || {}
       headers = {
         'Content-Type' => 'multipart/form-data',
         'X-Api-Version' => @api_version.to_s,
@@ -137,7 +137,7 @@ module OneviewSDK
       headers.merge!(headers_params)
 
       File.open(file_path) do |file|
-        name_to_show = options['file_name'] || options[:file_name] || File.basename(file_path)
+        name_to_show = options['file_name'] || File.basename(file_path)
         body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
 
         uri = URI.parse(URI.escape(@url + path))
