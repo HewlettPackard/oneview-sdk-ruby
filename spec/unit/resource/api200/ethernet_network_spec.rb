@@ -5,7 +5,7 @@ RSpec.describe OneviewSDK::EthernetNetwork do
 
   describe '#initialize' do
     it 'sets the defaults correctly api_ver 200' do
-      item = OneviewSDK::EthernetNetwork.new(@client, {}, 200)
+      item = OneviewSDK::EthernetNetwork.new(@client_200, {}, 200)
       expect(item[:ethernetNetworkType]).to eq('Tagged')
       expect(item[:type]).to eq('ethernet-networkV3')
     end
@@ -13,13 +13,13 @@ RSpec.describe OneviewSDK::EthernetNetwork do
 
   describe '#get_associated_profiles' do
     it 'requires a uri' do
-      expect { OneviewSDK::EthernetNetwork.new(@client).get_associated_profiles }
+      expect { OneviewSDK::EthernetNetwork.new(@client_200).get_associated_profiles }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'returns the response body from uri/associatedProfiles' do
-      item = OneviewSDK::EthernetNetwork.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_get).with("#{item['uri']}/associatedProfiles", item.api_version)
+      item = OneviewSDK::EthernetNetwork.new(@client_200, uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_get).with("#{item['uri']}/associatedProfiles", item.api_version)
         .and_return(FakeResponse.new('[]'))
       expect(item.get_associated_profiles).to eq('[]')
     end
@@ -27,13 +27,13 @@ RSpec.describe OneviewSDK::EthernetNetwork do
 
   describe '#get_associated_uplink_groups' do
     it 'requires a uri' do
-      expect { OneviewSDK::EthernetNetwork.new(@client).get_associated_uplink_groups }
+      expect { OneviewSDK::EthernetNetwork.new(@client_200).get_associated_uplink_groups }
         .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'returns the response body from uri/associatedUplinkGroups' do
-      item = OneviewSDK::EthernetNetwork.new(@client, uri: '/rest/fake')
-      expect(@client).to receive(:rest_get).with("#{item['uri']}/associatedUplinkGroups", item.api_version)
+      item = OneviewSDK::EthernetNetwork.new(@client_200, uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_get).with("#{item['uri']}/associatedUplinkGroups", item.api_version)
         .and_return(FakeResponse.new('[]'))
       expect(item.get_associated_uplink_groups).to eq('[]')
     end
@@ -53,7 +53,7 @@ RSpec.describe OneviewSDK::EthernetNetwork do
       expect_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new(networks, 200))
       expect_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(FakeResponse.new({}, 202))
       expect_any_instance_of(OneviewSDK::Client).to receive(:wait_for).and_return({})
-      list = OneviewSDK::EthernetNetwork.bulk_create(@client, options)
+      list = OneviewSDK::EthernetNetwork.bulk_create(@client_200, options)
       expect(list.length).to eq(3)
     end
   end

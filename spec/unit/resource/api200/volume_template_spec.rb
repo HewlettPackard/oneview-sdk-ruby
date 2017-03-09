@@ -27,17 +27,17 @@ RSpec.describe OneviewSDK::VolumeTemplate do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      profile = OneviewSDK::VolumeTemplate.new(@client)
+      profile = OneviewSDK::VolumeTemplate.new(@client_200)
       expect(profile[:type]).to eq('StorageVolumeTemplateV3')
     end
   end
 
   describe '#create' do
     it 'adds a language header to the request' do
-      item = OneviewSDK::VolumeTemplate.new(@client, name: 'Fake')
+      item = OneviewSDK::VolumeTemplate.new(@client_200, name: 'Fake')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(uri: '/rest/fake')
-      expect(@client).to receive(:rest_post).with(
+      expect(@client_200).to receive(:rest_post).with(
         '/rest/storage-volume-templates',
         { 'Accept-Language' => 'en_US', 'body' => item.data },
         item.api_version
@@ -49,14 +49,14 @@ RSpec.describe OneviewSDK::VolumeTemplate do
 
   describe '#update' do
     it 'requires a uri' do
-      expect { OneviewSDK::VolumeTemplate.new(@client).update }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { OneviewSDK::VolumeTemplate.new(@client_200).update }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
     it 'updates the name of the volume template' do
-      item = OneviewSDK::VolumeTemplate.new(@client, uri: '/rest/fake', name: 'Fake')
+      item = OneviewSDK::VolumeTemplate.new(@client_200, uri: '/rest/fake', name: 'Fake')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_put).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(true).and_return(item['name'] = 'Fake2')
-      expect(@client).to receive(:rest_put).with(
+      expect(@client_200).to receive(:rest_put).with(
         '/rest/fake',
         { 'Accept-Language' => 'en_US', 'body' => item.data },
         item.api_version
@@ -69,10 +69,10 @@ RSpec.describe OneviewSDK::VolumeTemplate do
 
   describe '#delete' do
     it 'adds a language header to the request' do
-      item = OneviewSDK::VolumeTemplate.new(@client, name: 'Fake', uri: '/rest/fake')
+      item = OneviewSDK::VolumeTemplate.new(@client_200, name: 'Fake', uri: '/rest/fake')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_delete).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
-      expect(@client).to receive(:rest_delete).with(
+      expect(@client_200).to receive(:rest_delete).with(
         '/rest/fake',
         { 'Accept-Language' => 'en_US' },
         item.api_version
@@ -84,7 +84,7 @@ RSpec.describe OneviewSDK::VolumeTemplate do
   describe '#set' do
     context 'provisioning' do
       it 'Attributes' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
+        volume_template = OneviewSDK::VolumeTemplate.new(@client_200)
         volume_template.set_provisioning(true, 'Thin', '10737418240', fake_storage_pool)
         expect(volume_template['provisioning']['shareable']).to eq(true)
         expect(volume_template['provisioning']['provisionType']).to eq('Thin')
@@ -95,13 +95,13 @@ RSpec.describe OneviewSDK::VolumeTemplate do
 
     context 'data' do
       it 'storage system' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
+        volume_template = OneviewSDK::VolumeTemplate.new(@client_200)
         volume_template.set_storage_system(fake_storage_system)
         expect(volume_template['storageSystemUri']).to eq('/rest/storage-systems/fake_uri')
       end
 
       it 'snapshot pool' do
-        volume_template = OneviewSDK::VolumeTemplate.new(@client)
+        volume_template = OneviewSDK::VolumeTemplate.new(@client_200)
         volume_template.set_snapshot_pool(fake_snapshot_pool)
         expect(volume_template['snapshotPoolUri']).to eq('/rest/storage-systems/snapshot-pools/fake_uri')
       end
@@ -110,9 +110,9 @@ RSpec.describe OneviewSDK::VolumeTemplate do
 
   describe '#get_connectable_volume_templates' do
     it 'gets the connectable volume templates by its attributes' do
-      volume_template = OneviewSDK::VolumeTemplate.new(@client)
+      volume_template = OneviewSDK::VolumeTemplate.new(@client_200)
       allow(OneviewSDK::Resource)
-        .to receive(:find_by).with(@client, {}, '/rest/storage-volume-templates/connectable-volume-templates').and_return('fake')
+        .to receive(:find_by).with(@client_200, {}, '/rest/storage-volume-templates/connectable-volume-templates').and_return('fake')
       expect(volume_template.get_connectable_volume_templates).to eq('fake')
     end
   end

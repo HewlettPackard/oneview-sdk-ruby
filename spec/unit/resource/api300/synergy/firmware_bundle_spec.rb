@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'net/http/post/multipart'
 
 RSpec.describe OneviewSDK::API300::Synergy::FirmwareBundle do
   include_context 'shared context'
