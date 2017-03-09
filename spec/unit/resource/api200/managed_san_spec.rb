@@ -5,37 +5,37 @@ RSpec.describe OneviewSDK::ManagedSAN do
 
   describe '#create' do
     it 'is unavailable' do
-      san = OneviewSDK::ManagedSAN.new(@client)
+      san = OneviewSDK::ManagedSAN.new(@client_200)
       expect { san.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
   end
 
   describe '#delete' do
     it 'is unavailable' do
-      san = OneviewSDK::ManagedSAN.new(@client)
+      san = OneviewSDK::ManagedSAN.new(@client_200)
       expect { san.delete }.to raise_error(/The method #delete is unavailable for this resource/)
     end
   end
 
   describe '#update' do
     it 'is unavailable' do
-      san = OneviewSDK::ManagedSAN.new(@client)
+      san = OneviewSDK::ManagedSAN.new(@client_200)
       expect { san.update }.to raise_error(/The method #update is unavailable for this resource/)
     end
   end
 
   describe '#get_endpoints' do
     it 'List endpoints' do
-      san = OneviewSDK::ManagedSAN.new(@client, uri: '/rest/fc-sans/managed-sans/100')
-      expect(@client).to receive(:rest_get).with('/rest/fc-sans/managed-sans/100/endpoints').and_return(FakeResponse.new({}))
+      san = OneviewSDK::ManagedSAN.new(@client_200, uri: '/rest/fc-sans/managed-sans/100')
+      expect(@client_200).to receive(:rest_get).with('/rest/fc-sans/managed-sans/100/endpoints').and_return(FakeResponse.new({}))
       expect { san.get_endpoints }.not_to raise_error
     end
   end
 
   describe '#set_refresh_state' do
     it 'Refresh managed SAN' do
-      san = OneviewSDK::ManagedSAN.new(@client, uri: '/rest/fc-sans/managed-sans/100')
-      expect(@client).to receive(:rest_put).with(
+      san = OneviewSDK::ManagedSAN.new(@client_200, uri: '/rest/fc-sans/managed-sans/100')
+      expect(@client_200).to receive(:rest_put).with(
         '/rest/fc-sans/managed-sans/100',
         'body' => { refreshState: 'RefreshPending' }
       ).and_return(FakeResponse.new({}))
@@ -53,8 +53,8 @@ RSpec.describe OneviewSDK::ManagedSAN do
           valueFormat: 'None'
         }
       ]
-      san = OneviewSDK::ManagedSAN.new(@client, uri: '/rest/fc-sans/managed-sans/100')
-      expect(@client).to receive(:rest_put).with(
+      san = OneviewSDK::ManagedSAN.new(@client_200, uri: '/rest/fc-sans/managed-sans/100')
+      expect(@client_200).to receive(:rest_put).with(
         '/rest/fc-sans/managed-sans/100',
         'body' => { publicAttributes: attributes }
       ).and_return(FakeResponse.new({}))
@@ -72,8 +72,8 @@ RSpec.describe OneviewSDK::ManagedSAN do
         targetNameFormat: '{storageSystemName}_{targetName}',
         targetGroupNameFormat: '{storageSystemName}_{targetGroupName}'
       }
-      san = OneviewSDK::ManagedSAN.new(@client, uri: '/rest/fc-sans/managed-sans/100')
-      expect(@client).to receive(:rest_put).with(
+      san = OneviewSDK::ManagedSAN.new(@client_200, uri: '/rest/fc-sans/managed-sans/100')
+      expect(@client_200).to receive(:rest_put).with(
         '/rest/fc-sans/managed-sans/100',
         'body' => { sanPolicy: policy }
       ).and_return(FakeResponse.new({}))
@@ -83,8 +83,8 @@ RSpec.describe OneviewSDK::ManagedSAN do
 
   describe '#get_zoning_report' do
     it 'Retrieve zoning report' do
-      san = OneviewSDK::ManagedSAN.new(@client, uri: '/rest/fc-sans/managed-sans/100')
-      expect(@client).to receive(:rest_post).with(
+      san = OneviewSDK::ManagedSAN.new(@client_200, uri: '/rest/fc-sans/managed-sans/100')
+      expect(@client_200).to receive(:rest_post).with(
         '/rest/fc-sans/managed-sans/100/issues',
         'body' => {}
       ).and_return(FakeResponse.new({}))
