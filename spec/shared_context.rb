@@ -50,6 +50,17 @@ RSpec.shared_context 'integration api300 context', a: :b do
   integration_context_debugging
 end
 
+# Context for API500 integration testing:
+RSpec.shared_context 'integration api500 context', a: :b do
+  before :all do
+    integration_context
+    $client_500 ||= OneviewSDK::Client.new($config.merge(api_version: 500))
+    $client_500_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 500))
+  end
+
+  integration_context_debugging
+end
+
 # Context for Image Streamer API300 integration testing:
 RSpec.shared_context 'integration i3s api300 context', a: :b do
   before :all do
