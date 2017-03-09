@@ -132,36 +132,16 @@ module OneviewSDK
       # @return [Array] Array of snapshots
       def get_snapshots
         ensure_uri && ensure_client
-        results = []
         uri = "#{@data['uri']}/snapshots"
-        loop do
-          response = @client.rest_get(uri, @api_version)
-          body = @client.response_handler(response)
-          members = body['members']
-          members.each do |member|
-            results.push(member)
-          end
-          break unless body['nextPageUri']
-          uri = body['nextPageUri']
-        end
-        results
+        self.class.find_with_pagination(@client, uri)
       end
 
       # Gets all the attachable volumes managed by the appliance
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @return [Array<OneviewSDK::Volume>] Array of volumes
       def self.get_attachable_volumes(client)
-        results = []
         uri = "#{BASE_URI}/attachable-volumes"
-        loop do
-          response = client.rest_get(uri)
-          body = client.response_handler(response)
-          members = body['members']
-          members.each { |member| results.push(OneviewSDK::Volume.new(client, member)) }
-          break unless body['nextPageUri']
-          uri = body['nextPageUri']
-        end
-        results
+        find_by(client, {}, uri)
       end
 
       # Gets the list of extra managed storage volume paths
