@@ -20,5 +20,7 @@ guard :rspec, cmd: 'bundle exec rspec --color', first_match: true do
   watch(%r{^(spec\/.+_spec\.rb)$}) { |m| m[1] }
   watch('lib/oneview-sdk/cli.rb') { 'spec/unit/cli' }
   watch(%r{^lib\/oneview-sdk\/(.+)\.rb$}) { |m| "spec/unit/#{m[1]}_spec.rb" }
+  watch(%r{^(spec\/support\/\w+\.rb)$}) { 'spec/unit' }
+  watch(%r{^spec\/support\/fixtures\/unit\/(\w+)\/.+$}) { |m| "spec/unit/#{m[1]}" }
   watch(%r{^lib\/(.+)\.rb$}) { 'spec/unit' } # Everything else
 end
