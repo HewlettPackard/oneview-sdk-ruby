@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-guard :rubocop, cli: ['-D'] do
+guard :rubocop, cmd: 'bundle exec rubocop', cli: ['-D'] do
   watch('.rubocop.yml')
   watch(/(.+\.rb)$/) { |m| m[1] }
   watch(/^(Gemfile|Rakefile)$/) { |m| m[1] }
