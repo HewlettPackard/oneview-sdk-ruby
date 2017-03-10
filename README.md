@@ -425,6 +425,7 @@ First run `$ bundle` (requires the bundler gem), then...
 ### Testing
  - RuboCop: `$ rake rubocop`
  - Unit: `$ rake spec`
+ - Optional: Start guard to run unit tests & rubocop automatically on file changes: `$ bundle exec guard`
  - Integration: See the [spec/integration](spec/integration/) README
  - All: Run `$ rake test:all` to run RuboCop, unit, & integration tests.
  - Examples: See the [examples](examples/) README
