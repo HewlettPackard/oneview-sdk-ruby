@@ -50,8 +50,7 @@ module OneviewSDK
             file_name = File.basename(file_path)
           end
 
-          params = { 'name' => file_name }
-          body = client.upload_file(file_path, BASE_URI, params, timeout)
+          body = client.upload_file(file_path, BASE_URI, { 'file_name' => file_name }, timeout)
           ArtifactBundle.new(client, body)
         end
 
@@ -76,22 +75,21 @@ module OneviewSDK
         #   If there are any artifacts existing, they will be removed before the extract operation.
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance
         # @param [String] file_path The file path with file extension
-        # @param [String] artifact_name The name for the artifact that will be created
+        # @param [String] artifact_name The name for the artifact that will be created. Default is the file name.
         # @param [Integer] timeout The number of seconds to wait for completing the request. Default is 300.
         # @return [Hash] The result hash with DeploymentGroup data
-        def self.create_backup_from_file!(client, deployment_group, file_path, artifact_name, timeout = OneviewSDK::Rest::READ_TIMEOUT)
+        def self.create_backup_from_file!(client, deployment_group, file_path, artifact_name = nil, timeout = OneviewSDK::Rest::READ_TIMEOUT)
           ensure_resource!(deployment_group)
           ensure_file_path_extension!(file_path)
 
-          file_name = artifact_name.dup
-          if file_name && !file_name.empty?
-            file_name += File.extname(file_path)
-          else
-            file_name = File.basename(file_path)
-          end
+          file_name = if artifact_name && !artifact_name.empty?
+                        artifact_name + File.extname(file_path)
+                      else
+                        File.basename(file_path)
+                      end
 
-          params = { 'name' => file_name, 'deploymentGrpUri' => deployment_group['uri'] }
-          client.upload_file(file_path, BACKUPS_ARCHIVE_URI, params, timeout)
+          params = { 'deploymentGrpUri' => deployment_group['uri'] }
+          client.upload_file(file_path, BACKUPS_ARCHIVE_URI, { 'file_name' => file_name, 'body' => params }, timeout)
         end
 
         # Download the backup bundle

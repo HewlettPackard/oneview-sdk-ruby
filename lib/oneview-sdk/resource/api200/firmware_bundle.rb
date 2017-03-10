@@ -9,54 +9,21 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require 'net/http/post/multipart'
-
 module OneviewSDK
   module API200
     # Firmware bundle resource implementation
     class FirmwareBundle
       BASE_URI = '/rest/firmware-bundles'.freeze
-      READ_TIMEOUT = 300 # in seconds, 5 minutes
 
       # Uploads a firmware bundle file
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @param [String] file_path
       # @param [Integer] timeout The number of seconds to wait for completing the request
       # @return [OneviewSDK::FirmwareDriver] if the upload was successful, return a FirmwareDriver object
-      def self.add(client, file_path, timeout = READ_TIMEOUT)
-        raise NotFound, "ERROR: File '#{file_path}' not found!" unless File.file?(file_path)
-        options = {}
-        options['Content-Type'] = 'multipart/form-data'
-        options['X-Api-Version'] = client.api_version.to_s
-        options['auth'] = client.token
-        options['uploadfilename'] = File.basename(file_path)
-        url = URI.parse(URI.escape("#{client.url}#{BASE_URI}"))
-
-        File.open(file_path) do |file|
-          req = Net::HTTP::Post::Multipart.new(
-            url.path,
-            { 'file' => UploadIO.new(file, 'application/octet-stream', File.basename(file_path)) },
-            options
-          )
-
-          http_request = Net::HTTP.new(url.host, url.port)
-          http_request.use_ssl = true
-          http_request.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          http_request.read_timeout = timeout
-
-          http_request.start do |http|
-            begin
-              response = http.request(req)
-              data = client.response_handler(response)
-              return OneviewSDK::FirmwareDriver.new(client, data)
-            rescue Net::ReadTimeout
-              raise "The connection was closed because the timeout of #{timeout} seconds has expired."\
-                'You can specify the timeout in seconds by passing the timeout on the method call.'\
-                'Interrupted firmware uploads may result in corrupted firmware remaining in the appliance.'\
-                'HPE recommends checking the appliance for corrupted firmware and removing it.'
-            end
-          end
-        end
+      def self.add(client, file_path, timeout = OneviewSDK::Rest::READ_TIMEOUT)
+        options = { 'header' => { 'uploadfilename' => File.basename(file_path) } }
+        result = client.upload_file(file_path, BASE_URI, options, timeout)
+        OneviewSDK::FirmwareDriver.new(client, result)
       end
     end
   end

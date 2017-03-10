@@ -14,21 +14,21 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'requires a path' do
-      expect { @client.rest_api(:get, nil) }.to raise_error(OneviewSDK::InvalidRequest, /Must specify path/)
+      expect { @client_200.rest_api(:get, nil) }.to raise_error(OneviewSDK::InvalidRequest, /Must specify path/)
     end
 
     it 'logs the request type and path (debug level)' do
-      @client.logger.level = @client.logger.class.const_get('DEBUG')
+      @client_200.logger.level = @client_200.logger.class.const_get('DEBUG')
       %w(get post put patch delete).each do |type|
-        expect { @client.rest_api(type, path) }
-          .to output(/Making :#{type} rest call to #{@client.url + path}/).to_stdout_from_any_process
+        expect { @client_200.rest_api(type, path) }
+          .to output(/Making :#{type} rest call to #{@client_200.url + path}/).to_stdout_from_any_process
       end
     end
 
     it 'raises an error when the ssl validation fails' do
       allow_any_instance_of(Net::HTTP).to receive(:request).and_raise(OpenSSL::SSL::SSLError, 'Msg')
-      expect(@client.logger).to receive(:error).with(/SSL verification failed/)
-      expect { @client.rest_api(:get, path) }.to raise_error(OpenSSL::SSL::SSLError)
+      expect(@client_200.logger).to receive(:error).with(/SSL verification failed/)
+      expect { @client_200.rest_api(:get, path) }.to raise_error(OpenSSL::SSL::SSLError)
     end
 
     it 'respects the client.timeout value' do
@@ -45,7 +45,7 @@ RSpec.describe OneviewSDK::Client do
       expect(response1).to receive(:class).and_return(Net::HTTPRedirection) # Simulate 301 on first request
       response2 = FakeResponse.new({ name: 'New' }, 200)
       expect(http).to receive(:request).and_return(response1, response2)
-      r = @client.rest_api(:get, path)
+      r = @client_200.rest_api(:get, path)
       expect(r).to eq(response2)
     end
 
@@ -53,8 +53,8 @@ RSpec.describe OneviewSDK::Client do
       response = FakeResponse.new({ name: 'New' }, 301, 'location' => path)
       allow(response.class).to receive(:<=).with(Net::HTTPRedirection).and_return(true)
       allow_any_instance_of(Net::HTTP).to receive(:request).and_return(response)
-      expect(@client).to receive(:rest_api).exactly(4).times.and_call_original
-      r = @client.rest_api(:get, path)
+      expect(@client_200).to receive(:rest_api).exactly(4).times.and_call_original
+      r = @client_200.rest_api(:get, path)
       expect(r).to eq(response)
     end
 
@@ -62,97 +62,97 @@ RSpec.describe OneviewSDK::Client do
       response = FakeResponse.new({ name: 'New' }, 301)
       allow(response.class).to receive(:<=).with(Net::HTTPRedirection).and_return(true)
       allow_any_instance_of(Net::HTTP).to receive(:request).and_return(response)
-      expect(@client).to receive(:rest_api).once.and_call_original
-      @client.rest_api(:get, path)
+      expect(@client_200).to receive(:rest_api).once.and_call_original
+      @client_200.rest_api(:get, path)
     end
   end
 
   describe '#rest_get' do
     it 'calls rest_api' do
-      expect(@client).to receive(:rest_api).with(:get, path, {}, @client.api_version)
-      @client.rest_get(path)
+      expect(@client_200).to receive(:rest_api).with(:get, path, {}, @client_200.api_version)
+      @client_200.rest_get(path)
     end
   end
 
   describe '#rest_post' do
     it 'calls rest_api' do
-      expect(@client).to receive(:rest_api).with(:post, path, { body: data }, @client.api_version)
-      @client.rest_post(path, { body: data }, @client.api_version)
+      expect(@client_200).to receive(:rest_api).with(:post, path, { body: data }, @client_200.api_version)
+      @client_200.rest_post(path, { body: data }, @client_200.api_version)
     end
 
     it 'has default options and api_ver' do
-      expect(@client).to receive(:rest_api).with(:post, path, {}, @client.api_version)
-      @client.rest_post(path)
+      expect(@client_200).to receive(:rest_api).with(:post, path, {}, @client_200.api_version)
+      @client_200.rest_post(path)
     end
   end
 
   describe '#rest_put' do
     it 'calls rest_api' do
-      expect(@client).to receive(:rest_api).with(:put, path, {}, @client.api_version)
-      @client.rest_put(path, {}, @client.api_version)
+      expect(@client_200).to receive(:rest_api).with(:put, path, {}, @client_200.api_version)
+      @client_200.rest_put(path, {}, @client_200.api_version)
     end
 
     it 'has default options and api_ver' do
-      expect(@client).to receive(:rest_api).with(:put, path, {}, @client.api_version)
-      @client.rest_put(path)
+      expect(@client_200).to receive(:rest_api).with(:put, path, {}, @client_200.api_version)
+      @client_200.rest_put(path)
     end
   end
 
   describe '#rest_patch' do
     it 'calls rest_api' do
-      expect(@client).to receive(:rest_api).with(:patch, path, {}, @client.api_version)
-      @client.rest_patch(path, {}, @client.api_version)
+      expect(@client_200).to receive(:rest_api).with(:patch, path, {}, @client_200.api_version)
+      @client_200.rest_patch(path, {}, @client_200.api_version)
     end
 
     it 'has default options and api_ver' do
-      expect(@client).to receive(:rest_api).with(:patch, path, {}, @client.api_version)
-      @client.rest_patch(path)
+      expect(@client_200).to receive(:rest_api).with(:patch, path, {}, @client_200.api_version)
+      @client_200.rest_patch(path)
     end
   end
 
   describe '#rest_delete' do
     it 'calls rest_api' do
-      expect(@client).to receive(:rest_api).with(:delete, path, {}, @client.api_version)
-      @client.rest_delete(path, {}, @client.api_version)
+      expect(@client_200).to receive(:rest_api).with(:delete, path, {}, @client_200.api_version)
+      @client_200.rest_delete(path, {}, @client_200.api_version)
     end
 
     it 'has default options and api_ver' do
-      expect(@client).to receive(:rest_api).with(:delete, path, {}, @client.api_version)
-      @client.rest_delete(path)
+      expect(@client_200).to receive(:rest_api).with(:delete, path, {}, @client_200.api_version)
+      @client_200.rest_delete(path)
     end
   end
 
   describe '#response_handler' do
     it 'returns the JSON-parsed body for 200 status' do
-      expect(@client.response_handler(FakeResponse.new(data))).to eq(data)
+      expect(@client_200.response_handler(FakeResponse.new(data))).to eq(data)
     end
 
     it 'returns the JSON-parsed body for 201 status' do
-      expect(@client.response_handler(FakeResponse.new(data, 201))).to eq(data)
+      expect(@client_200.response_handler(FakeResponse.new(data, 201))).to eq(data)
     end
 
     it 'waits on the task completion for 202 status' do
       initial_response = FakeResponse.new(data, 202, 'location' => '/rest/task/fake')
 
       wait_response = FakeResponse.new({}, 200, 'associatedResource' => { 'resourceUri' => data['uri'] })
-      expect(@client).to receive(:wait_for).with('/rest/task/fake').and_return(wait_response)
+      expect(@client_200).to receive(:wait_for).with('/rest/task/fake').and_return(wait_response)
 
-      expect(@client).to receive(:rest_get).with(data['uri']).and_return(FakeResponse.new(data))
-      expect(@client.response_handler(initial_response)).to eq(data)
+      expect(@client_200).to receive(:rest_get).with(data['uri']).and_return(FakeResponse.new(data))
+      expect(@client_200.response_handler(initial_response)).to eq(data)
     end
 
     it 'allows you to set wait_for_task to false' do
       response = FakeResponse.new(data, 202, 'location' => '/rest/task/fake')
-      expect(@client.response_handler(response, false)).to eq(data)
+      expect(@client_200.response_handler(response, false)).to eq(data)
     end
 
     it 'returns an empty hash for 204 status' do
-      expect(@client.response_handler(FakeResponse.new({}, 204))).to eq({})
+      expect(@client_200.response_handler(FakeResponse.new({}, 204))).to eq({})
     end
 
     it 'raises an error for 400 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 400)
-      expect { @client.response_handler(resp) }.to raise_error { |e|
+      expect { @client_200.response_handler(resp) }.to raise_error { |e|
         expect(e).to be_a(OneviewSDK::BadRequest)
         expect(e.message).to match(/400 BAD REQUEST.*Blah/)
         expect(e.data).to eq(resp)
@@ -161,7 +161,7 @@ RSpec.describe OneviewSDK::Client do
 
     it 'raises an error for 401 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 401)
-      expect { @client.response_handler(resp) }.to raise_error { |e|
+      expect { @client_200.response_handler(resp) }.to raise_error { |e|
         expect(e).to be_a(OneviewSDK::Unauthorized)
         expect(e.message).to match(/401 UNAUTHORIZED.*Blah/)
         expect(e.data).to eq(resp)
@@ -170,7 +170,7 @@ RSpec.describe OneviewSDK::Client do
 
     it 'raises an error for 404 status' do
       resp = FakeResponse.new({ message: 'Blah' }, 404)
-      expect { @client.response_handler(resp) }.to raise_error { |e|
+      expect { @client_200.response_handler(resp) }.to raise_error { |e|
         expect(e).to be_a(OneviewSDK::NotFound)
         expect(e.message).to match(/404 NOT FOUND.*Blah/)
         expect(e.data).to eq(resp)
@@ -180,35 +180,36 @@ RSpec.describe OneviewSDK::Client do
     it 'raises an error for undefined status codes' do
       [0, 19, 199, 203, 399, 402, 500].each do |status|
         resp = FakeResponse.new({ message: 'Blah' }, status)
-        expect { @client.response_handler(resp) }.to raise_error(OneviewSDK::RequestError, /#{status}.*Blah/)
+        expect { @client_200.response_handler(resp) }.to raise_error(OneviewSDK::RequestError, /#{status}.*Blah/)
       end
     end
   end
 
   describe '#build_request' do
     before :each do
-      @uri = URI.parse(URI.escape(@client.url + path))
+      @uri = URI.parse(URI.escape(@client_200.url + path))
       @options = {
-        'X-API-Version' => @client.api_version,
-        'auth' => @client.token
+        'X-API-Version' => @client_200.api_version,
+        'auth' => @client_200.token
       }
     end
 
     it 'fails when an invalid request type is given' do
-      expect { @client.send(:build_request, :fake, @uri, {}, @client.api_version) }.to raise_error(OneviewSDK::InvalidRequest, /Invalid rest method/)
+      expect { @client_200.send(:build_request, :fake, @uri, {}, @client_200.api_version) }
+        .to raise_error(OneviewSDK::InvalidRequest, /Invalid rest method/)
     end
 
     context 'default header values' do
       before :each do
-        @req = @client.send(:build_request, :get, @uri, {}, @client.api_version)
+        @req = @client_200.send(:build_request, :get, @uri, {}, @client_200.api_version)
       end
 
       it 'sets the X-API-Version' do
-        expect(@req['x-api-version']).to eq(@client.api_version.to_s)
+        expect(@req['x-api-version']).to eq(@client_200.api_version.to_s)
       end
 
       it 'sets the auth token' do
-        expect(@req['auth']).to eq(@client.token)
+        expect(@req['auth']).to eq(@client_200.token)
       end
 
       it 'sets the Content-Type' do
@@ -218,7 +219,7 @@ RSpec.describe OneviewSDK::Client do
 
     it 'allows deletion of default headers' do
       options = { 'Content-Type' => :none, 'X-API-Version' => :none, 'auth' => 'none' }
-      req = @client.send(:build_request, :get, @uri, options, @client.api_version)
+      req = @client_200.send(:build_request, :get, @uri, options, @client_200.api_version)
       expect(req['Content-Type']).to eq(nil)
       expect(req['x-api-version']).to eq(nil)
       expect(req['auth']).to eq(nil)
@@ -226,20 +227,20 @@ RSpec.describe OneviewSDK::Client do
 
     it 'allows additional headers to be set' do
       options = { 'My-Header' => 'blah' }
-      req = @client.send(:build_request, :get, @uri, options, @client.api_version)
+      req = @client_200.send(:build_request, :get, @uri, options, @client_200.api_version)
       expect(req['My-Header']).to eq('blah')
     end
 
     it 'sets the body option to the request body' do
       options = { 'body' => { name: 'New', uri: path } }
-      req = @client.send(:build_request, :get, @uri, options, @client.api_version)
+      req = @client_200.send(:build_request, :get, @uri, options, @client_200.api_version)
       expect(req.body).to eq(options['body'].to_json)
     end
 
     it 'logs the request options (debug level)' do
-      def_options = { 'X-API-Version' => @client.api_version, 'auth' => 'secretToken', 'Content-Type' => 'application/json' }
-      @client.logger.level = @client.logger.class.const_get('DEBUG')
-      expect { @client.send(:build_request, :get, @uri, {}, @client.api_version) }
+      def_options = { 'X-API-Version' => @client_200.api_version, 'auth' => 'secretToken', 'Content-Type' => 'application/json' }
+      @client_200.logger.level = @client_200.logger.class.const_get('DEBUG')
+      expect { @client_200.send(:build_request, :get, @uri, {}, @client_200.api_version) }
         .to output(/Options: #{def_options}/).to_stdout_from_any_process
     end
   end
@@ -247,7 +248,7 @@ RSpec.describe OneviewSDK::Client do
   describe 'upload_file' do
     context 'when file does not exist' do
       it 'should raise exception' do
-        expect { @client.upload_file('file.zip', '/uri') }.to raise_error(OneviewSDK::NotFound, //)
+        expect { @client_200.upload_file('file.zip', '/uri') }.to raise_error(OneviewSDK::NotFound, //)
       end
     end
 
@@ -257,8 +258,8 @@ RSpec.describe OneviewSDK::Client do
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
       http_fake = spy('http')
       allow(Net::HTTP).to receive(:new).and_return(http_fake)
-      allow(@client).to receive(:response_handler).and_return(FakeResponse.new)
-      @client.upload_file('file.zip', '/uri-file-upload')
+      allow(@client_200).to receive(:response_handler).and_return(FakeResponse.new)
+      @client_200.upload_file('file.zip', '/uri-file-upload')
       expect(http_fake).to have_received(:read_timeout=).with(OneviewSDK::Rest::READ_TIMEOUT)
     end
 
@@ -272,11 +273,11 @@ RSpec.describe OneviewSDK::Client do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler)
         .and_return(FakeResponse.new)
 
-      @client.upload_file('file.zip', '/uri-file-upload', { 'name' => 'TestName' }, 600)
+      @client_200.upload_file('file.zip', '/uri-file-upload', { 'body' => { 'name' => 'TestName' } }, 600)
 
-      expected_options = { 'Content-Type' => 'multipart/form-data', 'X-Api-Version' => @client.api_version.to_s, 'auth' => @client.token }
+      expected_options = { 'Content-Type' => 'multipart/form-data', 'X-Api-Version' => @client_200.api_version.to_s, 'auth' => @client_200.token }
       expect(Net::HTTP::Post::Multipart).to have_received(:new)
-        .with('/uri-file-upload', { 'file' => 'Fake_File_IO' }, expected_options)
+        .with('/uri-file-upload', { 'file' => 'Fake_File_IO', 'name' => 'TestName' }, expected_options)
       expect(http_fake).to have_received(:read_timeout=).with(600)
     end
 
@@ -290,8 +291,17 @@ RSpec.describe OneviewSDK::Client do
       allow(File).to receive(:file?).and_return(true)
       allow(File).to receive(:open).with('file.zip').and_yield('FAKE FILE CONTENT')
       allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
-      result = @client.upload_file('file.zip', 'rest/fake/1', options)
+      result = @client_200.upload_file('file.zip', 'rest/fake/1', options)
       expect(result).to eq(expected_result)
+    end
+
+    it 'raises an exception when timeout expire' do
+      allow_any_instance_of(Net::HTTP).to receive(:request).and_raise(Net::ReadTimeout)
+      allow_any_instance_of(Net::HTTP).to receive(:connect).and_return(true)
+      allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:open).with('file.tar').and_yield('FAKE FILE CONTENT')
+      allow(UploadIO).to receive(:new).and_return('FAKE FILE CONTENT')
+      expect { @client_200.upload_file('file.tar', 'rest/fake/1') }.to raise_error(/The connection was closed/)
     end
   end
 
@@ -310,10 +320,10 @@ RSpec.describe OneviewSDK::Client do
       expect(http_response_fake).to receive(:read_body).and_yield(stream_fake)
       expect(file_fake).to receive(:write).with(stream_fake)
 
-      expect(@client).to receive(:build_request)
-      expect(@client).not_to receive(:response_handler)
+      expect(@client_200).to receive(:build_request)
+      expect(@client_200).not_to receive(:response_handler)
 
-      result = @client.download_file('/file-download-uri', 'file.zip')
+      result = @client_200.download_file('/file-download-uri', 'file.zip')
       expect(result).to eq(true)
     end
 
@@ -327,7 +337,7 @@ RSpec.describe OneviewSDK::Client do
         allow(http_fake).to receive(:request).and_yield(http_response_fake)
         allow(http_response_fake).to receive(:code).and_return(400) # != 200..204
 
-        expect { @client.download_file('/file-download-uri', 'file.zip') }.to raise_error(OneviewSDK::BadRequest)
+        expect { @client_200.download_file('/file-download-uri', 'file.zip') }.to raise_error(OneviewSDK::BadRequest)
       end
     end
   end
@@ -336,11 +346,11 @@ RSpec.describe OneviewSDK::Client do
     context 'with ssl enabled and timeout variable defined' do
       it 'should create a http object with valid data' do
         uri = URI.parse('https://localhost:1000')
-        @client.ssl_enabled = true
-        @client.cert_store = 'some_certificate'
-        @client.timeout = 300
+        @client_200.ssl_enabled = true
+        @client_200.cert_store = 'some_certificate'
+        @client_200.timeout = 300
 
-        http = @client.send(:build_http_object, uri)
+        http = @client_200.send(:build_http_object, uri)
 
         expect(http.address).to eq('localhost')
         expect(http.port).to eq(1000)
@@ -356,9 +366,9 @@ RSpec.describe OneviewSDK::Client do
       it 'should create a http object with valid data' do
         http_default = Net::HTTP.new('http://localhost')
         uri = URI.parse('http://localhost:1000')
-        @client.ssl_enabled = false
+        @client_200.ssl_enabled = false
 
-        http = @client.send(:build_http_object, uri)
+        http = @client_200.send(:build_http_object, uri)
 
         expect(http.address).to eq('localhost')
         expect(http.port).to eq(1000)
