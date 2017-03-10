@@ -32,12 +32,6 @@ module OneviewSDK
         @data['type'] ||= 'logical-interconnect-groupV3'
         @data['interconnectMapTemplate'] ||= {}
         @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] ||= []
-
-        # User friendly values:
-        @bay_count = 8
-
-        # Create all entries if empty
-        parse_interconnect_map_template if @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] == []
       end
 
       # Get the logical interconnect group default settings
@@ -53,14 +47,25 @@ module OneviewSDK
       # @param [String] type Interconnect type
       # @raise [StandardError] if a invalid type is given then raises an error
       def add_interconnect(bay, type)
+        interconnect_type = OneviewSDK::Interconnect.get_type(@client, type)
+        raise OneviewSDK::NotFound unless interconnect_type
+
+        entry_already_present = false
         @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
           entry['logicalLocation']['locationEntries'].each do |location|
             if location['type'] == 'Bay' && location['relativeValue'] == bay
-              entry['permittedInterconnectTypeUri'] = OneviewSDK::Interconnect.get_type(@client, type)['uri']
+              entry['permittedInterconnectTypeUri'] = interconnect_type['uri']
+              entry_already_present = true
             end
           end
         end
-      rescue StandardError
+
+        unless entry_already_present
+          new_entry = new_interconnect_entry_template(bay, interconnect_type['uri'])
+          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << new_entry
+        end
+
+      rescue OneviewSDK::NotFound
         list = OneviewSDK::Interconnect.get_types(@client).map { |t| t['name'] }
         raise "Interconnect type #{type} not found! Supported types: #{list}"
       end
@@ -79,11 +84,25 @@ module OneviewSDK
         @client.response_handler(response)
       end
 
-      # Saves the current data attributes to the Logical Interconnect Group
-      # @param [Hash] attributes attributes to be updated
-      # @return Updated instance of the Logical Interconnect Group
+      # Create the resource on OneView using the current data
+      # @note Calls the refresh method to set additional data
+      # @raise [OneviewSDK::IncompleteResource] if the client is not set
+      # @raise [StandardError] if the resource creation fails
+      # @return [Resource] self
+      def create
+        verify_interconnects_before_save!
+        super
+      end
+
+      # Set data and save to OneView
+      # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
+      # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
+      # @raise [StandardError] if the resource save fails
+      # @return [Resource] self
       def update(attributes = {})
         set_all(attributes)
+        ensure_client && ensure_uri
+        verify_interconnects_before_save!
         update_options = {
           'If-Match' =>  @data.delete('eTag'),
           'Body' => @data
@@ -91,25 +110,26 @@ module OneviewSDK
         response = @client.rest_put(@data['uri'], update_options, @api_version)
         body = @client.response_handler(response)
         set_all(body)
+        self
       end
 
       private
 
-      # Parse interconnect map template structure
-      def parse_interconnect_map_template
-        1.upto(@bay_count) do |bay_number|
-          entry = {
-            'logicalDownlinkUri' => nil,
-            'logicalLocation' => {
-              'locationEntries' => [
-                { 'relativeValue' => bay_number, 'type' => 'Bay' },
-                { 'relativeValue' => 1, 'type' => 'Enclosure' }
-              ]
-            },
-            'permittedInterconnectTypeUri' => nil
-          }
-          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << entry
-        end
+      def verify_interconnects_before_save!
+        return unless @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].empty?
+        @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << new_interconnect_entry_template
+      end
+
+      def new_interconnect_entry_template(bay = 1, interconnect_type_uri = nil)
+        {
+          'logicalLocation' => {
+            'locationEntries' => [
+              { 'relativeValue' => bay, 'type' => 'Bay' },
+              { 'relativeValue' => 1, 'type' => 'Enclosure' }
+            ]
+          },
+          'permittedInterconnectTypeUri' => interconnect_type_uri
+        }
       end
     end
   end

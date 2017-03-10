@@ -11,6 +11,7 @@
 - [#202](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/202) The method #get_default_settings in LogicalInterconnectGroup is used on integration test
 - [#125](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/125) References to resources C7000 in Synergy integration tests
 - [#212](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/212) Unable to create a Server Profile with Deployment Plan settings
+- [#89](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/89) Fix like? method for Logical Interconnect Groups
 
 #### Design changes:
    - Architecture for future API500 support. Features for API500 are not yet supported.

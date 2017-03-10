@@ -170,9 +170,80 @@ RSpec.describe OneviewSDK::Resource do
       expect(res.like?(data: { key2: 'val2' })).to eq(false)
     end
 
-    it 'requires the other objet to respond to .each' do
+    it 'requires the other object to respond to .each' do
       res = OneviewSDK::Resource.new(@client_200)
       expect { res.like?(nil) }.to raise_error(/Can't compare with object type: NilClass/)
+    end
+
+    context 'when compare similar objects into array' do
+      it 'should return true' do
+        options = { uri: '/rest/fake', list: [{ uri: '/rest/child/1', tag: 'not_to_compare' }, { uri: '/rest/child/2', tag: 'not_to_compare' }] }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [{ uri: '/rest/child/2' }, { uri: '/rest/child/1' }])).to eq(true)
+        expect(res.like?(uri: '/rest/fake', list: [{ uri: '/rest/child/1' }])).to eq(true)
+      end
+
+      it 'should return true if array is empty' do
+        options = { uri: '/rest/fake', list: [] }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [])).to eq(true)
+      end
+
+      it 'should return true if value is null' do
+        options = { uri: '/rest/fake', list: nil }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: nil)).to eq(true)
+      end
+
+      it 'should return true with more than one depth level using array' do
+        options = { uri: '/rest/fake', list: [{ children: [{ name: 'level_2_child' }] }, { children: [{ name: 'level_2_child' }] }] }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [{ children: [{ name: 'level_2_child' }] }])).to eq(true)
+      end
+
+      it 'should return true with values that are not a Hash' do
+        options = { uri: '/rest/fake', list: %w(value_1 value_2) }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: %w(value_1 value_2))).to eq(true)
+      end
+    end
+
+    context 'when compare different objects into array' do
+      it 'should return false comparing with wrong value' do
+        options = { uri: '/rest/fake', list: [{ uri: '/rest/child/1', tag: 'not_to_compare' }, { uri: '/rest/child/2', tag: 'not_to_compare' }] }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [{ uri: '/rest/child/3' }])).to eq(false)
+      end
+
+      it 'should return false comparing with empty array' do
+        options = { uri: '/rest/fake', list: [{ uri: '/rest/child/1', tag: 'not_to_compare' }, { uri: '/rest/child/2', tag: 'not_to_compare' }] }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [])).to eq(false)
+      end
+
+      it 'should return false if current array is empty' do
+        options = { uri: '/rest/fake', list: [] }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [{ uri: '/rest/child/1' }])).to eq(false)
+      end
+
+      it 'should return false if current value is null' do
+        options = { uri: '/rest/fake', list: nil }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [{ uri: '/rest/child/1' }])).to eq(false)
+      end
+
+      it 'should return false with more than one depth level using array' do
+        options = { uri: '/rest/fake', list: [{ children: [{ name: 'level_2_child' }] }] }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: [{ children: [{ name: 'level_1_child' }] }])).to eq(false)
+      end
+
+      it 'should return false with values that are not a Hash' do
+        options = { uri: '/rest/fake', list: %(value_1 value_2) }
+        res = OneviewSDK::Resource.new(@client_200, options)
+        expect(res.like?(uri: '/rest/fake', list: ['value_1'])).to eq(false)
+      end
     end
   end
 

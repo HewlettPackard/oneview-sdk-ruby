@@ -25,7 +25,7 @@ module OneviewSDK
         super
         # Default values:
         @data['logicalPortConfigInfos'] ||= []
-        @data['lacpTimer'] ||= 'Short'
+        @data['lacpTimer'] ||= 'Short' unless @data['networkType'] == 'FibreChannel' # FibreChannel does not need set up lacpTimer
         @data['mode'] ||= 'Auto'
         @data['networkUris'] ||= []
       end

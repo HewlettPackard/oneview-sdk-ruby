@@ -361,6 +361,12 @@ module OneviewSDK
         return false unless data && data.respond_to?(:[])
         if val.is_a?(Hash)
           return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
+        elsif val.is_a?(Array) && val.first.is_a?(Hash)
+          data_array = data[key.to_s] || data[key.to_sym]
+          return false unless data_array.is_a?(Array)
+          val.each do |other_item|
+            return false unless data_array.find { |data_item| recursive_like?(other_item, data_item) }
+          end
         elsif val != data[key.to_s] && val != data[key.to_sym]
           return false
         end

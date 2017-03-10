@@ -14,9 +14,8 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
       expect(item['state']).to eq('Active')
       expect(item['uplinkSets']).to eq([])
       expect(item['type']).to eq('logical-interconnect-groupV300')
-      path = 'spec/support/fixtures/unit/resource/lig_default_templates.json'
-      expect(item['interconnectMapTemplate']).to eq(JSON.parse(File.read(path)))
-      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates'].size).to eq(8)
+      expect(item['interconnectMapTemplate']).to eq('interconnectMapEntryTemplates' => [])
+      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates']).to be_empty
     end
   end
 
@@ -30,13 +29,13 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
         .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
-      expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][2]['permittedInterconnectTypeUri'])
+      expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['permittedInterconnectTypeUri'])
         .to eq('/rest/fake')
     end
 
     it 'raises an error if the interconnect is not found' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
-        .and_return([])
+        .and_return(nil)
       expect(OneviewSDK::Interconnect).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.add_interconnect(3, @type) }.to raise_error(/not found!/)
     end
