@@ -35,6 +35,7 @@ DEPENDENCIES = {
   LogicalSwitchGroup: [],
   ManagedSAN: [:SANManager],
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
+  OSDeploymentPlan: [],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
   Rack: [:ServerProfile],
   SANManager: [],
