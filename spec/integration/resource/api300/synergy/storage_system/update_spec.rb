@@ -32,7 +32,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
       storage_system['credentials']['ip_hostname'] = $secrets_synergy['storage_system1_ip']
       storage_system.retrieve!
 
-      fc_network = OneviewSDK::API300::C7000::FCNetwork.find_by($client_300_synergy, {}).first
+      fc_network = OneviewSDK::API300::Synergy::FCNetwork.find_by($client_300_synergy, {}).first
 
       storage_system.data['unmanagedPorts'].first['expectedNetworkUri'] = fc_network.data['uri']
       storage_system.update
