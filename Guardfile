@@ -11,8 +11,8 @@
 
 guard :rubocop, cmd: 'bundle exec rubocop', cli: ['-D'] do
   watch('.rubocop.yml')
-  watch(/(.+\.rb)$/) { |m| m[1] }
-  watch(/^(Gemfile|Rakefile)$/) { |m| m[1] }
+  watch(/(.+\.rb)$/)
+  watch(/^(Gemfile|Rakefile)$/)
 end
 
 guard :rspec, cmd: 'bundle exec rspec --color -t ~integration', first_match: true do
