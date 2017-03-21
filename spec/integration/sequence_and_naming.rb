@@ -181,6 +181,9 @@ SERVER_PROFILE4_NAME = 'ServerProfile_4'.freeze
 SERVER_PROFILE5_NAME = 'ServerProfile_5'.freeze
 SERVER_PROFILE6_NAME = 'ServerProfile_6'.freeze
 
+# Server Profile with OS Deployment Plan
+SERVER_PROFILE_WITH_OSDP_NAME = 'ServerProfile_OSDP'.freeze
+
 # Server Profile Template
 SERVER_PROFILE_TEMPLATE_NAME = 'ServerProfileTemplate_1'.freeze
 SERVER_PROFILE_TEMPLATE_NAME_UPDATED = 'ServerProfileTemplate_1_UPDATED'.freeze
@@ -231,3 +234,6 @@ SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
 
 # USER
 USER_NAME = 'TestUser'.freeze
+
+# OS Deployment Plan
+OS_DEPLOYMENT_PLAN_NAME = 'HPE - Developer 1.0 - Deployment Test (UEFI)'.freeze
