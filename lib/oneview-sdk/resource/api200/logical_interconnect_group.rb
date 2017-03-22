@@ -110,7 +110,6 @@ module OneviewSDK
         response = @client.rest_put(@data['uri'], update_options, @api_version)
         body = @client.response_handler(response)
         set_all(body)
-        self
       end
 
       private
