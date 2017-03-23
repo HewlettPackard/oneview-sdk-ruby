@@ -367,7 +367,7 @@ module OneviewSDK
           val.each do |other_item|
             return false unless data_array.find { |data_item| recursive_like?(other_item, data_item) }
           end
-        elsif val != data[key.to_s] && val != data[key.to_sym]
+        elsif val.to_s != data[key.to_s].to_s && val.to_s != data[key.to_sym].to_s
           return false
         end
       end
