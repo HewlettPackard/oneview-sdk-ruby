@@ -159,9 +159,12 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     it 'works for nested hashes' do
-      options = { name: 'res', uri: '/rest/fake', data: { 'key1' => 'val1', 'key2' => 'val2' } }
+      options = { name: 'res', uri: '/rest/fake', data: { 'key1' => 1, 'key2' => 'val2', 'key3' => '2' } }
       res = OneviewSDK::Resource.new(@client_200, options)
+      expect(res.like?(data: { key1: '1' })).to eq(true)
+      expect(res.like?(data: { key1: 1 })).to eq(true)
       expect(res.like?(data: { key2: 'val2' })).to eq(true)
+      expect(res.like?(data: { key3: 2 })).to eq(true)
     end
 
     it 'returns false for unlike hashes' do
