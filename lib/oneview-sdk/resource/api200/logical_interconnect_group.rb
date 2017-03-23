@@ -45,10 +45,13 @@ module OneviewSDK
       # Adds an interconnect
       # @param [Fixnum] bay Bay number
       # @param [String] type Interconnect type
-      # @raise [StandardError] if an invalid type is given
+      # @raise [OneviewSDK::NotFound] if an invalid type is given
       def add_interconnect(bay, type)
         interconnect_type = OneviewSDK::Interconnect.get_type(@client, type)
-        raise OneviewSDK::NotFound unless interconnect_type
+        unless interconnect_type
+          list = OneviewSDK::Interconnect.get_types(@client).map { |t| t['name'] }
+          raise OneviewSDK::NotFound, "Interconnect type #{type} not found! Supported types: #{list}"
+        end
 
         entry_already_present = false
         @data['interconnectMapTemplate']['interconnectMapEntryTemplates'].each do |entry|
@@ -64,10 +67,6 @@ module OneviewSDK
           new_entry = new_interconnect_entry_template(bay, interconnect_type['uri'])
           @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << new_entry
         end
-
-      rescue OneviewSDK::NotFound
-        list = OneviewSDK::Interconnect.get_types(@client).map { |t| t['name'] }
-        raise "Interconnect type #{type} not found! Supported types: #{list}"
       end
 
       # Adds an uplink set

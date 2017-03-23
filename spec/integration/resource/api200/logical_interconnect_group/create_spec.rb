@@ -66,7 +66,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'LIG with unrecognized interconnect' do
-      expect { @item.add_interconnect(1, 'invalid_type') }.to raise_error(/Interconnect type invalid_type/)
+      expect { @item.add_interconnect(1, 'invalid_type') }.to raise_error(OneviewSDK::NotFound, /Interconnect type invalid_type not found!/)
     end
 
     it 'LIG with interconnect of type HP VC FlexFabric-20/40 F8 Module' do
