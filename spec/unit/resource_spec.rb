@@ -175,7 +175,7 @@ RSpec.describe OneviewSDK::Resource do
       expect { res.like?(nil) }.to raise_error(/Can't compare with object type: NilClass/)
     end
 
-    context 'when compare similar objects into array' do
+    context 'when comparing similar objects inside arrays' do
       it 'should return true' do
         options = { uri: '/rest/fake', list: [{ uri: '/rest/child/1', tag: 'not_to_compare' }, { uri: '/rest/child/2', tag: 'not_to_compare' }] }
         res = OneviewSDK::Resource.new(@client_200, options)
@@ -189,7 +189,7 @@ RSpec.describe OneviewSDK::Resource do
         expect(res.like?(uri: '/rest/fake', list: [])).to eq(true)
       end
 
-      it 'should return true if value is null' do
+      it 'should return true if value is nil' do
         options = { uri: '/rest/fake', list: nil }
         res = OneviewSDK::Resource.new(@client_200, options)
         expect(res.like?(uri: '/rest/fake', list: nil)).to eq(true)
@@ -208,7 +208,7 @@ RSpec.describe OneviewSDK::Resource do
       end
     end
 
-    context 'when compare different objects into array' do
+    context 'when comparing different objects inside arrays' do
       it 'should return false comparing with wrong value' do
         options = { uri: '/rest/fake', list: [{ uri: '/rest/child/1', tag: 'not_to_compare' }, { uri: '/rest/child/2', tag: 'not_to_compare' }] }
         res = OneviewSDK::Resource.new(@client_200, options)
@@ -221,13 +221,13 @@ RSpec.describe OneviewSDK::Resource do
         expect(res.like?(uri: '/rest/fake', list: [])).to eq(false)
       end
 
-      it 'should return false if current array is empty' do
+      it 'should return false if the array inside Resource that called the method is empty' do
         options = { uri: '/rest/fake', list: [] }
         res = OneviewSDK::Resource.new(@client_200, options)
         expect(res.like?(uri: '/rest/fake', list: [{ uri: '/rest/child/1' }])).to eq(false)
       end
 
-      it 'should return false if current value is null' do
+      it 'should return false if the value of array inside Resource that called the method is nil' do
         options = { uri: '/rest/fake', list: nil }
         res = OneviewSDK::Resource.new(@client_200, options)
         expect(res.like?(uri: '/rest/fake', list: [{ uri: '/rest/child/1' }])).to eq(false)
@@ -453,7 +453,7 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     context 'when there are many pages' do
-      context "and, in the last page, body['nextPageUri'] is null" do
+      context "and, in the last page, body['nextPageUri'] is nil" do
         it 'should return all resources' do
           fake_response_1 = FakeResponse.new(members: [
             { name: 'Enc1', uri: "#{OneviewSDK::Enclosure::BASE_URI}/1" },

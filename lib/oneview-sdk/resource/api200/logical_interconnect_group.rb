@@ -45,7 +45,7 @@ module OneviewSDK
       # Adds an interconnect
       # @param [Fixnum] bay Bay number
       # @param [String] type Interconnect type
-      # @raise [StandardError] if a invalid type is given then raises an error
+      # @raise [StandardError] if an invalid type is given
       def add_interconnect(bay, type)
         interconnect_type = OneviewSDK::Interconnect.get_type(@client, type)
         raise OneviewSDK::NotFound unless interconnect_type

@@ -29,8 +29,18 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
         .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
-      expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['permittedInterconnectTypeUri'])
-        .to eq('/rest/fake')
+
+      location_entries = @item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['logicalLocation']['locationEntries']
+      expect(location_entries.size).to eq(2)
+
+      bay_entry, enclosure_entry = location_entries
+      expect(bay_entry['type']).to eq('Bay')
+      expect(bay_entry['relativeValue']).to eq(3)
+      expect(enclosure_entry['type']).to eq('Enclosure')
+      expect(enclosure_entry['relativeValue']).to eq(1)
+
+      permitted_interconnect_type_uri = @item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['permittedInterconnectTypeUri']
+      expect(permitted_interconnect_type_uri).to eq('/rest/fake')
     end
 
     it 'raises an error if the interconnect is not found' do
