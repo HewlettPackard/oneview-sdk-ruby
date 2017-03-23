@@ -10,9 +10,8 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
       expect(item['state']).to eq('Active')
       expect(item['uplinkSets']).to eq([])
       expect(item['type']).to eq('logical-interconnect-groupV3')
-      path = 'spec/support/fixtures/unit/resource/lig_default_templates.json'
-      expect(item['interconnectMapTemplate']).to eq(JSON.parse(File.read(path)))
-      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates'].size).to eq(8)
+      expect(item['interconnectMapTemplate']).to eq('interconnectMapEntryTemplates' => [])
+      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates']).to be_empty
     end
   end
 
@@ -34,13 +33,13 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_200, @type)
         .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
-      expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][2]['permittedInterconnectTypeUri'])
+      expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['permittedInterconnectTypeUri'])
         .to eq('/rest/fake')
     end
 
     it 'raises an error if the interconnect is not found' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_200, @type)
-        .and_return([])
+        .and_return(nil)
       expect(OneviewSDK::Interconnect).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.add_interconnect(3, @type) }.to raise_error(/not found!/)
     end
@@ -62,6 +61,17 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
       expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', item.api_version)
         .and_return(FakeResponse.new)
       expect(item.get_settings).to be
+    end
+  end
+
+  describe '#like?' do
+    context 'when LIG has Interconnects attached and Uplink Sets defined' do
+      it 'should work properly' do
+        item = described_class.new(@client_200, uri: '/rest/fake')
+        expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', item.api_version)
+          .and_return(FakeResponse.new)
+        expect(item.get_settings).to be
+      end
     end
   end
 end

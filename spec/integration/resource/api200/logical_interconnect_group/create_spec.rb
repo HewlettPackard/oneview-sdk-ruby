@@ -18,6 +18,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       'type' => 'logical-interconnect-groupV3'
     }
     @item_2 = OneviewSDK::LogicalInterconnectGroup.new($client, lig_default_options_2)
+    @item_2_state_before_create = {} # it is built in #create test and used in #like? test
 
     lig_default_options_3 = {
       'name' => LOG_INT_GROUP3_NAME,
@@ -39,7 +40,8 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       networkType: 'Ethernet',
       ethernetNetworkType: 'Tagged'
     }
-    @eth_lig_uplink_set = OneviewSDK::LIGUplinkSet.new($client, eth_uplink_options)
+    @eth_lig_uplink_set_1 = OneviewSDK::LIGUplinkSet.new($client, eth_uplink_options)
+    @eth_lig_uplink_set_2 = OneviewSDK::LIGUplinkSet.new($client, eth_uplink_options)
     @ethernet_network = OneviewSDK::EthernetNetwork.new($client, name: ETH_NET_NAME)
     @ethernet_network.retrieve!
 
@@ -64,16 +66,16 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     end
 
     it 'LIG with unrecognized interconnect' do
-      expect { @item.add_interconnect(1, 'invalid_type') }.to raise_error(/Interconnect type invalid_type/)
+      expect { @item.add_interconnect(1, 'invalid_type') }.to raise_error(OneviewSDK::NotFound, /Interconnect type invalid_type not found!/)
     end
 
     it 'LIG with interconnect of type HP VC FlexFabric-20/40 F8 Module' do
       @item.add_interconnect(1, interconnect_type2)
 
-      @eth_lig_uplink_set.add_network(@ethernet_network)
-      @eth_lig_uplink_set.add_uplink(1, 'X1')
-      @eth_lig_uplink_set.add_uplink(1, 'X2')
-      @item.add_uplink_set(@eth_lig_uplink_set)
+      @eth_lig_uplink_set_1.add_network(@ethernet_network)
+      @eth_lig_uplink_set_1.add_uplink(1, 'X1')
+      @eth_lig_uplink_set_1.add_uplink(1, 'X2')
+      @item.add_uplink_set(@eth_lig_uplink_set_1)
 
       expect { @item.create }.not_to raise_error
       expect(@item['uri']).to be
@@ -83,15 +85,20 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     it 'LIG with interconnect and uplink sets' do
       @item_2.add_interconnect(1, interconnect_type)
 
-      @eth_lig_uplink_set.add_network(@ethernet_network)
-      @eth_lig_uplink_set.add_uplink(1, 'X1')
-      @eth_lig_uplink_set.add_uplink(1, 'X2')
-      @item_2.add_uplink_set(@eth_lig_uplink_set)
+      # require 'byebug'
+      # byebug
+
+      @eth_lig_uplink_set_2.add_network(@ethernet_network)
+      @eth_lig_uplink_set_2.add_uplink(1, 'X1')
+      @eth_lig_uplink_set_2.add_uplink(1, 'X2')
+      @item_2.add_uplink_set(@eth_lig_uplink_set_2)
 
       @fc_lig_uplink_set.add_network(@fc_network)
       @fc_lig_uplink_set.add_uplink(1, 'X3')
       @fc_lig_uplink_set.add_uplink(1, 'X4')
       @item_2.add_uplink_set(@fc_lig_uplink_set)
+
+      @item_2_state_before_create.merge!(Marshal.load(Marshal.dump(@item_2.data)))
 
       expect { @item_2.create }.not_to raise_error
       expect(@item_2['uri']).to be
@@ -144,6 +151,15 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
       expect(default_settings['type']).to eq('InterconnectSettingsV3')
       expect(default_settings['uri']).to_not be
       expect(default_settings['ethernetSettings']['uri']).to match(/ethernetSettings/)
+    end
+  end
+
+  describe '#like?' do
+    context 'when logical interconnect group has interconnect and uplink sets and use "like?" with identical data' do
+      it 'should work properly' do
+        lig_item_2 = OneviewSDK::API200::LogicalInterconnectGroup.find_by($client, name: LOG_INT_GROUP2_NAME).first
+        expect(lig_item_2.like?(@item_2_state_before_create)).to eq(true)
+      end
     end
   end
 end
