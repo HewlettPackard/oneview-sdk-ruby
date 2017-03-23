@@ -1,6 +1,6 @@
 # Requirements:
 # => 2 Server Hardware Types (any name)
-# => Enclosure Group 'EnclosureGroup_1' (configured for work with Deployment Network)
+# => Enclosure Group 'EnclosureGroup_1' (configured with HPE Image Streamer deployment network)
 # => Storage System (any name)
 # => FC Network 'FCNetwork_1' (it has to be associated to the LIG 'EnclosureGroup_1' is associated to)
 # => Volume 'Volume_4'
