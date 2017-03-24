@@ -37,3 +37,31 @@ puts "\nUpdated #{type} '#{encl1[:name]}' sucessfully.\n  uri = '#{encl1[:uri]}'
 
 # Patch update
 encl1.patch('replace', '/name', 'Edited_Enclosure')
+
+scope_1 = OneviewSDK::API300::Synergy::Scope.new(@client, name: 'Scope 1')
+scope_1.create
+scope_2 = OneviewSDK::API300::Synergy::Scope.new(@client, name: 'Scope 2')
+scope_2.create
+
+puts "\nAdding scopes"
+encl1.add_scope(scope_1)
+encl1.refresh
+puts 'Scopes:', encl1['scopeUris']
+
+puts "\nReplacing scopes"
+encl1.replace_scopes(scope_2)
+encl1.refresh
+puts 'Scopes:', encl1['scopeUris']
+
+puts "\nRemoving scopes"
+encl1.remove_scope(scope_1)
+encl1.remove_scope(scope_2)
+encl1.refresh
+puts 'Scopes:', encl1['scopeUris']
+
+scope_1.refresh
+scope_2.refresh
+
+# Clear data
+scope_1.delete
+scope_2.delete

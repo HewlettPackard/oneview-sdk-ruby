@@ -1,23 +1,49 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::UplinkSet, integration: true, type: UPDATE do
+klass = OneviewSDK::UplinkSet
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration context'
 
   describe '#update' do
-    before :each do
-      @interconnect = OneviewSDK::Interconnect.get_all($client).last # TODO: Find a more specific one?
-      @enclosure = OneviewSDK::Enclosure.find_by($client, name: ENCL_NAME).first
+
+    subject(:uplink) { klass.find_by($client, name: UPLINK_SET4_NAME).first }
+    let(:interconnect) { OneviewSDK::Interconnect.find_by($client, name: INTERCONNECT_2_NAME).first }
+    let(:enclosure) { OneviewSDK::Enclosure.find_by($client, name: ENCL_NAME).first }
+    let(:network) { OneviewSDK::EthernetNetwork.get_all($client).first }
+    let(:port) { interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['pairedPortName'] }.first }
+
+    before do
+      expect(uplink.retrieve!).to eq(true)
     end
 
-    it 'update portConfigInfos' do
-      uplink = OneviewSDK::UplinkSet.new($client, name: UPLINK_SET_NAME)
-      expect { uplink.retrieve! }.not_to raise_error
+    it 'update port_config' do
+      expect(uplink['portConfigInfos']).to be_empty
       uplink.add_port_config(
-        @interconnect[:uri],
+        port['uri'],
         'Auto',
-        [{ value: 1, type: 'Bay' }, { value: @enclosure[:uri], type: 'Enclosure' }, { value: 'X7', type: 'Port' }]
+        [{ value: port['bayNumber'], type: 'Bay' }, { value: enclosure[:uri], type: 'Enclosure' }, { value: port['portName'], type: 'Port' }]
       )
       expect { uplink.update }.not_to raise_error
+      uplink.refresh
+      expect(uplink['portConfigInfos']).not_to be_empty
+
+      uplink['portConfigInfos'].clear
+      expect { uplink.update }.not_to raise_error
+      uplink.refresh
+      expect(uplink['portConfigInfos']).to be_empty
+    end
+
+    it 'update network' do
+      expect(uplink['networkUris']).to be_empty
+      uplink.add_network(network)
+      expect { uplink.update }.not_to raise_error
+      uplink.refresh
+      expect(uplink['networkUris']).not_to be_empty
+
+      uplink['networkUris'].clear
+      expect { uplink.update }.not_to raise_error
+      uplink.refresh
+      expect(uplink['networkUris']).to be_empty
     end
   end
 end

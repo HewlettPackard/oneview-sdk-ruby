@@ -6,3 +6,16 @@ To test-run these examples, please:
   1. `cd` into this examples directory, then copy the `_client.rb.example` file to a new file named `_client.rb`;
   2. Modify it by inserting your credentials or authentication token, ssl_enabled flag, and anything else your environment requires. The options are commented in the `_client.rb.example` file;
   3. Run `ruby <api[200|300]>/<example_file>.rb`
+
+## Image Streamer
+
+To run the examples for Image Streamer, please:
+  1. `cd` into this examples directory, then copy the `_client_i3s.rb.example` file to a new file named `_client_i3s.rb`;
+  2. Modify it by inserting your authentication token, ssl_enabled flag, and anything else your environment requires. The options are commented in the `_client_i3s.rb.example` file;
+  3. Run `ruby image-streamer/api300/<example_file>.rb`
+
+## Concurrent Execution
+
+Some of the tasks that can be performed using this library take quite a bit of time; after all, we *are* dealing with physical infrastructure.
+Although this library doesn't provide special options to run tasks concurrently, there are ways to do this natively with Ruby.
+To see some examples of how this can be done, take a look at the [concurrent_execution.rb](concurrent_execution.rb) file.

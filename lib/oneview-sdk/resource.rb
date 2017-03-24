@@ -10,6 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'client'
+require_relative 'image-streamer/client'
 
 # OneviewSDK Resources
 module OneviewSDK
@@ -30,7 +31,8 @@ module OneviewSDK
     # @param [Integer] api_ver The api version to use when interracting with this resource.
     #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
     def initialize(client, params = {}, api_ver = nil)
-      raise InvalidClient, 'Must specify a valid client' unless client.is_a?(OneviewSDK::Client)
+      raise InvalidClient, 'Must specify a valid client'\
+        unless client.is_a?(OneviewSDK::Client) || client.is_a?(OneviewSDK::ImageStreamer::Client)
       @client = client
       @logger = @client.logger
       @api_version = api_ver || @client.api_version
@@ -260,20 +262,31 @@ module OneviewSDK
     # @param [String] uri URI of the endpoint
     # @return [Array<Resource>] Results matching the search
     def self.find_by(client, attributes, uri = self::BASE_URI)
+      all = find_with_pagination(client, uri)
       results = []
+      all.each do |member|
+        temp = new(client, member)
+        results.push(temp) if temp.like?(attributes)
+      end
+      results
+    end
+
+    # Make a GET request to the uri, and returns an array with all results (search using resource pagination)
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [String] uri URI of the endpoint
+    # @return [Array<Hash>] Results
+    def self.find_with_pagination(client, uri)
+      all = []
       loop do
         response = client.rest_get(uri)
         body = client.response_handler(response)
         members = body['members']
         break unless members
-        members.each do |member|
-          temp = new(client, member)
-          results.push(temp) if temp.like?(attributes)
-        end
+        all.concat(members)
         break unless body['nextPageUri'] && (body['nextPageUri'] != body['uri'])
         uri = body['nextPageUri']
       end
-      results
+      all
     end
 
     # Make a GET request to the resource base uri, and returns an array with all objects of this type
@@ -322,6 +335,17 @@ module OneviewSDK
       true
     end
 
+    # Gets all the URIs for the specified resources
+    # @param [Array<OneviewSDK::Resource>] resources The list of resources
+    # @return [Array<String>] List of uris
+    # @raise IncompleteResource if 'uri' is not set for each resource.
+    def ensure_and_get_uris(resources)
+      resources.map do |resource|
+        resource.ensure_uri
+        resource['uri']
+      end
+    end
+
     # Fail for methods that are not available for one resource
     def unavailable_method
       raise MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
@@ -337,7 +361,13 @@ module OneviewSDK
         return false unless data && data.respond_to?(:[])
         if val.is_a?(Hash)
           return false unless data.class == Hash && recursive_like?(val, data[key.to_s])
-        elsif val != data[key.to_s] && val != data[key.to_sym]
+        elsif val.is_a?(Array) && val.first.is_a?(Hash)
+          data_array = data[key.to_s] || data[key.to_sym]
+          return false unless data_array.is_a?(Array)
+          val.each do |other_item|
+            return false unless data_array.find { |data_item| recursive_like?(other_item, data_item) }
+          end
+        elsif val.to_s != data[key.to_s].to_s && val.to_s != data[key.to_sym].to_s
           return false
         end
       end
@@ -352,9 +382,8 @@ module OneviewSDK
   # @param [String] variant API module variant to fetch resource from
   # @return [Class] Resource class or nil if not found
   def self.resource_named(type, api_ver = @api_version, variant = nil)
-    unless SUPPORTED_API_VERSIONS.include?(api_ver)
-      raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"
-    end
+    raise UnsupportedVersion, "API version #{api_ver} is not supported! Try one of: #{SUPPORTED_API_VERSIONS}"\
+      unless SUPPORTED_API_VERSIONS.include?(api_ver)
     api_module = OneviewSDK.const_get("API#{api_ver}")
     variant ? api_module.resource_named(type, variant) : api_module.resource_named(type)
   end

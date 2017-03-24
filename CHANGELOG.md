@@ -1,3 +1,131 @@
+# v4.2.0
+
+#### New Resources:
+   - OS Deployment Plan
+
+#### Bug fixes & Enhancements:
+- [#89](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/89) Fix like? method for Logical Interconnect Groups
+- [#119](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
+- [#125](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/125) References to resources C7000 in Synergy integration tests
+- [#189](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/189) Use helper methods of Rest module for upload and download file
+- [#201](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/201) Code to search the collection of resources (paginated search) is repeated in some resources
+- [#202](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/202) The method #get_default_settings in LogicalInterconnectGroup is used on integration test
+- [#212](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/212) Unable to create a Server Profile with Deployment Plan settings
+- [#219](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/219) Fix like? method for Server Profile
+
+#### Design changes:
+   - Architecture for future API500 support. Features for API500 are not yet supported.
+
+# v4.1.0
+
+#### New Resources:
+Added full support to Image Streamer Rest API version 300:
+   - Artifact Bundle
+   - Build Plan
+   - Deployment Group
+   - Deployment Plan
+   - Golden Image
+   - OS Volume
+   - Plan Script
+
+#### Bug fixes & Enhancements:
+- Give custom exception classes a data attribute for more error context and default message
+- [#116](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
+- [#135](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/135) Firmware Bundle timeout does not give proper instructions for user post failure
+- [#146](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/146) Why is Switch the only resource that directly implements #set_scope_uris?
+- [#166](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/166) I3S - Simplify login to i3s through oneview client
+- [#178](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/178) Add client destroy_session method and domain attribute
+- [#174](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/174) I3S - Integration test for Build Plan failing
+- [#176](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/176) OneviewSDK.resource_named now finds resources that are not children of Resource
+- [#183](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/183) Image Streamer Client cannot be created with the OneView environment variables
+- [#184](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/184) Coveralls badge showing coverage as unknown
+- [#196](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/196) Missing endpoint for extract backup in Artifact Bundle
+
+# v4.0.0
+
+#### Breaking changes:
+- [#93](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/93) Fixed Logical Switch refresh conflict
+- [#134](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/134) Remove API300::Synergy::LogicalSwitchGroup resource, which is not defined in the API
+
+#### Bug fixes & Enhancements:
+- [#131](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/131) Unavailable methods can take any number of arguments
+- [#132](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/132) Made get_default_settings in API200 a class method instead of an instance method
+- [#141](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/141) Fixes for API300::Synergy::LogicalInterconnectGroup
+- [#142](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/142) EnclosureGroup should raise error in `#add_logical_interconnect_group` if LIG could not be retrieved
+- [#145](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/145) REST methods now handle redirects
+- [#147](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/147) [API300] Missing #patch in Logical Switch
+- [#149](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/149) API300::EnclosureGroup resources support enclosureIndex in interconnectBayMappings
+- [#152](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/152) Update client logger's log level with `client.log_level=`
+- [#161](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/161) Allow client attributes to be set after initialization, and token to be refreshed
+- Client #get_all method now supports an (optional) variant parameter
+- Support API modules & variants with the CLI
+
+#### New Resources:
+- Scope
+- User
+- Image Streamer API v300 Resources (experimental):
+  - OS Volume
+  - Plan Script
+  - Artifacts Bundle (unimplemented)
+  - Build Plan (unimplemented)
+  - Deployment Plan (unimplemented)
+  - Golden Image (unimplemented)
+
+# v3.1.0
+Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
+   - Interconnect
+   - Logical Interconnect
+   - Uplink Set
+   - Volume attachment
+   - Unmanaged devices
+
+#### Bug fixes
+- Fixed issue #124 Missing argument in API300 C7000 Managed SAN method.
+
+#### Features supported
+- Connection template
+- Datacenter
+- Enclosure
+- Ethernet network
+- Fabrics
+- FC network
+- FCoE network
+- Firmware bundles
+- Firmware drivers
+- Interconnect
+- Logical downlink
+- Logical enclosure
+- Logical interconnect
+- Logical interconnect Group
+- Uplink Set
+- Logical switch
+- Logical switch group
+- Managed SANs
+- Network set
+- Power devices
+- Racks
+- SAN managers
+- Server hardware
+- Server hardware type
+- Server profile
+- Server profile template
+- Storage pools
+- Storage systems
+- Switches
+- Volume
+- Volume attachment
+- Volume template
+- Drive Enclosures
+- Interconnect Link Topology
+- Internal Link Set
+- SAS Interconnect
+- SAS Interconnect Type
+- SAS Logical Interconnect
+- SAS Logical Interconnect Group
+- SAS Logical JBOD Attachments
+- SAS Logical JBODs
+- Unmanaged devices
+
 # v3.0.0
 ### Notes
  This is the Third major version of the Ruby SDK for HPE OneView. It features a split in the API support, allowing for C7000 and Synergy hardware variants to be used, while maintaining compatibility to older versions. There are some code improvements applied throughout the release, as well as additional endpoints support.
@@ -45,10 +173,10 @@
    - SAS Logical JBOD Attachments
    - SAS Logical JBODs
  3. Design changes:
- - Split features into API modules for each hardware variant
- - Fixed/updated/added CLI commands
+   - Split features into API modules for each hardware variant
+   - Fixed/updated/added CLI commands
 
-#### v2.2.1
+### v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
 
 ### v2.2.0
@@ -83,7 +211,6 @@
    - Power devices
    - Racks
    - Server hardware types
-   - Unmanaged devices
  3. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
 
 ### Breaking changes

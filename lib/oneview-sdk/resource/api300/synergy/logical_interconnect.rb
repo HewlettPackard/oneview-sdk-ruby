@@ -9,12 +9,33 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/logical_interconnect'
+require_relative '../c7000/logical_interconnect'
 
 module OneviewSDK
   module API300
     module Synergy
-      class LogicalInterconnect < OneviewSDK::API200::LogicalInterconnect
+      # Logical interconnect resource implementation for API300 Synergy
+      class LogicalInterconnect < OneviewSDK::API300::C7000::LogicalInterconnect
+
+        # Lists internal networks on the logical interconnect
+        # @return [OneviewSDK::Resource] List of networks
+        def list_vlan_networks
+          ensure_client && ensure_uri
+          results = OneviewSDK::Resource.find_by(@client, {}, @data['uri'] + '/internalVlans')
+          internal_networks = []
+          results.each do |vlan|
+            net = if vlan['generalNetworkUri'].include? 'ethernet-network'
+                    OneviewSDK::API300::Synergy::EthernetNetwork.new(@client, uri: vlan['generalNetworkUri'])
+                  elsif vlan['generalNetworkUri'].include? 'fc-network'
+                    OneviewSDK::API300::Synergy::FCNetwork.new(@client, uri: vlan['generalNetworkUri'])
+                  else
+                    OneviewSDK::API300::Synergy::FCoENetwork.new(@client, uri: vlan['generalNetworkUri'])
+                  end
+            net.retrieve!
+            internal_networks.push(net)
+          end
+          internal_networks
+        end
       end
     end
   end

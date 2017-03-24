@@ -1,7 +1,7 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2016-2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -17,8 +17,9 @@ require_relative 'ssl_helper'
 module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
-    attr_reader :url, :user, :token, :password, :max_api_version
-    attr_accessor :ssl_enabled, :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
+    attr_reader :max_api_version
+    attr_accessor :url, :user, :token, :password, :domain, :ssl_enabled, :api_version, \
+                  :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
     include Rest
 
@@ -31,6 +32,7 @@ module OneviewSDK
     # @option options [String] :url URL of OneView appliance
     # @option options [String] :user ('Administrator') The username to use for authentication with the OneView appliance
     # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) The password to use for authentication with OneView appliance
+    # @option options [String] :domain ('LOCAL') The name of the domain directory used for authentication
     # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) The token to use for authentication with OneView appliance
     #   Use the token or the username and password (not both). The token has precedence.
     # @option options [Integer] :api_version (200) This is the API version to use by default for requests
@@ -41,8 +43,7 @@ module OneviewSDK
       STDOUT.sync = true
       @logger = options[:logger] || Logger.new(STDOUT)
       [:debug, :info, :warn, :error, :level=].each { |m| raise InvalidClient, "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
-      @log_level = options[:log_level] || :info
-      @logger.level = @logger.class.const_get(@log_level.upcase) rescue @log_level
+      self.log_level = options[:log_level] || :info
       @print_wait_dots = options.fetch(:print_wait_dots, false)
       @url = options[:url] || ENV['ONEVIEWSDK_URL']
       raise InvalidClient, 'Must set the url option' unless @url
@@ -65,12 +66,17 @@ module OneviewSDK
       @timeout = options[:timeout] unless options[:timeout].nil?
       @cert_store = OneviewSDK::SSLHelper.load_trusted_certs if @ssl_enabled
       @token = options[:token] || ENV['ONEVIEWSDK_TOKEN']
-      return if @token
-      @logger.warn 'User option not set. Using default (Administrator)' unless options[:user] || ENV['ONEVIEWSDK_USER']
+      @logger.warn 'User option not set. Using default (Administrator)' unless @token || options[:user] || ENV['ONEVIEWSDK_USER']
       @user = options[:user] || ENV['ONEVIEWSDK_USER'] || 'Administrator'
       @password = options[:password] || ENV['ONEVIEWSDK_PASSWORD']
-      raise InvalidClient, 'Must set user & password options or token option' unless @password
-      @token = login
+      raise InvalidClient, 'Must set user & password options or token option' unless @token || @password
+      @domain = options[:domain] || ENV['ONEVIEWSDK_DOMAIN'] || 'LOCAL'
+      @token ||= login
+    end
+
+    def log_level=(level)
+      @logger.level = @logger.class.const_get(level.upcase) rescue level
+      @log_level = level
     end
 
     # Tells OneView to create the resource using the current attribute data
@@ -104,12 +110,14 @@ module OneviewSDK
     # Get array of all resources of a specified type
     # @param [String] type Resource type
     # @param [Integer] api_ver API module version to fetch resources from
+    # @param [String] variant API module variant to fetch resource from
     # @return [Array<Resource>] Results
     # @example Get all Ethernet Networks
     #   networks = @client.get_all('EthernetNetworks')
+    #   synergy_networks = @client.get_all('EthernetNetworks', 300, 'Synergy')
     # @raise [TypeError] if the type is invalid
-    def get_all(type, api_ver = @api_version)
-      klass = OneviewSDK.resource_named(type, api_ver)
+    def get_all(type, api_ver = @api_version, variant = nil)
+      klass = OneviewSDK.resource_named(type, api_ver, variant)
       raise TypeError, "Invalid resource type '#{type}'. OneviewSDK::API#{api_ver} does not contain a class like it." unless klass
       klass.get_all(self)
     end
@@ -141,6 +149,39 @@ module OneviewSDK
       end
     end
 
+    # Refresh the client's session token & max_api_version.
+    # Call this after a token expires or the user and/or password is updated on the client object.
+    # @return [OneviewSDK::Client] self
+    def refresh_login
+      @max_api_version = appliance_api_version
+      @token = login
+      self
+    end
+
+    # Delete the session on the appliance, invalidating the client's token.
+    # To generate a new token after calling this method, use the refresh_login method.
+    # Call this after a token expires or the user and/or password is updated on the client object.
+    # @return [OneviewSDK::Client] self
+    def destroy_session
+      response_handler(rest_delete('/rest/login-sessions'))
+      self
+    end
+
+    # Creates the image streamer client object.
+    # @param [Hash] options the options to configure the client
+    # @option options [Logger] :logger (Logger.new(STDOUT)) Logger object to use.
+    #   Must implement debug(String), info(String), warn(String), error(String), & level=
+    # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
+    # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on the tasks to complete.
+    # @option options [String] :url URL of Image Streamer
+    # @option options [Integer] :api_version (300) This is the API version to use by default for requests
+    # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['I3S_SSL_ENABLED']
+    # @option options [Integer] :timeout (nil) Override the default request timeout value
+    # @return [OneviewSDK::ImageStreamer::Client] New instance of image streamer client
+    def new_i3s_client(options = {})
+      OneviewSDK::ImageStreamer::Client.new(options.merge(token: @token))
+    end
+
 
     private
 
@@ -157,13 +198,13 @@ module OneviewSDK
       OneviewSDK::DEFAULT_API_VERSION
     end
 
-    # Log in to OneView appliance and set max_api_version
+    # Log in to OneView appliance and return the session token
     def login(retries = 2)
       options = {
         'body' => {
           'userName' => @user,
           'password' => @password,
-          'authLoginDomain' => 'LOCAL'
+          'authLoginDomain' => @domain
         }
       }
       response = rest_post('/rest/login-sessions', options)

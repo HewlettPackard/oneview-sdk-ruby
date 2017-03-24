@@ -11,18 +11,57 @@
 
 require_relative '../_client'
 
-# List of interconnects
-OneviewSDK::Interconnect.find_by(@client, {}).each do |interconnect|
-  puts "Interconnect #{interconnect['name']} URI=#{interconnect['uri']}"
+# Example: Actions with interconnect
+# NOTE: You'll need to add an interconnect with state Configured and a port linked.
 
-  # Retrieve name servers
-  puts " - Name servers: #{interconnect.nameServers}"
+# List of interconnects
+puts "\nGets all interconnects"
+OneviewSDK::Interconnect.find_by(@client, {}).each do |interconnect|
+  puts "Interconnect #{interconnect['name']} URI=#{interconnect['uri']} state #{interconnect['state']}"
 end
 
-# Retrieve interconnect
-interconnect = OneviewSDK::Interconnect.new(@client, name: 'Encl2, interconnect 2')
-interconnect.retrieve!
+# Retrieves interconnect types
+puts "\nRetrieving interconnect types"
+OneviewSDK::Interconnect.get_types(@client).each do |type|
+  puts "Interconnect type #{type['name']} URI=#{type['uri']}"
+end
+
+item = OneviewSDK::Interconnect.find_by(@client, state: 'Configured').first
+
+# Retrieving the named servers for this interconnect
+puts "\nRetrieving the named servers for interconnect #{item['name']}"
+servers = item.name_servers
+puts 'Server not found.' unless servers.empty?
+puts servers
+
+# Get statistics for an interconnect, for the specified port
+port = item[:ports].last
+puts "\nGetting statistics for the interconnect #{item['name']} and port #{port['name']}"
+stats = item.statistics(port['name'])
+puts "\nStatistics for the interconnect #{item['name']} and port #{port['name']}"
+puts stats
 
 # Resert Port Protection
-puts "Reseting port protection for interconnect #{interconnect['name']}"
-interconnect.resetportprotection
+puts "\nReseting port protection for interconnect #{item['name']}"
+item.reset_port_protection
+puts 'Reset port protection successfully'
+
+# Update port
+ports = item['ports'].select { |k| k['portType'] == 'Uplink' }
+port = ports.first
+puts "\nUpdating port for interconnect #{item['name']}"
+puts "and port #{port['name']} with status #{port['enabled']}"
+puts "\nChanging the status"
+item.update_port(port['name'], enabled: false)
+item.retrieve!
+ports_2 = item['ports'].select { |k| k['portType'] == 'Uplink' }
+port_updated = ports_2.first
+puts "Port updated successfully for interconnect #{item['name']}"
+puts "Port #{port_updated['name']} with status #{port_updated['enabled']}"
+# Returning for original state
+puts "\nEnabling the port #{port['name']}"
+item.update_port(port['name'], enabled: true)
+item.retrieve!
+ports_3 = item['ports'].select { |k| k['portType'] == 'Uplink' }
+port_original_state = ports_3.first
+puts "\nPort #{port_original_state['name']} with status #{port_original_state['enabled']}"

@@ -1,13 +1,14 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Interconnect, integration: true, type: UPDATE do
+klass = OneviewSDK::Interconnect
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration context'
 
-  let(:interconnect) { OneviewSDK::Interconnect.find_by($client, {}).last }
+  let(:interconnect) { klass.find_by($client, name: 'Encl1, interconnect 1').first }
 
-  describe '#name_servers' do
-    it 'retrieves name servers' do
-      expect { interconnect.name_servers }.not_to raise_error
+  describe '#update' do
+    it 'raises MethodUnavailable' do
+      expect { interconnect.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
   end
 
@@ -19,34 +20,35 @@ RSpec.describe OneviewSDK::Interconnect, integration: true, type: UPDATE do
 
   describe '#update_port' do
     it 'updates with valid attributes' do
-      port = interconnect[:ports].first
-      expect { interconnect.update_port(port['name'], enabled: !port['enabled']) }.not_to raise_error
+      ports = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
+      port = ports.first
+      expect { interconnect.update_port(port['name'], enabled: false) }.not_to raise_error
+      interconnect.retrieve!
+      ports_2 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
+      port_updated = ports_2.first
+      expect(port_updated['enabled']).to be false
+      uplink = OneviewSDK::EthernetNetwork.find_by($client, name: ETH_NET_NAME).first
+      expect { interconnect.update_port(port['name'], enabled: true, associatedUplinkSetUri: uplink['uri']) }.not_to raise_error
+      interconnect.retrieve!
+      ports_3 = interconnect['ports'].select { |k| k['portType'] == 'Uplink' }
+      port_updated_2 = ports_3.first
+      expect(port_updated_2['enabled']).to be true
     end
 
     it 'fails to update with invalid attributes' do
       port = interconnect[:ports].first
-      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error(/BAD REQUEST/)
-    end
-  end
-
-  describe '#statistics' do
-    it 'gets statistics' do
-      expect { interconnect.statistics }.not_to raise_error
-    end
-    it 'gets statistics for a specific port' do
-      port = interconnect[:ports].first
-      expect { interconnect.statistics(port['name']) }.not_to raise_error
-    end
-
-    # Missing example with subport
-    it 'interconnect subport statistics' do
-      port = interconnect[:ports].first
-      subport = nil
-      expect { interconnect.statistics(port['name'], subport) }.not_to raise_error
+      expect { interconnect.update_port(port['name'], none: 'none') }.to raise_error(OneviewSDK::BadRequest, /BAD REQUEST/)
     end
   end
 
   describe '#patch' do
-    it 'is a pending example'
+    xit 'update a given interconnect across a patch (Skipping this test due to the lack of type of interconnection that supports this operation)' do
+      expect { interconnect.patch('replace', '/uidState', 'Off') }.not_to raise_error
+      interconnect.retrieve!
+      expect(interconnect['uidState']).to eq('Off')
+      expect { interconnect.patch('replace', '/uidState', 'On') }.not_to raise_error
+      interconnect.retrieve!
+      expect(interconnect['uidState']).to eq('On')
+    end
   end
 end

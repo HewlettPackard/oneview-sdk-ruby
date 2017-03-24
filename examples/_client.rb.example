@@ -24,6 +24,7 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # Instance variables for examples:
 # @server_hardware_type_uri = '/rest/server-hardware-types/11111111-1111-1111-1111-111111111111'
 # @enclosure_group_uri = '/rest/enclosure-groups/11111111-1111-1111-1111-111111111111'
+# @enclosure_name = '0000A66101'
 # @enclosure_hostname = '172.1.1.11'
 # @enclosure_username = 'Administrator'
 # @enclosure_password = 'password123'
@@ -36,3 +37,9 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @firmware_bundle_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
 # @sas_interconnect_type = 'Synergy 12Gb SAS Connection Module'
 # @synergy_enclosure_hostname = 'fe80::2:0:9:1%eth2'
+# @interconnect_name = '0000A66101, interconnect 3'
+# @logical_switch1_ip = '172.18.16.91'
+# @logical_switch2_ip = '172.18.16.92'
+# @logical_switch_ssh_user = "dcs"
+# @logical_switch_ssh_password = "dcs"
+# @logical_switch_community_string = "public"

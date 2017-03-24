@@ -167,7 +167,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
 
   describe '#set_environmental_configuration' do
     it 'does not allow the method' do
-      enclosure = OneviewSDK::API300::Synergy::Enclosure.new(@client)
+      enclosure = OneviewSDK::API300::Synergy::Enclosure.new(@client_200)
       expect { enclosure.set_environmental_configuration }
         .to raise_error(OneviewSDK::MethodUnavailable, /The method #set_environmental_configuration is unavailable for this resource/)
     end
@@ -216,16 +216,9 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
 
     it 'does a PATCH to the enclosure uri with all parameters' do
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
-      data = { 'body' => [{ op: 'operation', path: '/path', value: 'val' }] }
+      data = { 'body' => [{ 'op' => 'operation', 'path' => '/path', 'value' => 'val' }] }
       expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Val'))
       expect(item.patch('operation', '/path', 'val')).to eq('key' => 'Val')
-    end
-
-    it 'does a PATCH to the enclosure uri with 2 parameters' do
-      item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      data = { 'body' => [{ op: 'operation', path: '/path' }] }
-      expect(@client_300).to receive(:rest_patch).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new(key: 'Op'))
-      expect(item.patch('operation', '/path')).to eq('key' => 'Op')
     end
   end
 

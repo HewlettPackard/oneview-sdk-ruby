@@ -492,4 +492,39 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
       expect(OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod_drives(@client_300, 'SAS_LOGICAL_JBOD1')['it']).to eq('works')
     end
   end
+
+  describe '#set_os_deployment_setttings' do
+    let(:os_deployment_plan) { OneviewSDK::API300::Synergy::OSDeploymentPlan.new(@client_300, uri: '/os-deployment-plan/1') }
+
+    it 'should pupulate osDeploymentSettings attribute correctly' do
+      custom_attrs = [{ name: 'field.one', value: 'value1' }, { name: 'field.two', value: 'value2' }]
+      expect(@item['osDeploymentSettings']).not_to be
+
+      @item.set_os_deployment_setttings(os_deployment_plan, custom_attrs)
+
+      expected_settings = { 'osDeploymentPlanUri' => '/os-deployment-plan/1', 'osCustomAttributes' => custom_attrs }
+      expect(@item['osDeploymentSettings']).to eq(expected_settings)
+    end
+
+    context 'when osDeploymentSettings already populated' do
+      it 'should change the values' do
+        custom_attrs = [{ name: 'field.one', value: 'value1' }, { name: 'field.two', value: 'value2' }]
+        settings = { 'osDeploymentPlanUri' => '/fake/uri', 'osCustomAttributes' => custom_attrs }
+        @item['osDeploymentSettings'] = settings
+
+        @item.set_os_deployment_setttings(os_deployment_plan, [{ name: 'new_name', value: 'new_value' }])
+
+        expected_settings = { 'osDeploymentPlanUri' => '/os-deployment-plan/1', 'osCustomAttributes' => [{ name: 'new_name', value: 'new_value' }] }
+        expect(@item['osDeploymentSettings']).to eq(expected_settings)
+      end
+    end
+
+    context 'when os_deployment_plan has not URI' do
+      it 'should throw IncompleteResource error' do
+        wrong_os_deployment_plan = OneviewSDK::API300::Synergy::OSDeploymentPlan.new(@client_300)
+        expect { @item.set_os_deployment_setttings(wrong_os_deployment_plan) }
+          .to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute*/)
+      end
+    end
+  end
 end

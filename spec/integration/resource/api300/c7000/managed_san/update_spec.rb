@@ -42,25 +42,9 @@ RSpec.describe klass, integration: true, type: UPDATE do
   end
 
   describe '#set_public_attributes' do
-
-    it 'is a pending test'
-    # NOTE: Disabled for now as the endpoint is not showing on documentation and
-    # it does not seem to be working. Following up on this with a oneview bug to
-    # track it, and may remove or uncomment it later on.
-    # it 'Update public attributes' do
-    #   attributes = [
-    #     {
-    #       'name' => 'MetaSan',
-    #       'value' => 'Neon SAN',
-    #       'valueType' => 'String',
-    #       'valueFormat' => 'None',
-    #       'displayName' => nil,
-    #       'required' => false
-    #     }
-    #   ]
-    #   expect { @item.set_public_attributes(attributes) }.not_to raise_error
-    #   expect(@item['publicAttributes']).to eq(attributes)
-    # end
+    it 'Update public attributes' do
+      expect { @item.set_public_attributes(name: 'MetaSan') }.to raise_error(/The method #set_public_attributes is unavailable for this resource/)
+    end
   end
 
   describe '#set_san_policy' do

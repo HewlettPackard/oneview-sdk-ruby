@@ -25,23 +25,25 @@ module OneviewSDK
       # @param [Integer] api_ver The api version to use when interracting with this resource.
       def initialize(client, params = {}, api_ver = nil)
         super
+        # Default values:
+        @data['type'] ||= 'InterconnectV3'
       end
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def create
+      def create(*)
         unavailable_method
       end
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def update
+      def update(*)
         unavailable_method
       end
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def delete
+      def delete(*)
         unavailable_method
       end
 

@@ -3,20 +3,24 @@
 AllCops:
   Exclude:
     - 'examples/_client.rb'
+    - 'examples/_client_i3s.rb'
 
 Metrics/ClassLength:
   Max: 200
   Exclude:
     - 'lib/oneview-sdk/cli.rb'
+    - 'lib/oneview-sdk/resource.rb'
 
 Metrics/LineLength:
   Max: 150
 
 Metrics/ModuleLength:
   Max: 150
+  Exclude:
+    - 'lib/oneview-sdk/rest.rb'
 
 Style/GlobalVars:
-  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy]
+  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $client_500, $client_500_synergy]
 
 Style/IndentationWidth:
   Width: 2

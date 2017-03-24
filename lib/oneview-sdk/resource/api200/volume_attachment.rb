@@ -29,19 +29,19 @@ module OneviewSDK
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def create
+      def create(*)
         unavailable_method
       end
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def update
+      def update(*)
         unavailable_method
       end
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def delete
+      def delete(*)
         unavailable_method
       end
 
@@ -60,7 +60,7 @@ module OneviewSDK
           type: 'ExtraUnmanagedStorageVolumes',
           resourceUri: resource['uri']
         }
-        response = client.rest_post(BASE_URI + '/repair', 'body' => requestBody)
+        response = client.rest_post(BASE_URI + '/repair', { 'Accept-Language' => 'en_US', 'body' => requestBody }, client.api_version)
         client.response_handler(response)
       end
 

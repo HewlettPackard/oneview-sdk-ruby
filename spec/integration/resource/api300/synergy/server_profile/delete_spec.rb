@@ -6,7 +6,7 @@ RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
 
   describe '#delete' do
     it 'deletes all the resources' do
-      names = [SERVER_PROFILE_NAME, SERVER_PROFILE2_NAME, SERVER_PROFILE3_NAME]
+      names = [SERVER_PROFILE_NAME, SERVER_PROFILE2_NAME, SERVER_PROFILE3_NAME, SERVER_PROFILE_WITH_OSDP_NAME]
       names.each do |name|
         item = klass.find_by($client_300_synergy, 'name' => name).first
         expect(item).to be

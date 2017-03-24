@@ -10,12 +10,14 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/enclosure'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module C7000
       # Enclosure resource implementation for API300 C7000
       class Enclosure < OneviewSDK::API200::Enclosure
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -25,22 +27,8 @@ module OneviewSDK
           @data ||= {}
           # Default values:
           @data['type'] ||= 'EnclosureV300'
+          @data['scopeUris'] ||= []
           super
-        end
-
-        # Update specific attributes of a given enclosure
-        # @param [String] operation Operation to be performed
-        # @param [String] path Path
-        # @param [String] value Value
-        def patch(operation, path, value = nil)
-          ensure_client && ensure_uri
-          body = if value
-                   { op: operation, path: path, value: value }
-                 else
-                   { op: operation, path: path }
-                 end
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
         end
       end
     end

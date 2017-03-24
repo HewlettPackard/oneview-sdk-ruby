@@ -51,7 +51,7 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
     it 'can create EnclosureGroup with empty LIG' do
       item_3 = OneviewSDK::EnclosureGroup.new($client, enclosure_group_options_3)
-      lig = OneviewSDK::LogicalInterconnectGroup.new($client, 'name' => LOG_INT_GROUP3_NAME)
+      lig = OneviewSDK::LogicalInterconnectGroup.new($client, 'name' => LOG_INT_GROUP4_NAME)
       lig.retrieve!
       item_3.add_logical_interconnect_group(lig)
       item_3.create

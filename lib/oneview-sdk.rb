@@ -15,11 +15,16 @@ require_relative 'oneview-sdk/client'
 require_relative 'oneview-sdk/resource'
 Dir[File.dirname(__FILE__) + '/oneview-sdk/resource/*.rb'].each { |file| require file }
 require_relative 'oneview-sdk/cli'
+require_relative 'oneview-sdk/image_streamer'
 
 # Module for interacting with the HPE OneView API
 module OneviewSDK
-  ENV_VARS = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_SSL_ENABLED).freeze
-  SUPPORTED_API_VERSIONS = [200, 300].freeze
+  env_sdk = %w(ONEVIEWSDK_URL ONEVIEWSDK_USER ONEVIEWSDK_PASSWORD ONEVIEWSDK_TOKEN ONEVIEWSDK_DOMAIN)
+  env_sdk.concat %w(ONEVIEWSDK_SSL_ENABLED ONEVIEWSDK_API_VERSION ONEVIEWSDK_VARIANT)
+  env_i3s = %w(I3S_URL I3S_SSL_ENABLED)
+  ENV_VARS = env_sdk.concat(env_i3s).freeze
+
+  SUPPORTED_API_VERSIONS = [200, 300, 500].freeze
   DEFAULT_API_VERSION = 200
   @api_version = DEFAULT_API_VERSION
   @api_version_updated = false # Whether or not the API version has been set by the user
@@ -32,8 +37,10 @@ module OneviewSDK
   # Set the default API version
   def self.api_version=(version)
     version = version.to_i rescue version
-    raise "API version #{version} is not supported!" unless SUPPORTED_API_VERSIONS.include?(version)
-    raise "The module for API version #{@api_version} is undefined" unless constants.include?("API#{@api_version}".to_sym)
+    raise UnsupportedVersion, "API version #{version} is not supported!"\
+      unless SUPPORTED_API_VERSIONS.include?(version)
+    raise UnsupportedVariant, "The module for API version #{@api_version} is undefined"\
+      unless constants.include?("API#{@api_version}".to_sym)
     @api_version_updated = true
     @api_version = version
   end

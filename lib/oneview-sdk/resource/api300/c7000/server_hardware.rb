@@ -10,12 +10,14 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/server_hardware'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module C7000
       # Server Hardware resource implementation on API300 C7000
       class ServerHardware < OneviewSDK::API200::ServerHardware
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -25,6 +27,7 @@ module OneviewSDK
           @data ||= {}
           # Default values:
           @data['type'] ||= 'server-hardware-5'
+          @data['scopeUris'] ||= []
           super
         end
 
@@ -41,38 +44,9 @@ module OneviewSDK
         # @return [Array] Array of firmware inventory
         def get_firmwares(filters = [])
           ensure_client
-          results = []
           uri = self.class::BASE_URI + '/*/firmware'
           uri_generate(uri, filters) unless filters.empty?
-          response = @client.rest_get(uri)
-          body = @client.response_handler(response)
-
-          loop do
-            members = body['members']
-            members.each do |member|
-              results.push(member)
-            end
-            break unless body['nextPageUri']
-            uri = body['nextPageUri']
-          end
-          results
-        end
-
-        # Performs a specific patch operation for the given server.
-        # If the server supports the particular operation, the operation is performed
-        # and a response is returned to the caller with the results.
-        # @param [String] operation The operation to be performed
-        # @param [String] path The path of operation
-        # @param [String] value The value
-        def patch(operation, path, value = nil)
-          ensure_client && ensure_uri
-          body = if value
-                   { op: operation, path: path, value: value }
-                 else
-                   { op: operation, path: path }
-                 end
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
+          self.class.find_with_pagination(@client, uri)
         end
 
         private

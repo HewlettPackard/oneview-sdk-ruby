@@ -1,10 +1,12 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE do
+klass = OneviewSDK::LogicalInterconnect
+extra_klass_1 = OneviewSDK::EthernetNetwork
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration context'
 
   let(:enclosure) { OneviewSDK::Enclosure.new($client, name: ENCL_NAME) }
-  let(:log_int) { OneviewSDK::LogicalInterconnect.new($client, name: LOG_INT_NAME) }
+  let(:log_int) { klass.new($client, name: LOG_INT_NAME) }
   let(:qos_fixture) { 'spec/support/fixtures/integration/logical_interconnect_qos.json' }
   let(:firmware_path) { 'spec/support/Service Pack for ProLiant' }
 
@@ -77,8 +79,8 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
 
     it 'will add and remove new networks' do
       vlans_1 = log_int.list_vlan_networks
-      et01 = OneviewSDK::EthernetNetwork.new($client, name: "#{BULK_ETH_NET_PREFIX}_1")
-      et02 = OneviewSDK::EthernetNetwork.new($client, name: "#{BULK_ETH_NET_PREFIX}_2")
+      et01 = extra_klass_1.new($client, name: "#{BULK_ETH_NET_PREFIX}_2")
+      et02 = extra_klass_1.new($client, name: "#{BULK_ETH_NET_PREFIX}_3")
       et01.retrieve!
       et02.retrieve!
 
@@ -170,7 +172,7 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
     it 'will be updated from a fixture' do
       log_int.retrieve!
 
-      log_int['qosConfiguration'] = OneviewSDK::LogicalInterconnect.from_file($client, qos_fixture)['qosConfiguration']
+      log_int['qosConfiguration'] = klass.from_file($client, qos_fixture)['qosConfiguration']
       expect { log_int.update_qos_configuration }.to_not raise_error
       log_int.compliance
     end
@@ -211,13 +213,13 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
 
   describe '#find_by' do
     it 'returns all resources when the hash is empty' do
-      names = OneviewSDK::LogicalInterconnect.find_by($client, {}).map { |item| item[:name] }
+      names = klass.find_by($client, {}).map { |item| item[:name] }
       expect(names).to include(log_int[:name])
     end
 
     it 'finds networks by multiple attributes' do
       attrs = { status: 'OK' }
-      lis = OneviewSDK::EthernetNetwork.find_by($client, attrs)
+      lis = extra_klass_1.find_by($client, attrs)
       expect(lis).to_not eq(nil)
     end
   end
@@ -252,6 +254,40 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
     end
   end
 
+  describe '#port_monitor' do
+    it 'gets a collection of uplink ports eligibles for assignment to an analyzer port' do
+      log_int.retrieve!
+      ports = []
+      expect { ports = log_int.get_unassigned_uplink_ports_for_port_monitor }.to_not raise_error
+      expect(ports).to_not be_empty
+    end
+
+    it 'updates the port monitor' do
+      log_int.retrieve!
+      port = log_int.get_unassigned_uplink_ports_for_port_monitor.first
+      interconnect = OneviewSDK::Interconnect.find_by($client, uri: log_int['interconnects'].first).first
+      downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
+      options = {
+        'analyzerPort' => {
+          'portUri' => port['uri'],
+          'portMonitorConfigInfo' => 'AnalyzerPort'
+        },
+        'enablePortMonitor' => true,
+        'type' => 'port-monitor',
+        'monitoredPorts' => [
+          {
+            'portUri' => downlinks.first['uri'],
+            'portMonitorConfigInfo' => 'MonitoredBoth'
+          }
+        ]
+      }
+
+      log_int['portMonitor'] = options
+      expect { log_int.update_port_monitor }.to_not raise_error
+      log_int.compliance
+    end
+  end
+
   describe '#configuration' do
     it 'reapplies configuration to all managed interconnects' do
       log_int.retrieve!
@@ -259,18 +295,10 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
     end
   end
 
-  describe 'Firmware Updates' do
-    it 'will assure the firmware is present' do
-      firmware_name = firmware_path.split('/').last
-      firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
-      firmware.retrieve!
-    end
-
+  describe '#get_firmware' do
     it 'will retrieve the firmware options' do
-      firmware_name = firmware_path.split('/').last
-      firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
-      firmware.retrieve!
       log_int.retrieve!
+      expect { log_int.configuration }.to_not raise_error
       firmware_opt = log_int.get_firmware
       expect(firmware_opt).to be
       expect(firmware_opt['ethernetActivationDelay']).to be
@@ -278,22 +306,31 @@ RSpec.describe OneviewSDK::LogicalInterconnect, integration: true, type: UPDATE 
       expect(firmware_opt['fcActivationDelay']).to be
       expect(firmware_opt['fcActivationType']).to be
     end
-
-    context 'perform the actions' do
-      it 'Stage' do
-        log_int.retrieve!
-        firmware_name = firmware_path.split('/').last
-        firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
-        firmware.retrieve!
-        firmware_opt = log_int.get_firmware
-        firmware_opt['ethernetActivationDelay'] = 7
-        firmware_opt['ethernetActivationType'] = 'OddEven'
-        firmware_opt['fcActivationDelay'] = 7
-        firmware_opt['fcActivationType'] = 'Serial'
-        firmware_opt['force'] = true
-        expect { log_int.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
-      end
-
-    end
   end
+
+  # NOTE: This action requires a firmware image to be specified
+  # describe 'Firmware Updates' do
+  #   it 'will assure the firmware is present' do
+  #     firmware_name = firmware_path.split('/').last
+  #     firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
+  #     firmware.retrieve!
+  #   end
+  #
+  #   context 'perform the actions' do
+  #     it 'Stage' do
+  #       log_int.retrieve!
+  #       firmware_name = firmware_path.split('/').last
+  #       firmware = OneviewSDK::FirmwareDriver.new($client, name: firmware_name)
+  #       firmware.retrieve!
+  #       firmware_opt = log_int.get_firmware
+  #       firmware_opt['ethernetActivationDelay'] = 7
+  #       firmware_opt['ethernetActivationType'] = 'OddEven'
+  #       firmware_opt['fcActivationDelay'] = 7
+  #       firmware_opt['fcActivationType'] = 'Serial'
+  #       firmware_opt['force'] = true
+  #       expect { log_int.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
+  #     end
+  #
+  #   end
+  # end
 end

@@ -31,6 +31,12 @@ RSpec.describe OneviewSDK::Client do
       expect(client.user).to eq('Administrator')
     end
 
+    it 'sets the domain to "LOCAL" by default' do
+      options = { url: 'https://oneview.example.com', token: 'secret123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.domain).to eq('LOCAL')
+    end
+
     it 'respects credential environment variables' do
       ENV['ONEVIEWSDK_USER'] = 'Admin'
       ENV['ONEVIEWSDK_PASSWORD'] = 'secret456'
@@ -43,6 +49,12 @@ RSpec.describe OneviewSDK::Client do
       ENV['ONEVIEWSDK_TOKEN'] = 'secret456'
       client = OneviewSDK::Client.new(url: 'https://oneview.example.com')
       expect(client.token).to eq('secret456')
+    end
+
+    it 'respects the domain environment variable' do
+      ENV['ONEVIEWSDK_DOMAIN'] = 'Other'
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'secret123')
+      expect(client.domain).to eq('Other')
     end
 
     it 'respects the ssl environment variable' do
@@ -72,10 +84,10 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'warns if the api level is greater than the appliance api version' do
-      options = { url: 'https://oneview.example.com', token: 'token123', api_version: 400 }
+      options = { url: 'https://oneview.example.com', token: 'token123', api_version: 600 }
       client = nil
       expect { client = OneviewSDK::Client.new(options) }.to output(/is greater than the appliance API version/).to_stdout_from_any_process
-      expect(client.api_version).to eq(400)
+      expect(client.api_version).to eq(600)
     end
 
     it 'sets @print_wait_dots to false by default' do
@@ -120,6 +132,41 @@ RSpec.describe OneviewSDK::Client do
       expect(OneviewSDK).to receive(:api_version_updated?).and_return false
       expect(OneviewSDK).to receive(:api_version=).with(200).and_return true
       OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'token123', api_version: 200)
+    end
+  end
+
+  describe 'attributes' do
+    include_context 'shared context'
+
+    it 'allows the url to be re-set' do
+      @client_200.url = 'https://new-url.example.com'
+      expect(@client_200.url).to eq('https://new-url.example.com')
+    end
+
+    it 'allows the user to be re-set' do
+      @client_200.user = 'updatedUser'
+      expect(@client_200.user).to eq('updatedUser')
+    end
+
+    it 'allows the password to be re-set' do
+      @client_200.password = 'updatedPassword'
+      expect(@client_200.password).to eq('updatedPassword')
+    end
+
+    it 'allows the token to be re-set' do
+      @client_200.token = 'updatedToken'
+      expect(@client_200.token).to eq('updatedToken')
+    end
+
+    it 'allows the log level to be re-set' do
+      expect(@client_200.log_level).to_not eq(:error)
+      @client_200.log_level = :error
+      expect(@client_200.log_level).to eq(:error)
+      expect(@client_200.logger.level).to eq(Logger.const_get(:ERROR))
+    end
+
+    it 'does not allow the max_api_version to be set manually' do
+      expect { @client_200.max_api_version = 1 }.to raise_error(NoMethodError, /undefined method/)
     end
   end
 
@@ -172,27 +219,27 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     before :each do
-      @resource = OneviewSDK::Resource.new(@client)
+      @resource = OneviewSDK::Resource.new(@client_200)
     end
 
     it 'implements the #create method' do
       expect(@resource).to receive(:create)
-      @client.create(@resource)
+      @client_200.create(@resource)
     end
 
     it 'implements the #update method' do
       expect(@resource).to receive(:update)
-      @client.update(@resource, name: 'NewName')
+      @client_200.update(@resource, name: 'NewName')
     end
 
     it 'implements the #refresh method' do
       expect(@resource).to receive(:refresh)
-      @client.refresh(@resource)
+      @client_200.refresh(@resource)
     end
 
     it 'implements the #delete method' do
       expect(@resource).to receive(:delete)
-      @client.delete(@resource)
+      @client_200.delete(@resource)
     end
   end
 
@@ -200,12 +247,51 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it "calls the correct resource's get_all method" do
-      expect(OneviewSDK::ServerProfile).to receive(:get_all).with(@client)
-      @client.get_all('ServerProfiles')
+      expect(OneviewSDK::API200::ServerProfile).to receive(:get_all).with(@client_200)
+      @client_200.get_all('ServerProfiles')
+    end
+
+    it 'accepts API version and variant parameters' do
+      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).with(@client_200)
+      @client_200.get_all('ServerProfiles', 300, 'Synergy')
+    end
+
+    it 'accepts symbols instead of strings' do
+      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).with(@client_200)
+      @client_200.get_all(:ServerProfiles, 300, :Synergy)
     end
 
     it 'fails when a bogus resource type is given' do
-      expect { @client.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
+      expect { @client_200.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
+    end
+
+    it 'fails when a bogus API version is given' do
+      expect { @client_200.get_all('ServerProfiles', 100) }.to raise_error(OneviewSDK::UnsupportedVersion, /version 100 is not supported/)
+    end
+
+    it 'fails when a bogus variant is given' do
+      expect { @client_200.get_all('ServerProfiles', 300, 'Bogus') }.to raise_error(/variant 'Bogus' is not supported/)
+    end
+  end
+
+  describe '#refresh_login' do
+    include_context 'shared context'
+
+    it 'refreshes the token and max_api_version' do
+      expect(@client_200).to receive(:appliance_api_version).and_return(250)
+      expect(@client_200).to receive(:login).and_return('newToken')
+      @client_200.refresh_login
+      expect(@client_200.max_api_version).to eq(250)
+      expect(@client_200.token).to eq('newToken')
+    end
+  end
+
+  describe '#destroy_session' do
+    include_context 'shared context'
+
+    it 'makes a REST call to destroy the session' do
+      expect(@client_200).to receive(:rest_delete).with('/rest/login-sessions').and_return(FakeResponse.new)
+      expect(@client_200.destroy_session).to eq(@client_200)
     end
   end
 
@@ -213,13 +299,13 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it 'requires a task_uri' do
-      expect { @client.wait_for('') }.to raise_error(ArgumentError, /Must specify a task_uri/)
+      expect { @client_200.wait_for('') }.to raise_error(ArgumentError, /Must specify a task_uri/)
     end
 
     it 'returns the response body for completed tasks' do
       fake_response = FakeResponse.new(taskState: 'Completed', name: 'NewName')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-      ret = @client.wait_for('/rest/tasks/1')
+      ret = @client_200.wait_for('/rest/tasks/1')
       expect(ret).to eq('taskState' => 'Completed', 'name' => 'NewName')
     end
 
@@ -227,7 +313,7 @@ RSpec.describe OneviewSDK::Client do
       fake_response = FakeResponse.new(taskState: 'Warning', taskErrors: 'Blah')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
       ret = nil
-      expect { ret = @client.wait_for('/rest/tasks/1') }.to output(/ended with warning.*Blah/).to_stdout_from_any_process
+      expect { ret = @client_200.wait_for('/rest/tasks/1') }.to output(/ended with warning.*Blah/).to_stdout_from_any_process
       expect(ret).to eq('taskState' => 'Warning', 'taskErrors' => 'Blah')
     end
 
@@ -235,7 +321,7 @@ RSpec.describe OneviewSDK::Client do
       %w(Error Killed Terminated).each do |state|
         fake_response = FakeResponse.new(taskState: state, message: 'Blah')
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
+        expect { @client_200.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
       end
     end
 
@@ -243,8 +329,94 @@ RSpec.describe OneviewSDK::Client do
       %w(Error Killed Terminated).each do |state|
         fake_response = FakeResponse.new(taskState: state, taskErrors: { message: 'Blah' })
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-        expect { @client.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
+        expect { @client_200.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
       end
+    end
+  end
+
+  describe '#new_i3s_client' do
+    it 'creates a client i3s' do
+      options = { url: 'https://oneview.example.com', token: 'token123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('token123')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('token123')
+    end
+
+    it 'creates a client i3s with oneview client created by user and password' do
+      options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('secretToken')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secretToken')
+    end
+
+    it 'creates a client i3s passing a token, but should use the oneview client' do
+      options = { url: 'https://oneview.example.com', user: 'Administrator', password: 'secret123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('secretToken')
+
+      i3s_options = { url: 'https://imagestreamer.example.com', token: 'token123' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secretToken')
+    end
+
+    it 'creates a client i3s passing the api version' do
+      options = { url: 'https://oneview.example.com', token: 'token123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('token123')
+      expect(client.api_version).to eq(200)
+
+      i3s_options = { url: 'https://imagestreamer.example.com', api_version: 300 }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('token123')
+      expect(i3s_client.api_version).to eq(300)
+    end
+
+    it 'creates an i3s client with oneview client and its specific version' do
+      options = { url: 'https://oneview.example.com', token: 'token123', api_version: 300 }
+      client = OneviewSDK::Client.new(options)
+      expect(client.token).to eq('token123')
+      expect(client.api_version).to eq(300)
+
+      i3s_options = { url: 'https://imagestreamer.example.com', api_version: 300 }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('token123')
+      expect(i3s_client.api_version).to eq(300)
+    end
+
+    it 'creates an i3s client with oneview client created with respects credential environment variables' do
+      ENV['ONEVIEWSDK_USER'] = 'Admin'
+      ENV['ONEVIEWSDK_PASSWORD'] = 'secret456'
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com')
+      expect(client.user).to eq('Admin')
+      expect(client.password).to eq('secret456')
+      expect(client.token).to eq('secretToken')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secretToken')
+    end
+
+    it 'creates an i3s client with oneview client created with respects the token environment variable' do
+      ENV['ONEVIEWSDK_TOKEN'] = 'secret456'
+      client = OneviewSDK::Client.new(url: 'https://oneview.example.com')
+      expect(client.token).to eq('secret456')
+
+      i3s_options = { url: 'https://imagestreamer.example.com' }
+      i3s_client = client.new_i3s_client(i3s_options)
+      expect(i3s_client.url).to eq('https://imagestreamer.example.com')
+      expect(i3s_client.token).to eq('secret456')
     end
   end
 end

@@ -1,0 +1,39 @@
+require_relative './../lib/oneview-sdk/image_streamer'
+require_relative './../lib/oneview-sdk'
+require 'pry'
+
+# Client for the Image Streamer
+@client = OneviewSDK::ImageStreamer::Client.new(
+  url: 'https://i3s.example.com', # or set ENV['I3S_URL']
+  token: 'token_oneview', # or set ENV['ONEVIEWSDK_TOKEN']
+  ssl_enabled: false
+)
+
+# Another way to instantiate the i3s client. Uncomment the creation of ov_client and @client instances.
+# ov_client = OneviewSDK::Client.new(
+#   url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
+#   user: 'Administrator', # or set ENV['ONEVIEWSDK_USER']
+#   password: 'secret123', # or set ENV['ONEVIEWSDK_PASSWORD']
+#   ssl_enabled: false
+# )
+
+# @client = ov_client.new_i3s_client(
+#   url: ''https://i3s.example.com', # or set ENV['I3S_URL']
+#   ssl_enabled: false
+# )
+
+## This setting allows the SDK to flush messages to the screen as it is being run.
+#  # It defaults to true when a client is created, and can be set to false in order
+#  # to only flush at the end of execution.
+# STDOUT.sync = false
+
+puts "Connected to Image Streamer at #{@client.url}\n\n"
+
+# Instance variables for examples:
+# @build_plan_name = 'Build_Plan_1'
+# @golden_image_name = 'Golden_Image_1'
+# @golden_image_download_path = 'golden_image_demo.zip'
+# @golden_image_upload_path = 'vmwareesxi6_demo.zip'
+# @golden_image_log_path = 'details_gi.log'
+# @plan_script1_name = 'Plan_Script_1'
+# @plan_script2_name = 'Plan_Script_2'

@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-    # Storage system resource implementation
+    # Unmanaged Device resource implementation
     class UnmanagedDevice < Resource
       BASE_URI = '/rest/unmanaged-devices'.freeze
 
@@ -30,13 +30,13 @@ module OneviewSDK
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def create
+      def create(*)
         unavailable_method
       end
 
       # Method is not available
       # @raise [OneviewSDK::MethodUnavailable] method is not available
-      def delete
+      def delete(*)
         unavailable_method
       end
 
