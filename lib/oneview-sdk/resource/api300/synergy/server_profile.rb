@@ -75,9 +75,10 @@ module OneviewSDK
 
         # Sets the OS deployment settings applicable when deployment is invoked through server profile
         # @param [OneviewSDK::API300::Synergy::OSDeploymentPlan] os_deployment_plan the OSDeploymentPlan resource with valid URI
-        # @param [Array<Hash<String, String>>] custom_attributes The custom attributes to be configured on the OS deployment plan
-        # @option custom_attributes [String] :name name of attribute
-        # @option custom_attributes [String] :value value of attribute
+        # @param [Array(Hash<String, String>)] custom_attributes The custom attributes to be configured on the OS deployment plan.
+        #   The internal hashes may contain:
+        #   - 'name' [String] name of the attribute
+        #   - 'value' [String] value of the attribute
         def set_os_deployment_setttings(os_deployment_plan, custom_attributes = [])
           os_deployment_plan.ensure_uri
           @data['osDeploymentSettings'] ||= {}
