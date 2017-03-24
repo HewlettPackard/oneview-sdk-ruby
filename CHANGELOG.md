@@ -1,8 +1,10 @@
 # Unreleased Changes
-## Suggested release: v5.0.0
+(none)
+
+# v4.2.0
 
 #### New Resources:
-(none)
+   - OS Deployment Plan
 
 #### Bug fixes & Enhancements:
 - [#189](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/189) Use helper methods of Rest module for upload and download file
@@ -14,9 +16,6 @@
 
 #### Design changes:
    - Architecture for future API500 support. Features for API500 are not yet supported.
-
-#### New Resources:
-   - OS Deployment Plan
 
 # v4.1.0
 
