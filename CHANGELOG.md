@@ -1,6 +1,3 @@
-# Unreleased Changes
-(none)
-
 # v4.2.0
 
 #### New Resources:
