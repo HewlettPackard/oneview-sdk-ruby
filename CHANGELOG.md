@@ -1,8 +1,7 @@
-# Unreleased Changes
-## Suggested release: v4.1.1
+# v4.2.0
 
 #### New Resources:
-(none)
+   - OS Deployment Plan
 
 #### Bug fixes & Enhancements:
 - [#89](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/89) Fix like? method for Logical Interconnect Groups
@@ -16,9 +15,6 @@
 
 #### Design changes:
    - Architecture for future API500 support. Features for API500 are not yet supported.
-
-#### New Resources:
-   - OS Deployment Plan
 
 # v4.1.0
 
