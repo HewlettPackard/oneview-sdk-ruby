@@ -7,7 +7,7 @@ RSpec.describe OneviewSDK::LIGUplinkSet do
     it 'sets the defaults correctly' do
       item = OneviewSDK::LIGUplinkSet.new(@client_200, networkType: 'FibreChannel')
       expect(item[:logicalPortConfigInfos]).to eq([])
-      expect(item[:lacpTimer]).to eq('Short')
+      expect(item[:lacpTimer]).to eq(nil)
       expect(item[:mode]).to eq('Auto')
       expect(item[:networkUris]).to eq([])
     end

@@ -14,9 +14,8 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
       expect(item['state']).to eq('Active')
       expect(item['uplinkSets']).to eq([])
       expect(item['type']).to eq('logical-interconnect-groupV300')
-      path = 'spec/support/fixtures/unit/resource/lig_default_templates.json'
-      expect(item['interconnectMapTemplate']).to eq(JSON.parse(File.read(path)))
-      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates'].size).to eq(8)
+      expect(item['interconnectMapTemplate']).to eq('interconnectMapEntryTemplates' => [])
+      expect(item['interconnectMapTemplate']['interconnectMapEntryTemplates']).to be_empty
     end
   end
 
@@ -30,13 +29,23 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
         .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
-      expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][2]['permittedInterconnectTypeUri'])
-        .to eq('/rest/fake')
+
+      location_entries = @item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['logicalLocation']['locationEntries']
+      expect(location_entries.size).to eq(2)
+
+      bay_entry, enclosure_entry = location_entries
+      expect(bay_entry['type']).to eq('Bay')
+      expect(bay_entry['relativeValue']).to eq(3)
+      expect(enclosure_entry['type']).to eq('Enclosure')
+      expect(enclosure_entry['relativeValue']).to eq(1)
+
+      permitted_interconnect_type_uri = @item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['permittedInterconnectTypeUri']
+      expect(permitted_interconnect_type_uri).to eq('/rest/fake')
     end
 
     it 'raises an error if the interconnect is not found' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
-        .and_return([])
+        .and_return(nil)
       expect(OneviewSDK::Interconnect).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.add_interconnect(3, @type) }.to raise_error(/not found!/)
     end

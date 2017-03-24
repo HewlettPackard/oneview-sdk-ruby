@@ -7,12 +7,14 @@
    - OS Deployment Plan
 
 #### Bug fixes & Enhancements:
+- [#89](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/89) Fix like? method for Logical Interconnect Groups
+- [#119](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
+- [#125](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/125) References to resources C7000 in Synergy integration tests
 - [#189](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/189) Use helper methods of Rest module for upload and download file
 - [#201](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/201) Code to search the collection of resources (paginated search) is repeated in some resources
-- [#119](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/112) VolumeAttachment::remove_extra_unmanaged_volume throw Unexpected Http Error
 - [#202](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/202) The method #get_default_settings in LogicalInterconnectGroup is used on integration test
-- [#125](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/125) References to resources C7000 in Synergy integration tests
 - [#212](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/212) Unable to create a Server Profile with Deployment Plan settings
+- [#219](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/219) Fix like? method for Server Profile
 
 #### Design changes:
    - Architecture for future API500 support. Features for API500 are not yet supported.
