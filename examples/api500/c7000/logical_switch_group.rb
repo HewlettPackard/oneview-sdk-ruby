@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 require_relative '../../_client' # Gives access to @client
 
 # Scopes
-scope_1 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 1')
+scope_1 = OneviewSDK::API500::C7000::Scope.new(@client, name: 'Scope 1', type: 'ScopeV2')
 scope_1.create
-scope_2 = OneviewSDK::API300::C7000::Scope.new(@client, name: 'Scope 2')
+scope_2 = OneviewSDK::API500::C7000::Scope.new(@client, name: 'Scope 2', type: 'ScopeV2')
 scope_2.create
 
 # Example: Create an Logical Switch Group
@@ -26,7 +26,7 @@ options = {
 }
 
 # Creating a LSG
-item = OneviewSDK::API300::C7000::LogicalSwitchGroup.new(@client, options)
+item = OneviewSDK::API500::C7000::LogicalSwitchGroup.new(@client, options)
 
 # Set the group parameters
 item.set_grouping_parameters(2, 'Cisco Nexus 50xx')
@@ -38,7 +38,7 @@ puts "\nCreated logical-switch-group '#{item[:name]}' sucessfully.\n  uri = '#{i
 sleep(10)
 
 # Retrieves a logical-switch-group'
-item2 = OneviewSDK::API300::C7000::LogicalSwitchGroup.new(@client, name: 'OneViewSDK Test Logical Switch Group')
+item2 = OneviewSDK::API500::C7000::LogicalSwitchGroup.new(@client, name: 'OneViewSDK Test Logical Switch Group')
 puts "\nRetrieving a logical-switch-group with name: '#{item[:name]}'."
 item2.retrieve!
 puts "\nRetrieved a logical-switch-group with name: '#{item[:name]}'.\n  uri = '#{item[:uri]}'"
