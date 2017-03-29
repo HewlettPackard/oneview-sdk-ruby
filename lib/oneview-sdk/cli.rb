@@ -54,7 +54,7 @@ module OneviewSDK
 
     class_option :ssl_verify,
       type: :boolean,
-      desc: 'Enable/Disable SSL verification for requests. Can also use ENV[\'ONEVIEWSDK_SSL_ENABLED\']',
+      desc: 'Enable/Disable SSL verification for requests. Uses ENV[\'ONEVIEWSDK_SSL_ENABLED\']',
       default: nil
 
     class_option :url,

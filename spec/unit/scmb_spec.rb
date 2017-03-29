@@ -26,6 +26,7 @@ RSpec.describe OneviewSDK::SCMB do
       allow(Bunny).to receive(:new) do |opts|
         expect(opts[:host]).to eq(URI.parse(@client_300.url).host)
         expect(opts[:verify_peer]).to eq(@client_300.ssl_enabled)
+        expect(opts[:logger]).to eq(@client_300.logger)
         expect(opts[:tls_cert]).to eq('cert1')
         expect(opts[:tls_key]).to eq('key1')
         con

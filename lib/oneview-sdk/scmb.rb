@@ -34,7 +34,8 @@ module OneviewSDK
         port: 5671,
         auth_mechanism: 'EXTERNAL',
         tls: true,
-        verify_peer: client.ssl_enabled
+        verify_peer: client.ssl_enabled,
+        logger: client.logger
       }
       con_opts.merge!(opts)
       con_opts[:host] = URI.parse(client.url).host
