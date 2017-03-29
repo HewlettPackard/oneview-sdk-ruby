@@ -428,6 +428,33 @@ module OneviewSDK
       fail_nice e.message
     end
 
+    method_option :route,
+      desc: 'Routing key to filter messages',
+      type: :string,
+      aliases: '-r',
+      default: OneviewSDK::SCMB::DEFAULT_ROUTING_KEY
+    method_option :format,
+      desc: 'Output format',
+      aliases: '-f',
+      enum: %w(json yaml raw),
+      default: 'json'
+    scmb_examples = "\n  oneview-sdk-ruby scmb -r 'scmb.ethernet-networks.#'"
+    scmb_examples << "\n  oneview-sdk-ruby scmb -r 'scmb.ethernet-networks.Created'"
+    scmb_examples << "\n  oneview-sdk-ruby scmb -r 'scmb.ethernet-networks.Updated.<resource_uri>'"
+    desc 'scmb', "Subscribe to the OneView State Change Message Bus. Examples:#{scmb_examples}"
+    # Subscribe to the OneView SCMB
+    def scmb
+      client_setup
+      connection = OneviewSDK::SCMB.new_connection(@client)
+      q = OneviewSDK::SCMB.new_queue(connection, @options['route'])
+      puts 'Subscribing to OneView messages. To exit, press Ctrl + c'
+      q.subscribe(block: true) do |_delivery_info, _properties, payload|
+        data = JSON.parse(payload) rescue payload
+        puts "\n#{'=' * 50}\n\nReceived message with payload:"
+        @options['format'] == 'raw' ? puts(payload) : output(data)
+      end
+    end
+
     private
 
     def fail_nice(msg = nil, exit_code = 1)

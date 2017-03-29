@@ -12,7 +12,7 @@ The OneView SDK provides a Ruby library to easily interact with HPE OneView and 
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk', '~> 4.2'
+  gem 'oneview-sdk', '~> 4.3'
   ```
 
   Then run `$ bundle install`
@@ -408,6 +408,13 @@ $ oneview-sdk-ruby cert check https://oneview.example.com
 $ oneview-sdk-ruby cert import https://oneview.example.com
  Importing certificate for 'https://oneview.example.com' into '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'...
  Cert added to '/home/users/user1/.oneview-sdk-ruby/trusted_certs.cer'
+```
+
+##### Subscribe to the OneView State Change Message Bus (SCMB):
+
+```bash
+$ oneview-sdk-ruby scmb
+$ oneview-sdk-ruby scmb -r 'scmb.ethernet-networks.#'
 ```
 
 ## License

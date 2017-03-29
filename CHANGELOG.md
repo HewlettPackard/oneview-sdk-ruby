@@ -1,4 +1,7 @@
-# v4.2.0
+## v4.3.0
+ - Added SCMB module and CLI command
+
+## v4.2.0
 
 #### New Resources:
    - OS Deployment Plan
@@ -16,7 +19,7 @@
 #### Design changes:
    - Architecture for future API500 support. Features for API500 are not yet supported.
 
-# v4.1.0
+## v4.1.0
 
 #### New Resources:
 Added full support to Image Streamer Rest API version 300:
@@ -71,7 +74,7 @@ Added full support to Image Streamer Rest API version 300:
   - Deployment Plan (unimplemented)
   - Golden Image (unimplemented)
 
-# v3.1.0
+## v3.1.0
 Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
    - Interconnect
    - Logical Interconnect
@@ -127,12 +130,12 @@ Added full support to OneView Rest API version 300 for the hardware variants C70
 - Unmanaged devices
 
 # v3.0.0
-### Notes
+#### Notes
  This is the Third major version of the Ruby SDK for HPE OneView. It features a split in the API support, allowing for C7000 and Synergy hardware variants to be used, while maintaining compatibility to older versions. There are some code improvements applied throughout the release, as well as additional endpoints support.
  This version of this SDK officially supports OneView appliances version 3.00.00 or higher, using the OneView Rest API version 300.
  Support is provided for C7000 and Synergy enclosure types.
 
-### Major changes
+#### Major changes
  1. Added full support to OneView Rest API version 300 for the hardware variants C7000 and Synergy to the already existing features:
    - Connection template
    - Datacenter
@@ -176,23 +179,23 @@ Added full support to OneView Rest API version 300 for the hardware variants C70
    - Split features into API modules for each hardware variant
    - Fixed/updated/added CLI commands
 
-### v2.2.1
+## v2.2.1
  - Fixed issue #88 (firmware bundle file size). Uses multipart-post now
 
-### v2.2.0
+## v2.2.0
  - Added the 'rest' and 'update' commands to the CLI
  - Removed the --force option from the create_from_file CLI command
 
-### v2.1.0
+## v2.1.0
  - Fixed issue with the :resource_named method for OneViewSDK::Resource in Ruby 2.3
 
 # v2.0.0
-### Notes
+#### Notes
  This is the second version of the Ruby SDK for HPE OneView. It was given support to the major features of OneView, refactor in some of the already existing code, and also a full set of exceptions to make some common exceptions more explicit in the debugging process.
  This version of this SDK officially supports OneView appliances version 2.00.00 or higher, using the OneView Rest API version 200.
  For now only C7000 enclosure types are being supported.
 
-### Major changes
+#### Major changes
  1. Added full support to the already existing features:
    - Server Profile
    - Server Profile Template
@@ -213,7 +216,7 @@ Added full support to OneView Rest API version 300 for the hardware variants C70
    - Server hardware types
  3. New exceptions to address the most common issues (Check them in *lib/oneview-sdk/resource/exceptions.rb*)
 
-### Breaking changes
+#### Breaking changes
  1. Refactored some method names that may cause incompatibility with older SDK versions. Due to the nature of OneView, the `create` and `delete` methods did not fit the physical infrastructure elements like Enclosures, or Switches, so they now have `add` and `remove` methods that act the same as before, but now it leaves no margin to misunderstand that OneView could actually create these resources. They are:
    - Datacenters
    - Enclosure
@@ -229,7 +232,7 @@ Added full support to OneView Rest API version 300 for the hardware variants C70
    - Switches
    - Unmanaged devices
 
-### Features supported
+#### Features supported
 - Ethernet network
 - FC network
 - FCOE network
@@ -265,13 +268,13 @@ Added full support to OneView Rest API version 300 for the hardware variants C70
 - Unmanaged devices
 
 # v1.0.0
-### Notes
+#### Notes
  This is the first release of the OneView SDK in Ruby and it adds full support to some core features listed bellow, with some execeptions that are explicit.
  This version of this SDK supports OneView appliances version 2.00.00 or higher, using the OneView Rest API version 200.
  For now it only supports C7000 enclosure types.
 
 
-### Features supported
+#### Features supported
 - Ethernet Network
 - FC Network
 - FCoE Network
@@ -292,7 +295,7 @@ Added full support to OneView Rest API version 300 for the hardware variants C70
 - Server Profile Template (CRUD supported)
 - Server Hardware (CRUD Supported)
 
-### Known issues
+#### Known issues
 The integration tests may warn about 3 issues:
 
 1. OneviewSDK::LogicalInterconnect Firmware Updates perform the actions Stage
