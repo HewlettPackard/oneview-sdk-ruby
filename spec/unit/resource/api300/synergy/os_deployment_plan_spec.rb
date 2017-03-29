@@ -15,7 +15,7 @@ RSpec.describe OneviewSDK::API300::Synergy::OSDeploymentPlan do
   include_context 'shared context'
 
   it 'BASE_URI should be the correct URI' do
-    expect(described_class::BASE_URI).to eq('/rest/os-deployment-plans')
+    expect(described_class::BASE_URI).to eq('/rest/os-deployment-plans/')
   end
 
   it 'inherits from Resource' do
