@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::LogicalSwitchGroup
+klass = OneviewSDK::API500::C7000::LogicalSwitchGroup
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
+  include_context 'integration api500 context'
 
-  let(:scope_1) { OneviewSDK::API300::C7000::Scope.get_all($client_300)[0] }
-  let(:scope_2) { OneviewSDK::API300::C7000::Scope.get_all($client_300)[1] }
-  subject(:item) { klass.find_by($client_300, name: LOG_SWI_GROUP_NAME).first }
+  let(:scope_1) { OneviewSDK::API500::C7000::Scope.get_all($client_500)[0] }
+  let(:scope_2) { OneviewSDK::API500::C7000::Scope.get_all($client_500)[1] }
+  subject(:item) { klass.find_by($client_500, name: LOG_SWI_GROUP_NAME).first }
 
   describe '#update' do
     it 'renaming the Logical Switch Group' do
