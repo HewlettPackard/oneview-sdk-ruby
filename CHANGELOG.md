@@ -1,3 +1,10 @@
+# Unreleased Changes
+## Suggested release: v4.3.0
+
+#### Features supported
+Added planned support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
+   - Ethernet network
+
 # v4.2.0
 
 #### New Resources:
