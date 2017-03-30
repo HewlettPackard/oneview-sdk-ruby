@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## v4.5.1
 
 #### Bug fixes & Enhancements
@@ -30,15 +29,6 @@
 - [#222](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/222) Error listing the OS Deployment Plans from OneView
 
 ## v4.2.0
-=======
-# Unreleased Changes
-Added planned support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
-   - Logical switch group
-
-#### Bug fixes & Enhancements:
-
-# v4.2.0
->>>>>>> Updating the CHANGELOG
 
 #### New Resources:
    - OS Deployment Plan
