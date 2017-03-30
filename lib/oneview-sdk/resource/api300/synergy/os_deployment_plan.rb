@@ -16,7 +16,7 @@ module OneviewSDK
     module Synergy
       # Network set resource implementation for API300 Synergy
       class OSDeploymentPlan < OneviewSDK::API300::Synergy::Resource
-        BASE_URI = '/rest/os-deployment-plans'.freeze
+        BASE_URI = '/rest/os-deployment-plans/'.freeze
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available

@@ -1,5 +1,9 @@
-## v4.3.0
- - Added SCMB module and CLI command
+# Unreleased Changes
+##### Suggested release: v4.3.0
+
+#### Bug fixes & Enhancements:
+- [#222](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/222) Error listing the OS Deployment Plans from OneView
+- Added SCMB module and CLI command
 
 ## v4.2.0
 
