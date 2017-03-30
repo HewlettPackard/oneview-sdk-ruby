@@ -1,9 +1,8 @@
 # Unreleased Changes
+Added planned support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
+   - Logical switch group
 
 #### Bug fixes & Enhancements:
-
-#### Features supported
-- Logical switch group
 
 # v4.2.0
 
