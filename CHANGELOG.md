@@ -1,3 +1,10 @@
+# Unreleased Changes
+
+#### Bug fixes & Enhancements:
+
+#### Features supported
+- Logical switch group
+
 # v4.2.0
 
 #### New Resources:
