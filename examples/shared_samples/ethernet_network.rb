@@ -9,27 +9,38 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client' # Gives access to @client
+require_relative '../_client' # Gives access to @client
 
-# Example: Create an ethernet network
-# NOTE: This will create an ethernet network named 'OneViewSDK Test Vlan', then delete it.
+# NOTE: Supported APIs:
+# - API200
+# - API300 for C7000
+# - API300 for Synergy
+# - API500 for C7000
+# - API500 for Synergy
+
+# Resource Class used in this sample
+# ethernet_class = OneviewSDK::API200::EthernetNetwork
+# ethernet_class = OneviewSDK::API300::C7000::EthernetNetwork
+# ethernet_class = OneviewSDK::API300::Synergy::EthernetNetwork
+# ethernet_class = OneviewSDK::API500::C7000::EthernetNetwork
+ethernet_class = OneviewSDK::API500::Synergy::EthernetNetwork
+
 options = {
   vlanId:  '1001',
   purpose:  'General',
   name:  'OneViewSDK Test Vlan',
   smartLink:  false,
   privateNetwork:  false,
-  connectionTemplateUri: nil,
-  type:  'ethernet-networkV300'
+  connectionTemplateUri: nil
 }
 
 # Creating a ethernet network
-ethernet = OneviewSDK::API300::C7000::EthernetNetwork.new(@client, options)
+ethernet = ethernet_class.new(@client, options)
 ethernet.create!
 puts "\nCreated ethernet-network '#{ethernet[:name]}' sucessfully.\n  uri = '#{ethernet[:uri]}'"
 
 # Find recently created network by name
-matches = OneviewSDK::API300::C7000::EthernetNetwork.find_by(@client, name: ethernet[:name])
+matches = ethernet_class.find_by(@client, name: ethernet[:name])
 ethernet2 = matches.first
 puts "\nFound ethernet-network by name: '#{ethernet[:name]}'.\n  uri = '#{ethernet2[:uri]}'"
 
@@ -49,14 +60,14 @@ puts "\nSuccessfully retrieved associated profiles: #{ethernet2.get_associated_p
 puts "\nSuccessfully retrieved associated uplink groups: #{ethernet2.get_associated_uplink_groups}"
 
 # Retrieve recently created network
-ethernet3 = OneviewSDK::API300::C7000::EthernetNetwork.new(@client, name: ethernet[:name])
+ethernet3 = ethernet_class.new(@client, name: ethernet[:name])
 ethernet3.retrieve!
 puts "\nRetrieved ethernet-network data by name: '#{ethernet[:name]}'.\n  uri = '#{ethernet3[:uri]}'"
 
 # Example: List all ethernet networks with certain attributes
 attributes = { purpose: 'Management' }
 puts "\n\nEthernet networks with #{attributes}"
-OneviewSDK::API300::C7000::EthernetNetwork.find_by(@client, attributes).each do |network|
+ethernet_class.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
 
@@ -78,7 +89,7 @@ options = {
   }
 }
 
-list = OneviewSDK::API300::C7000::EthernetNetwork.bulk_create(@client, options).each { |network| puts network['uri'] }
+list = ethernet_class.bulk_create(@client, options).each { |network| puts network['uri'] }
 
 puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully."
 
@@ -86,5 +97,5 @@ list.sort_by! { |e| e['name'] }
 list.each { |e| puts "  #{e['name']}" }
 
 # Clean up
-list.map(&:delete)
+list.each(&:delete)
 puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"
