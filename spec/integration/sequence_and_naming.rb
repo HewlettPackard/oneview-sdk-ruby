@@ -19,7 +19,7 @@ DEPENDENCIES = {
   DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
   EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
-  EthernetNetwork: [],
+  EthernetNetwork: [:Scope],
   Event: [],
   Fabric: [],
   FCNetwork: [],

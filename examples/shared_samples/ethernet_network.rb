@@ -11,8 +11,12 @@
 
 require_relative '../_client' # Gives access to @client
 
-# NOTE: Supported APIs:
-# - API200
+# Example: Create/Update/Delete ethernet networks
+# NOTE: This will create an ethernet network named 'OneViewSDK Test Vlan', update it and then delete it.
+#   It will create a bulk of ethernet networks and then delete them.
+#
+# Supported APIs:
+# - API200 for C7000
 # - API300 for C7000
 # - API300 for Synergy
 # - API500 for C7000
