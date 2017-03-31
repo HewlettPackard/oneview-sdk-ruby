@@ -36,8 +36,6 @@ RSpec.shared_context 'integration context', a: :b do
     $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
     $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
   end
-
-  integration_context_debugging
 end
 
 # Context for API300 integration testing:
@@ -47,8 +45,6 @@ RSpec.shared_context 'integration api300 context', a: :b do
     $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
     $client_300_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 300))
   end
-
-  integration_context_debugging
 end
 
 # Context for API500 integration testing:
@@ -58,8 +54,6 @@ RSpec.shared_context 'integration api500 context', a: :b do
     $client_500 ||= OneviewSDK::Client.new($config.merge(api_version: 500))
     $client_500_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 500))
   end
-
-  integration_context_debugging
 end
 
 # Context for Image Streamer API300 integration testing:
@@ -70,8 +64,6 @@ RSpec.shared_context 'integration i3s api300 context', a: :b do
     oneview_client ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 300))
     $client_i3s_300 ||= oneview_client.new_i3s_client($config_i3s.merge(api_version: 300))
   end
-
-  integration_context_debugging
 end
 
 RSpec.shared_context 'system context', a: :b do
@@ -86,7 +78,6 @@ RSpec.shared_context 'system context', a: :b do
     allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
     allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
   end
-
 end
 
 RSpec.shared_context 'system api300 context', a: :b do
@@ -102,7 +93,6 @@ RSpec.shared_context 'system api300 context', a: :b do
     allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
     allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
   end
-
 end
 
 # Must set the following environment variables:
@@ -153,22 +143,6 @@ def integration_context_i3s
 
   # Creates the global config variable
   $config_i3s ||= OneviewSDK::Config.load(@config_path_i3s)
-end
-
-# For debugging only: Shows test metadata without actually running the tests
-def integration_context_debugging
-  before :each do |e|
-    if ENV['PRINT_METADATA_ONLY']
-      action = case e.metadata[:type]
-               when CREATE then 'CREATE'
-               when UPDATE then 'UPDATE'
-               when DELETE then 'DELETE'
-               else '_____'
-               end
-      puts "#{action} #{e.metadata[:sequence] || '_'}: #{described_class}: #{e.metadata[:description]}"
-      raise 'Skipped'
-    end
-  end
 end
 
 # Must set the following environment variables:
