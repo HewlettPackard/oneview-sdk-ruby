@@ -24,10 +24,16 @@ require_relative '../_client' # Gives access to @client
 
 # Resource Class used in this sample
 # ethernet_class = OneviewSDK::API200::EthernetNetwork
-# ethernet_class = OneviewSDK::API300::C7000::EthernetNetwork
+ethernet_class = OneviewSDK::API300::C7000::EthernetNetwork
 # ethernet_class = OneviewSDK::API300::Synergy::EthernetNetwork
 # ethernet_class = OneviewSDK::API500::C7000::EthernetNetwork
-ethernet_class = OneviewSDK::API500::Synergy::EthernetNetwork
+# ethernet_class = OneviewSDK::API500::Synergy::EthernetNetwork
+
+# Scope class used in this sample
+scope_class = OneviewSDK::API300::C7000::Scope
+# scope_class = OneviewSDK::API300::Synergy::Scope
+# scope_class = OneviewSDK::API500::C7000::Scope
+# scope_class = OneviewSDK::API500::Synergy::Scope
 
 options = {
   vlanId:  '1001',
@@ -99,6 +105,34 @@ puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully
 
 list.sort_by! { |e| e['name'] }
 list.each { |e| puts "  #{e['name']}" }
+
+# only for API300 and API500
+if @client.api_version.to_i > 200
+  scope_1 = scope_class.new(@client, name: 'Scope 1')
+  scope_1.create!
+  scope_2 = scope_class.new(@client, name: 'Scope 2')
+  scope_2.create!
+
+  puts "\nAdding scopes"
+  ethernet.add_scope(scope_1)
+  ethernet.refresh
+  puts 'Scopes:', ethernet['scopeUris']
+
+  puts "\nReplacing scopes"
+  ethernet.replace_scopes(scope_2)
+  ethernet.refresh
+  puts 'Scopes:', ethernet['scopeUris']
+
+  puts "\nRemoving scopes"
+  ethernet.remove_scope(scope_1)
+  ethernet.remove_scope(scope_2)
+  ethernet.refresh
+  puts 'Scopes:', ethernet['scopeUris']
+
+  # Clear data
+  scope_1.delete
+  scope_2.delete
+end
 
 # Clean up
 list.each(&:delete)
