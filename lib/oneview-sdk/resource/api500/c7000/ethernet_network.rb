@@ -16,7 +16,6 @@ module OneviewSDK
     module C7000
       # Ethernet network resource implementation for API500 C7000
       class EthernetNetwork < OneviewSDK::API300::C7000::EthernetNetwork
-        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
       end
     end
   end
