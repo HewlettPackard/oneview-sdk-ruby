@@ -22,7 +22,7 @@ DEPENDENCIES = {
   EthernetNetwork: [:Scope],
   Event: [],
   Fabric: [],
-  FCNetwork: [],
+  FCNetwork: [:Scope],
   FCoENetwork: [],
   FirmwareBundle: [],
   FirmwareDriver: [:FirmwareBundle],
