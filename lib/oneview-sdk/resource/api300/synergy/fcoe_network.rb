@@ -9,27 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/fcoe_network'
+require_relative '../c7000/fcoe_network'
 
 module OneviewSDK
   module API300
     module Synergy
       # FCoE network resource implementation for API300 Synergy
-      class FCoENetwork < OneviewSDK::API200::FCoENetwork
+      class FCoENetwork < OneviewSDK::API300::C7000::FCoENetwork
         include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
-
-        # Create a resource object, associate it with a client, and set its properties.
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [Hash] params The options for this resource (key-value pairs)
-        # @param [Integer] api_ver The api version to use when interracting with this resource.
-        def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
-          # Default values:
-          @data['connectionTemplateUri'] ||= nil
-          @data['type'] ||= 'fcoe-networkV300'
-          super
-        end
-
       end
     end
   end
