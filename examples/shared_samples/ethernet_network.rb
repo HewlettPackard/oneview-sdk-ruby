@@ -22,6 +22,9 @@ require_relative '../_client' # Gives access to @client
 # - API500 for C7000
 # - API500 for Synergy
 
+# variant represents the model[C7000, Synergy]
+variant = ARGV[0]
+
 # Resource Class used in this sample
 # ethernet_class = OneviewSDK::API200::EthernetNetwork
 ethernet_class = OneviewSDK::API300::C7000::EthernetNetwork
