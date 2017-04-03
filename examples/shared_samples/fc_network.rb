@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -22,18 +22,14 @@ require_relative '../_client' # Gives access to @client
 # - API500 for C7000
 # - API500 for Synergy
 
-# Resource class used in this sample
-# fc_network_class = OneviewSDK::API200::FCNetwork
-fc_network_class = OneviewSDK::API300::C7000::FCNetwork
-# fc_network_class = OneviewSDK::API300::Synergy::FCNetwork
-# fc_network_class = OneviewSDK::API500::C7000::FCNetwork
-# fc_network_class = OneviewSDK::API500::Synergy::FCNetwork
+# variant represents the model[C7000, Synergy]
+variant = ARGV[0]
+
+# Resource Class used in this sample
+fc_network_class = OneviewSDK.resource_named('FCNetwork', @client.api_version, variant)
 
 # Scope class used in this sample
-scope_class = OneviewSDK::API300::C7000::Scope
-# scope_class = OneviewSDK::API300::Synergy::Scope
-# scope_class = OneviewSDK::API500::C7000::Scope
-# scope_class = OneviewSDK::API500::Synergy::Scope
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version, variant) unless @client.api_version.to_i <= 200
 
 options = {
   name: 'OneViewSDK Test FC Network',
