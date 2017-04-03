@@ -22,6 +22,13 @@ require_relative '../_client' # Gives access to @client
 # - API500 for C7000
 # - API500 for Synergy
 
+# Resources that can be created according to parameters:
+# api_version = 200 & variant = any to OneviewSDK::API200::FCNetwork
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::FCNetwork
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::FCNetwork
+# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::FCNetwork
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::FCNetwork
+
 # variant represents the model[C7000, Synergy]
 variant = ARGV[0]
 
