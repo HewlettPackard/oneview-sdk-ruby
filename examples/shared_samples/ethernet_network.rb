@@ -29,9 +29,6 @@ require_relative '../_client' # Gives access to @client
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::EthernetNetwork
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::EthernetNetwork
 
-# variant represents the model[C7000, Synergy]
-variant = ARGV[0]
-
 # Resource Class used in this sample
 ethernet_class = OneviewSDK.resource_named('FCNetwork', @client.api_version, variant)
 

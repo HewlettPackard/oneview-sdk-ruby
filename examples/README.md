@@ -7,10 +7,10 @@ To test-run these examples, please:
   2. Modify it by inserting your credentials or authentication token, ssl_enabled flag, and anything else your environment requires. The options are commented in the `_client.rb.example` file;
   3. There are specific examples for a given api[200, 300] and your variant[C7000, Synergy], as well as shared examples that should work for different versions of api.
      The api version that is used is according to the api version assigned in the creation of the client.
-     Performs the desired example specifying the variant.
-     Run `ruby <shared_samples>/<example_file>.rb` for API 200.
-     Run `ruby <shared_samples>/<example_file>.rb C7000` for API greater than 200 and C7000 variant.
-     Run `ruby <shared_samples>/<example_file>.rb Synergy` for API greater than 200 and Synergy variant.
+     Performs the desired example specifying the variant and api version uncommenting the variants options in the `_client.rb.example` file.
+     NOTE: This doesn't apply to API versions less than or equal to 200. Because there are no variants for these apis.
+
+  4. Run `ruby <shared_samples>/<example_file>.rb`.
 
 ## Image Streamer
 
