@@ -18,21 +18,6 @@ RSpec.describe OneviewSDK::API300::Synergy::Scope, integration: true, type: UPDA
   let(:enclosure) { OneviewSDK::API300::Synergy::Enclosure.get_all($client_300_synergy).first }
   let(:server_hardware) { OneviewSDK::API300::Synergy::ServerHardware.get_all($client_300_synergy).first }
 
-  describe '#update' do
-    it 'should update the scope' do
-      old_name = item['name']
-      item['name'] = "#{old_name} Updated"
-
-      expect { item.update }.not_to raise_error
-      item.refresh
-      expect(item['name']).to eq("#{old_name} Updated")
-
-      # coming back to original name
-      item['name'] = old_name
-      expect { item.update }.not_to raise_error
-    end
-  end
-
   describe '#set_resources' do
     it 'should update the scope' do
       expect { item.set_resources(enclosure, server_hardware) }.to_not raise_error
@@ -45,17 +30,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Scope, integration: true, type: UPDA
     end
   end
 
-  describe '#unset_resources' do
-    it 'should update the scope' do
-      expect { item.unset_resources(enclosure, server_hardware) }.to_not raise_error
-
-      enclosure.refresh
-      server_hardware.refresh
-
-      expect(enclosure['scopeUris']).to be_empty
-      expect(server_hardware['scopeUris']).to be_empty
-    end
-  end
+  include_examples 'ScopeUpdateExample', 'integration api300 context'
 
   describe '#change_resource_assignments' do
     it 'should update the scope' do
