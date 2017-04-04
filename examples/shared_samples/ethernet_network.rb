@@ -30,10 +30,10 @@ require_relative '../_client' # Gives access to @client
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::EthernetNetwork
 
 # Resource Class used in this sample
-ethernet_class = OneviewSDK.resource_named('FCNetwork', @client.api_version, variant)
+ethernet_class = OneviewSDK.resource_named('FCNetwork', @client.api_version)
 
 # Scope class used in this sample
-scope_class = OneviewSDK.resource_named('Scope', @client.api_version, variant) unless @client.api_version.to_i <= 200
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
 
 options = {
   vlanId:  '1001',
