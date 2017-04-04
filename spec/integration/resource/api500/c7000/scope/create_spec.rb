@@ -13,25 +13,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::API500::C7000::Scope
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration api500 context'
-
-  describe '#create' do
-    it 'should create scope' do
-      attrs = {
-        name: 'Scope 1',
-        description: 'Sample Scope description'
-      }
-      item = described_class.new($client_500_synergy, attrs)
-
-      expect { item.create }.not_to raise_error
-      expect(item.retrieve!).to eq(true)
-      expect(item['uri']).to be
-      expect(item['type']).to eq('ScopeV2')
-      expect(item['name']).to eq('Scope 1')
-      expect(item['description']).to eq('Sample Scope description')
-
-      scope = klass.new($client_500_synergy, name: 'Scope 2')
-      expect { scope.create }.to_not raise_error
-    end
-  end
+  let(:current_client) { $client_500 }
+  let(:type) { 'ScopeV2' }
+  include_examples 'ScopeCreateExample', 'integration api500 context'
 end

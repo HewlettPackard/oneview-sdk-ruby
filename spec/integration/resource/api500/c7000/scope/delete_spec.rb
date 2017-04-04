@@ -13,15 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API500::C7000::Scope
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api500 context'
-
-  describe '#delete' do
-    it 'should delete scope' do
-      items = klass.get_all($client_500_synergy)
-      items.each do |item|
-        expect { item.delete }.not_to raise_error
-        expect(item.retrieve!).to eq(false)
-      end
-    end
-  end
+  subject(:current_client) { $client_500 }
+  include_examples 'ScopeDeleteExample', 'integration api500 context'
 end
