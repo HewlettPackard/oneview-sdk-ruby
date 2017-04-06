@@ -1,7 +1,7 @@
 ## v4.5.1
 
 #### Features supported
-Added planned support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
+This release adds planned support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
    - Ethernet network
    - FCoE network
 
