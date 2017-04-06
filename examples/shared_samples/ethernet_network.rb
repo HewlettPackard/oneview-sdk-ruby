@@ -81,11 +81,6 @@ ethernet_class.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
 
-# Delete this network
-ethernet2.delete
-puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
-
-
 # Bulk create ethernet networks
 options = {
   vlanIdRange: '26-28',
@@ -135,5 +130,9 @@ if @client.api_version.to_i > 200
 end
 
 # Clean up
+# Delete this network
+ethernet2.delete
+puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
+
 list.each(&:delete)
 puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"
