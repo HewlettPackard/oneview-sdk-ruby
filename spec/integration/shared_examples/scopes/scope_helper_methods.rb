@@ -35,7 +35,7 @@ RSpec.shared_examples 'ScopeHelperMethodsExample' do |scope_class|
     it 'should replace the list of scopes' do
       expect { item.replace_scopes(scope_1, scope_2) }.to_not raise_error
       item.refresh
-      expect(item['scopeUris']).to match_array([scope_1['uri'], scope_2['uri']])
+      expect(item['scopeUris']).to eql([scope_1['uri'], scope_2['uri']])
     end
   end
 

@@ -18,39 +18,5 @@ RSpec.describe OneviewSDK::API300::C7000::Scope, integration: true, type: UPDATE
   let(:enclosure) { OneviewSDK::API300::C7000::Enclosure.get_all($client_300).first }
   let(:server_hardware) { OneviewSDK::API300::C7000::ServerHardware.get_all($client_300).first }
 
-  describe '#set_resources' do
-    it 'should update the scope' do
-      expect { item.set_resources(enclosure, server_hardware) }.to_not raise_error
-
-      enclosure.refresh
-      server_hardware.refresh
-
-      expect(enclosure['scopeUris']).to match_array([item['uri']])
-      expect(server_hardware['scopeUris']).to match_array([item['uri']])
-    end
-  end
-
   include_examples 'ScopeUpdateExample', 'integration api300 context'
-
-  describe '#change_resource_assignments' do
-    it 'should update the scope' do
-      expect { item.change_resource_assignments(add_resources: [enclosure]) }.to_not raise_error
-      enclosure.refresh
-      server_hardware.refresh
-      expect(enclosure['scopeUris']).to match_array([item['uri']])
-      expect(server_hardware['scopeUris']).to be_empty
-
-      expect { item.change_resource_assignments(add_resources: [server_hardware], remove_resources: [enclosure]) }.to_not raise_error
-      enclosure.refresh
-      server_hardware.refresh
-      expect(enclosure['scopeUris']).to be_empty
-      expect(server_hardware['scopeUris']).to match_array([item['uri']])
-
-      expect { item.change_resource_assignments(remove_resources: [server_hardware]) }.to_not raise_error
-      enclosure.refresh
-      server_hardware.refresh
-      expect(enclosure['scopeUris']).to be_empty
-      expect(server_hardware['scopeUris']).to be_empty
-    end
-  end
 end

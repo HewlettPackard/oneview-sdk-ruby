@@ -18,24 +18,6 @@ RSpec.describe OneviewSDK::API500::Synergy::Scope, integration: true, type: UPDA
   subject(:enclosure) { OneviewSDK::API500::Synergy::Enclosure.get_all($client_500_synergy).first }
   subject(:server_hardware) { OneviewSDK::API500::Synergy::ServerHardware.get_all($client_500_synergy).first }
 
-  describe '#set_resources' do
-    it 'should raise an exception when resource is not found' do
-      encl = OneviewSDK::API500::Synergy::Enclosure.new($client_500_synergy, name: 'Any')
-      expect { item.set_resources(encl) }.to raise_error(OneviewSDK::NotFound, /The resource was not found/)
-    end
-
-    it 'should update the scope' do
-      expect { item.set_resources(enclosure) }.to_not raise_error
-      expect { item.set_resources(server_hardware) }.to_not raise_error
-
-      enclosure.refresh
-      server_hardware.refresh
-
-      expect(enclosure['scopeUris']).to match_array([item['uri']])
-      expect(server_hardware['scopeUris']).to match_array([item['uri']])
-    end
-  end
-
   include_examples 'ScopeUpdateExample', 'integration api500 context'
 
   describe '#patch' do
@@ -55,13 +37,6 @@ RSpec.describe OneviewSDK::API500::Synergy::Scope, integration: true, type: UPDA
       item['name'] = old_name
       expect { item.patch('replace', '/name', old_name) }.to_not raise_error
       expect(item['name']).to eq(old_name)
-    end
-  end
-
-  describe '#change_resource_assignments' do
-    it 'should update the scope' do
-      expect { item.change_resource_assignments(add_resources: [enclosure]) }
-        .to raise_error(OneviewSDK::MethodUnavailable, /method #change_resource_assignments is unavailable/)
     end
   end
 end
