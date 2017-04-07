@@ -1,12 +1,9 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::LogicalSwitch
-RSpec.describe klass, integration: true, type: UPDATE, sequence: seq(klass) do
-  include_context 'integration api300 context'
+RSpec.describe klass, integration: true, type: UPDATE do
+  let(:current_client) { $client_300_synergy }
+  options = { 'execute_internal_links_sets' => true }
 
-  describe '#get_internal_link_sets' do
-    it 'gets the internal link sets' do
-      expect { klass.get_internal_link_sets($client_300_synergy) }.not_to raise_error
-    end
-  end
+  include_examples 'LogicalSwitchUpdateExample', 'integration api300 context', options
 end
