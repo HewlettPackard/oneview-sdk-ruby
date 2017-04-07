@@ -62,12 +62,7 @@ scope.update
 puts "It was updated successfully to '#{scope['name']}' with uri '#{scope['uri']}'."
 
 puts "\nSetting resources to the '#{scope['name']}'"
-if @client.api_version == 300
-  scope.set_resources(server_hardware, enclosure)
-elsif @client.api_version == 500
-  scope.set_resources(server_hardware)
-  scope.set_resources(enclosure)
-end
+scope.set_resources(server_hardware, enclosure)
 
 server_hardware.refresh
 enclosure.refresh
@@ -79,13 +74,11 @@ server_hardware.refresh
 enclosure.refresh
 puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
 
-if @client.api_version == 300
-  puts "\nReplacing resources from the '#{scope['name']}'"
-  scope.change_resource_assignments(add_resources: [server_hardware], remove_resources: [enclosure])
-  server_hardware.refresh
-  enclosure.refresh
-  puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
-end
+puts "\nReplacing resources from the '#{scope['name']}'"
+scope.change_resource_assignments(add_resources: [server_hardware], remove_resources: [enclosure])
+server_hardware.refresh
+enclosure.refresh
+puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
 
 if @client.api_version == 500
   puts "\nUpdating the scope name '#{scope['name']}' with a patch."

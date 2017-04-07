@@ -35,51 +35,49 @@ RSpec.describe OneviewSDK::API500::C7000::Scope do
     end
   end
 
-  describe '#set_resources' do
-    context 'when called with resources arguments' do
-      it 'should work well' do
-        body = [{
-          'op' => 'add',
-          'path' => '/addedResourceUris/-',
-          'value' => resource_1['uri']
-        }]
-        data = { 'Content-Type' => 'application/json-patch+json', 'body' => body }
+  describe '#change_resource_assignments' do
 
-        expect(@client_500).to receive(:rest_patch).with('/rest/scopes/UID-111', data, scope.api_version).and_return(fake_response)
-        expect(@client_500).to receive(:response_handler).with(fake_response).and_return('fake')
-        expect(scope.set_resources(resource_1)).to eq('fake')
+    context 'when called and scope has no URI' do
+      let(:invalid_scope) { described_class.new(@client_500) }
+
+      it { expect { invalid_scope.change_resource_assignments(add_resources: [resource_1]) }.to raise_error(OneviewSDK::IncompleteResource) }
+      it do
+        expect do
+          invalid_scope.change_resource_assignments(add_resources: [resource_1])
+        end.to raise_error(/Please set uri attribute before interacting with this resource/)
       end
     end
-  end
 
-  describe '#unset_resources' do
-    before :each do
-      body = [{
-        'op' => 'replace',
-        'path' => '/removedResourceUris',
-        'value' => [resource_1['uri'], resource_2['uri']]
-      }]
+    context 'when called and resource argument has no URI' do
+      let(:invalid_resource) { OneviewSDK::API500::C7000::ServerHardware.new(@client_500) }
+
+      it { expect { scope.change_resource_assignments(add_resources: [invalid_resource]) }.to raise_error(OneviewSDK::IncompleteResource) }
+      it do
+        expect do
+          scope.change_resource_assignments(add_resources: [invalid_resource])
+        end.to raise_error(/Please set uri attribute before interacting with this resource/)
+      end
+    end
+
+    context 'when called and resource has not arguments' do
+      it 'should not call remote rest api' do
+        expect(@client_500).to_not receive(:rest_patch)
+        expect(@client_500).to_not receive(:response_handler)
+        scope.change_resource_assignments
+      end
+    end
+
+    it 'should work well' do
+      body = [
+        { 'op' => 'add', 'path' => '/addedResourceUris/-', 'value' => resource_1['uri'] },
+        { 'op' => 'replace', 'path' => '/removedResourceUris', 'value' => [resource_2['uri']] }
+      ]
+
       data = { 'Content-Type' => 'application/json-patch+json', 'body' => body }
       expect(@client_500).to receive(:rest_patch).with('/rest/scopes/UID-111', data, scope.api_version).and_return(fake_response)
-      expect(@client_500).to receive(:response_handler).with(fake_response).and_return('fake')
-    end
+      expect(@client_500).to receive(:response_handler).with(fake_response)
 
-    context 'when called with strings arguments' do
-      it 'should work well' do
-        expect(scope.unset_resources(resource_1, resource_2)).to eq('fake')
-      end
-    end
-
-    context 'when called with array argument' do
-      it 'should work well' do
-        expect(scope.unset_resources([resource_1, resource_2])).to eq('fake')
-      end
-    end
-  end
-
-  describe '#change_resource_assignments' do
-    it 'method is unavailable' do
-      expect { scope.change_resource_assignments }.to raise_error(OneviewSDK::MethodUnavailable, /method #change_resource_assignments is unavailable/)
+      expect(scope.change_resource_assignments(add_resources: [resource_1], remove_resources: [resource_2])).to eq(scope)
     end
   end
 

@@ -27,28 +27,25 @@ module OneviewSDK
           super
         end
 
-        # Method is not available
-        # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def change_resource_assignments(*)
-          unavailable_method
-        end
-
-        # Adds resource assignments
-        # @param [OneviewSDK::API500::Resource] resource
-        # @raise [OneviewSDK::NotFound] if the resource uri is not set and cannot be retrieved
+        # Modifies scope membership by adding or removing resource assignments
+        # @param [Array] resources The array of resources (or any number of resources separated by comma)
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
-        def set_resources(resource)
-          resource.retrieve! unless resource['uri']
-          raise NotFound, 'The resource was not found!' unless resource['uri']
-          patch('add', '/addedResourceUris/-', resource['uri'])
-        end
+        def change_resource_assignments(add_resources: [], remove_resources: [])
+          if !add_resources.empty? || !remove_resources.empty?
+            ensure_uri && ensure_client
+            add_uris = ensure_and_get_uris(add_resources)
+            remove_uris = ensure_and_get_uris(remove_resources)
+            body = []
 
-        # Removes resource assignments
-        # @param [Array] *resources The array of resources (or any number of resources separated by comma)
-        # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
-        def unset_resources(*resources)
-          remove_uris = ensure_and_get_uris(resources.flatten) unless resources.empty?
-          patch('replace', '/removedResourceUris', remove_uris) unless remove_uris.empty?
+            add_uris.each do |uri|
+              body << { 'op' => 'add', 'path' => '/addedResourceUris/-', 'value' => uri }
+            end
+            body << { 'op' => 'replace', 'path' => '/removedResourceUris', 'value' => remove_uris }
+
+            response = @client.rest_patch(@data['uri'], { 'Content-Type' => 'application/json-patch+json', 'body' => body }, @api_version)
+            @client.response_handler(response)
+          end
+          self
         end
 
         # Performs a specific patch operation for the given server.

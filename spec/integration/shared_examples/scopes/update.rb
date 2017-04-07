@@ -27,6 +27,18 @@ RSpec.shared_examples 'ScopeUpdateExample' do |context_name|
     end
   end
 
+  describe '#set_resources' do
+    it 'should update the scope' do
+      expect { item.set_resources(enclosure, server_hardware) }.to_not raise_error
+
+      enclosure.refresh
+      server_hardware.refresh
+
+      expect(enclosure['scopeUris']).to match_array([item['uri']])
+      expect(server_hardware['scopeUris']).to match_array([item['uri']])
+    end
+  end
+
   describe '#unset_resources' do
     it 'should update the scope' do
       expect { item.unset_resources(enclosure, server_hardware) }.to_not raise_error
@@ -39,4 +51,25 @@ RSpec.shared_examples 'ScopeUpdateExample' do |context_name|
     end
   end
 
+  describe '#change_resource_assignments' do
+    it 'should update the scope' do
+      expect { item.change_resource_assignments(add_resources: [enclosure]) }.to_not raise_error
+      enclosure.refresh
+      server_hardware.refresh
+      expect(enclosure['scopeUris']).to match_array([item['uri']])
+      expect(server_hardware['scopeUris']).to be_empty
+
+      expect { item.change_resource_assignments(add_resources: [server_hardware], remove_resources: [enclosure]) }.to_not raise_error
+      enclosure.refresh
+      server_hardware.refresh
+      expect(enclosure['scopeUris']).to be_empty
+      expect(server_hardware['scopeUris']).to match_array([item['uri']])
+
+      expect { item.change_resource_assignments(remove_resources: [server_hardware]) }.to_not raise_error
+      enclosure.refresh
+      server_hardware.refresh
+      expect(enclosure['scopeUris']).to be_empty
+      expect(server_hardware['scopeUris']).to be_empty
+    end
+  end
 end
