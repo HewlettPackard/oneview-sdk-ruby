@@ -1,18 +1,12 @@
 require 'spec_helper'
 
 RSpec.describe OneviewSDK::API300::Synergy::FCNetwork, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
+  include_examples 'FCNetworkUpdateExample', 'integration api300 context' do
+    let(:current_client) { $client_300_synergy }
+  end
 
-  describe '#update' do
-    it 'updates the network name' do
-      item = OneviewSDK::API300::Synergy::FCNetwork.new($client_300_synergy, name: FC_NET_NAME)
-      item.retrieve!
-      item.update(name: FC_NET_NAME_UPDATED)
-      item.refresh
-      expect(item[:name]).to eq(FC_NET_NAME_UPDATED)
-      item.update(name: FC_NET_NAME) # Put it back to normal
-      item.refresh
-      expect(item[:name]).to eq(FC_NET_NAME)
-    end
+  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API300::Synergy::Scope do
+    let(:current_client) { $client_300_synergy }
+    let(:item) { described_class.get_all(current_client).first }
   end
 end
