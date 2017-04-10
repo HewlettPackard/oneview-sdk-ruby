@@ -32,6 +32,9 @@ require_relative '../_client' # Gives access to @client
 # Resource Class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
 
+# Scope class used in this sample
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
+
 options = {
   vlanId:  '1001',
   purpose:  'General',
@@ -78,11 +81,6 @@ ethernet_class.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
 
-# Delete this network
-ethernet2.delete
-puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
-
-
 # Bulk create ethernet networks
 options = {
   vlanIdRange: '26-28',
@@ -103,6 +101,38 @@ puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully
 list.sort_by! { |e| e['name'] }
 list.each { |e| puts "  #{e['name']}" }
 
+# only for API300 and API500
+if @client.api_version.to_i > 200
+  scope_1 = scope_class.new(@client, name: 'Scope 1')
+  scope_1.create!
+  scope_2 = scope_class.new(@client, name: 'Scope 2')
+  scope_2.create!
+
+  puts "\nAdding scopes"
+  ethernet.add_scope(scope_1)
+  ethernet.refresh
+  puts 'Scopes:', ethernet['scopeUris']
+
+  puts "\nReplacing scopes"
+  ethernet.replace_scopes(scope_2)
+  ethernet.refresh
+  puts 'Scopes:', ethernet['scopeUris']
+
+  puts "\nRemoving scopes"
+  ethernet.remove_scope(scope_1)
+  ethernet.remove_scope(scope_2)
+  ethernet.refresh
+  puts 'Scopes:', ethernet['scopeUris']
+
+  # Clear data
+  scope_1.delete
+  scope_2.delete
+end
+
 # Clean up
+# Delete this network
+ethernet2.delete
+puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
+
 list.each(&:delete)
 puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"
