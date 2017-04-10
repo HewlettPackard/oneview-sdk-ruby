@@ -11,9 +11,10 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::Scope
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  let(:type) { 'Scope' }
-  include_examples 'ScopeCreateExample', 'integration api300 context'
+RSpec.describe OneviewSDK::API500::Synergy::Scope do
+  include_context 'shared context'
+
+  it 'inherits from OneviewSDK::API500::Synergy::Scope' do
+    expect(described_class).to be < OneviewSDK::API500::C7000::Scope
+  end
 end

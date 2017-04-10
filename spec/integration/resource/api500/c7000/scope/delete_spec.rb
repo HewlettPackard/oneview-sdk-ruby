@@ -11,9 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::Scope
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  let(:type) { 'Scope' }
-  include_examples 'ScopeCreateExample', 'integration api300 context'
+klass = OneviewSDK::API500::C7000::Scope
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  subject(:current_client) { $client_500 }
+  include_examples 'ScopeDeleteExample', 'integration api500 context'
 end

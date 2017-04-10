@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/scope'
+require_relative '../synergy/scope'
 
 module OneviewSDK
   module API500
     module Synergy
       # Scope resource implementation for API500 Synergy
-      class Scope < OneviewSDK::API300::Synergy::Scope
+      class Scope < OneviewSDK::API500::C7000::Scope
       end
     end
   end
