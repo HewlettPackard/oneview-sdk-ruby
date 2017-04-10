@@ -16,6 +16,7 @@ module OneviewSDK
     module Synergy
       # FC network resource implementation for API500 Synergy
       class FCNetwork < OneviewSDK::API300::Synergy::FCNetwork
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
       end
     end
   end

@@ -6,18 +6,17 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
-# language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/fc_network'
+RSpec.shared_examples 'FCNetworkDeleteExample' do |context_name|
+  include_context context_name
 
-module OneviewSDK
-  module API500
-    module C7000
-      # FC network resource implementation for API500 C7000
-      class FCNetwork < OneviewSDK::API300::C7000::FCNetwork
-        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
-      end
+  describe '#delete' do
+    it 'deletes the resource' do
+      item = described_class.new(current_client, name: FC_NET_NAME)
+      item.retrieve!
+      expect { item.delete }.not_to raise_error
     end
   end
 end
