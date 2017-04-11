@@ -45,7 +45,7 @@ puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
-if @client.api_version >= 300 and variant == 'C7000'
+if @client.api_version >= 300 && variant == 'C7000'
   # Listing all switches
   itens = switch_class.get_all(@client)
   puts "\nListing all switches"

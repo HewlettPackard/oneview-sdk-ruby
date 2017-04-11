@@ -9,11 +9,19 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'spec_helper'
+RSpec.shared_examples 'FCNetworkUpdateExample' do |context_name|
+  include_context context_name
 
-klass = OneviewSDK::API300::C7000::Scope
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  let(:type) { 'Scope' }
-  include_examples 'ScopeCreateExample', 'integration api300 context'
+  describe '#update' do
+    it 'updates the network name' do
+      item = described_class.new(current_client, name: FC_NET_NAME)
+      item.retrieve!
+      item.update(name: FC_NET_NAME_UPDATED)
+      item.refresh
+      expect(item[:name]).to eq(FC_NET_NAME_UPDATED)
+      item.update(name: FC_NET_NAME) # Put it back to normal
+      item.refresh
+      expect(item[:name]).to eq(FC_NET_NAME)
+    end
+  end
 end

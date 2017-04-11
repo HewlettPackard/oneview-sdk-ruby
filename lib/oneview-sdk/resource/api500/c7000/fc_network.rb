@@ -16,6 +16,7 @@ module OneviewSDK
     module C7000
       # FC network resource implementation for API500 C7000
       class FCNetwork < OneviewSDK::API300::C7000::FCNetwork
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
       end
     end
   end

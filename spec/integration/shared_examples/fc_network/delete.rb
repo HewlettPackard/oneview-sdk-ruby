@@ -9,11 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'spec_helper'
+RSpec.shared_examples 'FCNetworkDeleteExample' do |context_name|
+  include_context context_name
 
-klass = OneviewSDK::API300::C7000::Scope
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  let(:type) { 'Scope' }
-  include_examples 'ScopeCreateExample', 'integration api300 context'
+  describe '#delete' do
+    it 'deletes the resource' do
+      item = described_class.new(current_client, name: FC_NET_NAME)
+      item.retrieve!
+      expect { item.delete }.not_to raise_error
+    end
+  end
 end

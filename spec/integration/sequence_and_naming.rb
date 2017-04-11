@@ -21,7 +21,7 @@ DEPENDENCIES = {
   EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
   EthernetNetwork: [:Scope],
   Fabric: [],
-  FCNetwork: [],
+  FCNetwork: [:Scope],
   FCoENetwork: [],
   FirmwareBundle: [],
   FirmwareDriver: [:FirmwareBundle],
