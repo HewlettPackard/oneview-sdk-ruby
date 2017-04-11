@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::Switch, integration: true, type: UPDATE, sequence: 15 do
-  include_context 'integration context'
-
-  it 'cannot be updated'
-
+RSpec.describe OneviewSDK::Switch, integration: true, type: UPDATE do
+  let(:current_client) { $client }
+  include_examples 'SwitchUpdateExample', 'integration context'
 end
