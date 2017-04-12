@@ -1,10 +1,18 @@
-## v4.5.1
+## v5.0.0 (Unreleased)
 
 #### Features supported
 This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
    - Ethernet network
    - FCoE network
    - Switch
+   - FC network
+   - Network set
+   - Scopes
+
+#### Breaking changes
+   1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
+
+## v4.5.1
 
 #### Bug fixes & Enhancements
 - [#241](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/241) Wrong method name in Server Profile
@@ -32,9 +40,6 @@ This release adds support to OneView Rest API version 500 for the hardware varia
 
 #### Bug fixes & Enhancements:
 - [#222](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/222) Error listing the OS Deployment Plans from OneView
-
-#### Breaking changes
-1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
 
 # v4.2.0
 
