@@ -23,13 +23,9 @@ RSpec.shared_examples 'SwitchCreateExample' do |context_name, only_c7000|
       expect(item.statistics).to_not be_empty
     end
 
-    # it 'gets data for the port X1' do
-    #   expect(item.statistics('X1')).to_not be_empty
-    # end
-
-    # it 'gets data for the port X1 with subport Q1' do
-    #   expect(item.statistics('X1', 'Q1')).to_not be_empty
-    # end
+    it 'gets data for the port X1. FAIL: May be a bug in OneView. Failure reported to the oneview team' do
+      expect(item.statistics('1.1')).to_not be_empty
+    end
   end
 
   describe '#environmentalConfiguration', if: only_c7000 do
