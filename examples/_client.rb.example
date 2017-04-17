@@ -15,8 +15,9 @@ require 'pry'
 
 # This setting allows for use of the shortened name of the resources, like OneviewSDK::<Resource_name>,
   # when referring to OneviewSDK::<API_version>::Synergy::<Resource_name>
-# OneviewSDK::API300.variant='Synergy' # [C7000, Synergy]
-# OneviewSDK::API500.variant='Synergy' # [C7000, Synergy]
+# Versions supported: [200, 300, 500]
+# Variants supported[C7000, Synergy]
+# OneviewSDK::API<version>.variant='Synergy'
 
 
 puts "Connected to OneView appliance at #{@client.url}\n\n"
