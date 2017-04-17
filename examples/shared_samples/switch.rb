@@ -14,16 +14,12 @@ require_relative '../_client' # Gives access to @client
 # NOTE: It is needed have a Switch created previously.
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
+# - 200, 300, 500
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Switch
-# api_version = 300 & variant = C7000 to switch_class
-# api_version = 300 & variant = Synergy to switch_class
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Switch
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::Switch
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Switch
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::Switch
 
@@ -45,7 +41,7 @@ puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
-if @client.api_version >= 300 and variant == 'C7000'
+if @client.api_version == 200 || variant == 'C7000'
   # Listing all switches
   itens = switch_class.get_all(@client)
   puts "\nListing all switches"
@@ -58,10 +54,21 @@ if @client.api_version >= 300 and variant == 'C7000'
   # Getting the statistics for switch
   puts "\nGetting the statistics for switch"
   stats = item.statistics('')
-  puts "\nStatistics for switch with name: #{item}"
+  puts "\nStatistics for switch with name: #{item['name']}"
   puts stats
 
+  # Getting the environmental configuration for switch
+  puts "\nGetting the environmental configuration for switch"
+  config = item.environmental_configuration
+  puts "\nEnvironmental configuration for switch with name: #{item['name']}"
+  puts config
+end
+
+
+if @client.api_version >= 300 && variant == 'C7000'
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+
+  item = switch_class.get_all(@client).first
 
   # Create Scopes
   scope_1 = scope_class.new(@client, name: 'Scope 1')
