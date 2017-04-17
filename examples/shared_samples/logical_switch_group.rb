@@ -13,10 +13,8 @@ require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
 # - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
+# - API300 for C7000 & Synergy
+# - API500 for C7000 & Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = Any to OneviewSDK::LogicalSwitchGroup
