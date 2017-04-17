@@ -15,16 +15,12 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an logical switch named 'LogicalSwitch', update it and then delete it.
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
+# - 200, 300, 500
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalSwitch
-# api_version = 300 & variant = C7000 to logical_switch_class
-# api_version = 300 & variant = Synergy to logical_switch_class
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalSwitch
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::LogicalSwitch
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalSwitch
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::LogicalSwitch
 
