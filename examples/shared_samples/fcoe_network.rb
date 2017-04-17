@@ -21,21 +21,24 @@ require_relative '../_client' # Gives access to @client
 # - API500 for C7000
 # - API500 for Synergy
 
-# variant represents the model[C7000, Synergy]
-variant = ARGV[0]
+# Resources that can be created according to parameters:
+# api_version = 200 & variant = any to OneviewSDK::API200::FCoENetwork
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::FCoENetwork
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::FCoENetwork
+# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::FCoENetwork
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::FCoENetwork
 
 # Resource Class used in this sample
-fcoe_network_class = OneviewSDK.resource_named('FCoENetwork', @client.api_version, variant)
+fcoe_network_class = OneviewSDK.resource_named('FCoENetwork', @client.api_version)
 
 # Scope class used in this sample
-scope_class = OneviewSDK.resource_named('Scope', @client.api_version, variant) unless @client.api_version.to_i <= 200
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
 
 # Example: Create an fc network
 # NOTE: This will create an fc network named 'OneViewSDK Test FC Network', then delete it.
 options = {
   name: 'OneViewSDK Test FCoE Network',
   connectionTemplateUri: nil,
-  type: 'fcoe-networkV300',
   vlanId: 300
 }
 
