@@ -2,38 +2,13 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::LogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300 }
+  let(:lig_uplink_set_class) { OneviewSDK::API300::C7000::LIGUplinkSet }
+  let(:ethernet_network_class) { OneviewSDK::API300::C7000::EthernetNetwork }
 
-  let(:item_2) { klass.new($client_300, name: LOG_INT_GROUP3_NAME) }
-  let(:eth) { OneviewSDK::API300::C7000::EthernetNetwork.new($client_300, name: ETH_NET_NAME) }
-  let(:uplink_options_2) do
-    {
-      name: LIG_UPLINK_SET2_NAME,
-      networkType: 'Ethernet',
-      ethernetNetworkType: 'Tagged'
-    }
-  end
-  let(:uplink_2) { OneviewSDK::API300::C7000::LIGUplinkSet.new($client_300, uplink_options_2) }
+  include_examples 'LIGC7000UpdateExample', 'integration api300 context'
 
-  describe '#update' do
-    it 'adding and removing uplink set' do
-      item_2.retrieve!
-      eth.retrieve!
-
-      uplink_2.add_network(eth)
-      uplink_2.add_uplink(1, 'X1')
-
-      item_2.add_uplink_set(uplink_2)
-
-      expect { item_2.update }.not_to raise_error
-
-      expect(item_2['uri']).to be
-      expect(item_2['uplinkSets']).to_not be_empty
-
-      item_2['uplinkSets'] = []
-      expect { item_2.update }.to_not raise_error
-      expect(item_2['uri']).to be
-      expect(item_2['uplinkSets']).to be_empty
-    end
+  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API300::C7000::Scope do
+    let(:item) { described_class.get_all(current_client).first }
   end
 end
