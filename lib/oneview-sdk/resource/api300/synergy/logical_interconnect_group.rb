@@ -10,12 +10,14 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'resource'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module Synergy
       # Logical interconnect group resource implementation
       class LogicalInterconnectGroup < Resource
+        include OneviewSDK::API300::Synergy::Scope::ScopeHelperMethods
         BASE_URI = '/rest/logical-interconnect-groups'.freeze
 
         # Create a resource object, associate it with a client, and set its properties.
