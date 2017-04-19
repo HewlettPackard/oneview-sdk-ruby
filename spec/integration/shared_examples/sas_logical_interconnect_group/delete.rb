@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,11 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'spec_helper'
+RSpec.shared_examples 'SASLogInterGroupDeleteExample' do |context_name|
+  include_context context_name
+  subject(:item) { described_class.find_by(current_client, name: SAS_LOG_INT_GROUP1_NAME).first }
 
-klass = OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300_synergy }
-
-  include_examples 'SASLogInterGroupCreateExample', 'integration api300 context'
+  describe '#delete' do
+    it 'removes the SAS Logical Interconnect group' do
+      expect { item.delete }.to_not raise_error
+      expect(item.retrieve!).to eq(false)
+    end
+  end
 end
