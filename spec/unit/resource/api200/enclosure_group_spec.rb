@@ -9,6 +9,8 @@ RSpec.describe klass do
       it 'sets the defaults correctly' do
         item = klass.new(@client_200)
         expect(item[:type]).to eq('EnclosureGroupV200')
+        expect(item[:interconnectBayMappingCount]).to eq(8)
+        expect(item[:stackingMode]).to eq('Enclosure')
       end
     end
   end
