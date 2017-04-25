@@ -10,7 +10,6 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api300/synergy/enclosure'
-require_relative '../c7000/enclosure'
 
 module OneviewSDK
   module API500
