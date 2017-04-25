@@ -16,6 +16,41 @@ module OneviewSDK
     module C7000
       # Enclosure resource implementation for API500 C7000
       class Enclosure < OneviewSDK::API300::C7000::Enclosure
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'EnclosureV400'
+          super
+        end
+
+        # Updates the name and rackName (and it uses PATCH).
+        # Overrides because is necessary to return the current state of the object.
+        # @param [Hash] attributes attributes to be updated
+        # @return [OneviewSDK::Enclosure] self
+        def update(attributes = {})
+          super(attributes)
+          retrieve!
+          self
+        end
+
+        # Performs a specific patch operation.
+        # @param [String] operation The operation to be performed
+        # @param [String] path The path of operation
+        # @param [String] value The value
+        # @return [Hash] hash with response
+        # @note The scopeUris attribute is subject to incompatible changes in future release versions.
+        def patch(operation, path, value = nil)
+          ensure_client && ensure_uri
+          body = [{ 'op' => operation, 'path' => path, 'value' => value }]
+          patch_options = { 'If-Match' => @data['eTag'] }
+          response = @client.rest_patch(@data['uri'], patch_options.merge('body' => body), @api_version)
+          @client.response_handler(response)
+        end
       end
     end
   end

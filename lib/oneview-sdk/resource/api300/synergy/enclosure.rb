@@ -31,7 +31,7 @@ module OneviewSDK
 
           # Renames the enclosures if the @data['name'] is not nil, otherwise only returns the enclosures
           @data['name'] ||= ''
-          OneviewSDK::API300::Synergy::Enclosure.update_enclosure_names(@client, @data['hostname'], @data['name'])
+          self.class.update_enclosure_names(@client, @data['hostname'], @data['name'])
         end
 
         # Method is not available
@@ -59,7 +59,7 @@ module OneviewSDK
 
           # Retrieve the frameLinkModuleDomain of the specified enclosure, then use it to find all enclosures
           # that share that frameLinkModuleDomain.
-          all_enclosures = OneviewSDK::API300::Synergy::Enclosure.find_by(client, {})
+          all_enclosures = find_by(client, {})
           all_enclosures.each do |encl|
             frame_link = encl['frameLinkModuleDomain'] if encl['managerBays'].first['ipAddress'] == hostname
           end
