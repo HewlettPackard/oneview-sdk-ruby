@@ -1,5 +1,4 @@
-# Unreleased Changes
-##### Suggested release: v4.3.0
+## v4.3.0
 
 #### New Features:
 - Added SCMB module and CLI command
