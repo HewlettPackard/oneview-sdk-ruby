@@ -67,4 +67,4 @@ $ rake system:only[,variant]                # e.g. system:only[,synergy]
 $ rake system:only[,,profile]               # e.g. system:only[,,light]
 ```
 
-Note: Set the `PRINT_METADATA_ONLY` environment variable to print the order of the tests only (without actually running any tests)
+Note: Set the `PRINT_METADATA_ONLY` environment variable (to anything) to print the order of the tests only (without actually running any tests)
