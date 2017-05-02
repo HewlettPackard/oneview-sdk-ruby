@@ -43,7 +43,6 @@ First, there's some setup you'll need to do. Do EITHER of the following:
    spec/system/one_view_secrets_synergy.json
    ```
 
-
 These config files get loaded and create the following global variables:
  - `$secrets`:
  - `$config`: Config for connecting to OneView appliance
@@ -60,16 +59,12 @@ Run `$ rake -T` to show all the available rake tasks.
 Then run any number of system tests:
 
 ```ruby
-$ rake spec:system
-$ rake spec:system:light
-$ rake spec:system:medium
-$ rake spec:system:heavy
-$ rake spec:system:api_version[version] # spec:system:api_version[300]
-$ rake spec:system:api_version_model[version,model] # spec:system:api_version_model[300,c7000]
-$ rake spec:system:light:api_version[version]
-$ rake spec:system:light:api_version_model[version,model]
-$ rake spec:system:medium:api_version[version]
-$ rake spec:system:medium:api_version_model[version,model]
-$ rake spec:system:heavy:api_version[version]
-$ rake spec:system:heavy:api_version_model[version,model]
+$ rake system
+$ rake system:path[path]                    # e.g. system:path[spec/system/light*/api200]
+$ rake system:only[api_ver,variant,profile] # e.g. system:only[300,synergy,light]
+$ rake system:only[api_ver]                 # e.g. system:only[300]
+$ rake system:only[,variant]                # e.g. system:only[,synergy]
+$ rake system:only[,,profile]               # e.g. system:only[,,light]
 ```
+
+Note: Set the `PRINT_METADATA_ONLY` environment variable (to any value) to print the order of the tests only (without actually running any tests)

@@ -12,7 +12,7 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::Rack
-RSpec.describe OneviewSDK::Rack, integration: true, type: UPDATE do
+RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
   describe '#update' do

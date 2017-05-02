@@ -83,7 +83,6 @@ spec/integration/i3s_config.json # Tests for API v300 Image Streamer
    ```
 
 
-
 These config files get loaded and create the global variables `$client_i3s_300`.
 
 ## Running the tests
@@ -94,20 +93,24 @@ Run `$ rake -T` to show all the available rake tasks.
 Then run any number of integration tests:
 
 ```ruby
-$ rake spec:integration
-$ rake spec:integration:create
-$ rake spec:integration:update
-$ rake spec:integration:delete
-$ rake spec:integration:api_version[ver]        # eg, spec:integration:api_version[300]
-$ rake spec:integration:api[version,model]      # eg, spec:integration:api_version[300,c7000]
-$ rake spec:integration:delete:api_version[ver] # eg, spec:integration:delete:api_version[300]
-$ rake test:path[path]        # eg, test:path['spec/integration/resource/api200/connection_template']
+$ rake integration
+$ rake integration:path[path]  # e.g. integration:path[spec/integration/resource/api200/connection_template]
+
+$ rake integration:only[action,type,api_ver,variant] # e.g. integration:only[create,volume,300,c7000]
+$ rake integration:only[action]                      # actions: create, update, delete
+$ rake integration:only[,type]                       # e.g. integration:only[,volume_template]
+$ rake integration:only[,,api_ver]                   # e.g. integration:only[,,300]
+$ rake integration:only[,,,variant]                  # e.g. integration:only[,,,synergy]
+$ rake integration:only[,,api_ver,variant]           # e.g. integration:only[,,300,c7000]
 
 # Tests for Image Streamer
-$ rake spec:integration:i3s
-$ rake spec:integration:i3s:create
-$ rake spec:integration:i3s:update
-$ rake spec:integration:i3s:delete
-$ rake spec:integration:i3s:api_version[ver]        # eg, spec:integration:i3s:api_version[300]
-$ rake test:i3s:path[path]        # eg, test:i3s:path['spec/integration/image-streamer/api300/os_volume']
+$ rake integration_i3s
+$ rake integration_i3s:path[path]   # e.g. test:i3s:path[spec/integration/image-streamer/api300/os_volume]
+
+$ rake integration_i3s:only[action,type,api_ver] # e.g. integration_i3s:only[create,build_plan,300]
+$ rake integration_i3s:only[action]              # actions: create, update, delete
+$ rake integration_i3s:only[,type]               # e.g. integration_i3s:only[,build_plan]
+$ rake integration_i3s:only[,,api_ver]           # e.g. integration_i3s:only[,,300]
 ```
+
+Note: Set the `PRINT_METADATA_ONLY` environment variable to print the order of the tests only (without actually running any tests)
