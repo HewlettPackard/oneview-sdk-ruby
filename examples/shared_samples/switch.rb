@@ -41,7 +41,8 @@ puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
-if @client.api_version == 200 || variant == 'C7000'
+# The statistics and environmental_configuration methods are not available for Synergy. Only to C7000.
+if variant != 'Synergy'
   # Listing all switches
   itens = switch_class.get_all(@client)
   puts "\nListing all switches"
@@ -64,7 +65,11 @@ if @client.api_version == 200 || variant == 'C7000'
   puts config
 end
 
-
+# In these lines below is added, replaced and removed a scopeUri to the switch resource.
+# A scope defines a collection of resources, which might be used for filtering or access control.
+# When a scope uri is added to a switch resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
+# Once grouped, with the scope it's possible to restrict an operation or action.
+# For the switch resource, this feature is only available for C7000 and api version higher than or equal to 300.
 if @client.api_version >= 300 && variant == 'C7000'
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 
