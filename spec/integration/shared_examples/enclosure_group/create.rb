@@ -29,6 +29,26 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
           'logicalInterconnectGroupUri' => ''
         },
         {
+          'enclosureIndex' => 1,
+          'interconnectBay' => 3,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 1,
+          'interconnectBay' => 6,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 2,
+          'interconnectBay' => 3,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 2,
+          'interconnectBay' => 6,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
           'enclosureIndex' => 3,
           'interconnectBay' => 2,
           'logicalInterconnectGroupUri' => ''
@@ -36,6 +56,16 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
         {
           'enclosureIndex' => 3,
           'interconnectBay' => 5,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 3,
+          'interconnectBay' => 3,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 3,
+          'interconnectBay' => 6,
           'logicalInterconnectGroupUri' => ''
         }
       ]
@@ -64,8 +94,10 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
     it 'can create EnclosureGroup with LIG', if: options[:variant] == 'Synergy' do
       item = described_class.new(current_client, enclosure_group_options)
       lig = log_inter_group_class.find_by(current_client, 'name' => LOG_INT_GROUP_NAME).first
+      lig2 = log_inter_group_class.find_by(current_client, 'name' => LOG_INT_GROUP3_NAME).first
       enclosure_group_options['interconnectBayMappings'].each do |bay|
-        bay['logicalInterconnectGroupUri'] = lig['uri']
+        bay['logicalInterconnectGroupUri'] = lig['uri'] if bay['interconnectBay'] == 2 || bay['interconnectBay'] == 5
+        bay['logicalInterconnectGroupUri'] = lig2['uri'] if bay['interconnectBay'] == 3 || bay['interconnectBay'] == 6
       end
 
       item.create
@@ -73,6 +105,8 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
       item['interconnectBayMappings'].each do |bay|
         if bay['interconnectBay'] == 2 || bay['interconnectBay'] == 5
           expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri'])
+        elsif bay['interconnectBay'] == 3 || bay['interconnectBay'] == 6
+          expect(bay['logicalInterconnectGroupUri']).to eq(lig2['uri'])
         else
           expect(bay['logicalInterconnectGroupUri']).to_not be
         end
