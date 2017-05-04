@@ -5,11 +5,12 @@
 #### Features supported
 This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
    - Enclosure
-   - Ethernet network
-   - FC network
-   - FCoE network
-   - Logical switch group
-   - Network set
+   - Ethernet Network
+   - FC Network
+   - FCoE Network
+   - Logical Switch Group
+   - Network Set
+   - SAS Logical Interconnect Group
    - Scopes
 
 # v4.2.0
