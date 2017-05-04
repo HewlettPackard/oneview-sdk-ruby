@@ -10,6 +10,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - FCoE Network
    - Logical Switch Group
    - Network Set
+   - SAS Logical Interconnect Group
    - Scopes
 
 # v4.2.0
