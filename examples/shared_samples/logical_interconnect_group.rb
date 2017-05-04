@@ -19,10 +19,10 @@ require_relative '../_client' # Gives access to @client
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalInterconnectGroup
-# api_version = 300 & variant = C7000 to lig_class
-# api_version = 300 & variant = Synergy to lig_class
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalInterconnectGroup
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::LogicalInterconnectGroup
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalInterconnectGroup
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::LogicalInterconnectGroup
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalInterconnectGroup
 
 # Resource Class used in this sample
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
@@ -165,24 +165,28 @@ if variant == 'Synergy'
   puts lig['internalNetworkUris']
 end
 
-# only for API300 and API500
+# In these lines below is added, replaced and removed a scopeUri to the lig resource.
+# A scope defines a collection of resources, which might be used for filtering or access control.
+# When a scope uri is added to a lig resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
+# Once grouped, with the scope it's possible to restrict an operation or action.
+# For the lig resource, this feature is only available for api version higher than or equal to 300.
 if @client.api_version.to_i > 200
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
   scope_2 = scope_class.new(@client, name: 'Scope 2')
   scope_2.create!
 
-  puts "\nAdding scopes"
+  puts "\nAdding scopes to the logical interconnect group"
   lig.add_scope(scope_1)
   lig.refresh
   puts 'Scopes:', lig['scopeUris']
 
-  puts "\nReplacing scopes"
+  puts "\nReplacing scopes inside the logical interconnect group"
   lig.replace_scopes(scope_2)
   lig.refresh
   puts 'Scopes:', lig['scopeUris']
 
-  puts "\nRemoving scopes"
+  puts "\nRemoving scopes from the logical interconnect group"
   lig.remove_scope(scope_1)
   lig.remove_scope(scope_2)
   lig.refresh

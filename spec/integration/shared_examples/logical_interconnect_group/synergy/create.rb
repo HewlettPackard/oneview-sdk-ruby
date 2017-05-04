@@ -14,6 +14,8 @@ RSpec.shared_examples 'LIGSynergyCreateExample' do |context_name|
 
   let(:interconnect_type) { 'Virtual Connect SE 40Gb F8 Module for Synergy' }
   let(:interconnect_type2) { 'Virtual Connect SE 16Gb FC Module for Synergy' }
+  let(:interconnect_type3) { 'Synergy 20Gb Interconnect Link Module' }
+  let(:ethernet_network) { ethernet_network_class.find_by(current_client, name: ETH_NET_NAME).first }
 
   describe '#create' do
     it 'creates a LIG with interconnect types' do
@@ -42,16 +44,37 @@ RSpec.shared_examples 'LIGSynergyCreateExample' do |context_name|
     end
 
     it 'creates an uplink set and a LIG with internal networks' do
-      ethernet_network = ethernet_network_class.find_by(current_client, name: ETH_NET_NAME).first
-
       lig_default_options = {
         'name' => LOG_INT_GROUP2_NAME,
-        'redundancyType' => 'Redundant',
-        'interconnectBaySet' => 3
+        'interconnectBaySet' => 3,
+        'enclosureIndexes' => [1, 2, 3],
+        'redundancyType' => 'HighlyAvailable'
       }
       item = described_class.new(current_client, lig_default_options)
-      item.add_interconnect(3, interconnect_type)
-      item.add_interconnect(6, interconnect_type)
+      item.add_interconnect(3, interconnect_type, nil, 1)
+      item.add_interconnect(6, interconnect_type3, nil, 1)
+      item.add_interconnect(3, interconnect_type3, nil, 2)
+      item.add_interconnect(6, interconnect_type, nil, 2)
+      item.add_interconnect(3, interconnect_type3, nil, 3)
+      item.add_interconnect(6, interconnect_type3, nil, 3)
+      item.add_internal_network(ethernet_network)
+      expect { item.create }.not_to raise_error
+    end
+
+    it 'creates an uplink set and a LIG with internal networks and specific enclosure index' do
+      lig_default_options = {
+        'name' => LOG_INT_GROUP3_NAME,
+        'interconnectBaySet' => 3,
+        'enclosureIndexes' => [1, 2, 3],
+        'redundancyType' => 'HighlyAvailable'
+      }
+      item = described_class.new(current_client, lig_default_options)
+      item.add_interconnect(3, interconnect_type, nil, 1)
+      item.add_interconnect(6, interconnect_type3, nil, 1)
+      item.add_interconnect(3, interconnect_type3, nil, 2)
+      item.add_interconnect(6, interconnect_type, nil, 2)
+      item.add_interconnect(3, interconnect_type3, nil, 3)
+      item.add_interconnect(6, interconnect_type3, nil, 3)
       item.add_internal_network(ethernet_network)
       expect { item.create }.not_to raise_error
     end
