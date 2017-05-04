@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Example: Create/Update/Delete sas logical interconnect group only for Synergy
-# NOTE: This will create a sas logical interconnect group named 'ONEVIEW_SDK_TEST_SAS_LIG', update it and then delete it.
+# NOTE: This will create a sas logical interconnect group named 'ONEVIEW_SDK_SAMPLE_SAS_LIG', update it and then delete it.
 #
 # Supported APIs:
 # - 300, 500
@@ -27,7 +27,7 @@ sas_int_group_class = OneviewSDK.resource_named('SASLogicalInterconnectGroup', @
 type = 'SAS Logical Interconnect Group'
 
 options = {
-  name: 'ONEVIEW_SDK_TEST_SAS_LIG'
+  name: 'ONEVIEW_SDK_SAMPLE_SAS_LIG'
 }
 
 item = sas_int_group_class.new(@client, options)
@@ -41,7 +41,7 @@ item.create!
 puts "\n#{type} #{item[:name]} created!"
 
 options2 = {
-  name: 'UPDATED_ONEVIEW_SDK_TEST_SAS_LIG '
+  name: 'UPDATED_ONEVIEW_SDK_SAMPLE_SAS_LIG '
 }
 
 puts "\nUpdating the name of #{type} with name = '#{item[:name]}' to '#{options2[:name]}'."
