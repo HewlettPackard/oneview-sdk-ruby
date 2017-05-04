@@ -14,6 +14,7 @@ RSpec.shared_examples 'LIGSynergyDeleteExample' do |context_name|
 
   subject(:item) { described_class.find_by(current_client, name: LOG_INT_GROUP_NAME).first }
   subject(:item_2) { described_class.find_by(current_client, name: LOG_INT_GROUP2_NAME).first }
+  subject(:item_3) { described_class.find_by(current_client, name: LOG_INT_GROUP3_NAME).first }
 
   describe '#delete' do
     it 'removes all the Logical Interconnect groups' do
@@ -21,6 +22,8 @@ RSpec.shared_examples 'LIGSynergyDeleteExample' do |context_name|
       expect(item.retrieve!).to eq(false)
       expect { item_2.delete }.to_not raise_error
       expect(item_2.retrieve!).to eq(false)
+      expect { item_3.delete }.to_not raise_error
+      expect(item_3.retrieve!).to eq(false)
     end
   end
 end
