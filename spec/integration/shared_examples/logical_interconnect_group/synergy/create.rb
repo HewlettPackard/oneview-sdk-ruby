@@ -46,17 +46,12 @@ RSpec.shared_examples 'LIGSynergyCreateExample' do |context_name|
     it 'creates an uplink set and a LIG with internal networks' do
       lig_default_options = {
         'name' => LOG_INT_GROUP2_NAME,
-        'interconnectBaySet' => 3,
-        'enclosureIndexes' => [1, 2, 3],
-        'redundancyType' => 'HighlyAvailable'
+        'redundancyType' => 'Redundant',
+        'interconnectBaySet' => 3
       }
       item = described_class.new(current_client, lig_default_options)
-      item.add_interconnect(3, interconnect_type, nil, 1)
-      item.add_interconnect(6, interconnect_type3, nil, 1)
-      item.add_interconnect(3, interconnect_type3, nil, 2)
-      item.add_interconnect(6, interconnect_type, nil, 2)
-      item.add_interconnect(3, interconnect_type3, nil, 3)
-      item.add_interconnect(6, interconnect_type3, nil, 3)
+      item.add_interconnect(3, interconnect_type)
+      item.add_interconnect(6, interconnect_type)
       item.add_internal_network(ethernet_network)
       expect { item.create }.not_to raise_error
     end
