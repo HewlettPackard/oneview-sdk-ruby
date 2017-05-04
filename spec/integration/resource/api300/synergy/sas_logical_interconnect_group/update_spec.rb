@@ -13,22 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
-
-  let(:item) { klass.new($client_300_synergy, name: SAS_LOG_INT_GROUP1_NAME) }
-
-  describe '#update' do
-    it 'is able to update the resource name and set it back' do
-      item.retrieve!
-
-      expect { item.update(name: 'Test') }.not_to raise_error
-
-      expect(item['name']).to eq('Test')
-
-      expect { item.update(name: SAS_LOG_INT_GROUP1_NAME) }.not_to raise_error
-
-      expect(item['name']).to eq(SAS_LOG_INT_GROUP1_NAME)
-      expect(item['uri']).to be
-    end
-  end
+  let(:current_client) { $client_300_synergy }
+  include_examples 'SASLogInterGroupUpdateExample', 'integration api300 context'
 end
