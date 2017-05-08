@@ -17,11 +17,19 @@ RSpec.shared_examples 'FCNetworkCreateExample' do |context_name|
   describe '#create' do
     it 'can create resources' do
       item = described_class.from_file(current_client, file_path)
+      item2 = described_class.new(current_client, name: FC_NET2_NAME )
+
       item.create
       expect(item[:name]).to eq(FC_NET_NAME)
       expect(item[:autoLoginRedistribution]).to eq(true)
       expect(item[:connectionTemplateUri]).not_to eq(nil)
       expect(item[:fabricType]).to eq('FabricAttach')
+
+      item2.create
+      expect(item2[:name]).to eq(FC_NET2_NAME)
+      expect(item2[:autoLoginRedistribution]).to eq(false)
+      expect(item2[:connectionTemplateUri]).not_to eq(nil)
+      expect(item2[:fabricType]).to eq('FabricAttach')
     end
   end
 
