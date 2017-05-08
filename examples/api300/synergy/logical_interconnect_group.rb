@@ -55,6 +55,9 @@ upset01.add_uplink(6, 'Q1', 'Virtual Connect SE 40Gb F8 Module for Synergy', 2)
 # Adds netowork 'Management' to the Uplink Set
 upset01.add_network(network01)
 
+# Adds Uplink set to the LIG
+item.add_uplink(upset01)
+
 # Creates the LIG
 item.create
 
