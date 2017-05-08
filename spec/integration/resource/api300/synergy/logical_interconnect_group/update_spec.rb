@@ -2,25 +2,12 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::LogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300_synergy }
+  let(:ethernet_network_class) { OneviewSDK::API300::Synergy::EthernetNetwork }
 
-  describe '#update' do
-    it 'adding and removing networks' do
-      item_2 = klass.new($client_300, name: LOG_INT_GROUP2_NAME)
-      item_2.retrieve!
+  include_examples 'LIGSynergyUpdateExample', 'integration api300 context'
 
-      ethernet_network = OneviewSDK::API300::Synergy::EthernetNetwork.new($client_300, name: ETH_NET_NAME)
-      ethernet_network.retrieve!
-
-      item_2['internalNetworkUris'] = []
-      expect { item_2.update }.not_to raise_error
-
-      item_2.retrieve!
-
-      item_2.add_internal_network(ethernet_network)
-      expect { item_2.update }.not_to raise_error
-
-      expect(item_2['internalNetworkUris']).to eq([ethernet_network['uri']])
-    end
+  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API300::Synergy::Scope do
+    let(:item) { described_class.get_all(current_client).first }
   end
 end
