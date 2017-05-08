@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::Interconnect
+klass = OneviewSDK::API500::Synergy::Interconnect
 RSpec.describe klass, integration: true, type: DELETE do
-  let(:current_client) { $client_300 }
-  include_examples 'InterconnectDeleteExample', 'integration api300 context'
+  let(:current_client) { $client_500_synergy }
+  include_examples 'InterconnectDeleteExample', 'integration api500 context'
 end

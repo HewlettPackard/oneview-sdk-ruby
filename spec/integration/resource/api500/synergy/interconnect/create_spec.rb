@@ -11,8 +11,12 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::Interconnect
-RSpec.describe klass, integration: true, type: DELETE do
-  let(:current_client) { $client_300 }
-  include_examples 'InterconnectDeleteExample', 'integration api300 context'
+klass = OneviewSDK::API500::Synergy::Interconnect
+RSpec.describe klass, integration: true, type: CREATE do
+  let(:current_client) { $client_500_synergy }
+  let(:interconnect_name) { INTERCONNECT_3_NAME }
+  let(:interconnect_type) { 'Virtual Connect SE 16Gb FC Module for Synergy' }
+
+  include_examples 'InterconnectCreateExample', 'integration api500 context', 500
+  include_examples 'LinkTopologyExample', 'integration api500 context'
 end
