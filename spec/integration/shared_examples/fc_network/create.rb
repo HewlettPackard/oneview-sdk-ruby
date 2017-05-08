@@ -17,7 +17,7 @@ RSpec.shared_examples 'FCNetworkCreateExample' do |context_name|
   describe '#create' do
     it 'can create resources' do
       item = described_class.from_file(current_client, file_path)
-      item2 = described_class.new(current_client, name: FC_NET2_NAME )
+      item2 = described_class.new(current_client, name: FC_NET2_NAME)
 
       item.create
       expect(item[:name]).to eq(FC_NET_NAME)
