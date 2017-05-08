@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
+klass = OneviewSDK::API500::Synergy::SASLogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300_synergy }
+  let(:current_client) { $client_500_synergy }
 
-  include_examples 'SASLogInterGroupCreateExample', 'integration api300 context'
+  include_examples 'SASLogInterGroupCreateExample', 'integration api500 context'
 end
