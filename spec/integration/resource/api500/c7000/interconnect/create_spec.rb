@@ -11,8 +11,11 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::Interconnect
-RSpec.describe klass, integration: true, type: DELETE do
-  let(:current_client) { $client_300 }
-  include_examples 'InterconnectDeleteExample', 'integration api300 context'
+klass = OneviewSDK::API500::C7000::Interconnect
+RSpec.describe klass, integration: true, type: CREATE do
+  let(:current_client) { $client_500 }
+  let(:interconnect_name) { INTERCONNECT_2_NAME }
+  let(:interconnect_type) { 'HP VC FlexFabric-20/40 F8 Module' }
+
+  include_examples 'InterconnectCreateExample', 'integration api500 context', 500
 end
