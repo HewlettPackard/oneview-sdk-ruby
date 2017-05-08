@@ -66,9 +66,9 @@ RSpec.describe OneviewSDK::LIGUplinkSet do
         upset = OneviewSDK::LIGUplinkSet.new(@client_200, def_options)
         expect { upset.add_uplink(1, 'Q1.1', @type) }.not_to raise_error
       end
-      it 'not supported port' do
+      it 'not existing port' do
         upset = OneviewSDK::LIGUplinkSet.new(@client_200, def_options)
-        expect { upset.add_uplink(1, 'Q8:1', @type) }.to raise_error(OneviewSDK::NotFound)
+        expect { upset.add_uplink(1, 'Q9:1', @type) }.to raise_error(OneviewSDK::NotFound)
       end
     end
   end
