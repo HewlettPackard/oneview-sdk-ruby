@@ -41,7 +41,7 @@ puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
-# The statistics and environmental_configuration methods are not available for Synergy. Only to C7000.
+# The statistics and environmental_configuration methods are only available to C7000 appliances..
 if variant != 'Synergy'
   # Listing all switches
   itens = switch_class.get_all(@client)
