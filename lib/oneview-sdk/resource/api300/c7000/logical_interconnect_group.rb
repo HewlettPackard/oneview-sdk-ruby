@@ -10,12 +10,14 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/logical_interconnect_group'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
     module C7000
       # Logical interconnect group resource implementation
       class LogicalInterconnectGroup < OneviewSDK::API200::LogicalInterconnectGroup
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
