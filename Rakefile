@@ -178,7 +178,7 @@ end
 desc 'Run rubocop & integration tests for specified path'
 task 'test:path', [:path] do |_t, spec|
   spec_pattern = spec['path']
-  Rake::Task[:rubocop].invoke
+  # Rake::Task[:rubocop].invoke
   Rake::Task['spec:integration'].invoke
 end
 
