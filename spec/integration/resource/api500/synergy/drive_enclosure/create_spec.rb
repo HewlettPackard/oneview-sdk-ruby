@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Synergy::DriveEnclosure
-RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_300_synergy }
-  include_examples 'DriveEnclosureUpdateExample', 'integration api300 context'
+klass = OneviewSDK::API500::Synergy::DriveEnclosure
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  include_examples 'DriveEnclosureCreateExample', 'integration api500 context'
 end
