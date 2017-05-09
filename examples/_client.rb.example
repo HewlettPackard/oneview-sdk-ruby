@@ -19,6 +19,12 @@ require 'pry'
 # Variants supported[C7000, Synergy]
 # OneviewSDK::API<version>.variant='Synergy'
 
+# Helper method that gets the variant value
+def example_helper
+	const = OneviewSDK.const_get("API#{@client.api_version}")
+	variant = const.name == 'OneviewSDK::API200' ? 'C7000' : const.variant
+end
+
 
 puts "Connected to OneView appliance at #{@client.url}\n\n"
 
