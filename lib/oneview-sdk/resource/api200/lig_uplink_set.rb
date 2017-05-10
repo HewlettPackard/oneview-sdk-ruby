@@ -49,7 +49,7 @@ module OneviewSDK
           if type
             fetch_relative_value_of(port, type)
           else
-            port.to_s == port.to_i.to_s ? port : relative_value_of(port)
+            port.to_s == port.to_i.to_s ? port.to_i : relative_value_of(port)
           end
         entry = {
           'desiredSpeed' => 'Auto',
