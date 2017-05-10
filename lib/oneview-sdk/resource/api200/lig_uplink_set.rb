@@ -49,7 +49,7 @@ module OneviewSDK
           if type
             fetch_relative_value_of(port, type)
           else
-            # Detect integer ports typed as String
+            # Detect Integer port: for example 67 or '67'
             port.to_s == port.to_i.to_s ? port.to_i : relative_value_of(port)
           end
         entry = {
