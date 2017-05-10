@@ -44,7 +44,7 @@ module OneviewSDK
       # @param [String] interconnect model name
       # @param [Fixnum] enclosure number for multi-frame configurations
       def add_uplink(bay, port, type = nil, enclosure_index = 1)
-        enclosure_index = !type.nil? && type.include?('Virtual Connect SE 16Gb FC Module') ? -1 : enclosure_index
+        enclosure_index = type && type.include?('Virtual Connect SE 16Gb FC Module') ? -1 : enclosure_index
         port =
           if type
             fetch_relative_value_of(port, type)
