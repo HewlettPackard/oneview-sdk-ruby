@@ -40,15 +40,25 @@ module OneviewSDK
 
       # Specify one uplink passing the virtual connect bay and the port to be attached.
       # @param [Fixnum] bay number to identify the VC
-      # @param [String] port to attach the uplink. Allowed D1..D16 and X1..X10
-      def add_uplink(bay, port)
+      # @param [String, Fixnum] port to attach the uplink. Examples: X1, D1, Q1, Q1.1, Q1:1, 67 ...
+      # @param [String] interconnect model name
+      # @param [Fixnum] enclosure number for multi-frame configurations
+      def add_uplink(bay, port, type = nil, enclosure_index = 1)
+        enclosure_index = type && type.include?('Virtual Connect SE 16Gb FC Module') ? -1 : enclosure_index
+        port =
+          if type
+            fetch_relative_value_of(port, type)
+          else
+            # Detect Integer port: for example 67 or '67'
+            port.to_s == port.to_i.to_s ? port.to_i : relative_value_of(port)
+          end
         entry = {
           'desiredSpeed' => 'Auto',
           'logicalLocation' => {
             'locationEntries' => [
               { 'relativeValue' => bay, 'type' => 'Bay' },
-              { 'relativeValue' => 1, 'type' => 'Enclosure' },
-              { 'relativeValue' => relative_value_of(port), 'type' => 'Port' }
+              { 'relativeValue' => enclosure_index, 'type' => 'Enclosure' },
+              { 'relativeValue' => port, 'type' => 'Port' }
             ]
           }
         }
@@ -78,6 +88,18 @@ module OneviewSDK
                  else raise InvalidResource, "Port not supported: #{identifier} type not found"
                  end
         port.to_i + offset
+      end
+
+      def fetch_relative_value_of(port, type)
+        port_formats = [port.sub('.', ':'), port.sub(':', '.')].uniq
+        interconnect_type = OneviewSDK::Interconnect.get_type(@client, type)
+        unless interconnect_type
+          list = OneviewSDK::Interconnect.get_types(@client).map { |t| t['name'] }
+          raise OneviewSDK::NotFound, "Interconnect type #{type} not found! Supported types: #{list}"
+        end
+        type_port = interconnect_type['portInfos'].find { |p| port_formats.include? p['portName'] }
+        raise OneviewSDK::NotFound, "Port #{port} not found!" unless type_port
+        type_port['portNumber']
       end
     end
   end
