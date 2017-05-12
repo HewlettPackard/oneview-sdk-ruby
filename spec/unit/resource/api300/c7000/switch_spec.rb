@@ -35,14 +35,14 @@ RSpec.describe OneviewSDK::API300::C7000::Switch do
       @item = described_class.new(@client_300, {})
     end
 
+    it 'switch' do
+      expect(@client_300).to receive(:rest_get).with('/statistics/').and_return(FakeResponse.new)
+      @item.statistics
+    end
+
     it 'port' do
       expect(@client_300).to receive(:rest_get).with('/statistics/p1').and_return(FakeResponse.new)
       @item.statistics('p1')
-    end
-
-    it 'port and subport' do
-      expect(@client_300).to receive(:rest_get).with('/statistics/p1/subport/sp1').and_return(FakeResponse.new)
-      @item.statistics('p1', 'sp1')
     end
   end
 

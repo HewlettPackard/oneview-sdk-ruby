@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,13 +9,10 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client' # Gives access to @client
+require 'spec_helper'
 
-# Retrieves all switch types from the Appliance
-OneviewSDK::API300::Synergy::Switch.get_types(@client).each do |type|
-  puts "Switch Type: #{type['name']}\nURI: #{type['uri']}\n\n"
+klass = OneviewSDK::API500::Synergy::Switch
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  include_examples 'SwitchCreateExample', 'integration api500 context'
 end
-
-# Retrieves switch type by name
-item = OneviewSDK::API300::Synergy::Switch.get_type(@client, 'Cisco Nexus 50xx')
-puts "Switch Type by name: #{item['name']}\nURI: #{item['uri']}\n\n"
