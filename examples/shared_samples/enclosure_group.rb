@@ -66,7 +66,7 @@ begin
   puts "\nScript retrieved sucessfully."
   puts script
 rescue OneviewSDK::MethodUnavailable
-  error_msg_helper('get_script', msg: 'This method available for C7000(all versions) and for Synergy with version equal to 300.')
+  error_msg_helper('get_script', msg: 'This method is available for C7000 in all API versions, and for Synergy in API300.')
 end
 
 puts "\nDeleting the #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"
