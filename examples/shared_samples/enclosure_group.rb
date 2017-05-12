@@ -35,8 +35,6 @@ encl_group_name = 'OneViewSDK Test Enclosure Group'
 
 item = encl_group_class.new(@client, name: encl_group_name)
 
-variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
-
 lig = lig_class.get_all(@client).first
 item.add_logical_interconnect_group(lig)
 
@@ -53,20 +51,24 @@ puts "\nUpdating an #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]
 item.update(name: 'OneViewSDK Test Enclosure_Group Updated')
 puts "\nUpdated #{type} with new name = '#{item[:name]}' sucessfully."
 
-unless variant == 'Synergy' && @client.api_version >= 300
+begin
   command = '#TEST COMMAND'
   puts "\nSetting a script with command = '#{command}'"
   item.set_script(command)
   puts "\nScript attributed sucessfully."
+rescue OneviewSDK::MethodUnavailable
+  error_msg_helper('set_script', variant: 'C7000')
 end
 
-unless variant == 'Synergy' && @client.api_version >= 500
+begin
   puts "\nGetting a script"
   script = item.get_script
   puts "\nScript retrieved sucessfully."
   puts script
+rescue OneviewSDK::MethodUnavailable
+  error_msg_helper('get_script', msg: 'This method available for C7000(all versions) and for Synergy with version equal to 300.')
 end
 
-puts "\nDeleting an #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"
+puts "\nDeleting the #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"
 item.delete
 puts "\nSucessfully deleted #{type} '#{item[:name]}'."
