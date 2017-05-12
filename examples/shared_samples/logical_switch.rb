@@ -20,9 +20,9 @@ require_relative '../_client' # Gives access to @client
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalSwitch
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalSwitch
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::LogicalSwitch
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::LogicalSwitch
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalSwitch
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::LogicalSwitch
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalSwitch
 
 # Resource Class used in this sample
 logical_switch_class = OneviewSDK.resource_named('LogicalSwitch', @client.api_version)
