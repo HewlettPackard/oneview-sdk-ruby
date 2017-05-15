@@ -18,7 +18,7 @@ require_relative '../_client' # Gives access to @client
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalInterconnect
-# api_version = 300 & variant = C7000 to logical_interconnect_class
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalInterconnect
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::LogicalInterconnect
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalInterconnect
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalInterconnect
@@ -26,8 +26,6 @@ require_relative '../_client' # Gives access to @client
 # Resource Class used in this sample
 logical_interconnect_class = OneviewSDK.resource_named('LogicalInterconnect', @client.api_version)
 
-# Scope class used in this sample
-scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
 # EthernetNetwork class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
 # Interconnect class used in this sample
@@ -268,24 +266,26 @@ puts "\nConfiguration Applied with successfully"
 # When a scope uri is added to a logical interconnect resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
 # For the logical interconnect resource, this feature is only available for api version higher than or equal to 300.
-if @client.api_version.to_i > 200
+puts "\nOperations with scope."
+begin
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   # Creating scopes for this example
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
   scope_2 = scope_class.new(@client, name: 'Scope 2')
   scope_2.create!
 
-  puts "\nAdding scopes"
+  puts "\nAdding scopes to logical interconnect"
   item.add_scope(scope_1)
   item.refresh
   puts 'Scopes:', item['scopeUris']
 
-  puts "\nReplacing scopes"
+  puts "\nReplacing scopes inside of the logical interconnect"
   item.replace_scopes(scope_2)
   item.refresh
   puts 'Scopes:', item['scopeUris']
 
-  puts "\nRemoving scopes"
+  puts "\nRemoving scopes from the logical interconnect"
   item.remove_scope(scope_1)
   item.remove_scope(scope_2)
   item.refresh
@@ -294,4 +294,6 @@ if @client.api_version.to_i > 200
   # Clear data
   scope_1.delete
   scope_2.delete
+rescue NoMethodError
+  puts "\nScope operations is not supported in this version."
 end
