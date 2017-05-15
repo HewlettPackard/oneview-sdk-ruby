@@ -109,5 +109,5 @@ begin
   puts "\nThe Small Form-factor Pluggable (SFP) instances retrieved successfully:"
   puts results
 rescue NoMethodError
-  puts 'The method #get_pluggable_module_information is available for api greater than or equal to 500.'
+  puts 'The method #get_pluggable_module_information is available only for api greater than or equal to 500.'
 end
