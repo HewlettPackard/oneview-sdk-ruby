@@ -91,22 +91,23 @@ item.patch('replace', '/uidState', 'On')
 item.retrieve!
 puts "Interconnect #{item['name']} updated successfully with previous uidState #{item['uidState']}"
 
-variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
-
-# This 'get_link_topologies' method is only available for Synergy.
-if variant == 'Synergy'
-  # List of synergy interconnect link topologies
+# List of synergy interconnect link topologies
+begin
   puts "\nGets a list of synergy interconnect link topologies"
   interconnect_class.get_link_topologies(@client).each do |link_topology|
     puts "Interconnect link topology #{link_topology['name']} URI=#{link_topology['uri']}"
   end
+rescue NoMethodError
+  puts 'The method #get_link_topologies is available only for Synergy.'
 end
 
+# Gets all the Small Form-factor Pluggable (SFP) instances from an interconnect.
 # This method 'get_pluggable_module_information' was added from api version 500.
-if @client.api_version >= 500
-  # Gets all the Small Form-factor Pluggable (SFP) instances from an interconnect.
+begin
   puts "\nGets all the Small Form-factor Pluggable (SFP) instances of interconnect #{item['uri']}."
   results = item.get_pluggable_module_information
   puts "\nThe Small Form-factor Pluggable (SFP) instances retrieved successfully:"
   puts results
+rescue NoMethodError
+  puts 'The method #get_pluggable_module_information is available for api greater than or equal to 500.'
 end
