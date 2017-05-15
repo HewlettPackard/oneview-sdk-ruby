@@ -11,8 +11,8 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Logical Switch Group
    - Network Set
    - SAS Logical Interconnect Group
-   - Server Hardware Type
    - Scopes
+   - Server Hardware Type
 
 # v4.2.0
 
