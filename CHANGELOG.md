@@ -1,4 +1,4 @@
-## Suggested release: v4.3.1 (Unreleased Changes)
+## v4.3.1
 
 #### Bug fixes & Enhancements
 - [#216](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/216) Missing support for Q ports in API300::Synergy::LIGUplinkSet, missing support for multiple Synergy frames
