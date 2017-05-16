@@ -56,8 +56,8 @@ begin
   puts "\nSetting a script with command = '#{command}'"
   item.set_script(command)
   puts "\nScript attributed sucessfully."
-rescue OneviewSDK::MethodUnavailable
-  error_msg_helper('set_script', variant: 'C7000')
+rescue OneviewSDK::MethodUnavailable => e
+  puts "\n#{e}. Available only for C7000."
 end
 
 begin
@@ -65,8 +65,8 @@ begin
   script = item.get_script
   puts "\nScript retrieved sucessfully."
   puts script
-rescue OneviewSDK::MethodUnavailable
-  error_msg_helper('get_script', msg: 'This method is available for C7000 in all API versions, and for Synergy in API300.')
+rescue OneviewSDK::MethodUnavailable => e
+  puts "\n#{e}. Available only for C7000."
 end
 
 puts "\nDeleting the #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"
