@@ -14,7 +14,7 @@ require_relative '../_client' # Gives access to @client
 # Example: Actions with drive enclosure
 #
 # Supported APIs:
-# 300, 500 only for Synergy.
+# 300, 500 both api versions only for Synergy.
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::DriveEnclosure
