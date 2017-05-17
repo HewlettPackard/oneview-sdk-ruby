@@ -240,3 +240,6 @@ USER_NAME = 'TestUser'.freeze
 
 # OS Deployment Plan
 OS_DEPLOYMENT_PLAN_NAME = 'HPE - Developer 1.0 - Deployment Test (UEFI)'.freeze
+
+# Server Hardware
+SERVER_HARDWARE_NAME = '0000A66101, bay 3'.freeze
