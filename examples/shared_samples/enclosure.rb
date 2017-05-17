@@ -31,9 +31,6 @@ enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
 # EnclosureGroup class used in this sample
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 
-# Scope class used in this sample
-scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
-
 encl_group = encl_group_class.get_all(@client).first
 
 type = 'enclosure'
@@ -120,36 +117,46 @@ puts "\nRefreshing the enclosure"
 item2.set_refresh_state('RefreshPending')
 puts "\nOperation applied successfully!"
 
-# only for API300 and API500
-if @client.api_version.to_i > 200
+# In these lines below is added, replaced and removed a scopeUri to the enclosure resource.
+# A scope defines a collection of resources, which might be used for filtering or access control.
+# When a scope uri is added to a enclosure resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
+# Once grouped, with the scope it's possible to restrict an operation or action.
+puts "\nOperations with scope."
+begin
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   scope_1 = scope_class.new(@client, name: 'Scope 1')
-  scope_1.create!
+  scope_1.create
   scope_2 = scope_class.new(@client, name: 'Scope 2')
-  scope_2.create!
+  scope_2.create
 
-  puts "\nAdding scopes"
+  puts "\nAdding scopes to the enclosure"
   item2.add_scope(scope_1)
   item2.refresh
   puts 'Scopes:', item2['scopeUris']
 
-  puts "\nReplacing scopes"
+  puts "\nReplacing scopes inside the enclosure"
   item2.replace_scopes(scope_2)
   item2.refresh
   puts 'Scopes:', item2['scopeUris']
 
-  puts "\nRemoving scopes"
+  puts "\nRemoving scopes from enclosure"
   item2.remove_scope(scope_1)
   item2.remove_scope(scope_2)
   item2.refresh
   puts 'Scopes:', item2['scopeUris']
 
-  # Clear data
+  scope_1.refresh
+  scope_2.refresh
+
+  # Delete scopes
   scope_1.delete
   scope_2.delete
+rescue NoMethodError
+  puts "\nScope operations is not supported in this version."
 end
 
-if variant != 'Synergy'
-  puts "\nRemoving an #{type} with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
-  item2.remove
-  puts "\n#{type} was removed successfully!"
-end
+# Removes an enclosure
+# NOTE: to remove Enclosures on Synergy requires them to be physically removed first
+puts "\nRemoving an #{type} with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
+item2.remove
+puts "\n#{type} was removed successfully!"
