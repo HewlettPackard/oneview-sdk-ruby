@@ -14,7 +14,7 @@ require_relative '../../_client' # Gives access to @client,
 # Example: Create a Logical Interconnect Group
 
 options = {
-  name: 'Sample LIG 2 Frames',
+  name: 'OneViewSDK LIG with 2 Frames',
   redundancyType: 'HighlyAvailable',
   interconnectBaySet: 3,
   enclosureIndexes: [1, 2],
@@ -25,10 +25,10 @@ options = {
 item = OneviewSDK::API300::Synergy::LogicalInterconnectGroup.new(@client, options)
 
 # Adds the following interconnects to the bays 3 and 6 with an Interconnect Type, respectively
-item.add_interconnect(3, 'Virtual Connect SE 40Gb F8 Module for Synergy', 1)
-item.add_interconnect(6, 'Synergy 20Gb Interconnect Link Module', 1)
-item.add_interconnect(3, 'Synergy 20Gb Interconnect Link Module', 2)
-item.add_interconnect(6, 'Virtual Connect SE 40Gb F8 Module for Synergy', 2)
+item.add_interconnect(3, 'Virtual Connect SE 40Gb F8 Module for Synergy', nil, 1)
+item.add_interconnect(6, 'Synergy 20Gb Interconnect Link Module', nil, 1)
+item.add_interconnect(3, 'Synergy 20Gb Interconnect Link Module', nil, 2)
+item.add_interconnect(6, 'Virtual Connect SE 40Gb F8 Module for Synergy', nil, 2)
 
 # Adds a new Ethernet / Tagged network
 network01_options = {
@@ -38,8 +38,8 @@ network01_options = {
   smartLink: false,
   privateNetwork: false
 }
-network01 = OneviewSDK::API300::EthernetNetwork.new(c, network01_options)
-network01.create
+network01 = OneviewSDK::API300::EthernetNetwork.new(@client, network01_options)
+network01.create!
 
 # Adds Uplink Set
 upset01_options = {
@@ -52,17 +52,17 @@ upset01 = OneviewSDK::API300::LIGUplinkSet.new(@client, upset01_options)
 upset01.add_uplink(3, 'Q1', 'Virtual Connect SE 40Gb F8 Module for Synergy', 1)
 upset01.add_uplink(6, 'Q1', 'Virtual Connect SE 40Gb F8 Module for Synergy', 2)
 
-# Adds netowork 'Management' to the Uplink Set
+# Adds network 'Management' to the Uplink Set
 upset01.add_network(network01)
 
 # Adds Uplink set to the LIG
-item.add_uplink(upset01)
+item.add_uplink_set(upset01)
 
 # Creates the LIG
 item.create
 
 # Lists all LIGs in the Appliance
-OneviewSDK::API300::Synergy::LogicalInterconnectGroup.each do |lig|
+OneviewSDK::API300::Synergy::LogicalInterconnectGroup.get_all(@client).each do |lig|
   puts "Name: #{lig['name']}\nURI: #{lig['uri']}"
 end
 
