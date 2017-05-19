@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,8 +11,10 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::LogicalDownlink
+klass = OneviewSDK::API500::C7000::Switch
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  include_examples 'LogicalDownlinkCreateExample', 'integration api300 context', true
+  let(:current_client) { $client_500 }
+  let(:item) { described_class.find_by(current_client, name: $secrets['logical_switch1_ip']).first }
+
+  include_examples 'SwitchCreateExample', 'integration api500 context', true
 end

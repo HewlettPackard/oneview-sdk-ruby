@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::LogicalDownlink
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  include_examples 'LogicalDownlinkCreateExample', 'integration api300 context', true
+klass = OneviewSDK::API500::C7000::Switch
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  let(:current_client) { $client_500 }
+  include_examples 'SwitchDeleteExample', 'integration api500 context'
 end
