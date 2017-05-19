@@ -260,27 +260,25 @@ puts "\nApplies or re-applies the logical interconnect configuration to all mana
 item.configuration
 puts "\nConfiguration Applied with successfully"
 
-# only for API300 and API500
-# In these lines below is added, replaced and removed a scopeUri to the switch resource.
-# A scope defines a collection of resources, which might be used for filtering or access control.
-# When a scope uri is added to a logical interconnect resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
+# This section illustrates scope usage with the Logical Interconnect. Supported for API versions higher than or equal to 300.
+# When a scope uri is added to a logical interconnect, the logical interconnect is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
-# For the logical interconnect resource, this feature is only available for api version higher than or equal to 300.
-puts "\nOperations with scope."
+puts "\nOperations with scopes"
 begin
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+  # Scope class used in this sample
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
   # Creating scopes for this example
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
   scope_2 = scope_class.new(@client, name: 'Scope 2')
   scope_2.create!
 
-  puts "\nAdding scopes to logical interconnect"
+  puts "\nAdding scopes to the logical interconnect"
   item.add_scope(scope_1)
   item.refresh
   puts 'Scopes:', item['scopeUris']
 
-  puts "\nReplacing scopes inside of the logical interconnect"
+  puts "\nReplacing scopes inside the logical interconnec"
   item.replace_scopes(scope_2)
   item.refresh
   puts 'Scopes:', item['scopeUris']
