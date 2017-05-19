@@ -117,9 +117,8 @@ puts "\nRefreshing the enclosure"
 item2.set_refresh_state('RefreshPending')
 puts "\nOperation applied successfully!"
 
-# In these lines below is added, replaced and removed a scopeUri to the enclosure resource.
-# A scope defines a collection of resources, which might be used for filtering or access control.
-# When a scope uri is added to a enclosure resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
+# This section illustrates scope usage with the enclosure. Supported for API versions higher than or equal to 300.
+# When a scope uri is added to a enclosure, the enclosure is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
 puts "\nOperations with scope."
 begin
@@ -157,6 +156,10 @@ end
 
 # Removes an enclosure
 # NOTE: to remove Enclosures on Synergy requires them to be physically removed first
-puts "\nRemoving an #{type} with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
-item2.remove
-puts "\n#{type} was removed successfully!"
+puts "\nRemoving an enclosure with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
+begin
+  item2.remove
+  puts "\n#{type} was removed successfully!"
+rescue OneviewSDK::TaskError
+  puts "\nError: Enclosures on Synergy requires them to be physically removed first."
+end

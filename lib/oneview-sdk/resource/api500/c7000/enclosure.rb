@@ -29,7 +29,7 @@ module OneviewSDK
         end
 
         # Updates the name and rackName (and it uses PATCH).
-        # Overrides because is necessary to return the current state of the object.
+        # Override in order to return the current state of the object.
         # @param [Hash] attributes attributes to be updated
         # @return [OneviewSDK::Enclosure] self
         def update(attributes = {})
