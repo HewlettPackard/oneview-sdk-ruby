@@ -253,65 +253,65 @@ RSpec.shared_examples 'LogicalInterconnectUpdateExample' do |context_name|
   end
 
   # NOTE: This action requires a firmware image to be specified
-  # describe 'Firmware Updates' do
-  #   it 'will assure the firmware is present' do
-  #     firmware_name = firmware_path.split('/').last
-  #     firmware = firmware_driver_class.new(current_client, name: firmware_name)
-  #     firmware.retrieve!
-  #   end
-  #
-  #   context 'perform the actions' do
-  #     it 'Stage' do
-  #       log_int.retrieve!
-  #       firmware_name = firmware_path.split('/').last
-  #       firmware = firmware_driver_class.new(current_client, name: firmware_name)
-  #       firmware.retrieve!
-  #       firmware_opt = log_int.get_firmware
-  #       firmware_opt['ethernetActivationDelay'] = 7
-  #       firmware_opt['ethernetActivationType'] = 'OddEven'
-  #       firmware_opt['fcActivationDelay'] = 7
-  #       firmware_opt['fcActivationType'] = 'Serial'
-  #       firmware_opt['force'] = true
-  #       expect { log_int.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
-  #     end
-  #
-  #   end
-  # end
+  describe 'Firmware Updates' do
+    xit 'will assure the firmware is present - This action requires a firmware image to be specified' do
+      firmware_name = firmware_path.split('/').last
+      firmware = firmware_driver_class.new(current_client, name: firmware_name)
+      firmware.retrieve!
+    end
+
+    context 'perform the actions - This action requires a firmware image to be specified' do
+      xit 'Stage' do
+        log_int.retrieve!
+        firmware_name = firmware_path.split('/').last
+        firmware = firmware_driver_class.new(current_client, name: firmware_name)
+        firmware.retrieve!
+        firmware_opt = log_int.get_firmware
+        firmware_opt['ethernetActivationDelay'] = 7
+        firmware_opt['ethernetActivationType'] = 'OddEven'
+        firmware_opt['fcActivationDelay'] = 7
+        firmware_opt['fcActivationType'] = 'Serial'
+        firmware_opt['force'] = true
+        expect { log_int.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
+      end
+
+    end
+  end
 
   # ATTENTION: REAL HARDWARE ONLY
-  # describe 'Manipulating interconnects' do
-  #
-  #   def interconnect_find(bay_number, enclosure)
-  #     log_int.retrieve!
-  #     enclosure_match = true
-  #     bay_match = false
-  #     log_int['interconnectMap']['interconnectMapEntries'].each do |interconnect|
-  #       interconnect['location']['locationEntries'].each do |entry|OneviewSDK::API300::C7000::API300::C7000::
-  #         enclosure_match = true if ((enclosure['uri'] == entry['value']) && (entry['type'] == 'Enclosure'))
-  #         bay_match = true if ((bay_number.to_s == entry['value']) && (entry['type'] == 'Bay'))
-  #       end
-  #       return true if (enclosure_match && bay_match)
-  #     end
-  #     false
-  #   end
-  #
-  #   it '#create the Interconnect in bay 2' do
-  #     enclosure.retrieve!
-  #     expect { log_int.create(2, enclosure) }.to_not raise_error
-  #     expect(interconnect_find(2, enclosure)).to eq(true)
-  #   end
-  #
-  #   # This example will fail if the interconnect is associated with the LIG
-  #   it '#create, #delete and #create the Interconnect in bay 2' do
-  #     enclosure.retrieve!
-  #     expect { log_int.create(2, enclosure) }.to_not raise_error
-  #     expect(interconnect_find(2, enclosure)).to eq(true)
-  #
-  #     expect { log_int.delete(2, enclosure) }.to_not raise_error
-  #     expect(interconnect_find(2, enclosure)).to eq(false)
-  #
-  #     expect { log_int.create(2, enclosure) }.to_not raise_error
-  #     expect(interconnect_find(2, enclosure)).to eq(true)
-  #   end
-  # end
+  describe 'Manipulating interconnects' do
+
+    def interconnect_find(bay_number, enclosure)
+      log_int.retrieve!
+      enclosure_match = true
+      bay_match = false
+      log_int['interconnectMap']['interconnectMapEntries'].each do |interconnect|
+        interconnect['location']['locationEntries'].each do |entry|
+          enclosure_match = true if enclosure['uri'] == entry['value'] && entry['type'] == 'Enclosure'
+          bay_match = true if bay_number.to_s == entry['value'] && entry['type'] == 'Bay'
+        end
+        return true if enclosure_match && bay_match
+      end
+      false
+    end
+
+    xit '#create the Interconnect in bay 2 - Test with real hardware only' do
+      enclosure.retrieve!
+      expect { log_int.create(2, enclosure) }.to_not raise_error
+      expect(interconnect_find(2, enclosure)).to eq(true)
+    end
+
+    # This example will fail if the interconnect is associated with the LIG
+    xit '#create, #delete and #create the Interconnect in bay 2 - Test with real hardware only' do
+      enclosure.retrieve!
+      expect { log_int.create(2, enclosure) }.to_not raise_error
+      expect(interconnect_find(2, enclosure)).to eq(true)
+
+      expect { log_int.delete(2, enclosure) }.to_not raise_error
+      expect(interconnect_find(2, enclosure)).to eq(false)
+
+      expect { log_int.create(2, enclosure) }.to_not raise_error
+      expect(interconnect_find(2, enclosure)).to eq(true)
+    end
+  end
 end
