@@ -51,45 +51,44 @@ RSpec.shared_examples 'SASLogicalInterconnectUpdateExample' do |context_name|
   end
 
   # NOTE: This action requires an unused drive enclosure to be swapped in with the one in use
-  # describe '#replace_drive_enclosure' do
-  #   it 'updates the drive enclosure to the correct one after it was physically changed' do
-  #     item.retrieve!
-  #     expect { item.replace_drive_enclosure(DRIVE_ENCL1_SERIAL, DRIVE_ENCL1_SERIAL_UPDATED) }.to_not raise_error
-  #   end
-  # end
+  describe '#replace_drive_enclosure' do
+    xit 'updates the drive enclosure to the correct one after it was physically changed' do
+      item.retrieve!
+      expect { item.replace_drive_enclosure(DRIVE_ENCL1_SERIAL, DRIVE_ENCL1_SERIAL_UPDATED) }.to_not raise_error
+    end
+  end
 
   # NOTE: This action requires a firmware image to be specified
-  # describe 'Firmware Updates' do
-  #   it 'will assure the firmware is present' do
-  #     firmware_name = firmware_path.split('/').last
-  #     firmware = OneviewSDK::FirmwareDriver.new(current_client, name: firmware_name)
-  #     firmware.retrieve!
-  #   end
-  #
-  #   it 'will retrieve the firmware options' do
-  #     firmware_name = firmware_path.split('/').last
-  #     firmware = OneviewSDK::FirmwareDriver.new(current_client, name: firmware_name)
-  #     firmware.retrieve!
-  #     item.retrieve!
-  #     firmware_opt = item.get_firmware
-  #     expect(firmware_opt).to be
-  #     expect(firmware_opt['ethernetActivationDelay']).to be
-  #     expect(firmware_opt['ethernetActivationType']).to be
-  #     expect(firmware_opt['fcActivationDelay']).to be
-  #     expect(firmware_opt['fcActivationType']).to be
-  #   end
-  #
-  #   context 'perform the actions' do
-  #     it 'Stage' do
-  #       item.retrieve!
-  #       firmware_name = firmware_path.split('/').last
-  #       firmware = OneviewSDK::FirmwareDriver.new(current_client, name: firmware_name)
-  #       firmware.retrieve!
-  #       firmware_opt = item.get_firmware
-  #       firmware_opt['force'] = true
-  #       expect { item.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
-  #     end
-  #   end
-  # end
+  describe 'Firmware Updates' do
+    xit 'will assure the firmware is present' do
+      firmware_name = firmware_path.split('/').last
+      firmware = firmware_driver_class.new(current_client, name: firmware_name)
+      firmware.retrieve!
+    end
 
+    xit 'will retrieve the firmware options' do
+      firmware_name = firmware_path.split('/').last
+      firmware = firmware_driver_class.new(current_client, name: firmware_name)
+      firmware.retrieve!
+      item.retrieve!
+      firmware_opt = item.get_firmware
+      expect(firmware_opt).to be
+      expect(firmware_opt['ethernetActivationDelay']).to be
+      expect(firmware_opt['ethernetActivationType']).to be
+      expect(firmware_opt['fcActivationDelay']).to be
+      expect(firmware_opt['fcActivationType']).to be
+    end
+
+    context 'perform the actions' do
+      xit 'Stage' do
+        item.retrieve!
+        firmware_name = firmware_path.split('/').last
+        firmware = firmware_driver_class.new(current_client, name: firmware_name)
+        firmware.retrieve!
+        firmware_opt = item.get_firmware
+        firmware_opt['force'] = true
+        expect { item.firmware_update('Stage', firmware, firmware_opt) }.to_not raise_error
+      end
+    end
+  end
 end
