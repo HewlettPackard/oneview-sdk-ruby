@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,12 +11,12 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::ManagedSAN
-RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  let(:current_client) { $client }
-  let(:san_manager_ip) { $secrets['san_manager_ip'] }
-  let(:fc_network_class) { OneviewSDK::FCNetwork }
-  let(:fcoe_network_class) { OneviewSDK::FCoENetwork }
+klass = OneviewSDK::API500::Synergy::ManagedSAN
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  let(:san_manager_ip) { $secrets_synergy['san_manager_ip'] }
+  let(:fc_network_class) { OneviewSDK::API500::Synergy::FCNetwork }
+  let(:fcoe_network_class) { OneviewSDK::API500::Synergy::FCoENetwork }
 
-  include_examples 'ManagedSANDeleteExample', 'integration context'
+  include_examples 'ManagedSANCreateExample', 'integration api500 context'
 end
