@@ -9,25 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/logical_downlink'
+require_relative '../c7000/logical_downlink'
 
 module OneviewSDK
   module API300
     module Synergy
       # Logical downlink resource implementation for API300 Synergy
-      class LogicalDownlink < OneviewSDK::API200::LogicalDownlink
-
-        # Method is not available
-        # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def self.get_without_ethernet(*)
-          raise MethodUnavailable, 'The method #self.get_without_ethernet is unavailable for this resource'
-        end
-
-        # Method is not available
-        # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def get_without_ethernet(*)
-          unavailable_method
-        end
+      class LogicalDownlink < OneviewSDK::API300::C7000::LogicalDownlink
       end
     end
   end
