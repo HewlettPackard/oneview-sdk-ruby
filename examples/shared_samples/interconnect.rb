@@ -19,7 +19,7 @@ require_relative '../_client' # Gives access to @client
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Interconnect'
-# api_version = 300 & variant = C7000 to interconnect_class'
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Interconnect'
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Interconnect'
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Interconnect'
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Interconnect'
