@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
-# - 230, 500 both api versions only for Synergy
+# - 200, 500 Synergy only
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::SASInterconnect
