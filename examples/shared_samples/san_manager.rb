@@ -84,7 +84,7 @@ connection_info = if variant == 'Synergy'
                   end
 
 # Setting the provider value according to the variant
-# This example is using 'Cisco' for Synergy and 'Brocade Network Advisor' for C7000
+puts "\nThis example is using a provider 'Cisco' for Synergy and 'Brocade Network Advisor' for C7000."
 provider = variant == 'Synergy' ? 'Cisco' : 'Brocade Network Advisor'
 
 # Add a SAN Manager
@@ -94,20 +94,20 @@ item['providerDisplayName'] = provider
 item['connectionInfo'] = connection_info
 
 item.add
-puts "SAN Manager #{item['name']} added sucessfully with uri='#{item['uri']}'."
+puts "\nSAN Manager #{item['name']} added sucessfully. URI: '#{item['uri']}'."
 
 # Updates SAN Manager
 item.retrieve!
-puts "Updating a SAN Manager #{item['name']}"
+puts "\nUpdating a SAN Manager #{item['name']}"
 item.update(refreshState: 'RefreshPending')
-puts "SAN Manager #{item['name']} updated successfully."
+puts "\nSAN Manager #{item['name']} updated successfully."
 
 # Print default connection info for SAN Manager
 default_info = san_manager_class.get_default_connection_info(@client, provider)
-puts 'SAN Manager connection info:'
+puts "\nSAN Manager connection info:"
 default_info.each { |property| puts "* #{property['name']} - #{property['value']}" }
 
 # Removes SAN Manager
 puts "\nRemoving the SAN Manager"
 item.remove
-puts "- SAN Manager #{item['name']} was removed sucessfully."
+puts "\nSAN Manager #{item['name']} removed sucessfully."
