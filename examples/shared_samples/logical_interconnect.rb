@@ -260,7 +260,7 @@ puts "\nApplies or re-applies the logical interconnect configuration to all mana
 item.configuration
 puts "\nConfiguration Applied with successfully"
 
-# This section illustrates scope usage with the Logical Interconnect. Supported for API versions higher than or equal to 300.
+# This section illustrates scope usage with the Logical Interconnect. Supported in API 300 and onwards.
 # When a scope uri is added to a logical interconnect, the logical interconnect is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
 puts "\nOperations with scopes"
