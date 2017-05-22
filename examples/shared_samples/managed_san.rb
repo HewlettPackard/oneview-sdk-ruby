@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Example: Actions with Managed SAN
-# NOTE: You'll need to have A Managed SAN added.
+# NOTE: You'll need to have a Managed SAN added.
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #  @san_manager_ip (hostname or IP address)
 #
@@ -21,7 +21,7 @@ require_relative '../_client' # Gives access to @client
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ManagedSAN
-# api_version = 300 & variant = C7000 to managed_san_class
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::ManagedSAN
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ManagedSAN
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ManagedSAN
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ManagedSAN
@@ -35,8 +35,7 @@ managed_san_class.find_by(@client, deviceManagerName: @san_manager_ip).each do |
   puts "- #{san['name']}"
 end
 
-# Creates FC Network with a managed SAN
-puts "\nCreating the FC Network with a managed SAN"
+puts "\nCreating a FC Network with a managed SAN"
 item = managed_san_class.find_by(@client, deviceManagerName: @san_manager_ip, isExpectedFc: true).first
 options = {
   connectionTemplateUri: nil,
@@ -49,8 +48,7 @@ options = {
 fc_network_class = OneviewSDK.resource_named('FCNetwork', @client.api_version)
 fc_network = fc_network_class.new(@client, options)
 fc_network.create!
-fc_network.retrieve!
-puts "\nFC Network with name = #{fc_network['name']} and managed SAN uri = #{fc_network['managedSanUri']}"
+puts "\nCreated FC Network with name = #{fc_network['name']} and managed SAN uri = #{fc_network['managedSanUri']}"
 
 # sleep to make sure the timing until the SAN is 'managed' isn't off
 sleep(20)
@@ -84,7 +82,7 @@ begin
   item.set_public_attributes(attributes)
   puts "\nPublic attributes updated successfully."
 rescue OneviewSDK::MethodUnavailable => e
-  puts "\n#{e}. This method is available only for api version 200 and api version greather than or equal to 500."
+  puts "\n#{e}: Method available for: API 200 & API 500 onwards - Only."
 end
 
 # Gets endpoints
@@ -99,7 +97,7 @@ begin
 
   managed_san_class.get_wwn(@client, wwn).each { |san| puts "\n Found the following SAN associated with the WWN informed:\n #{san}" }
 rescue NoMethodError
-  puts "\nThis #get_wwn method is available only for api version greather than or equal to 300."
+  puts "\nThe method #get_wwn is available from API 300 onwards."
 end
 
 # Clean up
