@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,10 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'spec_helper'
+RSpec.shared_examples 'InterconnectDeleteExample' do |context_name|
+  include_context context_name
 
-klass = OneviewSDK::API300::C7000::Interconnect
-RSpec.describe klass, integration: true, type: DELETE do
-  let(:current_client) { $client_300 }
-  include_examples 'InterconnectDeleteExample', 'integration api300 context'
+  describe '#delete' do
+    it 'raises MethodUnavailable' do
+      item = described_class.new(current_client)
+      expect { item.delete }.to raise_error(OneviewSDK::MethodUnavailable, /The method #delete is unavailable for this resource/)
+    end
+  end
 end

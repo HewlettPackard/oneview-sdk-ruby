@@ -13,46 +13,9 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::Interconnect
 RSpec.describe klass, integration: true, type: CREATE do
-  include_context 'integration api300 context'
-
-  let(:interconnect) { klass.find_by($client_300, name: 'Encl1, interconnect 1').first }
+  let(:current_client) { $client_300 }
+  let(:interconnect_name) { INTERCONNECT_2_NAME }
   let(:interconnect_type) { 'HP VC FlexFabric-20/40 F8 Module' }
 
-  describe '#create' do
-    it 'raises MethodUnavailable' do
-      item = klass.new($client_300)
-      expect { item.create }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create is unavailable for this resource/)
-    end
-  end
-
-  describe '#name_servers' do
-    it 'retrieves name servers' do
-      expect { interconnect.name_servers }.not_to raise_error
-    end
-  end
-
-  describe '#statistics' do
-    it 'gets statistics' do
-      expect { interconnect.statistics }.not_to raise_error
-    end
-
-    it 'gets statistics for a specific port' do
-      port = interconnect[:ports].first
-      expect { interconnect.statistics(port['name']) }.not_to raise_error
-    end
-  end
-
-  describe '#get_types' do
-    it 'retrieves interconnect types' do
-      expect { klass.get_types($client_300) }.not_to raise_error
-    end
-  end
-
-  describe '#get_type' do
-    it 'retrieves the interconnect type with name' do
-      interconnect_type_found = {}
-      expect { interconnect_type_found = klass.get_type($client_300, interconnect_type) }.not_to raise_error
-      expect(interconnect_type_found['name']).to eq(interconnect_type)
-    end
-  end
+  include_examples 'InterconnectCreateExample', 'integration api300 context'
 end

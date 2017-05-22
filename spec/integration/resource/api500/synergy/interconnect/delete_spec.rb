@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::Interconnect
+klass = OneviewSDK::API500::Synergy::Interconnect
 RSpec.describe klass, integration: true, type: DELETE do
-  let(:current_client) { $client_300 }
-  include_examples 'InterconnectDeleteExample', 'integration api300 context'
+  let(:current_client) { $client_500_synergy }
+  include_examples 'InterconnectDeleteExample', 'integration api500 context'
 end
