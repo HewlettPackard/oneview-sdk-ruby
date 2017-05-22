@@ -44,14 +44,14 @@ module OneviewSDK
       # @param [String] interconnect model name
       # @param [Fixnum] enclosure number for multi-frame configurations
       def add_uplink(bay, port, type = nil, enclosure_index = 1)
-        enclosure_index = type && type.include?('Virtual Connect SE 16Gb FC Module') ? -1 : enclosure_index
-        port =
-          if type
-            fetch_relative_value_of(port, type)
-          else
-            # Detect Integer port: for example 67 or '67'
-            port.to_s == port.to_i.to_s ? port.to_i : relative_value_of(port)
-          end
+        enclosure_index = type && type.include?('Virtual Connect SE 16Gb FC Module for Synergy') ? -1 : enclosure_index
+        port = if type
+                 fetch_relative_value_of(port, type)
+               else
+                 # Detect Integer port: for example 67 or '67'
+                 port.to_s == port.to_i.to_s ? port.to_i : relative_value_of(port)
+               end
+
         entry = {
           'desiredSpeed' => 'Auto',
           'logicalLocation' => {
