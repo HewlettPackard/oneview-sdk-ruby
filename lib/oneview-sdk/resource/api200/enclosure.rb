@@ -75,14 +75,10 @@ module OneviewSDK
         ensure_client && ensure_uri
         cur_state = self.class.find_by(@client, uri: @data['uri']).first
         unless cur_state[:name] == @data['name']
-          temp_data = [{ op: 'replace', path: '/name', value: @data['name'] }]
-          response = @client.rest_patch(@data['uri'], { 'body' => temp_data }, @api_version)
-          @client.response_handler(response)
+          patch('replace', '/name', @data['name'])
         end
         unless cur_state[:rackName] == @data['rackName']
-          temp_data = [{ op: 'replace', path: '/rackName', value: @data['rackName'] }]
-          response = @client.rest_patch(@data['uri'], { 'body' => temp_data }, @api_version)
-          @client.response_handler(response)
+          patch('replace', '/rackName', @data['rackName'])
         end
         self
       end

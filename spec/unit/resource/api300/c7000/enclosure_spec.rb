@@ -82,7 +82,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     it 'updates the server name with the local name' do
       expect(OneviewSDK::API300::C7000::Enclosure).to receive(:find_by).with(@client_300, uri: @item['uri']).and_return([@item2])
       expect(@client_300).to receive(:rest_patch)
-        .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/name', value: @item['name'] }] }, @item.api_version)
+        .with(@item['uri'], { 'body' => [{ 'op' => 'replace', 'path' => '/name', 'value' => @item['name'] }] }, @item.api_version)
         .and_return(FakeResponse.new)
       @item.update
     end
@@ -90,7 +90,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     it 'updates the server rackName with the local rackName' do
       expect(OneviewSDK::API300::C7000::Enclosure).to receive(:find_by).with(@client_300, uri: @item['uri']).and_return([@item3])
       expect(@client_300).to receive(:rest_patch)
-        .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/rackName', value: @item['rackName'] }] }, @item.api_version)
+        .with(@item['uri'], { 'body' => [{ 'op' => 'replace', 'path' => '/rackName', 'value' => @item['rackName'] }] }, @item.api_version)
         .and_return(FakeResponse.new)
       @item.update
     end
