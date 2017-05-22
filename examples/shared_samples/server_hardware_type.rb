@@ -24,9 +24,9 @@ require_relative '../_client' # Gives access to @client
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ServerHardwareType
 
 # Resource Class used in this sample
-sht_class = OneviewSDK.resource_named('ServerHardwareType', @client.api_version)
+shw_type_class = OneviewSDK.resource_named('ServerHardwareType', @client.api_version)
 
-sh_class = OneviewSDK.resource_named('ServerHardware', @client.api_version)
+shw_class = OneviewSDK.resource_named('ServerHardware', @client.api_version)
 
 def print_server_hardware_type(item)
   puts "\n-- Server hardware type --",
@@ -38,11 +38,9 @@ end
 
 server_hardware = nil
 item = nil
-# Get variant with example_helper method defined in _client.rb
-variant = example_helper
 
 # It is possible to create a server hardware type with a server hardware only for C7000.
-if variant == 'C7000'
+begin
   puts "\nCreating server hardware type by the creation of server hardware."
 
   options_server_hardware = {
@@ -53,22 +51,24 @@ if variant == 'C7000'
     licensingIntent: 'OneView'
   }
 
-  server_hardware = sh_class.new(@client, options_server_hardware)
+  server_hardware = shw_class.new(@client, options_server_hardware)
   server_hardware.add
   # retrieving server hardware type
-  item = sht_class.new(@client, uri: server_hardware['serverHardwareTypeUri'])
+  item = shw_type_class.new(@client, uri: server_hardware['serverHardwareTypeUri'])
   item.retrieve!
   print_server_hardware_type(item)
+rescue OneviewSDK::RequestError
+  puts "\nIt's possible to create a server hardware type with a server hardware for C7000 only."
 end
 
 # List all server hardware types
-list = sht_class.get_all(@client)
+list = shw_type_class.get_all(@client)
 puts "\n#Listing all:"
 list.each { |p| puts "  #{p[:name]}" }
 
 item ||= list.first
 
-puts "\nUpdating name and description of SHT with name = '#{item['name']}' and description = name = '#{item['description']}'."
+puts "\nUpdating name and description of server hardware type with name = '#{item['name']}' and description = name = '#{item['description']}'."
 old_name = item['name']
 old_description = item['description'] || ''
 new_name = "#{old_name}_Updated"
@@ -80,11 +80,13 @@ print_server_hardware_type(item)
 puts "\nReturning to original state"
 item.update(name: old_name, description: old_description)
 item.retrieve!
-puts "\nServer hardware returned to original state!"
+puts "\nServer hardware type returned to original state!"
 print_server_hardware_type(item)
 
-server_hardware.remove if variant == 'C7000'
-
-puts "\nRemoving resource."
-item.remove
-puts "\nSucessfully removed."
+# Removes a server hardware type if it is added through a server hardware
+if server_hardware['uri']
+  server_hardware.remove if server_hardware
+  puts "\nAttempting removal of resource."
+  item.remove
+  puts "\nSucessfully removed."
+end
