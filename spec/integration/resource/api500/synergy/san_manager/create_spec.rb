@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,11 +11,11 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Synergy::SANManager
-RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_300_synergy }
-  let(:san_manager_ip) { $secrets_synergy['san_manager_ip'] }
+klass = OneviewSDK::API500::Synergy::SANManager
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  let(:provider_name) { SAN_PROVIDER2_NAME }
 
   include_examples 'ConnectionInfoSynergy'
-  include_examples 'SANManagerUpdateExample', 'integration api300 context'
+  include_examples 'SANManagerCreateExample', 'integration api500 context'
 end
