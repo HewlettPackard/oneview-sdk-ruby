@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -12,15 +12,33 @@
 require_relative '../_client' # Gives access to @client
 
 # Example: Explores functionalities of Logical Interconnects
+#
+# Supported APIs:
+# - 200, 300, 500
+
+# Resources that can be created according to parameters:
+# api_version = 200 & variant = any to OneviewSDK::API200::LogicalInterconnect
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalInterconnect
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::LogicalInterconnect
+# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalInterconnect
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalInterconnect
+
+# Resource Class used in this sample
+logical_interconnect_class = OneviewSDK.resource_named('LogicalInterconnect', @client.api_version)
+
+# EthernetNetwork class used in this sample
+ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
+# Interconnect class used in this sample
+interconnect_class = OneviewSDK.resource_named('Interconnect', @client.api_version)
 
 # Finding a logical interconnect
-items = OneviewSDK::LogicalInterconnect.find_by(@client, {})
+items = logical_interconnect_class.find_by(@client, {})
 puts "\nListing all interconnects."
 items.each do |li|
   puts "\nLogical interconnect #{li['name']} was found."
 end
 
-item = OneviewSDK::LogicalInterconnect.find_by(@client, {}).first
+item = logical_interconnect_class.find_by(@client, {}).first
 # # Listing internal networks
 puts "\nListing internal networks of the logical  interconnect with name: #{item['name']}"
 networks = item.list_vlan_networks
@@ -38,10 +56,9 @@ li_et01_options = {
   name:  'li_et01',
   smartLink:  false,
   privateNetwork:  false,
-  connectionTemplateUri: nil,
-  type:  'ethernet-networkV3'
+  connectionTemplateUri: nil
 }
-et01 = OneviewSDK::EthernetNetwork.new(@client, li_et01_options)
+et01 = ethernet_class.new(@client, li_et01_options)
 et01.create!
 
 li_et02_options = {
@@ -50,10 +67,9 @@ li_et02_options = {
   name:  'li_et02',
   smartLink:  false,
   privateNetwork:  false,
-  connectionTemplateUri: nil,
-  type:  'ethernet-networkV3'
+  connectionTemplateUri: nil
 }
-et02 = OneviewSDK::EthernetNetwork.new(@client, li_et02_options)
+et02 = ethernet_class.new(@client, li_et02_options)
 et02.create!
 
 puts "\nUpdating internal networks"
@@ -135,11 +151,12 @@ puts "\nPort monitor current:"
 puts "\n#{item['portMonitor']}"
 puts "\nUpdate Port Monitor"
 # Get port and downlink for port monitor
-interconnect = OneviewSDK::Interconnect.find_by(@client, uri: item['interconnects'].first).first
+port = ports.first
+interconnect = interconnect_class.find_by(@client, name: port['interconnectName']).first
 downlinks = interconnect['ports'].select { |k| k['portType'] == 'Downlink' }
 options = {
   'analyzerPort' => {
-    'portUri' => ports.first['uri'],
+    'portUri' => port['uri'],
     'portMonitorConfigInfo' => 'AnalyzerPort'
   },
   'enablePortMonitor' => true,
@@ -182,14 +199,20 @@ item.retrieve!
 puts "\nQoS configuration original:"
 puts "\n #{item['qosConfiguration']}"
 
+puts "\nGets the installed firmware for a logical interconnect"
+firmware_opt = item.get_firmware
+puts "\nThe firmware installed on logical interconnect #{item['name']}:"
+puts firmware_opt.inspect
+
 puts "\nTelemetry Configuration"
 puts "\nTelemetry configuration current:"
 puts "\n#{item['telemetryConfiguration']}"
 
 sample_count_bkp = item['telemetryConfiguration']['sampleCount']
 sample_interval_bkp = item['telemetryConfiguration']['sampleInterval']
-item['telemetryConfiguration']['sampleCount'] = 20
-item['telemetryConfiguration']['sampleInterval'] = 200
+device_type = firmware_opt['interconnects'].first['deviceType']
+item['telemetryConfiguration']['sampleCount'] = device_type.include?('Virtual Connect SE 16Gb FC Module') ? 24 : 20
+item['telemetryConfiguration']['sampleInterval'] = device_type.include?('Virtual Connect SE 16Gb FC Module') ? 3600 : 200
 puts "\nUpdating the telemetry configuration"
 item.update_telemetry_configuration
 item.retrieve!
@@ -236,7 +259,39 @@ item.retrieve!
 puts "\nApplies or re-applies the logical interconnect configuration to all managed interconnects"
 item.configuration
 puts "\nConfiguration Applied with successfully"
-puts "\nGets the installed firmware for a logical interconnect"
-firmware_opt = item.get_firmware
-puts "\nThe firmware installed on logical interconnect #{item['name']}:"
-puts firmware_opt.inspect
+
+# This section illustrates scope usage with the Logical Interconnect. Supported in API 300 and onwards.
+# When a scope uri is added to a logical interconnect, the logical interconnect is grouped into a resource pool.
+# Once grouped, with the scope it's possible to restrict an operation or action.
+puts "\nOperations with scopes"
+begin
+  # Scope class used in this sample
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
+  # Creating scopes for this example
+  scope_1 = scope_class.new(@client, name: 'Scope 1')
+  scope_1.create!
+  scope_2 = scope_class.new(@client, name: 'Scope 2')
+  scope_2.create!
+
+  puts "\nAdding scopes to the logical interconnect"
+  item.add_scope(scope_1)
+  item.refresh
+  puts 'Scopes:', item['scopeUris']
+
+  puts "\nReplacing scopes inside the logical interconnec"
+  item.replace_scopes(scope_2)
+  item.refresh
+  puts 'Scopes:', item['scopeUris']
+
+  puts "\nRemoving scopes from the logical interconnect"
+  item.remove_scope(scope_1)
+  item.remove_scope(scope_2)
+  item.refresh
+  puts 'Scopes:', item['scopeUris']
+
+  # Clear data
+  scope_1.delete
+  scope_2.delete
+rescue NoMethodError
+  puts "\nScope operations is not supported in this version."
+end
