@@ -19,7 +19,6 @@ require 'pry'
 # Variants supported[C7000, Synergy]
 # OneviewSDK::API<version>.variant='Synergy'
 
-
 puts "Connected to OneView appliance at #{@client.url}\n\n"
 
 
