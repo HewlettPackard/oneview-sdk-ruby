@@ -61,7 +61,7 @@ RSpec.shared_examples 'DatacenterCreateExample' do |context_name|
       rack = rack_class.find_by(current_client, name: RACK1_NAME).first
 
       item = described_class.new(current_client, options)
-      item.add_rack(rack, 1000, 1000, rotation = 0)
+      item.add_rack(rack, 1000, 1000)
       item.add
       expect(item['uri']).not_to be_empty
       expect(item['contents'].first['resourceUri']).to eq(rack['uri'])
