@@ -44,8 +44,10 @@ item2.add_rack(rack, 1000, 1000, 0)
 item2.add
 puts "\nDatacenter #{item2['name']} added successfully. \nURI='#{item2['uri']}' \nRack URI='#{item2['contents'].first['resourceUri']}'"
 
+puts "\nGetting a list of visual content objects describing each rack within the datacenter"
+puts item2.get_visual_content
+
 puts "\nRemoving a rack of the datacenter"
-rack = rack_class.get_all(@client).first
 item2.remove_rack(rack)
 item2.update
 puts "\nRack removed of the datacenter successfully."
@@ -54,9 +56,6 @@ puts "\nListing all datacenters"
 datacenter_class.get_all(@client).each do |datacenter|
   puts "\n#{datacenter['name']}"
 end
-
-puts "\nGetting a list of visual content objects describing each rack within the data center"
-puts item2.get_visual_content
 
 puts "\nFinding a datacenter by name = #{datacenter_name}"
 item3 = datacenter_class.find_by(@client, name:  'OneViewSDK Test Datacenter').first
