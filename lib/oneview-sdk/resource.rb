@@ -72,6 +72,23 @@ module OneviewSDK
       false
     end
 
+    # Merges the first hash data structure with the second
+    # @note both arguments should be a Ruby Hash object.
+    #       The second hash should have strings as a keys.
+    #       This method will change the second argument.
+    # @raise [StandardError] if the arguments, or one them, is not a Hash object
+    def deep_merge!(other_data, target_data = @data)
+      raise 'Both arguments should be a object Hash' if !other_data.is_a?(Hash) || !target_data.is_a?(Hash)
+      other_data.each do |key, value|
+        value_target = target_data[key.to_s]
+        if value_target.is_a?(Hash) && value.is_a?(Hash)
+          deep_merge!(value, value_target)
+        else
+          target_data[key.to_s] = value
+        end
+      end
+    end
+
     # Set the given hash of key-value pairs as resource data attributes
     # @param [Hash, Resource] params The options for this resource (key-value pairs or resource object)
     # @note All top-level keys will be converted to strings
