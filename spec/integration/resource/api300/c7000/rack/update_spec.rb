@@ -15,12 +15,5 @@ klass = OneviewSDK::API300::C7000::Rack
 RSpec.describe klass, integration: true, type: UPDATE do
   include_context 'integration api300 context'
 
-  describe '#update' do
-    it 'updates depth' do
-      item = klass.new($client_300, name: RACK1_NAME)
-      item.retrieve!
-      item.update(depth: 1300)
-      expect(item['depth']).to eq(1300)
-    end
-  end
+  include_examples 'RackUpdateExample', 'integration api300 context'
 end
