@@ -15,7 +15,7 @@ module OneviewSDK
   module API500
     module Synergy
       # Storage system resource implementation for API 500 Synergy
-      class StorageSystem < OneviewSDK::API300::Synergy::StorageSystem
+      class StorageSystem < OneviewSDK::API500::C7000::StorageSystem
       end
     end
   end
