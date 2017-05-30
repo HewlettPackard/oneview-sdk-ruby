@@ -9,13 +9,57 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/storage_pool'
+require_relative 'resource'
 
 module OneviewSDK
   module API500
     module C7000
       # Storage pool resource implementation for API500 C7000
-      class StoragePool < OneviewSDK::API300::C7000::StoragePool
+      class StoragePool < OneviewSDK::API500::C7000::Resource
+        BASE_URI = '/rest/storage-pools'.freeze
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          super
+          # Default values:
+          @data['type'] ||= 'StoragePoolV3'
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def create(*)
+          unavailable_method
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def delete(*)
+          unavailable_method
+        end
+
+        # Gets the storage pools that are connected on the specified networks based on the storage system port's expected network connectivity.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @return [Array<OneviewSDK::StoragePool>] the list of storage pools
+        def self.reachable(client)
+          uri = self::BASE_URI + '/reachable-storage-pools'
+          client.find_with_pagination(uri, {})
+        end
+
+        # To manage/unmanage a storage pool
+        # @param [Boolean] be_managed Set true to manage or false to unmanage
+        def manage(be_managed)
+          self['isManaged'] = be_managed
+          update
+        end
+
+        # To request a refresh of a storage pool
+        def request_refresh
+          self['requestingRefresh'] = true
+          update
+        end
       end
     end
   end
