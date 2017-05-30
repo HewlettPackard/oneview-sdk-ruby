@@ -78,7 +78,7 @@ module OneviewSDK
     #       This method will change the second argument.
     # @raise [StandardError] if the arguments, or one them, is not a Hash object
     def deep_merge!(other_data, target_data = @data)
-      raise 'Both arguments should be a object Hash' if !other_data.is_a?(Hash) || !target_data.is_a?(Hash)
+      raise 'Both arguments should be a object Hash' unless other_data.is_a?(Hash) && target_data.is_a?(Hash)
       other_data.each do |key, value|
         value_target = target_data[key.to_s]
         if value_target.is_a?(Hash) && value.is_a?(Hash)

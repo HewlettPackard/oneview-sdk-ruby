@@ -12,7 +12,7 @@ Metrics/ClassLength:
     - 'lib/oneview-sdk/resource.rb'
 
 Metrics/LineLength:
-  Max: 155
+  Max: 150
 
 Metrics/ModuleLength:
   Max: 150
