@@ -65,17 +65,11 @@ module OneviewSDK
         results.find { |switch_type| switch_type['name'] == name }
       end
 
-      # Get statistics for an interconnect, for the specified port or subport
+      # Get statistics for a switch or for the specified port.
       # @param [String] port_name port to retrieve statistics
-      # @param [String] subport_number subport to retrieve statistics
       # @return [Hash] Switch statistics
-      def statistics(port_name = nil, subport_number = nil)
-        uri = if subport_number
-                "#{@data['uri']}/statistics/#{port_name}/subport/#{subport_number}"
-              else
-                "#{@data['uri']}/statistics/#{port_name}"
-              end
-        response = @client.rest_get(uri)
+      def statistics(port_name = nil)
+        response = @client.rest_get("#{@data['uri']}/statistics/#{port_name}")
         response.body
       end
 

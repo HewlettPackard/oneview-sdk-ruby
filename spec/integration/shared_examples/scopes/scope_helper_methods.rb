@@ -22,7 +22,7 @@ RSpec.shared_examples 'ScopeHelperMethodsExample' do |scope_class|
 
     it 'should add scope' do
       expect { item.add_scope(scope_1) }.to_not raise_error
-      item.refresh
+      item.retrieve!
       expect(item['scopeUris']).to match_array([scope_1['uri']])
     end
   end
@@ -34,7 +34,7 @@ RSpec.shared_examples 'ScopeHelperMethodsExample' do |scope_class|
 
     it 'should replace the list of scopes' do
       expect { item.replace_scopes(scope_1, scope_2) }.to_not raise_error
-      item.refresh
+      item.retrieve!
       expect(item['scopeUris']).to match_array([scope_1['uri'], scope_2['uri']])
     end
   end
@@ -46,11 +46,11 @@ RSpec.shared_examples 'ScopeHelperMethodsExample' do |scope_class|
 
     it 'should remove scope' do
       expect { item.remove_scope(scope_2) }.to_not raise_error
-      item.refresh
+      item.retrieve!
       expect(item['scopeUris']).to match_array([scope_1['uri']]) # scope_2 was removed
 
       expect { item.remove_scope(scope_1) }.to_not raise_error
-      item.refresh
+      item.retrieve!
       expect(item['scopeUris']).to be_empty
     end
   end

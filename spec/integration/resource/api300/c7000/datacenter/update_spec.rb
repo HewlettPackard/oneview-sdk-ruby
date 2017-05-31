@@ -13,19 +13,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::Datacenter
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
-
-  before :each do
-    @item = klass.find_by($client_300, name: DATACENTER1_NAME).first
-  end
-
-  describe '#update' do
-    it 'Changes name' do
-      @item.update(name: DATACENTER1_NAME_UPDATED)
-      expect(@item[:name]).to eq(DATACENTER1_NAME_UPDATED)
-      @item.refresh
-      @item.update(name: DATACENTER1_NAME) # Put it back to normal
-      expect(@item[:name]).to eq(DATACENTER1_NAME)
-    end
-  end
+  let(:current_client) { $client_300 }
+  let(:rack_class) { OneviewSDK::API300::C7000::Rack }
+  include_examples 'DatacenterUpdateExample', 'integration api300 context'
 end

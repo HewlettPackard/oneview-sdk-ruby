@@ -16,6 +16,33 @@ module OneviewSDK
     module Synergy
       # Enclosure group resource implementation on API500 Synergy
       class EnclosureGroup < OneviewSDK::API300::Synergy::EnclosureGroup
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'EnclosureGroupV400'
+          super
+        end
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def get_script(*)
+          unavailable_method
+        end
+
+        # Updates an enclosure group
+        # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
+        # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
+        # @raise [StandardError] if the resource save fails
+        # @return [Resource] self
+        def update(attributes = {})
+          super(attributes)
+          retrieve!
+          self
+        end
       end
     end
   end

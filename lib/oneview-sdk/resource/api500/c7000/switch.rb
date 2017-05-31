@@ -16,6 +16,13 @@ module OneviewSDK
     module C7000
       # Switch resource implementation for API 500 C7000
       class Switch < OneviewSDK::API300::C7000::Switch
+
+        # Method is not available
+        # Use {#add_scope}, {#remove_scope}, and {#replace_scopes} instead.
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def set_scope_uris(*)
+          unavailable_method
+        end
       end
     end
   end
