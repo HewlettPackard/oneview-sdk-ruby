@@ -32,16 +32,27 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
     expect { target.create }.to raise_error(OneviewSDK::MethodUnavailable)
   end
 
-  it '::reachable' do
-    expected_uri = '/rest/storage-pools/reachable-storage-pools'
-    expect(@client_500).to receive(:find_with_pagination).with(expected_uri, {}).and_return(:fake_response)
-    expect(described_class.reachable(@client_500)).to eq(:fake_response)
+  describe '::reachable' do
+    it 'should call the find_with_pagination correctly' do
+      expected_uri = '/rest/storage-pools/reachable-storage-pools'
+      expect(described_class).to receive(:find_with_pagination).with(@client_500, expected_uri).and_return(:fake_response)
+      expect(described_class.reachable(@client_500)).to eq(:fake_response)
+    end
+
+    it 'should build the URI with network URIs' do
+      fc_network_class = OneviewSDK::API500::C7000::FCNetwork
+      networks = [fc_network_class.new(@client_500, uri: '/uri-1'), fc_network_class.new(@client_500, uri: '/uri-2')]
+      expected_uri = "/rest/storage-pools/reachable-storage-pools?networks='/uri-1,/uri-2'"
+      expect(described_class).to receive(:find_with_pagination).with(@client_500, expected_uri).and_return(:fake_response)
+      expect(described_class.reachable(@client_500, networks)).to eq(:fake_response)
+    end
   end
 
   describe '#manage' do
     context 'when pass a true value' do
       it 'the isManaged attribute should be true and should call update method' do
         expect(target).to receive(:update)
+        expect(target).to receive(:refresh)
         expect(target['isManaged']).not_to be
         target.manage(true)
         expect(target['isManaged']).to eq(true)
@@ -51,6 +62,7 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
     context 'when pass a false value' do
       it 'the isManaged attribute should be false and should call update method' do
         expect(target).to receive(:update)
+        expect(target).to receive(:refresh)
         expect(target['isManaged']).not_to be
         target.manage(false)
         expect(target['isManaged']).to eq(false)
@@ -61,6 +73,7 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
   describe '#request_refresh' do
     it 'should set requestingRefresh attribute to true and should call update method' do
       expect(target).to receive(:update)
+      expect(target).to receive(:refresh)
       expect(target['requestingRefresh']).not_to be
       target.request_refresh
       expect(target['requestingRefresh']).to eq(true)
