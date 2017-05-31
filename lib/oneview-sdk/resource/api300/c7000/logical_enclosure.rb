@@ -10,24 +10,26 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/logical_enclosure'
+require_relative '../../../resource_helper'
 
 module OneviewSDK
   module API300
     module C7000
       # Logical Enclosure resource implementation on API300 C7000
       class LogicalEnclosure < OneviewSDK::API200::LogicalEnclosure
+        include OneviewSDK::ResourceHelper
 
         def initialize(client, params = {}, api_ver = nil)
           super
         end
 
-        # Updates specific attributes of a given logical enclosure resource
-        # @param [String] value Value
-        def patch(value)
-          ensure_client && ensure_uri
-          body = { op: 'replace', path: '/firmware', value: value }
-          response = @client.rest_patch(@data['uri'], { 'body' => [body] }, @api_version)
-          @client.response_handler(response)
+        # Updates  the firmware attributes of a given logical enclosure resource
+        # @param [Hash] attributes Hash with firmware attributes
+        # @option options [String] :firmwareUpdateOn Specifies the component types within the enclosure which has to be updated
+        # @option options [Boolean] :forceInstallFirmware Specifies whether the firmware operation to be carried forcefully or not
+        # @option options [String] :firmwareBaselineUri Firmware-drivers URI for the firmware bundle containing the baseline firmware
+        def update_firmware(attributes = {})
+          patch('replace', '/firmware', attributes)
         end
       end
     end

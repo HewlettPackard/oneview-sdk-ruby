@@ -10,12 +10,14 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api300/synergy/logical_enclosure'
+require_relative '../c7000/logical_enclosure'
 
 module OneviewSDK
   module API500
     module Synergy
       # Logical Enclosure resource implementation on API500 Synergy
       class LogicalEnclosure < OneviewSDK::API300::Synergy::LogicalEnclosure
+        include OneviewSDK::API500::C7000::FirmwareHelper
 
         # Method is not available
         # @raise [OneviewSDK::MethodUnavailable] method is not available
@@ -28,24 +30,6 @@ module OneviewSDK
         # @return [OneviewSDK::API500::Synergy::LogicalEnclosure] self
         def update(attributes = {})
           super(attributes)
-          retrieve!
-          self
-        end
-
-        # Updates the given logical enclosure's attributes that are passed
-        # @param [Hash] attributes Attributes
-        # @option attributes [String] :firmwareUpdateOn Specifies the component types within the enclosure which has to be updated
-        # @option attributes [Boolean] :forceInstallFirmware Specifies whether the firmware operation to be carried forcefully or not
-        # @option attributes [String] :firmwareBaselineUri Firmware-drivers URI for the firmware bundle containing the baseline firmware
-        # @return [OneviewSDK::API500::Synergy::LogicalEnclosure] self
-        def patch(attributes = {})
-          ensure_client && ensure_uri
-          options = {
-            'If-Match' =>  @data['eTag'],
-            'body' => [op: 'replace', path: '/firmware', value: attributes]
-          }
-          response = @client.rest_patch(@data['uri'], options, @api_version)
-          @client.response_handler(response)
           retrieve!
           self
         end
