@@ -42,23 +42,31 @@ module OneviewSDK
 
         # Gets the storage pools that are connected on the specified networks based on the storage system port's expected network connectivity.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Array<Resource>] networks The list of networks with URI to be used as a filter
         # @return [Array<OneviewSDK::StoragePool>] the list of storage pools
-        def self.reachable(client)
+        def self.reachable(client, networks = [])
           uri = self::BASE_URI + '/reachable-storage-pools'
-          client.find_with_pagination(uri, {})
+          unless networks.empty?
+            network_uris = networks.map { |item| item['uri'] }
+            uri += "?networks='#{network_uris.join(',')}'"
+          end
+          find_with_pagination(client, uri)
         end
 
         # To manage/unmanage a storage pool
         # @param [Boolean] be_managed Set true to manage or false to unmanage
+        # @note Storage Pool that belongs to Storage System family StoreVirtual can't be changed to unmanaged
         def manage(be_managed)
           self['isManaged'] = be_managed
           update
+          refresh
         end
 
         # To request a refresh of a storage pool
         def request_refresh
           self['requestingRefresh'] = true
           update
+          refresh
         end
       end
     end
