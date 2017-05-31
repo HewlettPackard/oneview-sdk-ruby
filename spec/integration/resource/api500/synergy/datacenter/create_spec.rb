@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::Datacenter
-RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_300 }
-  let(:rack_class) { OneviewSDK::API300::C7000::Rack }
-  include_examples 'DatacenterUpdateExample', 'integration api300 context'
+klass = OneviewSDK::API500::Synergy::Datacenter
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  let(:rack_class) { OneviewSDK::API500::Synergy::Rack }
+  include_examples 'DatacenterCreateExample', 'integration api500 context'
 end

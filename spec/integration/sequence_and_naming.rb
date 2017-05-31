@@ -15,7 +15,7 @@ class Hash
 end
 
 DEPENDENCIES = {
-  Datacenter: [],
+  Datacenter: [:Rack],
   DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
   EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
@@ -37,7 +37,7 @@ DEPENDENCIES = {
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   OSDeploymentPlan: [],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
-  Rack: [:ServerProfile],
+  Rack: [],
   SANManager: [],
   SASInterconnect: [:SASLogicalInterconnect],
   SASLogicalInterconnect: [:Enclosure],
