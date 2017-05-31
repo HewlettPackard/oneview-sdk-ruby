@@ -5,5 +5,5 @@ RSpec.describe OneviewSDK::LogicalEnclosure, integration: true, type: UPDATE do
   let(:current_client) { $client }
   let(:encl_name) { ENCL_NAME }
 
-  include_examples 'LogicalEnclosureUpdateExample', 'integration context', 200
+  include_examples 'LogicalEnclosureUpdateExample', 'integration context', 200, 'C7000'
 end

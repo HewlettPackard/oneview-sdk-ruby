@@ -33,13 +33,13 @@ RSpec.describe OneviewSDK::API500::Synergy::LogicalEnclosure do
     end
   end
 
-  describe '#perfoms a specific patch' do
+  describe '#update_firmware' do
     it 'requires a uri' do
       item = described_class.new(@client_500)
-      expect { item.patch('any') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
+      expect { item.update_firmware('any') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
     end
 
-    it 'performs a patch' do
+    it 'updates the the firmware of a given logical enclosure' do
       item = described_class.new(@client_500, uri: '/rest/fake', eTag: 'anyTag')
       options = {
         'If-Match' => item['eTag'],
@@ -47,7 +47,7 @@ RSpec.describe OneviewSDK::API500::Synergy::LogicalEnclosure do
       }
       expect(@client_500).to receive(:rest_patch).with(item['uri'], options, item.api_version).and_return(FakeResponse.new)
       allow_any_instance_of(described_class).to receive(:retrieve!).and_return(true)
-      item.patch('val')
+      item.update_firmware('val')
     end
   end
 end

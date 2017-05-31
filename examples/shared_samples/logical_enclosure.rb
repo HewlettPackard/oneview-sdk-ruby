@@ -12,7 +12,8 @@
 require_relative '../_client' # Gives access to @client
 
 # Example: Create/Update/Delete logical enclosure
-# NOTE: This will create an ethernet network named 'OneViewSDK Test Logical Enclosure', update it and then delete it.
+# NOTE: This will create a logical enclosure named 'OneViewSDK Test Logical Enclosure', update it and then delete it.
+# To run this test with Synergy you must have an enclosureGroup with enclosure count = 3.
 #
 # Supported APIs:
 # - 200, 300, 500
@@ -20,11 +21,10 @@ require_relative '../_client' # Gives access to @client
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalEnclosure
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalEnclosure
-# api_version = 300 & variant = Synergy to logical_enclosure_class
+# api_version = 300 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalEnclosure
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
 
-type = 'logical enclosure'
 # Resource Class used in this sample
 logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.api_version)
 
@@ -41,89 +41,98 @@ if variant == 'Synergy'
     firmwareBaselineUri: nil
   }
 
-  puts "\nCreating a #{type} with the name = '#{options[:name]}'."
+  puts "\nCreating a logical enclosure with the name = '#{options[:name]}'."
   item = logical_enclosure_class.new(@client, options)
   # set an enclosure group with enclosure count = 3
-  enclosure_group = encl_group_class.find_by(@client, name: 'EnclosureGroup_2').first
+  enclosure_group = encl_group_class.find_by(@client, enclosureCount: 3).first
   item.set_enclosure_group(enclosure_group)
 
-  # set an enclosure
+  # set the enclosures
   enclosure1 = enclosure_class.find_by(@client, name: '0000A66101').first
   enclosure2 = enclosure_class.find_by(@client, name: '0000A66102').first
   enclosure3 = enclosure_class.find_by(@client, name: '0000A66103').first
   item.set_enclosures([enclosure1, enclosure2, enclosure3])
 
   item.create
-  puts "\nCreated a #{type} '#{item[:name]}' successfully.\n  uri = '#{item[:uri]}'"
+  sleep(10)
+  puts "\nCreated a logical enclosure '#{item[:name]}' successfully.\n  uri = '#{item[:uri]}'"
 end
 
 puts "\nListing all logical enclosures:"
-itens = logical_enclosure_class.get_all(@client)
-itens.each do |i|
+items = logical_enclosure_class.get_all(@client)
+items.each do |i|
   puts i['name']
 end
 
-log_encl_name = itens.first['name']
-log_encl_uri = itens.first['uri']
+log_encl_name = items.first['name']
+log_encl_uri = items.first['uri']
 
-# retrieve a #{type}
+# retrieve a logical enclosure
 item2 = logical_enclosure_class.new(@client, name: log_encl_name)
-puts "\nRetrieve a #{type} with name '#{log_encl_name}'"
+puts "\nRetrieves a logical enclosure by name: '#{log_encl_name}'"
 item2.retrieve!
 puts "\nFound by name: '#{item2[:name]}'.\n  uri = '#{item2[:uri]}'"
 
 # Gets a logical enclosure by uri
 puts "\nGets a logical enclosure with uri '#{log_encl_uri}'"
 item3 = logical_enclosure_class.find_by(@client, uri: log_encl_uri).first
-puts "Found #{type} '#{item3[:uri]}'."
+puts "Found logical enclosure '#{item3[:uri]}'."
 
-puts "\nUpdating a #{type} with the name = '#{item3['name']}'."
+puts "\nUpdating a logical enclosure with the name = '#{item3['name']}'."
 old_name = item3['name']
 item3.update(name: "#{item3['name']}_Updated")
 item3.retrieve!
-puts "\n#{type} updated successfully and new name = '#{item3['name']}'."
+puts "\nlogical enclosure updated successfully and new name = '#{item3['name']}'."
 puts "\nUpdating to original name."
 item3.update(name: old_name)
 item3.retrieve!
-puts "\n#{type} updated successfully and returned to original name = '#{item3['name']}'."
+puts "\nlogical enclosure updated successfully and returned to original name = '#{item3['name']}'."
 
 # Reconfigure script
-puts "\nReconfiguring a #{type}"
+puts "\nReconfiguring a logical enclosure"
 item3.reconfigure
 puts "\nOperation performed successfully."
 
-if @client.api_version <= 200 || variant == 'C7000' || (variant == 'Synergy' && @client.api_version < 500)
-  # Get configuration script
-  puts "\nGetting a #{type} script"
+orig_script = nil
+
+# Get configuration script
+puts "\nGetting a logical enclosure script"
+begin
   orig_script = item3.get_script
-  puts "\nRetrieved #{type} '#{item3['name']}' script\n  Content = '#{orig_script}'"
+  puts "\nRetrieved logical enclosure '#{item3['name']}' script\n  Content = '#{orig_script}'"
+rescue OneviewSDK::MethodUnavailable => e
+  puts "\n#{e}. Available only for C7000."
 end
 
-if @client.api_version <= 200 || variant == 'C7000'
-  # Set configuration script
-  puts "\nSetting a #{type} script"
+# Set configuration script
+puts "\nSetting a logical enclosure script"
+begin
   item3.set_script(orig_script)
   puts "\nOperation performed successfully."
+rescue OneviewSDK::MethodUnavailable => e
+  puts "\n#{e}. Available only for C7000."
 end
 
 # Update from Group
 puts "\nUpdate from Group"
 item3.update_from_group
-puts "#{type} updated successfully."
+puts "\nlogical enclosure updated successfully."
 
-
-if @client.api_version >= 300
-  item3.retrieve!
-  # Performs a patch
-  puts "Performs a patch on #{type} #{item3['name']}"
+item3.retrieve!
+# Performs a patch
+puts "Updating the firmware of the logical enclosure #{item3['name']}"
+begin
   value = {
     firmwareUpdateOn: 'SharedInfrastructureOnly',
     forceInstallFirmware: false,
     updateFirmwareOnUnmanagedInterconnect: true
   }
 
-  item3.patch(value)
-  puts "Patch perfomed successfully on #{type} #{item3['name']}"
+  item3.update_firmware(value)
+  sleep(10)
+  puts "Firmware updated successfully on logical enclosure #{item3['name']}"
+rescue NoMethodError
+  puts "\nThe method #update_firmware is available from API 300 onwards.."
 end
 
 # Generate dump
@@ -131,12 +140,12 @@ dump = {
   errorCode: 'test',
   excludeApplianceDump: true
 }
-puts 'Generate dump'
+puts 'Generate support dump'
 item3.support_dump(dump)
-puts "\nGenerated dump for #{type} '#{item3['name']}'."
+puts "\nGenerated dump for logical enclosure '#{item3['name']}'."
 
 if variant == 'Synergy'
-  puts "Removing the #{type}"
+  puts "\nRemoving the logical enclosure"
   item3.delete
-  puts "\nRemoved #{type} '#{item3['name']}'."
+  puts "\nRemoved logical enclosure '#{item3['name']}'."
 end

@@ -16,6 +16,7 @@ RSpec.shared_examples 'LogicalEnclosureUpdateExample' do |context_name, version,
 
   describe '#update' do
     it 'Updating the name' do
+      sleep(10)
       item['name'] = "#{encl_name}_Updated"
       expect { item.update }.to_not raise_error
       expect(item['name']).to eq("#{encl_name}_Updated")
@@ -67,15 +68,16 @@ RSpec.shared_examples 'LogicalEnclosureUpdateExample' do |context_name, version,
     end
   end
 
-  describe '#patch', if: variant do
-    it 'Update a given logical enclosure across a patch' do
+  describe '#update_firmware', if: version >= 300 do
+    it 'Updating the firmware of a given logical enclosure' do
       firmware_attributes = {
         firmwareUpdateOn: 'EnclosureOnly',
         forceInstallFirmware: false,
         updateFirmwareOnUnmanagedInterconnect: true
       }
 
-      expect { item.patch(firmware_attributes) }.to_not raise_error
+      expect { item.update_firmware(firmware_attributes) }.to_not raise_error
+      sleep(10)
     end
   end
 end
