@@ -137,15 +137,6 @@ rescue NoMethodError
   puts 'The method #get_pluggable_module_information is available only for api greater than or equal to 300.'
 end
 
-# Gets the physical server hardware inventory
-begin
-  puts 'Gets the physical server hardware inventory'
-  sh_inventory = item3.get_physical_server_hardware
-  puts "\nFound the physical server hardware inventory: '#{sh_inventory}'."
-rescue NoMethodError
-  puts 'The method #get_physical_server_hardware is available only for api greater than or equal to 500.'
-end
-
 # In these lines below is added, replaced and removed a scopeUri to the server hardware resource.
 # A scope defines a collection of resources, which might be used for filtering or access control.
 # When a scope uri is added to a server hardware resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.

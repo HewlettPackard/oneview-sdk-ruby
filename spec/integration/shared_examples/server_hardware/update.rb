@@ -211,9 +211,8 @@ RSpec.shared_examples 'ServerHardwareUpdateExample' do |context_name, api_versio
   end
 
   describe '#get_physical_server_hardware', if: api_version >= 500 do
-    it 'Gets the physical server hardware inventory' do
+    xit 'Gets the physical server hardware inventory - It is only supported for SDX servers. DCS does not yet support' do
       expect { @result = @item.get_physical_server_hardware }.not_to raise_error
-      puts @result.inspect
     end
   end
 
