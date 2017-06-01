@@ -9,14 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-RSpec.shared_examples 'LogicalSwitchUpdateExample' do |context_name|
+RSpec.shared_examples 'InternalLinkSetCreateExample' do |context_name|
   include_context context_name
 
-  subject(:item) { described_class.find_by(current_client, name: LOG_SWI_NAME).first }
-
-  describe '#refresh_state' do
-    it 'should reclaims the top-of-rack switches in a logical switch' do
-      expect { item.refresh_state }.to_not raise_error
+  describe '#create' do
+    it 'self raises MethodUnavailable' do
+      item = described_class.new(current_client)
+      expect { item.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
   end
 end
