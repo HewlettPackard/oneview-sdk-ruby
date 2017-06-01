@@ -23,13 +23,13 @@ require_relative '../_client' # Gives access to @client
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ServerHardware
-# api_version = 300 & variant = C7000 to sh_class
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::ServerHardware
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ServerHardware
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ServerHardware
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ServerHardware
 
 # Resource Class used in this sample
-sh_class = OneviewSDK.resource_named('ServerHardware', @client.api_version)
+server_harware_class = OneviewSDK.resource_named('ServerHardware', @client.api_version)
 
 type = 'server hardware'
 options = {
@@ -40,71 +40,62 @@ options = {
 }
 
 puts "\nAdding #{type} with hostname = '#{@server_hardware_hostname}'"
-item = sh_class.new(@client, options)
+item = server_harware_class.new(@client, options)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
 # Find recently created item by name
 puts "\nSearch server by name = #{item[:name]}"
-matches = sh_class.find_by(@client, name: item[:name])
+matches = server_harware_class.find_by(@client, name: item[:name])
 item2 = matches.first
 raise "Failed to find #{type} by name: '#{item[:name]}'" unless matches.first
 puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item2[:uri]}'"
 
 # List all server hardware
 puts "\n\n#{type.capitalize} list:"
-sh_class.get_all(@client).each do |p|
+server_harware_class.get_all(@client).each do |p|
   puts "  #{p[:name]}"
 end
 
 # Retrieve recently created item
 puts "\nSearch server by hostname = #{@server_hardware_hostname}"
-item3 = sh_class.new(@client, hostname: @server_hardware_hostname)
+item3 = server_harware_class.new(@client, hostname: @server_hardware_hostname)
 item3.retrieve!
 puts "\nFound #{type} by hostname: '#{item3[:hostname]}'.\n  uri = '#{item3[:uri]}'"
 
-# Gets list of bios\UEFI values
 puts "\nGetting list of bios UEFI values"
 bios = item3.get_bios
 puts "\nList of bios UEFI found sucessfully."
 puts bios
 
-# Retrieves the URL to launch a Single Sign-On (SSO) session for the iLO web interface
 puts "\nRetrieving the URL to launch a Single Sign-On (SSO) session for the iLO web interface"
 sso_url = item3.get_ilo_sso_url
 puts "\nSSO found sucessfully. \nUrl: #{sso_url['iloSsoUrl']}"
 
-# Generates a Single Sign-On (SSO) session for the iLO Java Applet console and returns the URL to launch it
 puts "\nGenerating a Single Sign-On (SSO) session for the iLO Java Applet console and returns the URL to launch it"
 java_sso_url = item3.get_java_remote_sso_url
 puts "\nJava remote SSO found sucessfully. \nUrl: #{java_sso_url['javaRemoteConsoleUrl']}"
 
-# Generates a Single Sign-On (SSO) session for the iLO Integrated Remote Console Application (IRC) and returns the URL to launch it.
 puts "\nGenerating a Single Sign-On (SSO) session for the iLO Integrated Remote Console Application (IRC) and returns the URL to launch it."
 remote_console_url = item3.get_remote_console_url
 puts "\nRemote console found sucessfully. \nUrl: #{remote_console_url['remoteConsoleUrl']}"
 
-# Gets the settings that describe the environmental configuration.
 puts "\nGetting the settings that describe the environmental configuration."
 environmental = item3.environmental_configuration
 puts "\nEnviromental configuration found sucessfully: \n#{environmental}"
 
-# Retrieves historical utilization data for the specified resource, metrics, and time span.
 puts "\nRetrieving historical utilization data for the specified resource, metrics, and time span."
 utilization = item3.utilization
 puts "\nHistorical utilization retrieved sucessfully: \n#{utilization}"
 
-# Retrieves historical utilization with view.
 puts "\nRetrieving historical utilization with day view."
 utilization2 = item3.utilization(view: 'day')
 puts "\nHistorical utilization retrieved sucessfully: \n#{utilization2}"
 
-# Retrieves historical utilization with fields.
-puts "\nRetrieving historical utilization with AmbientTemperature field."
 utilization3 = item3.utilization(fields: %w(AmbientTemperature))
+puts "\nRetrieving historical utilization with AmbientTemperature field."
 puts "\nHistorical utilization retrieved sucessfully: \n#{utilization3}"
 
-# Retrieves historical utilization with filters.
 puts "\nRetrieving historical utilization by date."
 t = Time.now
 utilization4 = item3.utilization(startDate: t)
@@ -137,9 +128,8 @@ rescue NoMethodError
   puts 'The method #get_pluggable_module_information is available only for api greater than or equal to 300.'
 end
 
-# In these lines below is added, replaced and removed a scopeUri to the server hardware resource.
-# A scope defines a collection of resources, which might be used for filtering or access control.
-# When a scope uri is added to a server hardware resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
+# This section illustrates scope usage with the server hardware. Supported in API 300 and onwards.
+# When a scope uri is added to a server hardware, the server hardware is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
 puts "\nOperations with scope."
 begin
