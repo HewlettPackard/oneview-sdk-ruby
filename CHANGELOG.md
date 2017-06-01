@@ -1,19 +1,35 @@
 # Unreleased Changes
 
-## Suggested release: v4.3.0
+## Suggested release: v5.0.0
 
 #### Features supported
 This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
+   - Datacenter
+   - Drive Enclosure
+   - Enclosure
+   - Enclosure Group
    - Ethernet Network
    - FC Network
    - FCoE Network
+   - Interconnect
    - Internal Link Set
+   - Logical Downlink
+   - Logical Interconnect
    - Logical Interconnect Group
    - Logical Switch
    - Logical Switch Group
+   - Managed SANs
    - Network Set
+   - SAN Manager
+   - SAS Interconnect
+   - SAS Logical Interconnect
    - SAS Logical Interconnect Group
    - Scopes
+   - Server Hardware Type
+   - Switches
+
+#### Breaking changes
+1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
 
 # v4.2.0
 

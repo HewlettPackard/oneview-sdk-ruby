@@ -26,6 +26,7 @@ module OneviewSDK
         # Default values:
         @data['type'] ||= 'EnclosureGroupV200'
         @data['interconnectBayMappingCount'] ||= 8
+        @data['stackingMode'] ||= 'Enclosure'
         create_interconnect_bay_mapping unless @data['interconnectBayMappings']
       end
 

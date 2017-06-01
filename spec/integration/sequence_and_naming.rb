@@ -15,7 +15,7 @@ class Hash
 end
 
 DEPENDENCIES = {
-  Datacenter: [],
+  Datacenter: [:Rack],
   DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
   EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
@@ -37,7 +37,7 @@ DEPENDENCIES = {
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   OSDeploymentPlan: [],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
-  Rack: [:ServerProfile],
+  Rack: [],
   SANManager: [],
   SASInterconnect: [:SASLogicalInterconnect],
   SASLogicalInterconnect: [:Enclosure],
@@ -91,6 +91,7 @@ ETH_NET_NAME = 'EthernetNetwork_1'.freeze
 ETH_NET_NAME_UPDATED = 'EthernetNetwork_1_UPDATED'.freeze
 
 FC_NET_NAME = 'FCNetwork_1'.freeze
+FC_NET2_NAME = 'FCNetwork_2'.freeze
 FC_NET_NAME_UPDATED = 'FCNetwork_1_UPDATED'.freeze
 
 # FCoENetwork
@@ -128,7 +129,7 @@ LOG_ENCL1_NAME = 'LogicalEnclosure_1'.freeze
 
 # LogicalInterconnect
 LOG_INT_NAME = 'Encl1-LogicalInterconnectGroup_1'.freeze
-LOG_INT2_NAME = 'LogicalEnclosure_1-LogicalInterconnectGroup_1-1'.freeze
+LOG_INT2_NAME = 'LogicalEnclosure_1-LogicalInterconnectGroup_3'.freeze
 
 # UplinkSet
 UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze

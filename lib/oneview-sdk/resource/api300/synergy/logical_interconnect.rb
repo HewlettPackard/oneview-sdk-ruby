@@ -16,26 +16,6 @@ module OneviewSDK
     module Synergy
       # Logical interconnect resource implementation for API300 Synergy
       class LogicalInterconnect < OneviewSDK::API300::C7000::LogicalInterconnect
-
-        # Lists internal networks on the logical interconnect
-        # @return [OneviewSDK::Resource] List of networks
-        def list_vlan_networks
-          ensure_client && ensure_uri
-          results = OneviewSDK::Resource.find_by(@client, {}, @data['uri'] + '/internalVlans')
-          internal_networks = []
-          results.each do |vlan|
-            net = if vlan['generalNetworkUri'].include? 'ethernet-network'
-                    OneviewSDK::API300::Synergy::EthernetNetwork.new(@client, uri: vlan['generalNetworkUri'])
-                  elsif vlan['generalNetworkUri'].include? 'fc-network'
-                    OneviewSDK::API300::Synergy::FCNetwork.new(@client, uri: vlan['generalNetworkUri'])
-                  else
-                    OneviewSDK::API300::Synergy::FCoENetwork.new(@client, uri: vlan['generalNetworkUri'])
-                  end
-            net.retrieve!
-            internal_networks.push(net)
-          end
-          internal_networks
-        end
       end
     end
   end
