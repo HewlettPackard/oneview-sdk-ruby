@@ -2,40 +2,8 @@ require 'spec_helper'
 
 klass = OneviewSDK::Switch
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
+  let(:current_client) { $client }
+  let(:item) { klass.find_by(current_client, name: $secrets['logical_switch1_ip']).first }
 
-  before :all do
-    @item = OneviewSDK::Switch.find_by($client, {}).first
-  end
-
-  describe '#statistics' do
-    it 'gets data for the port X1' do
-      expect(@item.statistics('X1')).to_not be_empty
-    end
-
-    it 'gets data for the port X1 with subport Q1' do
-      expect(@item.statistics('X1', 'Q1')).to_not be_empty
-    end
-  end
-
-  describe '#environmentalConfiguration' do
-    it 'gets the current environmental configuration' do
-      expect(@item.environmental_configuration).to_not be_empty
-    end
-  end
-
-  describe '#get_types' do
-    it 'list all the types' do
-      expect(OneviewSDK::Switch.get_types($client)).to_not be_empty
-    end
-
-    it 'get one desired type' do
-      model_name = 'Cisco Nexus 55xx'
-      model = OneviewSDK::Switch.get_type($client, model_name)
-      expect(model).to_not be_empty
-      expect(model['name']).to eq(model_name)
-      expect(model['uri']).to_not be_empty
-    end
-  end
-
+  include_examples 'SwitchCreateExample', 'integration context', true
 end

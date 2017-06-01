@@ -13,13 +13,8 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::SANManager
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300 }
+  let(:san_manager_ip) { $secrets['san_manager_ip'] }
 
-  describe '#remove' do
-    it 'Brocade Network Advisor' do
-      item = klass.new($client_300, name: $secrets['san_manager_ip'])
-      item.retrieve!
-      expect { item.remove }.not_to raise_error
-    end
-  end
+  include_examples 'SANManagerDeleteExample', 'integration api300 context'
 end

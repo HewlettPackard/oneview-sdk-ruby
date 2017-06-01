@@ -13,36 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::SASInterconnect
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
-
-  let(:sas_interconnect_type) { 'Synergy 12Gb SAS Connection Module' }
-  let(:sas_interconnect) { klass.new($client_300_synergy, name: SAS_INTERCONNECT1_NAME) }
-
-  before :each do
-    sas_interconnect.retrieve!
-  end
-  describe '#get_type' do
-    it 'retrieves all types of SAS interconnects supported by the appliance' do
-      types = klass.get_types($client_300_synergy)
-      expect(types).not_to be_empty
-    end
-
-    it 'retrieves a specific type of SAS interconnect supported by the appliance' do
-      type = klass.get_type($client_300_synergy, sas_interconnect_type)
-      expect(type).not_to be_empty
-    end
-  end
-
-  describe '#set_refresh_state' do
-    it 'sets the refresh state of the SAS interconnect successfully' do
-      expect { sas_interconnect.set_refresh_state('RefreshPending') }.not_to raise_error
-    end
-  end
-
-
-  describe '#patch' do
-    it 'resets the SAS interconnect successfully' do
-      expect { sas_interconnect.patch('replace', '/hardResetState', 'Reset') }.not_to raise_error
-    end
-  end
+  let(:current_client) { $client_300_synergy }
+  include_examples 'SASInterconnectUpdateExample', 'integration api300 context'
 end
