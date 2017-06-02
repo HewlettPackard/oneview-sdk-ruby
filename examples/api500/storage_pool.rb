@@ -13,18 +13,14 @@ require_relative '../_client' # Gives access to @client
 
 # NOTE: You'll need to add one StorageSystem before execute this sample
 
-# Supported APIs:
-# - API200 for any (see /examples/shared_samples/storage_pool.rb)
-# - API300 for C7000 (see /examples/shared_samples/storage_pool.rb)
-# - API300 for Synergy (see /examples/shared_samples/storage_pool.rb)
-# - API500 for C7000
-# - API500 for Synergy
+# All supported APIs for Storage Pool:
+# - API200 for C7000 and Synergy (see /examples/shared_samples/storage_pool.rb)
+# - API300 for C7000 and Synergy (see /examples/shared_samples/storage_pool.rb)
+# - API500 for C7000 and Synergy
 
-# Resources that can be created according to parameters for StoragePool:
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::StoragePool
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::StoragePool
-
-# Resource Class used in this sample
+# Resources classes that you can use for StoragePool in this example:
+# storage_pool_class = OneviewSDK::API500::C7000::StoragePool
+# storage_pool_class = OneviewSDK::API500::Synergy::StoragePool
 storage_pool_class = OneviewSDK.resource_named('StoragePool', @client.api_version)
 
 puts "\nListing the storage pools:"

@@ -68,6 +68,15 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
         expect(target['isManaged']).to eq(false)
       end
     end
+
+    context 'when attempting to unmanage a StoreVirtual pool' do
+      it 'should raise a argument error' do
+        target['family'] = 'StoreVirtual'
+        expect(target).not_to receive(:update)
+        expect(target).not_to receive(:refresh)
+        expect { target.manage(false) }.to raise_error(ArgumentError, 'Attempting to unmanage a StoreVirtual pool is not allowed')
+      end
+    end
   end
 
   describe '#request_refresh' do
