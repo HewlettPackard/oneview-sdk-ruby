@@ -55,8 +55,11 @@ module OneviewSDK
 
         # To manage/unmanage a storage pool
         # @param [Boolean] be_managed Set true to manage or false to unmanage
-        # @note Storage Pool that belongs to Storage System family StoreVirtual can't be changed to unmanaged
+        # @note Storage Pool that belongs to Storage System with family StoreVirtual can't be changed to unmanaged
         def manage(be_managed)
+          if !be_managed && self['family'] == 'StoreVirtual'
+            raise ArgumentError, 'Attempting to unmanage a StoreVirtual pool is not allowed'
+          end
           self['isManaged'] = be_managed
           update
           refresh

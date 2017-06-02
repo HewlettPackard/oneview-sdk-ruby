@@ -15,25 +15,21 @@ require_relative '../_client' # Gives access to @client
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #   @storage_system_ip
 
-# Supported APIs:
-# - API200 for any
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000 (see /examples/api500/storage_pool.rb)
-# - API500 for Synergy (see /examples/api500/storage_pool.rb)
+# All supported APIs for Storage Pool:
+# - API200 for C7000 and Synergy
+# - API300 for C7000 and Synergy
+# - API500 for C7000 and Synergy (see /examples/api500/storage_pool.rb)
 
-# Resources that can be created according to parameters for StoragePool:
-# api_version = 200 & variant = any to OneviewSDK::API200::StoragePool
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::StoragePool
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::StoragePool
-
-# Resources that can be created according to parameters for StorageSystem:
-# api_version = 200 & variant = any to OneviewSDK::API200::StorageSystem
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::StorageSystem
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::StorageSystem
-
-# Resource Class used in this sample
+# Resources classes that you can use for StoragePool in this example:
+# storage_pool_class = OneviewSDK::API200::StoragePool
+# storage_pool_class = OneviewSDK::API300::C7000::StoragePool
+# storage_pool_class = OneviewSDK::API300::Synergy::StoragePool
 storage_pool_class = OneviewSDK.resource_named('StoragePool', @client.api_version)
+
+# Resources classes that you can use for StorageSystem in this example:
+# storage_system_class = OneviewSDK::API200::StorageSystem
+# storage_system_class = OneviewSDK::API300::C7000::StorageSystem
+# storage_system_class = OneviewSDK::API300::Synergy::StorageSystem
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 
 type = 'storage pool'
