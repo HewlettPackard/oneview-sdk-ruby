@@ -14,7 +14,6 @@ require 'spec_helper'
 klass = OneviewSDK::API500::C7000::Rack
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:current_client) { $client_500 }
-  let(:enclosure_class) { OneviewSDK::API500::C7000::Enclosure }
   let(:rack_name) { RACK2_NAME }
 
   include_examples 'RackUpdateExample', 'integration api500 context'
