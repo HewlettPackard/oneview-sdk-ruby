@@ -6,17 +6,15 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
-# language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/event'
+require 'spec_helper'
 
-module OneviewSDK
-  module API500
-    module C7000
-      # Event resource implementation for API500 C7000
-      class Event < OneviewSDK::API300::C7000::Event
-      end
-    end
+RSpec.describe OneviewSDK::API500::Synergy::Event do
+  include_context 'shared context'
+
+  it 'inherits from API300' do
+    expect(described_class).to be < OneviewSDK::API300::Synergy::Event
   end
 end

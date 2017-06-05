@@ -9,14 +9,10 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/event'
+require 'spec_helper'
 
-module OneviewSDK
-  module API500
-    module C7000
-      # Event resource implementation for API500 C7000
-      class Event < OneviewSDK::API300::C7000::Event
-      end
-    end
-  end
+klass = OneviewSDK::API500::Synergy::Event
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  include_examples 'EventCreateExample', 'integration api500 context'
 end
