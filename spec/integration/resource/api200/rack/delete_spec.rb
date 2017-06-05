@@ -13,19 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::Rack
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
-
-  describe '#remove' do
-    it 'Rack_1' do
-      item = OneviewSDK::Rack.new($client, name: RACK1_NAME)
-      item.retrieve!
-      expect { item.remove }.not_to raise_error
-    end
-
-    it 'Rack_2' do
-      item = OneviewSDK::Rack.new($client, name: RACK2_NAME)
-      item.retrieve!
-      expect { item.remove }.not_to raise_error
-    end
-  end
+  let(:current_client) { $client }
+  include_examples 'RackDeleteExample', 'integration context'
 end

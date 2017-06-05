@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,15 +9,10 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require 'spec_helper'
 
-options = {
-  name: 'myrack'
-}
-
-item = OneviewSDK::Rack.new(@client, options)
-item.add
-puts "Rack #{item['name']} was added with uri='#{item['uri']}'"
-
-item.remove
-puts "Rack #{item['name']} was successfully removed."
+klass = OneviewSDK::API500::C7000::Rack
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500 }
+  include_examples 'RackCreateExample', 'integration api500 context'
+end

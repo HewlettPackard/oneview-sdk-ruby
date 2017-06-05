@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,10 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Synergy::Rack
-RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_300_synergy }
-  let(:rack_name) { RACK3_NAME }
-
-  include_examples 'RackUpdateExample', 'integration api300 context'
+klass = OneviewSDK::API500::C7000::Rack
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  let(:current_client) { $client_500 }
+  include_examples 'RackDeleteExample', 'integration api500 context'
 end
