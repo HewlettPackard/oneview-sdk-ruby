@@ -14,7 +14,11 @@ RSpec.shared_examples 'RackUpdateExample' do |context_name|
 
   subject(:item) { described_class.find_by(current_client, name: rack_name).first }
 
-  let(:enclosure) { enclosure_class.get_all(current_client).first }
+  let(:enclosure) do
+    namespace = described_class.to_s[0, described_class.to_s.rindex('::')]
+    enclosure_class = Object.const_get("#{namespace}::Enclosure")
+    enclosure_class.get_all(current_client).first
+  end
 
   describe '#update' do
     it 'updates depth' do

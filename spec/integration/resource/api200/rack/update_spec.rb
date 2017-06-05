@@ -13,7 +13,6 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::Rack, integration: true, type: UPDATE do
   let(:current_client) { $client }
-  let(:enclosure_class) { OneviewSDK::Enclosure }
   let(:rack_name) { RACK2_NAME }
 
   include_examples 'RackUpdateExample', 'integration context'
