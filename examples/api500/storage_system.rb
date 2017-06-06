@@ -17,16 +17,10 @@ require_relative '../_client' # Gives access to @client
 #   @storage_system_username
 #   @storage_system_password
 
-# Supported APIs:
-# - API200 for C7000 (see /examples/shared_samples/storage_system.rb)
-# - API300 for C7000 (see /examples/shared_samples/storage_system.rb)
-# - API300 for Synergy (see /examples/shared_samples/storage_system.rb)
-# - API500 for C7000
-# - API500 for Synergy
-
-# Resources that can be created according to parameters:
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::StorageSystem
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::StorageSystem
+# All supported APIs for Storage System:
+# - API200 for C7000 and Synergy (see /examples/shared_samples/storage_system.rb)
+# - API300 for C7000 and Synergy (see /examples/shared_samples/storage_system.rb)
+# - API500 for C7000 and Synergy
 
 raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
@@ -36,7 +30,9 @@ if @client.api_version < 500
   raise "If you want execute sample for API < #{@client.api_version}, you should execute the ruby file '/examples/shared_samples/storage_system.rb'"
 end
 
-# Resource Class used in this sample
+# Resources classes that you can use for Storage System in this example:
+# storage_system_class = OneviewSDK::API500::C7000::StorageSystem
+# storage_system_class = OneviewSDK::API500::Synergy::StorageSystem
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 
 # for StorageSystem with family StoreServ
