@@ -1,5 +1,8 @@
 ## Suggested release: v4.4.1 (Unreleased Changes)
 
+#### New Features:
+- ID Pools
+
 #### Bug fixes & Enhancements
 - [#235](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/235) Example file for Synergy LIG fails with 'Interconnect type or Logical Downlink not found!'
 
