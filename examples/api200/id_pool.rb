@@ -62,7 +62,7 @@ puts "\nRemoving the list of the IDs allocated. List: #{response1['idList']}"
 response3 = item.collect_ids(pool_type, response1['idList'])
 puts "The list of the pools #{response3['idList']} removed successfully."
 
-puts "\nChecking the range availability. Range: 'A2:32:C3:D0:00:00' - 'A2:32:C3:DF:FF:FF'"
+puts "\nChecking the range availability. Range: #{response3['idList'].first} - #{response3['idList'].last}"
 response5 = item.check_range_availability(pool_type, response3['idList'])
 puts "\nThe range #{response5} is available."
 
