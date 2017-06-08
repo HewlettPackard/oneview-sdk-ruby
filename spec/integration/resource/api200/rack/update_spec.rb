@@ -12,14 +12,8 @@
 require 'spec_helper'
 
 RSpec.describe OneviewSDK::Rack, integration: true, type: UPDATE do
-  include_context 'integration context'
+  let(:current_client) { $client }
+  let(:rack_name) { RACK2_NAME }
 
-  describe '#update' do
-    it 'updates depth' do
-      item = OneviewSDK::Rack.new($client, name: RACK1_NAME)
-      item.retrieve!
-      item.update(depth: 1300)
-      expect(item['depth']).to eq(1300)
-    end
-  end
+  include_examples 'RackUpdateExample', 'integration context'
 end

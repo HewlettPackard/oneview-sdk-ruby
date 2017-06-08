@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,18 +9,9 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client' # Gives access to @client
+require 'spec_helper'
 
-options = {
-  name: 'myrack'
-}
-
-item = OneviewSDK::API300::C7000::Rack.new(@client, options)
-item.add
-puts "Rack #{item['name']} was added with uri='#{item['uri']}'"
-
-item.update(depth: 1300)
-puts "Rack #{item['name']} was updated with new depth value = '#{item['depth']}'"
-
-item.remove
-puts "Rack #{item['name']} was successfully removed."
+klass = OneviewSDK::API500::Synergy::StoragePool
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  include_examples 'StoragePoolUpdateExample API500'
+end

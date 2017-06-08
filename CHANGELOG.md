@@ -4,6 +4,7 @@
 
 #### Features supported
 This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
+   - Datacenter
    - Drive Enclosure
    - Enclosure
    - Enclosure Group
@@ -17,12 +18,14 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Logical Switch Group
    - Managed SANs
    - Network Set
+   - Rack
    - SAN Manager
    - SAS Interconnect
    - SAS Logical Interconnect
    - SAS Logical Interconnect Group
    - Scopes
    - Server Hardware Type
+   - Storage Pool
    - Storage System
    - Switches
 

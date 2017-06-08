@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,18 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client' # Gives access to @client
+RSpec.shared_examples 'StoragePoolUpdateExample' do |context_name|
+  include_context context_name
 
-options = {
-  name: 'myrack'
-}
-
-item = OneviewSDK::API300::Synergy::Rack.new(@client, options)
-item.add
-puts "Rack #{item['name']} was added with uri='#{item['uri']}'"
-
-item.update(depth: 1300)
-puts "Rack #{item['name']} was updated with new depth value = '#{item['depth']}'"
-
-item.remove
-puts "Rack #{item['name']} was successfully removed."
+  describe '#update' do
+    it 'should throw unavailable method error' do
+      item = described_class.new(current_client)
+      expect { item.update }.to raise_error(OneviewSDK::MethodUnavailable)
+    end
+  end
+end
