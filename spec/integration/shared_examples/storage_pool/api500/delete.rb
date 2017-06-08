@@ -6,17 +6,16 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
-# language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 
-require_relative '../c7000/storage_pool'
+RSpec.shared_examples 'StoragePoolDeleteExample API500' do
+  include_context 'integration api500 context'
 
-module OneviewSDK
-  module API500
-    module Synergy
-      # Storage pool resource implementation for API 500 Synergy
-      class StoragePool < OneviewSDK::API500::C7000::StoragePool
-      end
+  describe '#delete' do
+    it 'should throw unavailable exception' do
+      item = described_class.new($client_500)
+      expect { item.delete }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end
 end
