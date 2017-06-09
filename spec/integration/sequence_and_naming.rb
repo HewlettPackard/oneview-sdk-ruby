@@ -26,6 +26,7 @@ DEPENDENCIES = {
   FCoENetwork: [],
   FirmwareBundle: [],
   FirmwareDriver: [:FirmwareBundle],
+  IDPool: [],
   Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
   LogicalDownlink: [:Enclosure],
