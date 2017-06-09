@@ -11,10 +11,23 @@
 
 require_relative '../_client' # Gives access to @client
 
+# Example: Actions with ID pools
+#
+# Supported APIs:
+# - 200, 300
+
+# Resources that can be created according to parameters:
+# api_version = 200 & variant = any to OneviewSDK::API200::IDPool
+# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::IDPool
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::IDPool
+
+# Resource Class used in this sample
+id_pool_class = OneviewSDK.resource_named('IDPool', @client.api_version)
+
 pool_type = 'vmac'
 
 # Example: Actions with pools
-item = OneviewSDK::IDPool.new(@client)
+item = id_pool_class.new(@client)
 
 puts "\nGetting a pool of the type IPV4"
 item.get_pool('ipv4')
