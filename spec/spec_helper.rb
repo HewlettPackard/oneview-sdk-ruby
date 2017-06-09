@@ -81,6 +81,7 @@ require_relative 'shared_context'
 require_relative 'support/fake_response'
 require_relative 'integration/sequence_and_naming'
 require_relative 'integration/sequence_and_naming_i3s'
+Dir["#{File.dirname(__FILE__)}/integration/shared_examples/**/*.rb"].each { |file| require file }
 
 RSpec.configure do |config|
   # Sort integration and system tests
@@ -88,20 +89,22 @@ RSpec.configure do |config|
       config.filter_manager.inclusions.rules[:integration_i3s]
     config.register_ordering(:global) do |items|
       sorted_items = items.sort_by { |i| [(i.metadata[:type] || 0), (i.metadata[:sequence] || 100)] }
-      return sorted_items unless ENV['PRINT_METADATA_ONLY']
-      # Print the example group orders without running any actual tests if ENV['PRINT_METADATA_ONLY'] is set
-      puts "ENV['PRINT_METADATA_ONLY'] set! Printing order only...\n\n"
-      puts '<TYPE> <ORDER>: <DESCRIBED CLASS>'
-      puts '-' * 50
-      actions = { CREATE => 'CREATE', UPDATE => 'UPDATE', DELETE => 'DELETE' }
-      sorted_items.each do |e_group|
-        m = e_group.metadata
-        seq = m[:sequence] || '__'
-        space = seq.to_s.size < 2 ? ' ' : ''
-        puts "#{actions[m[:type]] || '_____'} #{space}#{seq}: #{m[:description]}"
+      if ENV['PRINT_METADATA_ONLY']
+        # Print the example group orders without running any actual tests if ENV['PRINT_METADATA_ONLY'] is set
+        puts "ENV['PRINT_METADATA_ONLY'] set! Printing order only...\n\n"
+        puts '<TYPE> <ORDER>: <DESCRIBED CLASS>'
+        puts '-' * 50
+        actions = { CREATE => 'CREATE', UPDATE => 'UPDATE', DELETE => 'DELETE' }
+        sorted_items.each do |e_group|
+          m = e_group.metadata
+          seq = m[:sequence] || '__'
+          space = seq.to_s.size < 2 ? ' ' : ''
+          puts "#{actions[m[:type]] || '_____'} #{space}#{seq}: #{m[:description]}"
+        end
+        puts "\nTotal Example Groups: #{sorted_items.size}"
+        exit 0
       end
-      puts "\nTotal Example Groups: #{sorted_items.size}"
-      exit 0
+      sorted_items
     end
   end
 

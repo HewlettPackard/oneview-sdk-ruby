@@ -41,7 +41,7 @@ RSpec.describe OneviewSDK::IDPool do
     end
   end
 
-  describe '#allocate_id_list' do
+  describe '#allocate_count' do
     it 'allocating' do
       fake_response = FakeResponse.new
       expect(@client_200).to receive(:rest_put).with('/rest/id-pools/vmac/allocator', 'body' => { count: 2 }).and_return(fake_response)

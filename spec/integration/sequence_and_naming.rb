@@ -20,6 +20,7 @@ DEPENDENCIES = {
   Enclosure: [:EnclosureGroup],
   EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
   EthernetNetwork: [],
+  Event: [],
   Fabric: [],
   FCNetwork: [],
   FCoENetwork: [],
