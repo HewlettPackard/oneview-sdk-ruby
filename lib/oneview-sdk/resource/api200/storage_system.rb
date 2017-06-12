@@ -96,7 +96,7 @@ module OneviewSDK
       # @param [Hash, Resource] other resource or hash to compare the key-value pairs with
       # @example Compare to hash
       # @note Does not check the password in credentials
-      # @example myResource.like?(credentials: { ip_hostname: 'res1', username: 'admin', password: 'secret' })
+      # @example myResource.like?(credentials: { username: 'admin', password: 'secret' })
       #   myResource = OneviewSDK::Resource.new(client, { name: 'res1', description: 'example'}, 200)
       #   myResource.like?(description: '') # returns false
       #   myResource.like?(name: 'res1') # returns true
@@ -125,25 +125,21 @@ module OneviewSDK
       # @return [String] response body
       def self.get_host_types(client)
         response = client.rest_get(BASE_URI + '/host-types')
-        response.body
+        client.response_handler(response)
       end
 
       # Lists the storage pools
       def get_storage_pools
-        response = @client.rest_get(@data['uri'] + '/storage-pools')
-        response.body
+        self.class.find_with_pagination(@client, @data['uri'] + '/storage-pools')
       end
 
       # Lists all managed target ports for the specified storage system,
       # or only the one specified
       # @param [String] port Target port
       def get_managed_ports(port = nil)
-        response = if port.nil?
-                     @client.rest_get("#{@data['uri']}/managedPorts")
-                   else
-                     @client.rest_get("#{@data['uri']}/managedPorts/#{port}")
-                   end
-        response.body
+        uri = @data['uri']
+        uri += port.nil? ? '/managedPorts' : "/managedPorts/#{port}"
+        self.class.find_with_pagination(@client, uri)
       end
 
       # Refreshes a storage system
