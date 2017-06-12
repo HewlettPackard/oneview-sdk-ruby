@@ -13,9 +13,11 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - FC Network
    - FCoE Network
    - Interconnect
+   - Internal Link Set
    - Logical Downlink
    - Logical Interconnect
    - Logical Interconnect Group
+   - Logical Switch
    - Logical Switch Group
    - Managed SANs
    - Network Set
