@@ -15,7 +15,7 @@ class Hash
 end
 
 DEPENDENCIES = {
-  Datacenter: [],
+  Datacenter: [:Rack],
   DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
   EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
@@ -37,7 +37,7 @@ DEPENDENCIES = {
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   OSDeploymentPlan: [],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
-  Rack: [:ServerProfile],
+  Rack: [],
   SANManager: [],
   SASInterconnect: [:SASLogicalInterconnect],
   SASLogicalInterconnect: [:Enclosure],
@@ -197,7 +197,8 @@ DATACENTER1_NAME_UPDATED = 'Datacenter_1_UPDATED'.freeze
 
 # Rack
 RACK1_NAME = 'Rack_1'.freeze
-RACK2_NAME = 'Rack_2'.freeze
+RACK2_NAME = 'Rack-425'.freeze
+RACK3_NAME = '2AB100LMNB'.freeze
 
 # Fabric
 DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
