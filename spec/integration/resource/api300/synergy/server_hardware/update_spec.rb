@@ -7,7 +7,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
 
   include_examples 'ServerHardwareUpdateExample', 'integration api300 context', 300
 
-  # include_examples 'ScopeHelperMethodsExample', OneviewSDK::API300::Synergy::Scope do
-  #   let(:item) { described_class.get_all(current_client).first }
-  # end
+  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API300::Synergy::Scope do
+    let(:item) { described_class.get_all(current_client).first }
+  end
 end
