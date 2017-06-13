@@ -45,7 +45,8 @@ module OneviewSDK
       # @return [OneviewSDK::ConnectionTemplate] Connection template
       def self.get_default(client)
         response = client.rest_get(BASE_URI + '/defaultConnectionTemplate')
-        OneviewSDK::ConnectionTemplate.new(client, client.response_handler(response))
+        variant = name.split('::').at(-2)
+        OneviewSDK.resource_named('ConnectionTemplate', client.api_version, variant).new(client, client.response_handler(response))
       end
     end
   end
