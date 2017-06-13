@@ -1,4 +1,4 @@
-## Suggested release: v4.5.0 (Unreleased Changes)
+## v4.5.0
 
 #### New Resources:
    - Event
