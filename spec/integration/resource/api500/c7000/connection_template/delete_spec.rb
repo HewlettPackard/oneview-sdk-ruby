@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::ConnectionTemplate
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  include_examples 'ConnectionTemplateCreateExample', 'integration api300 context'
+klass = OneviewSDK::API500::C7000::ConnectionTemplate
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  let(:current_client) { $client_500 }
+  include_examples 'ConnectionTemplateDeleteExample', 'integration api500 context'
 end
