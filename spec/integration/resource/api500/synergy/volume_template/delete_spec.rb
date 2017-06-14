@@ -6,17 +6,13 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
-# language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 
-require_relative '../c7000/volume_template'
+require 'spec_helper'
 
-module OneviewSDK
-  module API500
-    module Synergy
-      # Volume Template resource implementation for API500 Synergy
-      class VolumeTemplate < OneviewSDK::API500::C7000::VolumeTemplate
-      end
-    end
-  end
+klass = OneviewSDK::API500::Synergy::VolumeTemplate
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  let(:current_client) { $client_500_synergy }
+  include_examples 'VolumeTemplateDeleteExample', 'integration api500 context'
 end
