@@ -28,6 +28,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Server Hardware Type
    - Storage Pool
    - Storage System
+   - Storage Templates
    - Switches
 
 #### Breaking changes
