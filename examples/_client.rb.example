@@ -44,3 +44,4 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @logical_switch_ssh_user = "dcs"
 # @logical_switch_ssh_password = "dcs"
 # @logical_switch_community_string = "public"
+# @logical_interconnect_name = 'Encl1-LogicalInterconnectGroup_1'
