@@ -139,6 +139,7 @@ UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
 UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
 UPLINK_SET3_NAME = 'FCUplinkSet_2'.freeze
 UPLINK_SET4_NAME = 'EthernetUplinkSet_2'.freeze
+UPLINK_SET5_NAME = 'FCUplinkSet_3'.freeze
 
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
