@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,13 +9,18 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'spec_helper'
+RSpec.shared_examples 'FirmwareBundleCreateExample' do |context_name|
+  include_context context_name
 
-klass = OneviewSDK::API300::C7000::FirmwareBundle
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  let(:bundle_path) { $secrets['bundle_path'] }
-  let(:spp_path) { $secrets['spp_path'] }
+  describe '#self.add' do
+    it 'Upload hotfix' do
+      item = described_class.add(current_client, bundle_path)
+      expect(item['uri']).to be
+    end
 
-  include_examples 'FirmwareBundleCreateExample', 'integration api300 context'
+    it 'Upload SPP' do
+      item = described_class.add(current_client, spp_path)
+      expect(item['uri']).to be
+    end
+  end
 end
