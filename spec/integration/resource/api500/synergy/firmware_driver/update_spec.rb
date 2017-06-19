@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,8 +11,7 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::Synergy::FirmwareDriver
-RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  let(:current_client) { $client_300_synergy }
-  include_examples 'FirmwareDriverDeleteExample', 'integration api300 context'
+RSpec.describe OneviewSDK::FirmwareDriver, integration: true, type: UPDATE do
+  let(:current_client) { $client_500_synergy }
+  include_examples 'FirmwareDriverUpdateExample', 'integration api500 context'
 end
