@@ -20,21 +20,21 @@ require_relative '../_client'
 raise 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
 # Resources classes that you can use for Volume Template in this example:
-# volume_template_class = volume_template_class
+# volume_template_class = OneviewSDK::API200::VolumeTemplate
 # volume_template_class = OneviewSDK::API300::C7000::VolumeTemplate
 # volume_template_class = OneviewSDK::API300::Synergy::VolumeTemplate
 # volume_template_class = OneviewSDK::API500::C7000::VolumeTemplate
 # volume_template_class = OneviewSDK::API500::Synergy::VolumeTemplate
 
 # Resources classes that you can use for Storage System in this example:
-# storage_system_class = OneviewSDK::StorageSystem
+# storage_system_class = OneviewSDK::API200::StorageSystem
 # storage_system_class = OneviewSDK::API300::C7000::StorageSystem
 # storage_system_class = OneviewSDK::API300::Synergy::StorageSystem
 # storage_system_class = OneviewSDK::API500::C7000::StorageSystem
 # storage_system_class = OneviewSDK::API500::Synergy::StorageSystem
 
 # Resources classes that you can use for Storage Pool in this example:
-# storage_pool_class = OneviewSDK::StoragePool
+# storage_pool_class = OneviewSDK::API200::StoragePool
 # storage_pool_class = OneviewSDK::API300::C7000::StoragePool
 # storage_pool_class = OneviewSDK::API300::Synergy::StoragePool
 # storage_pool_class = OneviewSDK::API500::C7000::StoragePool
