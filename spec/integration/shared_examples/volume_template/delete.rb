@@ -17,8 +17,7 @@ RSpec.shared_examples 'VolumeTemplateDeleteExample' do |context_name|
       item = OneviewSDK::VolumeTemplate.new(current_client, name: VOL_TEMP_NAME)
       item.retrieve!
       expect { item.delete }.not_to raise_error
-      item = described_class.find_by(current_client, name: VOL_TEMP_NAME)
-      expect(item).to be_empty
+      expect(item.retrieve!).to eq(false)
     end
   end
 end

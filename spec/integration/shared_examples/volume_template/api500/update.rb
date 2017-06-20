@@ -47,9 +47,6 @@ RSpec.shared_examples 'VolumeTemplateUpdateExample API500' do
         expect { item.update }.not_to raise_error
         item.refresh
         expect(item.locked?(:isShareable)).to eq(true)
-
-        # item['properties']['isShareable']['title'] = 'New title is Shareable'
-        # expect { item.update }.to raise_error
       end
     end
 
@@ -60,11 +57,6 @@ RSpec.shared_examples 'VolumeTemplateUpdateExample API500' do
         expect { item.update }.not_to raise_error
         item.refresh
         expect(item.locked?(:isShareable)).to eq(false)
-
-        # item['properties']['isShareable']['title'] = 'Is Shareable?'
-        # expect { item.update }.not_to raise_error
-        # item.refresh
-        # expect(item['properties']['isShareable']['title']).to eq('Is Shareable?')
       end
     end
   end
