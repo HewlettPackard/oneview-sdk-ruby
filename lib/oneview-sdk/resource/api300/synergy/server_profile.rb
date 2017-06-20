@@ -79,7 +79,7 @@ module OneviewSDK
         #   The internal hashes may contain:
         #   - 'name' [String] name of the attribute
         #   - 'value' [String] value of the attribute
-        def set_os_deployment_setttings(os_deployment_plan, custom_attributes = [])
+        def set_os_deployment_settings(os_deployment_plan, custom_attributes = [])
           os_deployment_plan.ensure_uri
           @data['osDeploymentSettings'] ||= {}
           @data['osDeploymentSettings']['osDeploymentPlanUri'] = os_deployment_plan['uri']

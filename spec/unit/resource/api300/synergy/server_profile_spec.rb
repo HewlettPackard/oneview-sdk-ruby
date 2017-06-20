@@ -493,14 +493,14 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
     end
   end
 
-  describe '#set_os_deployment_setttings' do
+  describe '#set_os_deployment_settings' do
     let(:os_deployment_plan) { OneviewSDK::API300::Synergy::OSDeploymentPlan.new(@client_300, uri: '/os-deployment-plan/1') }
 
     it 'should pupulate osDeploymentSettings attribute correctly' do
       custom_attrs = [{ name: 'field.one', value: 'value1' }, { name: 'field.two', value: 'value2' }]
       expect(@item['osDeploymentSettings']).not_to be
 
-      @item.set_os_deployment_setttings(os_deployment_plan, custom_attrs)
+      @item.set_os_deployment_settings(os_deployment_plan, custom_attrs)
 
       expected_settings = { 'osDeploymentPlanUri' => '/os-deployment-plan/1', 'osCustomAttributes' => custom_attrs }
       expect(@item['osDeploymentSettings']).to eq(expected_settings)
@@ -512,7 +512,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
         settings = { 'osDeploymentPlanUri' => '/fake/uri', 'osCustomAttributes' => custom_attrs }
         @item['osDeploymentSettings'] = settings
 
-        @item.set_os_deployment_setttings(os_deployment_plan, [{ name: 'new_name', value: 'new_value' }])
+        @item.set_os_deployment_settings(os_deployment_plan, [{ name: 'new_name', value: 'new_value' }])
 
         expected_settings = { 'osDeploymentPlanUri' => '/os-deployment-plan/1', 'osCustomAttributes' => [{ name: 'new_name', value: 'new_value' }] }
         expect(@item['osDeploymentSettings']).to eq(expected_settings)
@@ -522,7 +522,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
     context 'when os_deployment_plan has not URI' do
       it 'should throw IncompleteResource error' do
         wrong_os_deployment_plan = OneviewSDK::API300::Synergy::OSDeploymentPlan.new(@client_300)
-        expect { @item.set_os_deployment_setttings(wrong_os_deployment_plan) }
+        expect { @item.set_os_deployment_settings(wrong_os_deployment_plan) }
           .to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute*/)
       end
     end
