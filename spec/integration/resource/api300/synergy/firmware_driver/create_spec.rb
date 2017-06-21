@@ -13,24 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::FirmwareDriver
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration api300 context'
-
-  describe '#create' do
-    it 'Create custom spp (it will fail if the applicance does not have a valid spp and hotfix)' do
-      spp = klass.find_by($client_300_synergy, state: 'Created', bundleType: 'SPP').first
-      hotfix = klass.find_by($client_300_synergy, state: 'Created', bundleType: 'Hotfix').first
-      expect(spp['uri']).to be
-      expect(hotfix['uri']).to be
-      custom = klass.new($client_300_synergy)
-      custom['baselineUri'] = spp['uri']
-      custom['hotfixUris'] = [
-        hotfix['uri']
-      ]
-      custom['customBaselineName'] = FIRMWARE_DRIVER1_NAME
-
-      expect { custom.create }.not_to raise_error
-      expect(custom['uri']).to include(FIRMWARE_DRIVER1_NAME)
-    end
-  end
-
+  let(:current_client) { $client_300_synergy }
+  include_examples 'FirmwareDriverCreateExample', 'integration api300 context'
 end

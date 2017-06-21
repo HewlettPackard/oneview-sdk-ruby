@@ -35,7 +35,8 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @storage_system_ip = '172.18.11.11'
 # @storage_system_username = 'Administrator'
 # @storage_system_password = 'password123'
-# @firmware_bundle_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
+# @firmware_bundle_spp_path = 'custom-spp-c7000.iso'
+# @firmware_bundle_hotfix_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
 # @sas_interconnect_type = 'Synergy 12Gb SAS Connection Module'
 # @synergy_enclosure_hostname = 'fe80::2:0:9:1%eth2'
 # @interconnect_name = '0000A66101, interconnect 3'
@@ -44,3 +45,4 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @logical_switch_ssh_user = "dcs"
 # @logical_switch_ssh_password = "dcs"
 # @logical_switch_community_string = "public"
+# @logical_interconnect_name = 'Encl1-LogicalInterconnectGroup_1'
