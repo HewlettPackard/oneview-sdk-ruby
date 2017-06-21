@@ -236,6 +236,7 @@ SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
 
 # USER
 USER_NAME = 'TestUser'.freeze
+FULL_NAME = 'Test User'.freeze
 
 # OS Deployment Plan
 OS_DEPLOYMENT_PLAN_NAME = 'HPE - Developer 1.0 - Deployment Test (UEFI)'.freeze
