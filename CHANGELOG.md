@@ -34,6 +34,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Storage System
    - Switches
    - Unmanaged Devices
+   - Uplink Set
    - User
 
 #### Breaking changes

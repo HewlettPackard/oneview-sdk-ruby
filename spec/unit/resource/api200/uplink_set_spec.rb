@@ -60,4 +60,14 @@ RSpec.describe OneviewSDK::UplinkSet do
     end
   end
 
+  describe '#get_unassigned_ports' do
+    it 'gets the unassigned uplink ports' do
+      item = OneviewSDK::UplinkSet.new(@client_200, uri: '/rest/fake')
+      fake_response = FakeResponse.new
+      expect(@client_200).to receive(:rest_post)
+        .with('/rest/uplink-sets/unassignedUplinkPorts', { 'body' => item.data }, 200).and_return(fake_response)
+      expect(@client_200).to receive(:response_handler).with(fake_response).and_return('members' => ['any'])
+      expect(item.get_unassigned_ports).to match_array(['any'])
+    end
+  end
 end
