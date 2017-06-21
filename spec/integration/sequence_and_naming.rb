@@ -136,6 +136,7 @@ UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
 UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
 UPLINK_SET3_NAME = 'FCUplinkSet_2'.freeze
 UPLINK_SET4_NAME = 'EthernetUplinkSet_2'.freeze
+UPLINK_SET5_NAME = 'FCUplinkSet_3'.freeze
 
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
@@ -236,6 +237,10 @@ SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
 
 # USER
 USER_NAME = 'TestUser'.freeze
+FULL_NAME = 'Test User'.freeze
 
 # OS Deployment Plan
 OS_DEPLOYMENT_PLAN_NAME = 'HPE - Developer 1.0 - Deployment Test (UEFI)'.freeze
+
+# Server Hardware
+SERVER_HARDWARE_NAME = '0000A66101, bay 3'.freeze

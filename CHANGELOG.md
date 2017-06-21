@@ -12,6 +12,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Fabric
    - FC Network
    - FCoE Network
+   - Firmware Bundle
    - Firmware Driver
    - Interconnect
    - Internal Link Set
@@ -29,11 +30,14 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - SAS Logical Interconnect
    - SAS Logical Interconnect Group
    - Scopes
+   - Server Hardware
    - Server Hardware Type
    - Storage Pool
    - Storage System
    - Switches
    - Unmanaged Devices
+   - Uplink Set
+   - User
 
 #### Breaking changes
 1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.

@@ -95,4 +95,26 @@ RSpec.describe klass do
       expect(@res['roles']).to eq(['Network administrator']) # After
     end
   end
+
+  describe '#validate_user_name' do
+    it 'validates an user by user name' do
+      user_name = 'userName'
+      fake_response = FakeResponse.new
+      expect(@client_200).to receive(:rest_post).with("#{klass::BASE_URI}/validateLoginName/#{user_name}")
+        .and_return(fake_response)
+      expect(@client_200).to receive(:response_handler).with(fake_response).and_return(true)
+      expect(klass.validate_user_name(@client_200, user_name)).to eq(true)
+    end
+  end
+
+  describe '#validate_full_name' do
+    it 'validates an user by full name' do
+      full_name = 'fullName'
+      fake_response = FakeResponse.new
+      expect(@client_200).to receive(:rest_post).with("#{klass::BASE_URI}/validateUserName/#{full_name}")
+        .and_return(fake_response)
+      expect(@client_200).to receive(:response_handler).with(fake_response).and_return(true)
+      expect(klass.validate_full_name(@client_200, full_name)).to eq(true)
+    end
+  end
 end
