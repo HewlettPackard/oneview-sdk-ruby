@@ -92,11 +92,6 @@ uplink.update
 uplink.retrieve!
 puts "\nNetwork removed successfully! \nNetworks: #{uplink['networkUris']}"
 
-uplink['networkUris'].each do |nw|
-
-
-end
-
 puts "\nDeleting UplinkSet ..."
 uplink.delete
 puts "\nUplinkSet deleted successfully!" unless uplink.retrieve!
