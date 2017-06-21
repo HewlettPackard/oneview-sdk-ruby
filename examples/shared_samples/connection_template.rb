@@ -43,7 +43,7 @@ end
 conn_name = connections.first['name']
 
 puts "\nFinding a connection template by name. Name: #{conn_name}"
-item = OneviewSDK::ConnectionTemplate.find_by(@client, name: conn_name).first
+item = conn_template_class.find_by(@client, name: conn_name).first
 puts "\nConnection template with name='#{item['name']}' bandwidth specification is:"
 puts "(- maximumBandwidth: #{item['bandwidth']['maximumBandwidth']})"
 puts "(- typicalBandwidth: #{item['bandwidth']['typicalBandwidth']})\n"

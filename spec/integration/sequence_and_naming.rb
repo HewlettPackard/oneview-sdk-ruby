@@ -15,7 +15,7 @@ class Hash
 end
 
 DEPENDENCIES = {
-  ConnectionTemplate: [],
+  ConnectionTemplate: [:EthernetNetwork],
   Datacenter: [:Rack],
   DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
