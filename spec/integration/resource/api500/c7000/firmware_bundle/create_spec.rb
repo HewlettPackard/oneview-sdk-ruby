@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,11 +11,11 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::FirmwareBundle
+klass = OneviewSDK::API500::C7000::FirmwareBundle
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
+  let(:current_client) { $client_500 }
   let(:bundle_path) { $secrets['bundle_path'] }
   let(:spp_path) { $secrets['spp_path'] }
 
-  include_examples 'FirmwareBundleCreateExample', 'integration api300 context'
+  include_examples 'FirmwareBundleCreateExample', 'integration api500 context'
 end
