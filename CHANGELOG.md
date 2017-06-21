@@ -39,6 +39,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Unmanaged Devices
    - Uplink Set
    - User
+   - Volume Templates
 
 #### Breaking changes
 1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
