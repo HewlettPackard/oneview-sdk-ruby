@@ -1,3 +1,8 @@
+## v4.5.1 (New Release)
+
+#### Bug fixes & Enhancements
+- [#241](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/241) Wrong method name in Server Profile
+
 ## v4.5.0
 
 #### New Resources:
