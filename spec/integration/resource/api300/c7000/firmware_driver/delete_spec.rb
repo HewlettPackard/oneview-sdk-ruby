@@ -13,22 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::FirmwareDriver
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
-
-  describe '#remove' do
-    it 'deletes the resource (it will fail if the applicance does not have a valid spp and hotfix)' do
-      firmware = klass.new($client_300, name: FIRMWARE_DRIVER1_NAME)
-
-      expect(firmware.retrieve!).to eq(true)
-      expect { firmware.remove }.not_to raise_error
-      expect(firmware.retrieve!).to eq(false)
-    end
-
-    it 'deletes other drivers' do
-      klass.find_by($client_300, {}).each do |driver|
-        expect { driver.remove }.not_to raise_error
-        expect(driver.retrieve!).to eq(false)
-      end
-    end
-  end
+  let(:current_client) { $client_300 }
+  include_examples 'FirmwareDriverDeleteExample', 'integration api300 context'
 end
