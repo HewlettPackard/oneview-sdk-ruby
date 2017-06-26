@@ -19,5 +19,12 @@ RSpec.shared_examples 'WebServerCertificateUpdateExample' do |context_name|
     end
   end
 
-  # TODO: implement the method #import test, occurs error when test it
+  describe '#import' do
+    it 'should import the certificate [IT\'S FAILLING]' do
+      item = described_class.new(current_client)
+      expect(item.retrieve!).to eq(true)
+      item2 = described_class.new(current_client, base64Data: item['base64Data'], type: 'CertificateDataV2')
+      expect { item2.import }.not_to raise_error
+    end
+  end
 end
