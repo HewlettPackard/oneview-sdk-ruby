@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::PowerDevice
+klass = OneviewSDK::API500::C7000::PowerDevice
 RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_300 }
+  let(:current_client) { $client_500 }
   let(:current_secrets) { $secrets }
-  include_examples 'PowerDeviceUpdateExample', 'integration api300 context'
+  include_examples 'PowerDeviceUpdateExample', 'integration api500 context'
 end

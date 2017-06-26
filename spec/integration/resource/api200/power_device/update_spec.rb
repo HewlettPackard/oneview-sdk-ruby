@@ -12,48 +12,7 @@
 require 'spec_helper'
 
 RSpec.describe OneviewSDK::PowerDevice, integration: true, type: UPDATE do
-  include_context 'integration context'
-
-  before :all do
-    @ipdu_list = OneviewSDK::PowerDevice.find_by($client, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
-    @item = @ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
-  end
-
-  describe '#update' do
-    it 'Change name' do
-      name = @item['name']
-      @item.update(name: 'PowerDevice_Name_Updated')
-      expect(@item['name']).to eq('PowerDevice_Name_Updated')
-      @item.refresh
-      @item.update(name: name)
-    end
-  end
-
-  describe '#set_refresh_state' do
-    it 'Refresh without changing credentials' do
-      expect { @item.set_refresh_state(refreshState: 'RefreshPending') }.not_to raise_error
-    end
-
-    it 'Refresh with new credentials' do
-      options = {
-        refreshState: 'RefreshPending',
-        username: $secrets['hp_ipdu_username'],
-        password: $secrets['hp_ipdu_password']
-      }
-      expect { @item.set_refresh_state(options) }.not_to raise_error
-    end
-  end
-
-  describe '#set_power_state' do
-    it 'On|off state on a device that supports this operation' do
-      power_device = @ipdu_list.reject { |ipdu| ipdu['model'] != 'Managed Ext. Bar Outlet' }.first
-      expect { power_device.set_power_state('On') }.not_to raise_error
-    end
-  end
-
-  describe '#set_uid_state' do
-    it 'On|off' do
-      expect { @item.set_uid_state('On') }.not_to raise_error
-    end
-  end
+  let(:current_client) { $client }
+  let(:current_secrets) { $secrets }
+  include_examples 'PowerDeviceUpdateExample', 'integration context'
 end

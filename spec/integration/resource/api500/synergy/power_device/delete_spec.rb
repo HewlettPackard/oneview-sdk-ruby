@@ -9,25 +9,11 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../_client' # Gives access to @client
+require 'spec_helper'
 
-# iPDU information
-options = {
-  username: @ipdu_username,
-  password: @ipdu_password,
-  hostname: @ipdu_hostname
-}
-
-# iPDU Discover
-ipdu = OneviewSDK::PowerDevice.discover(@client, options)
-puts "IPDU #{ipdu['name']} was sucessfully discovered!"
-
-# List iPDU power connections
-puts "\nPower connections for #{ipdu1['name']}:"
-ipdu1['powerConnections'].each do |connection|
-  puts "- Power connection uri='#{connection['connectionUri']}'"
+klass = OneviewSDK::API500::Synergy::PowerDevice
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  let(:current_client) { $client_500_synergy }
+  let(:current_secrets) { $secrets_synergy }
+  include_examples 'PowerDeviceDeleteExample', 'integration api500 context'
 end
-
-# Deletes power device
-ipdu1.remove
-puts "\nPower Device was sucessfully removed."
