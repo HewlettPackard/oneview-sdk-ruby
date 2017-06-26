@@ -6,14 +6,14 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, binding.pryeither express or implied. See the License for the specific
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
 require 'spec_helper'
 
-klass = OneviewSDK::API300::C7000::PowerDevice
-RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_300 }
-  let(:current_secrets) { $secrets }
-  include_examples 'PowerDeviceUpdateExample', 'integration api300 context'
+klass = OneviewSDK::API500::Synergy::PowerDevice
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  let(:current_secrets) { $secrets_synergy }
+  include_examples 'PowerDeviceCreateExample', 'integration api500 context'
 end
