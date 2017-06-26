@@ -18,13 +18,11 @@ require_relative '../_client' # Gives access to @client
 # - 200, 300, 500
 
 # Resources classes that you can use for Web Server Certificate in this example:
-# volume_template_class = OneviewSDK::API200::WebServerCertificate
-# volume_template_class = OneviewSDK::API300::C7000::WebServerCertificate
-# volume_template_class = OneviewSDK::API300::Synergy::WebServerCertificate
-# volume_template_class = OneviewSDK::API500::C7000::WebServerCertificate
-# volume_template_class = OneviewSDK::API500::Synergy::WebServerCertificate
-
-# Resource Class used in this sample
+# web_certificate_class = OneviewSDK::API200::WebServerCertificate
+# web_certificate_class = OneviewSDK::API300::C7000::WebServerCertificate
+# web_certificate_class = OneviewSDK::API300::Synergy::WebServerCertificate
+# web_certificate_class = OneviewSDK::API500::C7000::WebServerCertificate
+# web_certificate_class = OneviewSDK::API500::Synergy::WebServerCertificate
 web_certificate_class = OneviewSDK.resource_named('WebServerCertificate', @client.api_version)
 
 item = web_certificate_class.new(@client)

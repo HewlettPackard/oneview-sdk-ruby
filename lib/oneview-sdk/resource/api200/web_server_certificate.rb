@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-    # Client certificate resource implementation
+    # Web Server Certificate certificate resource implementation
     class WebServerCertificate < Resource
       BASE_URI = '/rest/certificates/https'.freeze
 
@@ -48,6 +48,10 @@ module OneviewSDK
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @param [String] address The hostname or IP address
       # @param [Hash] options The header options of request (key-value pairs)
+      # @option options [String] :requestername Used to identify requester to allow querying of proper trust store.
+      #   Default value is "DEFAULT". List of valid input values are { "DEFAULT", "AUTHN", "RABBITMQ", "ILOOA" }.
+      # @option options [String] :Accept-Language The language code requested in the response.
+      #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
       # @return [Boolean] Whether or not retrieve was successful
       # @return [WebServerCertificate] the resource
       def self.get_certificate(client, address, options = { 'requestername' => 'DEFAULT' })
