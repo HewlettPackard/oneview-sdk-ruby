@@ -37,6 +37,11 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @storage_system_password = 'password123'
 # @firmware_bundle_spp_path = 'custom-spp-c7000.iso'
 # @firmware_bundle_hotfix_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
+# @store_virtual_ip = "172.18.30.1",
+# @store_virtual_user = "dcs",
+# @store_virtual_password = "dcs",
+# @unmanaged_volume_wwn = 'DC:72:02:07:87:00:10:00:30:71:49:79:72:48:86:60'
+# @firmware_bundle_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
 # @sas_interconnect_type = 'Synergy 12Gb SAS Connection Module'
 # @synergy_enclosure_hostname = 'fe80::2:0:9:1%eth2'
 # @interconnect_name = '0000A66101, interconnect 3'
