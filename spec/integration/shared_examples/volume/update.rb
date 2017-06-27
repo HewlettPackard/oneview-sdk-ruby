@@ -13,12 +13,9 @@ RSpec.shared_examples 'VolumeUpdateExample' do |context_name|
   include_context context_name
 
   let(:item) { described_class.find_by(current_client, name: VOLUME2_NAME).first }
-  let(:namespace) { described_class.to_s[0, described_class.to_s.rindex('::')] }
-  let(:storage_system) { Object.const_get("#{namespace}::StorageSystem").get_all(current_client).first }
-  let(:storage_pool) { Object.const_get("#{namespace}::StoragePool").get_all(current_client).first }
-  let(:vol_template) do
-    Object.const_get("#{namespace}::VolumeTemplate").find_by(current_client, name: VOL_TEMP_NAME).first
-  end
+  let(:storage_system) { resource_class_of('StorageSystem').get_all(current_client).first }
+  let(:storage_pool) { resource_class_of('StoragePool').get_all(current_client).first }
+  let(:vol_template) { resource_class_of('VolumeTemplate').find_by(current_client, name: VOL_TEMP_NAME).first }
 
   describe '#update' do
     it 'updating the volume name' do

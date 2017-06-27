@@ -12,14 +12,13 @@
 RSpec.shared_examples 'VolumeCreateExample' do |context_name|
   include_context context_name
 
-  let(:namespace) { described_class.to_s[0, described_class.to_s.rindex('::')] }
-  let(:storage_system_class) { Object.const_get("#{namespace}::StorageSystem") }
+  let(:storage_system_class) { resource_class_of('StorageSystem') }
   let(:storage_system) { storage_system_class.find_by(current_client, credentials: { ip_hostname: storage_system_ip }).first }
   let(:storage_pool) do
     data = { name: STORAGE_POOL_NAME, storageSystemUri: storage_system['uri'] }
-    Object.const_get("#{namespace}::StoragePool").find_by(current_client, data).first
+    resource_class_of('StoragePool').find_by(current_client, data).first
   end
-  let(:vol_template) { Object.const_get("#{namespace}::VolumeTemplate").find_by(current_client, name: VOL_TEMP_NAME).first }
+  let(:vol_template) { resource_class_of('VolumeTemplate').find_by(current_client, name: VOL_TEMP_NAME).first }
   let(:options) do
     {
       description: 'Integration test volume',

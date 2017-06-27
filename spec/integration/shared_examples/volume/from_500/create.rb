@@ -13,18 +13,18 @@ RSpec.shared_examples 'From500VolumeCreateExample' do |context_name|
   include_context context_name
 
   let(:namespace) { described_class.to_s[0, described_class.to_s.rindex('::')] }
-  let(:storage_system_class) { Object.const_get("#{namespace}::StorageSystem") }
+  let(:storage_system_class) { resource_class_of('StorageSystem') }
   let(:storage_system) { storage_system_class.find_by(current_client, hostname: storage_system_ip).first }
   let(:storage_pool) do
     data = { name: STORAGE_POOL_NAME, storageSystemUri: storage_system['uri'] }
-    Object.const_get("#{namespace}::StoragePool").find_by(current_client, data).first
+    resource_class_of('StoragePool').find_by(current_client, data).first
   end
   let(:storage_virtual) { storage_system_class.find_by(current_client, hostname: storage_virtual_ip).first }
   let(:storage_virtual_pool) do
     data = { storageSystemUri: storage_virtual['uri'] }
-    Object.const_get("#{namespace}::StoragePool").find_by(current_client, data).first
+    resource_class_of('StoragePool').find_by(current_client, data).first
   end
-  let(:volume_template_class) { Object.const_get("#{namespace}::VolumeTemplate") }
+  let(:volume_template_class) { resource_class_of('VolumeTemplate') }
   let(:vol_template) { volume_template_class.new(current_client, name: VOL_TEMP_NAME) }
   let(:vol_template_virtual) { volume_template_class.new(current_client, name: VOL_TEMP_VIRTUAL_NAME) }
 
