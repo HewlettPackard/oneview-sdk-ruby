@@ -16,14 +16,30 @@ RSpec.shared_examples 'VolumeTemplateCreateExample API500' do
       description: 'The volume template for test (with level user)'
     }
   end
-  let(:storage_pool) { resource_class_of('StoragePool').get_all(current_client).find { |i| i['isManaged'] } }
-  let(:root_template) { described_class.get_all(current_client).first }
+
+  let(:item2_attributes) do
+    {
+      name: VOL_TEMP_VIRTUAL_NAME,
+      description: 'The volume template for test (with level user)'
+    }
+  end
+  let(:storage_pool) do
+    storage_system = resource_class_of('StorageSystem').find_by(current_client, hostname: storage_system_ip).first
+    resource_class_of('StoragePool').find_by(current_client, storageSystemUri: storage_system['uri'], isManaged: true).first
+  end
+  let(:storage_virtual_pool) do
+    storage_virtual = resource_class_of('StorageSystem').find_by(current_client, hostname: storage_virtual_ip).first
+    resource_class_of('StoragePool').find_by(current_client, storageSystemUri: storage_virtual['uri'], isManaged: true).first
+  end
+  let(:root_template) { described_class.find_by(current_client, isRoot: true, family: 'StoreServ').first }
+  let(:root_virtual_template) { described_class.find_by(current_client, isRoot: true, family: 'StoreVirtual').first }
 
   describe '#create' do
-    it 'should create the resource' do
+    it 'should create the resource - Store Serv' do
       item = described_class.new(current_client, item_attributes)
       item.set_root_template(root_template)
       item.set_default_value('storagePool', storage_pool)
+      item.set_default_value('snapshotPool', storage_pool)
       expect { item.create }.not_to raise_error
       expect(item.retrieve!).to eq(true)
       expect(item['name']).to eq(item_attributes[:name])
@@ -31,6 +47,19 @@ RSpec.shared_examples 'VolumeTemplateCreateExample API500' do
       expect(item.get_default_value('storagePool')).to eq(storage_pool['uri'])
       expect(item['storagePoolUri']).to eq(storage_pool['uri'])
       expect(item['rootTemplateUri']).to eq(root_template['uri'])
+    end
+
+    it 'should create the resource - Store Virtual' do
+      item = described_class.new(current_client, item2_attributes)
+      item.set_root_template(root_virtual_template)
+      item.set_default_value('storagePool', storage_virtual_pool)
+      expect { item.create }.not_to raise_error
+      expect(item.retrieve!).to eq(true)
+      expect(item['name']).to eq(item2_attributes[:name])
+      expect(item['description']).to eq(item2_attributes[:description])
+      expect(item.get_default_value('storagePool')).to eq(storage_virtual_pool['uri'])
+      expect(item['storagePoolUri']).to eq(storage_virtual_pool['uri'])
+      expect(item['rootTemplateUri']).to eq(root_virtual_template['uri'])
     end
   end
 
