@@ -4,6 +4,7 @@
 
 #### Features supported
 This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
+   - Connection Template
    - Datacenter
    - Drive Enclosure
    - Enclosure
@@ -12,6 +13,8 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Fabric
    - FC Network
    - FCoE Network
+   - Firmware Bundle
+   - Firmware Driver
    - Interconnect
    - Internal Link Set
    - Logical Downlink
@@ -34,7 +37,10 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Storage System
    - Switches
    - Unmanaged Devices
+   - Uplink Set
+   - User
    - Volume
+   - Volume Templates
 
 #### Breaking changes
 1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
