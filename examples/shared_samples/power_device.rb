@@ -63,24 +63,24 @@ item = power_device_class.new(@client, name: 'Power_Device_1', ratedCapacity: 50
 puts "\nAdding a power device with default values with name #{item['name']}."
 item.add
 item.retrieve!
-puts "\nPower device  added sucessfully with name #{item['name']} and uri #{item['uri']}."
+puts "\nPower device  added successfully with name #{item['name']} and uri #{item['uri']}."
 
 # Gets utilization data
 puts "\nGets utilization for Power Device with name \n #{item['name']}."
 item = power_device_class.find_by(@client, {}).first
 item.utilization
-puts "\nUtilization for Power Device with name \n #{item['name']} sucessfully."
+puts "\nUtilization for Power Device with name \n #{item['name']} successfully."
 
 # Updating the Power Device
 new_name = 'PowerDevice_Name_Updated'
 puts "\nUpdating a Power Device with name #{item['name']} for a new name #{new_name}."
 item.update(name: new_name)
-puts "\nPower Device updated sucessfully."
+puts "\nPower Device updated successfully."
 
 # Deletes power device
 puts "\nRemoving the Power Device with name #{item['name']}."
 item.remove
-puts "\nPower Device was sucessfully removed."
+puts "\nPower Device was successfully removed."
 
 has_ipdu = true
 begin
@@ -102,7 +102,7 @@ if has_ipdu
   # iPDU Discover
   puts "\nDiscovering ipdu."
   item2 = power_device_class.discover(@client, options)
-  puts "IPDU with uri #{item2['uri']} was discovered sucessfully."
+  puts "IPDU with uri #{item2['uri']} was discovered successfully."
 
   # List iPDU power connections
   puts "\nPower connections for #{item2['name']}."
@@ -121,16 +121,16 @@ if has_ipdu
   ipdu_list = power_device_class.find_by(@client, 'managedBy' => { 'hostName' => @ipdu_hostname })
   item3 = ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
   item3.set_refresh_state(options2)
-  puts "\nRefresh sucessfully."
+  puts "\nRefresh successfully."
 
   # Sets the state of Power Device
   puts "\nSets the state of Power Device."
   item4 = ipdu_list.reject { |ipdu| ipdu['model'] != 'Managed Ext. Bar Outlet' }.first
   item4.set_power_state('On')
-  puts "\nState changed sucessfully."
+  puts "\nState changed successfully."
 
   # Deletes power device
   puts "\nRemoving the Power Device with name #{item4['name']}."
   item4.remove
-  puts "\nPower Device was sucessfully removed."
+  puts "\nPower Device was successfully removed."
 end
