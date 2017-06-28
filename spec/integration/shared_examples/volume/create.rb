@@ -24,7 +24,8 @@ RSpec.shared_examples 'VolumeCreateExample' do |context_name|
       description: 'Integration test volume',
       provisioningParameters: {
         provisionType: 'Full',
-        requestedCapacity: 1024 * 1024 * 1024
+        requestedCapacity: 1024 * 1024 * 1024,
+        shareable: true
       }
     }
   end
