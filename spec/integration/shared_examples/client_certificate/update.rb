@@ -27,7 +27,11 @@ RSpec.shared_examples 'ClientCertificateUpdateExample' do |context_name|
       certificate_2 = described_class.new(current_client, aliasName: current_secrets['storage_system2_ip'])
       expect(certificate_2.retrieve!).to eq(true)
 
-      expect { described_class.replace(current_client, [certificate_1, certificate_2]) }.not_to raise_error
+      result = []
+      expect { result = described_class.replace(current_client, [certificate_1, certificate_2]) }.not_to raise_error
+      expect(result.size).to eq(2)
+      expect(result[0]['aliasName']).to eq(certificate_1['aliasName'])
+      expect(result[1]['aliasName']).to eq(certificate_2['aliasName'])
     end
   end
 end
