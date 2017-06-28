@@ -33,7 +33,7 @@ RSpec.shared_examples 'From500VolumeCreateExample' do |context_name|
       description: 'Volume store serv',
       size: 1024 * 1024 * 1024,
       provisioningType: 'Thin',
-      isShareable: false
+      isShareable: true
     }
   end
 
