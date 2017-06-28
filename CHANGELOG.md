@@ -1,6 +1,7 @@
 ## v5.0.0 (Unreleased)
 
 #### New Resources:
+This release adds support support to Oneview Rest API version 200 (only hardware variant C7000), 300 and 500 (both two for the hardware variants C7000 and Synergy) to the new features:
    - Event
 
 #### Features supported
