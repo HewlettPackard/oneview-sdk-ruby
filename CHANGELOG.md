@@ -2,8 +2,11 @@
 
 ## Suggested release: v5.0.0
 
+This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features and new resources:
+#### New Resources:
+   - Web Server Certificate
+
 #### Features supported
-This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
    - Connection Template
    - Datacenter
    - Drive Enclosure
@@ -40,7 +43,6 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Uplink Set
    - User
    - Volume Templates
-   - Web Server Certificate
 
 #### Breaking changes
 1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
