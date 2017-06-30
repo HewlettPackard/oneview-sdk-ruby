@@ -237,7 +237,7 @@ module OneviewSDK
 
     # Builds a http object using the data given
     def build_http_object(uri)
-      http = Net::HTTP.new(uri.host, uri.port)
+      http = Net::HTTP.new(uri.hostname, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
       if @ssl_enabled
         http.cert_store = @cert_store if @cert_store
