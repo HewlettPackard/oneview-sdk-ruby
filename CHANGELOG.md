@@ -2,8 +2,11 @@
 
 ## Suggested release: v5.0.0
 
+This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features and new resources:
+#### New Resources:
+   - Web Server Certificate
+
 #### Features supported
-This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
    - Connection Template
    - Datacenter
    - Drive Enclosure
