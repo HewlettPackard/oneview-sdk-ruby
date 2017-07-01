@@ -12,7 +12,7 @@ The OneView SDK provides a Ruby library to easily interact with HPE OneView and 
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk', '~> 4.3'
+  gem 'oneview-sdk', '~> 4.5'
   ```
 
   Then run `$ bundle install`

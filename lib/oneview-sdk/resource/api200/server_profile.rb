@@ -148,6 +148,7 @@ module OneviewSDK
       #   The value can be 'Undefined', 'Reserved', or 'Deployed'.
       # @option connection_options [String] 'functionType' Type of function required for the connection.
       #   functionType cannot be modified after the connection is created.
+      # @option connection_options [String] 'id' Unique identifier for this connection. Defaults to 0 (auto).
       # @option connection_options [String] 'mac' The MAC address that is currently programmed on the FlexNic.
       # @option connection_options [String] 'macType' Specifies the type of MAC address to be programmed into the IO Devices.
       #   The value can be 'Virtual', 'Physical' or 'UserDefined'.
@@ -165,7 +166,7 @@ module OneviewSDK
       #   The value can be 'Virtual', 'Physical' or 'UserDefined'.
       def add_connection(network, connection_options = {})
         self['connections'] = [] unless self['connections']
-        connection_options['id'] = 0 # Letting OneView treat the ID registering
+        connection_options['id'] ||= 0 unless connection_options[:id] # Letting OneView treat the ID registering
         connection_options['networkUri'] = network['uri'] if network['uri'] || network.retrieve!
         self['connections'] << connection_options
       end

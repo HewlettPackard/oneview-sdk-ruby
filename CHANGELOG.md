@@ -1,3 +1,25 @@
+## v4.5.1
+
+#### Bug fixes & Enhancements
+- [#241](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/241) Wrong method name in Server Profile
+
+## v4.5.0
+
+#### New Resources:
+   - Event
+   - ID Pools
+
+#### Bug fixes & Enhancements
+- [#235](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/235) Example file for Synergy LIG fails with 'Interconnect type or Logical Downlink not found!'
+
+
+## v4.4.0
+
+#### Bug fixes & Enhancements
+- [#216](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/216) Missing support for Q ports in API300::Synergy::LIGUplinkSet, missing support for multiple Synergy frames
+- [#228](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/228) Method add_uplink for LIG Uplinks Set does not work with Q ports nor integer ports
+- [#231](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/#231) Support id in ServerProfile#add_connection
+
 ## v4.3.0
 
 #### New Features:
