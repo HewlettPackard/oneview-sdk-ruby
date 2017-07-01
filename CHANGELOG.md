@@ -1,3 +1,8 @@
+## v4.5.2 (new release)
+
+#### Bug fixes & Enhancements
+- [#244](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/244) OneviewSDK::Rest can't properly handle IPv6 addresses
+
 ## v4.5.1
 
 #### Bug fixes & Enhancements
