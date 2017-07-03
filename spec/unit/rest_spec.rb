@@ -31,6 +31,10 @@ RSpec.describe OneviewSDK::Client do
       expect { @client_200.rest_api(:get, path) }.to raise_error(OpenSSL::SSL::SSLError)
     end
 
+    it 'raises an error when invalid path is supplied' do
+      expect { @client_200.rest_api(:get, '/invalid_uri%') }.to raise_error(OneviewSDK::InvalidRequest, /Invalid path/)
+    end
+
     it 'respects the client.timeout value' do
       client = OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'secret123', timeout: 5)
       expect_any_instance_of(Net::HTTP).to receive(:read_timeout=).with(5).and_call_original

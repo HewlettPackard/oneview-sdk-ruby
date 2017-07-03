@@ -238,7 +238,6 @@ module OneviewSDK
 
     # Prepare host/request info according to given data
     def prepare_request_info(path)
-      path = URI.escape(path)
       begin
         URI.parse(path)
       rescue URI::InvalidURIError
@@ -254,7 +253,7 @@ module OneviewSDK
         host = @hostname
         port = @port.to_i # forcibly convert to integer
       end
-      { host: host, port: port, use_ssl: use_ssl, path: path }
+      { host: host, port: port, use_ssl: use_ssl, path: URI.escape(path) }
     end
 
     # Builds a http object using the data given
