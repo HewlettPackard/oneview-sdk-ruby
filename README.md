@@ -30,7 +30,9 @@ The OneView client has a few configuration options, which you can pass in during
 # Create a OneView client object:
 require 'oneview-sdk'
 client = OneviewSDK::Client.new(
-  url: 'https://oneview.example.com',
+  url: 'https://oneview.example.com', # Set EITHER this or the hostname & port
+  hostname: 'oneview.example.com',
+  port: 443,
   user: 'Administrator',              # This is the default
   password: 'secret123',
   token: 'xxxx...',                   # Set EITHER this or the user & password
@@ -82,6 +84,8 @@ You can also set many of the client attributes using environment variables. To s
 ```bash
 # OneView client options:
 export ONEVIEWSDK_URL='https://oneview.example.com'
+export ONEVIEWSDK_HOSTNAME='oneview.example.com'
+export ONEVIEWSDK_PORT=443
 export ONEVIEWSDK_DOMAIN='LOCAL'
 # You can set the token if you know it, or set the user and password to generate one:
 export ONEVIEWSDK_TOKEN='xxxx...'
