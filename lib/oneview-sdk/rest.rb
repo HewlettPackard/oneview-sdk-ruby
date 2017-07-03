@@ -243,16 +243,10 @@ module OneviewSDK
       rescue URI::InvalidURIError
         raise InvalidRequest, 'Invalid path'
       end
-      if @url
-        uri = URI.parse(@url)
-        host = uri.hostname
-        port = uri.port
-        use_ssl = uri.scheme == 'https'
-      else
-        use_ssl = @port == 443
-        host = @hostname
-        port = @port.to_i # forcibly convert to integer
-      end
+      uri = @url ? URI.parse(@url) : nil
+      host = @url ? uri.hostname : @hostname
+      port = @url ? uri.port : @port
+      use_ssl = @url ? uri.scheme == 'https' : @port == 443
       { host: host, port: port, use_ssl: use_ssl, path: URI.escape(path) }
     end
 
