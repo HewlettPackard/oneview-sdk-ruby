@@ -2,7 +2,7 @@
 
 #### Bug fixes & Enhancements
 - [#244](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/244) OneviewSDK::Rest can't properly handle IPv6 addresses
-- [#246]https://github.com/HewlettPackard/oneview-sdk-ruby/issues/246 Missing support for zone ID in IPv6 addresses
+- [#246](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/246) Missing support for zone ID in IPv6 addresses
 
 ## v4.5.1
 
