@@ -20,8 +20,26 @@ RSpec.describe OneviewSDK::Client do
       expect { OneviewSDK::Client.new(options) }.to raise_error(OneviewSDK::InvalidClient, /Must set user & password options or token/)
     end
 
+    it 'creates a client with hostname and port' do
+      options = { hostname: 'oneview.example.com', port: 443, user: 'Administrator', password: 'secret123' }
+      client = OneviewSDK::Client.new(options)
+      expect(client.hostname).to eq(options[:hostname])
+      expect(client.port).to eq(options[:port])
+    end
+
+    it 'requires hostname and port pair' do
+      options = { hostname: 'oneview.example.com', user: 'Administrator', password: 'secret123' }
+      expect { OneviewSDK::Client.new(options) }.to raise_error(OneviewSDK::InvalidClient, /Must set the url or hostname \+ port/)
+    end
+
+    it 'requires hostname and port pair' do
+      options = { port: 443, user: 'Administrator', password: 'secret123' }
+      expect { OneviewSDK::Client.new(options) }.to raise_error(OneviewSDK::InvalidClient, /Must set the url or hostname \+ port/)
+    end
+
+
     it 'requires the url attribute to be set' do
-      expect { OneviewSDK::Client.new({}) }.to raise_error(OneviewSDK::InvalidClient, /Must set the url option/)
+      expect { OneviewSDK::Client.new({}) }.to raise_error(OneviewSDK::InvalidClient, /Must set the url or hostname \+ port/)
     end
 
     it 'sets the username to "Administrator" by default' do
@@ -141,6 +159,16 @@ RSpec.describe OneviewSDK::Client do
     it 'allows the url to be re-set' do
       @client_200.url = 'https://new-url.example.com'
       expect(@client_200.url).to eq('https://new-url.example.com')
+    end
+
+    it 'allows the hostname to be re-set' do
+      @client_200.hostname = '10.10.10.10'
+      expect(@client_200.hostname).to eq('10.10.10.10')
+    end
+
+    it 'allows the port to be re-set' do
+      @client_200.port = 443
+      expect(@client_200.port).to eq(443)
     end
 
     it 'allows the user to be re-set' do

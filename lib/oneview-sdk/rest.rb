@@ -34,7 +34,7 @@ module OneviewSDK
     # @return [NetHTTPResponse] Response object
     def rest_api(type, path, options = {}, api_ver = @api_version, redirect_limit = 3)
       logger_path = @url ? "#{@url}#{path}" : "https://#{@hostname}:#{@port}#{path}"
-      @logger.debug "Making :#{type} rest call to #{logger_path}"      
+      @logger.debug "Making :#{type} rest call to #{logger_path}"
       raise InvalidRequest, 'Must specify path' unless path
       req_info = prepare_request_info(path)
       http = build_http_object(req_info[:host], req_info[:port], req_info[:use_ssl])

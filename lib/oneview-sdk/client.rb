@@ -18,8 +18,8 @@ module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
     attr_reader :max_api_version
-    attr_accessor :url, :user, :token, :password, :domain, :ssl_enabled, :api_version, \
-                  :logger, :log_level, :cert_store, :print_wait_dots, :timeout
+    attr_accessor :url, :hostname, :port, :user, :token, :password, :domain, :ssl_enabled, \
+                  :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
     include Rest
 
@@ -51,7 +51,7 @@ module OneviewSDK
       @url = options[:url] || ENV['ONEVIEWSDK_URL']
       @hostname = options[:hostname] || ENV['ONEVIEWSDK_HOSTNAME']
       @port = options[:port] || ENV['ONEVIEWSDK_PORT']
-      raise InvalidClient, 'Must set the url or hostname + port.' unless @url || (@hostname && @port)
+      raise InvalidClient, 'Must set the url or hostname + port' unless @url || (@hostname && @port)
       @max_api_version = appliance_api_version
       if options[:api_version] && options[:api_version].to_i > @max_api_version
         logger.warn "API version #{options[:api_version]} is greater than the appliance API version (#{@max_api_version})"

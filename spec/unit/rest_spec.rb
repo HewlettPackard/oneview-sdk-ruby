@@ -350,7 +350,7 @@ RSpec.describe OneviewSDK::Client do
         @client_200.cert_store = 'some_certificate'
         @client_200.timeout = 300
 
-        http = @client_200.send(:build_http_object, uri)
+        http = @client_200.send(:build_http_object, uri.hostname, uri.port, uri.scheme == 'https')
 
         expect(http.address).to eq('localhost')
         expect(http.port).to eq(1000)
@@ -368,7 +368,7 @@ RSpec.describe OneviewSDK::Client do
         uri = URI.parse('http://localhost:1000')
         @client_200.ssl_enabled = false
 
-        http = @client_200.send(:build_http_object, uri)
+        http = @client_200.send(:build_http_object, uri.hostname, uri.port, uri.scheme == 'https')
 
         expect(http.address).to eq('localhost')
         expect(http.port).to eq(1000)
