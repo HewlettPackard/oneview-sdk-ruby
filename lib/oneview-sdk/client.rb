@@ -18,8 +18,8 @@ module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
     attr_reader :max_api_version
-    attr_accessor :url, :user, :token, :password, :domain, :ssl_enabled, :api_version, \
-                  :logger, :log_level, :cert_store, :print_wait_dots, :timeout
+    attr_accessor :url, :hostname, :port, :user, :token, :password, :domain, :ssl_enabled, \
+                  :api_version, :logger, :log_level, :cert_store, :print_wait_dots, :timeout
 
     include Rest
 
@@ -30,6 +30,9 @@ module OneviewSDK
     # @option options [Symbol] :log_level (:info) Log level. Logger must define a constant with this name. ie Logger::INFO
     # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on the tasks to complete.
     # @option options [String] :url URL of OneView appliance
+    # @option options [String] :hostname IPv4, IPv6 or hostname of OneView appliance
+    # @option options [Integer] :port TCP/IP port of OneView appliance
+    #   Use the url or hostname + port (not both). The url has precedence.
     # @option options [String] :user ('Administrator') The username to use for authentication with the OneView appliance
     # @option options [String] :password (ENV['ONEVIEWSDK_PASSWORD']) The password to use for authentication with OneView appliance
     # @option options [String] :domain ('LOCAL') The name of the domain directory used for authentication
@@ -46,7 +49,9 @@ module OneviewSDK
       self.log_level = options[:log_level] || :info
       @print_wait_dots = options.fetch(:print_wait_dots, false)
       @url = options[:url] || ENV['ONEVIEWSDK_URL']
-      raise InvalidClient, 'Must set the url option' unless @url
+      @hostname = options[:hostname] || ENV['ONEVIEWSDK_HOSTNAME']
+      @port = options[:port] || ENV['ONEVIEWSDK_PORT']
+      raise InvalidClient, 'Must set the url or hostname + port' unless @url || (@hostname && @port)
       @max_api_version = appliance_api_version
       if options[:api_version] && options[:api_version].to_i > @max_api_version
         logger.warn "API version #{options[:api_version]} is greater than the appliance API version (#{@max_api_version})"

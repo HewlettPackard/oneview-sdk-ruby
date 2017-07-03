@@ -33,11 +33,12 @@ module OneviewSDK
     # @raise [OpenSSL::SSL::SSLError] if SSL validation of OneView instance's certificate failed
     # @return [NetHTTPResponse] Response object
     def rest_api(type, path, options = {}, api_ver = @api_version, redirect_limit = 3)
-      @logger.debug "Making :#{type} rest call to #{@url}#{path}"
+      logger_path = @url ? "#{@url}#{path}" : "https://#{@hostname}:#{@port}#{path}"
+      @logger.debug "Making :#{type} rest call to #{logger_path}"
       raise InvalidRequest, 'Must specify path' unless path
-      uri = URI.parse(URI.escape(@url + path))
-      http = build_http_object(uri)
-      request = build_request(type, uri, options.dup, api_ver)
+      req_info = prepare_request_info(path)
+      http = build_http_object(req_info[:host], req_info[:port], req_info[:use_ssl])
+      request = build_request(type, req_info[:path], options.dup, api_ver)
       response = http.request(request)
       @logger.debug "  Response: Code=#{response.code}. Headers=#{response.to_hash}\n  Body=#{response.body}"
       if response.class <= Net::HTTPRedirection && redirect_limit > 0 && response['location']
@@ -140,12 +141,12 @@ module OneviewSDK
         name_to_show = options['file_name'] || File.basename(file_path)
         body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
 
-        uri = URI.parse(URI.escape(@url + path))
-        http_request = build_http_object(uri)
+        req_info = prepare_request_info(path)
+        http_request = build_http_object(req_info[:host], req_info[:port], req_info[:use_ssl])
         http_request.read_timeout = timeout
 
         req = Net::HTTP::Post::Multipart.new(
-          uri.path,
+          req_info[:path],
           body_params,
           headers
         )
@@ -169,9 +170,9 @@ module OneviewSDK
     # @param [String] local_drive_path Path to save file downloaded
     # @return [Boolean] if file was downloaded
     def download_file(path, local_drive_path)
-      uri = URI.parse(URI.escape(@url + path))
-      http_request = build_http_object(uri)
-      req = build_request(:get, uri, {}, @api_version.to_s)
+      req_info = prepare_request_info(path)
+      http_request = build_http_object(req_info[:host], req_info[:port], req_info[:use_ssl])
+      req = build_request(:get, req_info[:path], {}, @api_version.to_s)
 
       http_request.start do |http|
         http.request(req) do |res|
@@ -235,10 +236,24 @@ module OneviewSDK
 
     private
 
+    # Prepare host/request info according to given data
+    def prepare_request_info(path)
+      begin
+        URI.parse(path)
+      rescue URI::InvalidURIError
+        raise InvalidRequest, 'Invalid path'
+      end
+      uri = @url ? URI.parse(@url) : nil
+      host = @url ? uri.hostname : @hostname
+      port = @url ? uri.port : @port
+      use_ssl = @url ? uri.scheme == 'https' : @port == 443
+      { host: host, port: port, use_ssl: use_ssl, path: URI.escape(path) }
+    end
+
     # Builds a http object using the data given
-    def build_http_object(uri)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true if uri.scheme == 'https'
+    def build_http_object(host, port, use_ssl)
+      http = Net::HTTP.new(host, port)
+      http.use_ssl = use_ssl
       if @ssl_enabled
         http.cert_store = @cert_store if @cert_store
       else http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -249,18 +264,18 @@ module OneviewSDK
     end
 
     # Builds a request object using the data given
-    def build_request(type, uri, options, api_ver)
+    def build_request(type, path, options, api_ver)
       case type.downcase.to_sym
       when :get
-        request = Net::HTTP::Get.new(uri.request_uri)
+        request = Net::HTTP::Get.new(path)
       when :post
-        request = Net::HTTP::Post.new(uri.request_uri)
+        request = Net::HTTP::Post.new(path)
       when :put
-        request = Net::HTTP::Put.new(uri.request_uri)
+        request = Net::HTTP::Put.new(path)
       when :patch
-        request = Net::HTTP::Patch.new(uri.request_uri)
+        request = Net::HTTP::Patch.new(path)
       when :delete
-        request = Net::HTTP::Delete.new(uri.request_uri)
+        request = Net::HTTP::Delete.new(path)
       else
         raise InvalidRequest, "Invalid rest method: #{type}. Valid methods are: get, post, put, patch, delete"
       end
