@@ -162,8 +162,11 @@ VOLUME2_NAME = 'Volume_2'.freeze
 VOLUME3_NAME = 'Volume_3'.freeze
 VOLUME4_NAME = 'Volume_4'.freeze
 VOLUME5_NAME = 'Volume_5'.freeze
+VOLUME6_NAME = 'Volume_6'.freeze
+
 VOLUME_VIRTUAL_NAME = 'Volume_Virtual_1'.freeze
 VOLUME_VIRTUAL2_NAME = 'Volume_Virtual_2'.freeze
+
 VOL_SNAPSHOT_NAME = 'snapshot_qa'.freeze
 VOL_SNAPSHOT2_NAME = 'snapshot_qa_2'.freeze
 
@@ -195,7 +198,12 @@ SERVER_PROFILE_WITH_OSDP_NAME = 'ServerProfile_OSDP'.freeze
 
 # Server Profile Template
 SERVER_PROFILE_TEMPLATE_NAME = 'ServerProfileTemplate_1'.freeze
-SERVER_PROFILE_TEMPLATE_NAME_UPDATED = 'ServerProfileTemplate_1_UPDATED'.freeze
+SERVER_PROFILE_TEMPLATE2_NAME = 'ServerProfileTemplate_2'.freeze
+SERVER_PROFILE_TEMPLATE3_NAME = 'ServerProfileTemplate_3'.freeze
+SERVER_PROFILE_TEMPLATE4_NAME = 'ServerProfileTemplate_4'.freeze
+CONNECTION_NAME = 'EthernetConnection'.freeze
+CONNECTION2_NAME = 'FibreChannelConnection'.freeze
+CONNECTION3_NAME = 'FibreChannelConnection2'.freeze
 
 # Datacenter
 DATACENTER1_NAME = 'Datacenter_1'.freeze
@@ -251,3 +259,7 @@ OS_DEPLOYMENT_PLAN_NAME = 'HPE - Developer 1.0 - Deployment Test (UEFI)'.freeze
 
 # Server Hardware
 SERVER_HARDWARE_NAME = '0000A66101, bay 3'.freeze
+
+# Server Hardware Type
+SERVER_HARDWARE_TYPE_NAME = 'BL460c Gen8 1'.freeze
+SERVER_HARDWARE_TYPE2_NAME = 'SY 480 Gen9 1'.freeze
