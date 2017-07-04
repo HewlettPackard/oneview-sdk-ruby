@@ -44,20 +44,16 @@ module OneviewSDK
 
         # Deletes the resource from OneView or from Oneview and storage system
         # @param [Symbol] flag Delete storage system from Oneview only or in storage system as well.
+        #   Flags: :all = removes the volume from oneview and storage system. :oneview = removes from oneview only.
         # @raise [InvalidResource] if an invalid flag is passed.
         # @return [true] if resource was deleted successfully.
         def delete(flag = :all)
           ensure_client && ensure_uri
-          case flag
-          when :oneview
-            response = @client.rest_delete("#{@data['uri']}?suppressDeviceUpdates=true", 'If-Match' => @data['eTag'])
-            @client.response_handler(response)
-          when :all
-            response = @client.rest_delete(@data['uri'], 'If-Match' => @data['eTag'])
-            @client.response_handler(response)
-          else
-            raise InvalidResource, 'Invalid flag value, use :oneview or :all'
-          end
+          raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless flag == :oneview || flag == :all
+          uri = @data['uri']
+          uri << '?suppressDeviceUpdates=true' if flag == :oneview
+          response = @client.rest_delete(uri, 'If-Match' => @data['eTag'])
+          @client.response_handler(response)
           true
         end
 
@@ -136,7 +132,7 @@ module OneviewSDK
         # @param [String] name The name of the snapshot
         # @param [String] description The description of the snapshot
         # @return [Hash] snapshot data
-        def set_snapshot_data(name, description = nil)
+        def generate_snapshot_data(name, description = nil)
           { description: description, name: name }
         end
       end
