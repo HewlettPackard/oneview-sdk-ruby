@@ -58,7 +58,7 @@ RSpec.describe klass do
 
       it 'gets uri/script' do
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new('Content'))
-        expect(@client_300).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', @client_300.api_version)
+        expect(@client_300).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', {}, @client_300.api_version)
         expect(@item.get_script).to eq('Content')
       end
 

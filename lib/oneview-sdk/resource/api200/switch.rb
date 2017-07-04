@@ -77,7 +77,7 @@ module OneviewSDK
       # @return [Hash] Configuration parameters
       def environmental_configuration
         ensure_client && ensure_uri
-        response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
+        response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', {}, @api_version)
         @client.response_handler(response)
       end
     end

@@ -38,7 +38,7 @@ module OneviewSDK
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @return [Hash] The logical interconnect group settings
       def self.get_default_settings(client)
-        response = client.rest_get(BASE_URI + '/defaultSettings', client.api_version)
+        response = client.rest_get(BASE_URI + '/defaultSettings', {}, client.api_version)
         client.response_handler(response)
       end
 
@@ -79,7 +79,7 @@ module OneviewSDK
       # @return [Hash] The logical interconnect group settings
       def get_settings
         get_uri = @data['uri'] + '/settings'
-        response = @client.rest_get(get_uri, @api_version)
+        response = @client.rest_get(get_uri, {}, @api_version)
         @client.response_handler(response)
       end
 

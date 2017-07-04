@@ -155,7 +155,7 @@ module OneviewSDK
           uri += '&'
         end
         uri.chop! # Get rid of trailing '&' or '?'
-        response = @client.rest_get(uri, @api_version)
+        response = @client.rest_get(uri, {}, @api_version)
         @client.response_handler(response)
       end
 

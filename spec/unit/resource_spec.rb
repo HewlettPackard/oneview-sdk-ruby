@@ -402,7 +402,7 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     it 'tries to get BASE_URI/schema' do
-      expect(@client_200).to receive(:rest_get).with("#{OneviewSDK::Resource::BASE_URI}/schema", @client_200.api_version)
+      expect(@client_200).to receive(:rest_get).with("#{OneviewSDK::Resource::BASE_URI}/schema", {}, @client_200.api_version)
         .and_return(FakeResponse.new(key: 'val1', other_key: 'val2'))
       schema = OneviewSDK::Resource.schema(@client_200)
       expect(schema['key']).to eq('val1')

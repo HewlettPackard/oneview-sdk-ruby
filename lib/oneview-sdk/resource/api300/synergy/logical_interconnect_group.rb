@@ -50,7 +50,7 @@ module OneviewSDK
         # @return [Hash] The logical interconnect group settings
         def get_settings
           get_uri = @data['uri'] + '/settings'
-          response = @client.rest_get(get_uri, @api_version)
+          response = @client.rest_get(get_uri, {}, @api_version)
           @client.response_handler(response)
         end
 

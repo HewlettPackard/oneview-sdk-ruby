@@ -88,7 +88,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerHardware do
     end
 
     it 'gets uri/environmentalConfiguration' do
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', @item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', {}, @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.environmental_configuration).to eq('key' => 'val')
     end
@@ -101,26 +101,26 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerHardware do
     end
 
     it 'gets uri/utilization' do
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', @item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', {}, @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization).to eq('key' => 'val')
     end
 
     it 'takes query parameters' do
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', @item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', {}, @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(key: :val)).to eq('key' => 'val')
     end
 
     it 'takes an array for the :fields query parameter' do
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', @item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', {}, @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(fields: %w(one two three))).to eq('key' => 'val')
     end
 
     it 'converts Time query parameters' do
       t = Time.now
-      expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", @item.api_version)
+      expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", {}, @item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(startDate: t)).to eq('key' => 'val')
     end
