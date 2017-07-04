@@ -175,7 +175,7 @@ RSpec.describe OneviewSDK::ClientCertificate do
   describe '::replace' do
     it 'should call the api correctly' do
       fake_response = FakeResponse.new([{ base64Data: 'some certificate 1' }, { base64Data: 'some certificate 2' }])
-      expected_uri = described_class::BASE_URI + '?multiResource=true'
+      expected_uri = described_class::BASE_URI + '?multiResource=true&force=false'
       expected_options = {
         'requestername' => 'DEFAULT',
         'body' => [
@@ -250,7 +250,7 @@ RSpec.describe OneviewSDK::ClientCertificate do
   describe '::remove' do
     it 'should call the api correctly' do
       fake_response = FakeResponse.new
-      expected_uri = described_class::BASE_URI + '?multiResource=true&filter=hostname-Test_1&filter=hostname-Test_2'
+      expected_uri = described_class::BASE_URI + '?multiResource=true&force=false&filter=hostname-Test_1&filter=hostname-Test_2'
       expected_options = { 'requestername' => 'DEFAULT' }
       expect(@client_200).to receive(:rest_delete).with(expected_uri, expected_options).and_return(fake_response)
       described_class.remove(@client_200, ['hostname-Test_1', 'hostname-Test_2'])

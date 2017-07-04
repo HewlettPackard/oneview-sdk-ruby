@@ -45,14 +45,14 @@ module OneviewSDK
       # Gets the associated profiles
       def get_associated_profiles
         ensure_client && ensure_uri
-        response = @client.rest_get("#{@data['uri']}/associatedProfiles", @api_version)
+        response = @client.rest_get("#{@data['uri']}/associatedProfiles", {}, @api_version)
         response.body
       end
 
       # Gets the associated uplink groups
       def get_associated_uplink_groups
         ensure_client && ensure_uri
-        response = @client.rest_get("#{@data['uri']}/associatedUplinkGroups", @api_version)
+        response = @client.rest_get("#{@data['uri']}/associatedUplinkGroups", {}, @api_version)
         response.body
       end
     end

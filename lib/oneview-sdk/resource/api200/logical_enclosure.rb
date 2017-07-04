@@ -56,7 +56,7 @@ module OneviewSDK
       # @return [String] script
       def get_script
         ensure_client && ensure_uri
-        response = @client.rest_get("#{@data['uri']}/script", @api_version)
+        response = @client.rest_get("#{@data['uri']}/script", {}, @api_version)
         response.body
       end
 
