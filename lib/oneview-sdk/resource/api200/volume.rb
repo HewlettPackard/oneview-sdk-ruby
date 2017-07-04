@@ -98,7 +98,7 @@ module OneviewSDK
         else
           name = snapshot
         end
-        data = set_snapshot_data(name, description)
+        data = generate_snapshot_data(name, description)
         response = @client.rest_post("#{@data['uri']}/snapshots", { 'body' => data }, @api_version)
         @client.response_handler(response)
         true
@@ -163,17 +163,16 @@ module OneviewSDK
       # If not, first it tries to retrieve, and then verify for its existence
       # @param [OneviewSDK::Resource] resource The resource object
       # @raise [OneviewSDK::IncompleteResource] if the resource not found
-      # @return [Boolean] true if resource exists or false else
       def assure_uri(resource)
         resource.retrieve! unless resource['uri']
         raise IncompleteResource, "#{resource.class}: #{resource['name']} not found" unless resource['uri']
       end
 
-      # Sets the snapshot data
+      # Generates the snapshot data
       # @param [String] name The name of the snapshot
       # @param [String] description The description of the snapshot
       # @return [Hash] snapshot data
-      def set_snapshot_data(name, description = nil)
+      def generate_snapshot_data(name, description = nil)
         { type: 'Snapshot', description: description, name: name }
       end
     end
