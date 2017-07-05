@@ -119,11 +119,7 @@ module OneviewSDK
       # @return [Hash] snapshot data
       def get_snapshot(name)
         results = get_snapshots
-        snapshot = nil
-        results.each do |snap|
-          snapshot = snap if snap['name'] == name
-        end
-        snapshot
+        results.find { |snap| snap['name'] == name }
       end
 
       # Gets all the snapshots of this volume
@@ -163,7 +159,6 @@ module OneviewSDK
       # If not, first it tries to retrieve, and then verify for its existence
       # @param [OneviewSDK::Resource] resource The resource object
       # @raise [OneviewSDK::IncompleteResource] if the resource not found
-      # @return [Boolean] true if resource exists or false else
       def assure_uri(resource)
         resource.retrieve! unless resource['uri']
         raise IncompleteResource, "#{resource.class}: #{resource['name']} not found" unless resource['uri']

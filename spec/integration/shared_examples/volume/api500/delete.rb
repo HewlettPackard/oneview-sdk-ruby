@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-RSpec.shared_examples 'From500VolumeDeleteExample' do |context_name|
+RSpec.shared_examples 'VolumeDeleteExample API500' do |context_name|
   include_context context_name
 
   let(:vol_virtual) { described_class.find_by(current_client, name: VOLUME_VIRTUAL_NAME).first }

@@ -11,12 +11,10 @@
 
 require_relative '../_client' # Gives access to @client
 
-# Example: Create/Update/Delete volume
-# NOTE: This will create 5 volumes
 # NOTE: You'll need to add the following instance variable to the _client.rb file with valid values for your environment:
 #   @storage_system_ip
 #   @unmanaged_volume_wwn (optional)
-# NOTE: This sample is for APIs 200 and 300 only. To see sample for API 500, look at the example volume.rb in the from_500 folder.
+# NOTE: This sample is for APIs 200 and 300 only. To see sample for API 500, look at the example volume.rb in the examples/api500 folder.
 #
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Volume
