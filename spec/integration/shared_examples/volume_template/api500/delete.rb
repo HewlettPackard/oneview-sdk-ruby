@@ -9,11 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'spec_helper'
+RSpec.shared_examples 'VolumeTemplateDeleteExample API500' do |context_name|
+  include_context context_name
 
-klass = OneviewSDK::API500::C7000::VolumeTemplate
-RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  let(:current_client) { $client_500 }
-  include_examples 'VolumeTemplateDeleteExample', 'integration api500 context'
-  include_examples 'VolumeTemplateDeleteExample API500', 'integration api500 context'
+  describe '#delete' do
+    it 'deletes the resource - Store Virtual' do
+      item = described_class.find_by(current_client, name: VOL_TEMP_VIRTUAL_NAME).first
+      expect { item.delete }.not_to raise_error
+      expect(item.retrieve!).to eq(false)
+    end
+  end
 end
