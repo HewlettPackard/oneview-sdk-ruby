@@ -17,7 +17,7 @@ RSpec.describe OneviewSDK::ServerHardware do
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2', virtualSerialNumber: 'vsn2', serverProfileUri: 'sp2' },
         { name: 'name3', uri: 'uri2', mpHostInfo: { 'mpHostName' => 'h1' } }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'retrieves by name' do
@@ -59,7 +59,7 @@ RSpec.describe OneviewSDK::ServerHardware do
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2', virtualSerialNumber: 'vsn2', serverProfileUri: 'sp2' },
         { name: 'name3', uri: 'uri2', mpHostInfo: { 'mpHostName' => 'h1' } }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'finds it by name' do

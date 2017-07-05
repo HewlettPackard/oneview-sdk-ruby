@@ -81,19 +81,22 @@ RSpec.describe OneviewSDK::Resource do
 
     it 'uses the uri attribute when the name is not set' do
       res = OneviewSDK::Resource.new(@client_200, uri: '/rest/fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_200, 'uri' => res['uri']).and_return([])
+      expect(OneviewSDK::Resource).to receive(:find_by)
+        .with(@client_200, { 'uri' => res['uri'] }, described_class::BASE_URI, {}).and_return([])
       expect(res.exists?).to eq(false)
     end
 
     it 'returns true when the resource is found' do
       res = OneviewSDK::Resource.new(@client_200, name: 'ResourceName')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_200, 'name' => res['name']).and_return([res])
+      expect(OneviewSDK::Resource).to receive(:find_by)
+        .with(@client_200, { 'name' => res['name'] }, described_class::BASE_URI, {}).and_return([res])
       expect(res.exists?).to eq(true)
     end
 
     it 'returns false when the resource is not found' do
       res = OneviewSDK::Resource.new(@client_200, uri: '/rest/fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_200, 'uri' => res['uri']).and_return([])
+      expect(OneviewSDK::Resource).to receive(:find_by)
+        .with(@client_200, { 'uri' => res['uri'] }, described_class::BASE_URI, {}).and_return([])
       expect(res.exists?).to eq(false)
     end
   end
@@ -419,7 +422,7 @@ RSpec.describe OneviewSDK::Resource do
 
   describe '#find_by' do
     it 'should call #find_with_pagination with correct client and correct uri' do
-      expect(OneviewSDK::Enclosure).to receive(:find_with_pagination).with(@client, OneviewSDK::Enclosure::BASE_URI).and_return([])
+      expect(OneviewSDK::Enclosure).to receive(:find_with_pagination).with(@client, OneviewSDK::Enclosure::BASE_URI, {}).and_return([])
       OneviewSDK::Enclosure.find_by(@client, {})
     end
 
@@ -504,7 +507,7 @@ RSpec.describe OneviewSDK::Resource do
 
   describe '#get_all' do
     it 'calls find_by with an empty attributes hash' do
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_200, {})
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_200, {}, described_class::BASE_URI, {})
       OneviewSDK::Resource.get_all(@client_200)
     end
   end

@@ -160,19 +160,22 @@ RSpec.describe OneviewSDK::API500::C7000::StorageSystem do
   describe '#retrieve!' do
     it 'find by name' do
       item = described_class.new(client, name: 'Fake')
-      expect(described_class).to receive(:find_by).with(client, 'name' => 'Fake').and_return([item])
+      expect(described_class).to receive(:find_by)
+        .with(client, { 'name' => 'Fake' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
     it 'find by uri' do
       item = described_class.new(client, uri: '/rest/storage-systems/UUID-1')
-      expect(described_class).to receive(:find_by).with(client, 'uri' => '/rest/storage-systems/UUID-1').and_return([item])
+      expect(described_class).to receive(:find_by)
+        .with(client, { 'uri' => '/rest/storage-systems/UUID-1' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
     it 'find by hostname' do
       item = described_class.new(client, hostname: 'hostname.com')
-      expect(described_class).to receive(:find_by).with(client, 'hostname' => 'hostname.com').and_return([item])
+      expect(described_class).to receive(:find_by)
+        .with(client, { 'hostname' => 'hostname.com' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
@@ -202,19 +205,22 @@ RSpec.describe OneviewSDK::API500::C7000::StorageSystem do
   describe '#exists?' do
     it 'verify by name' do
       item = described_class.new(client, name: 'Fake')
-      expect(described_class).to receive(:find_by).with(client, 'name' => 'Fake').and_return([item])
+      expect(described_class).to receive(:find_by)
+        .with(client, { 'name' => 'Fake' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
     it 'verify by uri' do
       item = described_class.new(client, uri: '/rest/storage-systems/UUID-1')
-      expect(described_class).to receive(:find_by).with(client, 'uri' => '/rest/storage-systems/UUID-1').and_return([item])
+      expect(described_class).to receive(:find_by)
+        .with(client, { 'uri' => '/rest/storage-systems/UUID-1' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
     it 'verify by hostname' do
       item = described_class.new(client, hostname: 'hostname.com')
-      expect(described_class).to receive(:find_by).with(client, 'hostname' => 'hostname.com').and_return([item])
+      expect(described_class).to receive(:find_by)
+        .with(client, { 'hostname' => 'hostname.com' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
@@ -249,7 +255,7 @@ RSpec.describe OneviewSDK::API500::C7000::StorageSystem do
     it 'gets an empty list of reachable ports' do
       item = described_class.new(client, uri: '/rest/storage-systems/UUID-1')
       allow(client).to receive(:response_handler).and_return('members' => [])
-      allow(client).to receive(:rest_get).with('/rest/storage-systems/UUID-1/reachable-ports')
+      allow(client).to receive(:rest_get).with('/rest/storage-systems/UUID-1/reachable-ports', {})
       response = item.get_reachable_ports
       expect(response.class).to eq(Array)
       expect(response).to be_empty
@@ -263,7 +269,7 @@ RSpec.describe OneviewSDK::API500::C7000::StorageSystem do
       ]
 
       expect(client).to receive(:response_handler).and_return('members' => members)
-      expect(client).to receive(:rest_get).with('/rest/storage-systems/UUID-1/reachable-ports')
+      expect(client).to receive(:rest_get).with('/rest/storage-systems/UUID-1/reachable-ports', {})
       response = item.get_reachable_ports
       expect(response.class).to eq(Array)
       expect(response.size).to eq(2)

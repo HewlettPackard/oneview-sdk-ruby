@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::Switch do
         { name: 'name1', uri: 'uri1', serialNumber: 'sn1' },
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2' }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'retrieves by name' do
@@ -34,7 +34,7 @@ RSpec.describe OneviewSDK::Switch do
         { name: 'name1', uri: 'uri1', serialNumber: 'sn1' },
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2' }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'finds it by name' do

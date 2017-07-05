@@ -104,7 +104,7 @@ RSpec.describe OneviewSDK::API300::C7000::Volume do
         snapshot_options = { 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
         snapshots = [OneviewSDK::API300::C7000::VolumeSnapshot.new(@client_300, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
-        expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots")
+        expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots", {})
         snapshots = @item.get_snapshots
         expect(snapshots.class).to eq(Array)
         expect(snapshots.size).to eq(1)
@@ -118,7 +118,7 @@ RSpec.describe OneviewSDK::API300::C7000::Volume do
         snapshot_options = { 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
         snapshots = [OneviewSDK::API300::C7000::VolumeSnapshot.new(@client_300, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
-        expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots")
+        expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots", {})
         snapshot = @item.get_snapshot('Vol1_Snapshot1')
         expect(snapshot['type']).to eq('Snapshot')
         expect(snapshot['name']).to eq('Vol1_Snapshot1')
@@ -132,7 +132,7 @@ RSpec.describe OneviewSDK::API300::C7000::Volume do
         snapshot_options = { 'uri' => '/rest/fake', 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
         snapshots = [OneviewSDK::API300::C7000::VolumeSnapshot.new(@client_300, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
-        expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots")
+        expect(@client_300).to receive(:rest_get).with("#{@item['uri']}/snapshots", {})
         expect(@client_300).to receive(:rest_api).with(:delete, '/rest/fake', {}, @item.api_version)
         result = @item.delete_snapshot('Vol1_Snapshot1')
         expect(result).to eq(true)
@@ -143,7 +143,7 @@ RSpec.describe OneviewSDK::API300::C7000::Volume do
       it 'returns an array of available volumes' do
         volumes = [@item]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => volumes)
-        expect(@client_300).to receive(:rest_get).with('/rest/storage-volumes/attachable-volumes')
+        expect(@client_300).to receive(:rest_get).with('/rest/storage-volumes/attachable-volumes', {})
         items = OneviewSDK::API300::C7000::Volume.get_attachable_volumes(@client_300)
         expect(items.class).to eq(Array)
         expect(items.size).to eq(1)

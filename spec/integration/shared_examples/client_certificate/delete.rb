@@ -13,6 +13,7 @@ RSpec.shared_examples 'ClientCertificateDeleteExample' do |context_name|
   include_context context_name
 
   let(:item) { described_class.new(current_client, aliasName: current_secrets['storage_system1_ip']) }
+  let(:header) { { 'requestername' => 'DEFAULT' } }
 
   describe '#delete' do
     it 'should raise MethodUnavailable error' do
@@ -22,20 +23,20 @@ RSpec.shared_examples 'ClientCertificateDeleteExample' do |context_name|
 
   describe '#remove' do
     it 'should remove the certificate' do
-      expect(item.retrieve!).to eq(true)
-      expect(item.remove).to eq(true)
-      expect(item.retrieve!).to eq(false)
+      expect(item.retrieve!(header)).to eq(true)
+      expect(item.remove(header)).to eq(true)
+      expect(item.retrieve!(header)).to eq(false)
     end
   end
 
   describe '::remove' do
     it 'should remove a list of certificates' do
       certificate = described_class.new(current_client, aliasName: current_secrets['storage_system2_ip'])
-      expect(certificate.retrieve!).to eq(true)
+      expect(certificate.retrieve!(header)).to eq(true)
 
       alias_names = [current_secrets['storage_system2_ip']]
       expect { described_class.remove(current_client, alias_names) }.not_to raise_error
-      expect(certificate.retrieve!).to eq(false)
+      expect(certificate.retrieve!(header)).to eq(false)
     end
   end
 end
