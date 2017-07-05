@@ -151,6 +151,7 @@ STORAGE_POOL_NAME = 'CPG-SSD-AO'.freeze
 
 # VolumeTemplate
 VOL_TEMP_NAME = 'VolumeTemplate_1'.freeze
+VOL_TEMP_VIRTUAL_NAME = 'VolumeTemplateVirtual_1'.freeze
 VOL_TEMP_NAME_UPDATED = 'VolumeTemplate_1_UPDATED'.freeze
 
 # Volume
@@ -160,6 +161,8 @@ VOLUME3_NAME = 'Volume_3'.freeze
 VOLUME4_NAME = 'Volume_4'.freeze
 VOLUME5_NAME = 'Volume_5'.freeze
 VOLUME6_NAME = 'Volume_6'.freeze
+VOLUME_VIRTUAL_NAME = 'Volume_Virtual_1'.freeze
+VOLUME_VIRTUAL2_NAME = 'Volume_Virtual_2'.freeze
 VOL_SNAPSHOT_NAME = 'snapshot_qa'.freeze
 VOL_SNAPSHOT2_NAME = 'snapshot_qa_2'.freeze
 

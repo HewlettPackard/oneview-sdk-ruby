@@ -46,10 +46,10 @@ module OneviewSDK
         ensure_client && ensure_uri
         case flag
         when :oneview
-          response = @client.rest_api(:delete, @data['uri'], { 'exportOnly' => true }, @api_version)
+          response = @client.rest_delete(@data['uri'], { 'exportOnly' => true }, @api_version)
           @client.response_handler(response)
         when :all
-          response = @client.rest_api(:delete, @data['uri'], {}, @api_version)
+          response = @client.rest_delete(@data['uri'], {}, @api_version)
           @client.response_handler(response)
         else
           raise InvalidResource, 'Invalid flag value, use :oneview or :all'
@@ -98,11 +98,7 @@ module OneviewSDK
         else
           name = snapshot
         end
-        data = {
-          type: 'Snapshot',
-          description: description,
-          name: name
-        }
+        data = generate_snapshot_data(name, description)
         response = @client.rest_post("#{@data['uri']}/snapshots", { 'body' => data }, @api_version)
         @client.response_handler(response)
         true
@@ -113,7 +109,7 @@ module OneviewSDK
       # @return [true] if snapshot was created successfully
       def delete_snapshot(name)
         result = get_snapshot(name)
-        response = @client.rest_api(:delete, result['uri'], {}, @api_version)
+        response = @client.rest_delete(result['uri'], { 'If-Match' => @data['eTag'] }, @api_version)
         @client.response_handler(response)
         true
       end
@@ -123,9 +119,7 @@ module OneviewSDK
       # @return [Hash] snapshot data
       def get_snapshot(name)
         results = get_snapshots
-        results.each do |snapshot|
-          return snapshot if snapshot['name'] == name
-        end
+        results.find { |snap| snap['name'] == name }
       end
 
       # Gets all the snapshots of this volume
@@ -163,9 +157,19 @@ module OneviewSDK
 
       # Verify if the resource has a URI
       # If not, first it tries to retrieve, and then verify for its existence
+      # @param [OneviewSDK::Resource] resource The resource object
+      # @raise [OneviewSDK::IncompleteResource] if the resource not found
       def assure_uri(resource)
         resource.retrieve! unless resource['uri']
         raise IncompleteResource, "#{resource.class}: #{resource['name']} not found" unless resource['uri']
+      end
+
+      # Generates the snapshot data
+      # @param [String] name The name of the snapshot
+      # @param [String] description The description of the snapshot
+      # @return [Hash] snapshot data
+      def generate_snapshot_data(name, description = nil)
+        { type: 'Snapshot', description: description, name: name }
       end
     end
   end

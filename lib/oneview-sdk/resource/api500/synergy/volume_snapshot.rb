@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/volume_snapshot'
+require_relative '../c7000/volume_snapshot'
 
 module OneviewSDK
   module API500
     module Synergy
       # Volume snapshot resource implementation for API500 Synergy
-      class VolumeSnapshot < OneviewSDK::API300::Synergy::VolumeSnapshot
+      class VolumeSnapshot < OneviewSDK::API500::C7000::VolumeSnapshot
       end
     end
   end
