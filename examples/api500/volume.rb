@@ -9,10 +9,8 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client' # Gives access to @client
+require_relative '../_client' # Gives access to @client
 
-# Example: Create/Update/Delete volume
-# NOTE: This will create 5 volumes
 # NOTE: You'll need to add the following instance variable to the _client.rb file with valid values for your environment:
 #   @storage_system_ip
 #   @storage_virtual_ip

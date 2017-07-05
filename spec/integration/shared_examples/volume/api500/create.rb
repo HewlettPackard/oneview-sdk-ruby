@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-RSpec.shared_examples 'From500VolumeCreateExample' do |context_name|
+RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
   include_context context_name
 
   let(:namespace) { described_class.to_s[0, described_class.to_s.rindex('::')] }
