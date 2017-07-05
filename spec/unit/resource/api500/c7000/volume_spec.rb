@@ -154,7 +154,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots").and_return(@fake_response1)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(@fake_response1).and_return('members' => @snapshots)
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
-        .with("#{described_class::BASE_URI}/from-snapshot", 'body' => @data).and_return(@fake_response2)
+        .with("#{described_class::BASE_URI}/from-snapshot", { 'body' => @data }, 500).and_return(@fake_response2)
       expect(@client_500).to receive(:response_handler).with(@fake_response2).and_return('uri' => '/rest/fake2')
       volume = item.create_from_snapshot('Vol1_Snapshot1', @properties, @vol_template)
       expect(volume['uri']).to eq('/rest/fake2')
@@ -167,7 +167,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots").and_return(@fake_response1)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(@fake_response1).and_return('members' => @snapshots)
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
-        .with("#{described_class::BASE_URI}/from-snapshot", 'body' => @data).and_return(@fake_response2)
+        .with("#{described_class::BASE_URI}/from-snapshot", { 'body' => @data }, 500).and_return(@fake_response2)
       expect(@client_500).to receive(:response_handler).with(@fake_response2).and_return('uri' => '/rest/fake2')
       volume = item.create_from_snapshot('Vol1_Snapshot1', @properties)
       expect(volume['uri']).to eq('/rest/fake2')
@@ -194,7 +194,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       }
 
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
-        .with("#{described_class::BASE_URI}/from-existing", 'body' => data).and_return(fake_response)
+        .with("#{described_class::BASE_URI}/from-existing", { 'body' => data }, 500).and_return(fake_response)
       expect(@client_500).to receive(:response_handler).with(fake_response).and_return('uri' => '/rest/fake2')
       volume = described_class.add(@client_500, @storage_system, 'volume')
       expect(volume['uri']).to eq('/rest/fake2')
@@ -211,7 +211,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       }
 
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
-        .with("#{described_class::BASE_URI}/from-existing", 'body' => data).and_return(fake_response)
+        .with("#{described_class::BASE_URI}/from-existing", { 'body' => data }, 500).and_return(fake_response)
       expect(@client_500).to receive(:response_handler).with(fake_response).and_return('uri' => '/rest/fake2')
 
       options = { 'name' => 'Volume1', 'description' => 'volume test' }

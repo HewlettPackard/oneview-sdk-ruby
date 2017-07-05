@@ -104,7 +104,7 @@ module OneviewSDK
             'isPermanent' => is_permanent
           }
 
-          response = @client.rest_post("#{BASE_URI}/from-snapshot", 'body' => data)
+          response = @client.rest_post("#{BASE_URI}/from-snapshot", { 'body' => data }, @api_version)
           self.class.new(@client, client.response_handler(response))
         end
 
@@ -122,13 +122,13 @@ module OneviewSDK
         def self.add(client, storage_system, volume_name, is_shareable = false, options = {})
           raise IncompleteResource, 'Storage system not found!' unless storage_system.retrieve!
           data = options.merge('storageSystemUri' => storage_system['uri'], 'deviceVolumeName' => volume_name, 'isShareable' => is_shareable)
-          response = client.rest_post("#{BASE_URI}/from-existing", 'body' => data)
+          response = client.rest_post("#{BASE_URI}/from-existing", { 'body' => data }, client.api_version)
           new(client, client.response_handler(response))
         end
 
         private
 
-        # Sets the snapshot data
+        # Generates the snapshot data
         # @param [String] name The name of the snapshot
         # @param [String] description The description of the snapshot
         # @return [Hash] snapshot data

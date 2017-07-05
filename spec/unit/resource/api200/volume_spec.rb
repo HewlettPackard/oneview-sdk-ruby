@@ -147,7 +147,7 @@ RSpec.describe OneviewSDK::Volume do
         snapshots = [OneviewSDK::VolumeSnapshot.new(@client_200, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
         expect(@client_200).to receive(:rest_get).with("#{@item['uri']}/snapshots")
-        expect(@client_200).to receive(:rest_delete).with('/rest/fake', 'If-Match' => 'any_tag')
+        expect(@client_200).to receive(:rest_delete).with('/rest/fake', { 'If-Match' => 'any_tag' }, 200)
         result = @item.delete_snapshot('Vol1_Snapshot1')
         expect(result).to eq(true)
       end
