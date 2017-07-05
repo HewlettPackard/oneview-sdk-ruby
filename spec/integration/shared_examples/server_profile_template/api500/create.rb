@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-RSpec.shared_examples 'ServerProfileTemplateCreateExampleFrom500' do |context_name|
+RSpec.shared_examples 'ServerProfileTemplateCreateExample API500' do |context_name|
   include_context context_name
 
   let(:server_hardware_type) { resource_class_of('ServerHardwareType').find_by(current_client, name: server_hardware_type_name).first }
