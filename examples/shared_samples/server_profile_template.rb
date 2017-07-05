@@ -11,8 +11,6 @@
 
 require_relative '../_client' # Gives access to @client
 
-# Example: Create/Update/Delete server profile template
-#
 # Supported APIs:
 # - 200, 300, 500
 
@@ -30,8 +28,9 @@ server_profile_template_class = OneviewSDK.resource_named('ServerProfileTemplate
 enclosure_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 server_hardware_type_class = OneviewSDK.resource_named('ServerHardwareType', @client.api_version)
 
+server_profile_template_name = 'OneViewSDK Test ServerProfileTemplate'
 puts "\n### Creating a new Server Profile Template based on a Server Hardware Type and Enclosure Group"
-item = server_profile_template_class.new(@client, name:  'OneViewSDK Test ServerProfileTemplate')
+item = server_profile_template_class.new(@client, name:  server_profile_template_name)
 server_hardware_type = server_hardware_type_class.find_by(@client, {}).first
 raise 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
 item.set_server_hardware_type(server_hardware_type)
@@ -45,20 +44,20 @@ puts "\nEnclosure Group '#{enclosure_group['name']}'.\n  uri = '#{item['enclosur
 
 # Find recently created item by name
 puts "\n\n### Find recently created item by name"
-matches = server_profile_template_class.find_by(@client, name: item['name'])
+matches = server_profile_template_class.find_by(@client, name: server_profile_template_name)
 item2 = matches.first
-raise "Failed to find Server Profile Template by name: '#{item2['name']}'" unless matches.first
-puts "\nFound Server Profile Template by name: '#{item2['name']}'.\n  uri = '#{item2['uri']}'"
+raise "Failed to find Server Profile Template by name: '#{server_profile_template_name}'" unless matches.first
+puts "\nFound Server Profile Template by name: '#{server_profile_template_name}'.\n  uri = '#{item2['uri']}'"
 
 puts "\n\n### Creating a Server Profile from the retrieved template"
 server_profile = item.new_profile("ServerProfile1 from #{item2['name']}")
 server_profile.create
-puts "\nCreated Server Profile '#{server_profile['name']}' successfully.\n  uri = '#{item2['uri']}'"
+puts "\nCreated Server Profile '#{server_profile['name']}' successfully.\n  uri = '#{server_profile['uri']}'"
 server_profile.delete
 puts "\nSucessfully deleted '#{server_profile['name']}'"
 
 puts "\n\n### Transforms an existing profile template by supplying a new server hardware type and/or enclosure group"
-item3 = server_profile_template_class.new(@client, name:  'OneViewSDK Test ServerProfileTemplate2')
+item3 = server_profile_template_class.new(@client, name:  "#{server_profile_template_name}2")
 item3.set_server_hardware_type(server_hardware_type)
 item3.set_enclosure_group(enclosure_group)
 item3.create
@@ -69,7 +68,7 @@ begin
   item3.update
   puts "\nTransformed Server Profile Template '#{item3['name']}' successfully.\n  uri = '#{item3['uri']}' "
 rescue NoMethodError
-  puts "\nThe method #get_wwn is available from API 300 onwards."
+  puts "\nThe method #get_transformation is available from API 300 onwards."
 end
 
 puts "\n\n### Deleting all Server Profiles Template created in this sample"
