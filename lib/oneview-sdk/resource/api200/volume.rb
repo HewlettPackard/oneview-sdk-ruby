@@ -46,10 +46,10 @@ module OneviewSDK
         ensure_client && ensure_uri
         case flag
         when :oneview
-          response = @client.rest_delete(@data['uri'], 'exportOnly' => true)
+          response = @client.rest_delete(@data['uri'], { 'exportOnly' => true }, @api_version)
           @client.response_handler(response)
         when :all
-          response = @client.rest_delete(@data['uri'], {})
+          response = @client.rest_delete(@data['uri'], {}, @api_version)
           @client.response_handler(response)
         else
           raise InvalidResource, 'Invalid flag value, use :oneview or :all'
@@ -109,7 +109,7 @@ module OneviewSDK
       # @return [true] if snapshot was created successfully
       def delete_snapshot(name)
         result = get_snapshot(name)
-        response = @client.rest_delete(result['uri'], 'If-Match' => @data['eTag'])
+        response = @client.rest_delete(result['uri'], { 'If-Match' => @data['eTag'] }, @api_version)
         @client.response_handler(response)
         true
       end
@@ -163,6 +163,7 @@ module OneviewSDK
       # If not, first it tries to retrieve, and then verify for its existence
       # @param [OneviewSDK::Resource] resource The resource object
       # @raise [OneviewSDK::IncompleteResource] if the resource not found
+      # @return [Boolean] true if resource exists or false else
       def assure_uri(resource)
         resource.retrieve! unless resource['uri']
         raise IncompleteResource, "#{resource.class}: #{resource['name']} not found" unless resource['uri']
