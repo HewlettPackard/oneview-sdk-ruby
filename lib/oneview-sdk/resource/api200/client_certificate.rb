@@ -43,19 +43,6 @@ module OneviewSDK
         unavailable_method
       end
 
-      # Imports the given SSL certificate into the appliance trust store.
-      # @param [Hash] header The header options of request (key-value pairs)
-      # @option header [String] :requestername Used to identify requester to allow querying of proper trust store.
-      #   Default value is "DEFAULT". List of valid input values are { "DEFAULT", "AUTHN", "RABBITMQ", "ILOOA" }.
-      # @option header [String] :Accept-Language The language code requested in the response.
-      #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
-      # @raise [OneviewSDK::IncompleteResource] if the client is not set
-      # @raise [StandardError] if the resource import fails
-      # @return [Resource] self
-      def import(header = { 'requestername' => 'DEFAULT' })
-        super
-      end
-
       # Imports the given list of SSL certificates into the appliance trust store.
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @param [Array<ClientCertificate>] certificates The Client Certificate list
@@ -73,32 +60,6 @@ module OneviewSDK
         response = client.rest_post(self::BASE_URI + '?multiResource=true', options)
         body = client.response_handler(response)
         body.map { |data| new(client, data) }
-      end
-
-      # Updates this object using the data that exists on OneviewSDK
-      # @note Will overwrite any data that differs from OneView
-      # @param [Hash] header The header options of request (key-value pairs)
-      # @option header [String] :requestername Used to identify requester to allow querying of proper trust store.
-      #   Default value is "DEFAULT". List of valid input values are { "DEFAULT", "AUTHN", "RABBITMQ", "ILOOA" }.
-      # @option header [String] :Accept-Language The language code requested in the response.
-      #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
-      # @return [Resource] self
-      def refresh(header = { 'requestername' => 'DEFAULT' })
-        super
-      end
-
-      # Replaces the existing SSL certificate with a new certificate for the certificate alias name provided
-      # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
-      # @param [Hash] header The header options of request (key-value pairs)
-      # @option header [String] :requestername Used to identify requester to allow querying of proper trust store.
-      #   Default value is "DEFAULT". List of valid input values are { "DEFAULT", "AUTHN", "RABBITMQ", "ILOOA" }.
-      # @option header [String] :Accept-Language The language code requested in the response.
-      #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
-      # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
-      # @raise [StandardError] if the resource save fails
-      # @return [Resource] self
-      def update(attributes = {}, header = { 'requestername' => 'DEFAULT' })
-        super
       end
 
       # Replaces a list of existing SSL certificates with a new list of certificates.
@@ -119,17 +80,6 @@ module OneviewSDK
         response = client.rest_put(uri, options)
         body = client.response_handler(response)
         body.map { |data| new(client, data) }
-      end
-
-      # Delete resource from OneView
-      # @param [Hash] header The header options of request (key-value pairs)
-      # @option header [String] :requestername Used to identify requester to allow querying of proper trust store.
-      #   Default value is "DEFAULT". List of valid input values are { "DEFAULT", "AUTHN", "RABBITMQ", "ILOOA" }.
-      # @option header [String] :Accept-Language The language code requested in the response.
-      #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
-      # @return [true] if resource was deleted successfully
-      def remove(header = { 'requestername' => 'DEFAULT' })
-        super
       end
 
       # Removes a list of SSL certificates based on the list of alias names provided as filter criteria.

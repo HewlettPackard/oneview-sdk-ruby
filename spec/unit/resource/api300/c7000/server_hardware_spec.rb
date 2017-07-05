@@ -271,7 +271,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
   describe '#get firmwares' do
     it 'gets an empty list of firmwares' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => [])
-      expect(@client_300).to receive(:rest_get).with('/rest/server-hardware/*/firmware')
+      expect(@client_300).to receive(:rest_get).with('/rest/server-hardware/*/firmware', {})
       response = @item.get_firmwares([])
       expect(response.class).to eq(Array)
       expect(response).to be_empty
@@ -283,7 +283,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
         { category: 'cat2' }
       ]
       allow(@client_300).to receive(:response_handler).and_return('members' => members)
-      expect(@client_300).to receive(:rest_get).with('/rest/server-hardware/*/firmware')
+      expect(@client_300).to receive(:rest_get).with('/rest/server-hardware/*/firmware', {})
       response = @item.get_firmwares([])
       expect(response.class).to eq(Array)
       expect(response.size).to eq(2)
@@ -302,7 +302,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
       base_uri = '/rest/server-hardware/*/firmware'
       allow(@client_300).to receive(:response_handler).and_return('members' => members)
       expect(@client_300).to receive(:rest_get)
-        .with(base_uri + "?filter=components.componentName='HP ProLiant System ROM'&filter=components.componentVersion like '_37%25'")
+        .with(base_uri + "?filter=components.componentName='HP ProLiant System ROM'&filter=components.componentVersion like '_37%25'", {})
       response = @item.get_firmwares(filters)
       expect(response.class).to eq(Array)
       expect(response.size).to eq(2)

@@ -90,7 +90,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnect do
       allow_any_instance_of(OneviewSDK::API300::C7000::EthernetNetwork).to receive(:retrieve!).and_return(true)
       allow_any_instance_of(OneviewSDK::API300::C7000::FCNetwork).to receive(:retrieve!).and_return(true)
       allow_any_instance_of(OneviewSDK::API300::C7000::FCoENetwork).to receive(:retrieve!).and_return(true)
-      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/internalVlans").and_return(true)
+      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/internalVlans", {}).and_return(true)
       expect(@client_300).to receive(:response_handler).and_return(response)
       result = item.list_vlan_networks
       expect(result).to_not be_empty

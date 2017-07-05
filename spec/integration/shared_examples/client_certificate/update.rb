@@ -12,20 +12,22 @@
 RSpec.shared_examples 'ClientCertificateUpdateExample' do |context_name|
   include_context context_name
 
+  let(:header) { { 'requestername' => 'DEFAULT' } }
+
   describe '#update' do
     it 'should update the given certificate' do
       item = described_class.new(current_client, aliasName: current_secrets['storage_system1_ip'])
-      expect(item.retrieve!).to eq(true)
-      expect { item.update }.not_to raise_error
+      expect(item.retrieve!(header)).to eq(true)
+      expect { item.update({}, header) }.not_to raise_error
     end
   end
 
   describe '::replace' do
     it 'should replace the given list of SSL certificates' do
       certificate_1 = described_class.new(current_client, aliasName: current_secrets['storage_system1_ip'])
-      expect(certificate_1.retrieve!).to eq(true)
+      expect(certificate_1.retrieve!(header)).to eq(true)
       certificate_2 = described_class.new(current_client, aliasName: current_secrets['storage_system2_ip'])
-      expect(certificate_2.retrieve!).to eq(true)
+      expect(certificate_2.retrieve!(header)).to eq(true)
 
       result = []
       expect { result = described_class.replace(current_client, [certificate_1, certificate_2]) }.not_to raise_error

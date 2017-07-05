@@ -20,7 +20,7 @@ RSpec.describe OneviewSDK::ServerProfile do
         { name: 'name1', uri: 'uri1', associatedServer: 'as1', serialNumber: 'sn1', serverHardwareUri: 'sh1' },
         { name: 'name2', uri: 'uri2', associatedServer: 'as2', serialNumber: 'sn2', serverHardwareUri: 'sh2' }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'retrieves by name' do
@@ -55,7 +55,7 @@ RSpec.describe OneviewSDK::ServerProfile do
         { name: 'name1', uri: 'uri1', associatedServer: 'as1', serialNumber: 'sn1', serverHardwareUri: 'sh1' },
         { name: 'name2', uri: 'uri2', associatedServer: 'as2', serialNumber: 'sn2', serverHardwareUri: 'sh2' }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'finds it by name' do
@@ -97,7 +97,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will retrieve and set the serverHardwareUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware', {})
         .and_return(FakeResponse.new(members: [
             { name: 'server_hardware', uri: @server_hardware_uri },
             { name: 'wrong_server_hardware', uri: 'wrong_uri' }
@@ -107,7 +107,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put serverHardwareUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware', uri: 'wrong_uri' }
           ]))
@@ -128,7 +128,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will retrieve and set the serverHardwareTypeUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
         .and_return(FakeResponse.new(members: [
             { name: 'server_hardware_type', uri: @server_hardware_type_uri },
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
@@ -138,7 +138,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put serverHardwareTypeUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
@@ -159,7 +159,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will retrieve and set the enclosureGroupUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
         .and_return(FakeResponse.new(members: [
             { name: 'enclosure_group', uri: @enclosure_group_uri },
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
@@ -169,7 +169,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put enclosureGroupUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
@@ -190,7 +190,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will retrieve and set the enclosureUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosures')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosures', {})
         .and_return(FakeResponse.new(members: [
             { name: 'enclosure', uri: @enclosure_uri },
             { name: 'wrong_enclosure', uri: 'wrong_uri' }
@@ -200,7 +200,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put enclosureUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosures')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosures', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure', uri: 'wrong_uri' }
           ]))
