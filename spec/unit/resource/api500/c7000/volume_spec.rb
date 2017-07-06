@@ -135,7 +135,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
 
     it 'raises an exception when snapshot not found' do
       item = described_class.new(@client_500, uri: '/rest/fake')
-      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots").and_return(@fake_response1)
+      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots", {}).and_return(@fake_response1)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(@fake_response1).and_return('members' => @snapshots)
       expect { item.create_from_snapshot('Any', @properties) }.to raise_error(/Snapshot not found/)
     end
@@ -143,7 +143,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
     it 'raises an exception when template not found' do
       item = described_class.new(@client_500, uri: '/rest/fake')
       allow_any_instance_of(vol_template_class).to receive(:retrieve!).and_return(false)
-      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots").and_return(@fake_response1)
+      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots", {}).and_return(@fake_response1)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(@fake_response1).and_return('members' => @snapshots)
       expect { item.create_from_snapshot('Vol1_Snapshot1', @properties, @vol_template) }.to raise_error(/Volume Template not found/)
     end
@@ -151,7 +151,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
     it 'creating from snapshot' do
       item = described_class.new(@client_500, uri: '/rest/fake')
       allow_any_instance_of(vol_template_class).to receive(:retrieve!).and_return(@vol_template)
-      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots").and_return(@fake_response1)
+      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots", {}).and_return(@fake_response1)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(@fake_response1).and_return('members' => @snapshots)
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
         .with("#{described_class::BASE_URI}/from-snapshot", { 'body' => @data }, 500).and_return(@fake_response2)
@@ -164,7 +164,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       item = described_class.new(@client_500, uri: '/rest/fake', storagePoolUri: '/rest/storage-pool/fake')
       options_template = { isRoot: true, family: 'StoreServ' }
       expect(vol_template_class).to receive(:find_by).with(@client_500, options_template).and_return([@vol_template])
-      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots").and_return(@fake_response1)
+      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots", {}).and_return(@fake_response1)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(@fake_response1).and_return('members' => @snapshots)
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
         .with("#{described_class::BASE_URI}/from-snapshot", { 'body' => @data }, 500).and_return(@fake_response2)
