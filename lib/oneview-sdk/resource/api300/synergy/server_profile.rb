@@ -14,8 +14,7 @@ require_relative '../c7000/server_profile'
 module OneviewSDK
   module API300
     module Synergy
-
-      # Contains helper methods to include operation with firmware of a given logical enclosure resource
+      # Contains helper methods to include operation with SAS Logical JBOD
       module SASLogicalJBODHelper
         LOGICAL_JBOD_URI = '/rest/sas-logical-jbods'.freeze
         ATTACHMENT_URI = '/rest/sas-logical-jbod-attachments'.freeze
@@ -60,6 +59,7 @@ module OneviewSDK
         end
       end
 
+      # Contains helper methods to include operation Server Profile
       module ServerProfileHelper
         # Sets the OS deployment settings applicable when deployment is invoked through server profile
         # @param [OneviewSDK::API300::Synergy::OSDeploymentPlan] os_deployment_plan the OSDeploymentPlan resource with valid URI
