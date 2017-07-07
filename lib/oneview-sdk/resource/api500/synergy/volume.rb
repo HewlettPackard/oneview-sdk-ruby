@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/volume'
+require_relative '../c7000/volume'
 
 module OneviewSDK
   module API500
     module Synergy
       # Volume resource implementation for API500 Synergy
-      class Volume < OneviewSDK::API300::Synergy::Volume
+      class Volume < OneviewSDK::API500::C7000::Volume
       end
     end
   end

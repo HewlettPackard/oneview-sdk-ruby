@@ -36,11 +36,24 @@ RSpec.describe OneviewSDK::Volume do
   end
 
   describe '#delete' do
+    it 'raises an exception when is passed as invalid flag' do
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
+      item = OneviewSDK::Volume.new(@client_200, uri: '/rest/fake')
+      expect { item.delete(:any) }.to raise_error(/Invalid flag value, use :oneview or :all/)
+    end
+
     it 'passes an extra header' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
       item = OneviewSDK::Volume.new(@client_200, uri: '/rest/fake')
       expect(@client_200).to receive(:rest_api).with(:delete, '/rest/fake', { 'exportOnly' => true }, item.api_version)
       item.delete(:oneview)
+    end
+
+    it 'removing all' do
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
+      item = OneviewSDK::Volume.new(@client_200, uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_api).with(:delete, '/rest/fake', {}, item.api_version)
+      item.delete(:all)
     end
   end
 
@@ -92,6 +105,10 @@ RSpec.describe OneviewSDK::Volume do
       it 'creates the snapshot' do
         @item.create_snapshot(@snapshot_options[:name], @snapshot_options[:description])
       end
+
+      it 'creates the snapshot with a hash' do
+        @item.create_snapshot(@snapshot_options)
+      end
     end
 
     describe '#get_snapshots' do
@@ -125,11 +142,12 @@ RSpec.describe OneviewSDK::Volume do
     describe '#delete_snapshot' do
       it 'Deletes a snapshot of the volume' do
         @item['uri'] = '/rest/storage-volumes/fake'
+        @item['eTag'] = 'any_tag'
         snapshot_options = { 'uri' => '/rest/fake', 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
         snapshots = [OneviewSDK::VolumeSnapshot.new(@client_200, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
         expect(@client_200).to receive(:rest_get).with("#{@item['uri']}/snapshots")
-        expect(@client_200).to receive(:rest_api).with(:delete, '/rest/fake', {}, @item.api_version)
+        expect(@client_200).to receive(:rest_delete).with('/rest/fake', { 'If-Match' => 'any_tag' }, 200)
         result = @item.delete_snapshot('Vol1_Snapshot1')
         expect(result).to eq(true)
       end
