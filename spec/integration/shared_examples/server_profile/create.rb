@@ -34,11 +34,11 @@ RSpec.shared_examples 'ServerProfileCreateExample' do |context_name|
     }
 
     if current_client.api_version < 500
-      options[:storagePaths].first.merge!(storageTargetType: 'Auto')
-      options[:storagePaths].last.merge!(storageTargetType: 'Auto')
+      options[:storagePaths].first[:storageTargetType] = 'Auto'
+      options[:storagePaths].last[:storageTargetType] = 'Auto'
     else
-      options[:storagePaths].first.merge!(targetSelector: 'Auto')
-      options[:storagePaths].last.merge!(targetSelector: 'Auto')
+      options[:storagePaths].first[:targetSelector] = 'Auto'
+      options[:storagePaths].last[:targetSelector] = 'Auto'
     end
     options
   end

@@ -30,7 +30,7 @@ module OneviewSDK
       # @param [OneviewSDK::ServerHardware] server_hardware Server Hardware resource
       # @raise [OneviewSDK::IncompleteResource] if server hardware not found
       def set_server_hardware(server_hardware)
-        raise "Server Hardware could not be found!" unless server_hardware.retrieve!
+        raise 'Server Hardware could not be found!' unless server_hardware.retrieve!
         self['serverHardwareUri'] = server_hardware['uri']
       end
 
@@ -38,7 +38,7 @@ module OneviewSDK
       # @param [OneviewSDK::ServerHardwareType] server_hardware_type Type of the desired Server Hardware
       # @raise [OneviewSDK::IncompleteResource] if server hardware type not found
       def set_server_hardware_type(server_hardware_type)
-        raise "Server Hardware Type could not be found!" unless server_hardware_type.retrieve!
+        raise 'Server Hardware Type could not be found!' unless server_hardware_type.retrieve!
         self['serverHardwareTypeUri'] = server_hardware_type['uri']
       end
 
@@ -46,7 +46,7 @@ module OneviewSDK
       # @param [OneviewSDK::EnclosureGroup] enclosure_group Enclosure Group that the Server is a member
       # @raise [OneviewSDK::IncompleteResource] if enclosure group not found
       def set_enclosure_group(enclosure_group)
-        raise "Enclosure Group could not be found!" unless enclosure_group.retrieve!
+        raise 'Enclosure Group could not be found!' unless enclosure_group.retrieve!
         self['enclosureGroupUri'] = enclosure_group['uri']
       end
 
@@ -54,7 +54,7 @@ module OneviewSDK
       # @param [OneviewSDK::Enclosure] enclosure Enclosure that the Server is a member
       # @raise [OneviewSDK::IncompleteResource] if enclosure not found
       def set_enclosure(enclosure)
-        raise "Enclosure could not be found!" unless enclosure.retrieve!
+        raise 'Enclosure could not be found!' unless enclosure.retrieve!
         self['enclosureUri'] = enclosure['uri']
       end
 

@@ -12,33 +12,33 @@
 RSpec.shared_examples 'ServerProfileCreateExample Synergy' do |context_name|
   include_context context_name
 
-  # describe '#set_os_deployment_setttings' do
-  #   it 'Should work properly (it will fail if the there is not a OS Deployment Plan)' do
-  #     item = described_class.new(current_client, name: SERVER_PROFILE_WITH_OSDP_NAME)
-  #
-  #     # get values for set in ServerProfile
-  #     server_hardware_type = resource_class_of('ServerHardwareType').get_all(current_client).first
-  #     enclosure_group = resource_class_of('EnclosureGroup').get_all(current_client).first
-  #     os_deployment_plan = resource_class_of('OSDeploymentPlan').find_by(current_client, name: OS_DEPLOYMENT_PLAN_NAME).first
-  #     deployment_network_uri = enclosure_group['osDeploymentSettings']['deploymentModeSettings']['deploymentNetworkUri']
-  #     network_options = { enclosureGroupUri: enclosure_group['uri'], serverHardwareTypeUri: server_hardware_type['uri'], view: 'Ethernet' }
-  #     networks = described_class.get_available_networks(current_client, network_options)['ethernetNetworks']
-  #     network = networks.find { |netw| netw['uri'] == deployment_network_uri }
-  #
-  #     # set in ServerProfile necessary values for create it with the OSDeploymentPlan
-  #     item.add_connection(network, 'name' => 'deploy', 'functionType' => 'Ethernet', 'boot' => { 'priority' => 'Primary' })
-  #     item['boot'] = { 'manageBoot' => true, 'order' => ['HardDisk'] }
-  #     item['bootMode'] = { 'manageMode' => true, 'mode' => 'UEFIOptimized', 'pxeBootPolicy' => 'Auto' }
-  #     item.set_server_hardware_type(server_hardware_type)
-  #     item.set_enclosure_group(enclosure_group)
-  #
-  #     # the method target of this test
-  #     item.set_os_deployment_setttings(os_deployment_plan)
-  #
-  #     expect { item.create }.not_to raise_error
-  #     expect(item['uri']).to be
-  #   end
-  # end
+  describe '#set_os_deployment_setttings' do
+    it 'Should work properly (it will fail if the there is not a OS Deployment Plan)' do
+      item = described_class.new(current_client, name: SERVER_PROFILE_WITH_OSDP_NAME)
+
+      # get values for set in ServerProfile
+      server_hardware_type = resource_class_of('ServerHardwareType').get_all(current_client).first
+      enclosure_group = resource_class_of('EnclosureGroup').get_all(current_client).first
+      os_deployment_plan = resource_class_of('OSDeploymentPlan').find_by(current_client, name: OS_DEPLOYMENT_PLAN_NAME).first
+      deployment_network_uri = enclosure_group['osDeploymentSettings']['deploymentModeSettings']['deploymentNetworkUri']
+      network_options = { enclosureGroupUri: enclosure_group['uri'], serverHardwareTypeUri: server_hardware_type['uri'], view: 'Ethernet' }
+      networks = described_class.get_available_networks(current_client, network_options)['ethernetNetworks']
+      network = networks.find { |netw| netw['uri'] == deployment_network_uri }
+
+      # set in ServerProfile necessary values for create it with the OSDeploymentPlan
+      item.add_connection(network, 'name' => 'deploy', 'functionType' => 'Ethernet', 'boot' => { 'priority' => 'Primary' })
+      item['boot'] = { 'manageBoot' => true, 'order' => ['HardDisk'] }
+      item['bootMode'] = { 'manageMode' => true, 'mode' => 'UEFIOptimized', 'pxeBootPolicy' => 'Auto' }
+      item.set_server_hardware_type(server_hardware_type)
+      item.set_enclosure_group(enclosure_group)
+
+      # the method target of this test
+      item.set_os_deployment_setttings(os_deployment_plan)
+
+      expect { item.create }.not_to raise_error
+      expect(item['uri']).to be
+    end
+  end
 
   describe '#self.get_sas_logical_jbods' do
     it 'Gets a collection of SAS logical JBODs' do

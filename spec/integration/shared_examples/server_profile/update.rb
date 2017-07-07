@@ -137,7 +137,7 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
   end
 
   describe '#self.get_available_storage_system' do
-    it 'retrieves available storage system without errors. FAIL: Bug in OneView/Documentation' do
+    it 'retrieves available storage system without errors.' do
       query_options = {
         'enclosure_group' => enclosure_group,
         'server_hardware_type' => server_hardware_type,
