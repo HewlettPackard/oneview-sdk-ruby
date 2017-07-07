@@ -49,7 +49,8 @@ module OneviewSDK
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       def self.get_extra_unmanaged_volumes(client)
         response = client.rest_get(BASE_URI + '/repair?alertFixType=ExtraUnmanagedStorageVolumes')
-        client.response_handler(response)
+        body = client.response_handler(response)
+        body['members'].map { |data| new(client, data) }
       end
 
       # Removes extra presentations from a specific server profile
