@@ -163,6 +163,7 @@ VOLUME3_NAME = 'Volume_3'.freeze
 VOLUME4_NAME = 'Volume_4'.freeze
 VOLUME5_NAME = 'Volume_5'.freeze
 VOLUME6_NAME = 'Volume_6'.freeze
+VOLUME7_NAME = 'Volume_7'.freeze
 
 VOLUME_VIRTUAL_NAME = 'Volume_Virtual_1'.freeze
 VOLUME_VIRTUAL2_NAME = 'Volume_Virtual_2'.freeze
@@ -201,6 +202,7 @@ SERVER_PROFILE_TEMPLATE_NAME = 'ServerProfileTemplate_1'.freeze
 SERVER_PROFILE_TEMPLATE2_NAME = 'ServerProfileTemplate_2'.freeze
 SERVER_PROFILE_TEMPLATE3_NAME = 'ServerProfileTemplate_3'.freeze
 SERVER_PROFILE_TEMPLATE4_NAME = 'ServerProfileTemplate_4'.freeze
+SERVER_PROFILE_TEMPLATE_NAME_UPDATED = 'ServerProfileTemplate_1_UPDATED'.freeze
 CONNECTION_NAME = 'EthernetConnection'.freeze
 CONNECTION2_NAME = 'FibreChannelConnection'.freeze
 CONNECTION3_NAME = 'FibreChannelConnection2'.freeze

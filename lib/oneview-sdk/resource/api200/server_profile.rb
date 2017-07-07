@@ -10,11 +10,13 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'resource'
+require_relative '../../resource_helper'
 
 module OneviewSDK
   module API200
     # Server profile resource implementation
     class ServerProfile < Resource
+      include OneviewSDK::ResourceHelper
       BASE_URI = '/rest/server-profiles'.freeze
       UNIQUE_IDENTIFIERS = %w(name uri associatedServer serialNumber serverHardwareUri).freeze
 
@@ -26,30 +28,34 @@ module OneviewSDK
 
       # Sets the Server Hardware for the resource
       # @param [OneviewSDK::ServerHardware] server_hardware Server Hardware resource
+      # @raise [OneviewSDK::IncompleteResource] if server hardware not found
       def set_server_hardware(server_hardware)
-        self['serverHardwareUri'] = server_hardware['uri'] if server_hardware['uri'] || server_hardware.retrieve!
-        raise "Resource #{server_hardware['name']} could not be found!" unless server_hardware['uri']
+        raise "Server Hardware could not be found!" unless server_hardware.retrieve!
+        self['serverHardwareUri'] = server_hardware['uri']
       end
 
       # Sets the Server Hardware Type for the resource
       # @param [OneviewSDK::ServerHardwareType] server_hardware_type Type of the desired Server Hardware
+      # @raise [OneviewSDK::IncompleteResource] if server hardware type not found
       def set_server_hardware_type(server_hardware_type)
-        self['serverHardwareTypeUri'] = server_hardware_type['uri'] if server_hardware_type['uri'] || server_hardware_type.retrieve!
-        raise "Resource #{server_hardware_type['name']} could not be found!" unless server_hardware_type['uri']
+        raise "Server Hardware Type could not be found!" unless server_hardware_type.retrieve!
+        self['serverHardwareTypeUri'] = server_hardware_type['uri']
       end
 
       # Sets the Enclosure Group for the resource
       # @param [OneviewSDK::EnclosureGroup] enclosure_group Enclosure Group that the Server is a member
+      # @raise [OneviewSDK::IncompleteResource] if enclosure group not found
       def set_enclosure_group(enclosure_group)
-        self['enclosureGroupUri'] = enclosure_group['uri'] if enclosure_group['uri'] || enclosure_group.retrieve!
-        raise "Resource #{enclosure_group['name']} could not be found!" unless enclosure_group['uri']
+        raise "Enclosure Group could not be found!" unless enclosure_group.retrieve!
+        self['enclosureGroupUri'] = enclosure_group['uri']
       end
 
-      # Sets the Enclosure Group for the resource
+      # Sets the Enclosure for the resource
       # @param [OneviewSDK::Enclosure] enclosure Enclosure that the Server is a member
+      # @raise [OneviewSDK::IncompleteResource] if enclosure not found
       def set_enclosure(enclosure)
-        self['enclosureUri'] = enclosure['uri'] if enclosure['uri'] || enclosure.retrieve!
-        raise "Resource #{enclosure['name']} could not be found!" unless enclosure['uri']
+        raise "Enclosure could not be found!" unless enclosure.retrieve!
+        self['enclosureUri'] = enclosure['uri']
       end
 
       # Gets the preview of manual and automatic updates required to make the server profile consistent with its template.
@@ -88,14 +94,7 @@ module OneviewSDK
 
       # Updates the server profile from the server profile template.
       def update_from_template
-        ensure_client & ensure_uri
-        patch_operation = { 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant' }
-        patch_options = {
-          'If-Match' => self['eTag'],
-          'body' => [patch_operation]
-        }
-        response = @client.rest_patch(self['uri'], patch_options)
-        @client.response_handler(response)
+        patch('replace', '/templateCompliance', 'Compliant', 'If-Match' => self['eTag'])
       end
 
       # @!group Helpers
@@ -130,7 +129,8 @@ module OneviewSDK
           serverHardwareTypeUri: @data['serverHardwareTypeUri'],
           serverGroupUri: @data['enclosureGroupUri']
         }
-        OneviewSDK::ServerHardware.find_by(@client, params)
+        variant = self.class.name.split('::').at(-2)
+        OneviewSDK.resource_named('ServerHardware', @client.api_version, variant).find_by(@client, params)
       rescue StandardError => e
         raise IncompleteResource, "Failed to get available hardware. Message: #{e.message}"
       end
@@ -165,8 +165,9 @@ module OneviewSDK
       # @option connection_options [String] 'wwpnType' Specifies the type of WWN address to be porgrammed on the FlexNIC.
       #   The value can be 'Virtual', 'Physical' or 'UserDefined'.
       def add_connection(network, connection_options = {})
+        connection_options = Hash[connection_options.map { |k, v| [k.to_s, v] }]
         self['connections'] = [] unless self['connections']
-        connection_options['id'] ||= 0 unless connection_options[:id] # Letting OneView treat the ID registering
+        connection_options['id'] ||= 0
         connection_options['networkUri'] = network['uri'] if network['uri'] || network.retrieve!
         self['connections'] << connection_options
       end
@@ -192,13 +193,16 @@ module OneviewSDK
       # @option attachment_options [Boolean] 'permanent' Required. If true, indicates that the volume will persist when the profile is deleted.
       #   If false, then the volume will be deleted when the profile is deleted.
       # @option attachment_options [Array] 'storagePaths' A list of host-to-target path associations.
+      # @raise [OneviewSDK::IncompleteResource] if volume not found
       # @return Returns the connection hash if found, otherwise returns nil
       def add_volume_attachment(volume, attachment_options = {})
+        raise IncompleteResource, 'Volume not found!' unless volume.retrieve!
+        # Convert symbols keys to string
+        attachment_options = Hash[attachment_options.map { |k, v| [k.to_s, v] }]
         self['sanStorage'] ||= {}
         self['sanStorage']['volumeAttachments'] ||= []
+        self['sanStorage']['manageSanStorage'] ||= true
         attachment_options['id'] ||= 0
-
-        volume.retrieve! unless volume['uri'] || volume['storagePoolUri'] || volume['storageSystemUri']
         attachment_options['volumeUri'] = volume['uri']
         attachment_options['volumeStoragePoolUri'] = volume['storagePoolUri']
         attachment_options['volumeStorageSystemUri'] = volume['storageSystemUri']
@@ -207,7 +211,7 @@ module OneviewSDK
       end
 
       # Adds volume attachment entry and creates a new Volume associated in the Server profile
-      # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
+      # @param [OneviewSDK::StoragePool] storage_pool StoragePool Resource to add an attachment
       # @param [Hash] volume_options Options to create a new Volume.
       #   Please refer to OneviewSDK::Volume documentation for the data necessary to create a new Volume.
       # @param [Hash] attachment_options Options of the new attachment
@@ -217,8 +221,13 @@ module OneviewSDK
       # @option attachment_options [Boolean] 'permanent' Required. If true, indicates that the volume will persist when the profile is deleted.
       #   If false, then the volume will be deleted when the profile is deleted.
       # @option attachment_options [Array] 'storagePaths' A list of host-to-target path associations.
+      # @raise [OneviewSDK::IncompleteResource] if storage pool not found
       # @return Returns the connection hash if found, otherwise returns nil
       def create_volume_with_attachment(storage_pool, volume_options, attachment_options = {})
+        raise IncompleteResource, 'Storage Pool not found!' unless storage_pool.retrieve!
+        # Convert symbols keys to string in volume_options and attachment_options
+        volume_options = Hash[volume_options.map { |k, v| [k.to_s, v] }]
+        attachment_options = Hash[attachment_options.map { |k, v| [k.to_s, v] }]
         self['sanStorage'] ||= {}
         self['sanStorage']['volumeAttachments'] ||= []
         attachment_options['id'] ||= 0
@@ -233,7 +242,7 @@ module OneviewSDK
           attachment_options["volume#{k.to_s[0].capitalize}#{k.to_s[1, k.to_s.length - 1]}"] = v
         end
 
-        attachment_options['volumeStoragePoolUri'] = storage_pool['uri'] if storage_pool['uri'] || storage_pool.retrieve!
+        attachment_options['volumeStoragePoolUri'] = storage_pool['uri']
 
         # Since the volume is being created in this method, it needs to be nil
         attachment_options['volumeUri'] = nil
@@ -247,7 +256,9 @@ module OneviewSDK
         attachment_options['lunType'] ||= 'Auto'
         attachment_options['lun'] ||= nil
         attachment_options['storagePaths'] ||= []
+        attachment_options['volumeShareable'] = false
 
+        self['sanStorage']['manageSanStorage'] ||= true
         self['sanStorage']['volumeAttachments'] << attachment_options
       end
 
@@ -354,8 +365,7 @@ module OneviewSDK
       # @option query [String] 'sort' The number of resources to return. A count of -1 requests all the items.
       def self.get_available_storage_systems(client, query = nil)
         query_uri = build_query(query) if query
-        response = client.rest_get("#{BASE_URI}/available-storage-systems#{query_uri}")
-        client.response_handler(response)
+        find_with_pagination(client, "#{BASE_URI}/available-storage-systems#{query_uri}")
       end
 
       # Get the available targets based on the query parameters
