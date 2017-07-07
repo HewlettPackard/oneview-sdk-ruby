@@ -17,6 +17,10 @@ module OneviewSDK
     class ServerProfileTemplate < Resource
       BASE_URI = '/rest/server-profile-templates'.freeze
 
+      # Create a resource object, associate it with a client, and set its properties.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [Hash] params The options for this resource (key-value pairs)
+      # @param [Integer] api_ver The api version to use when interracting with this resource.
       def initialize(client, params = {}, api_ver = nil)
         super
         # Default values
@@ -82,8 +86,9 @@ module OneviewSDK
       # @option connection_options [String] 'wwpnType' Specifies the type of WWN address to be porgrammed on the FlexNIC.
       #   The value can be 'Virtual', 'Physical' or 'UserDefined'.
       def add_connection(network, connection_options = {})
+        connection_options = Hash[connection_options.map { |k, v| [k.to_s, v] }]
         self['connections'] = [] unless self['connections']
-        connection_options['id'] = 0 # Letting OneView treat the ID registering
+        connection_options['id'] ||= 0
         connection_options['networkUri'] = network['uri'] if network['uri'] || network.retrieve!
         self['connections'] << connection_options
       end
@@ -109,22 +114,25 @@ module OneviewSDK
       # @option attachment_options [Boolean] 'permanent' Required. If true, indicates that the volume will persist when the profile is deleted.
       #   If false, then the volume will be deleted when the profile is deleted.
       # @option attachment_options [Array] 'storagePaths' A list of host-to-target path associations.
+      # @raise [OneviewSDK::IncompleteResource] if volume not found
       # @return Returns the connection hash if found, otherwise returns nil
       def add_volume_attachment(volume, attachment_options = {})
+        raise IncompleteResource, 'Volume not found!' unless volume.retrieve!
+        # Convert symbols keys to string
+        attachment_options = Hash[attachment_options.map { |k, v| [k.to_s, v] }]
         self['sanStorage'] ||= {}
         self['sanStorage']['volumeAttachments'] ||= []
+        self['sanStorage']['manageSanStorage'] ||= true
         attachment_options['id'] ||= 0
-
-        volume.retrieve! unless volume['uri'] || volume['storagePoolUri'] || volume['storageSystemUri']
         attachment_options['volumeUri'] = volume['uri']
         attachment_options['volumeStoragePoolUri'] = volume['storagePoolUri']
-        attachment_options['volumeStorageSystemUri'] = volume['storageSystemUri']
+        attachment_options['volumeStorageSystemUri'] = volume['storageSystemUri'] if volume['storageSystemUri']
 
         self['sanStorage']['volumeAttachments'] << attachment_options
       end
 
       # Adds a volume attachment entry with new volume in Server profile template
-      # @param [OneviewSDK::Volume] volume Volume Resource to add an attachment
+      # @param [OneviewSDK::StoragePool] storage_pool StoragePool Resource to add an attachment
       # @param [Hash] volume_options Options to create a new Volume.
       #   Please refer to OneviewSDK::Volume documentation for the data necessary to create a new Volume.
       # @param [Hash] attachment_options Options of the new attachment
@@ -134,8 +142,13 @@ module OneviewSDK
       # @option attachment_options [Boolean] 'permanent' Required. If true, indicates that the volume will persist when the profile is deleted.
       #   If false, then the volume will be deleted when the profile is deleted.
       # @option attachment_options [Array] 'storagePaths' A list of host-to-target path associations.
+      # @raise [OneviewSDK::IncompleteResource] if storage pool not found
       # @return Returns the connection hash if found, otherwise returns nil
       def create_volume_with_attachment(storage_pool, volume_options, attachment_options = {})
+        raise IncompleteResource, 'Storage Pool not found!' unless storage_pool.retrieve!
+        # Convert symbols keys to string in volume_options and attachment_options
+        volume_options = Hash[volume_options.map { |k, v| [k.to_s, v] }]
+        attachment_options = Hash[attachment_options.map { |k, v| [k.to_s, v] }]
         self['sanStorage'] ||= {}
         self['sanStorage']['volumeAttachments'] ||= []
         attachment_options['id'] ||= 0
@@ -150,21 +163,17 @@ module OneviewSDK
           attachment_options["volume#{k.to_s[0].capitalize}#{k.to_s[1, k.to_s.length - 1]}"] = v
         end
 
-        attachment_options['volumeStoragePoolUri'] = storage_pool['uri'] if storage_pool['uri'] || storage_pool.retrieve!
-
-        # Since the volume is being created in this method, it needs to be nil
-        attachment_options['volumeUri'] = nil
-        attachment_options['volumeStorageSystemUri'] = nil
-
+        attachment_options['volumeStoragePoolUri'] = storage_pool['uri']
         # volumeProvisionedCapacityBytes is not following the same pattern in Volume
         attachment_options['volumeProvisionedCapacityBytes'] ||= attachment_options.delete('volumeRequestedCapacity')
 
         # Defaults
+        attachment_options['volumeUri'] = nil
+        attachment_options['volumeStorageSystemUri'] = nil
         attachment_options['permanent'] ||= true
-        attachment_options['lunType'] ||= 'Auto'
-        attachment_options['lun'] ||= nil
-        attachment_options['storagePaths'] ||= []
+        attachment_options['volumeShareable'] = false
 
+        self['sanStorage']['manageSanStorage'] ||= true
         self['sanStorage']['volumeAttachments'] << attachment_options
       end
 
@@ -184,6 +193,7 @@ module OneviewSDK
       end
 
       # Gets the available server hardwares
+      # @raise [OneviewSDK::IncompleteResource] if serverHardwareTypeUri or enclosureGroupUri is missing
       # @return [Array<OneviewSDK::ServerHardware>] Array of ServerHardware resources that matches this
       #   profile template's server hardware type and enclosure group and who's state is 'NoProfileApplied'
       def get_available_hardware

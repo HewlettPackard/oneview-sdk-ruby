@@ -19,7 +19,7 @@ RSpec.shared_examples 'StorageSystemUpdateExample' do |context_name, api_version
       storage_system = described_class.new(current_client, item_attributes)
       storage_system.retrieve!
 
-      fc_network = OneviewSDK::FCNetwork.find_by(current_client, {}).first
+      fc_network = OneviewSDK::FCNetwork.find_by(current_client, name: FC_NET_NAME).first
 
       storage_system.data['unmanagedPorts'].first['expectedNetworkUri'] = fc_network.data['uri']
       storage_system.update

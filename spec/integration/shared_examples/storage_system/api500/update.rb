@@ -3,7 +3,7 @@ RSpec.shared_examples 'StorageSystemUpdateExample API500' do
     it 'should update port to have a network correctly' do
       item = described_class.new($client_500, item_attributes)
       item.retrieve!
-      fc_network = OneviewSDK::API500::C7000::FCNetwork.get_all($client_500).first
+      fc_network = OneviewSDK::API500::C7000::FCNetwork.find_by($client_500, name: FC_NET_NAME).first
 
       port = item['ports'].first
       port['expectedNetworkUri'] = fc_network['uri']
@@ -31,7 +31,7 @@ RSpec.shared_examples 'StorageSystemUpdateExample API500' do
       item = described_class.new($client_500, item_attributes)
       item.retrieve!
       reachable_ports = []
-      fc_network = OneviewSDK::API500::C7000::FCNetwork.get_all($client_500).first
+      fc_network = OneviewSDK::API500::C7000::FCNetwork.find_by($client_500, name: FC_NET_NAME).first
       expect { reachable_ports = item.get_reachable_ports }.not_to raise_error
       expect(reachable_ports.length).to eq(1)
       expect(reachable_ports.first['expectedNetworkUri']).to eq(fc_network['uri'])
