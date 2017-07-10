@@ -47,6 +47,7 @@ module OneviewSDK
 
       # Gets the list of extra unmanaged storage volumes
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @return [Array] Array of extra unmanaged storage volumes
       def self.get_extra_unmanaged_volumes(client)
         response = client.rest_get(BASE_URI + '/repair?alertFixType=ExtraUnmanagedStorageVolumes')
         body = client.response_handler(response)
