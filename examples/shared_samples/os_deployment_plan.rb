@@ -9,18 +9,26 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client' # Gives access to @client
+require_relative '../_client' # Gives access to @client
 
-# Example: Get OS Deployment Plans
+# Supported APIs:
+# - 300, 500 only for Synergy
+
+# Resources that can be created according to parameters:
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::OSDeploymentPlan
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::OSDeploymentPlan
+
+# Resource Class used in this sample
+os_deployment_plan_class = OneviewSDK.resource_named('OSDeploymentPlan', @client.api_version)
 
 puts "\nListing all 'OS Deployment Plans':"
-all_deployments_plans = OneviewSDK::API300::Synergy::OSDeploymentPlan.get_all(@client)
+all_deployments_plans = os_deployment_plan_class.get_all(@client)
 all_deployments_plans.each { |item| puts "- #{item['name']}" }
 
 puts "\nFinding items by name '#{all_deployments_plans.first['name']}'"
-items = OneviewSDK::API300::Synergy::OSDeploymentPlan.find_by(@client, name: all_deployments_plans.first['name'])
+items = os_deployment_plan_class.find_by(@client, name: all_deployments_plans.first['name'])
 puts "#{items.size} item found:", items.first.data
 
 puts "\nRetrieving by URI '#{all_deployments_plans.first['uri']}'"
-item = OneviewSDK::API300::Synergy::OSDeploymentPlan.new(@client, uri: all_deployments_plans.first['uri'])
+item = os_deployment_plan_class.new(@client, uri: all_deployments_plans.first['uri'])
 puts 'Item retrieved: ', item.data if item.retrieve!
