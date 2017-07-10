@@ -52,6 +52,11 @@ RSpec.describe OneviewSDK::IDPool do
   end
 
   describe '#check_range_availability' do
+    it 'checking the range availability passing an empty list' do
+      response = item.check_range_availability(pool_type, [])
+      expect(response).to be_empty
+    end
+
     it 'checking a range' do
       fake_response = FakeResponse.new
       expect(@client_200).to receive(:rest_get)
@@ -63,6 +68,10 @@ RSpec.describe OneviewSDK::IDPool do
   end
 
   describe '#collect_ids' do
+    it 'raises an exception when passing an empty list' do
+      expect { item.collect_ids(pool_type, []) }.to raise_error(/The list of IDs informed is empty/)
+    end
+
     it 'collecting ids' do
       fake_response = FakeResponse.new
       expect(@client_200).to receive(:rest_put)
@@ -85,6 +94,11 @@ RSpec.describe OneviewSDK::IDPool do
   end
 
   describe '#validate_id_list' do
+    it 'validating passing an empty list' do
+      response = item.check_range_availability(pool_type, [])
+      expect(response).to be_empty
+    end
+
     it 'validating a list of IDs' do
       fake_response = FakeResponse.new
       expect(@client_200).to receive(:rest_put)
