@@ -27,7 +27,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
           { 'name' => 'Attachment3', 'uri' => 'rest/fake/3' }
         ]
       )
-      expect(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbod-attachments').and_return(attachment_list)
+      expect(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbod-attachments', {}).and_return(attachment_list)
       item = OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod_attachment(@client_300, 'Attachment2')
       expect(item['uri']).to eq('rest/fake/2')
     end
@@ -42,7 +42,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
           { 'name' => 'SAS_LOGICAL_JBOD3', 'uri' => 'rest/fake/3' }
         ]
       )
-      expect(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbods').and_return(list)
+      expect(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbods', {}).and_return(list)
       item = OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod(@client_300, 'SAS_LOGICAL_JBOD2')
       expect(item['uri']).to eq('rest/fake/2')
     end
@@ -51,7 +51,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfile do
   describe '#get_sas_logical_jbod_drives' do
     it 'should list all the SASLogicalJBOD drives' do
       list = FakeResponse.new('members' => [{ 'name' => 'SAS_LOGICAL_JBOD1', 'uri' => '/rest/fake/1' }])
-      allow(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbods').and_return(list)
+      allow(@client_300).to receive(:rest_get).with('/rest/sas-logical-jbods', {}).and_return(list)
       @item = OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod(@client_300, 'SAS_LOGICAL_JBOD1')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/1/drives').and_return(FakeResponse.new('it' => 'works'))
       expect(OneviewSDK::API300::Synergy::ServerProfile.get_sas_logical_jbod_drives(@client_300, 'SAS_LOGICAL_JBOD1')['it']).to eq('works')
