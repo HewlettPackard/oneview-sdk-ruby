@@ -20,6 +20,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - FCoE Network
    - Firmware Bundle
    - Firmware Driver
+   - ID Pool
    - Interconnect
    - Internal Link Set
    - Logical Downlink
