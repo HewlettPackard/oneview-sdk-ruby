@@ -429,7 +429,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     it 'can call the #add_volume_attachment using a specific already created Volume' do
       options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
       fake_response = FakeResponse.new(members: [options])
-      expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes').and_return(fake_response)
+      expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes', {}).and_return(fake_response)
       volume = OneviewSDK::Volume.new(@client_200, options)
       @item.add_volume_attachment(volume)
 
@@ -444,7 +444,7 @@ RSpec.describe OneviewSDK::ServerProfile do
       it 'and remove attachment with id 0' do
         options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
         fake_response = FakeResponse.new(members: [options])
-        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes').and_return(fake_response)
+        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes', {}).and_return(fake_response)
         volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -458,7 +458,7 @@ RSpec.describe OneviewSDK::ServerProfile do
       it 'and return nil if no attachment found' do
         options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
         fake_response = FakeResponse.new(members: [options])
-        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes').and_return(fake_response)
+        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes', {}).and_return(fake_response)
         volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -478,7 +478,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     it 'can call #create_volume_with_attachment and generate the data required for a new Volume with attachment' do
       options = { uri: 'fake/storage-pool', storageSystemUri: 'fake/storage-system' }
       fake_response = FakeResponse.new(members: [options])
-      expect(@client_200).to receive(:rest_get).with('/rest/storage-pools').and_return(fake_response)
+      expect(@client_200).to receive(:rest_get).with('/rest/storage-pools', {}).and_return(fake_response)
 
       storage_pool = OneviewSDK::StoragePool.new(@client_200, options)
       volume_options = {
