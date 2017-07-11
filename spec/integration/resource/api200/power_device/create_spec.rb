@@ -13,33 +13,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::PowerDevice
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
-
-  describe '#add' do
-    it 'can add a power device with default values' do
-      item = OneviewSDK::PowerDevice.new($client, name: POW_DEVICE1_NAME, ratedCapacity: 500)
-      item.add
-      expect(item['uri']).not_to be_empty
-    end
-  end
-
-  describe '#discover' do
-    it 'can discover an HP iPDU' do
-      options = {
-        username: $secrets['hp_ipdu_username'],
-        password: $secrets['hp_ipdu_password'],
-        hostname: $secrets['hp_ipdu_ip']
-      }
-
-      ipdu = OneviewSDK::PowerDevice.discover($client, options)
-      expect(ipdu['uri']).not_to be_empty
-    end
-  end
-
-  describe '#utilization' do
-    it 'Gets utilization data' do
-      item = OneviewSDK::PowerDevice.find_by($client, {}).first
-      expect { item.utilization }.not_to raise_error
-    end
-  end
+  let(:current_client) { $client }
+  let(:current_secrets) { $secrets }
+  include_examples 'PowerDeviceCreateExample', 'integration context'
 end
