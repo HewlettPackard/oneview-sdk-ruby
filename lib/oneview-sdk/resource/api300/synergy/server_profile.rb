@@ -21,6 +21,7 @@ module OneviewSDK
 
         # Retrieves all SAS Logical JBOD
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @return [Array] Array of SAS Logical JBOD
         def get_sas_logical_jbods(client)
           OneviewSDK::Resource.find_with_pagination(client, LOGICAL_JBOD_URI)
         end
@@ -28,7 +29,7 @@ module OneviewSDK
         # Retrieves a SAS Logical JBOD by name
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [String] name SAS Logical JBOD name
-        # @return [Array] SAS Logical JBOD
+        # @return [Hash] Hash with the SAS Logical JBOD if found or nil
         def get_sas_logical_jbod(client, name)
           results = get_sas_logical_jbods(client)
           results.find { |item| item['name'] == name }
@@ -37,6 +38,7 @@ module OneviewSDK
         # Retrieves drives by SAS Logical JBOD name
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [String] name SAS Logical JBOD name
+        # @return [Array] Array of drives allocated for SAS logical JBOD
         def get_sas_logical_jbod_drives(client, name)
           item = get_sas_logical_jbod(client, name)
           response = client.rest_get(item['uri'] + '/drives')
@@ -45,6 +47,7 @@ module OneviewSDK
 
         # Retrieves all SAS Logical JBOD Attachments
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @return [Array] Array of SAS Logical JBOD Attachment
         def get_sas_logical_jbod_attachments(client)
           OneviewSDK::Resource.find_with_pagination(client, ATTACHMENT_URI)
         end
@@ -52,7 +55,7 @@ module OneviewSDK
         # Retrieves a SAS Logical JBOD Attachment by name
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [String] name SAS Logical JBOD Attachment name
-        # @return [Array] SAS Logical JBOD Attachment
+        # @return [Hash] Hash with the SAS Logical JBOD Attachment if found or nil
         def get_sas_logical_jbod_attachment(client, name)
           results = get_sas_logical_jbod_attachments(client)
           results.find { |attachment| attachment['name'] == name }
