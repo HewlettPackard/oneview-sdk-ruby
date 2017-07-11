@@ -22,10 +22,6 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
   end
   api_version = described_class.to_s.split('::')[1]
 
-  before :each do
-    @response = nil
-  end
-
   describe '#update' do
     it 'updates the name' do
       item.retrieve!
@@ -98,22 +94,20 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
 
   describe '#get_available_hardware' do
     it 'raises an exception when serverHardwareTypeUri is missing' do
-      expect { @response = item.get_available_hardware }
-        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
+      expect { item.get_available_hardware }.to raise_error(OneviewSDK::IncompleteResource, /Must set.*serverHardwareTypeUri/)
     end
 
     it 'raises an exception when enclosureGroupUri is missing' do
       item.set_server_hardware_type(server_hardware_type)
-      expect { @response = item.get_available_hardware }
-        .to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
+      expect { item.get_available_hardware }.to raise_error(OneviewSDK::IncompleteResource, /Must set.*enclosureGroupUri/)
     end
 
     it 'retrieves the available hardware' do
       item.set_enclosure_group(enclosure_group)
       item.set_server_hardware_type(server_hardware_type)
-      expect { @response = item.get_available_hardware }.to_not raise_error
-      expect(@response).not_to be_empty
-      expect(@response.first).to be_an_instance_of(resource_class_of('ServerHardware'))
+      response = item.get_available_hardware
+      expect(response).not_to be_empty
+      expect(response.first).to be_an_instance_of(resource_class_of('ServerHardware'))
     end
   end
 
@@ -123,16 +117,16 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
         'enclosure_group' => enclosure_group,
         'server_hardware_type' => server_hardware_type
       }
-      expect { @response = described_class.get_available_networks(current_client, query_options) }.to_not raise_error
-      expect(@response['ethernetNetworks']).not_to be_empty
-      expect(@response['fcNetworks']).not_to be_empty
+      response = described_class.get_available_networks(current_client, query_options)
+      expect(response['ethernetNetworks']).not_to be_empty
+      expect(response['fcNetworks']).not_to be_empty
     end
   end
 
   describe '#self.get_available_servers' do
     it 'retrieves available servers without errors' do
-      expect { @response = described_class.get_available_servers(current_client) }.to_not raise_error
-      expect(@response).not_to be_empty
+      response = described_class.get_available_servers(current_client)
+      expect(response).not_to be_empty
     end
   end
 
@@ -143,8 +137,8 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
         'server_hardware_type' => server_hardware_type,
         'storage_system' => storage_system
       }
-      expect { @response = described_class.get_available_storage_system(current_client, query_options) }.to_not raise_error
-      expect(@response['storageSystemUri']).to eq(storage_system['uri'])
+      response = described_class.get_available_storage_system(current_client, query_options)
+      expect(response['storageSystemUri']).to eq(storage_system['uri'])
     end
   end
 
@@ -154,15 +148,15 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
         'enclosure_group' => enclosure_group,
         'server_hardware_type' => server_hardware_type
       }
-      expect { @response = described_class.get_available_storage_systems(current_client, query_options) }.to_not raise_error
-      expect(@response).not_to be_empty
+      response = described_class.get_available_storage_systems(current_client, query_options)
+      expect(response).not_to be_empty
     end
   end
 
   describe '#self.get_available_targets' do
     it 'retrieves available targets without errors' do
-      expect { @response = described_class.get_available_targets(current_client) }.to_not raise_error
-      expect(@response['targets']).not_to be_empty
+      response = described_class.get_available_targets(current_client)
+      expect(response['targets']).not_to be_empty
     end
   end
 
@@ -172,8 +166,8 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
         'enclosure_group' => enclosure_group,
         'server_hardware_type' => server_hardware_type
       }
-      expect { @response = described_class.get_profile_ports(current_client, query_options) }.to_not raise_error
-      expect(@response['ports']).not_to be_empty
+      response = described_class.get_profile_ports(current_client, query_options)
+      expect(response['ports']).not_to be_empty
     end
   end
 
@@ -202,27 +196,27 @@ RSpec.shared_examples 'ServerProfileUpdateExample' do |context_name|
   describe '#update_from_template' do
     it 'makes the Server Profile compliant with the template' do
       item2.retrieve!
-      expect { @response = item2.update_from_template }.to_not raise_error
+      expect { item2.update_from_template }.to_not raise_error
     end
   end
 
   describe '#get_available_networks' do
     it 'Gets available networks' do
       item2.retrieve!
-      expect { @response = item2.get_available_networks }.not_to raise_error
-      expect(@response['ethernetNetworks']).not_to be_empty
-      expect(@response['fcNetworks']).not_to be_empty
+      response = item2.get_available_networks
+      expect(response['ethernetNetworks']).not_to be_empty
+      expect(response['fcNetworks']).not_to be_empty
     end
   end
 
   describe '#get_profile_template', if: api_version.end_with?('500') do
     it 'Gets a new profile template of a given server profile' do
       item2.retrieve!
-      expect { @response = item2.get_profile_template }.not_to raise_error
-      expect(@response['uri']).to be_nil
-      expect(@response['name']).to be_nil
-      expect(@response['enclosureGroupUri']).to eq(enclosure_group['uri'])
-      expect(@response['serverHardwareTypeUri']).to eq(server_hardware_type['uri'])
+      response = item2.get_profile_template
+      expect(response['uri']).to be_nil
+      expect(response['name']).to be_nil
+      expect(response['enclosureGroupUri']).to eq(enclosure_group['uri'])
+      expect(response['serverHardwareTypeUri']).to eq(server_hardware_type['uri'])
     end
   end
 end
