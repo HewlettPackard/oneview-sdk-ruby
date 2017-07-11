@@ -113,7 +113,7 @@ module OneviewSDK
       # @return [String] Script content
       def script
         ensure_client && ensure_uri
-        response = @client.rest_get(@data['uri'] + '/script', @api_version)
+        response = @client.rest_get(@data['uri'] + '/script', {}, @api_version)
         @client.response_handler(response)
       end
 
@@ -121,7 +121,7 @@ module OneviewSDK
       # @return [Hash] The enclosure envirnomental configuration
       def environmental_configuration
         ensure_client && ensure_uri
-        response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
+        response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', {}, @api_version)
         @client.response_handler(response)
       end
 
@@ -158,7 +158,7 @@ module OneviewSDK
           uri += '&'
         end
         uri.chop! # Get rid of trailing '&' or '?'
-        response = @client.rest_get(uri, @api_version)
+        response = @client.rest_get(uri, {}, @api_version)
         @client.response_handler(response)
       end
 

@@ -35,7 +35,7 @@ RSpec.describe OneviewSDK::Cli do
     end
 
     it 'prints a list of resource names' do
-      expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, {})
+      expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, {}, OneviewSDK::ServerProfile::BASE_URI, {})
       expect { command }.to output(/Profile1\sProfile2\sProfile3\s/).to_stdout_from_any_process
     end
 

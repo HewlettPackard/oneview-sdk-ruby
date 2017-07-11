@@ -22,7 +22,7 @@ RSpec.describe klass do
 
     it 'gets uri/script' do
       item = klass.new(@client_200, uri: '/rest/fake')
-      expect(@client_200).to receive(:rest_get).with('/rest/fake/script', item.api_version).and_return(FakeResponse.new('Blah'))
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/script', {}, item.api_version).and_return(FakeResponse.new('Blah'))
       expect(@client_200.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
       expect(item.get_script).to eq('Blah')
     end

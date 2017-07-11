@@ -24,7 +24,7 @@ module OneviewSDK
         # @return [OneviewSDK::Fabric] self
         def get_reserved_vlan_range
           ensure_client && ensure_uri
-          response = @client.rest_get("#{@data['uri']}/reserved-vlan-range", @api_version)
+          response = @client.rest_get("#{@data['uri']}/reserved-vlan-range", {}, @api_version)
           @client.response_handler(response)
         end
 

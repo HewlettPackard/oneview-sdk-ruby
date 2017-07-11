@@ -63,7 +63,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
 
   describe '::get_default_settings' do
     it 'should get the default settings' do
-      expect(@client_300).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', @client_300.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', {}, @client_300.api_version)
         .and_return(FakeResponse.new)
       expect(OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client_300)).to be
     end

@@ -17,7 +17,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
   describe '::get_default_settings' do
     it 'should get the default settings' do
-      expect(@client_200).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', @client_200.api_version)
+      expect(@client_200).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', {}, @client_200.api_version)
         .and_return(FakeResponse.new)
       expect(OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client_200)).to be
     end
@@ -58,7 +58,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
   describe '#get_settings' do
     it 'should get the settings' do
       item = described_class.new(@client_200, uri: '/rest/fake')
-      expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', item.api_version)
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', {}, item.api_version)
         .and_return(FakeResponse.new)
       expect(item.get_settings).to be
     end
@@ -68,7 +68,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     context 'when LIG has Interconnects attached and Uplink Sets defined' do
       it 'should work properly' do
         item = described_class.new(@client_200, uri: '/rest/fake')
-        expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', item.api_version)
+        expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', {}, item.api_version)
           .and_return(FakeResponse.new)
         expect(item.get_settings).to be
       end

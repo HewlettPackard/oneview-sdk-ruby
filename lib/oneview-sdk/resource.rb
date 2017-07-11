@@ -46,12 +46,13 @@ module OneviewSDK
 
     # Retrieve resource details based on this resource's name or URI.
     # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri, must be specified in the resource
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Boolean] Whether or not retrieve was successful
-    def retrieve!
+    def retrieve!(header = {})
       retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
       raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
       retrieval_keys.each do |k|
-        results = self.class.find_by(@client, k => @data[k])
+        results = self.class.find_by(@client, { k => @data[k] }, self.class::BASE_URI, header)
         next if results.size != 1
         set_all(results[0].data)
         return true
@@ -61,12 +62,13 @@ module OneviewSDK
 
     # Check if a resource exists
     # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri, must be specified in the resource
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Boolean] Whether or not resource exists
-    def exists?
+    def exists?(header = {})
       retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
       raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
       retrieval_keys.each do |k|
-        results = self.class.find_by(@client, k => @data[k])
+        results = self.class.find_by(@client, { k => @data[k] }, self.class::BASE_URI, header)
         return true if results.size == 1
       end
       false
@@ -163,12 +165,14 @@ module OneviewSDK
 
     # Create the resource on OneView using the current data
     # @note Calls the refresh method to set additional data
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
-    def create
+    def create(header = {})
       ensure_client
-      response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+      options = {}.merge(header).merge('body' => @data)
+      response = @client.rest_post(self.class::BASE_URI, options, @api_version)
       body = @client.response_handler(response)
       set_all(body)
       self
@@ -176,21 +180,23 @@ module OneviewSDK
 
     # Delete the resource from OneView if it exists, then create it using the current data
     # @note Calls refresh method to set additional data
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @raise [OneviewSDK::IncompleteResource] if the client is not set
     # @raise [StandardError] if the resource creation fails
     # @return [Resource] self
-    def create!
+    def create!(header = {})
       temp = self.class.new(@client, @data)
       temp.delete if temp.retrieve!
-      create
+      create(header)
     end
 
     # Updates this object using the data that exists on OneView
     # @note Will overwrite any data that differs from OneView
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Resource] self
-    def refresh
+    def refresh(header = {})
       ensure_client && ensure_uri
-      response = @client.rest_get(@data['uri'], @api_version)
+      response = @client.rest_get(@data['uri'], header, @api_version)
       body = @client.response_handler(response)
       set_all(body)
       self
@@ -198,22 +204,25 @@ module OneviewSDK
 
     # Set data and save to OneView
     # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
     # @raise [StandardError] if the resource save fails
     # @return [Resource] self
-    def update(attributes = {})
+    def update(attributes = {}, header = {})
       set_all(attributes)
       ensure_client && ensure_uri
-      response = @client.rest_put(@data['uri'], { 'body' => @data }, @api_version)
+      options = {}.merge(header).merge('body' => @data)
+      response = @client.rest_put(@data['uri'], options, @api_version)
       @client.response_handler(response)
       self
     end
 
     # Delete resource from OneView
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @return [true] if resource was deleted successfully
-    def delete
+    def delete(header = {})
       ensure_client && ensure_uri
-      response = @client.rest_delete(@data['uri'], {}, @api_version)
+      response = @client.rest_delete(@data['uri'], header, @api_version)
       @client.response_handler(response)
       true
     end
@@ -248,7 +257,7 @@ module OneviewSDK
     # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @return [Hash] Schema
     def self.schema(client)
-      response = client.rest_get("#{self::BASE_URI}/schema", client.api_version)
+      response = client.rest_get("#{self::BASE_URI}/schema", {}, client.api_version)
       client.response_handler(response)
     rescue StandardError => e
       client.logger.error('This resource does not implement the schema endpoint!') if e.message =~ /404 NOT FOUND/
@@ -277,9 +286,10 @@ module OneviewSDK
     # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] attributes Hash containing the attributes name and value
     # @param [String] uri URI of the endpoint
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Array<Resource>] Results matching the search
-    def self.find_by(client, attributes, uri = self::BASE_URI)
-      all = find_with_pagination(client, uri)
+    def self.find_by(client, attributes, uri = self::BASE_URI, header = {})
+      all = find_with_pagination(client, uri, header)
       results = []
       all.each do |member|
         temp = new(client, member)
@@ -291,11 +301,12 @@ module OneviewSDK
     # Make a GET request to the uri, and returns an array with all results (search using resource pagination)
     # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [String] uri URI of the endpoint
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Array<Hash>] Results
-    def self.find_with_pagination(client, uri)
+    def self.find_with_pagination(client, uri, header = {})
       all = []
       loop do
-        response = client.rest_get(uri)
+        response = client.rest_get(uri, header)
         body = client.response_handler(response)
         members = body['members']
         break unless members
@@ -307,9 +318,11 @@ module OneviewSDK
     end
 
     # Make a GET request to the resource base uri, and returns an array with all objects of this type
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Array<Resource>] Results
-    def self.get_all(client)
-      find_by(client, {})
+    def self.get_all(client, header = {})
+      find_by(client, {}, self::BASE_URI, header)
     end
 
     # Builds a Query string corresponding to the parameters passed
