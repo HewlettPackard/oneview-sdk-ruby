@@ -5,7 +5,6 @@
 #### New Resources:
 This release adds support support to Oneview Rest API version 200 (only hardware variant C7000), 300 and 500 (both two for the hardware variants C7000 and Synergy) to the new features:
    - Client Certificate
-   - Event
    - Web Server Certificate
 
 #### Features supported
@@ -16,11 +15,13 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Enclosure
    - Enclosure Group
    - Ethernet Network
+   - Event
    - Fabric
    - FC Network
    - FCoE Network
    - Firmware Bundle
    - Firmware Driver
+   - ID Pool
    - Interconnect
    - Internal Link Set
    - Logical Downlink
@@ -31,6 +32,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Logical Switch Group
    - Managed SANs
    - Network Set
+   - OS Deployment Plan
    - Rack
    - SAN Manager
    - SAS Interconnect
@@ -47,6 +49,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Uplink Set
    - User
    - Volume
+   - Volume Attachment
    - Volume Templates
 
 #### Breaking changes

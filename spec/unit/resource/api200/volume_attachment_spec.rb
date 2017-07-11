@@ -23,7 +23,7 @@ RSpec.describe OneviewSDK::VolumeAttachment do
 
     it 'list' do
       expect(@client_200).to receive(:rest_get).with('/rest/storage-volume-attachments/repair?alertFixType=ExtraUnmanagedStorageVolumes')
-        .and_return(FakeResponse.new({}))
+        .and_return(FakeResponse.new('members' => []))
       OneviewSDK::VolumeAttachment.get_extra_unmanaged_volumes(@client_200)
     end
   end

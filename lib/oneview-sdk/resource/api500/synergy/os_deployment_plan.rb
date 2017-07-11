@@ -14,7 +14,7 @@ require_relative '../../api300/synergy/os_deployment_plan'
 module OneviewSDK
   module API500
     module Synergy
-      # Network set resource implementation for API300 Synergy
+      # Network set resource implementation for API500 Synergy
       class OSDeploymentPlan < OneviewSDK::API300::Synergy::OSDeploymentPlan
       end
     end
