@@ -29,5 +29,7 @@ spec/integration/one_view_secrets.json
 spec/integration/one_view_synergy_secrets.json
 spec/system/one_view_config.json
 spec/system/one_view_secrets.json
+spec/system/one_view_config_synergy.json
+spec/system/one_view_secrets_synergy.json
 examples/_client_i3s.rb
 spec/integration/i3s_config.json
