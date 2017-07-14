@@ -82,6 +82,7 @@ require_relative 'support/fake_response'
 require_relative 'integration/sequence_and_naming'
 require_relative 'integration/sequence_and_naming_i3s'
 Dir["#{File.dirname(__FILE__)}/integration/shared_examples/**/*.rb"].each { |file| require file }
+Dir["#{File.dirname(__FILE__)}/system/shared_examples/**/*.rb"].each { |file| require file }
 require_relative 'helpers'
 
 RSpec.configure do |config|

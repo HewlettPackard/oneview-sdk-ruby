@@ -77,32 +77,22 @@ end
 RSpec.shared_context 'system context', a: :b do
   before(:each) do
     load_system_properties
-
-    # Create client objects:
-    $config ||= OneviewSDK::Config.load(@config_path)
-    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
-    $client     ||= OneviewSDK::Client.new($config.merge(api_version: 200))
-
-    allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
-    allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
+    generate_clients(200)
   end
-
 end
 
 RSpec.shared_context 'system api300 context', a: :b do
   before(:each) do
     load_system_properties
-
-    # Create client objects:
-    $config ||= OneviewSDK::Config.load(@config_path)
-    $config_synergy ||= OneviewSDK::Config.load(@config_path_synergy)
-    $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: 300))
-    $client_300_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 300))
-
-    allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
-    allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
+    generate_clients(300)
   end
+end
 
+RSpec.shared_context 'system api500 context', a: :b do
+  before(:each) do
+    load_system_properties
+    generate_clients(500)
+  end
 end
 
 # Must set the following environment variables:
@@ -210,4 +200,26 @@ def load_system_properties
 
   $secrets ||= OneviewSDK::Config.load(@secrets_path) # Secrets for URIs, server/enclosure credentials, etc.
   $secrets_synergy ||= OneviewSDK::Config.load(@secrets_path_synergy) # Secrets for URIs, server/enclosure credentials, etc.
+end
+
+# Create client objects:
+# @param [Integer] api_version Integer representing the api version of the Oneview
+def generate_clients(api_version)
+  $config ||= OneviewSDK::Config.load(@config_path)
+  $config_synergy ||= OneviewSDK::Config.load(@config_path_synergy) if api_version >= 300
+
+  case api_version
+  when 200
+    $client_120 ||= OneviewSDK::Client.new($config.merge(api_version: 120))
+    $client ||= OneviewSDK::Client.new($config.merge(api_version: api_version))
+  when 300
+    $client_300 ||= OneviewSDK::Client.new($config.merge(api_version: api_version))
+    $client_300_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: api_version))
+  when 500
+    $client_500 ||= OneviewSDK::Client.new($config.merge(api_version: api_version))
+    $client_500_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: api_version))
+  end
+
+  allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
+  allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_call_original
 end
