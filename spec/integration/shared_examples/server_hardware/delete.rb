@@ -20,7 +20,7 @@ RSpec.shared_examples 'ServerHardwareDeleteExample' do |context_name, is_c7000|
   end
 
   describe '#remove' do
-    it 'deletes the resource' do
+    it 'deletes the resource [it will fail if appliance does not support rack mounted servers]' do
       item = described_class.new(current_client, hostname: hostname)
       item.retrieve!
       item.remove

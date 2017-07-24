@@ -20,6 +20,16 @@ RSpec.shared_examples 'StorageSystemCreateExample' do |context_name, api_version
 
       item_added = described_class.new(current_client, uri: item[:uri])
       expect(item_added.retrieve!).to be true
+
+      # setting a network port because is used by other resource tests
+      if api_version >= 500 && item_added['family'] == 'StoreServ' && item_added['state'] == 'Managed'
+        fc_network = resource_class_of('FCNetwork').find_by(current_client, name: FC_NET2_NAME).first
+        port = item_added['ports'].first
+        port['expectedNetworkUri'] = fc_network['uri']
+        port['expectedNetworkName'] = fc_network['name']
+        port['mode'] = 'Managed'
+        expect { item_added.update }.not_to raise_error
+      end
     end
   end
 
@@ -29,7 +39,7 @@ RSpec.shared_examples 'StorageSystemCreateExample' do |context_name, api_version
     end
   end
 
-  describe '#storage pools' do
+  describe '#get_storage_pools' do
     it 'List Storage Pools' do
       item = described_class.new(current_client, item_attributes)
       item.retrieve!
@@ -41,7 +51,9 @@ RSpec.shared_examples 'StorageSystemCreateExample' do |context_name, api_version
     it 'lists all the ports' do
       item = described_class.new(current_client, item_attributes)
       item.retrieve!
-      expect(item.get_managed_ports).to be_empty
+      ports = nil
+      expect { ports = item.get_managed_ports }.not_to raise_error
+      expect(ports.class).to eq(Array)
     end
   end
 

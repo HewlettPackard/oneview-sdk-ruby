@@ -4,10 +4,8 @@ klass = OneviewSDK::API500::Synergy::LogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:current_client) { $client_500_synergy }
   let(:ethernet_network_class) { OneviewSDK::API500::Synergy::EthernetNetwork }
+  let(:item) { described_class.find_by(current_client, name: LOG_INT_GROUP_NAME).first }
 
-  include_examples 'LIGSynergyUpdateExample', 'integration api500 context'
-
-  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API500::Synergy::Scope do
-    let(:item) { described_class.get_all(current_client).first }
-  end
+  it_behaves_like 'LIGSynergyUpdateExample', 'integration api500 context'
+  it_behaves_like 'ScopeHelperMethodsExample', OneviewSDK::API500::Synergy::Scope
 end

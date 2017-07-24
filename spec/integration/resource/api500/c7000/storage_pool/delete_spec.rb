@@ -12,6 +12,6 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API500::C7000::StoragePool
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+RSpec.describe klass, integration: true, type: DELETE, sequence: seq(klass) do
   include_examples 'StoragePoolDeleteExample API500'
 end

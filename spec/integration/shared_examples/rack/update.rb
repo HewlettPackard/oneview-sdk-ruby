@@ -12,25 +12,21 @@
 RSpec.shared_examples 'RackUpdateExample' do |context_name|
   include_context context_name
 
-  subject(:item) { described_class.find_by(current_client, name: rack_name).first }
-
-  let(:enclosure) do
-    namespace = described_class.to_s[0, described_class.to_s.rindex('::')]
-    enclosure_class = Object.const_get("#{namespace}::Enclosure")
-    enclosure_class.get_all(current_client).first
-  end
+  subject(:item) { described_class.find_by(current_client, {}).find { |item| !item['rackMounts'].empty? } }
+  let(:enclosure) { resource_class_of('Enclosure').get_all(current_client).first }
 
   describe '#update' do
     it 'updates depth' do
-      item.update(name: "#{rack_name}_Updated")
+      current_name = item['name']
+      item.update(name: "#{current_name}_Updated")
       sleep(5)
       item.refresh
-      expect(item['name']).to eq("#{rack_name}_Updated")
+      expect(item['name']).to eq("#{current_name}_Updated")
       # returning to original name
-      item.update(name: rack_name)
+      item.update(name: current_name)
       sleep(5)
       item.refresh
-      expect(item['name']).to eq(rack_name)
+      expect(item['name']).to eq(current_name)
     end
 
     it 'removing an enclosure of the rack' do

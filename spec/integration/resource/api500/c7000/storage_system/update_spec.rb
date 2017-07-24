@@ -9,7 +9,7 @@ RSpec.describe klass, integration: true, type: UPDATE do
         username: $secrets['storage_system1_user'],
         password: $secrets['storage_system1_password']
       },
-      hostname: $secrets['storage_system1_ip'],
+      hostname: $secrets['storage_system2_ip'],
       family: 'StoreServ'
     }
   end

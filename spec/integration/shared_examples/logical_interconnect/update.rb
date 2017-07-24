@@ -57,11 +57,10 @@ RSpec.shared_examples 'LogicalInterconnectUpdateExample' do |context_name|
 
   describe 'Internal Networks Test' do
     it 'will list the internal networks and verify it only lists the uplink network' do
-      vlans = log_int.list_vlan_networks
-      expect(vlans.any?).to be
-      vlans.each do |net|
-        expect([ETH_NET_NAME, FC_NET_NAME]).to include(net[:name])
-      end
+      networks = log_int.list_vlan_networks
+      expect(networks.any?).to eq(true)
+      names = networks.map { |item| item[:name] }
+      expect(names).to match_array([ETH_NET_NAME, FC_NET_NAME, FC_NET2_NAME])
     end
 
     it 'will add and remove new networks' do
@@ -76,11 +75,6 @@ RSpec.shared_examples 'LogicalInterconnectUpdateExample' do |context_name|
 
       log_int.update_internal_networks
       vlans_3 = log_int.list_vlan_networks
-
-      vlans_1.each do |v1|
-        expect(vlans_3.include?(v1)).to be
-        expect(vlans_2.include?(v1)).to be
-      end
 
       vlans_3.each do |v3|
         expect(vlans_1.include?(v3)).to be

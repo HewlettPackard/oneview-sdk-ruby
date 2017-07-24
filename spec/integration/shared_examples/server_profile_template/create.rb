@@ -78,7 +78,7 @@ RSpec.shared_examples 'ServerProfileTemplateCreateExample' do |context_name|
       storage_system['unmanagedPorts'][1]['expectedNetworkUri'] = fc_network2['uri']
       storage_system.update
 
-      volume = resource_class_of('Volume').new(current_client, name: VOLUME2_NAME)
+      volume = resource_class_of('Volume').new(current_client, name: VOLUME_NAME)
       item = described_class.new(current_client, name: SERVER_PROFILE_TEMPLATE4_NAME)
       item.set_server_hardware_type(server_hardware_type)
       item.set_enclosure_group(enclosure_group)
@@ -123,7 +123,6 @@ RSpec.shared_examples 'ServerProfileTemplateCreateExample' do |context_name|
       item.add_connection(fc_network, functionType: 'FibreChannel', name: CONNECTION2_NAME, portId: 'Auto', id: 1)
       item.add_connection(fc_network2, functionType: 'FibreChannel', name: CONNECTION3_NAME, portId: 'Auto', id: 2)
       item.create_volume_with_attachment(storage_pool, volume_options, attachment_options)
-      item['sanStorage']['manageSanStorage'] = true
       item['sanStorage']['hostOSType'] = 'Windows 2012 / WS2012 R2'
 
       expect { item.create }.to_not raise_error

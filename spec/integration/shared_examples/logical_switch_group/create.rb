@@ -12,7 +12,7 @@
 RSpec.shared_examples 'LogicalSwitchGroupCreateExample' do |context_name|
   include_context context_name
 
-  let(:type) { 'Cisco Nexus 55xx' }
+  let(:type) { 'Cisco Nexus 56xx' }
   subject(:item) { described_class.new(current_client, name: LOG_SWI_GROUP_NAME) }
 
   describe '#create' do

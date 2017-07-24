@@ -9,20 +9,22 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require 'time'
-
 RSpec.shared_examples 'StoragePoolCreateExample API500' do
   include_context 'integration api500 context'
-
-  let(:network_fc_class) do
-    namespace = described_class.to_s[0, described_class.to_s.rindex('::')]
-    Object.const_get("#{namespace}::FCNetwork")
-  end
 
   describe '#create' do
     it 'should throw unavailable exception' do
       item = described_class.new($client_500)
       expect { item.create }.to raise_error(OneviewSDK::MethodUnavailable)
+    end
+  end
+
+  # setting a storage pool as managed because it will be used by other resource tests
+  describe 'setting a storage pool as managed' do
+    it 'should set to managed' do
+      item = described_class.find_by($client_500, name: STORAGE_POOL_NAME).first
+      expect(item).to be
+      expect { item.manage(true) }.not_to raise_error
     end
   end
 
@@ -34,12 +36,12 @@ RSpec.shared_examples 'StoragePoolCreateExample API500' do
     it 'should get the storage pools that are connected on the specified networks' do
       storage_pool = described_class.reachable($client_500).first
       network_uri = storage_pool['reachableNetworks'].first
-      fc_network = network_fc_class.new($client_500, uri: network_uri)
+      fc_network = resource_class_of('FCNetwork').new($client_500, uri: network_uri)
       expect(described_class.reachable($client_500, [fc_network])).not_to be_empty
     end
 
     it 'should get the empty list when not connected on the specified networks' do
-      fc_network = network_fc_class.new($client_500, uri: '/rest/fc-networks/fake-UUID')
+      fc_network = resource_class_of('FCNetwork').new($client_500, uri: '/rest/fc-networks/fake-UUID')
       expect(described_class.reachable($client_500, [fc_network])).to be_empty
     end
   end
