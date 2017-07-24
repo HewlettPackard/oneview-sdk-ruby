@@ -15,6 +15,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
   include_context context_name
   api_version = example.metadata[:api_version]
   model = example.metadata[:model]
+
   # Resources used in this test
   let(:ethernet_network_class) { OneviewSDK.resource_named('EthernetNetwork', api_version, model) }
   let(:fc_network_class) { OneviewSDK.resource_named('FCNetwork', api_version, model) }
@@ -23,6 +24,8 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
   let(:storage_pool_class) { OneviewSDK.resource_named('StoragePool', api_version, model) }
   let(:volume_template_class) { OneviewSDK.resource_named('VolumeTemplate', api_version, model) }
   let(:volume_class) { OneviewSDK.resource_named('Volume', api_version, model) }
+  let(:scope_class) { OneviewSDK.resource_named('Scope', api_version, model) }
+
   # Variables
   let(:storage_system) do
     options = { name: ResourceNames.storage_system[0] }
@@ -52,9 +55,9 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
 
   it 'Bulk Ethernet Network' do
     bulk_options = {
-      vlanIdRange: '2-6',
+      vlanIdRange: ResourceNames.bulk_ethernet_network[0][:vlanIdRange],
       purpose: 'General',
-      namePrefix: ResourceNames.bulk_ethernet_network[0],
+      namePrefix: ResourceNames.bulk_ethernet_network[0][:namePrefix],
       smartLink: false,
       privateNetwork: false,
       bandwidth: {
@@ -88,19 +91,19 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(fcoe1['uri']).not_to be_empty
   end
 
-  it 'Storage System - StoreServ' do
+  xit 'Storage System - StoreServ' do
     storage = storage_system_class.new(current_client, storage_system_options)
     storage.add
     expect(storage['uri']).not_to be_empty
   end
 
-  it 'Storage System - StoreVirtual', if: api_version >= 500 do
+  xit 'Storage System - StoreVirtual', if: api_version >= 500 do
     storage = storage_system_class.new(current_client, storage_virtual_system_options)
     storage.add
     expect(storage['uri']).not_to be_empty
   end
 
-  it 'Storage Pool', if: api_version < 500 do
+  xit 'Storage Pool', if: api_version < 500 do
     options = { storageSystemUri: storage_system['uri'], poolName: ResourceNames.storage_pool[0] }
     pool = storage_pool_class.new(current_client, options)
     pool.add
@@ -110,11 +113,10 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
   it 'Storage Pool', if: api_version >= 500 do
     expect(storage_pool['isManaged']).to eq(false)
     expect { storage_pool.manage(true) }.not_to raise_error
-    storage_pool.refresh
     expect(storage_pool['isManaged']).to eq(true)
   end
 
-  it 'Volume Template', if: api_version < 500 do
+  xit 'Volume Template', if: api_version < 500 do
     options = {
       name: ResourceNames.volume_template[0],
       description: 'Volume Template',
@@ -140,7 +142,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(volume_template['uri']).not_to be_empty
   end
 
-  it 'Volume Template - StoreVirtual', if: api_version >= 500 do
+  xit 'Volume Template - StoreVirtual', if: api_version >= 500 do
     root_template = volume_template_class.find_by(current_client, isRoot: true, family: 'StoreVirtual').first
     options = { name: ResourceNames.volume_template[1], description: 'Volume Template virtual' }
     volume_template = volume_template_class.new(current_client, options)
@@ -150,7 +152,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(volume_template['uri']).not_to be_empty
   end
 
-  it 'Volume', if: api_version < 500 do
+  xit 'Volume', if: api_version < 500 do
     options = {
       name: ResourceNames.volume[0],
       description: 'Test volume with common creation: Storage System + Storage Pool',
@@ -182,7 +184,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(volume['uri']).not_to be_empty
   end
 
-  it 'Volume - StoreVirtual', if: api_version >= 500 do
+  xit 'Volume - StoreVirtual', if: api_version >= 500 do
     options = {
       properties: {
         name: ResourceNames.volume[1],
@@ -196,5 +198,23 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     volume.set_storage_pool(storage_virtual_pool)
     volume.create
     expect(volume['uri']).not_to be_empty
+  end
+
+  it 'Scope', if: api_version >= 300 do
+    options = {
+      name: ResourceNames.scope[0],
+      description: "#{ResourceNames.scope[0]} sample description"
+    }
+    scope = scope_class.new(current_client, options)
+    scope.create
+    expect(scope.retrieve!).to eq(true)
+
+    network = ethernet_network_class.new(current_client, name: ResourceNames.ethernet_network[0])
+    expect(network.retrieve!).to eq(true)
+
+    # adding network to scope created
+    scope.set_resources(network)
+    network.refresh
+    expect(network['scopeUris']).to match_array([scope['uri']])
   end
 end

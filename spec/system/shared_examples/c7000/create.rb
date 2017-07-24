@@ -59,7 +59,7 @@ RSpec.shared_examples 'SystemTestExample C7000' do |context_name|
     expect(eg2['uri']).not_to be_empty
   end
 
-  it 'Enclosure' do
+  xit 'Enclosure' do
     eg1 = enclosure_group_class.new(current_client, name: C7000ResourceNames.enclosure_group[0])
     eg1.retrieve!
     options = {
@@ -74,7 +74,7 @@ RSpec.shared_examples 'SystemTestExample C7000' do |context_name|
     expect(enc['uri']).not_to be_empty
   end
 
-  it 'Uplink set Ethernet' do
+  xit 'Uplink set Ethernet' do
 
     ethernet = ethernet_network_class.new(current_client, name: ResourceNames.ethernet_network[0])
     ethernet.retrieve!
@@ -107,7 +107,7 @@ RSpec.shared_examples 'SystemTestExample C7000' do |context_name|
     expect { uplink.create }.to_not raise_error
   end
 
-  it 'Uplink set FC' do
+  xit 'Uplink set FC' do
     fc = fc_network_class.new(current_client, name: ResourceNames.fc_network[0])
     fc.retrieve!
 
