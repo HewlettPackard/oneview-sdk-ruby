@@ -36,6 +36,13 @@ RSpec.shared_examples 'Clean up SystemTestExample C7000' do |context_name|
     expect(server_profile_template.retrieve!).to eq(false)
   end
 
+  it 'Removes Enclosure' do
+    enc = enclosure_class.find_by(current_client, activeOaPreferredIP: $secrets['enclosure1_ip']).first
+    expect(enc).to be
+    enc.remove
+    expect(enc.retrieve!).to eq(false)
+  end
+
   it 'Removes Enclosure Groups' do
     eg1 = enclosure_group_class.find_by(current_client, name: C7000ResourceNames.enclosure_group[0]).first
     expect(eg1).to be
