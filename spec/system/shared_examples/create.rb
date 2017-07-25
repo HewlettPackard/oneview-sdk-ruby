@@ -91,19 +91,19 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(fcoe1['uri']).not_to be_empty
   end
 
-  xit 'Storage System - StoreServ' do
+  it 'Storage System - StoreServ' do
     storage = storage_system_class.new(current_client, storage_system_options)
     storage.add
     expect(storage['uri']).not_to be_empty
   end
 
-  xit 'Storage System - StoreVirtual', if: api_version >= 500 do
+  it 'Storage System - StoreVirtual', if: api_version >= 500 do
     storage = storage_system_class.new(current_client, storage_virtual_system_options)
     storage.add
     expect(storage['uri']).not_to be_empty
   end
 
-  xit 'Storage Pool', if: api_version < 500 do
+  it 'Storage Pool', if: api_version < 500 do
     options = { storageSystemUri: storage_system['uri'], poolName: ResourceNames.storage_pool[0] }
     pool = storage_pool_class.new(current_client, options)
     pool.add
@@ -116,7 +116,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(storage_pool['isManaged']).to eq(true)
   end
 
-  xit 'Volume Template', if: api_version < 500 do
+  it 'Volume Template', if: api_version < 500 do
     options = {
       name: ResourceNames.volume_template[0],
       description: 'Volume Template',
@@ -142,7 +142,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(volume_template['uri']).not_to be_empty
   end
 
-  xit 'Volume Template - StoreVirtual', if: api_version >= 500 do
+  it 'Volume Template - StoreVirtual', if: api_version >= 500 do
     root_template = volume_template_class.find_by(current_client, isRoot: true, family: 'StoreVirtual').first
     options = { name: ResourceNames.volume_template[1], description: 'Volume Template virtual' }
     volume_template = volume_template_class.new(current_client, options)
@@ -152,7 +152,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(volume_template['uri']).not_to be_empty
   end
 
-  xit 'Volume', if: api_version < 500 do
+  it 'Volume', if: api_version < 500 do
     options = {
       name: ResourceNames.volume[0],
       description: 'Test volume with common creation: Storage System + Storage Pool',
@@ -184,7 +184,7 @@ RSpec.shared_examples 'SystemTestExample' do |context_name|
     expect(volume['uri']).not_to be_empty
   end
 
-  xit 'Volume - StoreVirtual', if: api_version >= 500 do
+  it 'Volume - StoreVirtual', if: api_version >= 500 do
     options = {
       properties: {
         name: ResourceNames.volume[1],

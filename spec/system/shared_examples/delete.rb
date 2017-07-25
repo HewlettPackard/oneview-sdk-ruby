@@ -19,6 +19,7 @@ RSpec.shared_examples 'Clean up SystemTestExample' do |context_name|
   let(:ethernet_network_class) { OneviewSDK.resource_named('EthernetNetwork', api_version, model) }
   let(:fc_network_class) { OneviewSDK.resource_named('FCNetwork', api_version, model) }
   let(:fcoe_network_class) { OneviewSDK.resource_named('FCoENetwork', api_version, model) }
+  let(:storage_system_class) { OneviewSDK.resource_named('StorageSystem', api_version, model) }
   let(:storage_pool_class) { OneviewSDK.resource_named('StoragePool', api_version, model) }
   let(:volume_template_class) { OneviewSDK.resource_named('VolumeTemplate', api_version, model) }
   let(:volume_class) { OneviewSDK.resource_named('Volume', api_version, model) }
@@ -77,6 +78,13 @@ RSpec.shared_examples 'Clean up SystemTestExample' do |context_name|
     expect(fcoe1.retrieve!).to eq(false)
   end
 
+  it 'Volume Template', if: api_version < 500 do
+    volume_template = volume_template_class.find_by(current_client, name: ResourceNames.volume_template[0]).first
+    expect(volume_template).to be
+    volume_template.delete
+    expect(volume_template.retrieve!).to eq(false)
+  end
+
   it 'Volume Template - StoreServ', if: api_version >= 500 do
     volume_template = volume_template_class.find_by(current_client, name: ResourceNames.volume_template[0]).first
     expect(volume_template).to be
@@ -84,8 +92,29 @@ RSpec.shared_examples 'Clean up SystemTestExample' do |context_name|
     expect(volume_template.retrieve!).to eq(false)
   end
 
+  it 'Volume Template - StoreVirtual', if: api_version >= 500 do
+    volume_template = volume_template_class.find_by(current_client, name: ResourceNames.volume_template[1]).first
+    expect(volume_template).to be
+    volume_template.delete
+    expect(volume_template.retrieve!).to eq(false)
+  end
+
+  it 'Volume', if: api_version < 500 do
+    volume = volume_class.find_by(current_client, name: ResourceNames.volume[0]).first
+    expect(volume).to be
+    volume.delete
+    expect(volume.retrieve!).to eq(false)
+  end
+
   it 'Volume - StoreServ', if: api_version >= 500 do
     volume = volume_class.find_by(current_client, name: ResourceNames.volume[0]).first
+    expect(volume).to be
+    volume.delete
+    expect(volume.retrieve!).to eq(false)
+  end
+
+  it 'Volume - StoreVirtual', if: api_version >= 500 do
+    volume = volume_class.find_by(current_client, name: ResourceNames.volume[1]).first
     expect(volume).to be
     volume.delete
     expect(volume.retrieve!).to eq(false)
@@ -97,5 +126,19 @@ RSpec.shared_examples 'Clean up SystemTestExample' do |context_name|
     expect(storage_pool['isManaged']).to eq(true)
     expect { storage_pool.manage(false) }.not_to raise_error
     expect(storage_pool['isManaged']).to eq(false)
+  end
+
+  it 'Storage System - StoreServ' do
+    storage = storage_system_class.new(current_client, storage_system_options)
+    expect(storage.retrieve!).to eq(true)
+    storage.remove
+    expect(storage.retrieve!).to eq(false)
+  end
+
+  it 'Storage System - StoreVirtual', if: api_version >= 500 do
+    storage = storage_system_class.new(current_client, storage_virtual_system_options)
+    expect(storage.retrieve!).to eq(true)
+    storage.remove
+    expect(storage.retrieve!).to eq(false)
   end
 end
