@@ -9,6 +9,8 @@ class C7000ResourceNames
     attr_accessor :logical_interconnect
     attr_accessor :logical_interconnect_group
     attr_accessor :uplink_set
+    attr_accessor :server_hardware_type
+    attr_accessor :server_profile_template
   end
 
   self.enclosure = ['Encl1']
@@ -19,4 +21,6 @@ class C7000ResourceNames
   self.logical_interconnect = ['Encl1-LogicalInterconnectGroup_01']
   self.logical_interconnect_group = ['LogicalInterconnectGroup_01']
   self.uplink_set = %w(EthernetUplinkSet_01 FCUplinkSet_01)
+  self.server_hardware_type = ['BL460c G7 1', 'BL460c Gen9 1']
+  self.server_profile_template = %w(ServerProfileTemplate_01)
 end

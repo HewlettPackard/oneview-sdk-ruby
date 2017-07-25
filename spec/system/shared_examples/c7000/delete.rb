@@ -25,8 +25,16 @@ RSpec.shared_examples 'Clean up SystemTestExample C7000' do |context_name|
   let(:enclosure_group_class) { OneviewSDK.resource_named('EnclosureGroup', api_version, model) }
   let(:enclosure_class) { OneviewSDK.resource_named('Enclosure', api_version, model) }
   let(:uplink_class) { OneviewSDK.resource_named('UplinkSet', api_version, model) }
+  let(:server_profile_template_class) { OneviewSDK.resource_named('ServerProfileTemplate', api_version, model) }
 
   # Note: Reverse order of the creating tests
+
+  it 'Removes Server Profile Template' do
+    server_profile_template = server_profile_template_class.find_by(current_client, name: C7000ResourceNames.server_profile_template[0]).first
+    expect(server_profile_template).to be
+    server_profile_template.delete
+    expect(server_profile_template.retrieve!).to eq(false)
+  end
 
   it 'Removes Enclosure Groups' do
     eg1 = enclosure_group_class.find_by(current_client, name: C7000ResourceNames.enclosure_group[0]).first
@@ -41,10 +49,7 @@ RSpec.shared_examples 'Clean up SystemTestExample C7000' do |context_name|
   end
 
   it 'Removes Logical interconnect group' do
-    options = {
-      name: C7000ResourceNames.logical_interconnect_group[0]
-    }
-    lig1 = lig_class.find_by(current_client, options).first
+    lig1 = lig_class.find_by(current_client, name: C7000ResourceNames.logical_interconnect_group[0]).first
     expect(lig1).to be
     lig1.delete
     expect(lig1.retrieve!).to eq(false)
