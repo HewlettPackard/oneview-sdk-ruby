@@ -25,6 +25,8 @@ RSpec.shared_examples 'SystemTestExample C7000' do |context_name|
   let(:enclosure_group_class) { OneviewSDK.resource_named('EnclosureGroup', api_version, model) }
   let(:enclosure_class) { OneviewSDK.resource_named('Enclosure', api_version, model) }
   let(:uplink_class) { OneviewSDK.resource_named('UplinkSet', api_version, model) }
+  let(:server_profile_template_class) { OneviewSDK.resource_named('ServerProfileTemplate', api_version, model) }
+  let(:server_hardware_type_class) { OneviewSDK.resource_named('ServerHardwareType', api_version, model) }
 
   it 'Logical interconnect group' do
     options = {
@@ -137,5 +139,20 @@ RSpec.shared_examples 'SystemTestExample C7000' do |context_name|
     )
     uplink.add_fcnetwork(fc)
     expect { uplink.create }.to_not raise_error
+  end
+
+  it 'Server Profile Template' do
+    server_hardware_type = server_hardware_type_class.new(current_client, name: C7000ResourceNames.server_hardware_type[0])
+    expect(server_hardware_type.retrieve!).to eq(true)
+
+    enclosure_group = enclosure_group_class.new(current_client, name: C7000ResourceNames.enclosure_group[0])
+    expect(enclosure_group.retrieve!).to eq(true)
+
+    server_profile_template = server_profile_template_class.new(current_client, name: C7000ResourceNames.server_profile_template[0])
+    server_profile_template.set_server_hardware_type(server_hardware_type)
+    server_profile_template.set_enclosure_group(enclosure_group)
+
+    server_profile_template.create
+    expect(server_profile_template.retrieve!).to eq(true)
   end
 end
