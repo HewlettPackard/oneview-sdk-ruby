@@ -42,7 +42,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnectGroup do
   describe '#get_settings' do
     it 'gets the current settings' do
       item = described_class.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/settings', 300)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/settings', {}, 300)
         .and_return(FakeResponse.new('Current' => 'Settings'))
       expect(item.get_settings).to eq('Current' => 'Settings')
     end

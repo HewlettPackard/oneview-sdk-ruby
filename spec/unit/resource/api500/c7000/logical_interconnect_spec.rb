@@ -27,7 +27,7 @@ RSpec.describe OneviewSDK::API500::C7000::LogicalInterconnect do
       allow_any_instance_of(extra_klass1).to receive(:retrieve!).and_return(true)
       allow_any_instance_of(extra_klass2).to receive(:retrieve!).and_return(true)
       allow_any_instance_of(extra_klass3).to receive(:retrieve!).and_return(true)
-      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/internalVlans").and_return(true)
+      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/internalVlans", {}).and_return(true)
       expect(@client_500).to receive(:response_handler).and_return(response)
       result = item.list_vlan_networks
       expect(result).to_not be_empty

@@ -69,6 +69,11 @@ RSpec.describe OneviewSDK::Client do
 
   describe '#rest_get' do
     it 'calls rest_api' do
+      expect(@client_200).to receive(:rest_api).with(:get, path, { some_header: data }, @client_200.api_version)
+      @client_200.rest_get(path, { some_header: data }, @client_200.api_version)
+    end
+
+    it 'has default options and api_ver' do
       expect(@client_200).to receive(:rest_api).with(:get, path, {}, @client_200.api_version)
       @client_200.rest_get(path)
     end

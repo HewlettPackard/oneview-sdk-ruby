@@ -36,7 +36,7 @@ RSpec.describe OneviewSDK::StorageSystem do
         { name: 'name1', uri: 'uri1', serialNumber: 'sn1', wwn: 'wwn1', credentials: { ip_hostname: 'ip1' } },
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2', wwn: 'wwn2', credentials: { ip_hostname: 'ip2' } }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'retrieves by name' do
@@ -76,7 +76,7 @@ RSpec.describe OneviewSDK::StorageSystem do
         { name: 'name1', uri: 'uri1', serialNumber: 'sn1', wwn: 'wwn1', credentials: { ip_hostname: 'ip1' } },
         { name: 'name2', uri: 'uri2', serialNumber: 'sn2', wwn: 'wwn2', credentials: { ip_hostname: 'ip2' } }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'finds it by name' do
@@ -177,7 +177,7 @@ RSpec.describe OneviewSDK::StorageSystem do
   describe '#storage pools' do
     it 'List Storage Pools' do
       item = OneviewSDK::StorageSystem.new(@client_200, uri: '/rest/fake')
-      expect(@client_200).to receive(:rest_get).with('/rest/fake/storage-pools').and_return(FakeResponse.new({}))
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/storage-pools', {}).and_return(FakeResponse.new({}))
       expect { item.get_storage_pools }.not_to raise_error
     end
   end
@@ -185,12 +185,12 @@ RSpec.describe OneviewSDK::StorageSystem do
   describe '#get_managed_ports' do
     it 'No port given' do
       item = OneviewSDK::StorageSystem.new(@client_200, uri: '/rest/fake')
-      expect(@client_200).to receive(:rest_get).with('/rest/fake/managedPorts').and_return(FakeResponse.new({}))
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/managedPorts', {}).and_return(FakeResponse.new({}))
       item.get_managed_ports
     end
     it 'With port given' do
       item = OneviewSDK::StorageSystem.new(@client_200, uri: '/rest/fake')
-      expect(@client_200).to receive(:rest_get).with('/rest/fake/managedPorts/100').and_return(FakeResponse.new({}))
+      expect(@client_200).to receive(:rest_get).with('/rest/fake/managedPorts/100', {}).and_return(FakeResponse.new({}))
       item.get_managed_ports(100)
     end
   end

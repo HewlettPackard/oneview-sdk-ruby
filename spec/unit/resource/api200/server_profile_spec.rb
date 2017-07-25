@@ -20,7 +20,7 @@ RSpec.describe OneviewSDK::ServerProfile do
         { name: 'name1', uri: 'uri1', associatedServer: 'as1', serialNumber: 'sn1', serverHardwareUri: 'sh1' },
         { name: 'name2', uri: 'uri2', associatedServer: 'as2', serialNumber: 'sn2', serverHardwareUri: 'sh2' }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'retrieves by name' do
@@ -55,7 +55,7 @@ RSpec.describe OneviewSDK::ServerProfile do
         { name: 'name1', uri: 'uri1', associatedServer: 'as1', serialNumber: 'sn1', serverHardwareUri: 'sh1' },
         { name: 'name2', uri: 'uri2', associatedServer: 'as2', serialNumber: 'sn2', serverHardwareUri: 'sh2' }
       ])
-      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI).and_return(resp)
+      allow(@client_200).to receive(:rest_get).with(described_class::BASE_URI, {}).and_return(resp)
     end
 
     it 'finds it by name' do
@@ -90,14 +90,8 @@ RSpec.describe OneviewSDK::ServerProfile do
       @server_hardware_uri = '/rest/fake/server-hardwares/test'
     end
 
-    it 'will set the serverHardwareUri correctly' do
-      @server_hardware['uri'] = @server_hardware_uri
-      @item.set_server_hardware(@server_hardware)
-      expect(@item['serverHardwareUri']).to eq(@server_hardware_uri)
-    end
-
     it 'will retrieve and set the serverHardwareUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware', {})
         .and_return(FakeResponse.new(members: [
             { name: 'server_hardware', uri: @server_hardware_uri },
             { name: 'wrong_server_hardware', uri: 'wrong_uri' }
@@ -107,7 +101,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put serverHardwareUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware', uri: 'wrong_uri' }
           ]))
@@ -121,14 +115,8 @@ RSpec.describe OneviewSDK::ServerProfile do
       @server_hardware_type_uri = '/rest/fake/server-hardware-types/test'
     end
 
-    it 'will set the serverHardwareTypeUri correctly' do
-      @server_hardware_type['uri'] = @server_hardware_type_uri
-      @item.set_server_hardware_type(@server_hardware_type)
-      expect(@item['serverHardwareTypeUri']).to eq(@server_hardware_type_uri)
-    end
-
     it 'will retrieve and set the serverHardwareTypeUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
         .and_return(FakeResponse.new(members: [
             { name: 'server_hardware_type', uri: @server_hardware_type_uri },
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
@@ -138,7 +126,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put serverHardwareTypeUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
@@ -152,14 +140,8 @@ RSpec.describe OneviewSDK::ServerProfile do
       @enclosure_group_uri = '/rest/fake/enclosure-groups/test'
     end
 
-    it 'will set the enclosureGroupUri correctly' do
-      @enclosure_group['uri'] = @enclosure_group_uri
-      @item.set_enclosure_group(@enclosure_group)
-      expect(@item['enclosureGroupUri']).to eq(@enclosure_group_uri)
-    end
-
     it 'will retrieve and set the enclosureGroupUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
         .and_return(FakeResponse.new(members: [
             { name: 'enclosure_group', uri: @enclosure_group_uri },
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
@@ -169,7 +151,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put enclosureGroupUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
@@ -183,14 +165,8 @@ RSpec.describe OneviewSDK::ServerProfile do
       @enclosure_uri = '/rest/fake/enclosures/test'
     end
 
-    it 'will set the enclosureUri correctly' do
-      @enclosure['uri'] = @enclosure_uri
-      @item.set_enclosure(@enclosure)
-      expect(@item['enclosureUri']).to eq(@enclosure_uri)
-    end
-
     it 'will retrieve and set the enclosureUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosures')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosures', {})
         .and_return(FakeResponse.new(members: [
             { name: 'enclosure', uri: @enclosure_uri },
             { name: 'wrong_enclosure', uri: 'wrong_uri' }
@@ -200,7 +176,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'will fail to put enclosureUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosures')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosures', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure', uri: 'wrong_uri' }
           ]))
@@ -276,10 +252,9 @@ RSpec.describe OneviewSDK::ServerProfile do
 
   describe '#self.get_available_storage_systems' do
     it 'retrieves available storage system based on a query' do
-      expect(@client_200).to receive(:rest_get)
-        .with("#{OneviewSDK::ServerProfile::BASE_URI}/available-storage-systems")
-        .and_return(FakeResponse.new('it' => 'works'))
-      expect(OneviewSDK::ServerProfile.get_available_storage_systems(@client_200)['it']).to eq('works')
+      fake_response = FakeResponse.new(members: [{ it: 'works' }])
+      allow(@client_200).to receive(:rest_get).and_return(fake_response)
+      expect(OneviewSDK::ServerProfile.get_available_storage_systems(@client_200).first['it']).to eq('works')
     end
   end
 
@@ -327,13 +302,13 @@ RSpec.describe OneviewSDK::ServerProfile do
 
   describe '#update_from_template' do
     it 'transforms an existing profile' do
-      patch_ops = [{ 'op' => 'replace', 'path' => '/templateCompliance', 'value' => 'Compliant' }]
+      patch_ops = [{ op: 'replace', path: '/templateCompliance', value: 'Compliant' }]
       request = {
         'If-Match' => @item['eTag'],
         'body' => patch_ops
       }
       expect(@client_200).to receive(:rest_patch)
-        .with(@item['uri'], request)
+        .with(@item['uri'], request, 200)
         .and_return(FakeResponse.new)
       expect { @item.update_from_template }.to_not raise_error
     end
@@ -453,6 +428,8 @@ RSpec.describe OneviewSDK::ServerProfile do
   describe 'Volume attachment operations' do
     it 'can call the #add_volume_attachment using a specific already created Volume' do
       options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+      fake_response = FakeResponse.new(members: [options])
+      expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes', {}).and_return(fake_response)
       volume = OneviewSDK::Volume.new(@client_200, options)
       @item.add_volume_attachment(volume)
 
@@ -466,6 +443,8 @@ RSpec.describe OneviewSDK::ServerProfile do
     describe 'can call #remove_volume_attachment' do
       it 'and remove attachment with id 0' do
         options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+        fake_response = FakeResponse.new(members: [options])
+        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes', {}).and_return(fake_response)
         volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -478,6 +457,8 @@ RSpec.describe OneviewSDK::ServerProfile do
 
       it 'and return nil if no attachment found' do
         options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+        fake_response = FakeResponse.new(members: [options])
+        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes', {}).and_return(fake_response)
         volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -495,13 +476,16 @@ RSpec.describe OneviewSDK::ServerProfile do
     end
 
     it 'can call #create_volume_with_attachment and generate the data required for a new Volume with attachment' do
-      storage_pool = OneviewSDK::StoragePool.new(@client_200, uri: 'fake/storage-pool')
+      options = { uri: 'fake/storage-pool', storageSystemUri: 'fake/storage-system' }
+      fake_response = FakeResponse.new(members: [options])
+      expect(@client_200).to receive(:rest_get).with('/rest/storage-pools', {}).and_return(fake_response)
+
+      storage_pool = OneviewSDK::StoragePool.new(@client_200, options)
       volume_options = {
         name: 'TestVolume',
         description: 'Test Volume for Server Profile Volume Attachment',
         provisioningParameters: {
           provisionType: 'Full',
-          shareable: true,
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
@@ -511,7 +495,7 @@ RSpec.describe OneviewSDK::ServerProfile do
       expect(va['volumeUri']).not_to be
       expect(va['volumeStorageSystemUri']).not_to be
       expect(va['volumeStoragePoolUri']).to eq('fake/storage-pool')
-      expect(va['volumeShareable']).to eq(true)
+      expect(va['volumeShareable']).to eq(false)
       expect(va['volumeProvisionedCapacityBytes']).to eq(1024 * 1024 * 1024)
       expect(va['volumeProvisionType']).to eq('Full')
     end
