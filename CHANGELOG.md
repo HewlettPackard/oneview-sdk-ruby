@@ -7,9 +7,6 @@ This release adds support support to Oneview Rest API version 200 (only hardware
    - Client Certificate
    - Web Server Certificate
 
-#### Bug fixes & Enhancements:
-- [#367](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/367) Integration tests of Power Device resource are failing
-
 #### Features supported
 This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
    - Connection Template
