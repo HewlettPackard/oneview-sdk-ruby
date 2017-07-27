@@ -16,8 +16,20 @@ module OneviewSDK
     # Client certificate resource implementation
     class ClientCertificate < Resource
       BASE_URI = '/rest/certificates'.freeze
+      DEFAULT_REQUEST_HEADER = { 'requestername' => 'DEFAULT' }.freeze
 
+      # Imports the given SSL certificate into the appliance trust store
+      # @param [Hash] header The header options of request (key-value pairs)
+      # @option header [String] :requestername Used to identify requester to allow querying of proper trust store.
+      #   Default value is "DEFAULT". List of valid input values are { "DEFAULT", "AUTHN", "RABBITMQ", "ILOOA" }.
+      # @return [ClientCertificate] self
       alias import create
+
+      # Removes the SSL certificate
+      # @param [Hash] header The header options of request (key-value pairs)
+      # @option header [String] :requestername Used to identify requester to allow querying of proper trust store.
+      #   Default value is "DEFAULT". List of valid input values are { "DEFAULT", "AUTHN", "RABBITMQ", "ILOOA" }.
+      # @return [true] if resource was deleted successfully
       alias remove delete
 
       # Create a resource object, associate it with a client, and set its properties.
@@ -53,7 +65,7 @@ module OneviewSDK
       #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
       # @raise [ArgumentError] if the certificates list is nil or empty
       # @return [Array<ClientCertificate>] list of Client Certificate imported
-      def self.import(client, certificates, header = { 'requestername' => 'DEFAULT' })
+      def self.import(client, certificates, header = self::DEFAULT_REQUEST_HEADER)
         raise ArgumentError, 'the certificates list should be valid' if certificates.nil? || certificates.empty?
         options = {}.merge(header)
         options['body'] = certificates.map(&:data)
@@ -72,7 +84,7 @@ module OneviewSDK
       # @option header [String] :Accept-Language The language code requested in the response.
       #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
       # @return [Array<ClientCertificate>] list of the Client Certificate
-      def self.replace(client, certificates, force = false, header = { 'requestername' => 'DEFAULT' })
+      def self.replace(client, certificates, force = false, header = self::DEFAULT_REQUEST_HEADER)
         raise ArgumentError, 'the certificates list should be valid' if certificates.nil? || certificates.empty?
         options = {}.merge(header)
         options['body'] = certificates.map(&:data)
@@ -92,7 +104,7 @@ module OneviewSDK
       # @option header [String] :Accept-Language The language code requested in the response.
       #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
       # @raise [ArgumentError] if the certificates list is nil or empty
-      def self.remove(client, alias_names, force = false, header = { 'requestername' => 'DEFAULT' })
+      def self.remove(client, alias_names, force = false, header = self::DEFAULT_REQUEST_HEADER)
         raise ArgumentError, 'the certificates list should be valid' if alias_names.nil? || alias_names.empty?
         uri = self::BASE_URI + build_query(multi_resource: true, force: force)
         uri += '&filter=' + alias_names.join('&filter=')
@@ -108,7 +120,7 @@ module OneviewSDK
       #   If a suitable match to the requested language is not available, en-US or the appliance locale is used.
       # @raise [OneviewSDK::IncompleteResource] if the client or the uri is not set
       # @return [OneviewSDK::ClientCertificate] self
-      def validate(header = { 'requestername' => 'DEFAULT' })
+      def validate(header = self.class::DEFAULT_REQUEST_HEADER)
         ensure_client && ensure_uri
         options = {}.merge(header)
         options['body'] = @data

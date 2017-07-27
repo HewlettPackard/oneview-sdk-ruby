@@ -31,7 +31,6 @@ RSpec.shared_examples 'PowerDeviceUpdateExample' do |context_name|
 
   describe '#set_refresh_state [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
     it 'Refresh without changing credentials' do
-      expect(item['state']).to eq('Unmanaged')
       expect { item.set_refresh_state(refreshState: 'RefreshPending') }.not_to raise_error
       item.refresh
       expect(item['state']).to eq('Configured')
@@ -50,25 +49,27 @@ RSpec.shared_examples 'PowerDeviceUpdateExample' do |context_name|
   describe '#set_power_state [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
     it 'On|off state on a device that supports this operation' do
       power_device = ipdu_list.reject { |ipdu| ipdu['model'] != 'Managed Ext. Bar Outlet' }.first
-      expect(power_device.get_power_state).to eq('"On"')
-      expect { power_device.set_power_state('Off') }.not_to raise_error
-      expect(power_device.get_power_state).to eq('"Off"')
+      original_value, new_value = power_device.get_power_state == '"On"' ? %w(On Off) : %w(Off On)
+
+      expect { power_device.set_power_state(new_value) }.not_to raise_error
+      expect(power_device.get_power_state).to eq("\"#{new_value}\"")
 
       # back to the original value
-      expect { power_device.set_power_state('On') }.not_to raise_error
-      expect(power_device.get_power_state).to eq('"On"')
+      expect { power_device.set_power_state(original_value) }.not_to raise_error
+      expect(power_device.get_power_state).to eq("\"#{original_value}\"")
     end
   end
 
   describe '#set_uid_state [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
     it 'On|off' do
-      expect(item.get_uid_state).to eq('"On"')
-      expect { item.set_uid_state('Off') }.not_to raise_error
-      expect(item.get_uid_state).to eq('"Off"')
+      original_value, new_value = item.get_uid_state == '"On"' ? %w(On Off) : %w(Off On)
+
+      expect { item.set_uid_state(new_value) }.not_to raise_error
+      expect(item.get_uid_state).to eq("\"#{new_value}\"")
 
       # back to the original value
-      expect { item.set_uid_state('On') }.not_to raise_error
-      expect(item.get_uid_state).to eq('"On"')
+      expect { item.set_uid_state(original_value) }.not_to raise_error
+      expect(item.get_uid_state).to eq("\"#{original_value}\"")
     end
   end
 end
