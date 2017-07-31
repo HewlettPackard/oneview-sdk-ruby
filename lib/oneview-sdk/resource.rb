@@ -187,7 +187,7 @@ module OneviewSDK
     # @return [Resource] self
     def create!(header = self.class::DEFAULT_REQUEST_HEADER)
       temp = self.class.new(@client, @data)
-      temp.delete if temp.retrieve!
+      temp.delete(header) if temp.retrieve!(header)
       create(header)
     end
 
