@@ -330,7 +330,7 @@ RSpec.describe OneviewSDK::ServerProfile do
     it 'allows you to set the id' do
       @item.add_connection(@network, id: 1)
       @item.add_connection(@network, 'id' => 2)
-      expect(@item['connections'].first[:id]).to eq(1)
+      expect(@item['connections'].first['id']).to eq(1)
       expect(@item['connections'].last['id']).to eq(2)
     end
 
