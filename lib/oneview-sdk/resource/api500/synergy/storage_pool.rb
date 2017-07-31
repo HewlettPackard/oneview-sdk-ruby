@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/storage_pool'
+require_relative '../c7000/storage_pool'
 
 module OneviewSDK
   module API500
     module Synergy
       # Storage pool resource implementation for API 500 Synergy
-      class StoragePool < OneviewSDK::API300::Synergy::StoragePool
+      class StoragePool < OneviewSDK::API500::C7000::StoragePool
       end
     end
   end

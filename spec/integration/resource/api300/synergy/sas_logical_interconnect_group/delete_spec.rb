@@ -13,16 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
-
-  before :all do
-    @item = klass.new($client_300_synergy, name: SAS_LOG_INT_GROUP1_NAME)
-    @item.retrieve!
-  end
-
-  describe '#delete' do
-    it 'removes the SAS Logical Interconnect group' do
-      expect { @item.delete }.to_not raise_error
-    end
-  end
+  let(:current_client) { $client_300_synergy }
+  include_examples 'SASLogInterGroupDeleteExample', 'integration api300 context'
 end

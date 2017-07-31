@@ -12,13 +12,7 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::ConnectionTemplate
-RSpec.describe klass, integration: true, type: DELETE do
-  include_context 'integration api300 context'
-
-  describe '#delete' do
-    it 'self raises MethodUnavailable' do
-      item = klass.new($client_300_synergy)
-      expect { item.delete }.to raise_error(/The method #delete is unavailable for this resource/)
-    end
-  end
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  let(:current_client) { $client_300_synergy }
+  include_examples 'ConnectionTemplateDeleteExample', 'integration api300 context'
 end

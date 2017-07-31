@@ -13,22 +13,9 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::FirmwareBundle
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300_synergy }
+  let(:bundle_path) { $secrets_synergy['bundle_path'] }
+  let(:spp_path) { $secrets_synergy['spp_path'] }
 
-  let(:hotfix_path) { 'spec/support/hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm' }
-  let(:spp_path) { 'spec/support/custom-spp-synergy.iso' }
-
-  describe '#self.upload' do
-    it 'Upload hotfix' do
-      item = klass.add($client_300_synergy, hotfix_path)
-      expect(item['uri']).to be
-      expect(item['bundleType']).to eq('Hotfix')
-    end
-
-    it 'Upload SPP' do
-      item = klass.add($client_300_synergy, spp_path)
-      expect(item['uri']).to be
-      expect(item['bundleType']).to eq('SPP')
-    end
-  end
+  include_examples 'FirmwareBundleCreateExample', 'integration api300 context'
 end

@@ -16,6 +16,7 @@ module OneviewSDK
     module C7000
       # Ethernet network resource implementation for API300 C7000
       class EthernetNetwork < OneviewSDK::API200::EthernetNetwork
+        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance

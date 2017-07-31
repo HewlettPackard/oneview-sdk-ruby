@@ -82,7 +82,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     it 'updates the server name with the local name' do
       expect(OneviewSDK::API300::C7000::Enclosure).to receive(:find_by).with(@client_300, uri: @item['uri']).and_return([@item2])
       expect(@client_300).to receive(:rest_patch)
-        .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/name', value: @item['name'] }] }, @item.api_version)
+        .with(@item['uri'], { 'body' => [{ 'op' => 'replace', 'path' => '/name', 'value' => @item['name'] }] }, @item.api_version)
         .and_return(FakeResponse.new)
       @item.update
     end
@@ -90,7 +90,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     it 'updates the server rackName with the local rackName' do
       expect(OneviewSDK::API300::C7000::Enclosure).to receive(:find_by).with(@client_300, uri: @item['uri']).and_return([@item3])
       expect(@client_300).to receive(:rest_patch)
-        .with(@item['uri'], { 'body' => [{ op: 'replace', path: '/rackName', value: @item['rackName'] }] }, @item.api_version)
+        .with(@item['uri'], { 'body' => [{ 'op' => 'replace', 'path' => '/rackName', 'value' => @item['rackName'] }] }, @item.api_version)
         .and_return(FakeResponse.new)
       @item.update
     end
@@ -149,7 +149,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
 
     it 'gets uri/script' do
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/script', item.api_version).and_return(FakeResponse.new('Blah'))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/script', {}, item.api_version).and_return(FakeResponse.new('Blah'))
       expect(@client_300.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
       expect(item.script).to eq('Blah')
     end
@@ -163,7 +163,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
 
     it 'gets uri/environmentalConfiguration' do
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', {}, item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(item.environmental_configuration).to eq('key' => 'val')
     end
@@ -177,20 +177,20 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
 
     it 'gets uri/utilization' do
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', item.api_version).and_return(FakeResponse.new(key: 'val'))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', {}, item.api_version).and_return(FakeResponse.new(key: 'val'))
       expect(item.utilization).to eq('key' => 'val')
     end
 
     it 'takes query parameters' do
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', {}, item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(item.utilization(key: :val)).to eq('key' => 'val')
     end
 
     it 'takes an array for the :fields query parameter' do
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', item.api_version)
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', {}, item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(item.utilization(fields: %w(one two three))).to eq('key' => 'val')
     end
@@ -198,7 +198,7 @@ RSpec.describe OneviewSDK::API300::C7000::Enclosure do
     it 'converts Time query parameters' do
       t = Time.now
       item = OneviewSDK::API300::C7000::Enclosure.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", item.api_version)
+      expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", {}, item.api_version)
         .and_return(FakeResponse.new(key: 'val'))
       expect(item.utilization(startDate: t)).to eq('key' => 'val')
     end

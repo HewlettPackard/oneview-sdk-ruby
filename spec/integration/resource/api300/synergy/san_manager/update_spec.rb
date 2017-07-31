@@ -13,50 +13,9 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::SANManager
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300_synergy }
+  let(:san_manager_ip) { $secrets_synergy['san_manager_ip'] }
 
-  before :each do
-    @item = klass.new($client_300_synergy, name: $secrets_synergy['san_manager_ip'])
-    @item.retrieve!
-  end
-
-  describe '#update' do
-    it 'refresh a SAN Device Manager' do
-      expect { @item.update(refreshState: 'RefreshPending') }.not_to raise_error
-    end
-
-    it 'Update hostname and credentials' do
-      connection_info = [
-        {
-          'name' => 'Host',
-          'value' => $secrets_synergy['san_manager_ip']
-        },
-        {
-          'name' => 'SnmpPort',
-          'value' => 161
-        },
-        {
-          'name' => 'SnmpUserName',
-          'value' => $secrets_synergy['san_manager_username']
-        },
-        {
-          'name' => 'SnmpAuthLevel',
-          'value' => 'AUTHNOPRIV'
-        },
-        {
-          'name' => 'SnmpAuthProtocol',
-          'value' => 'SHA'
-        },
-        {
-          'name' => 'SnmpAuthString',
-          'value' => $secrets_synergy['san_manager_password']
-        }
-      ]
-      expect { @item.update(connectionInfo: connection_info) }.not_to raise_error
-    end
-
-    it 'Update invalid field' do
-      expect { @item.update(name: 'SANManager_01') }.to raise_error(OneviewSDK::BadRequest)
-    end
-  end
+  include_examples 'ConnectionInfoSynergy'
+  include_examples 'SANManagerUpdateExample', 'integration api300 context'
 end

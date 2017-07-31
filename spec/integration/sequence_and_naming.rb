@@ -15,14 +15,15 @@ class Hash
 end
 
 DEPENDENCIES = {
-  Datacenter: [],
+  ConnectionTemplate: [:EthernetNetwork],
+  Datacenter: [:Rack],
   DriveEnclosure: [:Enclosure],
   Enclosure: [:EnclosureGroup],
   EnclosureGroup: [:LogicalInterconnectGroup, :SASLogicalInterconnectGroup],
-  EthernetNetwork: [],
+  EthernetNetwork: [:Scope],
   Event: [],
   Fabric: [],
-  FCNetwork: [],
+  FCNetwork: [:Scope],
   FCoENetwork: [],
   FirmwareBundle: [],
   FirmwareDriver: [:FirmwareBundle],
@@ -39,7 +40,7 @@ DEPENDENCIES = {
   NetworkSet: [:EthernetNetwork, :FCNetwork, :FCoENetwork],
   OSDeploymentPlan: [],
   PowerDevice: [:ServerProfile, :Volume, :LogicalSwitch],
-  Rack: [:ServerProfile],
+  Rack: [],
   SANManager: [],
   SASInterconnect: [:SASLogicalInterconnect],
   SASLogicalInterconnect: [:Enclosure],
@@ -93,6 +94,7 @@ ETH_NET_NAME = 'EthernetNetwork_1'.freeze
 ETH_NET_NAME_UPDATED = 'EthernetNetwork_1_UPDATED'.freeze
 
 FC_NET_NAME = 'FCNetwork_1'.freeze
+FC_NET2_NAME = 'FCNetwork_2'.freeze
 FC_NET_NAME_UPDATED = 'FCNetwork_1_UPDATED'.freeze
 
 # FCoENetwork
@@ -130,13 +132,14 @@ LOG_ENCL1_NAME = 'LogicalEnclosure_1'.freeze
 
 # LogicalInterconnect
 LOG_INT_NAME = 'Encl1-LogicalInterconnectGroup_1'.freeze
-LOG_INT2_NAME = 'LogicalEnclosure_1-LogicalInterconnectGroup_1-1'.freeze
+LOG_INT2_NAME = 'LogicalEnclosure_1-LogicalInterconnectGroup_3'.freeze
 
 # UplinkSet
 UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
 UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
 UPLINK_SET3_NAME = 'FCUplinkSet_2'.freeze
 UPLINK_SET4_NAME = 'EthernetUplinkSet_2'.freeze
+UPLINK_SET5_NAME = 'FCUplinkSet_3'.freeze
 
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
@@ -150,6 +153,7 @@ STORAGE_POOL_NAME = 'CPG-SSD-AO'.freeze
 
 # VolumeTemplate
 VOL_TEMP_NAME = 'VolumeTemplate_1'.freeze
+VOL_TEMP_VIRTUAL_NAME = 'VolumeTemplateVirtual_1'.freeze
 VOL_TEMP_NAME_UPDATED = 'VolumeTemplate_1_UPDATED'.freeze
 
 # Volume
@@ -157,6 +161,11 @@ VOLUME_NAME = 'Volume_1'.freeze
 VOLUME2_NAME = 'Volume_2'.freeze
 VOLUME3_NAME = 'Volume_3'.freeze
 VOLUME4_NAME = 'Volume_4'.freeze
+VOLUME5_NAME = 'Volume_5'.freeze
+VOLUME6_NAME = 'Volume_6'.freeze
+VOLUME7_NAME = 'Volume_7'.freeze
+VOLUME_VIRTUAL_NAME = 'Volume_Virtual_1'.freeze
+VOLUME_VIRTUAL2_NAME = 'Volume_Virtual_2'.freeze
 VOL_SNAPSHOT_NAME = 'snapshot_qa'.freeze
 VOL_SNAPSHOT2_NAME = 'snapshot_qa_2'.freeze
 
@@ -188,7 +197,13 @@ SERVER_PROFILE_WITH_OSDP_NAME = 'ServerProfile_OSDP'.freeze
 
 # Server Profile Template
 SERVER_PROFILE_TEMPLATE_NAME = 'ServerProfileTemplate_1'.freeze
+SERVER_PROFILE_TEMPLATE2_NAME = 'ServerProfileTemplate_2'.freeze
+SERVER_PROFILE_TEMPLATE3_NAME = 'ServerProfileTemplate_3'.freeze
+SERVER_PROFILE_TEMPLATE4_NAME = 'ServerProfileTemplate_4'.freeze
 SERVER_PROFILE_TEMPLATE_NAME_UPDATED = 'ServerProfileTemplate_1_UPDATED'.freeze
+CONNECTION_NAME = 'EthernetConnection'.freeze
+CONNECTION2_NAME = 'FibreChannelConnection'.freeze
+CONNECTION3_NAME = 'FibreChannelConnection2'.freeze
 
 # Datacenter
 DATACENTER1_NAME = 'Datacenter_1'.freeze
@@ -198,7 +213,8 @@ DATACENTER1_NAME_UPDATED = 'Datacenter_1_UPDATED'.freeze
 
 # Rack
 RACK1_NAME = 'Rack_1'.freeze
-RACK2_NAME = 'Rack_2'.freeze
+RACK2_NAME = 'Rack-425'.freeze
+RACK3_NAME = '2AB100LMNB'.freeze
 
 # Fabric
 DEFAULT_FABRIC_NAME = 'DefaultFabric'.freeze
@@ -236,6 +252,14 @@ SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
 
 # USER
 USER_NAME = 'TestUser'.freeze
+FULL_NAME = 'Test User'.freeze
 
 # OS Deployment Plan
 OS_DEPLOYMENT_PLAN_NAME = 'HPE - Developer 1.0 - Deployment Test (UEFI)'.freeze
+
+# Server Hardware
+SERVER_HARDWARE_NAME = '0000A66101, bay 3'.freeze
+
+# Server Hardware Type
+SERVER_HARDWARE_TYPE_NAME = 'BL460c Gen8 1'.freeze
+SERVER_HARDWARE_TYPE2_NAME = 'SY 480 Gen9 1'.freeze

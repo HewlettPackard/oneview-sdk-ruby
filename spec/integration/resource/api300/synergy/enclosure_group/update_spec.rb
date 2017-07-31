@@ -2,18 +2,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::EnclosureGroup
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
-
-  describe '#script' do
-    it 'can retrieve the script' do
-      item = klass.find_by($client_300_synergy, name: ENC_GROUP_NAME).first
-      script = item.get_script
-      expect(script).to be_a(String)
-    end
-
-    it 'returns method unavailable for the set_script method' do
-      item = klass.find_by($client_300_synergy, name: ENC_GROUP_NAME).first
-      expect { item.set_script }.to raise_error(/The method #set_script is unavailable for this resource/)
-    end
-  end
+  let(:current_client) { $client_300_synergy }
+  include_examples 'EnclosureGroupUpdateExample', 'integration api300 context'
+  include_examples 'EnclGroupScriptSynergyExample', 'integration api300 context', 300
 end

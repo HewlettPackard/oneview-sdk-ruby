@@ -2,14 +2,8 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::StorageSystem
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
-
-  describe '#remove' do
-    it 'removes the storage system' do
-      storage_system = klass.new($client_300_synergy, 'credentials' => {})
-      storage_system['credentials']['ip_hostname'] = $secrets['storage_system1_ip']
-      storage_system.retrieve!
-      expect { storage_system.remove }.to_not raise_error
-    end
+  include_examples 'StorageSystemDeleteExample', 'integration api300 context' do
+    let(:current_client) { $client_300_synergy }
+    let(:item_attributes) { { 'credentials' => { ip_hostname: $secrets_synergy['storage_system1_ip'] } } }
   end
 end

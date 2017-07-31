@@ -14,7 +14,7 @@ require_relative '../../api300/synergy/power_device'
 module OneviewSDK
   module API500
     module Synergy
-      class PowerDevice < OneviewSDK::API300::Synergy::PowerDevice
+      class PowerDevice < OneviewSDK::API500::C7000::PowerDevice
       end
     end
   end

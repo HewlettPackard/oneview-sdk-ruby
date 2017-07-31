@@ -12,13 +12,7 @@
 require 'spec_helper'
 
 klass = OneviewSDK::ConnectionTemplate
-RSpec.describe klass, integration: true, type: DELETE do
-  include_context 'integration context'
-
-  describe '#delete' do
-    it 'self raises MethodUnavailable' do
-      item = klass.new($client)
-      expect { item.delete }.to raise_error(/The method #delete is unavailable for this resource/)
-    end
-  end
+RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
+  let(:current_client) { $client }
+  include_examples 'ConnectionTemplateDeleteExample', 'integration context'
 end

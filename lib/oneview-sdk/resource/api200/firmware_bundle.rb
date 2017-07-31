@@ -23,7 +23,8 @@ module OneviewSDK
       def self.add(client, file_path, timeout = OneviewSDK::Rest::READ_TIMEOUT)
         options = { 'header' => { 'uploadfilename' => File.basename(file_path) } }
         result = client.upload_file(file_path, BASE_URI, options, timeout)
-        OneviewSDK::FirmwareDriver.new(client, result)
+        variant = name.split('::').at(-2)
+        OneviewSDK.resource_named('FirmwareDriver', client.api_version, variant).new(client, result)
       end
     end
   end

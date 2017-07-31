@@ -16,21 +16,6 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalSwitch do
     end
   end
 
-  describe '#get_internal_link_sets' do
-    it 'finds the specified internal link set' do
-      internal_link_set_list = FakeResponse.new(
-        'members' => [
-          { 'name' => 'InternalLinkSet1', 'uri' => 'rest/fake/internal-link-set' },
-          { 'name' => 'InternalLinkSet2', 'uri' => 'rest/fake/B' },
-          { 'name' => 'InternalLinkSet3', 'uri' => 'rest/fake/C' }
-        ]
-      )
-      expect(@client_300).to receive(:rest_get).with('/rest/internal-link-sets').and_return(internal_link_set_list)
-      item = OneviewSDK::API300::C7000::LogicalSwitch.get_internal_link_set(@client_300, 'InternalLinkSet1')
-      expect(item['uri']).to eq('rest/fake/internal-link-set')
-    end
-  end
-
   describe 'Validate structs' do
     it 'SSH credentials' do
       ssh_credentials = OneviewSDK::API300::C7000::LogicalSwitch::CredentialsSSH.new('ssh_user', 'ssh_password')

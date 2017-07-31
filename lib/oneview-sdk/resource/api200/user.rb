@@ -74,6 +74,24 @@ module OneviewSDK
         set('roles', new_roles)
         self
       end
+
+      # Validates the existence of a user with the given user name in the appliance.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [String] user_name The user name to validate
+      # @return [Boolean] return true if the user already exists
+      def self.validate_user_name(client, user_name)
+        response = client.rest_post("#{BASE_URI}/validateLoginName/#{user_name}")
+        client.response_handler(response)
+      end
+
+      # Checks for the existence of a user with the specified full name in the appliance.
+      # @param [OneviewSDK::Client] client The client object for the OneView appliance
+      # @param [String] full_name The full name to validate
+      # @return [Boolean] return true if the user already exists
+      def self.validate_full_name(client, full_name)
+        response = client.rest_post("#{BASE_URI}/validateUserName/#{full_name}")
+        client.response_handler(response)
+      end
     end
   end
 end

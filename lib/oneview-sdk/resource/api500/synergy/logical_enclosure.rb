@@ -10,12 +10,29 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api300/synergy/logical_enclosure'
+require_relative '../c7000/logical_enclosure'
 
 module OneviewSDK
   module API500
     module Synergy
       # Logical Enclosure resource implementation on API500 Synergy
       class LogicalEnclosure < OneviewSDK::API300::Synergy::LogicalEnclosure
+        include OneviewSDK::API500::C7000::FirmwareHelper
+
+        # Method is not available
+        # @raise [OneviewSDK::MethodUnavailable] method is not available
+        def get_script(*)
+          unavailable_method
+        end
+
+        # Updates a logical enclosure
+        # @param [Hash] attributes attributes to be updated
+        # @return [OneviewSDK::API500::Synergy::LogicalEnclosure] self
+        def update(attributes = {})
+          super(attributes)
+          retrieve!
+          self
+        end
       end
     end
   end
