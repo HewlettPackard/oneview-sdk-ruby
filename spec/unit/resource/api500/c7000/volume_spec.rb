@@ -32,8 +32,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
     it 'creating a volume - Store Serv' do
       item = described_class.new(@client_500, properties: options)
       vol_template = vol_template_class.new(@client_500, uri: '/rest/fake-template')
-      options_template = { isRoot: true, family: 'StoreServ' }
-      expect(vol_template_class).to receive(:find_by).with(@client_500, options_template).and_return([vol_template])
+      expect(item).to receive(:get_volume_template_uri).with(isRoot: true, family: 'StoreServ').and_return(vol_template['uri'])
       data = { 'properties' => options, 'templateUri' => vol_template['uri'] }
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
         .with(described_class::BASE_URI, { 'body' => data }, 500).and_return(fake_response)
@@ -55,8 +54,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
     it 'creating a volume - Store Virtual' do
       item = described_class.new(@client_500, properties: options.merge(dataProtectionLevel: 'anyLevel'))
       vol_template = vol_template_class.new(@client_500, uri: '/rest/fake-template')
-      options_template = { isRoot: true, family: 'StoreVirtual' }
-      expect(vol_template_class).to receive(:find_by).with(@client_500, options_template).and_return([vol_template])
+      expect(item).to receive(:get_volume_template_uri).with(isRoot: true, family: 'StoreVirtual').and_return(vol_template['uri'])
       data = { 'properties' => options.merge(dataProtectionLevel: 'anyLevel'), 'templateUri' => vol_template['uri'] }
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
         .with(described_class::BASE_URI, { 'body' => data }, 500).and_return(fake_response)
@@ -162,8 +160,7 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
 
     it 'creating from snapshot with root template' do
       item = described_class.new(@client_500, uri: '/rest/fake', storagePoolUri: '/rest/storage-pool/fake')
-      options_template = { isRoot: true, family: 'StoreServ' }
-      expect(vol_template_class).to receive(:find_by).with(@client_500, options_template).and_return([@vol_template])
+      expect(item).to receive(:get_volume_template_uri).with(isRoot: true, family: 'StoreServ').and_return(@vol_template['uri'])
       expect(@client_500).to receive(:rest_get).with("#{item['uri']}/snapshots", {}).and_return(@fake_response1)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).with(@fake_response1).and_return('members' => @snapshots)
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
@@ -238,6 +235,34 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
 
     it 'creates the snapshot with a hash' do
       @item.create_snapshot(@snapshot_options)
+    end
+  end
+
+  describe '#get_volume_template_uri' do
+    let(:instance_item) { described_class.new(@client_500) }
+
+    before do
+      storage_pool = OneviewSDK::API500::C7000::StoragePool.new(@client_500, storageSystemUri: '/storage-systems/1', uri: '/storage-pools/1')
+      instance_item.set_storage_pool(storage_pool)
+      expect(storage_pool).to receive(:retrieve!).and_return(true)
+      expect(OneviewSDK::API500::C7000::StoragePool).to receive(:new).and_return(storage_pool)
+      storage_system = OneviewSDK::API500::C7000::StorageSystem.new(@client_500)
+      expect(OneviewSDK::API500::C7000::StorageSystem).to receive(:new).and_return(storage_system)
+      templates = [
+        { 'isRoot' => true, 'family' => 'StoreServ', 'uri' => '/rest/template/1' },
+        { 'isRoot' => true, 'family' => 'StoreVirtual', 'uri' => '/rest/template/2' }
+      ]
+      expect(storage_system).to receive(:get_templates).and_return(templates)
+    end
+
+    it 'should returns the URI correctly when family is StoreServ' do
+      parameters = { isRoot: true, family: 'StoreServ' }
+      expect(instance_item.send(:get_volume_template_uri, parameters)).to eq('/rest/template/1')
+    end
+
+    it 'should returns the URI correctly when family is StoreVirtual' do
+      parameters = { isRoot: true, family: 'StoreVirtual' }
+      expect(instance_item.send(:get_volume_template_uri, parameters)).to eq('/rest/template/2')
     end
   end
 end

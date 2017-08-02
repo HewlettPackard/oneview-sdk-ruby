@@ -35,7 +35,8 @@ module OneviewSDK
             isRoot: true,
             family: family
           }
-          @data['templateUri'] = OneviewSDK::API500::C7000::VolumeTemplate.find_by(@client, template_data).first['uri'] unless @data['templateUri']
+          @data['templateUri'] = get_volume_template_uri(template_data) unless @data['templateUri']
+
           OneviewSDK::Resource.instance_method(:create).bind(self).call
           @data.delete('properties')
           @data.delete('templateUri')
@@ -88,19 +89,19 @@ module OneviewSDK
           snapshot = get_snapshot(snapshot_name)
           raise IncompleteResource, 'Snapshot not found!' unless snapshot
           storage_pool_uri = nil
-          volume_template = if volume_template.nil?
-                              storage_pool_uri = @data['storagePoolUri']
-                              OneviewSDK::API500::C7000::VolumeTemplate.find_by(@client, isRoot: true, family: 'StoreServ').first
-                            else
-                              raise IncompleteResource, 'Volume Template not found!' unless volume_template.retrieve!
-                              storage_pool_uri = volume_template['storagePoolUri']
-                              volume_template
-                            end
+          volume_template_uri = if volume_template.nil?
+                                  storage_pool_uri = @data['storagePoolUri']
+                                  get_volume_template_uri(isRoot: true, family: 'StoreServ')
+                                else
+                                  raise IncompleteResource, 'Volume Template not found!' unless volume_template.retrieve!
+                                  storage_pool_uri = volume_template['storagePoolUri']
+                                  volume_template['uri']
+                                end
 
           data = {
             'properties' => properties.merge('storagePool' => storage_pool_uri, 'snapshotPool' => storage_pool_uri),
             'snapshotUri' => snapshot['uri'],
-            'templateUri' => volume_template['uri'],
+            'templateUri' => volume_template_uri,
             'isPermanent' => is_permanent
           }
 
@@ -127,6 +128,21 @@ module OneviewSDK
         end
 
         private
+
+        # Gets the storage volume template URI
+        # @param [Hash] template_data The data of storage volume template to filter the result
+        # @option options [Boolean] :isRoot True if storage volume template is root. False if not
+        # @option options [String] :family The family of storage volume template
+        # @return [String] the URI of storage volume template
+        def get_volume_template_uri(template_data)
+          storage_pool_uri = self['storagePoolUri'] || self['properties']['storagePool']
+          storage_pool = OneviewSDK::API500::C7000::StoragePool.new(@client, uri: storage_pool_uri)
+          raise 'StoragePool or snapshotPool must be set' unless storage_pool.retrieve!
+          storage_system = OneviewSDK::API500::C7000::StorageSystem.new(@client, uri: storage_pool['storageSystemUri'])
+          templates = storage_system.get_templates
+          template = templates.find { |item| item['isRoot'] == template_data[:isRoot] && item['family'] == template_data[:family] }
+          template['uri'] if template
+        end
 
         # Generates the snapshot data
         # @param [String] name The name of the snapshot
