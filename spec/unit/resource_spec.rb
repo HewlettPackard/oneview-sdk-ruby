@@ -3,6 +3,16 @@ require_relative './../spec_helper'
 RSpec.describe OneviewSDK::Resource do
   include_context 'shared context'
 
+  describe 'default constants' do
+    it 'should there is default request header as a empty hash' do
+      expect(described_class::DEFAULT_REQUEST_HEADER).to eq({})
+    end
+
+    it 'should there is unique identifiers with name and uri' do
+      expect(described_class::UNIQUE_IDENTIFIERS).to eq(%w(name uri))
+    end
+  end
+
   describe '#initialize' do
     it 'requires a valid client to be passed' do
       expect { OneviewSDK::Resource.new(nil) }.to raise_error(OneviewSDK::InvalidClient, /Must specify a valid client/)
@@ -42,6 +52,20 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#retrieve!' do
+    it 'should have the default parameter header' do
+      res = described_class.new(@client_200, name: 'ResourceName')
+      expect(described_class).to receive(:find_by)
+        .with(@client_200, { 'name' => 'ResourceName' }, described_class::BASE_URI, {}).and_return([])
+      res.retrieve!
+    end
+
+    it 'it can override the default parameter header' do
+      res = described_class.new(@client_200, name: 'ResourceName')
+      expect(described_class).to receive(:find_by)
+        .with(@client_200, { 'name' => 'ResourceName' }, described_class::BASE_URI, some_header: 'some_value').and_return([])
+      res.retrieve!(some_header: 'some_value')
+    end
+
     it 'requires the name attribute to be set' do
       res = OneviewSDK::Resource.new(@client_200)
       expect { res.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name/)
@@ -74,6 +98,20 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#exists?' do
+    it 'should have the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, uri: '/rest/fake')
+      expect(OneviewSDK::Resource).to receive(:find_by)
+        .with(@client_200, { 'uri' => res['uri'] }, described_class::BASE_URI, {}).and_return([])
+      res.exists?
+    end
+
+    it 'it can override the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, uri: '/rest/fake')
+      expect(OneviewSDK::Resource).to receive(:find_by)
+        .with(@client_200, { 'uri' => res['uri'] }, described_class::BASE_URI, some_header: 'some_value').and_return([])
+      res.exists?(some_header: 'some_value')
+    end
+
     it 'requires the name attribute to be set' do
       res = OneviewSDK::Resource.new(@client_200)
       expect { res.exists? }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri/)
@@ -254,6 +292,22 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#create' do
+    it 'should have the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name')
+      expect(@client_200).to receive(:rest_post)
+        .with(described_class::BASE_URI, { 'body' => { 'name' => 'Name' } }, @client_200.api_version)
+        .and_return(FakeResponse.new)
+      res.create
+    end
+
+    it 'it can override the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name')
+      expect(@client_200).to receive(:rest_post)
+        .with(described_class::BASE_URI, { :some_header => 'some_value', 'body' => { 'name' => 'Name' } }, @client_200.api_version)
+        .and_return(FakeResponse.new)
+      res.create(some_header: 'some_value')
+    end
+
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client_200)
       res.client = nil
@@ -281,6 +335,20 @@ RSpec.describe OneviewSDK::Resource do
       @res = OneviewSDK::Resource.new(@client_200, name: 'Name')
     end
 
+    it 'should have the default parameter header' do
+      allow_any_instance_of(@res.class).to receive(:retrieve!).with({}).and_return(true)
+      allow_any_instance_of(@res.class).to receive(:delete).with({}).and_return(true)
+      expect(@res).to receive(:create).with({})
+      @res.create!
+    end
+
+    it 'it can override the default parameter header' do
+      allow_any_instance_of(@res.class).to receive(:retrieve!).with(some_header: 'some_value').and_return(true)
+      allow_any_instance_of(@res.class).to receive(:delete).with(some_header: 'some_value').and_return(true)
+      expect(@res).to receive(:create).with(some_header: 'some_value')
+      @res.create!(some_header: 'some_value')
+    end
+
     it 'deletes the resource if it exists' do
       allow_any_instance_of(@res.class).to receive(:retrieve!).and_return(true)
       expect_any_instance_of(@res.class).to receive(:delete).and_return(true)
@@ -297,6 +365,20 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#refresh' do
+    it 'should have the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name', uri: '/rest/fake')
+      fake_response = FakeResponse.new(res.data.merge(name: 'NewName', description: 'Blah'))
+      expect(@client_200).to receive(:rest_get).with('/rest/fake', {}, @client_200.api_version).and_return(fake_response)
+      res.refresh
+    end
+
+    it 'it can override the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name', uri: '/rest/fake')
+      fake_response = FakeResponse.new(res.data.merge(name: 'NewName', description: 'Blah'))
+      expect(@client_200).to receive(:rest_get).with('/rest/fake', { some_header: 'some_value' }, @client_200.api_version).and_return(fake_response)
+      res.refresh(some_header: 'some_value')
+    end
+
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client_200)
       res.client = nil
@@ -319,6 +401,19 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#update' do
+    it 'should have the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name', uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_put).with(res['uri'], { 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
+      res.update
+    end
+
+    it 'it can override the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name', uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_put)
+        .with(res['uri'], { :some_header => 'some_value', 'body' => res.data }, res.api_version).and_return(FakeResponse.new)
+      res.update({}, some_header: 'some_value')
+    end
+
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client_200)
       res.client = nil
@@ -345,6 +440,18 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#delete' do
+    it 'should have the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name', uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_delete).with(res['uri'], {}, res.api_version).and_return(FakeResponse.new)
+      res.delete
+    end
+
+    it 'it can override the default parameter header' do
+      res = OneviewSDK::Resource.new(@client_200, name: 'Name', uri: '/rest/fake')
+      expect(@client_200).to receive(:rest_delete).with(res['uri'], { some_header: 'some_value' }, res.api_version).and_return(FakeResponse.new)
+      res.delete(some_header: 'some_value')
+    end
+
     it 'requires the client to be set' do
       res = OneviewSDK::Resource.new(@client_200)
       res.client = nil
@@ -421,9 +528,20 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#find_by' do
+    it 'should have the default parameter header' do
+      expect(described_class).to receive(:find_with_pagination).with(@client_200, described_class::BASE_URI, {}).and_return([])
+      described_class.find_by(@client_200, name: 'attribute name')
+    end
+
+    it 'it can override the default parameter header' do
+      expect(described_class).to receive(:find_with_pagination)
+        .with(@client_200, 'some-uri/123', some_header: 'some_value').and_return([])
+      described_class.find_by(@client_200, { name: 'attribute name' }, 'some-uri/123', some_header: 'some_value')
+    end
+
     it 'should call #find_with_pagination with correct client and correct uri' do
-      expect(OneviewSDK::Enclosure).to receive(:find_with_pagination).with(@client, OneviewSDK::Enclosure::BASE_URI, {}).and_return([])
-      OneviewSDK::Enclosure.find_by(@client, {})
+      expect(OneviewSDK::Enclosure).to receive(:find_with_pagination).with(@client_200, OneviewSDK::Enclosure::BASE_URI, {}).and_return([])
+      OneviewSDK::Enclosure.find_by(@client_200, {})
     end
 
     it 'returns an empty array if no results are found' do
@@ -451,6 +569,16 @@ RSpec.describe OneviewSDK::Resource do
   end
 
   describe '#find_with_pagination' do
+    it 'should have the default parameter header' do
+      expect(@client_200).to receive(:rest_get).with('some_uri/123', {}).and_return(FakeResponse.new(members: []))
+      described_class.find_with_pagination(@client_200, 'some_uri/123')
+    end
+
+    it 'it can override the default parameter header' do
+      expect(@client_200).to receive(:rest_get).with('some_uri/123', some_header: 'some_value').and_return(FakeResponse.new(members: []))
+      described_class.find_with_pagination(@client_200, 'some_uri/123', some_header: 'some_value')
+    end
+
     it 'returns an empty array if no results are found' do
       fake_response = FakeResponse.new(members: [])
       allow(@client_200).to receive(:rest_get).and_return(fake_response)
@@ -509,6 +637,11 @@ RSpec.describe OneviewSDK::Resource do
     it 'calls find_by with an empty attributes hash' do
       expect(OneviewSDK::Resource).to receive(:find_by).with(@client_200, {}, described_class::BASE_URI, {})
       OneviewSDK::Resource.get_all(@client_200)
+    end
+
+    it 'it can override the default parameter header' do
+      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_200, {}, described_class::BASE_URI, some_header: 'some_value')
+      OneviewSDK::Resource.get_all(@client_200, some_header: 'some_value')
     end
   end
 
