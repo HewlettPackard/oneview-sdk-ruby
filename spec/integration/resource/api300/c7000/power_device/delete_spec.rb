@@ -13,22 +13,7 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::PowerDevice
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
-
-  describe '#remove' do
-    before :all do
-      @power_device_1 = klass.new($client_300, name: POW_DEVICE1_NAME)
-      @power_device_1.retrieve!
-      ipdu_list = klass.find_by($client_300, 'managedBy' => { 'hostName' => $secrets['hp_ipdu_ip'] })
-      @power_device_2 = ipdu_list.reject { |ipdu| ipdu['managedBy']['id'] == ipdu['id'] }.first
-    end
-
-    it 'remove Power device 1' do
-      expect { @power_device_1.remove }.to_not raise_error
-    end
-
-    it 'remove Power device 2' do
-      expect { @power_device_2.remove }.to_not raise_error
-    end
-  end
+  let(:current_client) { $client_300 }
+  let(:current_secrets) { $secrets }
+  include_examples 'PowerDeviceDeleteExample', 'integration api300 context'
 end

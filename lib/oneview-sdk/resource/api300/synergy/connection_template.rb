@@ -16,14 +16,6 @@ module OneviewSDK
     module Synergy
       # Connection template resource implementation for API300 Synergy
       class ConnectionTemplate < OneviewSDK::API200::ConnectionTemplate
-
-        # Get the default network connection template
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @return [OneviewSDK::API300::Synergy::ConnectionTemplate] Connection template
-        def self.get_default(client)
-          response = client.rest_get(BASE_URI + '/defaultConnectionTemplate')
-          OneviewSDK::API300::Synergy::ConnectionTemplate.new(client, client.response_handler(response))
-        end
       end
     end
   end

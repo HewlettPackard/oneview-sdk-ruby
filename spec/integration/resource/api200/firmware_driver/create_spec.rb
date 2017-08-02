@@ -13,23 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::FirmwareDriver
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration context'
-
-  describe '#create' do
-    it 'Create custom spp' do
-      spp = OneviewSDK::FirmwareDriver.find_by($client, state: 'Created', bundleType: 'SPP').first
-      hotfix = OneviewSDK::FirmwareDriver.find_by($client, state: 'Created', bundleType: 'Hotfix').first
-      expect(spp['uri']).to be
-      expect(hotfix['uri']).to be
-      custom = OneviewSDK::FirmwareDriver.new($client)
-      custom['baselineUri'] = spp['uri']
-      custom['hotfixUris'] = [
-        hotfix['uri']
-      ]
-      custom['customBaselineName'] = FIRMWARE_DRIVER1_NAME
-      expect { custom.create }.not_to raise_error
-      expect(custom['uri']).to be
-    end
-  end
-
+  let(:current_client) { $client }
+  include_examples 'FirmwareDriverCreateExample', 'integration context'
 end

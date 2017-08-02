@@ -13,15 +13,10 @@ require 'spec_helper'
 
 klass = OneviewSDK::ManagedSAN
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration context'
+  let(:current_client) { $client }
+  let(:san_manager_ip) { $secrets['san_manager_ip'] }
+  let(:fc_network_class) { OneviewSDK::FCNetwork }
+  let(:fcoe_network_class) { OneviewSDK::FCoENetwork }
 
-  describe 'Remove FC Networks' do
-    it 'Remove' do
-      OneviewSDK::ManagedSAN.find_by($client, deviceManagerName: $secrets['san_manager_ip']).each do |san|
-        fc = OneviewSDK::FCNetwork.new($client, name: "FC_#{san['name']}")
-        fc.retrieve!
-        fc.delete
-      end
-    end
-  end
+  include_examples 'ManagedSANDeleteExample', 'integration context'
 end

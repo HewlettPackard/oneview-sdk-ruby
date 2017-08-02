@@ -10,12 +10,15 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api300/synergy/server_profile'
+require_relative '../c7000/server_profile'
 
 module OneviewSDK
   module API500
     module Synergy
       # Server profile resource implementation for API500 Synergy
-      class ServerProfile < OneviewSDK::API300::Synergy::ServerProfile
+      class ServerProfile < OneviewSDK::API500::C7000::ServerProfile
+        extend OneviewSDK::API300::Synergy::SASLogicalJBODHelper
+        include OneviewSDK::API300::Synergy::ServerProfileHelper
       end
     end
   end

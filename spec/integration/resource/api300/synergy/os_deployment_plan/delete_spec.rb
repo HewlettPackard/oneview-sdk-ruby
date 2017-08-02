@@ -13,12 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::OSDeploymentPlan
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
-
-  describe '#delete' do
-    it 'should throw method unavailable exception' do
-      item = klass.new($client_300)
-      expect { item.delete }.to raise_error(OneviewSDK::MethodUnavailable)
-    end
-  end
+  let(:current_client) { $client_300_synergy }
+  include_examples 'OSDeploymentPlanDeleteExample', 'integration api300 context'
 end

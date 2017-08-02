@@ -27,7 +27,7 @@ RSpec.describe OneviewSDK::LogicalEnclosure do
     describe '#get_script' do
       it 'calls the /script uri' do
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new('Content'))
-        expect(@client_200).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', @client_200.api_version)
+        expect(@client_200).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', {}, @client_200.api_version)
         expect(@item.get_script).to eq('Content')
       end
     end

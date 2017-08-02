@@ -12,28 +12,11 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::ManagedSAN
-extra_klass = OneviewSDK::API300::C7000::FCNetwork
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300 }
+  let(:san_manager_ip) { $secrets['san_manager_ip'] }
+  let(:fc_network_class) { OneviewSDK::API300::C7000::FCNetwork }
+  let(:fcoe_network_class) { OneviewSDK::API300::C7000::FCoENetwork }
 
-  let(:fc_options) do
-    {
-      connectionTemplateUri: nil,
-      autoLoginRedistribution: true,
-      fabricType: 'FabricAttach'
-    }
-  end
-
-  describe 'Import SANs' do
-    it 'create fc networks' do
-      klass.find_by($client_300, deviceManagerName: $secrets['san_manager_ip']).each do |san|
-        options = fc_options
-        options[:name] = "FC_#{san['name']}"
-        options[:managedSanUri] = san['uri']
-        fc = extra_klass.new($client_300, options)
-        fc.create!
-        expect(fc['uri']).to be
-      end
-    end
-  end
+  include_examples 'ManagedSANCreateExample', 'integration api300 context'
 end

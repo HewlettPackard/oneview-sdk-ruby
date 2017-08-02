@@ -13,13 +13,8 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::SANManager
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300_synergy }
+  let(:san_manager_ip) { $secrets_synergy['san_manager_ip'] }
 
-  describe '#remove' do
-    it 'Removing a Cisco Switch' do
-      item = klass.new($client_300_synergy, name: $secrets_synergy['san_manager_ip'])
-      item.retrieve!
-      expect { item.remove }.not_to raise_error
-    end
-  end
+  include_examples 'SANManagerDeleteExample', 'integration api300 context'
 end

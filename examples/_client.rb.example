@@ -15,8 +15,9 @@ require 'pry'
 
 # This setting allows for use of the shortened name of the resources, like OneviewSDK::<Resource_name>,
   # when referring to OneviewSDK::<API_version>::Synergy::<Resource_name>
-# OneviewSDK::API300.variant='Synergy'
-
+# Versions supported: [200, 300, 500]
+# Variants supported[C7000, Synergy]
+# OneviewSDK::API<version>.variant='Synergy'
 
 puts "Connected to OneView appliance at #{@client.url}\n\n"
 
@@ -28,13 +29,21 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @enclosure_hostname = '172.1.1.11'
 # @enclosure_username = 'Administrator'
 # @enclosure_password = 'password123'
+# @ipdu_username = 'dcs'
+# @ipdu_password = 'dcs'
+# @ipdu_hostname = '172.18.8.12'
 # @server_hardware_hostname = '172.1.1.12'
 # @server_hardware_username = 'Administrator'
 # @server_hardware_password = 'password123'
 # @storage_system_ip = '172.18.11.11'
 # @storage_system_username = 'Administrator'
 # @storage_system_password = 'password123'
-# @firmware_bundle_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
+# @store_virtual_ip = "172.18.30.1",
+# @store_virtual_user = "dcs",
+# @store_virtual_password = "dcs",
+# @unmanaged_volume_wwn = 'DC:72:02:07:87:00:10:00:30:71:49:79:72:48:86:60'
+# @firmware_bundle_spp_path = 'custom-spp-c7000.iso'
+# @firmware_bundle_hotfix_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
 # @sas_interconnect_type = 'Synergy 12Gb SAS Connection Module'
 # @synergy_enclosure_hostname = 'fe80::2:0:9:1%eth2'
 # @interconnect_name = '0000A66101, interconnect 3'
@@ -43,3 +52,4 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @logical_switch_ssh_user = "dcs"
 # @logical_switch_ssh_password = "dcs"
 # @logical_switch_community_string = "public"
+# @logical_interconnect_name = 'Encl1-LogicalInterconnectGroup_1'

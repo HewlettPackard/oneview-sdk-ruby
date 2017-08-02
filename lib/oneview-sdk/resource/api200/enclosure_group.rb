@@ -26,6 +26,7 @@ module OneviewSDK
         # Default values:
         @data['type'] ||= 'EnclosureGroupV200'
         @data['interconnectBayMappingCount'] ||= 8
+        @data['stackingMode'] ||= 'Enclosure'
         create_interconnect_bay_mapping unless @data['interconnectBayMappings']
       end
 
@@ -33,7 +34,7 @@ module OneviewSDK
       # @return [String] The script for this enclosure group
       def get_script
         ensure_client && ensure_uri
-        response = @client.rest_get(@data['uri'] + '/script', @api_version)
+        response = @client.rest_get(@data['uri'] + '/script', {}, @api_version)
         @client.response_handler(response)
       end
 

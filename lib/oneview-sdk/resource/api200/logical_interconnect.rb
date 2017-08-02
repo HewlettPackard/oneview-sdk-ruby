@@ -78,13 +78,14 @@ module OneviewSDK
         ensure_client && ensure_uri
         results = OneviewSDK::Resource.find_by(@client, {}, @data['uri'] + '/internalVlans')
         internal_networks = []
+        variant = self.class.name.split('::').at(-2)
         results.each do |vlan|
           net = if vlan['generalNetworkUri'].include? 'ethernet-network'
-                  OneviewSDK::EthernetNetwork.new(@client, uri: vlan['generalNetworkUri'])
+                  OneviewSDK.resource_named('EthernetNetwork', @client.api_version, variant).new(@client, uri: vlan['generalNetworkUri'])
                 elsif vlan['generalNetworkUri'].include? 'fc-network'
-                  OneviewSDK::FCNetwork.new(@client, uri: vlan['generalNetworkUri'])
+                  OneviewSDK.resource_named('FCNetwork', @client.api_version, variant).new(@client, uri: vlan['generalNetworkUri'])
                 else
-                  OneviewSDK::FCoENetwork.new(@client, uri: vlan['generalNetworkUri'])
+                  OneviewSDK.resource_named('FCoENetwork', @client.api_version, variant).new(@client, uri: vlan['generalNetworkUri'])
                 end
           net.retrieve!
           internal_networks.push(net)
