@@ -145,7 +145,7 @@ RSpec.shared_examples 'ServerProfileCreateExample' do |context_name|
 
     it 'creates a server profile template and a volume with attachment', if: api_version.end_with?('500') do
       storage_system = resource_class_of('StorageSystem').find_by(current_client, hostname: storage_system_ip).first
-      storage_pool = resource_class_of('StoragePool').new(current_client, name: STORAGE_POOL_NAME, storageSystemUri: storage_system['uri'])
+      storage_pool = resource_class_of('StoragePool').find_by(current_client, name: STORAGE_POOL_NAME, storageSystemUri: storage_system['uri']).first
 
       volume_options = {
         name: VOLUME7_NAME,
