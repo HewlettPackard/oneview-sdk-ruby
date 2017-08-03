@@ -1,9 +1,10 @@
-## v5.0.0 (Unreleased)
+# Unreleased Changes
+
+## Suggested release: v5.0.0
 
 #### New Resources:
 This release adds support support to Oneview Rest API version 200 (only hardware variant C7000), 300 and 500 (both two for the hardware variants C7000 and Synergy) to the new features:
    - Client Certificate
-   - Event
    - Web Server Certificate
 
 #### Features supported
@@ -53,7 +54,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
    - Volume Templates
 
 #### Breaking changes
-   1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
+1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
 
 ## v4.5.1
 
@@ -68,6 +69,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
 
 #### Bug fixes & Enhancements
 - [#235](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/235) Example file for Synergy LIG fails with 'Interconnect type or Logical Downlink not found!'
+
 
 ## v4.4.0
 
@@ -84,7 +86,7 @@ This release adds support to OneView Rest API version 500 for the hardware varia
 #### Bug fixes & Enhancements:
 - [#222](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/222) Error listing the OS Deployment Plans from OneView
 
-# v4.2.0
+## v4.2.0
 
 #### New Resources:
    - OS Deployment Plan
