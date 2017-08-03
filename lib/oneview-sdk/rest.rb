@@ -57,10 +57,14 @@ module OneviewSDK
 
     # Makes a restful GET request to OneView
     # @param [String] path The path for the request. Usually starts with "/rest/"
+    # @param [Hash] options The options for the request
+    # @option options [String] :Content-Type ('application/json') Set to nil or :none to have this option removed
+    # @option options [Integer] :X-API-Version (client.api_version) API version to use for this request
+    # @option options [Integer] :auth (client.token) Authentication token to use for this request
     # @param [Integer] api_ver The api version to use when interracting with this resource
     # @return [NetHTTPResponse] Response object
-    def rest_get(path, api_ver = @api_version)
-      rest_api(:get, path, {}, api_ver)
+    def rest_get(path, options = {}, api_ver = @api_version)
+      rest_api(:get, path, options, api_ver)
     end
 
     # Makes a restful POST request to OneView

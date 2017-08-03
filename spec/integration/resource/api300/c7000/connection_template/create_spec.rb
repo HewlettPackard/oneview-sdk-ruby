@@ -12,13 +12,7 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::ConnectionTemplate
-RSpec.describe klass, integration: true, type: CREATE do
-  include_context 'integration api300 context'
-
-  describe '#create' do
-    it 'self raises MethodUnavailable' do
-      item = klass.new($client_300)
-      expect { item.create }.to raise_error(/The method #create is unavailable for this resource/)
-    end
-  end
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_300 }
+  include_examples 'ConnectionTemplateCreateExample', 'integration api300 context'
 end

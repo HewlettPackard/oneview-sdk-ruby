@@ -13,17 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::LogicalDownlink
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration api300 context'
-
-  describe '#find_by' do
-    it 'returns all logical downlinks in the appliance' do
-      expect { klass.find_by($client_300, {}) }.not_to raise_error
-    end
-  end
-
-  describe '#get_without_ethernet' do
-    it 'self raises MethodUnavailable' do
-      expect { klass.get_without_ethernet }.to raise_error(/The method #self.get_without_ethernet is unavailable for this resource/)
-    end
-  end
+  let(:current_client) { $client_300 }
+  include_examples 'LogicalDownlinkCreateExample', 'integration api300 context', true
 end

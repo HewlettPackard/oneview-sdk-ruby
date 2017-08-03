@@ -235,7 +235,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
     it 'should call get backups correctly' do
       fake_http_response = spy('http_response')
       fake_response = { 'members' => [{ 'name' => 'Backup Name', 'test' => 'Test attr' }] }
-      expect(@client_i3s_300).to receive(:rest_get).with('/rest/artifact-bundles/backups').and_return(fake_http_response)
+      expect(@client_i3s_300).to receive(:rest_get).with('/rest/artifact-bundles/backups', {}).and_return(fake_http_response)
       expect(@client_i3s_300).to receive(:response_handler).with(fake_http_response).and_return(fake_response)
 
       result = described_class.get_backups(@client_i3s_300)

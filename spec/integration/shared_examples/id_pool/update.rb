@@ -15,10 +15,6 @@ RSpec.shared_examples 'IDPoolUpdateExample' do |context_name|
   subject(:item) { described_class.new(current_client) }
   let(:pool_type) { 'vmac' }
 
-  before :each do
-    @response = nil
-  end
-
   describe '#get_pool' do
     it 'gets a pool by type - IPV4' do
       item.get_pool('IPV4')
@@ -57,55 +53,69 @@ RSpec.shared_examples 'IDPoolUpdateExample' do |context_name|
 
   describe '#generate_random_range' do
     it 'generating a random range' do
-      expect { @response = item.generate_random_range(pool_type) }.to_not raise_error
-      expect(@response['startAddress']).to be_truthy
-      expect(@response['endAddress']).to be_truthy
+      response = item.generate_random_range(pool_type)
+      expect(response['startAddress']).to be_truthy
+      expect(response['endAddress']).to be_truthy
     end
   end
 
   describe '#allocate' do
     it 'allocating an amount IDs' do
-      expect { @response = item.allocate_count(pool_type, 5) }.to_not raise_error
-      expect(@response['count']).to eq(5)
-      expect(@response['idList'].size).to eq(5)
+      response = item.allocate_count(pool_type, 5)
+      expect(response['count']).to eq(5)
+      expect(response['idList'].size).to eq(5)
       # Collecting the IDs allocated
-      item.collect_ids(pool_type, @response['idList'])
+      item.collect_ids(pool_type, response['idList'])
     end
 
     it 'allocating a list of IDs' do
       vmacs = item.generate_random_range(pool_type)
-      expect { @response = item.allocate_id_list(pool_type, vmacs['startAddress'], vmacs['endAddress']) }.to_not raise_error
-      expect(@response['count']).to eq(2)
-      expect(@response['idList']).to match_array([vmacs['startAddress'], vmacs['endAddress']])
+      response = item.allocate_id_list(pool_type, vmacs['startAddress'], vmacs['endAddress'])
+      expect(response['count']).to eq(2)
+      expect(response['idList']).to match_array([vmacs['startAddress'], vmacs['endAddress']])
       # Collecting the IDs allocated
-      item.collect_ids(pool_type, @response['idList'])
+      item.collect_ids(pool_type, response['idList'])
     end
   end
 
   describe '#check_range_availability' do
+    it 'checking the range availability passing an empty list' do
+      response = item.check_range_availability(pool_type, [])
+      expect(response).to be_empty
+    end
+
     it 'checking the range availability' do
       allocated_ids = item.allocate_count(pool_type, 2)
-      expect { @response = item.check_range_availability(pool_type, allocated_ids['idList']) }.to_not raise_error
-      expect(@response['idList']).to match_array(allocated_ids['idList'])
+      response = item.check_range_availability(pool_type, allocated_ids['idList'])
+      expect(response['idList']).to match_array(allocated_ids['idList'])
       # Collecting the IDs allocated
       item.collect_ids(pool_type, allocated_ids['idList'])
     end
   end
 
   describe '#validate_id_list' do
+    it 'validating passing an empty list' do
+      response = item.check_range_availability(pool_type, [])
+      expect(response).to be_empty
+    end
+
     it 'validating a list of IDs' do
       vmacs = item.generate_random_range(pool_type)
-      expect { @response = item.validate_id_list(pool_type, vmacs['startAddress'], vmacs['endAddress']) }.to_not raise_error
-      expect(@response).to eq(true)
+      response = item.validate_id_list(pool_type, vmacs['startAddress'], vmacs['endAddress'])
+      expect(response).to eq(true)
     end
   end
 
   describe '#collect_ids' do
+    it 'raises an exception when passing an empty list' do
+      expect { item.collect_ids(pool_type, []) }.to raise_error(/The list of IDs informed is empty/)
+    end
+
     it 'collecting IDs' do
       # Allocating IDs to test
       allocated_ids = item.allocate_count(pool_type, 5)
-      expect { @response = item.collect_ids(pool_type, allocated_ids['idList']) }.to_not raise_error
-      expect(@response['idList']).to match_array(allocated_ids['idList'])
+      response = item.collect_ids(pool_type, allocated_ids['idList'])
+      expect(response['idList']).to match_array(allocated_ids['idList'])
     end
   end
 end

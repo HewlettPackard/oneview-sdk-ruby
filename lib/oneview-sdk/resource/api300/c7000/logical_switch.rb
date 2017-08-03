@@ -19,8 +19,6 @@ module OneviewSDK
       class LogicalSwitch < OneviewSDK::API200::LogicalSwitch
         include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
 
-        INTERNAL_LINK_SET_URI = '/rest/internal-link-sets'.freeze
-
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
@@ -31,23 +29,6 @@ module OneviewSDK
           @data['type'] ||= 'logical-switchV300'
           @data['scopeUris'] ||= []
           super
-        end
-
-        # Retrieves all internal link sets
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        def self.get_internal_link_sets(client)
-          response = client.rest_get(INTERNAL_LINK_SET_URI)
-          response = client.response_handler(response)
-          response['members']
-        end
-
-        # Retrieves the internal link set with name
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [String] name The internal link set name
-        # @return [Array] Internal Link Set Array
-        def self.get_internal_link_set(client, name)
-          results = get_internal_link_sets(client)
-          results.find { |internal_link_set| internal_link_set['name'] == name }
         end
       end
     end

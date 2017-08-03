@@ -25,7 +25,6 @@ module OneviewSDK
           @data ||= {}
           # Default values:
           @data['type'] ||= 'EnclosureGroupV300'
-          @data['stackingMode'] ||= 'Enclosure'
           @data['enclosureCount'] ||= 1
           @data['interconnectBayMappingCount'] ||= 8
           super

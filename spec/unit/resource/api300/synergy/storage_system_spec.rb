@@ -42,7 +42,8 @@ RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
   describe '#retrieve!' do
     it 'finds by name if it is set' do
       item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
+      expect(OneviewSDK::Resource).to receive(:find_by)
+        .with(@client_300, { 'name' => 'Fake' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.retrieve!).to eq(true)
     end
 
@@ -64,7 +65,8 @@ RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
   describe '#exists?' do
     it 'finds by name if it is set' do
       item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, name: 'Fake')
-      expect(OneviewSDK::Resource).to receive(:find_by).with(@client_300, 'name' => 'Fake').and_return([item])
+      expect(OneviewSDK::Resource).to receive(:find_by)
+        .with(@client_300, { 'name' => 'Fake' }, described_class::BASE_URI, {}).and_return([item])
       expect(item.exists?).to eq(true)
     end
 
@@ -153,7 +155,7 @@ RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
   describe '#storage pools' do
     it 'List Storage Pools' do
       item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/storage-pools').and_return(FakeResponse.new({}))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/storage-pools', {}).and_return(FakeResponse.new({}))
       expect { item.get_storage_pools }.not_to raise_error
     end
   end
@@ -161,13 +163,13 @@ RSpec.describe OneviewSDK::API300::Synergy::StorageSystem do
   describe '#get_managed_ports' do
     it 'No port given' do
       item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts').and_return(FakeResponse.new({}))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts', {}).and_return(FakeResponse.new({}))
       item.get_managed_ports
     end
 
     it 'With port given' do
       item = OneviewSDK::API300::Synergy::StorageSystem.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts/100').and_return(FakeResponse.new({}))
+      expect(@client_300).to receive(:rest_get).with('/rest/fake/managedPorts/100', {}).and_return(FakeResponse.new({}))
       item.get_managed_ports(100)
     end
   end

@@ -23,7 +23,7 @@ RSpec.describe OneviewSDK::API300::C7000::EthernetNetwork do
 
     it 'returns the response body from uri/associatedProfiles' do
       item = OneviewSDK::API300::C7000::EthernetNetwork.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/associatedProfiles", item.api_version)
+      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/associatedProfiles", {}, item.api_version)
         .and_return(FakeResponse.new('[]'))
       expect(item.get_associated_profiles).to eq('[]')
     end
@@ -37,7 +37,7 @@ RSpec.describe OneviewSDK::API300::C7000::EthernetNetwork do
 
     it 'returns the response body from uri/associatedUplinkGroups' do
       item = OneviewSDK::API300::C7000::EthernetNetwork.new(@client_300, uri: '/rest/fake')
-      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/associatedUplinkGroups", item.api_version)
+      expect(@client_300).to receive(:rest_get).with("#{item['uri']}/associatedUplinkGroups", {}, item.api_version)
         .and_return(FakeResponse.new('[]'))
       expect(item.get_associated_uplink_groups).to eq('[]')
     end

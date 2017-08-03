@@ -9,28 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/network_set'
+require_relative '../c7000/network_set'
 
 module OneviewSDK
   module API300
     module Synergy
       # Network set resource implementation for API300 Synergy
-      class NetworkSet < OneviewSDK::API200::NetworkSet
-
-        # Create a resource object, associate it with a client, and set its properties.
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [Hash] params The options for this resource (key-value pairs)
-        # @param [Integer] api_ver The api version to use when interracting with this resource.
-        def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
-          # Default values:
-          @data['connectionTemplateUri'] ||= nil
-          @data['nativeNetworkUri'] ||= nil
-          @data['networkUris'] ||= []
-          @data['type'] ||= 'network-setV300'
-          super
-        end
-
+      class NetworkSet < OneviewSDK::API300::C7000::NetworkSet
       end
     end
   end

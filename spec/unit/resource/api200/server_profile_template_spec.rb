@@ -26,7 +26,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will retrieve and set the serverHardwareTypeUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
         .and_return(FakeResponse.new(members: [
             { name: 'server_hardware_type', uri: @server_hardware_type_uri },
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
@@ -36,7 +36,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will fail to put serverHardwareTypeUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types')
+      expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
@@ -57,7 +57,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will retrieve and set the enclosureGroupUri correctly' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
         .and_return(FakeResponse.new(members: [
             { name: 'enclosure_group', uri: @enclosure_group_uri },
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
@@ -67,7 +67,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     end
 
     it 'will fail to put enclosureGroupUri since the resource does not exists' do
-      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups')
+      expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
         .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
@@ -197,8 +197,15 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
   end
 
   describe 'Volume attachment operations' do
+    it 'raises an exception when volume not found' do
+      volume = OneviewSDK::Volume.new(@client_200)
+      allow_any_instance_of(OneviewSDK::Volume).to receive(:retrieve!).and_return(false)
+      expect { @item.add_volume_attachment(volume, {}) }.to raise_error(/Volume not found/)
+    end
+
     it 'can call the #add_volume_attachment using a specific already created Volume' do
       options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+      allow_any_instance_of(OneviewSDK::Volume).to receive(:retrieve!).and_return(true)
       volume = OneviewSDK::Volume.new(@client_200, options)
       @item.add_volume_attachment(volume)
 
@@ -212,6 +219,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
     describe 'can call #remove_volume_attachment' do
       it 'and remove attachment with id 0' do
         options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+        allow_any_instance_of(OneviewSDK::Volume).to receive(:retrieve!).and_return(true)
         volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -224,6 +232,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
       it 'and return nil if no attachment found' do
         options = { uri: '/fake/volume', storagePoolUri: '/fake/storage-pool', storageSystemUri: '/fake/storage-system' }
+        allow_any_instance_of(OneviewSDK::Volume).to receive(:retrieve!).and_return(true)
         volume = OneviewSDK::Volume.new(@client_200, options)
         @item.add_volume_attachment(volume, 'id' => 7)
         expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
@@ -240,6 +249,12 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
       end
     end
 
+    it 'raises an exception when storage pool not found' do
+      allow_any_instance_of(OneviewSDK::StoragePool).to receive(:retrieve!).and_return(false)
+      storage_pool = OneviewSDK::StoragePool.new(@client_200)
+      expect { @item.create_volume_with_attachment(storage_pool, {}) }.to raise_error(/Storage Pool not found/)
+    end
+
     it 'can call #create_volume_with_attachment and generate the data required for a new Volume with attachment' do
       storage_pool = OneviewSDK::StoragePool.new(@client_200, uri: 'fake/storage-pool')
       volume_options = {
@@ -251,13 +266,14 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
           requestedCapacity: 1024 * 1024 * 1024
         }
       }
+      allow_any_instance_of(OneviewSDK::StoragePool).to receive(:retrieve!).and_return(true)
       @item.create_volume_with_attachment(storage_pool, volume_options)
       expect(@item['sanStorage']['volumeAttachments'].size).to eq(1)
       va = @item['sanStorage']['volumeAttachments'].first
       expect(va['volumeUri']).not_to be
       expect(va['volumeStorageSystemUri']).not_to be
       expect(va['volumeStoragePoolUri']).to eq('fake/storage-pool')
-      expect(va['volumeShareable']).to eq(true)
+      expect(va['volumeShareable']).to eq(false)
       expect(va['volumeProvisionedCapacityBytes']).to eq(1024 * 1024 * 1024)
       expect(va['volumeProvisionType']).to eq('Full')
     end

@@ -13,7 +13,7 @@ require_relative 'resource'
 
 module OneviewSDK
   module API200
-    # Id pool resource implementation
+    # Id Pool resource implementation
     class IDPool < Resource
       BASE_URI = '/rest/id-pools'.freeze
 
@@ -32,13 +32,12 @@ module OneviewSDK
       # Gets a pool along with the list of ranges present in it.
       # @param [String] pool_type The type of the pool. Values: (ipv4, vmac, vsn, vwwn)
       # @raise [OneviewSDK::IncompleteResource] if the client
-      # @return [OneviewSDK::API200::IDPool] The response with IDs list, count and if this is a valid allocator
+      # @return [OneviewSDK::IDPool] The response with IDs list, count and if this is a valid allocator
       def get_pool(pool_type)
         ensure_client
         response = @client.rest_get("#{BASE_URI}/#{pool_type}")
         body = @client.response_handler(response)
         set_all(body)
-        self
       end
 
       # Allocates one or more IDs from a according the amount informed
@@ -66,6 +65,7 @@ module OneviewSDK
       # @return [Hash] The hash with eTag and list of ID's
       def check_range_availability(pool_type, *id_list)
         ensure_client
+        return {} if id_list.flatten.empty?
         response = @client.rest_get("#{BASE_URI}/#{pool_type}/checkrangeavailability?idList=#{id_list.flatten.join('&idList=')}")
         @client.response_handler(response)
       end
@@ -76,6 +76,7 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @return [Hash] The list of IDs collected
       def collect_ids(pool_type, *id_list)
+        raise IncompleteResource, 'The list of IDs informed is empty.' if id_list.flatten.empty?
         ensure_client
         response = @client.rest_put("#{BASE_URI}/#{pool_type}/collector", 'body' => { 'idList' => id_list.flatten })
         @client.response_handler(response)
@@ -99,6 +100,7 @@ module OneviewSDK
       # @return [Boolean] Returns true if is valid
       def validate_id_list(pool_type, *id_list)
         ensure_client
+        return {} if id_list.flatten.empty?
         response = @client.rest_put("#{BASE_URI}/#{pool_type}/validate", 'body' => { 'idList' => id_list.flatten })
         body = @client.response_handler(response)
         body['valid']

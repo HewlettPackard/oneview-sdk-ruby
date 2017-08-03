@@ -1,21 +1,12 @@
 require 'spec_helper'
 
 RSpec.describe OneviewSDK::API300::Synergy::NetworkSet, integration: true, type: UPDATE, sequence: 2 do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300_synergy }
+  let(:ethernet_class) { OneviewSDK::API300::Synergy::EthernetNetwork }
 
-  describe '#get_without_ethernet' do
-    it 'instance' do
-      item = OneviewSDK::API300::Synergy::NetworkSet.new($client_300_synergy, name: NETWORK_SET3_NAME)
-      item.retrieve!
-      item_without_networks = item.get_without_ethernet
-      expect(item_without_networks['networkUris']).to eq([])
-    end
+  include_examples 'NetworkSetUpdateExample', 'integration api300 context'
 
-    it 'class' do
-      OneviewSDK::API300::Synergy::NetworkSet.get_without_ethernet($client_300_synergy)['members'].each do |network_set|
-        expect(network_set['networkUris']).to eq([])
-      end
-    end
+  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API300::Synergy::Scope do
+    let(:item) { described_class.get_all(current_client).first }
   end
-
 end

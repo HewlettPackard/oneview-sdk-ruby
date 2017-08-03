@@ -2,21 +2,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::ServerHardwareType
 RSpec.describe klass, integration: true, type: UPDATE do
-  include_context 'integration api300 context'
-
-  let(:server_hardware) do
-    OneviewSDK::API300::Synergy::ServerHardware.get_all($client_300_synergy).first
-  end
-  subject(:target) { klass.find_by($client_300_synergy, uri: server_hardware['serverHardwareTypeUri']).first }
-
-  describe '#update' do
-    it 'should update name and description' do
-      expect { target.update(name: 'Name Updated', description: 'Description updated') }.not_to raise_error
-
-      target.retrieve!
-
-      expect(target['name']).to eq('Name Updated')
-      expect(target['description']).to eq('Description updated')
-    end
-  end
+  let(:current_client) { $client_300_synergy }
+  include_examples 'ServerHardwareTypeUpdateExample', 'integration api300 context'
 end

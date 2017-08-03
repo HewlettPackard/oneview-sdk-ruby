@@ -40,7 +40,7 @@ RSpec.describe klass do
 
       it 'gets uri/script' do
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(FakeResponse.new('Content'))
-        expect(@client_300).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', @client_300.api_version)
+        expect(@client_300).to receive(:rest_get).with('/rest/logical-enclosures/fake/script', {}, @client_300.api_version)
         expect(@item.get_script).to eq('Content')
       end
 
@@ -51,18 +51,18 @@ RSpec.describe klass do
       end
     end
 
-    describe '#perfoms a specific patch' do
+    describe '#update_firmware' do
       it 'requires a uri' do
         logical_enclosure = klass.new(@client_300)
-        expect { logical_enclosure.patch(:val) }
+        expect { logical_enclosure.update_firmware(:val) }
           .to raise_error(OneviewSDK::IncompleteResource, /Please set uri/)
       end
 
-      it 'does a patch to the server hardware uri' do
+      it 'updates the the firmware of a given logical enclosure' do
         data = { 'body' => [{ op: 'replace', path: '/firmware', value: 'val' }] }
         expect(@client_300).to receive(:rest_patch)
           .with('/rest/logical-enclosures/fake', data, @item.api_version).and_return(FakeResponse.new(key: 'Val'))
-        expect(@item.patch('val')).to eq('key' => 'Val')
+        expect(@item.update_firmware('val')).to eq('key' => 'Val')
       end
     end
 

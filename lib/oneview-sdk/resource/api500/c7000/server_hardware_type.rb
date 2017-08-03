@@ -14,6 +14,7 @@ require_relative '../../api300/c7000/server_hardware_type'
 module OneviewSDK
   module API500
     module C7000
+      # Server hardware type resource implementation for API500 C7000
       class ServerHardwareType < OneviewSDK::API300::C7000::ServerHardwareType
       end
     end

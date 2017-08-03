@@ -13,20 +13,9 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::FirmwareBundle
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300 }
+  let(:bundle_path) { $secrets['bundle_path'] }
+  let(:spp_path) { $secrets['spp_path'] }
 
-  let(:hotfix_path) { 'spec/support/hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm' }
-  let(:spp_path) { 'spec/support/custom-spp-c7000.iso' }
-
-  describe '#self.upload' do
-    it 'Upload hotfix' do
-      item = klass.add($client_300, hotfix_path)
-      expect(item['uri']).to be
-    end
-
-    it 'Upload SPP' do
-      item = klass.add($client_300, spp_path)
-      expect(item['uri']).to be
-    end
-  end
+  include_examples 'FirmwareBundleCreateExample', 'integration api300 context'
 end

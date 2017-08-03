@@ -16,6 +16,26 @@ module OneviewSDK
     module C7000
       # Server Hardware resource implementation on API500 C7000
       class ServerHardware < OneviewSDK::API300::C7000::ServerHardware
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'server-hardware-7'
+          super
+        end
+
+        # Gets the information describing an 'SDX' partition including a list of physical server blades represented by a server hardware.
+        # @note Used with SDX enclosures only
+        # @return [Hash] Hash with the physical server hardware inventory
+        def get_physical_server_hardware
+          ensure_client && ensure_uri
+          response = @client.rest_get(@data['uri'] + '/physicalServerHardware')
+          @client.response_handler(response)
+        end
       end
     end
   end

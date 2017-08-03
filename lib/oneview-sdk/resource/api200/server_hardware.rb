@@ -165,7 +165,7 @@ module OneviewSDK
       # Gets the settings that describe the environmental configuration
       def environmental_configuration
         ensure_client && ensure_uri
-        response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', @api_version)
+        response = @client.rest_get(@data['uri'] + '/environmentalConfiguration', {}, @api_version)
         @client.response_handler(response)
       end
 
@@ -194,7 +194,7 @@ module OneviewSDK
           uri += '&'
         end
         uri.chop! # Get rid of trailing '&' or '?'
-        response = @client.rest_get(uri, @api_version)
+        response = @client.rest_get(uri, {}, @api_version)
         @client.response_handler(response)
       end
 

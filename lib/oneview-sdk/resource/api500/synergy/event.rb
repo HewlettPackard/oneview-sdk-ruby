@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api200/event'
+require_relative '../../api300/synergy/event'
 
 module OneviewSDK
   module API500
     module Synergy
       # Event resource implementation for API500 Synergy
-      class Event < OneviewSDK::API200::Event
+      class Event < OneviewSDK::API300::Synergy::Event
       end
     end
   end

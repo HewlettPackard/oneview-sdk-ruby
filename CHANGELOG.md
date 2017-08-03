@@ -1,3 +1,61 @@
+# Unreleased Changes
+
+## Suggested release: v5.0.0
+
+#### New Resources:
+This release adds support support to Oneview Rest API version 200 (only hardware variant C7000), 300 and 500 (both two for the hardware variants C7000 and Synergy) to the new features:
+   - Client Certificate
+   - Web Server Certificate
+
+#### Features supported
+This release adds support to OneView Rest API version 500 for the hardware variants C7000 and Synergy to the already existing features:
+   - Connection Template
+   - Datacenter
+   - Drive Enclosure
+   - Enclosure
+   - Enclosure Group
+   - Ethernet Network
+   - Event
+   - Fabric
+   - FC Network
+   - FCoE Network
+   - Firmware Bundle
+   - Firmware Driver
+   - ID Pool
+   - Interconnect
+   - Internal Link Set
+   - Logical Downlink
+   - Logical Enclosure
+   - Logical Interconnect
+   - Logical Interconnect Group
+   - Logical Switch
+   - Logical Switch Group
+   - Managed SANs
+   - Network Set
+   - Power Device
+   - OS Deployment Plan
+   - Rack
+   - SAN Manager
+   - SAS Interconnect
+   - SAS Logical Interconnect
+   - SAS Logical Interconnect Group
+   - Scopes
+   - Server Hardware
+   - Server Hardware Type
+   - Server Profile Template
+   - Storage Pool
+   - Storage System
+   - Switches
+   - Unmanaged Devices
+   - Uplink Set
+   - User
+   - Volume
+   - Volume Attachment
+   - Volume Templates
+
+#### Breaking changes
+1. In the Switch resource, the `statistics` method was fixed, a non-existent endpoint was removed `/rest/switches/statistics/{portName}/subport/{subportNumber}`. Now the method only get statistics of a switch or a specific port.
+
 ## v4.5.1
 
 #### Bug fixes & Enhancements

@@ -13,42 +13,9 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::C7000::SANManager
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  include_context 'integration api300 context'
+  let(:current_client) { $client_300 }
+  let(:provider_name) { SAN_PROVIDER1_NAME }
 
-  describe '#add' do
-    it 'can create resources' do
-      item = klass.new($client_300)
-      item['providerDisplayName'] = SAN_PROVIDER1_NAME
-      item['connectionInfo'] = [
-        {
-          'name' => 'Host',
-          'value' => $secrets['san_manager_ip']
-        },
-        {
-          'name' => 'Port',
-          'value' => 5989
-        },
-        {
-          'name' => 'Username',
-          'value' => $secrets['san_manager_username']
-        },
-        {
-          'name' => 'Password',
-          'value' => $secrets['san_manager_password']
-        },
-        {
-          'name' => 'UseSsl',
-          'value' => true
-        }
-      ]
-      expect { item.add }.not_to raise_error
-      expect(item['uri']).to be
-    end
-  end
-
-  describe '#self.get_default_connection_info' do
-    it 'Retrieve connection info for provider' do
-      expect { klass.get_default_connection_info($client_300, SAN_PROVIDER1_NAME) }.to_not raise_error
-    end
-  end
+  include_examples 'ConnectionInfoC7000'
+  include_examples 'SANManagerCreateExample', 'integration api300 context'
 end
