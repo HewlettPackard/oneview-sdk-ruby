@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/power_device'
+require_relative '../c7000/power_device'
 
 module OneviewSDK
   module API500
