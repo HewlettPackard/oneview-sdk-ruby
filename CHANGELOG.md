@@ -1,3 +1,8 @@
+## v5.0.1 (Unreleased)
+
+#### Bug fixes & Enhancements
+- [#258](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/258) Incorrect import into Server Profile
+
 ## v5.0.0
 
 #### New Resources:
