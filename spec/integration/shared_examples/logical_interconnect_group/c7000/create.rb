@@ -18,6 +18,7 @@ RSpec.shared_examples 'LIGC7000CreateExample' do |context_name|
   subject(:item_2_state_before_create) { {} }
   let(:ethernet_network) { ethernet_network_class.find_by(current_client, name: ETH_NET_NAME).first }
   let(:fc_network) { fc_network_class.find_by(current_client, name: FC_NET_NAME).first }
+  let(:fc_network_2) { fc_network_class.find_by(current_client, name: FC_NET2_NAME).first }
   let(:eth_uplink_options) do
     {
       name: LIG_UPLINK_SET_NAME,
@@ -31,6 +32,7 @@ RSpec.shared_examples 'LIGC7000CreateExample' do |context_name|
       networkType: 'FibreChannel'
     }
   end
+  let(:fc_uplink_options_2) { fc_uplink_options.merge(name: LIG_UPLINK_SET3_NAME) }
   let(:interconnect_type) { 'HP VC FlexFabric 10Gb/24-Port Module' }
   let(:interconnect_type2) { 'HP VC FlexFabric-20/40 F8 Module' }
 
@@ -41,13 +43,24 @@ RSpec.shared_examples 'LIGC7000CreateExample' do |context_name|
 
     it 'LIG with interconnect of type HP VC FlexFabric-20/40 F8 Module' do
       item.add_interconnect(1, interconnect_type2)
+      item.add_interconnect(2, interconnect_type2)
 
       eth_lig_uplink_set_1 = lig_uplink_set_class.new(current_client, eth_uplink_options)
+      fc_lig_uplink_set_1 = lig_uplink_set_class.new(current_client, fc_uplink_options)
+      fc_lig_uplink_set_2 = lig_uplink_set_class.new(current_client, fc_uplink_options_2)
 
       eth_lig_uplink_set_1.add_network(ethernet_network)
       eth_lig_uplink_set_1.add_uplink(1, 'X1')
       eth_lig_uplink_set_1.add_uplink(1, 'X2')
       item.add_uplink_set(eth_lig_uplink_set_1)
+
+      fc_lig_uplink_set_1.add_network(fc_network)
+      fc_lig_uplink_set_1.add_uplink(1, 'D33')
+      item.add_uplink_set(fc_lig_uplink_set_1)
+
+      fc_lig_uplink_set_2.add_network(fc_network_2)
+      fc_lig_uplink_set_2.add_uplink(2, 'D33')
+      item.add_uplink_set(fc_lig_uplink_set_2)
 
       expect { item.create }.not_to raise_error
       expect(item['uri']).to be

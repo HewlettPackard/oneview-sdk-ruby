@@ -15,21 +15,13 @@ RSpec.shared_examples 'UplinkSetUpdateExample' do |context_name|
   describe '#update' do
 
     subject(:uplink) { described_class.find_by(current_client, name: UPLINK_SET4_NAME).first }
-    let(:namespace) { described_class.to_s[0, described_class.to_s.rindex('::')] }
-    let(:log_int) do
-      namespace = described_class.to_s[0, described_class.to_s.rindex('::')]
-      Object.const_get("#{namespace}::LogicalInterconnect").find_by(current_client, name: li_name).first
-    end
-    let(:interconnect) { Object.const_get("#{namespace}::Interconnect").find_by(current_client, logicalInterconnectUri: log_int['uri']).first }
-    let(:network) { Object.const_get("#{namespace}::EthernetNetwork").get_all(current_client).first }
-    let(:fc_network) { Object.const_get("#{namespace}::FCNetwork").get_all(current_client).first }
-    let(:port) { interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['portStatus'] == 'Unlinked' }.first }
-
-    before do
-      uplink.retrieve!
-    end
+    let(:log_int) { resource_class_of('LogicalInterconnect').find_by(current_client, name: li_name).first }
+    let(:interconnect) { resource_class_of('Interconnect').find_by(current_client, logicalInterconnectUri: log_int['uri']).first }
+    let(:network) { resource_class_of('EthernetNetwork').get_all(current_client).first }
+    let(:fc_network) { resource_class_of('FCNetwork').find_by(current_client, name: FC_NET3_NAME).first }
 
     it 'update port_config' do
+      port = uplink.get_unassigned_ports.first
       expect(uplink['portConfigInfos']).to be_empty
       uplink.add_port_config(
         port['uri'],

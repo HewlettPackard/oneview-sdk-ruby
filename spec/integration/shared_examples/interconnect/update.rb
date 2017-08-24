@@ -12,7 +12,11 @@
 RSpec.shared_examples 'InterconnectUpdateExample' do |context_name|
   include_context context_name
 
-  let(:item) { described_class.find_by(current_client, name: interconnect_name).first }
+  let(:item) do
+    described_class.get_all(current_client).find do |resource|
+      !resource['ports'].select { |k| k['portType'] == 'Uplink' }.empty?
+    end
+  end
 
   describe '#update' do
     it 'self raises MethodUnavailable' do
@@ -28,6 +32,7 @@ RSpec.shared_examples 'InterconnectUpdateExample' do |context_name|
 
   describe '#update_port' do
     it 'updates with valid attributes' do
+      raise 'must there is some interconnect with free uplink ports' unless item
       ports = item['ports'].select { |k| k['portType'] == 'Uplink' }
       port = ports.first
       expect { item.update_port(port['name'], enabled: false) }.not_to raise_error

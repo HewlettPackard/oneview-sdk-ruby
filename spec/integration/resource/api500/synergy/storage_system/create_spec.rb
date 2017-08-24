@@ -6,10 +6,10 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   let(:store_serv_data) do
     {
       credentials: {
-        username: $secrets_synergy['storage_system1_user'],
-        password: $secrets_synergy['storage_system1_password']
+        username: $secrets_synergy['storage_system2_user'],
+        password: $secrets_synergy['storage_system2_password']
       },
-      hostname: $secrets_synergy['storage_system1_ip'],
+      hostname: $secrets_synergy['storage_system2_ip'],
       family: 'StoreServ'
     }
   end
@@ -17,10 +17,10 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   let(:store_serv_data_with_domain) do
     {
       credentials: {
-        username: $secrets_synergy['storage_system2_user'],
-        password: $secrets_synergy['storage_system2_password']
+        username: $secrets_synergy['storage_system1_user'],
+        password: $secrets_synergy['storage_system1_password']
       },
-      hostname: $secrets_synergy['storage_system2_ip'],
+      hostname: $secrets_synergy['storage_system1_ip'],
       family: 'StoreServ',
       deviceSpecificAttributes: {
         managedDomain: 'TestDomain'

@@ -14,7 +14,6 @@ require 'spec_helper'
 klass = OneviewSDK::API300::C7000::Rack
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:current_client) { $client_300 }
-  let(:rack_name) { RACK2_NAME }
 
   include_examples 'RackUpdateExample', 'integration api300 context'
 end

@@ -5,10 +5,10 @@ RSpec.describe klass, integration: true, type: UPDATE do
   let(:store_serv_data) do
     {
       credentials: {
-        username: $secrets_synergy['storage_system1_user'],
-        password: $secrets_synergy['storage_system1_password']
+        username: $secrets_synergy['storage_system2_user'],
+        password: $secrets_synergy['storage_system2_password']
       },
-      hostname: $secrets_synergy['storage_system1_ip'],
+      hostname: $secrets_synergy['storage_system2_ip'],
       family: 'StoreServ'
     }
   end

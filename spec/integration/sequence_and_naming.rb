@@ -15,6 +15,7 @@ class Hash
 end
 
 DEPENDENCIES = {
+  ClientCertificate: [],
   ConnectionTemplate: [:EthernetNetwork],
   Datacenter: [:Rack],
   DriveEnclosure: [:Enclosure],
@@ -58,7 +59,8 @@ DEPENDENCIES = {
   User: [],
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
-  VolumeTemplate: [:StoragePool]
+  VolumeTemplate: [:StoragePool],
+  WebServerCertificate: []
 }.freeze
 
 SEQ = DEPENDENCIES.tsort
@@ -95,6 +97,7 @@ ETH_NET_NAME_UPDATED = 'EthernetNetwork_1_UPDATED'.freeze
 
 FC_NET_NAME = 'FCNetwork_1'.freeze
 FC_NET2_NAME = 'FCNetwork_2'.freeze
+FC_NET3_NAME = 'FCNetwork_3'.freeze
 FC_NET_NAME_UPDATED = 'FCNetwork_1_UPDATED'.freeze
 
 # FCoENetwork
@@ -126,6 +129,9 @@ ENCL2_NAME = '0000A66101'.freeze
 ENCL3_NAME = '0000A66102'.freeze
 ENCL4_NAME = '0000A66103'.freeze
 ENCL_NAME_UPDATED = 'Encl1_UPDATED'.freeze
+ENCL1_UUID = '0000000000A66101'.freeze
+ENCL2_UUID = '0000000000A66102'.freeze
+ENCL3_UUID = '0000000000A66103'.freeze
 
 # LogicalEnclosure
 LOG_ENCL1_NAME = 'LogicalEnclosure_1'.freeze
@@ -144,6 +150,8 @@ UPLINK_SET5_NAME = 'FCUplinkSet_3'.freeze
 # LIGUplinkSet
 LIG_UPLINK_SET_NAME = 'EthernetUplinkSet_1'.freeze
 LIG_UPLINK_SET2_NAME = 'FCUplinkSet_1'.freeze
+LIG_UPLINK_SET3_NAME = 'FCUplinkSet_2'.freeze
+LIG_UPLINK_SET4_NAME = 'LIG_FCUplinkSet_1'.freeze
 
 # storageSystem
 STORAGE_SYSTEM_NAME = 'ThreePAR7200-2027'.freeze
@@ -246,9 +254,11 @@ ENCLOSURE_1 = '0000A66101'.freeze
 INTERCONNECT_1_NAME = "#{ENCLOSURE_1}, interconnect 3".freeze
 INTERCONNECT_2_NAME = "#{ENCL_NAME}, interconnect 1".freeze
 INTERCONNECT_3_NAME = "#{ENCLOSURE_1}, interconnect 5".freeze
+INTERCONNECT_4_NAME = "#{ENCL_NAME}1, interconnect 5".freeze
+INTERCONNECT_5_NAME = "#{ENCL_NAME}1, interconnect 6".freeze
 
 # SAS Interconnect
-SAS_INTERCONNECT1_NAME = "#{ENCLOSURE_1}, interconnect 1".freeze
+SAS_INTERCONNECT1_NAME = 'Encl13, interconnect 1'.freeze
 
 # USER
 USER_NAME = 'TestUser'.freeze
@@ -263,3 +273,5 @@ SERVER_HARDWARE_NAME = '0000A66101, bay 3'.freeze
 # Server Hardware Type
 SERVER_HARDWARE_TYPE_NAME = 'BL460c Gen8 1'.freeze
 SERVER_HARDWARE_TYPE2_NAME = 'SY 480 Gen9 1'.freeze
+
+DRIVE_ENCLOSURE_NAME = 'Encl11, bay 1'.freeze

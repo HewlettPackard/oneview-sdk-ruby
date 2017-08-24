@@ -18,6 +18,7 @@ RSpec.shared_examples 'StorageSystemUpdateExample' do |context_name, api_version
     it '#updating fc_network unmanaged ports' do
       storage_system = described_class.new(current_client, item_attributes)
       storage_system.retrieve!
+      old_ports_size = storage_system.get_managed_ports.size
 
       fc_network = OneviewSDK::FCNetwork.find_by(current_client, name: FC_NET_NAME).first
 
@@ -28,8 +29,8 @@ RSpec.shared_examples 'StorageSystemUpdateExample' do |context_name, api_version
 
       ports = new_item.get_managed_ports
       expect(ports).not_to be_empty
-      expect(ports.size).to eq(1)
-      expect(ports.first['expectedNetworkUri']).to eq(fc_network.data['uri'])
+      expect(ports.size - old_ports_size).to eq(1)
+      expect(ports.last['expectedNetworkUri']).to eq(fc_network.data['uri'])
     end
   end
 

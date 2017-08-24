@@ -14,7 +14,6 @@ require 'spec_helper'
 klass = OneviewSDK::API500::Synergy::Rack
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:current_client) { $client_500_synergy }
-  let(:rack_name) { RACK3_NAME }
 
   include_examples 'RackUpdateExample', 'integration api500 context'
 end

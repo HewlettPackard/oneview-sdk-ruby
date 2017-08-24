@@ -64,7 +64,7 @@ RSpec.shared_examples 'LogicalEnclosureUpdateExample' do |context_name, version,
 
   describe '#support_dump' do
     it 'Support dump' do
-      expect { item.support_dump(errorCode: 'teste') }.to_not raise_error
+      expect { item.support_dump(errorCode: 'test') }.to_not raise_error
     end
   end
 
