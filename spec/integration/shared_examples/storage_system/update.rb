@@ -15,7 +15,7 @@ RSpec.shared_examples 'StorageSystemUpdateExample' do |context_name, api_version
   let(:item_attributes_2) { JSON.load(item_attributes.to_json) }
 
   describe '#update', if: api_version <= 300 do
-    xit '#updating fc_network unmanaged ports' do
+    it '#updating fc_network unmanaged ports' do
       storage_system = described_class.new(current_client, item_attributes)
       storage_system.retrieve!
       old_ports_size = storage_system.get_managed_ports.size
