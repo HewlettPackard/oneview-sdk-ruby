@@ -15,6 +15,7 @@ class Hash
 end
 
 DEPENDENCIES = {
+  ClientCertificate: [],
   ConnectionTemplate: [:EthernetNetwork],
   Datacenter: [:Rack],
   DriveEnclosure: [:Enclosure],
@@ -59,8 +60,7 @@ DEPENDENCIES = {
   Volume: [:StorageSystem, :StoragePool, :VolumeTemplate],
   VolumeAttachment: [:ServerProfile],
   VolumeTemplate: [:StoragePool],
-  WebServerCertificate: [],
-  ClientCertificate: []
+  WebServerCertificate: []
 }.freeze
 
 SEQ = DEPENDENCIES.tsort
