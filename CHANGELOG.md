@@ -1,6 +1,7 @@
-## v5.0.1 (Unreleased)
+## v5.0.1
 
 #### Bug fixes & Enhancements
+- [#127](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/127) Integration tests fail when running end-to-end
 - [#258](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/258) Incorrect import into Server Profile
 
 ## v5.0.0
