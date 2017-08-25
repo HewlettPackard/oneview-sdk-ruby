@@ -20,6 +20,16 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
       [
         {
           'enclosureIndex' => 1,
+          'interconnectBay' => 1,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 1,
+          'interconnectBay' => 4,
+          'logicalInterconnectGroupUri' => ''
+        },
+        {
+          'enclosureIndex' => 1,
           'interconnectBay' => 2,
           'logicalInterconnectGroupUri' => ''
         },
@@ -86,8 +96,8 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
       item.create
       expect(item['name']).to eq(ENC_GROUP2_NAME)
       item['interconnectBayMappings'].each do |bay|
-        expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if bay['interconnectBay'] == 1
-        expect(bay['logicalInterconnectGroupUri']).to_not be if bay['interconnectBay'] != 1
+        expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if [1, 2].include?(bay['interconnectBay'])
+        expect(bay['logicalInterconnectGroupUri']).to_not be unless [1, 2].include?(bay['interconnectBay'])
       end
     end
 
@@ -95,7 +105,9 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
       item = described_class.new(current_client, enclosure_group_options)
       lig = log_inter_group_class.find_by(current_client, 'name' => LOG_INT_GROUP_NAME).first
       lig2 = log_inter_group_class.find_by(current_client, 'name' => LOG_INT_GROUP3_NAME).first
+      lig3 = resource_class_of('SASLogicalInterconnectGroup').find_by(current_client, 'name' => SAS_LOG_INT_GROUP1_NAME).first
       enclosure_group_options['interconnectBayMappings'].each do |bay|
+        bay['logicalInterconnectGroupUri'] = lig3['uri'] if bay['interconnectBay'] == 1 || bay['interconnectBay'] == 4
         bay['logicalInterconnectGroupUri'] = lig['uri'] if bay['interconnectBay'] == 2 || bay['interconnectBay'] == 5
         bay['logicalInterconnectGroupUri'] = lig2['uri'] if bay['interconnectBay'] == 3 || bay['interconnectBay'] == 6
       end
@@ -107,6 +119,8 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
           expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri'])
         elsif bay['interconnectBay'] == 3 || bay['interconnectBay'] == 6
           expect(bay['logicalInterconnectGroupUri']).to eq(lig2['uri'])
+        elsif bay['interconnectBay'] == 1 || bay['interconnectBay'] == 4
+          expect(bay['logicalInterconnectGroupUri']).to eq(lig3['uri'])
         else
           expect(bay['logicalInterconnectGroupUri']).to_not be
         end
@@ -121,8 +135,8 @@ RSpec.shared_examples 'EnclosureGroupCreateExample' do |context_name, options|
       expect(item['name']).to eq(ENC_GROUP3_NAME)
       item['interconnectBayMappings'].each do |bay|
         if options[:variant] == 'C7000'
-          expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if bay['interconnectBay'] == 1
-          expect(bay['logicalInterconnectGroupUri']).to_not be if bay['interconnectBay'] != 1
+          expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if [1, 2].include?(bay['interconnectBay'])
+          expect(bay['logicalInterconnectGroupUri']).to_not be unless [1, 2].include?(bay['interconnectBay'])
         else
           expect(bay['logicalInterconnectGroupUri']).to eq(lig['uri']) if bay['interconnectBay'] == 2 || bay['interconnectBay'] == 5
           expect(bay['logicalInterconnectGroupUri']).to_not be if bay['interconnectBay'] != 2 && bay['interconnectBay'] != 5

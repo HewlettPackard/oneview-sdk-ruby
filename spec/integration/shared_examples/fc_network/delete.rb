@@ -16,10 +16,19 @@ RSpec.shared_examples 'FCNetworkDeleteExample' do |context_name|
     it 'deletes the resource' do
       item = described_class.new(current_client, name: FC_NET_NAME)
       item2 = described_class.new(current_client, name: FC_NET2_NAME)
-      item.retrieve!
-      item2.retrieve!
+      item3 = described_class.new(current_client, name: FC_NET3_NAME)
+
+      expect(item.retrieve!).to eq(true)
+      expect(item2.retrieve!).to eq(true)
+      expect(item3.retrieve!).to eq(true)
+
       expect { item.delete }.not_to raise_error
       expect { item2.delete }.not_to raise_error
+      expect { item3.delete }.not_to raise_error
+
+      expect(item.retrieve!).to eq(false)
+      expect(item2.retrieve!).to eq(false)
+      expect(item3.retrieve!).to eq(false)
     end
   end
 end

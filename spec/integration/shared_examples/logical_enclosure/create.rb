@@ -21,9 +21,9 @@ RSpec.shared_examples 'LogicalEnclosureCreateExample' do |context_name, variant|
 
     it 'create a logical enclosure', if: variant == 'Synergy' do
       enclosure_group = encl_group_class.find_by(current_client, name: ENC_GROUP2_NAME).first
-      enclosure1 = enclosure_class.find_by(current_client, name: ENCL2_NAME).first
-      enclosure2 = enclosure_class.find_by(current_client, name: ENCL3_NAME).first
-      enclosure3 = enclosure_class.find_by(current_client, name: ENCL4_NAME).first
+      enclosure1 = enclosure_class.find_by(current_client, uuid: ENCL1_UUID).first
+      enclosure2 = enclosure_class.find_by(current_client, uuid: ENCL2_UUID).first
+      enclosure3 = enclosure_class.find_by(current_client, uuid: ENCL3_UUID).first
 
       item = described_class.new(current_client, name: LOG_ENCL1_NAME, forceInstallFirmware: false, firmwareBaselineUri: nil)
       item.set_enclosure_group(enclosure_group)

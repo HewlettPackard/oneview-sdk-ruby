@@ -12,6 +12,6 @@
 require 'spec_helper'
 
 klass = OneviewSDK::API500::Synergy::StoragePool
-RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+RSpec.describe klass, integration: true, type: UPDATE, sequence: seq(klass) do
   include_examples 'StoragePoolUpdateExample API500'
 end

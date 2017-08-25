@@ -27,7 +27,7 @@ RSpec.shared_examples 'VolumeAttachmentUpdateExample' do |context_name, options|
 
   describe '::remove_extra_unmanaged_volume' do
     it 'should remove extra presentations from a specific server profile' do
-      server_profile = resource_class_of('ServerProfile').find_by(current_client, name: SERVER_PROFILE_NAME).first
+      server_profile = resource_class_of('ServerProfile').find_by(current_client, name: SERVER_PROFILE4_NAME).first
       expect { described_class.remove_extra_unmanaged_volume(current_client, server_profile) }.to_not raise_error
     end
   end

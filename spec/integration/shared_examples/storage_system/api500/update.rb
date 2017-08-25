@@ -33,7 +33,7 @@ RSpec.shared_examples 'StorageSystemUpdateExample API500' do
       reachable_ports = []
       fc_network = OneviewSDK::API500::C7000::FCNetwork.find_by($client_500, name: FC_NET_NAME).first
       expect { reachable_ports = item.get_reachable_ports }.not_to raise_error
-      expect(reachable_ports.length).to eq(1)
+      expect(reachable_ports).not_to be_empty
       expect(reachable_ports.first['expectedNetworkUri']).to eq(fc_network['uri'])
     end
   end

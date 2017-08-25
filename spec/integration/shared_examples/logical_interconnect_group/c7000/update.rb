@@ -12,11 +12,10 @@
 RSpec.shared_examples 'LIGC7000UpdateExample' do |context_name|
   include_context context_name
 
-  let(:item) { described_class.new(current_client, name: LOG_INT_GROUP3_NAME) }
-  let(:eth) { ethernet_network_class.new(current_client, name: ETH_NET_NAME) }
+  let(:eth) { ethernet_network_class.find_by(current_client, name: ETH_NET_NAME).first }
   let(:uplink_options) do
     {
-      name: LIG_UPLINK_SET2_NAME,
+      name: LIG_UPLINK_SET4_NAME,
       networkType: 'Ethernet',
       ethernetNetworkType: 'Tagged'
     }
@@ -25,9 +24,6 @@ RSpec.shared_examples 'LIGC7000UpdateExample' do |context_name|
 
   describe '#update' do
     it 'adding and removing uplink set' do
-      item.retrieve!
-      eth.retrieve!
-
       uplink.add_network(eth)
       uplink.add_uplink(1, 'X1')
 
@@ -38,7 +34,7 @@ RSpec.shared_examples 'LIGC7000UpdateExample' do |context_name|
       expect(item['uri']).to be
       expect(item['uplinkSets']).to_not be_empty
 
-      item['uplinkSets'] = []
+      item['uplinkSets'].clear
       expect { item.update }.to_not raise_error
       expect(item['uri']).to be
       expect(item['uplinkSets']).to be_empty
