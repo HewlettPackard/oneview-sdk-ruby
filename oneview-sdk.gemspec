@@ -29,6 +29,8 @@ Gem::Specification.new do |spec|
   spec.executables   = all_files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.required_ruby_version = '>= 2.2'
+
   spec.add_runtime_dependency 'thor'
   spec.add_runtime_dependency 'highline'
   spec.add_runtime_dependency 'pry'

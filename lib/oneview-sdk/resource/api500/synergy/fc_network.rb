@@ -10,6 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api300/synergy/fc_network'
+require_relative 'scope'
 
 module OneviewSDK
   module API500
