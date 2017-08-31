@@ -10,6 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api300/c7000/fc_network'
+require_relative 'scope'
 
 module OneviewSDK
   module API500

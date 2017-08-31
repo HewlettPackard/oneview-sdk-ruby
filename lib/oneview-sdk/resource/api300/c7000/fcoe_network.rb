@@ -10,6 +10,7 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api200/fcoe_network'
+require_relative 'scope'
 
 module OneviewSDK
   module API300
