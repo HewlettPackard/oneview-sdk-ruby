@@ -1,3 +1,8 @@
+## v5.0.3
+
+#### Bug fixes & Enhancements
+- [#266](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/266) cannot require oneview-sdk because the code is using non-require'd code #2
+
 ## v5.0.2
 
 #### Bug fixes & Enhancements
