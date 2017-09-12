@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/storage_system'
+require_relative '../../api500/c7000/storage_system'
 
 module OneviewSDK
   module API500
