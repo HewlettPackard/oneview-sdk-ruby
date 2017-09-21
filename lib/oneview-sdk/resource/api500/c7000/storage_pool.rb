@@ -17,6 +17,7 @@ module OneviewSDK
       # Storage pool resource implementation for API500 C7000
       class StoragePool < OneviewSDK::API500::C7000::Resource
         BASE_URI = '/rest/storage-pools'.freeze
+        UNIQUE_IDENTIFIERS = %w(uri).freeze
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -44,15 +45,13 @@ module OneviewSDK
         # @note Name or URI must be specified inside the resource
         # @return [Boolean] Whether or not retrieve was successful
         def retrieve!
-          raise IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
-          if @data['name'] && @data['storageSystemUri']
-            results = self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri'])
-            if results.size == 1
-              set_all(results[0].data)
-              return true
-            end
+          return super if @data['uri']
+          results = self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri'])
+          if results.size == 1
+            set_all(results[0].data)
+            return true
           end
-          super
+          false
         end
 
         # Check if a resource exists

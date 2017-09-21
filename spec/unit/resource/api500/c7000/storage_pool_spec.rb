@@ -24,6 +24,10 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
     expect(described_class::BASE_URI).to eq('/rest/storage-pools')
   end
 
+  it 'should have only uri into UNIQUE_IDENTIFIERS' do
+    expect(described_class::UNIQUE_IDENTIFIERS).to eq(['uri'])
+  end
+
   it '#create' do
     expect { target.create }.to raise_error(OneviewSDK::MethodUnavailable)
   end
@@ -90,15 +94,24 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
   end
 
   describe '#retrieve!' do
-    it 'should call super method if storageSystemUri is not set' do
-      target['name'] = 'StoragePool'
-      target['uri'] = '/fake/1'
-      expect(described_class).to receive(:find_by).with(@client_500, { 'name' => 'StoragePool' }, anything, anything).and_return([])
-      expect(described_class).to receive(:find_by).with(@client_500, { 'uri' => '/fake/1' }, anything, anything).and_return([])
-      target.retrieve!
+    context 'should call super method' do
+      before do
+        target['uri'] = '/fake/1'
+        expect(described_class).to receive(:find_by).with(@client_500, { 'uri' => '/fake/1' }, anything, anything).and_return([])
+      end
+
+      it 'when name is set but storageSystemUri is not set' do
+        target['name'] = 'StoragePool'
+        target.retrieve!
+      end
+
+      it 'when storageSystemUri is set but name is not set' do
+        target['storageSystemUri'] = '/fake/storage-system/1'
+        target.retrieve!
+      end
     end
 
-    it 'should find_by name and storageSystemUri when possible' do
+    it 'should find_by name and storageSystemUri when uri is not set' do
       target['name'] = 'StoragePool'
       target['storageSystemUri'] = '/storage-system/1'
       expect(described_class).to receive(:find_by)
