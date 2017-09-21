@@ -40,6 +40,29 @@ module OneviewSDK
           unavailable_method
         end
 
+        # Retrieve resource details based on this resource's name or URI.
+        # @note Name or URI must be specified inside the resource
+        # @return [Boolean] Whether or not retrieve was successful
+        def retrieve!
+          raise IncompleteResource, 'Must set resource name or uri before trying to retrieve!' unless @data['name'] || @data['uri']
+          if @data['name'] && @data['storageSystemUri']
+            results = self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri'])
+            if results.size == 1
+              set_all(results[0].data)
+              return true
+            end
+          end
+          super
+        end
+
+        # Check if a resource exists
+        # @note name or uri must be specified inside resource
+        # @return [Boolean] Whether or not resource exists
+        def exists?
+          temp = self.class.new(@client, data)
+          temp.retrieve!
+        end
+
         # Gets the storage pools that are connected on the specified networks based on the storage system port's expected network connectivity.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Array<Resource>] networks The list of networks with URI to be used as a filter
