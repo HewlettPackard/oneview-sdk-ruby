@@ -1,3 +1,8 @@
+## v5.0.4 (Unreleased)
+
+#### Bug fixes & Enhancements
+- [#269](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/269) The StoragePool of API500 can't be retrieved using retrieve! method by name and storageSystemUri
+
 ## v5.0.3
 
 #### Bug fixes & Enhancements

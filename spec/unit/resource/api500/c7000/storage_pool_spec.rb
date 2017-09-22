@@ -24,6 +24,10 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
     expect(described_class::BASE_URI).to eq('/rest/storage-pools')
   end
 
+  it 'should have only uri into UNIQUE_IDENTIFIERS' do
+    expect(described_class::UNIQUE_IDENTIFIERS).to eq(['uri'])
+  end
+
   it '#create' do
     expect { target.create }.to raise_error(OneviewSDK::MethodUnavailable)
   end
@@ -86,6 +90,40 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
       expect(target['requestingRefresh']).not_to be
       target.request_refresh
       expect(target['requestingRefresh']).to eq(true)
+    end
+  end
+
+  describe '#retrieve!' do
+    it 'should call super method when uri is set' do
+      target['uri'] = '/fake/1'
+      target['name'] = 'StoragePool'
+      target['storageSystemUri'] = '/fake/storage-system/1'
+      expect(described_class).to receive(:find_by).with(@client_500, { 'uri' => '/fake/1' }, anything, anything).and_return([])
+      target.retrieve!
+    end
+
+    it 'should find_by name and storageSystemUri when uri is not set' do
+      target['name'] = 'StoragePool'
+      target['storageSystemUri'] = '/storage-system/1'
+      expect(described_class).to receive(:find_by)
+        .with(@client_500, name: 'StoragePool', storageSystemUri: '/storage-system/1')
+        .and_return([described_class.new(@client_500, name: 'StoragePool')])
+      expect(described_class).not_to receive(:find_by).with(@client_500, { 'name' => 'StoragePool' }, anything, anything)
+      expect(described_class).not_to receive(:find_by).with(@client_500, { 'uri' => '/fake/1' }, anything, anything)
+      expect(target.retrieve!).to eq(true)
+    end
+
+    it 'throw error when name and storageSystemUri, or uri, are not set' do
+      expect { target.retrieve! } .to raise_error(OneviewSDK::IncompleteResource, /Must set resource name and storageSystemUri, or uri, before/)
+    end
+  end
+
+  describe '#exists?' do
+    it 'should call retrieve! method with copy of current resource' do
+      target['uri'] = 'fake/1'
+      expect_any_instance_of(described_class).to receive(:retrieve!)
+      expect(target).not_to receive(:retrieve!)
+      target.exists?
     end
   end
 end

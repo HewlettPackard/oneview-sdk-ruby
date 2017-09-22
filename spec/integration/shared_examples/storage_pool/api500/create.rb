@@ -45,4 +45,35 @@ RSpec.shared_examples 'StoragePoolCreateExample API500' do
       expect(described_class.reachable($client_500, [fc_network])).to be_empty
     end
   end
+
+  describe '#retrieve!' do
+    it 'should retrieve the storage_pool created by name and storageSystemUri' do
+      item_created = described_class.find_by($client_500, name: STORAGE_POOL_NAME).first
+      item_found = described_class.new($client_500, name: item_created['name'], storageSystemUri: item_created['storageSystemUri'])
+      expect(item_found.retrieve!).to eq(true)
+      expect(item_found['uri']).to eq(item_created['uri'])
+
+      item_found = described_class.new($client_500, name: 'Some wrong name', storageSystemUri: item_created['storageSystemUri'])
+      expect(item_found.retrieve!).to eq(false)
+      expect(item_found['uri']).not_to be
+
+      item_found = described_class.new($client_500, name: item_created['name'], storageSystemUri: '/other-uri/1')
+      expect(item_found.retrieve!).to eq(false)
+      expect(item_found['uri']).not_to be
+    end
+  end
+
+  describe '#exists?' do
+    it 'should verify if exists the storage_pool created by name and storageSystemUri' do
+      item_created = described_class.find_by($client_500, name: STORAGE_POOL_NAME).first
+      item_found = described_class.new($client_500, name: item_created['name'], storageSystemUri: item_created['storageSystemUri'])
+      expect(item_found.exists?).to eq(true)
+
+      item_found = described_class.new($client_500, name: 'Some wrong name', storageSystemUri: item_created['storageSystemUri'])
+      expect(item_found.exists?).to eq(false)
+
+      item_found = described_class.new($client_500, name: item_created['name'], storageSystemUri: '/other-uri/1')
+      expect(item_found.exists?).to eq(false)
+    end
+  end
 end

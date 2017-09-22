@@ -17,6 +17,7 @@ module OneviewSDK
       # Storage pool resource implementation for API500 C7000
       class StoragePool < OneviewSDK::API500::C7000::Resource
         BASE_URI = '/rest/storage-pools'.freeze
+        UNIQUE_IDENTIFIERS = %w(uri).freeze
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -38,6 +39,30 @@ module OneviewSDK
         # @raise [OneviewSDK::MethodUnavailable] method is not available
         def delete(*)
           unavailable_method
+        end
+
+        # Retrieve resource details based on this resource's name or URI.
+        # @note Name or URI must be specified inside the resource
+        # @return [Boolean] Whether or not retrieve was successful
+        def retrieve!
+          return super if @data['uri']
+          unless @data['name'] && @data['storageSystemUri']
+            raise IncompleteResource, 'Must set resource name and storageSystemUri, or uri, before trying to retrieve!'
+          end
+          results = self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri'])
+          if results.size == 1
+            set_all(results[0].data)
+            return true
+          end
+          false
+        end
+
+        # Check if a resource exists
+        # @note name or uri must be specified inside resource
+        # @return [Boolean] Whether or not resource exists
+        def exists?
+          temp = self.class.new(@client, data)
+          temp.retrieve!
         end
 
         # Gets the storage pools that are connected on the specified networks based on the storage system port's expected network connectivity.
