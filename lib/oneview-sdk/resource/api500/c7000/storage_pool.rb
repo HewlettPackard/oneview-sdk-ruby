@@ -46,6 +46,9 @@ module OneviewSDK
         # @return [Boolean] Whether or not retrieve was successful
         def retrieve!
           return super if @data['uri']
+          unless @data['name'] && @data['storageSystemUri']
+            raise IncompleteResource, 'Must set resource name and storageSystemUri, or uri, before trying to retrieve!'
+          end
           results = self.class.find_by(@client, name: @data['name'], storageSystemUri: @data['storageSystemUri'])
           if results.size == 1
             set_all(results[0].data)

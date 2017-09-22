@@ -94,21 +94,12 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
   end
 
   describe '#retrieve!' do
-    context 'should call super method' do
-      before do
-        target['uri'] = '/fake/1'
-        expect(described_class).to receive(:find_by).with(@client_500, { 'uri' => '/fake/1' }, anything, anything).and_return([])
-      end
-
-      it 'when name is set but storageSystemUri is not set' do
-        target['name'] = 'StoragePool'
-        target.retrieve!
-      end
-
-      it 'when storageSystemUri is set but name is not set' do
-        target['storageSystemUri'] = '/fake/storage-system/1'
-        target.retrieve!
-      end
+    it 'should call super method when uri is set' do
+      target['uri'] = '/fake/1'
+      target['name'] = 'StoragePool'
+      target['storageSystemUri'] = '/fake/storage-system/1'
+      expect(described_class).to receive(:find_by).with(@client_500, { 'uri' => '/fake/1' }, anything, anything).and_return([])
+      target.retrieve!
     end
 
     it 'should find_by name and storageSystemUri when uri is not set' do
@@ -120,6 +111,10 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
       expect(described_class).not_to receive(:find_by).with(@client_500, { 'name' => 'StoragePool' }, anything, anything)
       expect(described_class).not_to receive(:find_by).with(@client_500, { 'uri' => '/fake/1' }, anything, anything)
       expect(target.retrieve!).to eq(true)
+    end
+
+    it 'throw error when name and storageSystemUri, or uri, are not set' do
+      expect { target.retrieve! } .to raise_error(OneviewSDK::IncompleteResource, /Must set resource name and storageSystemUri, or uri, before/)
     end
   end
 
