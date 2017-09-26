@@ -265,4 +265,62 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       expect(instance_item.send(:get_volume_template_uri, parameters)).to eq('/rest/template/2')
     end
   end
+
+  describe '#retrieve!' do
+    let(:item_found) { [described_class.new(@client_500, name: 'volume 1', uri: '/rest/fake')] }
+
+    it 'should call super method when properties is not set' do
+      item = described_class.new(@client_500, name: 'volume 1')
+      expect(described_class).to receive(:find_by).with(@client_500, { 'name' => 'volume 1' }, anything, anything).and_return([])
+      expect(item.retrieve!).to eq(false)
+    end
+
+    it 'should find by name when properties is set' do
+      item = described_class.new(@client_500, properties: { name: 'volume 1' })
+      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return([])
+      expect(item.retrieve!).to eq(false)
+      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return(item_found)
+      expect(item.retrieve!).to eq(true)
+      expect(item['name']).to eq(item_found.first['name'])
+      expect(item['uri']).to eq(item_found.first['uri'])
+    end
+
+    it 'raises an exception when uri or name and property is not set' do
+      item = described_class.new(@client_500, {})
+      expect { item.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri before/)
+    end
+
+    it 'raises an exception name is not set and property is set' do
+      item = described_class.new(@client_500, properties: {})
+      expect { item.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name within the properties before/)
+    end
+  end
+
+  describe '#exists?' do
+    let(:item_found) { [described_class.new(@client_500, name: 'volume 1', uri: '/rest/fake')] }
+
+    it 'should call super method when properties is not set' do
+      item = described_class.new(@client_500, name: 'volume 1')
+      expect(described_class).to receive(:find_by).with(@client_500, { 'name' => 'volume 1' }, anything, anything).and_return([])
+      expect(item.exists?).to eq(false)
+    end
+
+    it 'should find by name when properties is set' do
+      item = described_class.new(@client_500, properties: { name: 'volume 1' })
+      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return([])
+      expect(item.exists?).to eq(false)
+      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return(item_found)
+      expect(item.exists?).to eq(true)
+    end
+
+    it 'raises an exception when uri or name and property is not set' do
+      item = described_class.new(@client_500, {})
+      expect { item.exists? } .to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri before/)
+    end
+
+    it 'raises an exception name is not set and property is set' do
+      item = described_class.new(@client_500, properties: {})
+      expect { item.exists? } .to raise_error(OneviewSDK::IncompleteResource, /Must set resource name within the properties before/)
+    end
+  end
 end

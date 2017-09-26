@@ -1,3 +1,8 @@
+## v5.0.5(unreleased)
+
+#### Bug fixes & Enhancements
+- [#273](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/273) Find a volume using the retrieve! and exists? methods on the API500 before a post
+
 ## v5.0.4
 
 #### Bug fixes & Enhancements
