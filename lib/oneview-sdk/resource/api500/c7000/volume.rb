@@ -132,12 +132,10 @@ module OneviewSDK
         # @return [Boolean] Whether or not retrieve was successful
         def retrieve!
           return super unless @data['properties']
-          results = find
-          if results.size == 1
-            set_all(results.first.data)
-            return true
-          end
-          false
+          results = find_by_name_in_properties
+          return false unless results.size == 1
+          set_all(results.first.data)
+          true
         end
 
         # Check if a resource exists
@@ -145,9 +143,7 @@ module OneviewSDK
         # @return [Boolean] Whether or not resource exists
         def exists?
           return super unless @data['properties']
-          results = find
-          return true if results.size == 1
-          false
+          find_by_name_in_properties.size == 1
         end
 
         private
@@ -178,10 +174,10 @@ module OneviewSDK
         # Gets the volume
         # @raise [OneviewSDK::IncompleteResource] if the name parameter is not set
         # @return [Array] the array of volumes
-        def find
-          @data['properties'] = Hash[@data['properties'].map { |k, v| [k.to_s, v] }]
-          raise IncompleteResource, 'Must set resource name within the properties before trying to retrieve!' unless @data['properties']['name']
-          self.class.find_by(@client, 'name' => @data['properties']['name'])
+        def find_by_name_in_properties
+          name = @data['properties']['name'] || @data['properties'][:name]
+          raise IncompleteResource, 'Must set resource name within the properties before trying to retrieve!' unless name
+          self.class.find_by(@client, 'name' => name)
         end
       end
     end
