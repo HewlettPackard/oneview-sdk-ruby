@@ -127,6 +127,25 @@ module OneviewSDK
           new(client, client.response_handler(response))
         end
 
+        # Retrieve resource details based on this resource's name or URI.
+        # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
+        # @return [Boolean] Whether or not retrieve was successful
+        def retrieve!
+          return super unless @data['properties']
+          results = find_by_name_in_properties
+          return false unless results.size == 1
+          set_all(results.first.data)
+          true
+        end
+
+        # Check if a resource exists
+        # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
+        # @return [Boolean] Whether or not resource exists
+        def exists?
+          return super unless @data['properties']
+          find_by_name_in_properties.size == 1
+        end
+
         private
 
         # Gets the storage volume template URI
@@ -150,6 +169,15 @@ module OneviewSDK
         # @return [Hash] snapshot data
         def generate_snapshot_data(name, description = nil)
           { description: description, name: name }
+        end
+
+        # Gets the volume
+        # @raise [OneviewSDK::IncompleteResource] if the name parameter is not set
+        # @return [Array] the array of volumes
+        def find_by_name_in_properties
+          name = @data['properties']['name'] || @data['properties'][:name]
+          raise IncompleteResource, 'Must set resource name within the properties before trying to retrieve!' unless name
+          self.class.find_by(@client, 'name' => name)
         end
       end
     end

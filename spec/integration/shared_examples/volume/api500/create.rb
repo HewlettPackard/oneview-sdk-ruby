@@ -206,4 +206,52 @@ RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
       expect(item['properties']['snapshotPool']).to eq(storage_pool['uri'])
     end
   end
+
+  describe '#retrieve!' do
+    it 'should call super method when properties is not set' do
+      item = described_class.new(current_client, name: VOLUME_NAME)
+      expect(item.retrieve!).to eq(true)
+    end
+
+    it 'should find by name when properties is set' do
+      item = described_class.new(current_client, properties: { name: 'volume 1' })
+      expect(item.retrieve!).to eq(false)
+      item = described_class.new(current_client, properties: { name: VOLUME_NAME })
+      expect(item.retrieve!).to eq(true)
+    end
+
+    it 'raises an exception when uri or name and property is not set' do
+      item = described_class.new(current_client, {})
+      expect { item.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri before/)
+    end
+
+    it 'raises an exception name is not set and property is set' do
+      item = described_class.new(current_client, properties: {})
+      expect { item.retrieve! }.to raise_error(OneviewSDK::IncompleteResource, /Must set resource name within the properties before/)
+    end
+  end
+
+  describe '#exists?' do
+    it 'should call super method when properties is not set' do
+      item = described_class.new(current_client, name: VOLUME_NAME)
+      expect(item.exists?).to eq(true)
+    end
+
+    it 'should find by name when properties is set' do
+      item = described_class.new(current_client, properties: { name: 'volume 1' })
+      expect(item.exists?).to eq(false)
+      item = described_class.new(current_client, properties: { name: VOLUME_NAME })
+      expect(item.exists?).to eq(true)
+    end
+
+    it 'raises an exception when uri or name and property is not set' do
+      item = described_class.new(current_client, {})
+      expect { item.exists? } .to raise_error(OneviewSDK::IncompleteResource, /Must set resource name or uri before/)
+    end
+
+    it 'raises an exception name is not set and property is set' do
+      item = described_class.new(current_client, properties: {})
+      expect { item.exists? } .to raise_error(OneviewSDK::IncompleteResource, /Must set resource name within the properties before/)
+    end
+  end
 end
