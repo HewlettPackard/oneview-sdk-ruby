@@ -1,4 +1,4 @@
-## v5.0.5(unreleased)
+## v5.0.5
 
 #### Bug fixes & Enhancements
 - [#273](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/273) 'retrieve!' and 'exists?' methods return false for existing Volumes on API500
