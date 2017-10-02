@@ -158,9 +158,19 @@ RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
   end
 
   describe '#add' do
-    it 'raises an exception when storage system not found' do
-      storage = storage_system_class.new(current_client, name: 'Any')
-      expect { described_class.add(current_client, storage, 'any') }.to raise_error(/Storage system not found/)
+    it 'raises an exception when deviceVolumeName is missing' do
+      item = described_class.new(current_client, storageSystemUri: '/rest/storage-system/1', isShareable: false)
+      expect { item.add }.to raise_error(/Missing required attribute: 'deviceVolumeName'/)
+    end
+
+    it 'raises an exception when storageSystemUri is missing' do
+      item = described_class.new(current_client, deviceVolumeName: 'Anything', isShareable: false)
+      expect { item.add }.to raise_error(/Missing required attribute: 'storageSystemUri'/)
+    end
+
+    it 'raises an exception when isShareable is missing' do
+      item = described_class.new(current_client, deviceVolumeName: 'Anything', storageSystemUri: '/rest/storage-system/1')
+      expect { item.add }.to raise_error(/Missing required attribute: 'isShareable'/)
     end
 
     it 'adding a volume' do
@@ -171,12 +181,16 @@ RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
       device_volume = item['deviceVolumeName']
       expect { item.delete(:oneview) }.to_not raise_error
 
-      volume = nil
       options = {
-        'name' => VOLUME5_NAME,
-        'description' => 'adding a volume'
+        name: VOLUME5_NAME,
+        description: 'Volume added',
+        deviceVolumeName: device_volume,
+        isShareable: false,
+        storageSystemUri: storage_system['uri']
       }
-      expect { volume = described_class.add(current_client, storage_system, device_volume, false, options) }.to_not raise_error
+
+      volume = described_class.new(current_client, options)
+      expect { volume.add }.to_not raise_error
       expect(volume.retrieve!).to eq(true)
       expect(volume['name']).to eq(VOLUME5_NAME)
       expect(volume['isShareable']).to eq(false)
