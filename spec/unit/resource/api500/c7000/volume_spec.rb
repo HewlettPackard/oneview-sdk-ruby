@@ -171,49 +171,74 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
     end
   end
 
-  describe '#self.add' do
+  describe '#add' do
     before :each do
       @storage_system_class = OneviewSDK::API500::C7000::StorageSystem
       @storage_system = @storage_system_class.new(@client_500, uri: '/rest/storage-system/fake')
+      @device_volume_name = 'External Volume'
     end
 
-    it 'raises an exception when storage system not found' do
-      allow_any_instance_of(@storage_system_class).to receive(:retrieve!).and_return(false)
-      expect { described_class.add(@client_500, @storage_system, 'volume') }.to raise_error(/Storage system not found/)
+    it 'raises an exception when deviceVolumeName is missing' do
+      item = described_class.new(@client_500, storageSystemUri: '/rest/storage-system/1', isShareable: false)
+      expect { item.add }.to raise_error(/Missing required attribute: 'deviceVolumeName'/)
+    end
+
+    it 'raises an exception when storageSystemUri is missing' do
+      item = described_class.new(@client_500, deviceVolumeName: 'Anything', isShareable: false)
+      expect { item.add }.to raise_error(/Missing required attribute: 'storageSystemUri'/)
+    end
+
+    it 'raises an exception when isShareable is missing' do
+      item = described_class.new(@client_500, deviceVolumeName: 'Anything', storageSystemUri: '/rest/storage-system/1')
+      expect { item.add }.to raise_error(/Missing required attribute: 'isShareable'/)
+    end
+
+    it 'raises an exception when some attribute is missing and passed as symbol' do
+      item = described_class.new(@client_500, storageSystemUri: '/rest/storage-system/1', isShareable: false)
+      item.data = { storageSystemUri: '/rest/storage-system/1', isShareable: false }
+      expect { item.add }.to raise_error(/Missing required attribute: 'deviceVolumeName'/)
     end
 
     it 'adding a volume' do
-      allow_any_instance_of(@storage_system_class).to receive(:retrieve!).and_return(true)
       data = {
-        'storageSystemUri' => @storage_system['uri'],
-        'deviceVolumeName' => 'volume',
-        'isShareable' => false
+        'name' => 'Volume1',
+        'description' => 'Volume added',
+        'deviceVolumeName' => @device_volume_name,
+        'isShareable' => false,
+        'storageSystemUri' => @storage_system['uri']
       }
 
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
+      expect(@client_500).to receive(:rest_post)
         .with("#{described_class::BASE_URI}/from-existing", { 'body' => data }, 500).and_return(fake_response)
-      expect(@client_500).to receive(:response_handler).with(fake_response).and_return('uri' => '/rest/fake2')
-      volume = described_class.add(@client_500, @storage_system, 'volume')
-      expect(volume['uri']).to eq('/rest/fake2')
+      expect(@client_500).to receive(:response_handler).with(fake_response).and_return(data.merge('uri' => '/rest/fake2'))
+
+      item = described_class.new(@client_500, data)
+      expect { item.add }.to_not raise_error
+      expect(item['uri']).to eq('/rest/fake2')
+      expect(item['name']).to eq('Volume1')
+      expect(item['deviceVolumeName']).to eq(@device_volume_name)
+      expect(item['storageSystemUri']).to eq(@storage_system['uri'])
     end
 
-    it 'adding a volume with options' do
-      allow_any_instance_of(@storage_system_class).to receive(:retrieve!).and_return(true)
+    it 'adding a volume without name attribute' do
       data = {
-        'storageSystemUri' => @storage_system['uri'],
-        'deviceVolumeName' => 'volume',
+        'description' => 'Volume added',
+        'deviceVolumeName' => @device_volume_name,
         'isShareable' => false,
-        'name' => 'Volume1',
-        'description' => 'volume test'
+        'storageSystemUri' => @storage_system['uri']
       }
 
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
-        .with("#{described_class::BASE_URI}/from-existing", { 'body' => data }, 500).and_return(fake_response)
-      expect(@client_500).to receive(:response_handler).with(fake_response).and_return('uri' => '/rest/fake2')
+      expect(@client_500).to receive(:rest_post)
+        .with("#{described_class::BASE_URI}/from-existing", { 'body' => data.merge('name' => @device_volume_name) }, 500)
+        .and_return(fake_response)
+      expect(@client_500).to receive(:response_handler).with(fake_response).and_return(data.merge('uri' => '/rest/fake2'))
 
-      options = { 'name' => 'Volume1', 'description' => 'volume test' }
-      volume = described_class.add(@client_500, @storage_system, 'volume', false, options)
-      expect(volume['uri']).to eq('/rest/fake2')
+      item = described_class.new(@client_500, data)
+      expect { item.add }.to_not raise_error
+      expect(item['uri']).to eq('/rest/fake2')
+      expect(item['name']).to eq(@device_volume_name)
+      expect(item['deviceVolumeName']).to eq(@device_volume_name)
+      expect(item['storageSystemUri']).to eq(@storage_system['uri'])
     end
   end
 

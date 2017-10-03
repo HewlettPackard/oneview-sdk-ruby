@@ -122,11 +122,15 @@ puts "\nVolume removed successfully!"
 puts "\nAdding a unmanaged volume..."
 
 options5 = {
-  'name' => 'ONEVIEW_SDK_TEST_VOLUME_5',
-  'description' => 'adding a volume'
+  name: 'ONEVIEW_SDK_TEST_VOLUME_5',
+  description: 'Volume added',
+  deviceVolumeName: device_volume,
+  isShareable: false,
+  storageSystemUri: storage_system['uri']
 }
 
-item5 = volume_class.add(@client, storage_system, device_volume, false, options5)
+item5 = volume_class.new(@client, options5)
+item5.add
 puts "\nVolume added successfully! \nName: #{item5['name']} \nURI: #{item5['uri']}"
 
 puts "\nCreating a volume from Storage Virtual..."
