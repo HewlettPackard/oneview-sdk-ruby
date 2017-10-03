@@ -116,7 +116,7 @@ module OneviewSDK
         def add
           ensure_client
           required_attributes = %w(deviceVolumeName isShareable storageSystemUri)
-          required_attributes.each { |k| raise IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) }
+          required_attributes.each { |k| raise IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) || @data.key?(k.to_sym) }
           @data['name'] ||= @data['deviceVolumeName']
           response = @client.rest_post("#{BASE_URI}/from-existing", { 'body' => @data }, @api_version)
           set_all(client.response_handler(response))

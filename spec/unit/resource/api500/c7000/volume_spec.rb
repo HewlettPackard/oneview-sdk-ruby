@@ -193,6 +193,12 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       expect { item.add }.to raise_error(/Missing required attribute: 'isShareable'/)
     end
 
+    it 'raises an exception when some attribute is missing and passed as symbol' do
+      item = described_class.new(@client_500, storageSystemUri: '/rest/storage-system/1', isShareable: false)
+      item.data = { storageSystemUri: '/rest/storage-system/1', isShareable: false }
+      expect { item.add }.to raise_error(/Missing required attribute: 'deviceVolumeName'/)
+    end
+
     it 'adding a volume' do
       data = {
         'name' => 'Volume1',
