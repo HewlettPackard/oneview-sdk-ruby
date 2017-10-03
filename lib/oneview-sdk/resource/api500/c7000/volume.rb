@@ -111,6 +111,25 @@ module OneviewSDK
 
         # Initiates a process to import a volume (created external to OneView) for management by the appliance.
         # @note Volumes can be added only on the storage system and storage pools managed by the appliance.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance.
+        # @param [OneviewSDK::StorageSystem] storage_system The storage system in which the volume exists to be managed.
+        # @param [String] volume_name The name of the volume on the actual storage system.
+        # @param [Boolean] is_shareable Describes if the volume is shareable or private.
+        # @param [Hash] options The options to create a volume.
+        # @option options [String] :name The name for new volume.
+        # @option options [String] :description The description for new volume.
+        # @raise [OneviewSDK::IncompleteResource] if storage system is not found
+        # @return [OneviewSDK::Volume] The volume imported.
+        # @deprecated Use {#add} instead.
+        def self.add(client, storage_system, volume_name, is_shareable = false, options = {})
+          raise IncompleteResource, 'Storage system not found!' unless storage_system.retrieve!
+          data = options.merge('storageSystemUri' => storage_system['uri'], 'deviceVolumeName' => volume_name, 'isShareable' => is_shareable)
+          response = client.rest_post("#{BASE_URI}/from-existing", { 'body' => data }, client.api_version)
+          new(client, client.response_handler(response))
+        end
+
+        # Initiates a process to import a volume (created external to OneView) for management by the appliance.
+        # @note Volumes can be added only on the storage system and storage pools managed by the appliance.
         # @raise [OneviewSDK::IncompleteResource] if the client is not set or required attributes are missing
         # @return [OneviewSDK::Volume] The volume imported.
         def add

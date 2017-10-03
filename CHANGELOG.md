@@ -1,7 +1,8 @@
-# v6.0.0
+# v5.1.0
 
-#### Breaking changes:
-- [#275](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/275) Method 'add' in Volume API 500 expects different arguments from usual 'add' implementations
+#### Bug fixes & Enhancements
+1. The method `self.add` in the Volumes API 500 was deprecated, use the `add` method instead.
+  - [#275](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/275) Method 'add' in Volume API 500 expects different arguments from usual 'add' implementations
 
 ## v5.0.5
 
