@@ -1,4 +1,4 @@
-# v6.0.0(unreleased)
+# v6.0.0
 
 #### Breaking changes:
 - [#275](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/275) Method 'add' in Volume API 500 expects different arguments from usual 'add' implementations
