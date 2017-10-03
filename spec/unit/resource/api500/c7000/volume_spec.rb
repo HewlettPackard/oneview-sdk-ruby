@@ -87,18 +87,30 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
   end
 
   describe '#set_storage_pool' do
-    it 'sets the storagePool attribute' do
-      item = described_class.new(@client_500)
+    it 'sets the storagePool attribute in properties' do
+      item = described_class.new(@client_500, properties: {})
       item.set_storage_pool(OneviewSDK::StoragePool.new(@client_500, uri: '/rest/fake'))
       expect(item['properties']['storagePool']).to eq('/rest/fake')
+    end
+
+    it 'sets the storagePoolUri attribute' do
+      item = described_class.new(@client_500)
+      item.set_storage_pool(OneviewSDK::StoragePool.new(@client_500, uri: '/rest/fake'))
+      expect(item['storagePoolUri']).to eq('/rest/fake')
     end
   end
 
   describe '#set_snapshot_pool' do
-    it 'sets the snapshotPool attribute' do
-      item = described_class.new(@client_500)
+    it 'sets the snapshotPool attribute in properties' do
+      item = described_class.new(@client_500, properties: {})
       item.set_snapshot_pool(OneviewSDK::StoragePool.new(@client_500, uri: '/rest/fake'))
       expect(item['properties']['snapshotPool']).to eq('/rest/fake')
+    end
+
+    it 'sets the snapshotPoolUri attribute' do
+      item = described_class.new(@client_500)
+      item.set_snapshot_pool(OneviewSDK::StoragePool.new(@client_500, uri: '/rest/fake'))
+      expect(item['snapshotPoolUri']).to eq('/rest/fake')
     end
   end
 

@@ -112,10 +112,16 @@ RSpec.shared_examples 'VolumeCreateExample' do |context_name|
   end
 
   describe '#set_storage_pool' do
+    it 'set_storage_pool in provisioningParameters' do
+      item = described_class.new(current_client, name: VOLUME_NAME, provisioningParameters: {})
+      item.set_storage_pool(storage_pool)
+      expect(item['provisioningParameters']['storagePoolUri']).to eq(storage_pool['uri'])
+    end
+
     it 'set_storage_pool' do
       item = described_class.new(current_client, name: VOLUME_NAME)
       item.set_storage_pool(storage_pool)
-      expect(item['provisioningParameters']['storagePoolUri']).to eq(storage_pool['uri'])
+      expect(item['storagePoolUri']).to eq(storage_pool['uri'])
     end
   end
 

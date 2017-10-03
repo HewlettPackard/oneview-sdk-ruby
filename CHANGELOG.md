@@ -1,3 +1,8 @@
+## v5.1.1
+
+#### Bug fixes & Enhancements
+- [#279](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/279) Bug when setting the Storage Pool and Snapshot Pool when trying to make an update
+
 # v5.1.0
 
 #### Bug fixes & Enhancements

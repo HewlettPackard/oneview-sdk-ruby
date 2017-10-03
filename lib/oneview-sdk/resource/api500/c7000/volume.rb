@@ -62,16 +62,22 @@ module OneviewSDK
         # @param [OneviewSDK::StoragePool] storage_pool Storage pool.
         def set_storage_pool(storage_pool)
           assure_uri(storage_pool)
-          @data['properties'] ||= {}
-          @data['properties']['storagePool'] = storage_pool['uri']
+          if @data['properties']
+            @data['properties']['storagePool'] = storage_pool['uri']
+          else
+            @data['storagePoolUri'] = storage_pool['uri']
+          end
         end
 
         # Sets the snapshot pool to the volume
         # @param [OneviewSDK::StoragePool] storage_pool Storage Pool to use for snapshots.
         def set_snapshot_pool(storage_pool)
           assure_uri(storage_pool)
-          @data['properties'] ||= {}
-          @data['properties']['snapshotPool'] = storage_pool['uri']
+          if @data['properties']
+            @data['properties']['snapshotPool'] = storage_pool['uri']
+          else
+            @data['snapshotPoolUri'] = storage_pool['uri']
+          end
         end
 
         # Creates a new volume on the storage system from a snapshot of a volume.

@@ -70,9 +70,15 @@ RSpec.describe OneviewSDK::Volume do
     end
 
     describe '#set_storage_pool' do
-      it 'sets the storagePoolUri' do
+      it 'sets the storagePoolUri in provisioningParameters' do
+        @item['provisioningParameters'] = {}
         @item.set_storage_pool(OneviewSDK::StoragePool.new(@client_200, uri: '/rest/fake'))
         expect(@item['provisioningParameters']['storagePoolUri']).to eq('/rest/fake')
+      end
+
+      it 'sets the storagePoolUri' do
+        @item.set_storage_pool(OneviewSDK::StoragePool.new(@client_200, uri: '/rest/fake'))
+        expect(@item['storagePoolUri']).to eq('/rest/fake')
       end
     end
 
