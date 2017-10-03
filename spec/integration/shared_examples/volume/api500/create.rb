@@ -157,6 +157,33 @@ RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
     end
   end
 
+  describe '#self.add' do
+    it 'raises an exception when storage system not found' do
+      storage = storage_system_class.new(current_client, name: 'Any')
+      expect { described_class.add(current_client, storage, 'any') }.to raise_error(/Storage system not found/)
+    end
+
+    it 'adding a volume' do
+      item = described_class.new(current_client, properties: options_store_serv.merge(name: VOLUME5_NAME))
+      item.set_storage_pool(storage_pool)
+      item.set_snapshot_pool(storage_pool)
+      item.create
+      device_volume = item['deviceVolumeName']
+      expect { item.delete(:oneview) }.to_not raise_error
+
+      volume = nil
+      options = {
+        'name' => VOLUME5_NAME,
+        'description' => 'adding a volume'
+      }
+      expect { volume = described_class.add(current_client, storage_system, device_volume, false, options) }.to_not raise_error
+      expect(volume.retrieve!).to eq(true)
+      expect(volume['name']).to eq(VOLUME5_NAME)
+      expect(volume['isShareable']).to eq(false)
+      expect(volume['deviceVolumeName']).to eq(device_volume)
+    end
+  end
+
   describe '#add' do
     it 'raises an exception when deviceVolumeName is missing' do
       item = described_class.new(current_client, storageSystemUri: '/rest/storage-system/1', isShareable: false)
@@ -175,9 +202,7 @@ RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
 
     it 'adding a volume' do
       item = described_class.new(current_client, properties: options_store_serv.merge(name: VOLUME5_NAME))
-      item.set_storage_pool(storage_pool)
-      item.set_snapshot_pool(storage_pool)
-      item.create
+      expect(item.retrieve!).to eq(true)
       device_volume = item['deviceVolumeName']
       expect { item.delete(:oneview) }.to_not raise_error
 

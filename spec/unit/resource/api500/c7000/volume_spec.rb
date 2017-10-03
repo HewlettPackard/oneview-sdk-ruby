@@ -171,6 +171,52 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
     end
   end
 
+  describe '#self.add' do
+    before :each do
+      @storage_system_class = OneviewSDK::API500::C7000::StorageSystem
+      @storage_system = @storage_system_class.new(@client_500, uri: '/rest/storage-system/fake')
+    end
+
+    it 'raises an exception when storage system not found' do
+      allow_any_instance_of(@storage_system_class).to receive(:retrieve!).and_return(false)
+      expect { described_class.add(@client_500, @storage_system, 'volume') }.to raise_error(/Storage system not found/)
+    end
+
+    it 'adding a volume' do
+      allow_any_instance_of(@storage_system_class).to receive(:retrieve!).and_return(true)
+      data = {
+        'storageSystemUri' => @storage_system['uri'],
+        'deviceVolumeName' => 'volume',
+        'isShareable' => false
+      }
+
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
+        .with("#{described_class::BASE_URI}/from-existing", { 'body' => data }, 500).and_return(fake_response)
+      expect(@client_500).to receive(:response_handler).with(fake_response).and_return('uri' => '/rest/fake2')
+      volume = described_class.add(@client_500, @storage_system, 'volume')
+      expect(volume['uri']).to eq('/rest/fake2')
+    end
+
+    it 'adding a volume with options' do
+      allow_any_instance_of(@storage_system_class).to receive(:retrieve!).and_return(true)
+      data = {
+        'storageSystemUri' => @storage_system['uri'],
+        'deviceVolumeName' => 'volume',
+        'isShareable' => false,
+        'name' => 'Volume1',
+        'description' => 'volume test'
+      }
+
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post)
+        .with("#{described_class::BASE_URI}/from-existing", { 'body' => data }, 500).and_return(fake_response)
+      expect(@client_500).to receive(:response_handler).with(fake_response).and_return('uri' => '/rest/fake2')
+
+      options = { 'name' => 'Volume1', 'description' => 'volume test' }
+      volume = described_class.add(@client_500, @storage_system, 'volume', false, options)
+      expect(volume['uri']).to eq('/rest/fake2')
+    end
+  end
+
   describe '#add' do
     before :each do
       @storage_system_class = OneviewSDK::API500::C7000::StorageSystem
