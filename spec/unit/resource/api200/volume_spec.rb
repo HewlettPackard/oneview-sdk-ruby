@@ -76,9 +76,9 @@ RSpec.describe OneviewSDK::Volume do
         expect(@item['provisioningParameters']['storagePoolUri']).to eq('/rest/fake')
       end
 
-      it 'sets the storagePoolUri' do
+      it 'should not sets the storagePoolUri without provisioningParameters' do
         @item.set_storage_pool(OneviewSDK::StoragePool.new(@client_200, uri: '/rest/fake'))
-        expect(@item['storagePoolUri']).to eq('/rest/fake')
+        expect(@item['storagePoolUri']).to_not be
       end
     end
 

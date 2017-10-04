@@ -68,11 +68,7 @@ module OneviewSDK
       # @param [OneviewSDK::StoragePool] storage_pool Storage pool
       def set_storage_pool(storage_pool)
         assure_uri(storage_pool)
-        if self['provisioningParameters']
-          self['provisioningParameters']['storagePoolUri'] = storage_pool['uri']
-        else
-          self['storagePoolUri'] = storage_pool['uri']
-        end
+        self['provisioningParameters']['storagePoolUri'] = storage_pool['uri'] if self['provisioningParameters']
       end
 
       # Adds the storage volume template to the volume

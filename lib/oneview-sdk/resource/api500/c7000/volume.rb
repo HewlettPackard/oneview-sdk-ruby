@@ -62,11 +62,7 @@ module OneviewSDK
         # @param [OneviewSDK::StoragePool] storage_pool Storage pool.
         def set_storage_pool(storage_pool)
           assure_uri(storage_pool)
-          if @data['properties']
-            @data['properties']['storagePool'] = storage_pool['uri']
-          else
-            @data['storagePoolUri'] = storage_pool['uri']
-          end
+          @data['properties']['storagePool'] = storage_pool['uri'] if @data['properties']
         end
 
         # Sets the snapshot pool to the volume
@@ -76,7 +72,8 @@ module OneviewSDK
           if @data['properties']
             @data['properties']['snapshotPool'] = storage_pool['uri']
           else
-            @data['snapshotPoolUri'] = storage_pool['uri']
+            @data['deviceSpecificAttributes'] ||= {}
+            @data['deviceSpecificAttributes']['snapshotPoolUri'] = storage_pool['uri']
           end
         end
 

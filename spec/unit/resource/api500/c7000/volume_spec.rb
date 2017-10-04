@@ -93,10 +93,10 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
       expect(item['properties']['storagePool']).to eq('/rest/fake')
     end
 
-    it 'sets the storagePoolUri attribute' do
+    it 'should not sets the storagePoolUri without properties' do
       item = described_class.new(@client_500)
       item.set_storage_pool(OneviewSDK::StoragePool.new(@client_500, uri: '/rest/fake'))
-      expect(item['storagePoolUri']).to eq('/rest/fake')
+      expect(item['storagePoolUri']).to_not be
     end
   end
 
@@ -108,9 +108,9 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
     end
 
     it 'sets the snapshotPoolUri attribute' do
-      item = described_class.new(@client_500)
+      item = described_class.new(@client_500, deviceSpecificAttributes: {})
       item.set_snapshot_pool(OneviewSDK::StoragePool.new(@client_500, uri: '/rest/fake'))
-      expect(item['snapshotPoolUri']).to eq('/rest/fake')
+      expect(item['deviceSpecificAttributes']['snapshotPoolUri']).to eq('/rest/fake')
     end
   end
 
@@ -322,11 +322,10 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
   end
 
   describe '#get_volume_template_uri' do
-    let(:instance_item) { described_class.new(@client_500) }
+    let(:instance_item) { described_class.new(@client_500, storagePoolUri: '/storage-pools/1') }
 
     before do
       storage_pool = OneviewSDK::API500::C7000::StoragePool.new(@client_500, storageSystemUri: '/storage-systems/1', uri: '/storage-pools/1')
-      instance_item.set_storage_pool(storage_pool)
       expect(storage_pool).to receive(:retrieve!).and_return(true)
       expect(OneviewSDK::API500::C7000::StoragePool).to receive(:new).and_return(storage_pool)
       storage_system = OneviewSDK::API500::C7000::StorageSystem.new(@client_500)
