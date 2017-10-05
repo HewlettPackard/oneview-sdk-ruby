@@ -231,30 +231,24 @@ RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
   end
 
   describe '#set_storage_pool' do
-    it 'set_storage_pool in properties' do
-      item = described_class.new(current_client, name: VOLUME_NAME, properties: {})
-      item.set_storage_pool(storage_pool)
-      expect(item['properties']['storagePool']).to eq(storage_pool['uri'])
-    end
-
     it 'set_storage_pool' do
       item = described_class.new(current_client, name: VOLUME_NAME)
       item.set_storage_pool(storage_pool)
-      expect(item['storagePoolUri']).to eq(storage_pool['uri'])
+      expect(item['properties']['storagePool']).to eq(storage_pool['uri'])
     end
   end
 
   describe '#set_snapshot_pool' do
     it 'set_snapshot_pool in properties' do
-      item = described_class.new(current_client, name: VOLUME_NAME, properties: {})
+      item = described_class.new(current_client, name: VOLUME_NAME)
       item.set_snapshot_pool(storage_pool)
       expect(item['properties']['snapshotPool']).to eq(storage_pool['uri'])
     end
 
     it 'set_snapshot_pool' do
-      item = described_class.new(current_client, name: VOLUME_NAME)
+      item = described_class.get_all(current_client).first
       item.set_snapshot_pool(storage_pool)
-      expect(item['snapshotPoolUri']).to eq(storage_pool['uri'])
+      expect(item['deviceSpecificAttributes']['snapshotPoolUri']).to eq(storage_pool['uri'])
     end
   end
 

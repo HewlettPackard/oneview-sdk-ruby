@@ -12,21 +12,21 @@
 RSpec.shared_examples 'VolumeSnapshotPoolUpdateExample' do |context_name|
   include_context context_name
 
-  let(:item) { described_class.find_by(current_client, name: VOLUME2_NAME).first }
-
   describe '#update snapshot pool' do
     it 'updating the snapshot pool' do
-      old_snapshot_pool = resource_class_of('StoragePool').find_by(current_client, uri: item['snapshotPoolUri']).first
-      new_snapshot_pool = resource_class_of('StoragePool').get_all(current_client).first
-      item.set_snapshot_pool(new_snapshot_pool)
-      item.update
-      item.retrieve!
-      expect(item['snapshotPoolUri']).to eq(new_snapshot_pool['uri'])
+      volume = described_class.find_by(current_client, name: VOLUME4_NAME).first
+      storage_pools = resource_class_of('StoragePool').find_by(current_client, storageSystemUri: volume['storageSystemUri'])
+      old_snapshot_pool = resource_class_of('StoragePool').find_by(current_client, uri: volume['snapshotPoolUri']).first
+      new_snapshot_pool = storage_pools.select { |pool| pool['uri'] != old_snapshot_pool['uri'] }.first
+      volume.set_snapshot_pool(new_snapshot_pool)
+      volume.update
+      volume.retrieve!
+      expect(volume['snapshotPoolUri']).to eq(new_snapshot_pool['uri'])
       # Returning to original snapshot pool
-      item.set_snapshot_pool(old_snapshot_pool)
-      item.update
-      item.retrieve!
-      expect(item['snapshotPoolUri']).to eq(old_snapshot_pool['uri'])
+      volume.set_snapshot_pool(old_snapshot_pool)
+      volume.update
+      volume.retrieve!
+      expect(volume['snapshotPoolUri']).to eq(old_snapshot_pool['uri'])
     end
   end
 end

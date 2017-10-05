@@ -39,6 +39,14 @@ module OneviewSDK
         self
       end
 
+      # Update resource attributes
+      # @param [Hash] attributes attributes to be updated
+      # @return [OneviewSDK::Volume] self
+      def update(attributes = {})
+        @data.delete('provisioningParameters')
+        super
+      end
+
       # Deletes the resource from OneView or from Oneview and storage system
       # @param [Symbol] flag Delete storage system from Oneview only or in storage system as well
       # @return [true] if resource was deleted successfully
@@ -59,16 +67,19 @@ module OneviewSDK
 
       # Sets the storage system to the volume
       # @param [OneviewSDK::StorageSystem] storage_system Storage System
+      # @note The storageSystemUri attribute should not be set in the updated. Once created, this attribute is read only.
       def set_storage_system(storage_system)
         assure_uri(storage_system)
         set('storageSystemUri', storage_system['uri'])
       end
 
       # Sets the storage pool to the volume
+      # @note The storagePoolUri attribute should not be set in the updated. Once created, this attribute is read only.
       # @param [OneviewSDK::StoragePool] storage_pool Storage pool
       def set_storage_pool(storage_pool)
         assure_uri(storage_pool)
-        self['provisioningParameters']['storagePoolUri'] = storage_pool['uri'] if self['provisioningParameters']
+        self['provisioningParameters'] ||= {}
+        self['provisioningParameters']['storagePoolUri'] = storage_pool['uri']
       end
 
       # Adds the storage volume template to the volume

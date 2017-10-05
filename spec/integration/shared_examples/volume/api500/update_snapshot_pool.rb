@@ -12,22 +12,21 @@
 RSpec.shared_examples 'VolumeSnapshotPoolUpdateExample API500' do |context_name|
   include_context context_name
 
-  let(:item) { described_class.find_by(current_client, name: VOLUME2_NAME).first }
-
   describe '#update snapshot pool' do
     it 'updating the snapshot pool' do
-      old_snapshot_pool = resource_class_of('StoragePool').find_by(current_client, uri: item['deviceSpecificAttributes']['snapshotPoolUri']).first
+      volume = described_class.find_by(current_client, name: VOLUME5_NAME).first
+      old_snapshot_pool = resource_class_of('StoragePool').find_by(current_client, uri: volume['deviceSpecificAttributes']['snapshotPoolUri']).first
       new_snapshot_pool = resource_class_of('StoragePool').find_by(current_client, isManaged: false).first
       new_snapshot_pool.manage(true)
-      item.set_snapshot_pool(new_snapshot_pool)
-      item.update
-      item.retrieve!
-      expect(item['deviceSpecificAttributes']['snapshotPoolUri']).to eq(new_snapshot_pool['uri'])
+      volume.set_snapshot_pool(new_snapshot_pool)
+      volume.update
+      volume.retrieve!
+      expect(volume['deviceSpecificAttributes']['snapshotPoolUri']).to eq(new_snapshot_pool['uri'])
       # Returning to original snapshot pool
-      item.set_snapshot_pool(old_snapshot_pool)
-      item.update
-      item.retrieve!
-      expect(item['deviceSpecificAttributes']['snapshotPoolUri']).to eq(old_snapshot_pool['uri'])
+      volume.set_snapshot_pool(old_snapshot_pool)
+      volume.update
+      volume.retrieve!
+      expect(volume['deviceSpecificAttributes']['snapshotPoolUri']).to eq(old_snapshot_pool['uri'])
       new_snapshot_pool.manage(false)
     end
   end

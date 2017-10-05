@@ -71,6 +71,7 @@ RSpec.shared_examples 'VolumeCreateExample' do |context_name|
       item2 = described_class.new(current_client, options.merge(name: VOLUME4_NAME, snapshotUri: "#{item[:uri]}/snapshots/#{snap['uri']}"))
       item2.set_storage_system(storage_system)
       item2.set_storage_pool(storage_pool)
+      item2.set_snapshot_pool(storage_pool)
       expect { item2.create }.to_not raise_error
       expect(item2.retrieve!).to eq(true)
       expect(item2['name']).to eq(VOLUME4_NAME)
@@ -112,16 +113,10 @@ RSpec.shared_examples 'VolumeCreateExample' do |context_name|
   end
 
   describe '#set_storage_pool' do
-    it 'set_storage_pool in provisioningParameters' do
-      item = described_class.new(current_client, name: VOLUME_NAME, provisioningParameters: {})
-      item.set_storage_pool(storage_pool)
-      expect(item['provisioningParameters']['storagePoolUri']).to eq(storage_pool['uri'])
-    end
-
     it 'set_storage_pool' do
       item = described_class.new(current_client, name: VOLUME_NAME)
       item.set_storage_pool(storage_pool)
-      expect(item['storagePoolUri']).to eq(storage_pool['uri'])
+      expect(item['provisioningParameters']['storagePoolUri']).to eq(storage_pool['uri'])
     end
   end
 
