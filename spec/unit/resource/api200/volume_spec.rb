@@ -35,6 +35,21 @@ RSpec.describe OneviewSDK::Volume do
     end
   end
 
+  describe '#update' do
+    it 'updating a volume' do
+      fake_response = FakeResponse.new
+      item = described_class.new(@client_200, uri: 'rest/fake', name: 'Volume')
+      item.set_storage_pool(OneviewSDK::StoragePool.new(@client_200, uri: '/rest/fake2'))
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_put).and_return(fake_response)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler)
+        .with(fake_response).and_return('name' => 'Volume2')
+      data = { 'uri' => item['uri'], 'name' => 'Volume2' }
+      expect(@client_200).to receive(:rest_put).with('rest/fake', { 'body' => data }, 200)
+      item.update(name: 'Volume2')
+      expect(item['name']).to eq('Volume2')
+    end
+  end
+
   describe '#delete' do
     it 'raises an exception when is passed as invalid flag' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)

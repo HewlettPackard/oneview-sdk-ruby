@@ -43,6 +43,14 @@ module OneviewSDK
           self
         end
 
+        # Update resource attributes
+        # @param [Hash] attributes attributes to be updated
+        # @return [OneviewSDK::Volume] self
+        def update(attributes = {})
+          @data.delete('properties')
+          OneviewSDK::Resource.instance_method(:update).bind(self).call(attributes)
+        end
+
         # Deletes the resource from OneView or from Oneview and storage system
         # @param [Symbol] flag Delete storage system from Oneview only or in storage system as well.
         #   Flags: :all = removes the volume from oneview and storage system. :oneview = removes from oneview only.
@@ -60,6 +68,7 @@ module OneviewSDK
 
         # Sets the storage pool to the volume
         # @param [OneviewSDK::StoragePool] storage_pool Storage pool.
+        # @note The storagePoolUri attribute should not be set in the updated. Once created, this attribute is read only.
         def set_storage_pool(storage_pool)
           assure_uri(storage_pool)
           @data['properties'] ||= {}
@@ -70,8 +79,13 @@ module OneviewSDK
         # @param [OneviewSDK::StoragePool] storage_pool Storage Pool to use for snapshots.
         def set_snapshot_pool(storage_pool)
           assure_uri(storage_pool)
-          @data['properties'] ||= {}
-          @data['properties']['snapshotPool'] = storage_pool['uri']
+          if @data['uri']
+            @data['deviceSpecificAttributes'] ||= {}
+            @data['deviceSpecificAttributes']['snapshotPoolUri'] = storage_pool['uri']
+          else
+            @data['properties'] ||= {}
+            @data['properties']['snapshotPool'] = storage_pool['uri']
+          end
         end
 
         # Creates a new volume on the storage system from a snapshot of a volume.
