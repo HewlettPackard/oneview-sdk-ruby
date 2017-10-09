@@ -1,6 +1,6 @@
 # Testing 'oneview-sdk' gem source code
-The 'oneview-sdk' source code provides a unit, integration/functional, system testing strategies, and linting tools to ensure its code style.
-This document will cover on how to execute and implement them.
+The 'oneview-sdk' source code provides a unit, integration/functional, and system testing strategies. It also provides linting tools to ensure its code style.
+This document will cover how to execute and implement them.
 
 ## Executing tests
 The tests can be executed by `rake` tasks, `guard` watches, and by their original tools, like `rspec`, and `rubocop`.
@@ -21,9 +21,9 @@ The integration tests are responsible for checking if the `oneview-sdk` is corre
 #### Categories
 Each integration test has its own pre-requisites and leaves the appliance in a different post state, and given OneView composable nature, each resource needs other resources configured so it can work.
 
-The most top-level resources would need the appliance entirely configured, and setting up and tearing it down for each test would cost a lot of time (likely days). Because of the slow time to set up the tests have dependencies on each other that sped up the execution to few minutes or likely an hour depending on the test environment.
+The most top-level resources would need the appliance entirely configured, and setting up and tearing it down for each test would cost a lot of time (likely days). So there is a chained dependency among the tests to greatly reduce its execution time.
 
-So the integration tests are split into 3 categories `create`, `update`, and `delete` that are executed in the same order to allow some level of modularity between the steps, i.e. if something fails in one of the categories, the testing environment can be easily fixed so the next step won't fail because of the dependency.
+The integration tests are split into 3 categories `create`, `update`, and `delete` that can be run separately to allow some level of modularity between them.
 
 ### System tests
 System tests are integration-like tests, but they aim to test the whole solution executing more complex interactions (use cases), not just focusing in testing one endpoint.
