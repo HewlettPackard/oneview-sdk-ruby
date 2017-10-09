@@ -131,8 +131,8 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **Firmware Driver**                                                                                                                          |
 |<sub>/rest/firmware-drivers</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/firmware-drivers</sub>                                                       | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/firmware-drivers{id}</sub>                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/firmware-drivers{id}</sub>                                                   | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/firmware-drivers/{id}</sub>                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/firmware-drivers/{id}</sub>                                                  | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Id Pools**                                                                                                                      |
 |<sub>/rest/id-pools/{poolType}                                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/id-pools/{poolType}                                                           | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
@@ -281,9 +281,9 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **Migratable VC Domains**                                                                                                                    |
 |<sub>/rest/migratable-vc-domains</sub>                                                   | GET      | :heavy_minus_sign:   |                      |
 |<sub>/rest/migratable-vc-domains</sub>                                                   | POST     |    |                      |
-|<sub>/rest/migratable-vc-domains{id}</sub>                                               | PUT      |    |                      |
-|<sub>/rest/migratable-vc-domains{id}</sub>                                               | GET      |    |    |
-|<sub>/rest/migratable-vc-domains{id}</sub>                                               | DELETE   |    |    |
+|<sub>/rest/migratable-vc-domains/{id}</sub>                                              | PUT      |    |                      |
+|<sub>/rest/migratable-vc-domains/{id}</sub>                                              | GET      |    |    |
+|<sub>/rest/migratable-vc-domains/{id}</sub>                                              | DELETE   |    |    |
 |     **Network Set**                                                                                                                              |
 |<sub>/rest/network-sets</sub>                                                            |GET       | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/network-sets</sub>                                                            | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
