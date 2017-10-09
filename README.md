@@ -155,6 +155,11 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 
 :lock: Tip: When the log_level is set to debug, API request options will be logged (including auth tokens and passwords); be careful to protect secret information.
 
+
+## API Implementation
+
+A status of the HPE OneView REST interfaces that have been implemented in this SDK can be found in the [endpoints-support.md](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/endpoints-support.md) file.
+
 ### OneView API versions and appliance types
 You may notice resource classes being accessed in a few different ways; for example, `OneviewSDK::EthernetNetwork`, `OneviewSDK::API300::EthernetNetwork`, and `OneviewSDK::API300::C7000::EthernetNetwork`. However, each of these accessors may actually be referring to the same class. This is because in order to keep backwards compatibility and make examples a little more simple, there are module methods in place to redirect/resolve the shorthand accessors to their full namespace identifier. In order to automatically complete the full namespace identifier, there are some defaults in place. Here's some example code that should help clear things up (return values are commented behind the code):
 
