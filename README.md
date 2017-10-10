@@ -447,7 +447,7 @@ First run `$ bundle` (requires the bundler gem), then...
  - All: Run `$ rake test:all` to run RuboCop, unit, & integration tests.
  - Examples: See the [examples](examples/) README
 
-Note: run `$ rake -T` to get a list of all the available rake tasks.
+For the full testing reference please look into [TESTING.md](TESTING.md) file.
 
 ## Authors
 See the [contributors graph](https://github.com/HewlettPackard/oneview-sdk-ruby/graphs/contributors)
