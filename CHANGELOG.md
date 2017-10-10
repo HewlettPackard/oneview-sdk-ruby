@@ -4,6 +4,9 @@ This release adds the [endpoints-support.md](endpoints-support.md) file to the r
 
 Also adds the [TESTING.md](TESTING.md) file to the repository, in order to guide the test execution and implementation for this SDK.
 
+#### Bug fixes & Enhancements
+- [#285](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/285) Add helper method to set a StorageSystem to a StoragePool of API500
+
 ## v5.1.1
 
 #### Bug fixes & Enhancements

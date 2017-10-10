@@ -126,4 +126,18 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
       target.exists?
     end
   end
+
+  describe '#set_storage_system' do
+    it 'should set the storageSystemUri' do
+      storage_system = OneviewSDK::API500::C7000::StorageSystem.new(@client_500, uri: '/storage-sytems/1')
+      expect(target['storageSystemUri']).to eq(nil)
+      target.set_storage_system(storage_system)
+      expect(target['storageSystemUri']).to eq('/storage-sytems/1')
+    end
+
+    it 'should throw error when StorageSystem URI is not present' do
+      storage_system = OneviewSDK::API500::C7000::StorageSystem.new(@client_500)
+      expect { target.set_storage_system(storage_system) }.to raise_error(OneviewSDK::IncompleteResource, /storage system\'s uri/)
+    end
+  end
 end

@@ -96,6 +96,13 @@ module OneviewSDK
           update
           refresh
         end
+
+        # Sets the storage system
+        # @param [OneviewSDK::StorageSystem] storage_system
+        def set_storage_system(storage_system)
+          raise IncompleteResource, 'Please set the storage system\'s uri attribute!' unless storage_system['uri']
+          set('storageSystemUri', storage_system['uri'])
+        end
       end
     end
   end
