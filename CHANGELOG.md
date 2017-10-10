@@ -2,6 +2,8 @@
 #### Notes
 This release adds the [endpoints-support.md](endpoints-support.md) file to the repository, in order to track implemented endpoints and what is in the scope of this SDK.
 
+Also adds the [TESTING.md](TESTING.md) file to the repository, in order to guide the test execution and implementation for this SDK.
+
 ## v5.1.1
 
 #### Bug fixes & Enhancements
