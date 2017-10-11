@@ -1,4 +1,4 @@
-## v5.1.2 (Unreleased)
+## v5.1.2
 #### Notes
 This release adds the [endpoints-support.md](endpoints-support.md) file to the repository, in order to track implemented endpoints and what is in the scope of this SDK.
 
