@@ -96,6 +96,14 @@ module OneviewSDK
           update
           refresh
         end
+
+        # Sets the storage system
+        # @param [OneviewSDK::StorageSystem] storage_system
+        # @raise [OneviewSDK::IncompleteResource] if Storage System not found
+        def set_storage_system(storage_system)
+          raise 'Storage System could not be found!' unless storage_system.retrieve!
+          set('storageSystemUri', storage_system['uri'])
+        end
       end
     end
   end
