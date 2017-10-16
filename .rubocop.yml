@@ -15,14 +15,15 @@ Metrics/LineLength:
   Max: 150
 
 Metrics/ModuleLength:
-  Max: 150
+  Max: 200
   Exclude:
     - 'lib/oneview-sdk/rest.rb'
 
 Metrics/BlockLength:
-  Max: 150
+  Max: 200
   Exclude:
     - 'lib/oneview-sdk/rest.rb'
+    - 'spec/**/*'
 
 Style/GlobalVars:
   AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $client_500, $client_500_synergy]
@@ -42,7 +43,7 @@ Naming/VariableName:
     - 'lib/oneview-sdk/resource/**/*'
 
 Naming/VariableNumber:
-  EnforcedStyle: snake_case
+  Enabled: false
 
 Naming/MethodName:
   Exclude:
