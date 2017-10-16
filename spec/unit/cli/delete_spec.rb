@@ -13,11 +13,11 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'requires a valid type' do
         expect(STDOUT).to receive(:puts).with(/Invalid resource type/)
-        expect { OneviewSDK::Cli.start(%w(delete InvalidType name)) }.to raise_error SystemExit
+        expect { OneviewSDK::Cli.start(%w[delete InvalidType name]) }.to raise_error SystemExit
       end
 
       it 'requires a resource name' do
-        expect { OneviewSDK::Cli.start(%w(delete ServerProfiles)) }
+        expect { OneviewSDK::Cli.start(%w[delete ServerProfiles]) }
           .to output(/was called with arguments.*\sUsage:/).to_stderr_from_any_process
       end
     end
@@ -33,20 +33,20 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'deletes valid profiles' do
         expect_any_instance_of(HighLine).to receive(:agree)
-        expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1)) }
+        expect { OneviewSDK::Cli.start(%w[delete ServerProfile Profile1]) }
           .to output(/Deleted Successfully!/).to_stdout_from_any_process
       end
 
       it 'respects the force option' do
         expect_any_instance_of(HighLine).to_not receive(:agree)
-        expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1 -f)) }
+        expect { OneviewSDK::Cli.start(%w[delete ServerProfile Profile1 -f]) }
           .to output(/Deleted Successfully!/).to_stdout_from_any_process
       end
 
       it 'fails if deletion fails' do
         allow_any_instance_of(OneviewSDK::Resource).to receive(:delete).and_raise 'Failure'
         expect(STDOUT).to receive(:puts).with(/Failed to delete/)
-        expect { OneviewSDK::Cli.start(%w(delete ServerProfile Profile1 -f)) }
+        expect { OneviewSDK::Cli.start(%w[delete ServerProfile Profile1 -f]) }
           .to raise_error SystemExit
       end
     end
@@ -59,7 +59,7 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'prints a "Not Found" message' do
         expect(STDOUT).to receive(:puts).with(/Not Found/)
-        expect { OneviewSDK::Cli.start(%w(delete ServerProfile FakeProfile)) }.to raise_error SystemExit
+        expect { OneviewSDK::Cli.start(%w[delete ServerProfile FakeProfile]) }.to raise_error SystemExit
       end
     end
   end

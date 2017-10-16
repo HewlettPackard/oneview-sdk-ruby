@@ -25,7 +25,7 @@ RSpec.describe OneviewSDK::UnmanagedDevice do
     it 'Should support add' do
       device = OneviewSDK::UnmanagedDevice.new(@client_200, name: 'UnmanagedDevice_1')
       expect(@client_200).to receive(:rest_post).with('/rest/unmanaged-devices', { 'body' => { 'name' => 'UnmanagedDevice_1' } }, 200)
-        .and_return(FakeResponse.new({}))
+                                                .and_return(FakeResponse.new({}))
       expect { device.add }.not_to raise_error
     end
   end

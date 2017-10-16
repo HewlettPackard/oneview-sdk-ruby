@@ -39,7 +39,7 @@ module OneviewSDK
         options = Hash[options.map { |k, v| [k.to_sym, v] }] # Convert string hash keys to symbols
         STDOUT.sync = true
         @logger = options[:logger] || Logger.new(STDOUT)
-        [:debug, :info, :warn, :error, :level=].each { |m| raise InvalidClient, "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
+        %i[debug info warn error level=].each { |m| raise InvalidClient, "Logger must respond to #{m} method " unless @logger.respond_to?(m) }
         self.log_level = options[:log_level] || :info
         @print_wait_dots = options.fetch(:print_wait_dots, false)
         @url = options[:url] || ENV['I3S_URL']
@@ -54,8 +54,8 @@ module OneviewSDK
           OneviewSDK::ImageStreamer.api_version_updated? || !OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS.include?(@api_version)
         @ssl_enabled = true
         if ENV.key?('I3S_SSL_ENABLED')
-          if %w(true false 1 0).include?(ENV['I3S_SSL_ENABLED'])
-            @ssl_enabled = !%w(false 0).include?(ENV['I3S_SSL_ENABLED'])
+          if %w[true false 1 0].include?(ENV['I3S_SSL_ENABLED'])
+            @ssl_enabled = !%w[false 0].include?(ENV['I3S_SSL_ENABLED'])
           else
             @logger.warn "Unrecognized ssl_enabled value '#{ENV['I3S_SSL_ENABLED']}'. Valid options are 'true' & 'false'"
           end
@@ -88,7 +88,7 @@ module OneviewSDK
         response = rest_api(:get, '/rest/version', options)
         version = response_handler(response)['currentVersion']
         raise ConnectionError, "Couldn't get API version" unless version
-        version = version.to_i if version.class != Fixnum
+        version = version.to_i if version.class != Integer
         version
       rescue ConnectionError
         @logger.warn "Failed to get Image Streamer max api version. Using default (#{OneviewSDK::ImageStreamer::DEFAULT_API_VERSION})"

@@ -84,7 +84,7 @@ RSpec.shared_examples 'EnclosureCreateExample' do |context_name, variant|
     it 'Gets utilization data by fields' do
       item = described_class.get_all(current_client).first
       res = nil
-      expect { res = item.utilization(fields: %w(AmbientTemperature)) }.not_to raise_error
+      expect { res = item.utilization(fields: %w[AmbientTemperature]) }.not_to raise_error
       expect(res['metricList']).not_to be_empty
     end
 

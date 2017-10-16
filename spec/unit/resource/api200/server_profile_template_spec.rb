@@ -27,7 +27,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
     it 'will retrieve and set the serverHardwareTypeUri correctly' do
       expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'server_hardware_type', uri: @server_hardware_type_uri },
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
@@ -37,7 +37,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
     it 'will fail to put serverHardwareTypeUri since the resource does not exists' do
       expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
       expect { @item.set_server_hardware_type(@server_hardware_type) }.to raise_error(/could not be found/)
@@ -58,7 +58,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
     it 'will retrieve and set the enclosureGroupUri correctly' do
       expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'enclosure_group', uri: @enclosure_group_uri },
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
@@ -68,7 +68,7 @@ RSpec.describe OneviewSDK::ServerProfileTemplate do
 
     it 'will fail to put enclosureGroupUri since the resource does not exists' do
       expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
       expect { @item.set_enclosure_group(@enclosure_group) }.to raise_error(/could not be found/)

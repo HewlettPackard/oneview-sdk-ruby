@@ -17,7 +17,7 @@ module OneviewSDK
       # Storage pool resource implementation for API500 C7000
       class StoragePool < OneviewSDK::API500::C7000::Resource
         BASE_URI = '/rest/storage-pools'.freeze
-        UNIQUE_IDENTIFIERS = %w(uri).freeze
+        UNIQUE_IDENTIFIERS = %w[uri].freeze
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance

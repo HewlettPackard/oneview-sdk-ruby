@@ -43,7 +43,7 @@ RSpec.describe klass do
     it 'does a PUT to uri/script' do
       item = klass.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_put).with('/rest/fake/script', { 'body' => 'Blah' }, item.api_version)
-        .and_return(FakeResponse.new('Blah'))
+                                               .and_return(FakeResponse.new('Blah'))
       expect(@client_300.logger).to receive(:warn).with(/Failed to parse JSON response/).and_return(true)
       expect(item.set_script('Blah')).to eq(true)
     end

@@ -213,7 +213,7 @@ RSpec.describe OneviewSDK::ImageStreamer::API300::ArtifactBundle do
       fake_response = { 'name' => 'ArtifactName' }
 
       expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/artifact-bundles', { 'file_name' => 'ArtifactName.zip' }, 500)
-        .and_return(fake_response)
+                                                      .and_return(fake_response)
 
       result = described_class.create_from_file(@client_i3s_300, 'file.zip', 'ArtifactName', 500)
 

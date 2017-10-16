@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::Cli do
   describe '#rest get' do
     it 'requires a URI' do
       expect($stderr).to receive(:puts).with(/ERROR.*arguments/)
-      described_class.start(%w(rest get))
+      described_class.start(%w[rest get])
     end
 
     it 'sends any data that is passed in' do
@@ -26,17 +26,17 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'makes a GET call to the URI and outputs the response in json format' do
-        expect { described_class.start(%w(rest get rest/fake)) }
+        expect { described_class.start(%w[rest get rest/fake]) }
           .to output(JSON.pretty_generate(response) + "\n").to_stdout_from_any_process
       end
 
       it 'can output the response in raw format' do
-        expect { described_class.start(%w(rest get rest/fake -f raw)) }
+        expect { described_class.start(%w[rest get rest/fake -f raw]) }
           .to output(response.to_json + "\n").to_stdout_from_any_process
       end
 
       it 'can output the response in yaml format' do
-        expect { described_class.start(%w(rest get rest/fake -f yaml)) }
+        expect { described_class.start(%w[rest get rest/fake -f yaml]) }
           .to output(response.to_yaml).to_stdout_from_any_process
       end
     end
@@ -44,13 +44,13 @@ RSpec.describe OneviewSDK::Cli do
     context 'bad requests' do
       it 'fails if the data cannot be parsed as json' do
         expect($stdout).to receive(:puts).with(/Failed to parse data as JSON/)
-        expect { described_class.start(%w(rest get rest/ -d fake_json)) }
+        expect { described_class.start(%w[rest get rest/ -d fake_json]) }
           .to raise_error SystemExit
       end
 
       it 'fails if the request method is invalid' do
         expect($stdout).to receive(:puts).with(/Invalid rest method/)
-        expect { described_class.start(%w(rest blah rest/)) }
+        expect { described_class.start(%w[rest blah rest/]) }
           .to raise_error SystemExit
       end
 
@@ -60,7 +60,7 @@ RSpec.describe OneviewSDK::Cli do
         expect_any_instance_of(OneviewSDK::Client).to receive(:rest_api)
           .with('get', '/rest', {}).and_return FakeResponse.new(body, 308, headers)
         expect($stdout).to receive(:puts).with(/308.*location/m)
-        expect { described_class.start(%w(rest get rest)) }
+        expect { described_class.start(%w[rest get rest]) }
           .to raise_error SystemExit
       end
 
@@ -70,7 +70,7 @@ RSpec.describe OneviewSDK::Cli do
         expect_any_instance_of(OneviewSDK::Client).to receive(:rest_api)
           .with('get', '/rest', {}).and_return FakeResponse.new(body, 404, headers)
         expect($stdout).to receive(:puts).with(/404.*content-type.*Not found/m)
-        expect { described_class.start(%w(rest get rest)) }
+        expect { described_class.start(%w[rest get rest]) }
           .to raise_error SystemExit
       end
 
@@ -80,7 +80,7 @@ RSpec.describe OneviewSDK::Cli do
         expect_any_instance_of(OneviewSDK::Client).to receive(:rest_api)
           .with('get', '/rest', {}).and_return FakeResponse.new(body, 500, headers)
         expect($stdout).to receive(:puts).with(/500.*content-type.*Server error/m)
-        expect { described_class.start(%w(rest get rest)) }
+        expect { described_class.start(%w[rest get rest]) }
           .to raise_error SystemExit
       end
     end

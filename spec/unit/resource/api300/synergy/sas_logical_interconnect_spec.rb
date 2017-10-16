@@ -38,7 +38,7 @@ RSpec.describe klass do
         'body' => { 'type' => 'sas-logical-interconnect' }
       }
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/compliance', update_options, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       item.compliance
       expect(item['key']).to eq('val')
     end
@@ -52,7 +52,7 @@ RSpec.describe klass do
     it 'does a PUT to uri/configuration & updates @data' do
       item = sas_log_int
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/configuration', {}, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       item.configuration
       expect(item['key']).to eq('val')
     end
@@ -93,7 +93,7 @@ RSpec.describe klass do
 
     it 'enables the new drive enclosure to take over as a replacement after physically swapping the drive enclosures' do
       expect(@client_300).to receive(:rest_post).with(sas_log_int['uri'] + '/replaceDriveEnclosure', update_json)
-        .and_return(FakeResponse.new(['/rest/fake2']))
+                                                .and_return(FakeResponse.new(['/rest/fake2']))
       updated_sas_log_int = sas_log_int.replace_drive_enclosure('SNFAKE1', 'SNFAKE2')
       expect(updated_sas_log_int).to eq(['/rest/fake2'])
     end

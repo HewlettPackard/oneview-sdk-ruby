@@ -85,7 +85,7 @@ RSpec.describe klass do
 
       it 'raising an exception when uri not exists' do
         expect(@client_300).to receive(:rest_get).with('/rest/enclosure-groups', {})
-          .and_return(FakeResponse.new)
+                                                 .and_return(FakeResponse.new)
         expect { @item.set_enclosure_group(@enclosure_group) }.to raise_error(/could not be found/)
       end
 
@@ -97,7 +97,7 @@ RSpec.describe klass do
 
       it 'will fail to put enclosureGroupUri since the resource does not exists' do
         expect(@client_300).to receive(:rest_get).with('/rest/enclosure-groups', {})
-          .and_return(FakeResponse.new(members: [
+                                                 .and_return(FakeResponse.new(members: [
               { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
             ]))
         expect { @item.set_enclosure_group(@enclosure_group) }.to raise_error(/could not be found/)
@@ -112,7 +112,7 @@ RSpec.describe klass do
 
       it 'raising an exception when uri not exists' do
         expect(@client_300).to receive(:rest_get).with('/rest/enclosures', {})
-          .and_return(FakeResponse.new)
+                                                 .and_return(FakeResponse.new)
         expect { @item.set_enclosures([@enclosure]) }.to raise_error(/could not be found/)
       end
 
@@ -138,7 +138,7 @@ RSpec.describe klass do
 
       it 'will fail to put enclosureUri since the resource does not exists' do
         expect(@client_300).to receive(:rest_get).with('/rest/enclosures', {})
-          .and_return(FakeResponse.new(members: [
+                                                 .and_return(FakeResponse.new(members: [
               { name: 'wrong_enclosure', uri: 'wrong_uri' }
             ]))
         expect { @item.set_enclosures([@enclosure]) }.to raise_error(/could not be found/)
@@ -153,7 +153,7 @@ RSpec.describe klass do
 
       it 'raising an exception when uri not exists' do
         expect(@client_300).to receive(:rest_get).with('/rest/firmware-drivers', {})
-          .and_return(FakeResponse.new)
+                                                 .and_return(FakeResponse.new)
         expect { @item.set_firmware_driver(@firmware_driver) }.to raise_error(/could not be found/)
       end
 
@@ -165,7 +165,7 @@ RSpec.describe klass do
 
       it 'will fail to put firmwareBaselineUri since the resource does not exists' do
         expect(@client_300).to receive(:rest_get).with('/rest/firmware-drivers', {})
-          .and_return(FakeResponse.new(members: [
+                                                 .and_return(FakeResponse.new(members: [
               { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
             ]))
         expect { @item.set_firmware_driver(@firmware_driver) }.to raise_error(/could not be found/)

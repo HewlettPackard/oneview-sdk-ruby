@@ -16,7 +16,7 @@ module OneviewSDK
     # Server hardware resource implementation
     class ServerHardware < Resource
       BASE_URI = '/rest/server-hardware'.freeze
-      UNIQUE_IDENTIFIERS = %w(name uri serialNumber virtualSerialNumber serverProfileUri).freeze
+      UNIQUE_IDENTIFIERS = %w[name uri serialNumber virtualSerialNumber serverProfileUri].freeze
 
       # Remove resource from OneView
       # @return [true] if resource was removed successfully
@@ -79,15 +79,15 @@ module OneviewSDK
       # @return [OneviewSDK::ServerHardware] self
       def add
         ensure_client
-        required_attributes = %w(hostname username password licensingIntent)
+        required_attributes = %w[hostname username password licensingIntent]
         required_attributes.each { |k| raise IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) }
 
-        optional_attrs = %w(configurationState force restore)
+        optional_attrs = %w[configurationState force restore]
         temp_data = @data.select { |k, _v| required_attributes.include?(k) || optional_attrs.include?(k) }
         response = @client.rest_post(self.class::BASE_URI, { 'body' => temp_data }, @api_version)
         body = @client.response_handler(response)
         set_all(body)
-        %w(username password hostname).each { |k| @data.delete(k) } # These are no longer needed
+        %w[username password hostname].each { |k| @data.delete(k) } # These are no longer needed
         self
       end
 

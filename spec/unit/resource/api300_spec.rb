@@ -4,11 +4,11 @@ RSpec.describe OneviewSDK::API300 do
   it 'has a list of supported variants' do
     variants = described_class::SUPPORTED_VARIANTS
     expect(variants).to be_a Array
-    %w(C7000 Synergy).each { |v| expect(variants).to include(v) }
+    %w[C7000 Synergy].each { |v| expect(variants).to include(v) }
   end
 
   it 'returns a valid API300 variant' do
-    %w(C7000 Synergy).each { |v| expect { OneviewSDK::API300.const_get(v) }.not_to raise_error }
+    %w[C7000 Synergy].each { |v| expect { OneviewSDK::API300.const_get(v) }.not_to raise_error }
   end
 
   it 'raises an error when an invalid API300 variant is called' do

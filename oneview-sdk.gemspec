@@ -1,4 +1,4 @@
-# coding: utf-8
+
 # http://guides.rubygems.org/specification-reference
 
 # (C) Copyright 2016 Hewlett Packard Enterprise Development LP
@@ -42,6 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'byebug'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop', '= 0.42.0'
+  spec.add_development_dependency 'rubocop', '~> 0.50.0'
   spec.add_development_dependency 'simplecov'
 end

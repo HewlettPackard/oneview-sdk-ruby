@@ -27,7 +27,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
 
     it 'adds a valid interconnect' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
-        .and_return('uri' => '/rest/fake')
+                                                            .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
 
       location_entries = @item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['logicalLocation']['locationEntries']
@@ -45,7 +45,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
 
     it 'raises an error if the interconnect is not found' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_300, @type)
-        .and_return(nil)
+                                                            .and_return(nil)
       expect(OneviewSDK::Interconnect).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.add_interconnect(3, @type) }.to raise_error(/not found!/)
     end
@@ -64,7 +64,7 @@ RSpec.describe OneviewSDK::API300::C7000::LogicalInterconnectGroup do
   describe '::get_default_settings' do
     it 'should get the default settings' do
       expect(@client_300).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', {}, @client_300.api_version)
-        .and_return(FakeResponse.new)
+                                               .and_return(FakeResponse.new)
       expect(OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client_300)).to be
     end
   end

@@ -17,7 +17,7 @@ module OneviewSDK
       # Storage System resource implementation for API500 C7000
       class StorageSystem < OneviewSDK::API300::C7000::StorageSystem
         # deviceSpecificAttributes['serialNumber'] and deviceSpecificAttributes['wwn'] are supported too
-        UNIQUE_IDENTIFIERS = %w(name uri hostname).freeze
+        UNIQUE_IDENTIFIERS = %w[name uri hostname].freeze
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance

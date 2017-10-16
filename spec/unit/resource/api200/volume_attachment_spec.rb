@@ -23,7 +23,7 @@ RSpec.describe OneviewSDK::VolumeAttachment do
 
     it 'list' do
       expect(@client_200).to receive(:rest_get).with('/rest/storage-volume-attachments/repair?alertFixType=ExtraUnmanagedStorageVolumes')
-        .and_return(FakeResponse.new('members' => []))
+                                               .and_return(FakeResponse.new('members' => []))
       OneviewSDK::VolumeAttachment.get_extra_unmanaged_volumes(@client_200)
     end
   end
@@ -31,14 +31,14 @@ RSpec.describe OneviewSDK::VolumeAttachment do
   describe '#path' do
     it 'retrieve by id' do
       expect(@client_200).to receive(:rest_get).with('/rest/storage-volume-attachments/volume_attach_1/paths/volume_path_1')
-        .and_return(FakeResponse.new({}))
+                                               .and_return(FakeResponse.new({}))
       item = OneviewSDK::VolumeAttachment.new(@client_200, uri: '/rest/storage-volume-attachments/volume_attach_1')
       item.get_path('volume_path_1')
     end
 
     it 'get list' do
       expect(@client_200).to receive(:rest_get).with('/rest/storage-volume-attachments/volume_attach_1/paths')
-        .and_return(FakeResponse.new({}))
+                                               .and_return(FakeResponse.new({}))
       item = OneviewSDK::VolumeAttachment.new(@client_200, uri: '/rest/storage-volume-attachments/volume_attach_1')
       item.get_paths
     end

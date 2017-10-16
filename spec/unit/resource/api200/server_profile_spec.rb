@@ -92,7 +92,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will retrieve and set the serverHardwareUri correctly' do
       expect(@client_200).to receive(:rest_get).with('/rest/server-hardware', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'server_hardware', uri: @server_hardware_uri },
             { name: 'wrong_server_hardware', uri: 'wrong_uri' }
           ]))
@@ -102,7 +102,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will fail to put serverHardwareUri since the resource does not exists' do
       expect(@client_200).to receive(:rest_get).with('/rest/server-hardware', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware', uri: 'wrong_uri' }
           ]))
       expect { @item.set_server_hardware(@server_hardware) }.to raise_error(/could not be found/)
@@ -117,7 +117,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will retrieve and set the serverHardwareTypeUri correctly' do
       expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'server_hardware_type', uri: @server_hardware_type_uri },
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
@@ -127,7 +127,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will fail to put serverHardwareTypeUri since the resource does not exists' do
       expect(@client_200).to receive(:rest_get).with('/rest/server-hardware-types', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'wrong_server_hardware_type', uri: 'wrong_uri' }
           ]))
       expect { @item.set_server_hardware_type(@server_hardware_type) }.to raise_error(/could not be found/)
@@ -142,7 +142,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will retrieve and set the enclosureGroupUri correctly' do
       expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'enclosure_group', uri: @enclosure_group_uri },
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
@@ -152,7 +152,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will fail to put enclosureGroupUri since the resource does not exists' do
       expect(@client_200).to receive(:rest_get).with('/rest/enclosure-groups', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure_group', uri: 'wrong_uri' }
           ]))
       expect { @item.set_enclosure_group(@enclosure_group) }.to raise_error(/could not be found/)
@@ -167,7 +167,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will retrieve and set the enclosureUri correctly' do
       expect(@client_200).to receive(:rest_get).with('/rest/enclosures', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'enclosure', uri: @enclosure_uri },
             { name: 'wrong_enclosure', uri: 'wrong_uri' }
           ]))
@@ -177,7 +177,7 @@ RSpec.describe OneviewSDK::ServerProfile do
 
     it 'will fail to put enclosureUri since the resource does not exists' do
       expect(@client_200).to receive(:rest_get).with('/rest/enclosures', {})
-        .and_return(FakeResponse.new(members: [
+                                               .and_return(FakeResponse.new(members: [
             { name: 'wrong_enclosure', uri: 'wrong_uri' }
           ]))
       expect { @item.set_enclosure(@enclosure) }.to raise_error(/could not be found/)
@@ -200,20 +200,20 @@ RSpec.describe OneviewSDK::ServerProfile do
   describe '#self.get_available_networks' do
     it 'returns all the available networks' do
       expect(@client_200).to receive(:rest_get).with("#{OneviewSDK::ServerProfile::BASE_URI}/available-networks?view=unit")
-        .and_return(FakeResponse.new(
-                      'ethernetNetworks' => [
-                        { 'name' => 'ethernet_network_1', 'uri' => 'fake1', 'vlan' => 1 },
-                        { 'name' => 'ethernet_network_2', 'uri' => 'fake2', 'vlan' => 2 }
-                      ],
-                      'fcNetworks' => [
-                        { 'name' => 'fc_network_1', 'uri' => 'fake3', 'vlan' => 3 },
-                        { 'name' => 'fc_network_2', 'uri' => 'fake4', 'vlan' => 4 }
-                      ],
-                      'networkSets' => [
-                        { 'name' => 'network_set_1', 'uri' => 'fake5' }
-                      ],
-                      'type' => 'fakeType'
-        ))
+                                               .and_return(FakeResponse.new(
+                                                             'ethernetNetworks' => [
+                                                               { 'name' => 'ethernet_network_1', 'uri' => 'fake1', 'vlan' => 1 },
+                                                               { 'name' => 'ethernet_network_2', 'uri' => 'fake2', 'vlan' => 2 }
+                                                             ],
+                                                             'fcNetworks' => [
+                                                               { 'name' => 'fc_network_1', 'uri' => 'fake3', 'vlan' => 3 },
+                                                               { 'name' => 'fc_network_2', 'uri' => 'fake4', 'vlan' => 4 }
+                                                             ],
+                                                             'networkSets' => [
+                                                               { 'name' => 'network_set_1', 'uri' => 'fake5' }
+                                                             ],
+                                                             'type' => 'fakeType'
+                                               ))
 
       returned_set = OneviewSDK::ServerProfile.get_available_networks(@client_200, 'view' => 'unit')
       expect(returned_set['ethernetNetworks'].size).to eq(2)
@@ -279,7 +279,7 @@ RSpec.describe OneviewSDK::ServerProfile do
   describe '#get_compliance_preview' do
     it 'shows compliance preview' do
       expect(@client_200).to receive(:rest_get).with("#{@item['uri']}/compliance-preview")
-        .and_return(FakeResponse.new('it' => 'works'))
+                                               .and_return(FakeResponse.new('it' => 'works'))
       expect(@item.get_compliance_preview['it']).to eq('works')
     end
   end
@@ -287,7 +287,7 @@ RSpec.describe OneviewSDK::ServerProfile do
   describe '#get_messages' do
     it 'shows messages' do
       expect(@client_200).to receive(:rest_get).with("#{@item['uri']}/messages")
-        .and_return(FakeResponse.new('it' => 'works'))
+                                               .and_return(FakeResponse.new('it' => 'works'))
       expect(@item.get_messages['it']).to eq('works')
     end
   end
@@ -295,7 +295,7 @@ RSpec.describe OneviewSDK::ServerProfile do
   describe '#get_transformation' do
     it 'transforms an existing profile' do
       expect(@client_200).to receive(:rest_get).with("#{@item['uri']}/transformation?queryTest=Test")
-        .and_return(FakeResponse.new('it' => 'works'))
+                                               .and_return(FakeResponse.new('it' => 'works'))
       expect(@item.get_transformation('query_test' => 'Test')['it']).to eq('works')
     end
   end

@@ -46,7 +46,7 @@ RSpec.describe klass do
 
     it 'gets an interconnect type' do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).with('/rest/sas-interconnect-types')
-        .and_return(FakeResponse.new('members' => [{ 'name' => @type, 'uri' => '/rest/fake' }]))
+                                                                     .and_return(FakeResponse.new('members' => [{ 'name' => @type, 'uri' => '/rest/fake' }]))
       item = klass.get_type(@client_300, @type)
       expect(item['name']).to eq(@type)
     end
@@ -63,7 +63,7 @@ RSpec.describe klass do
 
     it 'does a PUT to /refreshState' do
       expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/refreshState', 'body' => { refreshState: 'RefreshPending' })
-        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+                                               .and_return(FakeResponse.new(refreshState: 'Refreshing'))
       @item.set_refresh_state('RefreshPending')
       expect(@item['refreshState']).to eq('Refreshing')
     end
@@ -81,7 +81,7 @@ RSpec.describe klass do
 
     it 'does a reset to the appliance' do
       expect(@client_300).to receive(:rest_patch).with(@item['uri'], 'body' => [{ op: 'replace', path: '/hardResetState', value: 'Reset' }])
-        .and_return(FakeResponse.new([@item]))
+                                                 .and_return(FakeResponse.new([@item]))
       expect { @item.patch('replace', '/hardResetState', 'Reset') }.not_to raise_error
     end
   end

@@ -21,7 +21,7 @@ RSpec.describe OneviewSDK::LogicalSwitchGroup do
 
     it 'defines a valid siwtch group' do
       expect(OneviewSDK::Switch).to receive(:get_type).with(@client_200, @type)
-        .and_return('uri' => '/rest/fake')
+                                                      .and_return('uri' => '/rest/fake')
       @item.set_grouping_parameters(1, @type)
       expect(@item['switchMapTemplate']['switchMapEntryTemplates'].first['permittedSwitchTypeUri'])
         .to eq('/rest/fake')
@@ -29,7 +29,7 @@ RSpec.describe OneviewSDK::LogicalSwitchGroup do
 
     it 'raises an error if the switch is not found' do
       expect(OneviewSDK::Switch).to receive(:get_type).with(@client_200, @type)
-        .and_return([])
+                                                      .and_return([])
       expect(OneviewSDK::Switch).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.set_grouping_parameters(1, @type) }.to raise_error(/not found!/)
     end

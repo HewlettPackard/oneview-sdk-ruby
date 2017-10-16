@@ -7,12 +7,12 @@ RSpec.describe OneviewSDK::Cli do
     context 'with invalid options' do
       it 'requires a valid format' do
         expect($stderr).to receive(:puts).with(/Expected.+format/)
-        described_class.start(%w(scmb -f InvalidFormat))
+        described_class.start(%w[scmb -f InvalidFormat])
       end
     end
 
-    let(:command) { OneviewSDK::Cli.start(%w(scmb)) }
-    let(:command_eth) { OneviewSDK::Cli.start(%w(scmb -r scmb.ethernet-networks.#)) }
+    let(:command) { OneviewSDK::Cli.start(%w[scmb]) }
+    let(:command_eth) { OneviewSDK::Cli.start(%w[scmb -r scmb.ethernet-networks.#]) }
     let(:con) { double('connection') }
     let(:chan) { double('channel') }
     let(:queue) { double('queue') }
@@ -63,7 +63,7 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'outputs the payload in raw format' do
         expect(STDOUT).to receive(:puts).with(/#{payload.to_json}/)
-        OneviewSDK::Cli.start(%w(scmb -r scmb.ethernet-networks.# -f raw))
+        OneviewSDK::Cli.start(%w[scmb -r scmb.ethernet-networks.# -f raw])
       end
     end
   end

@@ -18,7 +18,7 @@ module OneviewSDK
     class ServerProfile < Resource
       include OneviewSDK::ResourceHelper::PatchOperation
       BASE_URI = '/rest/server-profiles'.freeze
-      UNIQUE_IDENTIFIERS = %w(name uri associatedServer serialNumber serverHardwareUri).freeze
+      UNIQUE_IDENTIFIERS = %w[name uri associatedServer serialNumber serverHardwareUri].freeze
 
       def initialize(client, params = {}, api_ver = nil)
         super
@@ -313,7 +313,7 @@ module OneviewSDK
         query_uri = build_query(query) if query
         response = client.rest_get("#{BASE_URI}/available-networks#{query_uri}")
         body = client.response_handler(response)
-        body.select { |k, _v| %w(ethernetNetworks networkSets fcNetworks).include?(k) }
+        body.select { |k, _v| %w[ethernetNetworks networkSets fcNetworks].include?(k) }
       end
 
       # Gets the available servers based on the query parameters

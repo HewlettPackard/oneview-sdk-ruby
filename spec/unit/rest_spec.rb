@@ -19,7 +19,7 @@ RSpec.describe OneviewSDK::Client do
 
     it 'logs the request type and path (debug level)' do
       @client_200.logger.level = @client_200.logger.class.const_get('DEBUG')
-      %w(get post put patch delete).each do |type|
+      %w[get post put patch delete].each do |type|
         expect { @client_200.rest_api(type, path) }
           .to output(/Making :#{type} rest call to #{@client_200.url + path}/).to_stdout_from_any_process
       end

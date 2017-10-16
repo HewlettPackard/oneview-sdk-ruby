@@ -108,7 +108,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
     it 'does a PUT to /uri/configuration and updates the attributes' do
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_put).with('/rest/fake/configuration', {}, item.api_version)
-        .and_return(FakeResponse.new(name: 'NewName'))
+                                               .and_return(FakeResponse.new(name: 'NewName'))
       item.configuration
       expect(item['name']).to eq('NewName')
     end
@@ -123,7 +123,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
     it 'does a PUT to /refreshState' do
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
-        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+                                               .and_return(FakeResponse.new(refreshState: 'Refreshing'))
       item.set_refresh_state('Refreshing')
       expect(item['refreshState']).to eq('Refreshing')
     end
@@ -131,7 +131,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
     it 'allows string or symbol refreshState values' do
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
-        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+                                               .and_return(FakeResponse.new(refreshState: 'Refreshing'))
       item.set_refresh_state(:Refreshing)
       expect(item['refreshState']).to eq('Refreshing')
     end
@@ -160,7 +160,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
     it 'gets uri/environmentalConfiguration' do
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', {}, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       expect(item.environmental_configuration).to eq('key' => 'val')
     end
   end
@@ -188,22 +188,22 @@ RSpec.describe OneviewSDK::API300::Synergy::Enclosure do
     it 'takes query parameters' do
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', {}, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       expect(item.utilization(key: :val)).to eq('key' => 'val')
     end
 
     it 'takes an array for the :fields query parameter' do
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', {}, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
-      expect(item.utilization(fields: %w(one two three))).to eq('key' => 'val')
+                                               .and_return(FakeResponse.new(key: 'val'))
+      expect(item.utilization(fields: %w[one two three])).to eq('key' => 'val')
     end
 
     it 'converts Time query parameters' do
       t = Time.now
       item = OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", {}, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       expect(item.utilization(startDate: t)).to eq('key' => 'val')
     end
   end

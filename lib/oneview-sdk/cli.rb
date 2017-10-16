@@ -73,7 +73,7 @@ module OneviewSDK
     class_option :log_level,
       desc: 'Log level to use',
       aliases: '-l',
-      enum: %w(debug info warn error),
+      enum: %w[debug info warn error],
       default: :warn
 
     map ['-v', '--version'] => :version
@@ -108,7 +108,7 @@ module OneviewSDK
     method_option :format,
       desc: 'Output format',
       aliases: '-f',
-      enum: %w(json yaml human),
+      enum: %w[json yaml human],
       default: 'human'
     desc 'env', 'Show environment variables for oneview-sdk-ruby'
     # Show environment variables for oneview-sdk-ruby
@@ -117,7 +117,7 @@ module OneviewSDK
       OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
       if @options['format'] == 'human'
         data.each do |key, value|
-          value = "'#{value}'" if value && !%w(true false).include?(value)
+          value = "'#{value}'" if value && !%w[true false].include?(value)
           printf "%-#{data.keys.max_by(&:length).length}s = %s\n", key, value || 'nil'
         end
       else
@@ -135,7 +135,7 @@ module OneviewSDK
     method_option :format,
       desc: 'Output format',
       aliases: '-f',
-      enum: %w(json yaml human),
+      enum: %w[json yaml human],
       default: 'human'
     desc 'list TYPE', 'List names of resources'
     # List names of resources
@@ -150,7 +150,7 @@ module OneviewSDK
     method_option :format,
       desc: 'Output format',
       aliases: '-f',
-      enum: %w(json yaml human),
+      enum: %w[json yaml human],
       default: 'human'
     method_option :attribute,
       type: :string,
@@ -177,7 +177,7 @@ module OneviewSDK
     method_option :format,
       desc: 'Output format',
       aliases: '-f',
-      enum: %w(json yaml human),
+      enum: %w[json yaml human],
       default: 'human'
     method_option :attribute,
       type: :string,
@@ -218,7 +218,7 @@ module OneviewSDK
     method_option :format,
       desc: 'Output format',
       aliases: '-f',
-      enum: %w(json yaml raw),
+      enum: %w[json yaml raw],
       default: 'json'
     method_option :data,
       desc: 'Data to pass in the request body (in JSON format)',
@@ -384,7 +384,7 @@ module OneviewSDK
     method_option :format,
       desc: 'Output format',
       aliases: '-f',
-      enum: %w(json yaml),
+      enum: %w[json yaml],
       default: 'json'
     desc 'to_file TYPE NAME', 'Save resource details to file'
     # Save resource details to file
@@ -436,7 +436,7 @@ module OneviewSDK
     method_option :format,
       desc: 'Output format',
       aliases: '-f',
-      enum: %w(json yaml raw),
+      enum: %w[json yaml raw],
       default: 'json'
     scmb_examples = "\n  oneview-sdk-ruby scmb -r 'scmb.ethernet-networks.#'"
     scmb_examples << "\n  oneview-sdk-ruby scmb -r 'scmb.ethernet-networks.Created'"

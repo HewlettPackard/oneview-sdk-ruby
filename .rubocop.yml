@@ -19,53 +19,66 @@ Metrics/ModuleLength:
   Exclude:
     - 'lib/oneview-sdk/rest.rb'
 
+Metrics/BlockLength:
+  Max: 150
+  Exclude:
+    - 'lib/oneview-sdk/rest.rb'
+
 Style/GlobalVars:
   AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $client_500, $client_500_synergy]
 
-Style/IndentationWidth:
-  Width: 2
-
-Style/VariableName:
-  EnforcedStyle: snake_case
-  Exclude:
-    - 'lib/oneview-sdk/resource/**/*'
-
-Style/MethodName:
-  Exclude:
-    - 'lib/oneview-sdk/resource/**/*'
-
-Style/FileName:
-  Exclude:
-    - 'lib/oneview-sdk.rb'
-    - 'bin/oneview-sdk'
-
-Style/AlignParameters:
-  Exclude:
-    - 'lib/oneview-sdk/cli.rb'
-
-
-Style/AccessorMethodName:
-  Enabled: false
-
-Style/EmptyLines:
-  Enabled: false
-
 Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/IndentArray:
-  Enabled: false
-
-Style/MultilineOperationIndentation:
   Enabled: false
 
 Style/RescueModifier:
   Enabled: false
 
-Style/EmptyLinesAroundBlockBody:
+Style/NestedParenthesizedCalls:
   Enabled: false
 
-Style/EmptyLinesAroundClassBody:
+Naming/VariableName:
+  EnforcedStyle: snake_case
+  Exclude:
+    - 'lib/oneview-sdk/resource/**/*'
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Naming/MethodName:
+  Exclude:
+    - 'lib/oneview-sdk/resource/**/*'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/oneview-sdk.rb'
+    - 'bin/oneview-sdk'
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Layout/AlignParameters:
+  Exclude:
+    - 'lib/oneview-sdk/cli.rb'
+
+Layout/IndentationWidth:
+  Width: 2
+
+Layout/EmptyLines:
+  Enabled: false
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Layout/IndentArray:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
   Enabled: false
 
 Metrics/AbcSize:

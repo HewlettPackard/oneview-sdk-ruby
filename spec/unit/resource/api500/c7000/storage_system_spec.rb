@@ -7,7 +7,7 @@ RSpec.describe OneviewSDK::API500::C7000::StorageSystem do
   let(:empty_item) { described_class.new(client) }
 
   it 'the UNIQUE_IDENTIFIERS shoud have name, uri and hostname' do
-    expect(described_class::UNIQUE_IDENTIFIERS).to eq(%w(name uri hostname))
+    expect(described_class::UNIQUE_IDENTIFIERS).to eq(%w[name uri hostname])
   end
 
   it 'inherits from OneviewSDK::API300::C7000::StorageSystem' do

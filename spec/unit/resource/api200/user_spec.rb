@@ -57,7 +57,7 @@ RSpec.describe klass do
 
     it 'sets the roles if they do not match the response' do
       fake_response = FakeResponse.new(roles: ['Network administrator'])
-      data2 = { 'body' => @res.data.select { |k, _v| k.to_s != 'roles' } }
+      data2 = { 'body' => @res.data.reject { |k, _v| k.to_s == 'roles' } }
       expect(@client_200).to receive(:rest_put).with(klass::BASE_URI, data2, 200).and_return(fake_response)
       expect(@res).to receive(:set_roles).with(@res['roles']).and_return(fake_response)
       @res.update
@@ -89,7 +89,7 @@ RSpec.describe klass do
       fake_response = FakeResponse.new([{ 'roleName' => 'Network administrator' }])
       data = { 'body' => [{ roleName: 'Network administrator', type: 'RoleNameDtoV2' }] }
       expect(@client_200).to receive(:rest_put).with("#{@data['uri']}/roles?multiResource=true", data, 200)
-        .and_return(fake_response)
+                                               .and_return(fake_response)
       expect(@res['roles']).to eq(['Read only']) # Before
       @res.set_roles(['Network administrator'])
       expect(@res['roles']).to eq(['Network administrator']) # After
@@ -101,7 +101,7 @@ RSpec.describe klass do
       user_name = 'userName'
       fake_response = FakeResponse.new
       expect(@client_200).to receive(:rest_post).with("#{klass::BASE_URI}/validateLoginName/#{user_name}")
-        .and_return(fake_response)
+                                                .and_return(fake_response)
       expect(@client_200).to receive(:response_handler).with(fake_response).and_return(true)
       expect(klass.validate_user_name(@client_200, user_name)).to eq(true)
     end
@@ -112,7 +112,7 @@ RSpec.describe klass do
       full_name = 'fullName'
       fake_response = FakeResponse.new
       expect(@client_200).to receive(:rest_post).with("#{klass::BASE_URI}/validateUserName/#{full_name}")
-        .and_return(fake_response)
+                                                .and_return(fake_response)
       expect(@client_200).to receive(:response_handler).with(fake_response).and_return(true)
       expect(klass.validate_full_name(@client_200, full_name)).to eq(true)
     end

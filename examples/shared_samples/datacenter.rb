@@ -58,7 +58,7 @@ datacenter_class.get_all(@client).each do |datacenter|
 end
 
 puts "\nFinding a datacenter by name = #{datacenter_name}"
-item3 = datacenter_class.find_by(@client, name:  'OneViewSDK Test Datacenter').first
+item3 = datacenter_class.find_by(@client, name: 'OneViewSDK Test Datacenter').first
 puts "\nDatacenter found successfully. \nName = #{item3['name']}"
 
 puts "\nUpdating datacenter name"

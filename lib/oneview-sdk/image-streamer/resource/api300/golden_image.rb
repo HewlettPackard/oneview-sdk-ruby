@@ -17,7 +17,7 @@ module OneviewSDK
       # Golden Image resource implementation for Image Streamer
       class GoldenImage < Resource
         BASE_URI = '/rest/golden-images'.freeze
-        ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
+        ACCEPTED_FORMATS = %w[.zip .ZIP].freeze # Supported upload extensions
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::ImageStreamer::Client] client The client object for the Image Streamer appliance

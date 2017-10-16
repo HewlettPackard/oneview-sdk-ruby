@@ -97,7 +97,7 @@ utilization = item2.utilization(view: 'day')
 puts utilization
 
 puts "\nGetting the utilization data by fields"
-utilization = item2.utilization(fields: %w(AmbientTemperature))
+utilization = item2.utilization(fields: %w[AmbientTemperature])
 puts utilization
 
 puts "\nGetting the utilization data by filters"

@@ -214,7 +214,7 @@ module OneviewSDK
           return response.body
         end
       when RESPONSE_CODE_CREATED # Synchronous add
-        return JSON.parse(response.body)
+        JSON.parse(response.body)
       when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete
         return JSON.parse(response.body) unless wait_on_task
         @logger.debug "Waiting for task: response.header['location']"
@@ -222,9 +222,9 @@ module OneviewSDK
         task = wait_for(uri)
         return true unless task['associatedResource'] && task['associatedResource']['resourceUri']
         resource_data = rest_get(task['associatedResource']['resourceUri'])
-        return JSON.parse(resource_data.body)
+        JSON.parse(resource_data.body)
       when RESPONSE_CODE_NO_CONTENT # Synchronous delete
-        return {}
+        {}
       when RESPONSE_CODE_BAD_REQUEST
         BadRequest.raise! "400 BAD REQUEST #{response.body}", response
       when RESPONSE_CODE_UNAUTHORIZED

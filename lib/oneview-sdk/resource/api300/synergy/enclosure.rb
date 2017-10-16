@@ -22,7 +22,7 @@ module OneviewSDK
         # @return [Array<OneviewSDK:API300:Synergy::Enclosure>] containing the added enclosures
         def add
           ensure_client
-          required_attributes = %w(hostname)
+          required_attributes = %w[hostname]
           required_attributes.each { |k| raise IncompleteResource, "Missing required attribute: '#{k}'" unless @data.key?(k) }
 
           temp_data = @data.select { |k, _v| required_attributes.include?(k) }

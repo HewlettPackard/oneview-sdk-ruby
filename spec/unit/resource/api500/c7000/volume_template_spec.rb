@@ -19,7 +19,7 @@ RSpec.describe OneviewSDK::API500::C7000::VolumeTemplate do
       expect(item).to receive(:ensure_client).and_return(true)
       expect(item).to receive(:ensure_uri).and_return(true)
       expect(@client_500).to receive(:rest_delete).with('/rest/storage-volume-templates/UUID-111', { 'If-Match' => 'eTag key' }, 500)
-        .and_return(fake_response)
+                                                  .and_return(fake_response)
       expect(@client_500).to receive(:response_handler).with(fake_response)
       item['eTag'] = 'eTag key'
       expect(item.delete).to eq(true)

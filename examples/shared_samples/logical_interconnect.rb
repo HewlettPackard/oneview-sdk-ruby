@@ -233,10 +233,10 @@ puts "\n#{item['snmpConfiguration']}"
 
 # Adding configuration
 item['snmpConfiguration']['snmpAccess'].push('172.18.6.15/24')
-enet_trap = %w(PortStatus)
-fc_trap = %w(PortStatus)
-vcm_trap = %w(Legacy)
-trap_sev = %w(Normal Warning Critical)
+enet_trap = %w[PortStatus]
+fc_trap = %w[PortStatus]
+vcm_trap = %w[Legacy]
+trap_sev = %w[Normal Warning Critical]
 trap_options = item.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev)
 item.add_snmp_trap_destination('172.18.6.16', 'SNMPv2', 'public', trap_options)
 

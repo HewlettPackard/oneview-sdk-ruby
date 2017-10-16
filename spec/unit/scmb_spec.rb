@@ -59,7 +59,7 @@ RSpec.describe OneviewSDK::SCMB do
       resp2 = FakeResponse.new(keypair)
       expect(@client_300).to receive(:rest_get).with(keypair_uri).and_return(resp1, resp2)
       expect(@client_300).to receive(:rest_post).with('/rest/certificates/client/rabbitmq', Hash)
-        .and_return(FakeResponse.new)
+                                                .and_return(FakeResponse.new)
       expect(@client_300.logger).to receive(:info).with(/default keypair not found\. Creating it/)
       expect(described_class.get_or_create_keypair(@client_300)). to eq(keypair)
     end

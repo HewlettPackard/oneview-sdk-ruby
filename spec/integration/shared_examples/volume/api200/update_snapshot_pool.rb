@@ -17,7 +17,7 @@ RSpec.shared_examples 'VolumeSnapshotPoolUpdateExample' do |context_name|
       volume = described_class.find_by(current_client, name: VOLUME4_NAME).first
       storage_pools = resource_class_of('StoragePool').find_by(current_client, storageSystemUri: volume['storageSystemUri'])
       old_snapshot_pool = resource_class_of('StoragePool').find_by(current_client, uri: volume['snapshotPoolUri']).first
-      new_snapshot_pool = storage_pools.select { |pool| pool['uri'] != old_snapshot_pool['uri'] }.first
+      new_snapshot_pool = storage_pools.reject { |pool| pool['uri'] == old_snapshot_pool['uri'] }.first
       volume.set_snapshot_pool(new_snapshot_pool)
       volume.update
       volume.retrieve!

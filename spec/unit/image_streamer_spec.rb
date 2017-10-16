@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::ImageStreamer do
   end
 
   it 'returns a valid API version' do
-    %w(API300).each { |v| expect { OneviewSDK::ImageStreamer.const_get(v) }.not_to raise_error }
+    %w[API300].each { |v| expect { OneviewSDK::ImageStreamer.const_get(v) }.not_to raise_error }
   end
 
   it 'raises an error when an invalid API300 version is called' do
