@@ -12,11 +12,14 @@
 require 'time'
 require 'date'
 require_relative 'resource'
+require_relative '../../resource_helper'
 
 module OneviewSDK
   module API200
     # Enclosure resource implementation
     class Enclosure < Resource
+      include OneviewSDK::ResourceHelper::ConfigurationOperation
+
       BASE_URI = '/rest/enclosures'.freeze
       UNIQUE_IDENTIFIERS = %w(name uri serialNumber activeOaPreferredIP standbyOaPreferredIP).freeze
 
@@ -82,15 +85,6 @@ module OneviewSDK
         end
         self
       end
-
-      # Reapplies the enclosure configuration
-      def configuration
-        ensure_client && ensure_uri
-        response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
-        new_data = @client.response_handler(response)
-        set_all(new_data)
-      end
-
 
       # Refreshes the enclosure along with all of its components
       # @param [String] state NotRefreshing, RefreshFailed, RefreshPending, Refreshing

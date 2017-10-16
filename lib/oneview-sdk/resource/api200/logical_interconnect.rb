@@ -10,11 +10,14 @@
 # language governing permissions and limitations under the License.
 
 require_relative 'resource'
+require_relative '../../resource_helper'
 
 module OneviewSDK
   module API200
     # Logical interconnect resource implementation
     class LogicalInterconnect < Resource
+      include OneviewSDK::ResourceHelper::ConfigurationOperation
+
       BASE_URI = '/rest/logical-interconnects'.freeze
       LOCATION_URI = '/rest/logical-interconnects/locations/interconnects'.freeze
 
@@ -131,15 +134,6 @@ module OneviewSDK
       def compliance
         ensure_client && ensure_uri
         response = @client.rest_put(@data['uri'] + '/compliance', {}, @api_version)
-        body = client.response_handler(response)
-        set_all(body)
-      end
-
-      # Asynchronously applies or re-applies the logical interconnect configuration to all managed interconnects
-      # @return returns the updated object
-      def configuration
-        ensure_client && ensure_uri
-        response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
         body = client.response_handler(response)
         set_all(body)
       end

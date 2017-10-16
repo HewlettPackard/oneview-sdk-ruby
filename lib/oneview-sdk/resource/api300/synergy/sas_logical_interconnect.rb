@@ -16,6 +16,8 @@ module OneviewSDK
     module Synergy
       # SAS logical interconnect resource implementation
       class SASLogicalInterconnect < Resource
+        include OneviewSDK::ResourceHelper::ConfigurationOperation
+
         BASE_URI = '/rest/sas-logical-interconnects'.freeze
 
         # Create a resource object, associate it with a client, and set its properties.
@@ -94,15 +96,6 @@ module OneviewSDK
           }
           response = @client.rest_post(@data['uri'] + '/replaceDriveEnclosure', update_json)
           @client.response_handler(response)
-        end
-
-        # Asynchronously applies or re-applies the SAS logical interconnect configuration to all managed interconnects
-        # @return returns the updated object
-        def configuration
-          ensure_client && ensure_uri
-          response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
-          body = client.response_handler(response)
-          set_all(body)
         end
       end
     end
