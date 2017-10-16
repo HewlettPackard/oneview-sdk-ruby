@@ -17,7 +17,7 @@ module OneviewSDK
     module C7000
       # Contains helper methods to include operation with firmware of a given logical enclosure resource
       module FirmwareHelper
-        include ResourceHelper
+        include ResourceHelper::PatchOperation
 
         # Updates  the firmware attributes of a given logical enclosure resource
         # @param [Hash] attributes Hash with firmware attributes

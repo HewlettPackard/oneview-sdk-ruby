@@ -16,7 +16,7 @@ module OneviewSDK
   module API200
     # Server profile resource implementation
     class ServerProfile < Resource
-      include OneviewSDK::ResourceHelper
+      include OneviewSDK::ResourceHelper::PatchOperation
       BASE_URI = '/rest/server-profiles'.freeze
       UNIQUE_IDENTIFIERS = %w(name uri associatedServer serialNumber serverHardwareUri).freeze
 

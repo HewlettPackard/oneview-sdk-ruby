@@ -17,7 +17,7 @@ module OneviewSDK
     module C7000
       # Logical Enclosure resource implementation on API300 C7000
       class LogicalEnclosure < OneviewSDK::API200::LogicalEnclosure
-        include OneviewSDK::ResourceHelper
+        include OneviewSDK::ResourceHelper::PatchOperation
 
         def initialize(client, params = {}, api_ver = nil)
           super
