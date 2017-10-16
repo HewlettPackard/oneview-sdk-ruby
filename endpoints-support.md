@@ -182,7 +182,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/interconnects</sub>                                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/interconnects/{id}</sub>                                                      | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/interconnects/{id}</sub>                                                      | PATCH    | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/interconnects/{id}/configuration</sub>                                        | PUT      | :heavy_minus_sign:   | :heavy_minus_sign:   |    |
+|<sub>/rest/interconnects/{id}/configuration</sub>                                        | PUT      | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |
 |<sub>/rest/interconnects/{id}/pluggableModuleInformation</sub>                           | GET      | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |
 |<sub>/rest/interconnects/{id}/ports</sub>                                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/interconnects/{id}/ports</sub>                                                | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
