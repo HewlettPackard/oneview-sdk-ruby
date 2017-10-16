@@ -1,7 +1,8 @@
 ## v5.2.0 (Unreleased)
 
-#### New features
-- [#290](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/290) Adding update ports for Switch API 300
+#### New Features:
+- [#287](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/287) Missing method to apply/reapply configuration to Interconnect of API500
+- [#290](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/290) Missing update ports method for Switch on API 300
 
 ## v5.1.2
 #### Notes
