@@ -25,6 +25,18 @@ module OneviewSDK
         def set_scope_uris(scope_uris)
           patch('replace', '/scopeUris', scope_uris)
         end
+
+        # Updates the switch ports
+        # @note Only the ports under the management of OneView and those that are unlinked are supported for update
+        # @param [String] portName port name
+        # @param [Hash] attributes hash with attributes and values to be changed
+        def update_port(portName, attributes)
+          ensure_uri
+          port = @data['ports'].select { |p| p['portName'] == portName }.first
+          attributes.each { |key, value| port[key.to_s] = value }
+          response = @client.rest_put(@data['uri'] + '/update-ports', 'body' => [port])
+          @client.response_handler(response)
+        end
       end
     end
   end
