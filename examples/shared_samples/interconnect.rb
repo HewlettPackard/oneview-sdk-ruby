@@ -112,12 +112,12 @@ rescue NoMethodError
   puts 'The method #get_pluggable_module_information is available only for api greater than or equal to 500.'
 end
 
-# Applies or re-applies the current interconnect configuration.
-# This method 'configuration' was added from api version 500.
+# Applies or reapplies the current interconnect configuration.
+# This method 'configuration' was added in API version 500.
 begin
   puts "\nApplying the configuration to interconnect #{item['uri']}."
   item.configuration
   puts "\nThe action was executed successfully"
 rescue NoMethodError
-  puts 'The method #configuration is available only for api greater than or equal to 500.'
+  puts 'The method #configuration is available only for API version greater than or equal to 500.'
 end
