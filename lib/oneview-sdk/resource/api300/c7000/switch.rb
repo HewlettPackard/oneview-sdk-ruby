@@ -32,7 +32,7 @@ module OneviewSDK
         # @param [Hash] attributes hash with attributes and values to be changed
         def update_port(portName, attributes)
           ensure_uri
-          port = @data['ports'].select { |p| p['portName'] == portName }.first
+          port = @data['ports'].find { |p| p['portName'] == portName }
           attributes.each { |key, value| port[key.to_s] = value }
           response = @client.rest_put(@data['uri'] + '/update-ports', 'body' => [port])
           @client.response_handler(response)

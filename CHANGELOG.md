@@ -1,6 +1,6 @@
 ## v5.2.0 (Unreleased)
 
-#### Bug fixes & Enhancements
+#### New features
 - [#290](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/290) Adding update ports for Switch API 300
 
 ## v5.1.2

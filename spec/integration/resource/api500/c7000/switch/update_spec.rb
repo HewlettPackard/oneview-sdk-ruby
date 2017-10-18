@@ -14,7 +14,6 @@ require 'spec_helper'
 klass = OneviewSDK::API500::C7000::Switch
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:current_client) { $client_500 }
-  include_examples 'SwitchUpdateExample', 'integration api500 context'
   include_examples 'SwitchUpdateExample  API300', 'integration api500 context'
 
   describe '#set_scope_uris' do

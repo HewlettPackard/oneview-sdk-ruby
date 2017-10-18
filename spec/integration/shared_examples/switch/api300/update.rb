@@ -34,4 +34,6 @@ RSpec.shared_examples 'SwitchUpdateExample  API300' do |context_name|
       expect(port_updated['enabled']).to eq(old_enabled)
     end
   end
+
+  include_examples 'SwitchUpdateExample', context_name
 end
