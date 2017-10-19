@@ -1,4 +1,4 @@
-## v5.2.0 (Unreleased)
+## v5.2.0
 
 #### New Features:
 - [#287](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/287) Missing method to apply/reapply configuration to Interconnect of API500
