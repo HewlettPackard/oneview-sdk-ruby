@@ -472,7 +472,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/switches/{id}/environmentalConfiguration</sub>                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/switches/{id}/statistics</sub>                                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/switches/{id}/statistics/{portName:.+}</sub>                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/switches/{id}/update-ports</sub>                                              | PUT      | :heavy_minus_sign:   |    |    |
+|<sub>/rest/switches/{id}/update-ports</sub>                                              | PUT      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
 |     **Switch Type**                                                                                                                              |
 |<sub>/rest/switch-types</sub>                                                            | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/switch-types/{id}</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |

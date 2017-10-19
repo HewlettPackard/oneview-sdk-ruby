@@ -3,7 +3,7 @@ require 'spec_helper'
 klass = OneviewSDK::API300::C7000::Switch
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:current_client) { $client_300 }
-  include_examples 'SwitchUpdateExample', 'integration api300 context'
+  include_examples 'SwitchUpdateExample  API300', 'integration api300 context'
 
   describe '#set_scope_uris' do
     it 'replaces the switch scopeUris' do

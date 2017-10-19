@@ -63,6 +63,46 @@ if variant != 'Synergy'
   config = item.environmental_configuration
   puts "\nEnvironmental configuration for switch with name: #{item['name']}"
   puts config
+
+  puts "\nUpdating the switch ports."
+  begin
+    # Getting a switch with unlinked ports
+    item2 = switch_class.get_all(@client).find do |resource|
+      !resource['ports'].select { |k| k['portStatus'] == 'Unlinked' }.empty?
+    end
+    port = item2['ports'].select { |k| k['portStatus'] == 'Unlinked' }.first
+    old_enabled = port['enabled']
+    enable_msg = port['enabled'] ? 'enabled' : 'disabled'
+    puts "\nSwitch '#{item2['name']}' with port name '#{port['portName']}' is #{enable_msg}."
+    item2.update_port(port['name'], enabled: !old_enabled)
+    sleep(30)
+    item2.retrieve!
+    port_updated = item2['ports'].select { |k| k['portName'] == port['name'] }.first
+    enable_msg = port_updated['enabled'] ? 'enabled' : 'disabled'
+    puts "\nSwitch '#{item2['name']}' with port name '#{port['portName']}' is #{enable_msg}."
+    puts "\nReturning to original state..."
+    eth_options = {
+      vlanId:  '1001',
+      purpose:  'General',
+      name:  'Ethernet Network for Switch',
+      smartLink:  false,
+      privateNetwork:  false,
+      connectionTemplateUri: nil
+    }
+    eth = OneviewSDK.resource_named('EthernetNetwork', @client.api_version).new(@client, eth_options)
+    eth.create
+    eth.retrieve!
+    item2.update_port(port['name'], enabled: old_enabled, associatedUplinkSetUri: eth['uri'])
+    sleep(30)
+    item2.retrieve!
+    port_updated = item2['ports'].select { |k| k['portName'] == port['name'] }.first
+    enable_msg = port_updated['enabled'] ? 'enabled' : 'disabled'
+    puts "\nSwitch '#{item2['name']}' with port name '#{port['portName']}' is #{enable_msg}."
+    # Delete the ethernet network created
+    eth.delete
+  rescue NoMethodError
+    puts "\nUpdate ports operations is not supported in this version."
+  end
 end
 
 # In these lines below is added, replaced and removed a scopeUri to the switch resource.

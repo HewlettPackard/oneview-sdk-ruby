@@ -1,3 +1,8 @@
+## v5.2.0 (Unreleased)
+
+#### New features
+- [#290](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/290) Adding update ports for Switch API 300
+
 ## v5.1.2
 #### Notes
 This release adds the [endpoints-support.md](endpoints-support.md) file to the repository, in order to track implemented endpoints and what is in the scope of this SDK.
@@ -12,7 +17,7 @@ Also adds the [TESTING.md](TESTING.md) file to the repository, in order to guide
 #### Bug fixes & Enhancements
 - [#279](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/279) Bug when setting the Storage Pool and Snapshot Pool when trying to make an update
 
-# v5.1.0
+## v5.1.0
 
 #### Bug fixes & Enhancements
 1. The method `self.add` in the Volumes API 500 was deprecated, use the `add` method instead.
