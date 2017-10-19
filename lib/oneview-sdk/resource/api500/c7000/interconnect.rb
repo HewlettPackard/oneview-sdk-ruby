@@ -16,6 +16,7 @@ module OneviewSDK
     module C7000
       # Interconnect resource implementation on API500 C7000
       class Interconnect < OneviewSDK::API300::C7000::Interconnect
+        include OneviewSDK::ResourceHelper::ConfigurationOperation
 
         # Gets all the Small Form-factor Pluggable (SFP) instances from an interconnect.
         # @return [Hash] hash The Small Form-factor Pluggable (SFP) instances of the interconnect

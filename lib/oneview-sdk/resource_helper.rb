@@ -12,19 +12,33 @@
 module OneviewSDK
   # Contains helper methods to include certain functionalities on resources
   module ResourceHelper
-    # Performs a specific patch operation for the given resource.
-    # If the resource supports the particular operation, the operation is performed
-    # and a response is returned to the caller with the results.
-    # @param [String] operation The operation to be performed
-    # @param [String] path The path of operation
-    # @param [String] value The value
-    # @note This attribute is subject to incompatible changes in future release versions, including redefinition or removal.
-    def patch(operation, path, value = nil, header_options = {})
-      ensure_client && ensure_uri
-      options = { 'body' => [op: operation, path: path, value: value] }
-      options = options.merge(header_options)
-      response = @client.rest_patch(@data['uri'], options, @api_version)
-      @client.response_handler(response)
+    # Contains helper method to call patch endpoint of resource
+    module PatchOperation
+      # Performs a specific patch operation for the given resource.
+      # If the resource supports the particular operation, the operation is performed
+      # and a response is returned to the caller with the results.
+      # @param [String] operation The operation to be performed
+      # @param [String] path The path of operation
+      # @param [String] value The value
+      # @note This attribute is subject to incompatible changes in future release versions, including redefinition or removal.
+      def patch(operation, path, value = nil, header_options = {})
+        ensure_client && ensure_uri
+        options = { 'body' => [op: operation, path: path, value: value] }
+        options = options.merge(header_options)
+        response = @client.rest_patch(@data['uri'], options, @api_version)
+        @client.response_handler(response)
+      end
+    end
+
+    # Contains helper method to call configuration endpoint of resource
+    module ConfigurationOperation
+      # Reapplies the configuration
+      def configuration
+        ensure_client && ensure_uri
+        response = @client.rest_put(@data['uri'] + '/configuration', {}, @api_version)
+        new_data = @client.response_handler(response)
+        set_all(new_data)
+      end
     end
   end
 end

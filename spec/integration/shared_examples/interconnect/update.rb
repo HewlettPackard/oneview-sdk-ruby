@@ -54,6 +54,12 @@ RSpec.shared_examples 'InterconnectUpdateExample' do |context_name|
     end
   end
 
+  describe '#configuration' do
+    it 'applies or re-applies the current interconnect configuration.' do
+      expect { item.configuration }.not_to raise_error
+    end
+  end
+
   describe '#patch' do
     xit 'update a given interconnect across a patch (Skipping this test due to the lack of type of interconnection that supports this operation)' do
       expect { item.patch('replace', '/uidState', 'Off') }.not_to raise_error
