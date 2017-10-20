@@ -9,6 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require 'addressable'
 require 'uri'
 require 'net/http'
 require 'openssl'
@@ -41,7 +42,7 @@ module OneviewSDK
     # @return [Boolean] Whether or not certificate is trusted
     # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.check_cert(url)
-      uri = URI.parse(URI.escape(url))
+      uri = URI.parse(Addressable::URI.escape(url))
       raise InvalidURL, "Invalid url '#{url}'" unless uri.host
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true if uri.scheme == 'https'
@@ -58,7 +59,7 @@ module OneviewSDK
     # @param [String] url URL for the OneView Instance to be added
     # @raise [OneviewSDK::InvalidURL] if the url is invalid
     def self.install_cert(url)
-      uri = URI.parse(URI.escape(url))
+      uri = URI.parse(Addressable::URI.escape(url))
       raise InvalidURL, "Invalid url '#{url}'" unless uri.host
       options = { use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE }
       pem = Net::HTTP.start(uri.host, uri.port, options) do |http|

@@ -47,7 +47,7 @@ module OneviewSDK
         # @return [OneviewSDK::StorageSystem] self
         def add
           ensure_client
-          temp_old_data = JSON.load(@data.to_json)
+          temp_old_data = JSON.parse(@data.to_json)
           credentials = temp_old_data['credentials'] || {}
           request_body = {
             'family'   => @data['family'],
@@ -103,7 +103,7 @@ module OneviewSDK
         # @return [Boolean] Whether or not retrieve was successful
         # @raise [OneviewSDK::IncompleteResource] if required attributes are not filled
         def retrieve!
-          data_temp = JSON.load(@data.to_json)
+          data_temp = JSON.parse(@data.to_json)
           serial_number = data_temp['deviceSpecificAttributes']['serialNumber'] rescue nil
           wwn = data_temp['deviceSpecificAttributes']['wwn'] rescue nil
 

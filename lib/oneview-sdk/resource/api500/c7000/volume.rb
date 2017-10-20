@@ -58,7 +58,7 @@ module OneviewSDK
         # @return [true] if resource was deleted successfully.
         def delete(flag = :all)
           ensure_client && ensure_uri
-          raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless flag == :oneview || flag == :all
+          raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless %i[oneview all].include?(flag)
           uri = @data['uri']
           uri << '?suppressDeviceUpdates=true' if flag == :oneview
           response = @client.rest_delete(uri, 'If-Match' => @data['eTag'])

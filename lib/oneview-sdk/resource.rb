@@ -133,7 +133,7 @@ module OneviewSDK
     # @return The value set for the given key
     def []=(key, value)
       set(key, value)
-      value
+      # value
     end
 
     # Check equality of 2 resources. Same as eql?(other)
@@ -379,7 +379,7 @@ module OneviewSDK
 
     # Fail for methods that are not available for one resource
     def unavailable_method
-      raise MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
+      raise MethodUnavailable, "The method ##{caller(1..1).first[/`.*'/][1..-2]} is unavailable for this resource"
     end
 
     private

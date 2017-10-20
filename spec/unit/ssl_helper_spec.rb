@@ -85,7 +85,7 @@ RSpec.describe OneviewSDK::SSLHelper do
     end
 
     before :each do
-      @uri = URI.parse(URI.escape(valid_url))
+      @uri = URI.parse(CGI.escape(valid_url))
       @cert_dir = File.dirname(described_class::CERT_STORE)
     end
 

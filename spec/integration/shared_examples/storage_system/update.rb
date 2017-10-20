@@ -12,7 +12,7 @@
 RSpec.shared_examples 'StorageSystemUpdateExample' do |context_name, api_version|
   include_context context_name
 
-  let(:item_attributes_2) { JSON.load(item_attributes.to_json) }
+  let(:item_attributes_2) { JSON.parse(item_attributes.to_json) }
 
   describe '#update', if: api_version <= 300 do
     it '#updating fc_network unmanaged ports' do

@@ -17,9 +17,9 @@ require_relative 'ssl_helper'
 module OneviewSDK
   # The client defines the connection to the OneView server and handles communication with it.
   class Client
-    attr_reader :max_api_version
+    attr_reader :max_api_version, :log_level
     attr_accessor :url, :user, :token, :password, :domain, :ssl_enabled, :api_version, \
-                  :logger, :log_level, :cert_store, :print_wait_dots, :timeout
+                  :logger, :cert_store, :print_wait_dots, :timeout
 
     include Rest
 

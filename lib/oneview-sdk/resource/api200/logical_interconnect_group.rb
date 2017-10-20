@@ -63,10 +63,9 @@ module OneviewSDK
           end
         end
 
-        unless entry_already_present
-          new_entry = new_interconnect_entry_template(bay, interconnect_type['uri'])
-          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << new_entry
-        end
+        return if entry_already_present
+        new_entry = new_interconnect_entry_template(bay, interconnect_type['uri'])
+        @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] << new_entry
       end
 
       # Adds an uplink set

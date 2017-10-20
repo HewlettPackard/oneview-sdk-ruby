@@ -45,8 +45,8 @@ RSpec.describe klass do
     end
 
     it 'gets an interconnect type' do
-      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).with('/rest/sas-interconnect-types')
-                                                                     .and_return(FakeResponse.new('members' => [{ 'name' => @type, 'uri' => '/rest/fake' }]))
+      member_response = FakeResponse.new('members' => [{ 'name' => @type, 'uri' => '/rest/fake' }])
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).with('/rest/sas-interconnect-types').and_return(member_response)
       item = klass.get_type(@client_300, @type)
       expect(item['name']).to eq(@type)
     end
