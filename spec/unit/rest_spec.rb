@@ -1,4 +1,6 @@
 require_relative './../spec_helper'
+require 'uri'
+require 'addressable/uri'
 
 # Tests for the Rest module
 RSpec.describe OneviewSDK::Client do
@@ -192,7 +194,7 @@ RSpec.describe OneviewSDK::Client do
 
   describe '#build_request' do
     before :each do
-      @uri = URI.parse(CGI.escape(@client_200.url + path))
+      @uri = URI.parse(Addressable::URI.escape(@client_200.url + path))
       @options = {
         'X-API-Version' => @client_200.api_version,
         'auth' => @client_200.token

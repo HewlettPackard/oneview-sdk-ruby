@@ -1,5 +1,6 @@
 require_relative './../spec_helper'
 require 'uri'
+require 'addressable/uri'
 
 # Tests for the SSLHelper module
 RSpec.describe OneviewSDK::SSLHelper do
@@ -52,7 +53,7 @@ RSpec.describe OneviewSDK::SSLHelper do
 
       it 'requires a valid url' do
         expect { described_class.check_cert('blah') }.to raise_error(OneviewSDK::InvalidURL, /Invalid url/)
-        expect { described_class.check_cert('http://') }.to raise_error(/(Invalid url)|(bad URI)/) # Differs on Ruby 2.1 and 2.2
+        expect { described_class.check_cert('http://') }.to raise_error(Addressable::URI::InvalidURIError, /URI missing/)
         expect { described_class.check_cert('10.0.0.1') }.to raise_error(OneviewSDK::InvalidURL, /Invalid url/)
       end
     end
@@ -79,13 +80,13 @@ RSpec.describe OneviewSDK::SSLHelper do
 
       it 'requires a valid url' do
         expect { described_class.install_cert('blah') }.to raise_error(OneviewSDK::InvalidURL, /Invalid url/)
-        expect { described_class.check_cert('http://') }.to raise_error(/(Invalid url)|(bad URI)/) # Differs on Ruby 2.1 and 2.2
+        expect { described_class.check_cert('http://') }.to raise_error(Addressable::URI::InvalidURIError, /URI missing/)
         expect { described_class.install_cert('10.0.0.1') }.to raise_error(OneviewSDK::InvalidURL, /Invalid url/)
       end
     end
 
     before :each do
-      @uri = URI.parse(CGI.escape(valid_url))
+      @uri = URI.parse(Addressable::URI.escape(valid_url))
       @cert_dir = File.dirname(described_class::CERT_STORE)
     end
 
