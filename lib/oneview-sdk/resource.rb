@@ -133,7 +133,6 @@ module OneviewSDK
     # @return The value set for the given key
     def []=(key, value)
       set(key, value)
-      # value
     end
 
     # Check equality of 2 resources. Same as eql?(other)
