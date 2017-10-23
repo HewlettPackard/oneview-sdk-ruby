@@ -18,7 +18,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
   describe '::get_default_settings' do
     it 'should get the default settings' do
       expect(@client_200).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings', {}, @client_200.api_version)
-        .and_return(FakeResponse.new)
+                                               .and_return(FakeResponse.new)
       expect(OneviewSDK::LogicalInterconnectGroup.get_default_settings(@client_200)).to be
     end
   end
@@ -31,7 +31,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
     it 'adds a valid interconnect' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_200, @type)
-        .and_return('uri' => '/rest/fake')
+                                                            .and_return('uri' => '/rest/fake')
       @item.add_interconnect(3, @type)
       expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'].first['permittedInterconnectTypeUri'])
         .to eq('/rest/fake')
@@ -39,7 +39,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
 
     it 'raises an error if the interconnect is not found' do
       expect(OneviewSDK::Interconnect).to receive(:get_type).with(@client_200, @type)
-        .and_return(nil)
+                                                            .and_return(nil)
       expect(OneviewSDK::Interconnect).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.add_interconnect(3, @type) }.to raise_error(/not found!/)
     end
@@ -59,7 +59,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
     it 'should get the settings' do
       item = described_class.new(@client_200, uri: '/rest/fake')
       expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', {}, item.api_version)
-        .and_return(FakeResponse.new)
+                                               .and_return(FakeResponse.new)
       expect(item.get_settings).to be
     end
   end
@@ -69,7 +69,7 @@ RSpec.describe OneviewSDK::LogicalInterconnectGroup do
       it 'should work properly' do
         item = described_class.new(@client_200, uri: '/rest/fake')
         expect(@client_200).to receive(:rest_get).with('/rest/fake/settings', {}, item.api_version)
-          .and_return(FakeResponse.new)
+                                                 .and_return(FakeResponse.new)
         expect(item.get_settings).to be
       end
     end

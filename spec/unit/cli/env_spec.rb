@@ -63,7 +63,7 @@ RSpec.describe OneviewSDK::Cli do
     it 'prints the resource details in json format' do
       data = {}
       OneviewSDK::ENV_VARS.each { |k| data[k] = ENV[k] }
-      expect { OneviewSDK::Cli.start(%w(env -f json)) }.to output(JSON.pretty_generate(data) + "\n").to_stdout_from_any_process
+      expect { OneviewSDK::Cli.start(%w[env -f json]) }.to output(JSON.pretty_generate(data) + "\n").to_stdout_from_any_process
     end
   end
 end

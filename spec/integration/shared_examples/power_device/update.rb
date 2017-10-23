@@ -48,8 +48,8 @@ RSpec.shared_examples 'PowerDeviceUpdateExample' do |context_name|
 
   describe '#set_power_state [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
     it 'On|off state on a device that supports this operation' do
-      power_device = ipdu_list.reject { |ipdu| ipdu['model'] != 'Managed Ext. Bar Outlet' }.first
-      original_value, new_value = power_device.get_power_state == '"On"' ? %w(On Off) : %w(Off On)
+      power_device = ipdu_list.select { |ipdu| ipdu['model'] == 'Managed Ext. Bar Outlet' }.first
+      original_value, new_value = power_device.get_power_state == '"On"' ? %w[On Off] : %w[Off On]
 
       expect { power_device.set_power_state(new_value) }.not_to raise_error
       expect(power_device.get_power_state).to eq("\"#{new_value}\"")
@@ -62,7 +62,7 @@ RSpec.shared_examples 'PowerDeviceUpdateExample' do |context_name|
 
   describe '#set_uid_state [EXPECTED TO FAIL IF SCHEMATIC HAS NO IPDU]' do
     it 'On|off' do
-      original_value, new_value = item.get_uid_state == '"On"' ? %w(On Off) : %w(Off On)
+      original_value, new_value = item.get_uid_state == '"On"' ? %w[On Off] : %w[Off On]
 
       expect { item.set_uid_state(new_value) }.not_to raise_error
       expect(item.get_uid_state).to eq("\"#{new_value}\"")

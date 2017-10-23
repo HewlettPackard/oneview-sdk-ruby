@@ -21,7 +21,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
   describe '#update_ilo_firmware' do
     it '' do
       expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/mpFirmwareVersion')
-        .and_return(FakeResponse.new({}))
+                                               .and_return(FakeResponse.new({}))
       @item.update_ilo_firmware
     end
   end
@@ -29,7 +29,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
   describe '#get_bios' do
     it '' do
       expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/bios')
-        .and_return(FakeResponse.new({}))
+                                               .and_return(FakeResponse.new({}))
       @item.get_bios
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
   describe '#get_remote_console_url' do
     it '' do
       expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/remoteConsoleUrl')
-        .and_return(FakeResponse.new({}))
+                                               .and_return(FakeResponse.new({}))
       @item.get_remote_console_url
     end
   end
@@ -45,7 +45,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
   describe '#get_ilo_sso_url' do
     it '' do
       expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/iloSsoUrl')
-        .and_return(FakeResponse.new({}))
+                                               .and_return(FakeResponse.new({}))
       @item.get_ilo_sso_url
     end
   end
@@ -53,7 +53,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
   describe '#get_java_remote_sso_url' do
     it '' do
       expect(@client_300).to receive(:rest_get).with(@item['uri'] + '/javaRemoteConsoleUrl')
-        .and_return(FakeResponse.new({}))
+                                               .and_return(FakeResponse.new({}))
       @item.get_java_remote_sso_url
     end
   end
@@ -67,7 +67,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
     it 'does a PUT to /refreshState' do
       item = OneviewSDK::API300::C7000::ServerHardware.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
-        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+                                               .and_return(FakeResponse.new(refreshState: 'Refreshing'))
       item.set_refresh_state('Refreshing')
       expect(item['refreshState']).to eq('Refreshing')
     end
@@ -75,7 +75,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
     it 'allows string or symbol refreshState values' do
       item = OneviewSDK::API300::C7000::ServerHardware.new(@client_300, uri: '/rest/fake', refreshState: 'NotRefreshing')
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/refreshState', Hash, item.api_version)
-        .and_return(FakeResponse.new(refreshState: 'Refreshing'))
+                                               .and_return(FakeResponse.new(refreshState: 'Refreshing'))
       item.set_refresh_state(:Refreshing)
       expect(item['refreshState']).to eq('Refreshing')
     end
@@ -89,7 +89,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
 
     it 'gets uri/environmentalConfiguration' do
       expect(@client_300).to receive(:rest_get).with('/rest/fake/environmentalConfiguration', {}, @item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       expect(@item.environmental_configuration).to eq('key' => 'val')
     end
   end
@@ -102,26 +102,26 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
 
     it 'gets uri/utilization' do
       expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization', {}, @item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization).to eq('key' => 'val')
     end
 
     it 'takes query parameters' do
       expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?key=val', {}, @item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(key: :val)).to eq('key' => 'val')
     end
 
     it 'takes an array for the :fields query parameter' do
       expect(@client_300).to receive(:rest_get).with('/rest/fake/utilization?fields=one,two,three', {}, @item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
-      expect(@item.utilization(fields: %w(one two three))).to eq('key' => 'val')
+                                               .and_return(FakeResponse.new(key: 'val'))
+      expect(@item.utilization(fields: %w[one two three])).to eq('key' => 'val')
     end
 
     it 'converts Time query parameters' do
       t = Time.now
       expect(@client_300).to receive(:rest_get).with("/rest/fake/utilization?filter=startDate=#{t.utc.iso8601(3)}", {}, @item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       expect(@item.utilization(startDate: t)).to eq('key' => 'val')
     end
   end
@@ -145,7 +145,7 @@ RSpec.describe OneviewSDK::API300::C7000::ServerHardware do
       end
 
       it 'only sends certain attributes on the POST' do
-        data = @data.select { |k, _v| k != 'other' }
+        data = @data.reject { |k, _v| k == 'other' }
         expect(@client_300).to receive(:rest_post).with('/rest/server-hardware', { 'body' => data }, anything)
         @server_hardware.add
       end

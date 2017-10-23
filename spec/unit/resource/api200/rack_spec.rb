@@ -75,7 +75,7 @@ RSpec.describe OneviewSDK::Rack do
     it 'Should support add' do
       rack = OneviewSDK::Rack.new(@client_200, uri: '/rest/racks')
       expect(@client_200).to receive(:rest_post).with('/rest/racks', { 'body' => { 'uri' => '/rest/racks', 'rackMounts' => [] } }, 200)
-        .and_return(FakeResponse.new({}))
+                                                .and_return(FakeResponse.new({}))
       rack.add
     end
   end

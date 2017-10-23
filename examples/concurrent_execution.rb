@@ -26,7 +26,7 @@ require_relative '_client' # Gives access to @client
 # in my environment took 360 seconds, but only 16 seconds concurrently.
 # Here's how to use threads to power them all on concurrently:
 servers = @client.get_all(:ServerHardware)
-servers_to_power_on = servers.select { |s| s['powerState'] != 'On' }
+servers_to_power_on = servers.reject { |s| s['powerState'] == 'On' }
 puts "Total hardware count: #{servers.size}"
 puts "Hardware count to be powered on: #{servers_to_power_on.size}\n\n"
 

@@ -216,10 +216,10 @@ RSpec.shared_examples 'LogicalInterconnectUpdateExample' do |context_name|
     it 'adds one configuration' do
       # Adding configuration
       log_int['snmpConfiguration']['snmpAccess'].push('172.18.6.15/24')
-      enet_trap = %w(PortStatus)
-      fc_trap = %w(Other PortStatus)
-      vcm_trap = %w(Legacy)
-      trap_sev = %w(Normal Warning Critical)
+      enet_trap = %w[PortStatus]
+      fc_trap = %w[Other PortStatus]
+      vcm_trap = %w[Legacy]
+      trap_sev = %w[Normal Warning Critical]
       trap_options = log_int.generate_trap_options(enet_trap, fc_trap, vcm_trap, trap_sev)
       log_int.add_snmp_trap_destination('172.18.6.16', 'SNMPv2', 'public', trap_options)
 

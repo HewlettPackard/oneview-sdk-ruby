@@ -16,7 +16,7 @@ module OneviewSDK
     # User resource implementation
     class User < Resource
       BASE_URI = '/rest/users'.freeze
-      UNIQUE_IDENTIFIERS = %w(userName uri).freeze
+      UNIQUE_IDENTIFIERS = %w[userName uri].freeze
 
       # Create a resource object, associate it with a client, and set its properties.
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -53,7 +53,7 @@ module OneviewSDK
       def update(attributes = {})
         set_all(attributes)
         ensure_client && ensure_uri
-        new_data = @data.select { |k, _v| k.to_s != 'roles' } # This cannot be updated here. It is updated below
+        new_data = @data.reject { |k, _v| k.to_s == 'roles' } # This cannot be updated here. It is updated below
         response = @client.rest_put(self.class::BASE_URI, { 'body' => new_data }, @api_version)
         d = @client.response_handler(response)
         set_roles(@data['roles']) if @data['roles'] && @data['roles'].sort != d['roles'].sort

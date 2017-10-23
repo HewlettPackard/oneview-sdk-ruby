@@ -95,7 +95,7 @@ RSpec.describe klass do
       options = { name: 'image1', description: 'anything' }
       expected_options = { 'body' => { 'name' => 'image1', 'description' => 'anything' } }
       expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/golden-images', expected_options, OneviewSDK::Rest::READ_TIMEOUT)
-        .and_return({})
+                                                      .and_return({})
       klass.add(@client_i3s_300, 'file.zip', options)
     end
 
@@ -103,7 +103,7 @@ RSpec.describe klass do
       options = { name: 'image1', description: 'anything' }
       expect_options = { 'body' => { 'name' => 'image1', 'description' => 'anything' } }
       expect(@client_i3s_300).to receive(:upload_file).with('file.zip', '/rest/golden-images', expect_options, 600)
-        .and_return({})
+                                                      .and_return({})
       klass.add(@client_i3s_300, 'file.zip', options, 600)
     end
 

@@ -7,10 +7,10 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
     expect(described_class).to be < OneviewSDK::API200::LogicalInterconnect
   end
 
-  let(:enet_trap) { %w(Other PortStatus PortThresholds) }
-  let(:fc_trap) { %w(Other PortStatus) }
-  let(:vcm_trap) { %w(Legacy) }
-  let(:trap_sev) { %w(Normal Info Warning Critical Major Minor Unknown) }
+  let(:enet_trap) { %w[Other PortStatus PortThresholds] }
+  let(:fc_trap) { %w[Other PortStatus] }
+  let(:vcm_trap) { %w[Legacy] }
+  let(:trap_sev) { %w[Normal Info Warning Critical Major Minor Unknown] }
 
   let(:fixture_path) { 'spec/support/fixtures/unit/resource/logical_interconnect_default.json' }
   let(:log_int) { OneviewSDK::API300::Synergy::LogicalInterconnect.from_file(@client_300, fixture_path) }
@@ -30,7 +30,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
 
     it 'makes a POST call to the base uri' do
       expect(@client_300).to receive(:rest_post).with(log_int.class::LOCATION_URI, Hash, log_int.api_version)
-        .and_return(FakeResponse.new)
+                                                .and_return(FakeResponse.new)
       log_int.create(1, OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake'))
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
     it 'makes a DELETE call to the base uri' do
       uri = log_int.class::LOCATION_URI + '?location=Enclosure:/rest/fake,Bay:1'
       expect(@client_300).to receive(:rest_delete).with(uri, {}, log_int.api_version)
-        .and_return(FakeResponse.new)
+                                                  .and_return(FakeResponse.new)
       log_int.delete(1, OneviewSDK::API300::Synergy::Enclosure.new(@client_300, uri: '/rest/fake'))
     end
   end
@@ -60,7 +60,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
         'body' => []
       }
       expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/internalNetworks', body)
-        .and_return(FakeResponse.new(uri: 'fake'))
+                                               .and_return(FakeResponse.new(uri: 'fake'))
       @item.update_internal_networks
       expect(@item['uri']).to eq('fake')
     end
@@ -71,7 +71,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
       }
       et01 = OneviewSDK::API300::Synergy::EthernetNetwork.new(@client_300, uri: 'rest/fake/ethernet', name: 'et01')
       expect(@client_300).to receive(:rest_put).with(@item['uri'] + '/internalNetworks', body)
-        .and_return(FakeResponse.new(uri: 'fake'))
+                                               .and_return(FakeResponse.new(uri: 'fake'))
       @item.update_internal_networks(et01)
       expect(@item['uri']).to eq('fake')
     end
@@ -117,7 +117,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
     it 'does a PUT to uri/ethernetSettings & updates @data' do
       item = log_int
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/ethernetSettings', Hash, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       item.update_ethernet_settings
       expect(item['key']).to eq('val')
     end
@@ -132,7 +132,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
     it 'does a PUT to uri/settings & updates @data' do
       item = log_int
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/settings', Hash, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       item.update_settings
       expect(item['key']).to eq('val')
     end
@@ -147,7 +147,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
     it 'does a PUT to uri/compliance & updates @data' do
       item = log_int
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/compliance', {}, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       item.compliance
       expect(item['key']).to eq('val')
     end
@@ -162,7 +162,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
     it 'does a PUT to uri/configuration & updates @data' do
       item = log_int
       expect(@client_300).to receive(:rest_put).with(item['uri'] + '/configuration', {}, item.api_version)
-        .and_return(FakeResponse.new(key: 'val'))
+                                               .and_return(FakeResponse.new(key: 'val'))
       item.configuration
       expect(item['key']).to eq('val')
     end
@@ -177,7 +177,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
     it 'get_unassigned_uplink_ports_for_port_monitor' do
       item = log_int
       expect(@client_300).to receive(:rest_get).with("#{item['uri']}/unassignedUplinkPortsForPortMonitor")
-        .and_return(FakeResponse.new(members: [{ interconnectName: 'p1' }, { interconnectName: 'p2' }]))
+                                               .and_return(FakeResponse.new(members: [{ interconnectName: 'p1' }, { interconnectName: 'p2' }]))
       results = item.get_unassigned_uplink_ports_for_port_monitor
       expect(results).to_not be_empty
       expect(results.first['interconnectName']).to eq('p1')
@@ -199,7 +199,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
         'body' => item['portMonitor']
       }
       expect(@client_300).to receive(:rest_put).with("#{item['uri']}/port-monitor", update_options, item.api_version)
-        .and_return(true)
+                                               .and_return(true)
       expect(@client_300).to receive(:response_handler).and_return(enablePortMonitor: true)
       expect { item.update_port_monitor }.to_not raise_error
       expect(item['enablePortMonitor']).to be true
@@ -224,7 +224,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
         'body' => item['qosConfiguration']
       }
       expect(@client_300).to receive(:rest_put).with("#{item['uri']}/qos-aggregated-configuration", update_options, item.api_version)
-        .and_return(true)
+                                               .and_return(true)
       expect(@client_300).to receive(:response_handler).and_return('activeQosConfig' => { 'type' => 'QosConfiguration' })
       expect { item.update_qos_configuration }.to_not raise_error
       expect(item['activeQosConfig']['type']).to eq('QosConfiguration')
@@ -249,7 +249,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
         'body' => item['telemetryConfiguration']
       }
       expect(@client_300).to receive(:rest_put).with(item['telemetryConfiguration']['uri'], update_options, item.api_version)
-        .and_return(true)
+                                               .and_return(true)
       expect(@client_300).to receive(:response_handler).and_return('telemetryConfiguration' => { 'sampleCount' => 0 })
       expect { item.update_telemetry_configuration }.to_not raise_error
       expect(item['telemetryConfiguration']['sampleCount']).to eq(0)
@@ -303,7 +303,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnect do
         'body' => item['snmpConfiguration']
       }
       expect(@client_300).to receive(:rest_put).with("#{item['uri']}/snmp-configuration", update_options, item.api_version)
-        .and_return(true)
+                                               .and_return(true)
       expect(@client_300).to receive(:response_handler).and_return(enabled: true)
       expect { item.update_snmp_configuration }.to_not raise_error
       expect(item['enabled']).to be true

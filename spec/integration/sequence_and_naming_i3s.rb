@@ -2,8 +2,8 @@ I3S_DEPENDENCIES = {
   ArtifactBundle: [:DeploymentGroup],
   DeploymentGroup: [],
   BuildPlan: [:PlanScript],
-  DeploymentPlan: [:BuildPlan, :GoldenImage],
-  GoldenImage: [:BuildPlan, :OSVolume],
+  DeploymentPlan: %i[BuildPlan GoldenImage],
+  GoldenImage: %i[BuildPlan OSVolume],
   OSVolume: [],
   PlanScript: []
 }.freeze

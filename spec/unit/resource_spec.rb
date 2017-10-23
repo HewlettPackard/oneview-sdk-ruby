@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     it 'should there is unique identifiers with name and uri' do
-      expect(described_class::UNIQUE_IDENTIFIERS).to eq(%w(name uri))
+      expect(described_class::UNIQUE_IDENTIFIERS).to eq(%w[name uri])
     end
   end
 
@@ -246,9 +246,9 @@ RSpec.describe OneviewSDK::Resource do
       end
 
       it 'should return true with values that are not a Hash' do
-        options = { uri: '/rest/fake', list: %w(value_1 value_2) }
+        options = { uri: '/rest/fake', list: %w[value_1 value_2] }
         res = OneviewSDK::Resource.new(@client_200, options)
-        expect(res.like?(uri: '/rest/fake', list: %w(value_1 value_2))).to eq(true)
+        expect(res.like?(uri: '/rest/fake', list: %w[value_1 value_2])).to eq(true)
       end
     end
 
@@ -513,7 +513,7 @@ RSpec.describe OneviewSDK::Resource do
 
     it 'tries to get BASE_URI/schema' do
       expect(@client_200).to receive(:rest_get).with("#{OneviewSDK::Resource::BASE_URI}/schema", {}, @client_200.api_version)
-        .and_return(FakeResponse.new(key: 'val1', other_key: 'val2'))
+                                               .and_return(FakeResponse.new(key: 'val1', other_key: 'val2'))
       schema = OneviewSDK::Resource.schema(@client_200)
       expect(schema['key']).to eq('val1')
       expect(schema['other_key']).to eq('val2')

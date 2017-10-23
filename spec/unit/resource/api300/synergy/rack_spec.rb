@@ -29,7 +29,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Rack do
     it 'Should support add' do
       rack = OneviewSDK::API300::Synergy::Rack.new(@client_300, uri: '/rest/racks')
       expect(@client_300).to receive(:rest_post).with('/rest/racks', { 'body' => { 'uri' => '/rest/racks', 'rackMounts' => [] } }, 300)
-        .and_return(FakeResponse.new({}))
+                                                .and_return(FakeResponse.new({}))
       rack.add
     end
   end

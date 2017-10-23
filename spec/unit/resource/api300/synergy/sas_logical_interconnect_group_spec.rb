@@ -40,7 +40,7 @@ RSpec.describe klass do
 
     it 'adds a valid interconnect type' do
       allow(extra_klass1).to receive(:get_type).with(anything, @type)
-        .and_return('uri' => '/rest/fake')
+                                               .and_return('uri' => '/rest/fake')
       @item.add_interconnect(1, @type)
       @item.add_interconnect(4, @type)
       expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][0]['permittedInterconnectTypeUri'])
@@ -49,7 +49,7 @@ RSpec.describe klass do
 
     it 'raises an error if the interconnect is not found' do
       expect(extra_klass1).to receive(:get_type).with(@client_300, @type)
-        .and_return([])
+                                                .and_return([])
       expect(extra_klass1).to receive(:get_types).and_return([{ 'name' => '1' }, { 'name' => '2' }])
       expect { @item.add_interconnect(1, @type) }.to raise_error(/not found!/)
     end

@@ -14,7 +14,7 @@ RSpec.describe OneviewSDK::StorageSystem do
     it 'sends just the credentials hash, then the rest of the data' do
       item = OneviewSDK::StorageSystem.new(@client_200, name: 'Fake', credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
       expect(@client_200).to receive(:rest_post).with('/rest/storage-systems', { 'body' => item['credentials'] }, item.api_version)
-        .and_return(FakeResponse.new('uri' => '/rest/task/fake'))
+                                                .and_return(FakeResponse.new('uri' => '/rest/task/fake'))
       allow(@client_200).to receive(:wait_for).and_return(FakeResponse.new(nil, 200, 'associatedResource' => { 'resourceUri' => '/rest/fake' }))
       expect(item).to receive(:refresh).and_return(true)
       expect(item).to receive(:update).with('name' => 'Fake', 'type' => 'StorageSystemV3').and_return(true)

@@ -18,7 +18,7 @@ RSpec.describe OneviewSDK::API300::Synergy::ServerProfileTemplate do
     it 'transforms an existing profile template' do
       item = described_class.new(@client_300, uri: '/rest/server-profile-templates/fake')
       expect(@client_300).to receive(:rest_get).with("#{item['uri']}/transformation?queryTest=Test")
-        .and_return(FakeResponse.new('it' => 'ServerProfileTemplate'))
+                                               .and_return(FakeResponse.new('it' => 'ServerProfileTemplate'))
       expect(item.get_transformation(@client_300, 'query_test' => 'Test')['it']).to eq('ServerProfileTemplate')
     end
   end

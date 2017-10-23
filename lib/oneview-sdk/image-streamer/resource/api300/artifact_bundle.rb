@@ -16,7 +16,7 @@ module OneviewSDK
     module API300
       # Artifacts Bundle resource implementation for Image Streamer
       class ArtifactBundle < Resource
-        ACCEPTED_FORMATS = %w(.zip .ZIP).freeze # Supported upload extensions
+        ACCEPTED_FORMATS = %w[.zip .ZIP].freeze # Supported upload extensions
 
         BASE_URI = '/rest/artifact-bundles'.freeze
         BACKUPS_URI = "#{BASE_URI}/backups".freeze

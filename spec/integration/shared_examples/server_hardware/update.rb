@@ -106,7 +106,7 @@ RSpec.shared_examples 'ServerHardwareUpdateExample' do |context_name, api_versio
     end
 
     it 'Gets utilization data by fields' do
-      expect { @response = @item.utilization(fields: %w(AmbientTemperature)) }.not_to raise_error
+      expect { @response = @item.utilization(fields: %w[AmbientTemperature]) }.not_to raise_error
       expect(@response['metricList']).to be
     end
 

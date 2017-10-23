@@ -57,7 +57,7 @@ server_profile.delete
 puts "\nSucessfully deleted '#{server_profile['name']}'"
 
 puts "\n\n### Transforms an existing profile template by supplying a new server hardware type and/or enclosure group"
-item3 = server_profile_template_class.new(@client, name:  "#{server_profile_template_name}2")
+item3 = server_profile_template_class.new(@client, name: "#{server_profile_template_name}2")
 item3.set_server_hardware_type(server_hardware_type)
 item3.set_enclosure_group(enclosure_group)
 item3.create

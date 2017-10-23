@@ -125,7 +125,7 @@ if has_ipdu
 
   # Sets the state of Power Device
   puts "\nSets the state of Power Device."
-  item4 = ipdu_list.reject { |ipdu| ipdu['model'] != 'Managed Ext. Bar Outlet' }.first
+  item4 = ipdu_list.select { |ipdu| ipdu['model'] == 'Managed Ext. Bar Outlet' }.first
   item4.set_power_state('On')
   puts "\nState changed successfully."
 

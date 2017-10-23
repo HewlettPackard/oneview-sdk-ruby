@@ -12,7 +12,7 @@
 module OneviewSDK
   # Module for API v300
   module API300
-    SUPPORTED_VARIANTS = %w(C7000 Synergy).freeze
+    SUPPORTED_VARIANTS = %w[C7000 Synergy].freeze
     DEFAULT_VARIANT = 'C7000'.freeze
     @variant = DEFAULT_VARIANT
     @variant_updated = false # Whether or not the API variant has been set by the user

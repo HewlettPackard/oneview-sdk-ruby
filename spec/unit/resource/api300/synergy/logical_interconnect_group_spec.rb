@@ -34,7 +34,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnectGroup do
   describe '::get_default_settings' do
     it 'gets the default settings' do
       expect(@client_300).to receive(:rest_get).with('/rest/logical-interconnect-groups/defaultSettings')
-        .and_return(FakeResponse.new('Default' => 'Settings'))
+                                               .and_return(FakeResponse.new('Default' => 'Settings'))
       expect(described_class.get_default_settings(@client_300)).to eq('Default' => 'Settings')
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnectGroup do
     it 'gets the current settings' do
       item = described_class.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with('/rest/fake/settings', {}, 300)
-        .and_return(FakeResponse.new('Current' => 'Settings'))
+                                               .and_return(FakeResponse.new('Current' => 'Settings'))
       expect(item.get_settings).to eq('Current' => 'Settings')
     end
   end
@@ -67,9 +67,9 @@ RSpec.describe OneviewSDK::API300::Synergy::LogicalInterconnectGroup do
     it 'adds a valid interconnect type' do
       logical_downlink = OneviewSDK::API300::Synergy::LogicalDownlink.new(@client_300, name: 'LD', uri: '/rest/fake')
       allow(OneviewSDK::API300::Synergy::LogicalDownlink).to receive(:find_by).with(anything, name: 'LD')
-        .and_return([logical_downlink])
+                                                                              .and_return([logical_downlink])
       allow(OneviewSDK::API300::Synergy::Interconnect).to receive(:get_type).with(anything, @type)
-        .and_return(@interconnect)
+                                                                            .and_return(@interconnect)
       @item.add_interconnect(1, @type, 'LD')
       expect(@item['interconnectMapTemplate']['interconnectMapEntryTemplates'][0]['permittedInterconnectTypeUri'])
         .to eq('/rest/fake')

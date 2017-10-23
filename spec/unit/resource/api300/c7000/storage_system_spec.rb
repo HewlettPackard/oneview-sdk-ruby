@@ -20,7 +20,7 @@ RSpec.describe OneviewSDK::API300::C7000::StorageSystem do
                                                           name: 'Fake',
                                                           credentials: { ip_hostname: 'a.com', username: 'admin', password: 'secret' })
       expect(@client_300).to receive(:rest_post).with('/rest/storage-systems', { 'body' => item['credentials'] }, item.api_version)
-        .and_return(FakeResponse.new('uri' => '/rest/task/fake'))
+                                                .and_return(FakeResponse.new('uri' => '/rest/task/fake'))
       allow(@client_300).to receive(:wait_for)
         .and_return(FakeResponse.new(nil, 300, 'associatedResource' => { 'resourceUri' => '/rest/fake' }))
       expect(item).to receive(:refresh).and_return(true)

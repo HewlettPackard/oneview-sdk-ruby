@@ -9,6 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require 'addressable'
 require 'uri'
 require 'net/http'
 require 'openssl'
@@ -35,7 +36,7 @@ module OneviewSDK
     def rest_api(type, path, options = {}, api_ver = @api_version, redirect_limit = 3)
       @logger.debug "Making :#{type} rest call to #{@url}#{path}"
       raise InvalidRequest, 'Must specify path' unless path
-      uri = URI.parse(URI.escape(@url + path))
+      uri = URI.parse(Addressable::URI.escape(@url + path))
       http = build_http_object(uri)
       request = build_request(type, uri, options.dup, api_ver)
       response = http.request(request)
@@ -144,7 +145,7 @@ module OneviewSDK
         name_to_show = options['file_name'] || File.basename(file_path)
         body_params['file'] = UploadIO.new(file, 'application/octet-stream', name_to_show)
 
-        uri = URI.parse(URI.escape(@url + path))
+        uri = URI.parse(Addressable::URI.escape(@url + path))
         http_request = build_http_object(uri)
         http_request.read_timeout = timeout
 
@@ -173,7 +174,7 @@ module OneviewSDK
     # @param [String] local_drive_path Path to save file downloaded
     # @return [Boolean] if file was downloaded
     def download_file(path, local_drive_path)
-      uri = URI.parse(URI.escape(@url + path))
+      uri = URI.parse(Addressable::URI.escape(@url + path))
       http_request = build_http_object(uri)
       req = build_request(:get, uri, {}, @api_version.to_s)
 
@@ -214,7 +215,7 @@ module OneviewSDK
           return response.body
         end
       when RESPONSE_CODE_CREATED # Synchronous add
-        return JSON.parse(response.body)
+        JSON.parse(response.body)
       when RESPONSE_CODE_ACCEPTED # Asynchronous add, update or delete
         return JSON.parse(response.body) unless wait_on_task
         @logger.debug "Waiting for task: response.header['location']"
@@ -222,9 +223,9 @@ module OneviewSDK
         task = wait_for(uri)
         return true unless task['associatedResource'] && task['associatedResource']['resourceUri']
         resource_data = rest_get(task['associatedResource']['resourceUri'])
-        return JSON.parse(resource_data.body)
+        JSON.parse(resource_data.body)
       when RESPONSE_CODE_NO_CONTENT # Synchronous delete
-        return {}
+        {}
       when RESPONSE_CODE_BAD_REQUEST
         BadRequest.raise! "400 BAD REQUEST #{response.body}", response
       when RESPONSE_CODE_UNAUTHORIZED

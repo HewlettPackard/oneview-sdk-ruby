@@ -33,7 +33,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Fabric do
     it 'gets the reserved vlan range attributes successfully' do
       item = OneviewSDK::API300::Synergy::Fabric.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_get).with("#{item['uri']}/reserved-vlan-range", {}, item.api_version)
-        .and_return(FakeResponse.new([{ start: 105, length: 105, type: 'vlan-pool' }]))
+                                               .and_return(FakeResponse.new([{ start: 105, length: 105, type: 'vlan-pool' }]))
       expect { item.get_reserved_vlan_range }.not_to raise_error
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe OneviewSDK::API300::Synergy::Fabric do
       options = { start: 105, length: 105, type: 'vlan-pool' }
       item = OneviewSDK::API300::Synergy::Fabric.new(@client_300, uri: '/rest/fake')
       expect(@client_300).to receive(:rest_put).with("#{item['uri']}/reserved-vlan-range", { 'body' => options }, item.api_version)
-        .and_return(FakeResponse.new(options))
+                                               .and_return(FakeResponse.new(options))
       expect { item.set_reserved_vlan_range(options) }.not_to raise_error
     end
   end

@@ -231,7 +231,7 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     end
 
     it 'raises an error if the task fails' do
-      %w(Error Killed Terminated).each do |state|
+      %w[Error Killed Terminated].each do |state|
         fake_response = FakeResponse.new(taskState: state, message: 'Blah')
         allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:rest_get).and_return(fake_response)
         expect { @client_i3s_300.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
@@ -239,7 +239,7 @@ RSpec.describe OneviewSDK::ImageStreamer::Client do
     end
 
     it 'raises an error with the error details if the task fails' do
-      %w(Error Killed Terminated).each do |state|
+      %w[Error Killed Terminated].each do |state|
         fake_response = FakeResponse.new(taskState: state, taskErrors: { message: 'Blah' })
         allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:rest_get).and_return(fake_response)
         expect { @client_i3s_300.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)

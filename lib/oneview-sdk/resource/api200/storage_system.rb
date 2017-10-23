@@ -16,7 +16,7 @@ module OneviewSDK
     # Storage system resource implementation
     class StorageSystem < Resource
       BASE_URI = '/rest/storage-systems'.freeze
-      UNIQUE_IDENTIFIERS = %w(name uri serialNumber wwn).freeze # credentials['ip_hostname'] is supported too
+      UNIQUE_IDENTIFIERS = %w[name uri serialNumber wwn].freeze # credentials['ip_hostname'] is supported too
 
       # Remove resource from OneView
       # @return [true] if resource was removed successfully

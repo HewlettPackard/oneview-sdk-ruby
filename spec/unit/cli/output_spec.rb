@@ -26,11 +26,11 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'prints arrays' do
-        expect { cli.instance_eval { output(%w(val val2)) } }.to output("val\nval2\n\nTotal: 2\n").to_stdout_from_any_process
+        expect { cli.instance_eval { output(%w[val val2]) } }.to output("val\nval2\n\nTotal: 2\n").to_stdout_from_any_process
       end
 
       it 'prints nested arrays' do
-        expect { cli.instance_eval { output(['val', %w(val2 val3)]) } }.to output("val\n  val2\n  val3\n\nTotal: 2\n").to_stdout_from_any_process
+        expect { cli.instance_eval { output(['val', %w[val2 val3]]) } }.to output("val\n  val2\n  val3\n\nTotal: 2\n").to_stdout_from_any_process
       end
 
       it 'prints hashes' do

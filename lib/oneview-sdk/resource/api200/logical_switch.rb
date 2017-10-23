@@ -99,7 +99,7 @@ module OneviewSDK
       # @return [Array] List of connection properties for each logical switch
       def generate_logical_switch_credentials
         credentials = []
-        @logical_switch_credentials.each do |_, switch|
+        @logical_switch_credentials.each_value do |switch|
           switch_credentials = []
           switch_credentials << {
             'valueFormat' => 'Unknown',

@@ -17,7 +17,7 @@ module OneviewSDK
   # Resource base class that defines all common resource functionality.
   class Resource
     BASE_URI = '/rest'.freeze
-    UNIQUE_IDENTIFIERS = %w(name uri).freeze # Ordered list of unique attributes to search by
+    UNIQUE_IDENTIFIERS = %w[name uri].freeze # Ordered list of unique attributes to search by
     DEFAULT_REQUEST_HEADER = {}.freeze
 
     attr_accessor \
@@ -50,7 +50,7 @@ module OneviewSDK
     # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Boolean] Whether or not retrieve was successful
     def retrieve!(header = self.class::DEFAULT_REQUEST_HEADER)
-      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
+      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.reject { |k| @data[k].nil? }
       raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
       retrieval_keys.each do |k|
         results = self.class.find_by(@client, { k => @data[k] }, self.class::BASE_URI, header)
@@ -66,7 +66,7 @@ module OneviewSDK
     # @param [Hash] header The header options for the request (key-value pairs)
     # @return [Boolean] Whether or not resource exists
     def exists?(header = self.class::DEFAULT_REQUEST_HEADER)
-      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.select { |k| !@data[k].nil? }
+      retrieval_keys = self.class::UNIQUE_IDENTIFIERS.reject { |k| @data[k].nil? }
       raise IncompleteResource, "Must set resource #{self.class::UNIQUE_IDENTIFIERS.join(' or ')} before trying to retrieve!" if retrieval_keys.empty?
       retrieval_keys.each do |k|
         results = self.class.find_by(@client, { k => @data[k] }, self.class::BASE_URI, header)
@@ -133,7 +133,6 @@ module OneviewSDK
     # @return The value set for the given key
     def []=(key, value)
       set(key, value)
-      value
     end
 
     # Check equality of 2 resources. Same as eql?(other)
@@ -234,7 +233,7 @@ module OneviewSDK
     # @note If a .yml or .yaml file extension is given in the file_path, the format will be set automatically
     # @return [True] The Resource was saved successfully
     def to_file(file_path, format = :json)
-      format = :yml if %w(.yml .yaml).include? File.extname(file_path)
+      format = :yml if %w[.yml .yaml].include? File.extname(file_path)
       temp_data = { type: self.class.name, api_version: @api_version, data: @data }
       case format.to_sym
       when :json
@@ -379,7 +378,7 @@ module OneviewSDK
 
     # Fail for methods that are not available for one resource
     def unavailable_method
-      raise MethodUnavailable, "The method ##{caller[0][/`.*'/][1..-2]} is unavailable for this resource"
+      raise MethodUnavailable, "The method ##{caller(1..1).first[/`.*'/][1..-2]} is unavailable for this resource"
     end
 
     private

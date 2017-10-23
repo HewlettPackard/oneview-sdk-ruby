@@ -33,7 +33,7 @@ RSpec.describe klass do
 
     it 'gets details of the archive OS Volumes' do
       expect(@client_i3s_300).to receive(:rest_get).with('/rest/os-volumes/archive/fake')
-        .and_return(FakeResponse.new(response: 'fake'))
+                                                   .and_return(FakeResponse.new(response: 'fake'))
       item = klass.new(@client_i3s_300, uri: '/rest/os-volumes/fake')
       expect(item.get_details_archive).to eq('response' => 'fake')
     end
