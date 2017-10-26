@@ -96,6 +96,16 @@ RSpec.shared_examples 'VolumeCreateExample' do |context_name|
     end
   end
 
+  describe '#create!' do
+    it 'should retrieve!, delete and create the resource' do
+      item = described_class.new(current_client, options.merge(name: VOLUME_NAME))
+      item.set_storage_system(storage_system)
+      item.set_storage_pool(storage_pool)
+      expect { item.create! }.to_not raise_error
+      expect(item.retrieve!).to eq(true)
+    end
+  end
+
   describe '#set_storage_system' do
     before :each do
       @item = described_class.new(current_client, name: VOLUME_NAME)

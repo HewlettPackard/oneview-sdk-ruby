@@ -33,6 +33,13 @@ RSpec.shared_examples 'StorageSystemCreateExample' do |context_name, api_version
     end
   end
 
+  describe '#create!' do
+    it 'should throw unavailable exception' do
+      item = described_class.new(current_client)
+      expect { item.create! }.to raise_error(OneviewSDK::MethodUnavailable)
+    end
+  end
+
   describe '#host-types' do
     it 'List Host Types' do
       expect(described_class.get_host_types(current_client)).not_to be_empty

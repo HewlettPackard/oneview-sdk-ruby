@@ -19,6 +19,13 @@ RSpec.shared_examples 'ServerHardwareCreateExample' do |context_name|
     end
   end
 
+  describe '#create!' do
+    it 'should throw unavailable exception' do
+      item = described_class.new(current_client)
+      expect { item.create! }.to raise_error(OneviewSDK::MethodUnavailable)
+    end
+  end
+
   describe '#add' do
     it 'can create resources' do
       options = {

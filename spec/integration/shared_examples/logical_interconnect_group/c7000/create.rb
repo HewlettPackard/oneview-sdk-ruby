@@ -104,6 +104,14 @@ RSpec.shared_examples 'LIGC7000CreateExample' do |context_name|
     end
   end
 
+  describe '#create!' do
+    it 'should retrieve, delete and create the resource' do
+      item = described_class.new(current_client, name: LOG_INT_GROUP4_NAME)
+      expect { item.create! }.not_to raise_error
+      expect(item.retrieve!).to eq(true)
+    end
+  end
+
   describe '#retrieve!' do
     it 'retrieves the objects' do
       lig = described_class.new(current_client, name: LOG_INT_GROUP_NAME)
