@@ -26,14 +26,14 @@ RSpec.shared_examples 'LogicalSwitchCreateExample' do |context_name|
     end
 
     describe '#create' do
-      it 'Logical switch create' do
+      it 'creates a logical switch' do
         item.create
         expect(item['uri']).to be
       end
     end
 
     describe '#create!' do
-      it 'Logical switch create' do
+      it 'creates a logical switch' do
         item.create!
         expect(item['uri']).to be
       end

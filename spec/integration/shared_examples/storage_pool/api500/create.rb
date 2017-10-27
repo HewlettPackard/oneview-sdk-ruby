@@ -21,7 +21,7 @@ RSpec.shared_examples 'StoragePoolCreateExample API500' do
 
   describe '#create!' do
     it 'should throw unavailable exception' do
-      item = described_class.new(current_client)
+      item = described_class.new($client_500)
       expect { item.create! }.to raise_error(OneviewSDK::MethodUnavailable)
     end
   end

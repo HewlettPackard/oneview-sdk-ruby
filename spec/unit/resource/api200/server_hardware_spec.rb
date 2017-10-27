@@ -319,18 +319,17 @@ RSpec.describe OneviewSDK::ServerHardware do
   describe 'undefined methods' do
     it 'does not allow the create action' do
       server_hardware = OneviewSDK::ServerHardware.new(@client_200)
-      expect { server_hardware.create }.to raise_error(
-        OneviewSDK::MethodUnavailable,
-        /The method #create is unavailable for this resource/
-      )
+      expect { server_hardware.create }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create is unavailable for this resource/)
+    end
+
+    it 'does not allow the create! action' do
+      server_hardware = OneviewSDK::ServerHardware.new(@client_200)
+      expect { server_hardware.create! }.to raise_error(OneviewSDK::MethodUnavailable, /The method #create! is unavailable for this resource/)
     end
 
     it 'does not allow the update action' do
       server_hardware = OneviewSDK::ServerHardware.new(@client_200)
-      expect { server_hardware.update }.to raise_error(
-        OneviewSDK::MethodUnavailable,
-        /The method #update is unavailable for this resource/
-      )
+      expect { server_hardware.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)
     end
 
     it 'does not allow the delete action' do

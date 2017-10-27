@@ -19,12 +19,10 @@ module OneviewSDK
         BASE_URI = '/rest/storage-volume-templates'.freeze
 
         # Delete resource from OneView
+        # @param [Hash] header The header options for the request (key-value pairs)
         # @return [true] if resource was deleted successfully
-        def delete
-          ensure_client && ensure_uri
-          response = @client.rest_delete(@data['uri'], { 'If-Match' => @data['eTag'] }, @api_version)
-          @client.response_handler(response)
-          true
+        def delete(header = self.class::DEFAULT_REQUEST_HEADER)
+          super(header.merge('If-Match' => @data['eTag']))
         end
 
         # Sets the root template
