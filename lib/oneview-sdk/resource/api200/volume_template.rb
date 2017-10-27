@@ -33,23 +33,19 @@ module OneviewSDK
 
       # Create the resource on OneView using the current data
       # @note Calls refresh method to set additional data
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create
-        ensure_client
-        response = @client.rest_post(self.class::BASE_URI, { 'Accept-Language' => 'en_US', 'body' => @data }, @api_version)
-        body = @client.response_handler(response)
-        set_all(body)
+      def create(header = self.class::DEFAULT_REQUEST_HEADER)
+        super(header.merge('Accept-Language' => 'en_US'))
       end
 
       # Deletes the volume template from OneView
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @return [TrueClass] if the volume template was deleted successfully
-      def delete
-        ensure_client && ensure_uri
-        response = @client.rest_delete(@data['uri'], { 'Accept-Language' => 'en_US' }, @api_version)
-        @client.response_handler(response)
-        true
+      def delete(header = self.class::DEFAULT_REQUEST_HEADER)
+        super(header.merge('Accept-Language' => 'en_US'))
       end
 
       # Updates the volume template from OneView

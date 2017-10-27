@@ -29,11 +29,15 @@ RSpec.describe OneviewSDK::API500::C7000::StoragePool do
   end
 
   it '#create' do
-    expect { target.create }.to raise_error(OneviewSDK::MethodUnavailable)
+    expect { target.create }.to raise_error(/The method #create is unavailable for this resource/)
+  end
+
+  it '#create!' do
+    expect { target.create! }.to raise_error(/The method #create! is unavailable for this resource/)
   end
 
   it '#delete' do
-    expect { target.create }.to raise_error(OneviewSDK::MethodUnavailable)
+    expect { target.delete }.to raise_error(/The method #delete is unavailable for this resource/)
   end
 
   describe '::reachable' do

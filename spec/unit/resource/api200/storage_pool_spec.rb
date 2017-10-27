@@ -138,6 +138,11 @@ RSpec.describe OneviewSDK::StoragePool do
       expect { pool.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
 
+    it 'does not allow the create! action' do
+      pool = OneviewSDK::StoragePool.new(@client_200)
+      expect { pool.create! }.to raise_error(/The method #create! is unavailable for this resource/)
+    end
+
     it 'does not allow the update action' do
       storage_pool = OneviewSDK::StoragePool.new(@client_200)
       expect { storage_pool.update }.to raise_error(OneviewSDK::MethodUnavailable, /The method #update is unavailable for this resource/)

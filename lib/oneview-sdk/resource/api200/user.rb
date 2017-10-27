@@ -33,12 +33,13 @@ module OneviewSDK
       # Create the resource on OneView using the current data
       # @note Calls the refresh method to set additional data
       # @note Removes the password attribute after creation
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create
+      def create(header = self.class::DEFAULT_REQUEST_HEADER)
         ensure_client
-        response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
+        response = @client.rest_post(BASE_URI, header.merge('body' => @data), @api_version)
         body = @client.response_handler(response)
         @data.delete('password')
         set_all(body)
