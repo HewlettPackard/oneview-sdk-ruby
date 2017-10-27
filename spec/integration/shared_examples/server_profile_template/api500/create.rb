@@ -115,7 +115,7 @@ RSpec.shared_examples 'ServerProfileTemplateCreateExample API500' do |context_na
     it 'raises an exception when storage pool not found' do
       item = described_class.new(current_client, name: 'any')
       storage_pool = resource_class_of('StoragePool').new(current_client, name: 'any')
-      expect { item.create_volume_with_attachment(storage_pool, {}) }.to raise_error(/Storage Pool not found/)
+      expect { item.create_volume_with_attachment(storage_pool, {}) }.to raise_error(OneviewSDK::IncompleteResource, /before trying to retrieve!/)
     end
 
     it 'creates a server profile template and a volume with attachment' do
