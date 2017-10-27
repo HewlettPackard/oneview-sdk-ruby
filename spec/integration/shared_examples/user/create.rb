@@ -39,6 +39,8 @@ RSpec.shared_examples 'UserCreateExample' do |context_name|
       item = described_class.new(current_client, resource_attributes)
       expect { item.create! }.not_to raise_error
       expect(item.retrieve!).to eq(true)
+      list = described_class.find_by(current_client, userName: USER_NAME)
+      expect(list.size).to eq(1)
     end
   end
 

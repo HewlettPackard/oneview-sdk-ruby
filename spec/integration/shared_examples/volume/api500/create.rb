@@ -99,6 +99,8 @@ RSpec.shared_examples 'VolumeCreateExample API500' do |context_name|
       item.set_storage_pool(storage_pool)
       expect { item.create! }.to_not raise_error
       expect(item.retrieve!).to eq(true)
+      list = described_class.find_by(current_client, { name: VOLUME_NAME })
+      expect(list.size).to eq(1)
     end
   end
 

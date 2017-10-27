@@ -49,6 +49,8 @@ RSpec.shared_examples 'VolumeTemplateCreateExample' do |context_name|
       it 'should retrieve!, delete, and create the resource' do
         expect { item.create! }.to_not raise_error
         expect(item.retrieve!).to eq(true)
+        list = described_class.find_by(current_client, name: VOL_TEMP_NAME)
+        expect(list.size).to eq(1)
       end
     end
   end

@@ -35,7 +35,9 @@ RSpec.shared_examples 'LogicalSwitchCreateExample' do |context_name|
     describe '#create!' do
       it 'creates a logical switch' do
         item.create!
-        expect(item['uri']).to be
+        expect(item.retrieve!).to eq(true)
+        list = described_class.find_by(current_client, name: LOG_SWI_NAME)
+        expect(list.size).to eq(1)
       end
     end
   end

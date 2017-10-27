@@ -108,6 +108,9 @@ RSpec.shared_examples 'LIGSynergyCreateExample' do |context_name|
       item.add_interconnect(6, interconnect_type)
       item.add_internal_network(ethernet_network)
       expect { item.create! }.not_to raise_error
+      expect(item.retrieve!).to eq(true)
+      list = described_class.find_by(current_client, lig_default_options)
+      expect(list.size).to eq(1)
     end
   end
 
