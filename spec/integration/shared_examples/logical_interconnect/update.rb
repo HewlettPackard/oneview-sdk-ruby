@@ -120,7 +120,7 @@ RSpec.shared_examples 'LogicalInterconnectUpdateExample' do |context_name|
       expect(log_int['ethernetSettings']['macRefreshInterval']).to eq(eth_set_backup['macRefreshInterval'])
     end
 
-    xit 'will use update settings to do it' do
+    it 'will use update settings to do it' do
       log_int.retrieve!
       eth_set_backup = {}
       eth_set_backup['igmpIdleTimeoutInterval'] = log_int['ethernetSettings']['igmpIdleTimeoutInterval']
