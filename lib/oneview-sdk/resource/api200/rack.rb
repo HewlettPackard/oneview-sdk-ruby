@@ -54,8 +54,8 @@ module OneviewSDK
       # Updates a rack
       # @param [Hash] attributes attributes to be updated
       # @return [OneviewSDK::Rack] self
-      def update(attributes = {}, header = self.class::DEFAULT_REQUEST_HEADER)
-        super(attributes, header.merge('If-Match' => '*'))
+      def update(attributes = {}, header = { 'If-Match' => '*' })
+        super(attributes, header)
       end
 
       # Adds the rack resource with specified options
