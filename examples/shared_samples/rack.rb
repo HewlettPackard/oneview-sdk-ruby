@@ -46,18 +46,15 @@ end
 
 puts "\nUpdating the name of the rack"
 item.update(name: "#{rack_name}_updated")
-item.retrieve!
 puts "\nRack updated successfully with new name = '#{item['name']}'"
 puts "\nReturning to original name"
 item.update(name: rack_name)
-item.retrieve!
 puts "Rack updated successfully with original name = '#{item['name']}'"
 
 enclosure = enclosure_class.find_by(@client, name: @enclosure_name).first
 puts "\nAdding an enclosure with uri = '#{enclosure['uri']}' to a rack."
 item.add_rack_resource(enclosure, topUSlot: 20, uHeight: 10)
 item.update
-item.retrieve!
 puts "\nEnclosure added successfully. \n #{item['rackMounts']}"
 
 puts "\nGetting the device topology."
@@ -66,7 +63,6 @@ puts item.get_device_topology
 puts "\nRemoving an enclosure with uri = '#{enclosure['uri']}' of the rack."
 item.remove_rack_resource(enclosure)
 item.update
-item.retrieve!
 puts "\nEnclosure removed successfully. \n #{item['rackMounts']}"
 
 puts "\nRemoving a rack."
