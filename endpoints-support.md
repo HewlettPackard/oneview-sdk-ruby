@@ -510,7 +510,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/users/{userName}/roles</sub>                                                  | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/users/{userName}/roles</sub>                                                  | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Version**                                                                                                                         |
-|<sub>/rest/version</sub>                                                                 | GET      |                      |                      |                      |
+|<sub>/rest/version</sub>                                                                 | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |                     |                      |                      |
 |     **Volume**                                                                                                                                   |
 |<sub>/rest/storage-volumes</sub>                                                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/storage-volumes</sub>                                                         | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |

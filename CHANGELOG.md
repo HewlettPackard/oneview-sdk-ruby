@@ -1,3 +1,11 @@
+## v5.3.0(Unreleased)
+#### New Resources:
+- Login Detail
+- Version
+
+#### Bug fixes & Enhancements
+- [#226] Add_rack_resource method returns NOMATCHING_ETAG_MESSAGE.
+
 ## v5.2.0
 
 #### New Features:
