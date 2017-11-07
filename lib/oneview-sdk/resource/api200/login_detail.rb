@@ -14,11 +14,11 @@ require_relative 'resource'
 module OneviewSDK
   module API200
     # Login Details resource implementation
-    class LoginDetail < Resource
+    class LoginDetail
       BASE_URI = '/rest/logindetails'.freeze
 
       def self.get_login_details(client)
-        response = client.rest_get(BASE_URI.to_s)
+        response = client.rest_get(BASE_URI)
         client.response_handler(response)
       end
     end

@@ -14,7 +14,7 @@ require_relative '../../api300/synergy/login_detail'
 module OneviewSDK
   module API500
     module Synergy
-      # Login Details resource implementation
+      # Login Details resource implementation for API500 Synergy
       class LoginDetail < OneviewSDK::API300::Synergy::LoginDetail
 
       end
