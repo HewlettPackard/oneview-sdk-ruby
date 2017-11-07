@@ -1,5 +1,8 @@
 ## v5.2.1(Unreleased)
 
+#### New Resources:
+-login_details
+
 #### Bug fixes & Enhancements
 - [#226](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/226) Add_rack_resource method returns NOMATCHING_ETAG_MESSAGE.
 
