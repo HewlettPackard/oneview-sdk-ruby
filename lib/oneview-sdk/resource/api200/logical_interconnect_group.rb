@@ -88,7 +88,7 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create(header = self.class::DEFAULT_REQUEST_HEADER)
+      def create(header = DEFAULT_REQUEST_HEADER)
         verify_interconnects_before_save!
         super(header)
       end

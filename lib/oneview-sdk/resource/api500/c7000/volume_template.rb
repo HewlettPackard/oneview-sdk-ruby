@@ -21,7 +21,7 @@ module OneviewSDK
         # Delete resource from OneView
         # @param [Hash] header The header options for the request (key-value pairs)
         # @return [true] if resource was deleted successfully
-        def delete(header = self.class::DEFAULT_REQUEST_HEADER)
+        def delete(header = DEFAULT_REQUEST_HEADER)
           super(header.merge('If-Match' => @data['eTag']))
         end
 

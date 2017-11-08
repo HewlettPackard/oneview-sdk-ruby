@@ -29,7 +29,7 @@ module OneviewSDK
         # @raise [OneviewSDK::IncompleteResource] if the client is not set.
         # @raise [StandardError] if the resource creation fails.
         # @return [Resource] self
-        def create(header = self.class::DEFAULT_REQUEST_HEADER)
+        def create(header = DEFAULT_REQUEST_HEADER)
           properties = Hash[@data['properties'].map { |k, v| [k.to_sym, v] }]
           family = properties[:dataProtectionLevel].nil? ? 'StoreServ' : 'StoreVirtual'
           template_data = {
@@ -58,7 +58,7 @@ module OneviewSDK
         # @param [Hash] header The header options for the request (key-value pairs)
         # @raise [InvalidResource] if an invalid flag is passed.
         # @return [true] if resource was deleted successfully.
-        def delete(flag = :all, header = self.class::DEFAULT_REQUEST_HEADER)
+        def delete(flag = :all, header = DEFAULT_REQUEST_HEADER)
           ensure_client && ensure_uri
           raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless %i[oneview all].include?(flag)
           uri = @data['uri']
@@ -162,7 +162,7 @@ module OneviewSDK
         # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
         # @param [Hash] header The header options for the request (key-value pairs)
         # @return [Boolean] Whether or not retrieve was successful
-        def retrieve!(header = self.class::DEFAULT_REQUEST_HEADER)
+        def retrieve!(header = DEFAULT_REQUEST_HEADER)
           return super(header) unless @data['properties']
           results = find_by_name_in_properties(header)
           return false unless results.size == 1
@@ -174,7 +174,7 @@ module OneviewSDK
         # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
         # @param [Hash] header The header options for the request (key-value pairs)
         # @return [Boolean] Whether or not resource exists
-        def exists?(header = self.class::DEFAULT_REQUEST_HEADER)
+        def exists?(header = DEFAULT_REQUEST_HEADER)
           return super(header) unless @data['properties']
           find_by_name_in_properties(header).size == 1
         end

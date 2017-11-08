@@ -31,7 +31,7 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create(header = self.class::DEFAULT_REQUEST_HEADER)
+      def create(header = DEFAULT_REQUEST_HEADER)
         super(header)
         @data.delete('provisioningParameters')
         self
@@ -43,7 +43,7 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create!(header = self.class::DEFAULT_REQUEST_HEADER)
+      def create!(header = DEFAULT_REQUEST_HEADER)
         temp = self.class.new(@client, @data)
         temp.delete(:all, header) if temp.retrieve!(header)
         create(header)
@@ -61,7 +61,7 @@ module OneviewSDK
       # @param [Symbol] flag Delete storage system from Oneview only or in storage system as well
       # @param [Hash] header The header options for the request (key-value pairs)
       # @return [true] if resource was deleted successfully
-      def delete(flag = :all, header = self.class::DEFAULT_REQUEST_HEADER)
+      def delete(flag = :all, header = DEFAULT_REQUEST_HEADER)
         ensure_client && ensure_uri
         raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless %i[oneview all].include?(flag)
         header = header.merge('exportOnly' => true) if flag == :oneview
