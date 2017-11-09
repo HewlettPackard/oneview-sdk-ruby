@@ -135,7 +135,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/firmware-bundles</sub>                                                       | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Firmware Drivers**                                                                                                                          |
 |<sub>/rest/firmware-drivers</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/firmware-drivers</sub>                                                       | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/firmware-drivers</sub>                                                       | POST     | :black_circle:       | :black_circle:       |:black_circle:        |
 |<sub>/rest/firmware-drivers/{id}</sub>                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/firmware-drivers/{id}</sub>                                                  | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **ID Pools**                                                                                                                      |
