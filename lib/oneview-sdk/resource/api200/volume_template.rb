@@ -38,15 +38,15 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create(header = DEFAULT_REQUEST_HEADER)
-        super(header)
+      def create(header = {})
+        super(header.merge(DEFAULT_REQUEST_HEADER))
       end
 
       # Deletes the volume template from OneView
       # @param [Hash] header The header options for the request (key-value pairs)
       # @return [TrueClass] if the volume template was deleted successfully
-      def delete(header = DEFAULT_REQUEST_HEADER)
-        super(header)
+      def delete(header = {})
+        super(header.merge(DEFAULT_REQUEST_HEADER))
       end
 
       # Updates the volume template from OneView
