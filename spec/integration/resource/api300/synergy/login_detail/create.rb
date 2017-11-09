@@ -13,6 +13,6 @@ require 'spec_helper'
 
 klass = OneviewSDK::API300::Synergy::LoginDetail
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_300 }
-  include_examples 'LoginDetailExample', 'integration api300 context'
+  let(:current_client) { $client_300_synergy }
+  include_examples 'LoginDetailGetExample', 'integration api300 context'
 end
