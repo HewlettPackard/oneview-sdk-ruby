@@ -51,6 +51,13 @@ module OneviewSDK
         unavailable_method
       end
 
+      # Updates a rack
+      # @param [Hash] attributes attributes to be updated
+      # @return [OneviewSDK::Rack] self
+      def update(attributes = {}, header = { 'If-Match' => '*' })
+        super(attributes, header)
+      end
+
       # Adds the rack resource with specified options
       # @param [OneviewSDK::Resource] resource Resource to be added
       # @param [String] options rack options

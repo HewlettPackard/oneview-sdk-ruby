@@ -20,28 +20,26 @@ RSpec.shared_examples 'RackUpdateExample' do |context_name|
       current_name = item['name']
       item.update(name: "#{current_name}_Updated")
       sleep(5)
-      item.refresh
       expect(item['name']).to eq("#{current_name}_Updated")
       # returning to original name
       item.update(name: current_name)
       sleep(5)
-      item.refresh
       expect(item['name']).to eq(current_name)
     end
 
     it 'removing an enclosure of the rack' do
+      @rack_name = item['name']
       item.remove_rack_resource(enclosure)
       item.update
-      item.refresh
       enclosure_mount = item['rackMounts'].find { |resource_from_rack| resource_from_rack['mountUri'] == enclosure['uri'] }
       expect(enclosure_mount).to be_nil
     end
 
     it 'adding an enclosure on the rack' do
-      item.add_rack_resource(enclosure, topUSlot: 20, uHeight: 10)
-      item.update
-      item.refresh
-      enclosure_mount = item['rackMounts'].find { |resource_from_rack| resource_from_rack['mountUri'] == enclosure['uri'] }
+      rack = described_class.find_by(current_client, name: @rack_name).first
+      rack.add_rack_resource(enclosure, topUSlot: 20, uHeight: 10)
+      rack.update
+      enclosure_mount = rack['rackMounts'].find { |resource_from_rack| resource_from_rack['mountUri'] == enclosure['uri'] }
       expect(enclosure_mount['mountUri']).to eq(enclosure['uri'])
       expect(enclosure_mount['topUSlot']).to eq(20)
       expect(enclosure_mount['uHeight']).to eq(10)
