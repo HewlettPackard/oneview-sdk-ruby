@@ -6,18 +6,16 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
-# language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/login_detail'
+RSpec.shared_examples 'LoginDetailGetExample' do |context_name|
+  include_context context_name
 
-module OneviewSDK
-  module API500
-    module Synergy
-      # Login Details resource implementation for API500 Synergy
-      class LoginDetail < OneviewSDK::API300::Synergy::LoginDetail
-
-      end
+  describe '#get_login_details' do
+    it 'calls the uri' do
+      item = described_class.get_login_details(current_client)
+      expect(item).to be
     end
   end
 end

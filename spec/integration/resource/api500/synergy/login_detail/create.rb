@@ -9,15 +9,10 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/login_detail'
+require 'spec_helper'
 
-module OneviewSDK
-  module API500
-    module Synergy
-      # Login Details resource implementation for API500 Synergy
-      class LoginDetail < OneviewSDK::API300::Synergy::LoginDetail
-
-      end
-    end
-  end
+klass = OneviewSDK::API500::Synergy::LoginDetail
+RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
+  let(:current_client) { $client_500_synergy }
+  include_examples 'LoginDetailExample', 'integration api500 context'
 end

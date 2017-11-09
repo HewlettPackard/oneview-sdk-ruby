@@ -15,6 +15,9 @@ module OneviewSDK
     class LoginDetail
       BASE_URI = '/rest/logindetails'.freeze
 
+      # Gets the login details
+      # @param [OneviewSDK::client] client access for resource endpoint
+      # @return [Hash] Response to the api call
       def self.get_login_details(client)
         response = client.rest_get(BASE_URI)
         client.response_handler(response)
