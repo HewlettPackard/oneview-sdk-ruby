@@ -265,7 +265,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/logical-switches/{id}</sub>                                                   |DELETE    | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/logical-switches/{id}/refresh</sub>                                           |PUT       | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Login Details**                                                                                                                                                   |
-|<sub>/rest/logindetails</sub>                                                            | GET      |   |   |   |
+|<sub>/rest/logindetails</sub>                                                            | GET      | :white_check_mark:   | :white_check_mark:  | :white_check_mark:   | 
 |     **Managed SANs**                                                                                                                             |
 |<sub>/rest/fc-sans/managed-sans</sub>                                                    | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/fc-sans/managed-sans/{id}</sub>                                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
