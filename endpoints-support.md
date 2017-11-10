@@ -12,7 +12,7 @@
 
 * If an endpoint is not marked as implemented for a specific API, it can still be used in compatibility mode for the supported API versions.
 * If an example is not working on a supported API version, verify the [HPE OneView REST API Documentation](http://h17007.www1.hpe.com/docs/enterprise/servers/oneview3.1/cic-api/en/api-docs/current/index.html)  for the API version being used, since the expected attributes for that resource might have changed.
-* For DELETE endpoints which remove multiple resources at once using a filter, that functionality is considered as implemented as long as a DELETE by `{id}` is implemented for that resource.
+* For DELETE endpoints which remove multiple resources at once using a filter, that functionality is considered as implemented so long as a DELETE by `{id}` is implemented for that resource.
 The user may then call the method `find_by` to filter the resources and use a looping function to remove all matching results, similarly to the following example:
 ```ruby
 OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
@@ -350,9 +350,9 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/power-devices/{id}/uidState</sub>                                             | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/power-devices/{id}/utilization</sub>                                          | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Providers**                                                                                                                                     |
-|<sub>/rest/fc-sans/providers</sub>                                                       | GET      | :heavy_multiplication_x:       | :heavy_multiplication_x:       |   :heavy_multiplication_x:  |
-|<sub>/rest/fc-sans/providers/{id}</sub>                                                  | GET      | :heavy_minus_sign:   | :heavy_multiplication_x:       |   :heavy_multiplication_x:  |
-|<sub>/rest/fc-sans/providers/{id}/device-managers</sub>                                  | POST     | :heavy_minus_sign:   | :heavy_multiplication_x:       |   :white_check_mark:  |
+|<sub>/rest/fc-sans/providers</sub>                                                       | GET      |       |        |     |
+|<sub>/rest/fc-sans/providers/{id}</sub>                                                  | GET      | :heavy_minus_sign:   | :white_check_mark:       |   :white_check_mark:  |
+|<sub>/rest/fc-sans/providers/{id}/device-managers</sub>                                  | POST     | :heavy_minus_sign:   | :white_check_mark:       |   :white_check_mark:  |
 |     **Racks**                                                                                                                                     |
 |<sub>/rest/racks</sub>                                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/racks</sub>                                                                   | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
