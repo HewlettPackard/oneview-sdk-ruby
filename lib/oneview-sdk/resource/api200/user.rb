@@ -37,9 +37,9 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create(header = DEFAULT_REQUEST_HEADER)
+      def create(header = {})
         ensure_client
-        response = @client.rest_post(BASE_URI, header.merge('body' => @data), @api_version)
+        response = @client.rest_post(BASE_URI, DEFAULT_REQUEST_HEADER.merge(header).merge('body' => @data), @api_version)
         body = @client.response_handler(response)
         @data.delete('password')
         set_all(body)

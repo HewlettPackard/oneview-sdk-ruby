@@ -35,13 +35,13 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [OneviewSDK::LogicalSwitch] self
-      def create(header = DEFAULT_REQUEST_HEADER)
+      def create(header = {})
         ensure_client
         request_body = {}
         request_body['logicalSwitchCredentials'] = generate_logical_switch_credentials
         request_body['logicalSwitch'] = @data.clone
         request_body['logicalSwitch']['switchCredentialConfiguration'] = generate_logical_switch_credential_configuration
-        options = {}.merge(header).merge('body' => request_body)
+        options = DEFAULT_REQUEST_HEADER.merge(header).merge('body' => request_body)
         response = @client.rest_post(self.class::BASE_URI, options, @api_version)
         body = @client.response_handler(response)
         set_all(body)

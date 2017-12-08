@@ -29,7 +29,7 @@ module OneviewSDK
         # @raise [OneviewSDK::IncompleteResource] if the client is not set.
         # @raise [StandardError] if the resource creation fails.
         # @return [Resource] self
-        def create(header = DEFAULT_REQUEST_HEADER)
+        def create(header = {})
           properties = Hash[@data['properties'].map { |k, v| [k.to_sym, v] }]
           family = properties[:dataProtectionLevel].nil? ? 'StoreServ' : 'StoreVirtual'
           template_data = {
@@ -38,7 +38,7 @@ module OneviewSDK
           }
           @data['templateUri'] = get_volume_template_uri(template_data) unless @data['templateUri']
 
-          OneviewSDK::Resource.instance_method(:create).bind(self).call(header)
+          OneviewSDK::Resource.instance_method(:create).bind(self).call(DEFAULT_REQUEST_HEADER.merge(header))
           @data.delete('properties')
           @data.delete('templateUri')
           self
@@ -58,12 +58,12 @@ module OneviewSDK
         # @param [Hash] header The header options for the request (key-value pairs)
         # @raise [InvalidResource] if an invalid flag is passed.
         # @return [true] if resource was deleted successfully.
-        def delete(flag = :all, header = DEFAULT_REQUEST_HEADER)
+        def delete(flag = :all, header = {})
           ensure_client && ensure_uri
           raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless %i[oneview all].include?(flag)
           uri = @data['uri']
           uri << '?suppressDeviceUpdates=true' if flag == :oneview
-          response = @client.rest_delete(uri, header.merge('If-Match' => @data['eTag']))
+          response = @client.rest_delete(uri, DEFAULT_REQUEST_HEADER.merge(header).merge('If-Match' => @data['eTag']))
           @client.response_handler(response)
           true
         end
@@ -162,7 +162,8 @@ module OneviewSDK
         # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
         # @param [Hash] header The header options for the request (key-value pairs)
         # @return [Boolean] Whether or not retrieve was successful
-        def retrieve!(header = DEFAULT_REQUEST_HEADER)
+        def retrieve!(header = {})
+          header = DEFAULT_REQUEST_HEADER.merge(header)
           return super(header) unless @data['properties']
           results = find_by_name_in_properties(header)
           return false unless results.size == 1
@@ -174,7 +175,8 @@ module OneviewSDK
         # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
         # @param [Hash] header The header options for the request (key-value pairs)
         # @return [Boolean] Whether or not resource exists
-        def exists?(header = DEFAULT_REQUEST_HEADER)
+        def exists?(header = {})
+          header = DEFAULT_REQUEST_HEADER.merge(header)
           return super(header) unless @data['properties']
           find_by_name_in_properties(header).size == 1
         end

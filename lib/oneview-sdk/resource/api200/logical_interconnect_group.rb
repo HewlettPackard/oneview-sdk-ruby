@@ -88,9 +88,9 @@ module OneviewSDK
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create(header = DEFAULT_REQUEST_HEADER)
+      def create(header = {})
         verify_interconnects_before_save!
-        super(header)
+        super(DEFAULT_REQUEST_HEADER.merge(header))
       end
 
       # Set data and save to OneView
