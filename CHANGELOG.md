@@ -1,4 +1,4 @@
-## v5.3.0(Unreleased)
+## v5.3.0
 
 #### New Resources:
 - Login Detail
@@ -6,6 +6,7 @@
 
 #### Bug fixes & Enhancements
 - [#226](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/226) Add_rack_resource method returns NOMATCHING_ETAG_MESSAGE.
+- [#301](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/301) Bug - Race condition when requiring oneview-sdk gem on ruby 2.4
 
 ## v5.2.0
 
