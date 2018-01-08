@@ -13,6 +13,7 @@ require_relative 'oneview-sdk/version'
 require_relative 'oneview-sdk/exceptions'
 require_relative 'oneview-sdk/client'
 require_relative 'oneview-sdk/resource'
+require_relative 'oneview-sdk/resource_helper'
 Dir[File.dirname(__FILE__) + '/oneview-sdk/resource/*.rb'].each { |file| require file }
 require_relative 'oneview-sdk/scmb'
 require_relative 'oneview-sdk/image_streamer'
