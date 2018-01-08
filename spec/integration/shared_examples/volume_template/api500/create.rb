@@ -63,6 +63,19 @@ RSpec.shared_examples 'VolumeTemplateCreateExample API500' do
     end
   end
 
+  describe '#create!' do
+    it 'should retrieve, delete and create the resource - Store Serv' do
+      item = described_class.new(current_client, item_attributes)
+      item.set_root_template(root_template)
+      item.set_default_value('storagePool', storage_pool)
+      item.set_default_value('snapshotPool', storage_pool)
+      expect { item.create! }.not_to raise_error
+      expect(item.retrieve!).to eq(true)
+      list = described_class.find_by(current_client, item_attributes)
+      expect(list.size).to eq(1)
+    end
+  end
+
   describe '#get_compatible_systems' do
     it 'should create the resource' do
       item = described_class.find_by(current_client, name: item_attributes['name']).first

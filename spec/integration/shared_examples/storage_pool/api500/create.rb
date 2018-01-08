@@ -19,6 +19,13 @@ RSpec.shared_examples 'StoragePoolCreateExample API500' do
     end
   end
 
+  describe '#create!' do
+    it 'should throw unavailable exception' do
+      item = described_class.new($client_500)
+      expect { item.create! }.to raise_error(OneviewSDK::MethodUnavailable)
+    end
+  end
+
   # setting a storage pool as managed because it will be used by other resource tests
   describe 'setting a storage pool as managed' do
     it 'should set to managed' do

@@ -16,6 +16,7 @@ module OneviewSDK
     # Volume template resource implementation
     class VolumeTemplate < Resource
       BASE_URI = '/rest/storage-volume-templates'.freeze
+      DEFAULT_REQUEST_HEADER = { 'Accept-Language' => 'en_US' }.freeze
 
       # Create the client object, establishes connection, and set up the logging and api version.
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
@@ -33,23 +34,19 @@ module OneviewSDK
 
       # Create the resource on OneView using the current data
       # @note Calls refresh method to set additional data
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create
-        ensure_client
-        response = @client.rest_post(self.class::BASE_URI, { 'Accept-Language' => 'en_US', 'body' => @data }, @api_version)
-        body = @client.response_handler(response)
-        set_all(body)
+      def create(header = {})
+        super(DEFAULT_REQUEST_HEADER.merge(header))
       end
 
       # Deletes the volume template from OneView
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @return [TrueClass] if the volume template was deleted successfully
-      def delete
-        ensure_client && ensure_uri
-        response = @client.rest_delete(@data['uri'], { 'Accept-Language' => 'en_US' }, @api_version)
-        @client.response_handler(response)
-        true
+      def delete(header = {})
+        super(DEFAULT_REQUEST_HEADER.merge(header))
       end
 
       # Updates the volume template from OneView

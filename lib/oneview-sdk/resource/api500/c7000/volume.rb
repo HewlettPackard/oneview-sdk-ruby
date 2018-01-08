@@ -25,10 +25,11 @@ module OneviewSDK
 
         # Creates the volume
         # @note properties and templateUri parameters are required for creation, but not afterwards; after creation, they will be removed.
+        # @param [Hash] header The header options for the request (key-value pairs)
         # @raise [OneviewSDK::IncompleteResource] if the client is not set.
         # @raise [StandardError] if the resource creation fails.
         # @return [Resource] self
-        def create
+        def create(header = {})
           properties = Hash[@data['properties'].map { |k, v| [k.to_sym, v] }]
           family = properties[:dataProtectionLevel].nil? ? 'StoreServ' : 'StoreVirtual'
           template_data = {
@@ -37,7 +38,7 @@ module OneviewSDK
           }
           @data['templateUri'] = get_volume_template_uri(template_data) unless @data['templateUri']
 
-          OneviewSDK::Resource.instance_method(:create).bind(self).call
+          OneviewSDK::Resource.instance_method(:create).bind(self).call(DEFAULT_REQUEST_HEADER.merge(header))
           @data.delete('properties')
           @data.delete('templateUri')
           self
@@ -54,14 +55,15 @@ module OneviewSDK
         # Deletes the resource from OneView or from Oneview and storage system
         # @param [Symbol] flag Delete storage system from Oneview only or in storage system as well.
         #   Flags: :all = removes the volume from oneview and storage system. :oneview = removes from oneview only.
+        # @param [Hash] header The header options for the request (key-value pairs)
         # @raise [InvalidResource] if an invalid flag is passed.
         # @return [true] if resource was deleted successfully.
-        def delete(flag = :all)
+        def delete(flag = :all, header = {})
           ensure_client && ensure_uri
           raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless %i[oneview all].include?(flag)
           uri = @data['uri']
           uri << '?suppressDeviceUpdates=true' if flag == :oneview
-          response = @client.rest_delete(uri, 'If-Match' => @data['eTag'])
+          response = @client.rest_delete(uri, DEFAULT_REQUEST_HEADER.merge(header).merge('If-Match' => @data['eTag']))
           @client.response_handler(response)
           true
         end
@@ -158,10 +160,12 @@ module OneviewSDK
 
         # Retrieve resource details based on this resource's name or URI.
         # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
+        # @param [Hash] header The header options for the request (key-value pairs)
         # @return [Boolean] Whether or not retrieve was successful
-        def retrieve!
-          return super unless @data['properties']
-          results = find_by_name_in_properties
+        def retrieve!(header = {})
+          header = DEFAULT_REQUEST_HEADER.merge(header)
+          return super(header) unless @data['properties']
+          results = find_by_name_in_properties(header)
           return false unless results.size == 1
           set_all(results.first.data)
           true
@@ -169,10 +173,12 @@ module OneviewSDK
 
         # Check if a resource exists
         # @note one of the UNIQUE_IDENTIFIERS, e.g. name or uri or properties['name'], must be specified in the resource
+        # @param [Hash] header The header options for the request (key-value pairs)
         # @return [Boolean] Whether or not resource exists
-        def exists?
-          return super unless @data['properties']
-          find_by_name_in_properties.size == 1
+        def exists?(header = {})
+          header = DEFAULT_REQUEST_HEADER.merge(header)
+          return super(header) unless @data['properties']
+          find_by_name_in_properties(header).size == 1
         end
 
         private
@@ -201,12 +207,13 @@ module OneviewSDK
         end
 
         # Gets the volume
+        # @param [Hash] header The header options for the request (key-value pairs)
         # @raise [OneviewSDK::IncompleteResource] if the name parameter is not set
         # @return [Array] the array of volumes
-        def find_by_name_in_properties
+        def find_by_name_in_properties(header)
           name = @data['properties']['name'] || @data['properties'][:name]
           raise IncompleteResource, 'Must set resource name within the properties before trying to retrieve!' unless name
-          self.class.find_by(@client, 'name' => name)
+          self.class.find_by(@client, { 'name' => name }, BASE_URI, header)
         end
       end
     end

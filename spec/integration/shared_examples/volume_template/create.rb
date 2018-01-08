@@ -17,26 +17,41 @@ RSpec.shared_examples 'VolumeTemplateCreateExample' do |context_name|
   let(:storage_pool_data) { { name: STORAGE_POOL_NAME, storageSystemUri: storage_system['uri'] } }
   let(:storage_pool) { resource_class_of('StoragePool').find_by(current_client, storage_pool_data).first }
 
-  describe '#create' do
-    it 'can create resources' do
-      options = {
+  context 'create actions' do
+    let(:options) do
+      {
         name: VOL_TEMP_NAME,
         state: 'Normal',
         description: 'Volume Template',
         type: 'StorageVolumeTemplateV3'
       }
+    end
+    let(:item) { described_class.new(current_client, options) }
 
-      item = described_class.new(current_client, options)
+    before do
       item.set_provisioning(true, 'Thin', 2 * 1024 * 1024 * 1024, storage_pool)
       item.set_storage_system(storage_system)
       item.set_snapshot_pool(storage_pool)
+    end
 
-      expect { item.create }.to_not raise_error
-      expect(item.retrieve!).to eq(true)
-      expect(item[:name]).to eq(VOL_TEMP_NAME)
-      expect(item[:description]).to eq('Volume Template')
-      expect(item[:stateReason]).to eq('None')
-      expect(item[:type]).to eq('StorageVolumeTemplateV3')
+    describe '#create' do
+      it 'can create resources' do
+        expect { item.create }.to_not raise_error
+        expect(item.retrieve!).to eq(true)
+        expect(item[:name]).to eq(VOL_TEMP_NAME)
+        expect(item[:description]).to eq('Volume Template')
+        expect(item[:stateReason]).to eq('None')
+        expect(item[:type]).to eq('StorageVolumeTemplateV3')
+      end
+    end
+
+    describe '#create!' do
+      it 'should retrieve!, delete, and create the resource' do
+        expect { item.create! }.to_not raise_error
+        expect(item.retrieve!).to eq(true)
+        list = described_class.find_by(current_client, name: VOL_TEMP_NAME)
+        expect(list.size).to eq(1)
+      end
     end
   end
 end

@@ -12,23 +12,35 @@
 RSpec.shared_examples 'UserCreateExample' do |context_name|
   include_context context_name
 
+  let(:resource_attributes) do
+    {
+      userName: USER_NAME,
+      password: 'secret123',
+      emailAddress: 'test_user@hpe.com',
+      fullName: 'Test User',
+      roles: ['Read only']
+    }
+  end
+
   describe '#create' do
     it 'can create resources' do
-      options = {
-        userName: USER_NAME,
-        password: 'secret123',
-        emailAddress: 'test_user@hpe.com',
-        fullName: 'Test User',
-        roles: ['Read only']
-      }
-
-      item = described_class.new(current_client, options)
+      item = described_class.new(current_client, resource_attributes)
 
       expect { item.create }.to_not raise_error
       expect(item[:userName]).to eq(USER_NAME)
       expect(item[:emailAddress]).to eq('test_user@hpe.com')
       expect(item[:fullName]).to eq('Test User')
       expect(item[:roles]).to eq(['Read only'])
+    end
+  end
+
+  describe '#create!' do
+    it 'should retrieve, delete and create the resource' do
+      item = described_class.new(current_client, resource_attributes)
+      expect { item.create! }.not_to raise_error
+      expect(item.retrieve!).to eq(true)
+      list = described_class.find_by(current_client, userName: USER_NAME)
+      expect(list.size).to eq(1)
     end
   end
 

@@ -11,14 +11,16 @@
 
 RSpec.shared_examples 'ScopeCreateExample' do |context_name|
   include_context context_name
+  let(:resource_attributes) do
+    {
+      name: 'Scope 1',
+      description: 'Sample Scope description'
+    }
+  end
 
   describe '#create' do
     it 'should create scope' do
-      attrs = {
-        name: 'Scope 1',
-        description: 'Sample Scope description'
-      }
-      item = described_class.new(current_client, attrs)
+      item = described_class.new(current_client, resource_attributes)
 
       expect { item.create }.not_to raise_error
       expect(item.retrieve!).to eq(true)
@@ -32,4 +34,13 @@ RSpec.shared_examples 'ScopeCreateExample' do |context_name|
     end
   end
 
+  describe '#create!' do
+    it 'should retrieve, delete and create the resource' do
+      item = described_class.new(current_client, resource_attributes)
+      expect { item.create! }.not_to raise_error
+      expect(item.retrieve!).to eq(true)
+      list = described_class.find_by(current_client, resource_attributes)
+      expect(list.size).to eq(1)
+    end
+  end
 end

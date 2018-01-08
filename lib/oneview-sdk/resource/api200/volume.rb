@@ -27,16 +27,27 @@ module OneviewSDK
 
       # Creates the volume
       # @note provisioning parameters are required for creation, but not afterwards; after creation, they will be removed.
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create
-        ensure_client
-        response = @client.rest_post(self.class::BASE_URI, { 'body' => @data }, @api_version)
-        body = @client.response_handler(response)
-        set_all(body)
+      def create(header = {})
+        super(DEFAULT_REQUEST_HEADER.merge(header))
         @data.delete('provisioningParameters')
         self
+      end
+
+      # Delete the resource from OneView if it exists, then create it using the current data
+      # @note Calls refresh method to set additional data
+      # @param [Hash] header The header options for the request (key-value pairs)
+      # @raise [OneviewSDK::IncompleteResource] if the client is not set
+      # @raise [StandardError] if the resource creation fails
+      # @return [Resource] self
+      def create!(header = {})
+        temp = self.class.new(@client, @data)
+        header = DEFAULT_REQUEST_HEADER.merge(header)
+        temp.delete(:all, header) if temp.retrieve!(header)
+        create(header)
       end
 
       # Update resource attributes
@@ -49,20 +60,13 @@ module OneviewSDK
 
       # Deletes the resource from OneView or from Oneview and storage system
       # @param [Symbol] flag Delete storage system from Oneview only or in storage system as well
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @return [true] if resource was deleted successfully
-      def delete(flag = :all)
+      def delete(flag = :all, header = {})
         ensure_client && ensure_uri
-        case flag
-        when :oneview
-          response = @client.rest_delete(@data['uri'], { 'exportOnly' => true }, @api_version)
-          @client.response_handler(response)
-        when :all
-          response = @client.rest_delete(@data['uri'], {}, @api_version)
-          @client.response_handler(response)
-        else
-          raise InvalidResource, 'Invalid flag value, use :oneview or :all'
-        end
-        true
+        raise InvalidResource, 'Invalid flag value, use :oneview or :all' unless %i[oneview all].include?(flag)
+        header = DEFAULT_REQUEST_HEADER.merge(header).merge('exportOnly' => true) if flag == :oneview
+        super(header)
       end
 
       # Sets the storage system to the volume

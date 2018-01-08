@@ -47,13 +47,11 @@ module OneviewSDK
         end
 
         # Delete resource from OneView
+        # @param [Hash] header The header options for the request (key-value pairs)
         # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
         # @return [true] if resource was deleted successfully
-        def delete
-          ensure_client && ensure_uri
-          response = @client.rest_delete(@data['uri'], { 'If-Match' => @data['eTag'] }, @api_version)
-          @client.response_handler(response)
-          true
+        def delete(header = {})
+          super(DEFAULT_REQUEST_HEADER.merge(header).merge('If-Match' => @data['eTag']))
         end
 
         # Adds resource assignments

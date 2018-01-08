@@ -201,6 +201,11 @@ RSpec.describe OneviewSDK::StorageSystem do
       expect { storage.create }.to raise_error(/The method #create is unavailable for this resource/)
     end
 
+    it 'does not allow the create! action' do
+      storage = OneviewSDK::StorageSystem.new(@client_200)
+      expect { storage.create! }.to raise_error(/The method #create! is unavailable for this resource/)
+    end
+
     it 'does not allow the delete action' do
       storage = OneviewSDK::StorageSystem.new(@client_200)
       expect { storage.delete }.to raise_error(/The method #delete is unavailable for this resource/)

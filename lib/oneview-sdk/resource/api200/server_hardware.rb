@@ -32,6 +32,12 @@ module OneviewSDK
         @data['type'] ||= 'server-hardware-4'
       end
 
+      # Method is not available
+      # @raise [OneviewSDK::MethodUnavailable] method is not available
+      def create!(*)
+        unavailable_method
+      end
+
       # Retrieve resource details based on this resource's name or URI.
       # @note one of the UNIQUE_IDENTIFIERS must be specified in the resource
       # @return [Boolean] Whether or not retrieve was successful

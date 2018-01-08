@@ -84,12 +84,13 @@ module OneviewSDK
 
       # Create the resource on OneView using the current data
       # @note Calls the refresh method to set additional data
+      # @param [Hash] header The header options for the request (key-value pairs)
       # @raise [OneviewSDK::IncompleteResource] if the client is not set
       # @raise [StandardError] if the resource creation fails
       # @return [Resource] self
-      def create
+      def create(header = {})
         verify_interconnects_before_save!
-        super
+        super(DEFAULT_REQUEST_HEADER.merge(header))
       end
 
       # Set data and save to OneView

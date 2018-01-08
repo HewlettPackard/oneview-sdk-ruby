@@ -147,4 +147,18 @@ RSpec.describe OneviewSDK::API300::C7000::Scope do
     end
   end
 
+  describe '#delete' do
+    it 'deleting a scope' do
+      item = described_class.new(@client_300, name: 'Scope 1', uri: '/rest/fake', eTag: 'any_tag')
+      allow_any_instance_of(OneviewSDK::Client).to receive(:rest_delete).and_return(true)
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
+      expect(@client_300).to receive(:rest_delete).with(
+        '/rest/fake',
+        { 'If-Match' => item['eTag'] },
+        item.api_version
+      )
+      item.delete
+    end
+  end
+
 end

@@ -368,9 +368,9 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
 
     it 'should find by name when properties is set' do
       item = described_class.new(@client_500, properties: { name: 'volume 1' })
-      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return([])
+      expect(described_class).to receive(:find_by).with(@client_500, { 'name' => 'volume 1' }, described_class::BASE_URI, {}).and_return([])
       expect(item.retrieve!).to eq(false)
-      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return(item_found)
+      expect(described_class).to receive(:find_by).with(@client_500, { 'name' => 'volume 1' }, described_class::BASE_URI, {}).and_return(item_found)
       expect(item.retrieve!).to eq(true)
       expect(item['name']).to eq(item_found.first['name'])
       expect(item['uri']).to eq(item_found.first['uri'])
@@ -398,9 +398,9 @@ RSpec.describe OneviewSDK::API500::C7000::Volume do
 
     it 'should find by name when properties is set' do
       item = described_class.new(@client_500, properties: { name: 'volume 1' })
-      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return([])
+      expect(described_class).to receive(:find_by).with(@client_500, { 'name' => 'volume 1' }, described_class::BASE_URI, {}).and_return([])
       expect(item.exists?).to eq(false)
-      expect(described_class).to receive(:find_by).with(@client_500, 'name' => 'volume 1').and_return(item_found)
+      expect(described_class).to receive(:find_by).with(@client_500, { 'name' => 'volume 1' }, described_class::BASE_URI, {}).and_return(item_found)
       expect(item.exists?).to eq(true)
     end
 

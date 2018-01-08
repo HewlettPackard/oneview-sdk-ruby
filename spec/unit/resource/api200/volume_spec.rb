@@ -15,7 +15,6 @@ RSpec.describe OneviewSDK::Volume do
 
   describe '#create' do
     it 'rearranges the provisioningParameters' do
-      allow_any_instance_of(OneviewSDK::Resource).to receive(:create).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(true)
       allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(
         name: volume_name,
@@ -32,6 +31,40 @@ RSpec.describe OneviewSDK::Volume do
       expect(item['shareable']).to eq(provisioning_parameters[:shareable])
       expect(item['allocatedCapacity']).to eq(provisioning_parameters[:requestedCapacity])
       expect(item['storagePoolUri']).to eq(provisioning_parameters[:storagePoolUri])
+    end
+  end
+
+  describe '#create!' do
+    before :each do
+      @item = described_class.new(@client_200, name: volume_name)
+    end
+
+    it 'should have the default parameter header' do
+      allow_any_instance_of(@item.class).to receive(:retrieve!).with({}).and_return(true)
+      allow_any_instance_of(@item.class).to receive(:delete).with(:all, {}).and_return(true)
+      expect(@item).to receive(:create).with({})
+      @item.create!
+    end
+
+    it 'it can override the default parameter header' do
+      allow_any_instance_of(@item.class).to receive(:retrieve!).with(some_header: 'some_value').and_return(true)
+      allow_any_instance_of(@item.class).to receive(:delete).with(:all, some_header: 'some_value').and_return(true)
+      expect(@item).to receive(:create).with(some_header: 'some_value')
+      @item.create!(some_header: 'some_value')
+    end
+
+    it 'deletes the resource if it exists' do
+      allow_any_instance_of(@item.class).to receive(:retrieve!).and_return(true)
+      expect_any_instance_of(@item.class).to receive(:delete).with(:all, {}).and_return(true)
+      expect(@item).to receive(:create)
+      @item.create!
+    end
+
+    it 'does not delete the resource if it does not exist' do
+      allow_any_instance_of(@item.class).to receive(:retrieve!).and_return(false)
+      expect_any_instance_of(@item.class).not_to receive(:delete)
+      expect(@item).to receive(:create)
+      @item.create!
     end
   end
 

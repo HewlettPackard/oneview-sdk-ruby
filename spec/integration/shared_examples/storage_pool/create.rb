@@ -32,6 +32,13 @@ RSpec.shared_examples 'StoragePoolCreateExample' do |context_name|
     end
   end
 
+  describe '#create!' do
+    it 'should throw unavailable exception' do
+      item = described_class.new(current_client)
+      expect { item.create! }.to raise_error(OneviewSDK::MethodUnavailable)
+    end
+  end
+
   describe '#add' do
     it 'can add resources' do
       item = described_class.new(current_client, item_attributes)
@@ -76,7 +83,6 @@ RSpec.shared_examples 'StoragePoolCreateExample' do |context_name|
   describe '#set_storage_system' do
     it 'can set storage system before add storage pool' do
       storage_system = storage_system_class.new(current_client, storage_system_options)
-      storage_system.retrieve!
       item = described_class.new(current_client)
 
       expect(item.set_storage_system(storage_system)).to eq(storage_system['uri'])
@@ -84,11 +90,9 @@ RSpec.shared_examples 'StoragePoolCreateExample' do |context_name|
     end
 
     it 'should throw incomplete resource exception if storage system\'s uri is unknown' do
-      storage_system = storage_system_class.new(current_client, storage_system_options)
+      storage_system = storage_system_class.new(current_client, uri: '/rest/fake')
       item = described_class.new(current_client)
-
-      expect { item.set_storage_system(storage_system) }.to raise_error(OneviewSDK::IncompleteResource)
-      expect { item.set_storage_system(storage_system) }.to raise_error(/Please set the storage system\'s uri attribute!/)
+      expect { item.set_storage_system(storage_system) }.to raise_error(/Storage System could not be found!/)
     end
   end
 
