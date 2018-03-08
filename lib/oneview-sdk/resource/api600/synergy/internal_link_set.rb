@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/internal_link_set'
+require_relative '../../api500/synergy/internal_link_set'
 
 module OneviewSDK
   module API600
     module Synergy
-      # Internal Link Set resource implementation for API300 Synergy
-      class InternalLinkSet < OneviewSDK::API300::Synergy::InternalLinkSet
+      # Internal Link Set resource implementation for API500 Synergy
+      class InternalLinkSet < OneviewSDK::API500::Synergy::InternalLinkSet
       end
     end
   end
