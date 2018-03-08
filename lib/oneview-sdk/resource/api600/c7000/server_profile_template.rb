@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/server_profile_template'
+require_relative '../../api500/c7000/server_profile_template'
 
 module OneviewSDK
   module API600
     module C7000
       # Server Profile Template resource implementation on API600 C7000
-      class ServerProfileTemplate < OneviewSDK::API300::C7000::ServerProfileTemplate
+      class ServerProfileTemplate < OneviewSDK::API500::C7000::ServerProfileTemplate
 
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance

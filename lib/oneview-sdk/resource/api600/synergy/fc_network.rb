@@ -9,15 +9,15 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/fc_network'
+require_relative '../../api500/synergy/fc_network'
 require_relative 'scope'
 
 module OneviewSDK
   module API600
     module Synergy
       # FC network resource implementation for API600 Synergy
-      class FCNetwork < OneviewSDK::API300::Synergy::FCNetwork
-        include OneviewSDK::API300::C7000::Scope::ScopeHelperMethods
+      class FCNetwork < OneviewSDK::API500::Synergy::FCNetwork
+        include OneviewSDK::API500::C7000::Scope::ScopeHelperMethods
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)

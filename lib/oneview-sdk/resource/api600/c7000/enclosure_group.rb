@@ -20,23 +20,23 @@ module OneviewSDK
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
-        def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
-          # Default values:
-          @data['type'] ||= 'EnclosureGroupV400'
-          super
-        end
+        # def initialize(client, params = {}, api_ver = nil)
+        #   @data ||= {}
+        #   # Default values:
+        #   @data['type'] ||= 'EnclosureGroupV400'
+        #   super
+        # end
 
-        # Updates an enclosure group
-        # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
-        # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
-        # @raise [StandardError] if the resource save fails
-        # @return [Resource] self
-        def update(attributes = {})
-          super(attributes)
-          retrieve!
-          self
-        end
+        # # Updates an enclosure group
+        # # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
+        # # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
+        # # @raise [StandardError] if the resource save fails
+        # # @return [Resource] self
+        # def update(attributes = {})
+        #   super(attributes)
+        #   retrieve!
+        #   self
+        # end
       end
     end
   end

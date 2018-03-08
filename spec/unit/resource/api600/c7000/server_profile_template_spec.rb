@@ -1,25 +1,25 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::C7000::ServerProfileTemplate do
+RSpec.describe OneviewSDK::API600::C7000::ServerProfileTemplate do
   include_context 'shared context'
 
-  it 'inherits from API300' do
-    expect(described_class).to be < OneviewSDK::API300::C7000::ServerProfileTemplate
+  it 'inherits from API500' do
+    expect(described_class).to be < OneviewSDK::API500::C7000::ServerProfileTemplate
   end
 
   describe '#initialize' do
     it 'sets the type correctly' do
-      item = described_class.new(@client_500, name: 'server_profile_template')
+      item = described_class.new(@client_600, name: 'server_profile_template')
       expect(item[:type]).to eq('ServerProfileTemplateV3')
     end
   end
 
   describe '#add_connection' do
     before :each do
-      @item = described_class.new(@client_500, name: 'server_profile_template')
+      @item = described_class.new(@client_600, name: 'server_profile_template')
       @item['connectionSettings'] = {}
       @item['connectionSettings']['connections'] = []
-      @network = OneviewSDK::API500::C7000::EthernetNetwork.new(@client_500, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
+      @network = OneviewSDK::API600::C7000::EthernetNetwork.new(@client_600, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
     end
 
     it 'adds simple connection' do
@@ -44,10 +44,10 @@ RSpec.describe OneviewSDK::API500::C7000::ServerProfileTemplate do
 
     describe '#remove_connection' do
       before :each do
-        @item = described_class.new(@client_500, name: 'server_profile_template')
+        @item = described_class.new(@client_600, name: 'server_profile_template')
         @item['connectionSettings'] = {}
         @item['connectionSettings']['connections'] = []
-        @network = OneviewSDK::EthernetNetwork.new(@client_500, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
+        @network = OneviewSDK::EthernetNetwork.new(@client_600, name: 'unit_ethernet_network', uri: 'rest/fake/ethernet-networks/unit')
         base_uri = @network['uri']
         1.upto(5) do |count|
           @network['uri'] = "#{@network['uri']}_#{count}"
@@ -89,11 +89,11 @@ RSpec.describe OneviewSDK::API500::C7000::ServerProfileTemplate do
   end
 
   describe '#create_volume_with_attachment' do
-    let(:storage_pool_class) { OneviewSDK::API500::C7000::StoragePool }
-    let(:storage_pool) { storage_pool_class.new(@client_500, uri: 'fake/storage-pool') }
+    let(:storage_pool_class) { OneviewSDK::API600::C7000::StoragePool }
+    let(:storage_pool) { storage_pool_class.new(@client_600, uri: 'fake/storage-pool') }
 
     before :each do
-      @item = described_class.new(@client_500, name: 'server_profile_template')
+      @item = described_class.new(@client_600, name: 'server_profile_template')
     end
 
     it 'raises an exception when storage pool not found' do

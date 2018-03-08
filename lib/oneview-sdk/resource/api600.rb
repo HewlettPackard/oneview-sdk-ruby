@@ -39,28 +39,28 @@ module OneviewSDK
       @variant
     end
 
-    # Has the Api600 variant been set by the user?
+    # Has the API600 variant been set by the user?
     # @return [TrueClass, FalseClass]
     def self.variant_updated?
       @variant_updated
     end
 
-    # Sets the Api600 variant
+    # Sets the API600 variant
     def self.variant=(variant)
       raise "API600 variant '#{variant}' is not supported! Try one of #{SUPPORTED_VARIANTS}" unless SUPPORTED_VARIANTS.include?(variant)
       @variant_updated = true
       @variant = variant
     end
 
-    # Helps redirect resources to the correct Api600 variant
+    # Helps redirect resources to the correct API600 variant
     def self.const_missing(const)
       api600_module = OneviewSDK::API600.const_get(@variant.to_s)
       api600_module.const_get(const)
     rescue NameError
-      raise NameError, "The #{const} method or resource does not exist for OneView Api600 variant #{@variant}."
+      raise NameError, "The #{const} method or resource does not exist for OneView API600 variant #{@variant}."
     end
   end
 end
 
-# Load all Api600-specific resources:
+# Load all API600-specific resources:
 Dir[File.dirname(__FILE__) + '/api600/*.rb'].each { |file| require file }

@@ -24,12 +24,12 @@ module OneviewSDK
         #   - 'name' [String] name of the attribute
         #   - 'value' [String] value of the attribute
         # @raise [OneviewSDK::IncompleteResource] if OS Deployment not found.
-        def set_os_deployment_settings(os_deployment_plan, custom_attributes = [])
-          raise IncompleteResource, 'OS Deployment Plan not found!' unless os_deployment_plan.retrieve!
-          self['osDeploymentSettings'] ||= {}
-          self['osDeploymentSettings']['osDeploymentPlanUri'] = os_deployment_plan['uri']
-          self['osDeploymentSettings']['osCustomAttributes'] = custom_attributes
-        end
+        # def set_os_deployment_settings(os_deployment_plan, custom_attributes = [])
+        #   raise IncompleteResource, 'OS Deployment Plan not found!' unless os_deployment_plan.retrieve!
+        #   self['osDeploymentSettings'] ||= {}
+        #   self['osDeploymentSettings']['osDeploymentPlanUri'] = os_deployment_plan['uri']
+        #   self['osDeploymentSettings']['osCustomAttributes'] = custom_attributes
+        # end
       end
     end
   end
