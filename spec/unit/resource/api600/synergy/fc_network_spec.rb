@@ -15,5 +15,5 @@ RSpec.describe OneviewSDK::API600::Synergy::FCNetwork do
       expect(item[:linkStabilityTime]).to eq(30)
       expect(item[:fabricType]).to eq('FabricAttach')
     end
-  end  
+  end
 end

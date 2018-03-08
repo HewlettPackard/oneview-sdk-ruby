@@ -54,7 +54,7 @@ module OneviewSDK
 
     # Helps redirect resources to the correct Api600 variant
     def self.const_missing(const)
-      api600_module = OneviewSDK::api600.const_get(@variant.to_s)
+      api600_module = OneviewSDK::API600.const_get(@variant.to_s)
       api600_module.const_get(const)
     rescue NameError
       raise NameError, "The #{const} method or resource does not exist for OneView Api600 variant #{@variant}."

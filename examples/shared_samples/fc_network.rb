@@ -70,7 +70,7 @@ fc_network_class.find_by(@client, attributes).each do |network|
 end
 
 # only for API300 and API500
-if @client.api_version.to_i > 200 and @client.api_version.to_i < 600
+if @client.api_version.to_i > 200 && @client.api_version.to_i < 600
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
   scope_2 = scope_class.new(@client, name: 'Scope 2')
