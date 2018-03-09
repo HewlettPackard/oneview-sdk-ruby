@@ -21,6 +21,8 @@ require_relative '../_client' # Gives access to @client
 # - API300 for Synergy
 # - API500 for C7000
 # - API500 for Synergy
+# - API600 for C7000
+# - API600 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::FCNetwork
@@ -28,6 +30,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::FCNetwork
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::FCNetwork
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::FCNetwork
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::FCNetwork
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::C7000::FCNetwork
 
 # Resource Class used in this sample
 fc_network_class = OneviewSDK.resource_named('FCNetwork', @client.api_version)
@@ -39,7 +43,8 @@ options = {
   name: 'OneViewSDK Test FC Network',
   connectionTemplateUri: nil,
   autoLoginRedistribution: true,
-  fabricType: 'FabricAttach'
+  fabricType: 'FabricAttach',
+  initialScopeUris: ['/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271', '/rest/scopes/e0f6b95a-67a6-4718-b42c-1f7d426b730c']
 }
 
 fc = fc_network_class.new(@client, options)
@@ -69,7 +74,7 @@ fc_network_class.find_by(@client, attributes).each do |network|
   puts "  #{network[:name]}"
 end
 
-# only for API300 and API500
+# only for API300 and API500, not supported for OneView 4.0 or greater
 if @client.api_version.to_i > 200 && @client.api_version.to_i < 600
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
