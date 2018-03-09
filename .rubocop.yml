@@ -38,7 +38,7 @@ Metrics/PerceivedComplexity:
   Enabled: false
 
 Style/GlobalVars:
-  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $client_500, $client_500_synergy]
+  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $client_500, $client_500_synergy, $client_600, $client_600_synergy ]
 
 Style/FrozenStringLiteralComment:
   Enabled: false

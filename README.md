@@ -167,7 +167,7 @@ You may notice resource classes being accessed in a few different ways; for exam
 require 'oneview-sdk'
 
 # Show defaults:
-OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500]
+OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600]
 OneviewSDK::DEFAULT_API_VERSION         # 200
 OneviewSDK.api_version                  # 200
 OneviewSDK.api_version_updated?         # false
@@ -183,7 +183,7 @@ OneviewSDK.api_version = 300
 OneviewSDK.api_version                  # 300
 OneviewSDK.api_version_updated?         # true
 
-# The API200 module has no variants, but API300 and API500 has 2 (C7000 & Synergy):
+# The API200 module has no variants, but API300, API500 and API600 has 2 (C7000 & Synergy):
 OneviewSDK::API300::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
 OneviewSDK::API300::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API300.variant              # 'C7000'
@@ -193,6 +193,11 @@ OneviewSDK::API500::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
 OneviewSDK::API500::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API500.variant              # 'C7000'
 OneviewSDK::API500.variant_updated?     # false
+
+OneviewSDK::API600::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API600::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API600.variant              # 'C7000'
+OneviewSDK::API600.variant_updated?     # false
 
 # Therefore, there is 1 more namespace level to the real resource class name
 OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
