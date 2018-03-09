@@ -10,27 +10,25 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api500/c7000/fc_network'
-require_relative 'scope'
 
 module OneviewSDK
   module API600
     module C7000
       # FC network resource implementation for API600 C7000
       class FCNetwork < OneviewSDK::API500::C7000::FCNetwork
-        include OneviewSDK::API500::C7000::Scope::ScopeHelperMethods
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
-        # def initialize(client, params = {}, api_ver = nil)
-        #   @data ||= {}
-        #   # Default values
-        #   @data['autoLoginRedistribution'] ||= false
-        #   @data['type'] ||= 'fc-networkV4'
-        #   @data['linkStabilityTime'] ||= 30
-        #   @data['fabricType'] ||= 'FabricAttach'
-        #   super
-        # end
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values
+          @data['autoLoginRedistribution'] ||= false
+          @data['type'] ||= 'fc-networkV4'
+          @data['linkStabilityTime'] ||= 30
+          @data['fabricType'] ||= 'FabricAttach'
+          super
+        end
       end
     end
   end
