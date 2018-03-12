@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/internal_link_set'
+require_relative '../../api500/c7000/internal_link_set'
 
 module OneviewSDK
   module API600
     module C7000
-      # Internal Link Set resource implementation for API300 C7000
-      class InternalLinkSet < OneviewSDK::API300::C7000::InternalLinkSet
+      # Internal Link Set resource implementation for API500 C7000
+      class InternalLinkSet < OneviewSDK::API500::C7000::InternalLinkSet
       end
     end
   end
