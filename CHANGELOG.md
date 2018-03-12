@@ -5,8 +5,8 @@ Extends support of the SDK to OneView Rest API version 600 (OneView v4.0).
 
 #### Features supported
 This release adds support to OneView Rest API version 600 for the hardware variants C7000 and Synergy to the already existing features:
-   - Internal Link Set
    - FC Network
+   - Internal Link Set
 
 ## v5.3.0
 
