@@ -30,8 +30,6 @@ sas_int_class.get_types(@client).each do |interconnect_type|
   puts "SAS Interconnect type: '#{interconnect_type['name']}', uri: '#{interconnect_type['uri']}'"
 end
 
-#item = sas_int_class.get_types(@client).first
-
 # Getting a specific type of SAS interconnect
 puts "\n\nSpecifically retrieving SAS Interconnect type '#{@sas_interconnect_type}':"
 sas_int_type = sas_int_class.get_type(@client, @sas_interconnect_type)
