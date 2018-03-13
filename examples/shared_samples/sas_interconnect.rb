@@ -21,6 +21,7 @@ require_relative '../_client' # Gives access to @client
 # Resource Class used in this sample
 sas_int_class = OneviewSDK.resource_named('SASInterconnect', @client.api_version)
 
+puts @client.api_version
 type = 'SAS Interconnect'
 
 # Gets all types of SAS interconnects supported by the appliance
@@ -29,9 +30,11 @@ sas_int_class.get_types(@client).each do |interconnect_type|
   puts "SAS Interconnect type: '#{interconnect_type['name']}', uri: '#{interconnect_type['uri']}'"
 end
 
+item = sas_int_class.get_types(@client).first
+
 # Getting a specific type of SAS interconnect
-puts "\n\nSpecifically retrieving SAS Interconnect type '#{@sas_interconnect_type}':"
-sas_int_type = sas_int_class.get_type(@client, @sas_interconnect_type)
+puts "\n\nSpecifically retrieving SAS Interconnect type '#{item['name']}':"
+sas_int_type = sas_int_class.get_type(@client, item['name'])
 puts "SAS Interconnect type '#{sas_int_type['name']}' uri: '#{sas_int_type['uri']}'"
 
 # Gets all SAS interconnects on the appliance
