@@ -9,13 +9,30 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/logical_interconnect'
+require_relative '../../api500/synergy/logical_interconnect'
 
 module OneviewSDK
   module API600
     module Synergy
       # Logical interconnect resource implementation for API600 Synergy
-      class LogicalInterconnect < OneviewSDK::API300::Synergy::LogicalInterconnect
+      class LogicalInterconnect < OneviewSDK::API500::Synergy::LogicalInterconnect
+
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'logical-interconnectV4'
+          super
+        end
+
+        # @param options Options to update the Logical Interconnect
+        # @return Updated instance of the Logical Interconnect
+        def update_settings(*)
+          unavailable_method
+        end
       end
     end
   end

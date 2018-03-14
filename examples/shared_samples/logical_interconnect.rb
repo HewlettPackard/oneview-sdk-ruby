@@ -56,7 +56,8 @@ li_et01_options = {
   name:  'li_et01',
   smartLink:  false,
   privateNetwork:  false,
-  connectionTemplateUri: nil
+  connectionTemplateUri: nil,
+  type: 'ethernet-networkV4'
 }
 et01 = ethernet_class.new(@client, li_et01_options)
 et01.create!
@@ -67,7 +68,8 @@ li_et02_options = {
   name:  'li_et02',
   smartLink:  false,
   privateNetwork:  false,
-  connectionTemplateUri: nil
+  connectionTemplateUri: nil,
+  type: 'ethernet-networkV4'
 }
 et02 = ethernet_class.new(@client, li_et02_options)
 et02.create!
@@ -266,7 +268,7 @@ puts "\nConfiguration Applied with successfully"
 puts "\nOperations with scopes"
 begin
   # Scope class used in this sample
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200 && client.api_version.to_i >= 600
   # Creating scopes for this example
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
