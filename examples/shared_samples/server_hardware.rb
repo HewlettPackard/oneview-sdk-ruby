@@ -19,7 +19,7 @@ require_relative '../_client' # Gives access to @client
 #   @server_hardware_password
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ServerHardware
@@ -27,6 +27,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ServerHardware
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ServerHardware
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ServerHardware
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ServerHardware
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ServerHardware
 
 # Resource Class used in this sample
 server_harware_class = OneviewSDK.resource_named('ServerHardware', @client.api_version)
@@ -36,13 +38,21 @@ options = {
   hostname: @server_hardware_hostname,
   username: @server_hardware_username,
   password: @server_hardware_password,
-  licensingIntent: 'OneView'
+  mpHostsAndRanges: @server_mpHostsAndRanges,
+  licensingIntent: 'OneView',
 }
 
+# Below Endpoint is supported only for C7000.
 puts "\nAdding #{type} with hostname = '#{@server_hardware_hostname}'"
 item = server_harware_class.new(@client, options)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+
+# Below Endpoint is supported only for C7000.
+puts "\nAdding multiple #{type} with hostname Range = #{@server_mpHostsAndRanges}'"
+item_multiple = server_harware_class.new(@client, options)
+item_multiple.add_multiple_servers
+puts "\nAdded multiple #{type} successfully \n'#{item_multiple}'"
 
 # Find recently created item by name
 puts "\nSearch server by name = #{item[:name]}"
