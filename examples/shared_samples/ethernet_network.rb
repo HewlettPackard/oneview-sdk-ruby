@@ -21,13 +21,17 @@ require_relative '../_client' # Gives access to @client
 # - API300 for Synergy
 # - API500 for C7000
 # - API500 for Synergy
+# - API600 for C7000
+# - API600 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::EthernetNetwork
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::EthernetNetwork
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::EthernetNetwork
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::EthernetNetwork
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::EthernetNetwork
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::EthernetNetwork
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::EthernetNetwork
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::EthernetNetwork
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::EthernetNetwork
 
 # Resource Class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
@@ -101,8 +105,8 @@ puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully
 list.sort_by! { |e| e['name'] }
 list.each { |e| puts "  #{e['name']}" }
 
-# only for API300 and API500
-if @client.api_version.to_i > 200
+# only for API300 and API500, not supported for OneView 4.0 or greater
+if @client.api_version.to_i > 200 && @client.api_version.to_i < 600
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
   scope_2 = scope_class.new(@client, name: 'Scope 2')
