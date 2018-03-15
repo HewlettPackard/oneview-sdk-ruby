@@ -22,7 +22,6 @@ require_relative '../_client' # Gives access to @client
 # Resource Class used in this sample
 sas_int_class = OneviewSDK.resource_named('SASInterconnect', @client.api_version)
 
-puts @client.api_version
 type = 'SAS Interconnect'
 
 # Gets all types of SAS interconnects supported by the appliance

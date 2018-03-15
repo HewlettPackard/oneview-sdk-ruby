@@ -12,7 +12,7 @@
 RSpec.shared_examples 'SASInterconnectUpdateExample' do |context_name|
   include_context context_name
 
-  subject(:item) { described_class.get_all(current_client).first }
+  subject(:item) { described_class.find_by(current_client, name: SAS_INTERCONNECT1_NAME).first }
   let(:sas_interconnect_type) { 'Synergy 12Gb SAS Connection Module' }
 
   describe '#update' do
