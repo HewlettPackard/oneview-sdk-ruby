@@ -15,16 +15,17 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a sas logical interconnect group named 'ONEVIEW_SDK_SAMPLE_SAS_LIG', update it and then delete it.
 #
 # Supported APIs:
-# - 300, 500
+# - 300, 500,  600
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::SASLogicalInterconnectGroup
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::SASLogicalInterconnectGroup
 
 # Resource Class used in this sample
 sas_int_group_class = OneviewSDK.resource_named('SASLogicalInterconnectGroup', @client.api_version)
 
-type = 'SAS Logical Interconnect Group'
+type = 'sas-logical-interconnect-group'
 
 options = {
   name: 'ONEVIEW_SDK_SAMPLE_SAS_LIG'
