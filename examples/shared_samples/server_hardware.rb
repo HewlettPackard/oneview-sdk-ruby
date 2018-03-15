@@ -39,7 +39,7 @@ options = {
   username: @server_hardware_username,
   password: @server_hardware_password,
   mpHostsAndRanges: @server_mpHostsAndRanges,
-  licensingIntent: 'OneView',
+  licensingIntent: 'OneView'
 }
 
 # Below Endpoint is supported only for C7000.
