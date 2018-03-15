@@ -9,22 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/interconnect'
+require_relative '../../api500/c7000/interconnect'
 
 module OneviewSDK
   module API600
     module C7000
       # Interconnect resource implementation on API600 C7000
-      class Interconnect < OneviewSDK::API300::C7000::Interconnect
+      class Interconnect < OneviewSDK::API500::C7000::Interconnect
         include OneviewSDK::ResourceHelper::ConfigurationOperation
-
-        # Gets all the Small Form-factor Pluggable (SFP) instances from an interconnect.
-        # @return [Hash] hash The Small Form-factor Pluggable (SFP) instances of the interconnect
-        def get_pluggable_module_information
-          ensure_client && ensure_uri
-          response = @client.rest_get(@data['uri'] + '/pluggableModuleInformation')
-          @client.response_handler(response)
-        end
       end
     end
   end

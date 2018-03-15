@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::Interconnect
+klass = OneviewSDK::API600::C7000::Interconnect
 RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_500 }
-  let(:ethernet_class) { OneviewSDK::API500::C7000::EthernetNetwork }
+  let(:current_client) { $client_600 }
+  let(:ethernet_class) { OneviewSDK::API600::C7000::EthernetNetwork }
 
-  include_examples 'InterconnectUpdateExample', 'integration api500 context'
+  include_examples 'InterconnectUpdateExample', 'integration api600 context'
 end
