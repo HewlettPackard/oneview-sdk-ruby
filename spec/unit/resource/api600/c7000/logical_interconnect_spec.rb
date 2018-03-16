@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-extra_klass1 = OneviewSDK::API500::C7000::EthernetNetwork
-extra_klass2 = OneviewSDK::API500::C7000::FCNetwork
-extra_klass3 = OneviewSDK::API500::C7000::FCoENetwork
-RSpec.describe OneviewSDK::API500::C7000::LogicalInterconnect do
+extra_klass1 = OneviewSDK::API600::C7000::EthernetNetwork
+extra_klass2 = OneviewSDK::API600::C7000::FCNetwork
+extra_klass3 = OneviewSDK::API600::C7000::FCoENetwork
+RSpec.describe OneviewSDK::API600::C7000::LogicalInterconnect do
   include_context 'shared context'
 
   let(:fixture_path) { 'spec/support/fixtures/unit/resource/logical_interconnect_default.json' }
-  let(:log_int) { OneviewSDK::API500::C7000::LogicalInterconnect.from_file(@client_500, fixture_path) }
+  let(:log_int) { OneviewSDK::API600::C7000::LogicalInterconnect.from_file(@client_600, fixture_path) }
 
-  it 'inherits from OneviewSDK::API300::C7000::LogicalInterconnect' do
-    expect(described_class).to be < OneviewSDK::API300::C7000::LogicalInterconnect
+  it 'inherits from OneviewSDK::API500::C7000::LogicalInterconnect' do
+    expect(described_class).to be < OneviewSDK::API500::C7000::LogicalInterconnect
   end
 
   describe '#list_vlan_networks' do
@@ -27,8 +27,8 @@ RSpec.describe OneviewSDK::API500::C7000::LogicalInterconnect do
       allow_any_instance_of(extra_klass1).to receive(:retrieve!).and_return(true)
       allow_any_instance_of(extra_klass2).to receive(:retrieve!).and_return(true)
       allow_any_instance_of(extra_klass3).to receive(:retrieve!).and_return(true)
-      expect(@client_500).to receive(:rest_get).with("#{item['uri']}/internalVlans", {}).and_return(true)
-      expect(@client_500).to receive(:response_handler).and_return(response)
+      expect(@client_600).to receive(:rest_get).with("#{item['uri']}/internalVlans", {}).and_return(true)
+      expect(@client_600).to receive(:response_handler).and_return(response)
       result = item.list_vlan_networks
       expect(result).to_not be_empty
       expect(result[0]).to be_instance_of(extra_klass1)
