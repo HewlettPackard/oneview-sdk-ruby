@@ -58,8 +58,7 @@ li_et01_options = {
   name:  'li_et01',
   smartLink:  false,
   privateNetwork:  false,
-  connectionTemplateUri: nil,
-  type: 'ethernet-networkV4'
+  connectionTemplateUri: nil
 }
 et01 = ethernet_class.new(@client, li_et01_options)
 et01.create!
@@ -70,8 +69,7 @@ li_et02_options = {
   name:  'li_et02',
   smartLink:  false,
   privateNetwork:  false,
-  connectionTemplateUri: nil,
-  type: 'ethernet-networkV4'
+  connectionTemplateUri: nil
 }
 et02 = ethernet_class.new(@client, li_et02_options)
 et02.create!
