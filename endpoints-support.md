@@ -276,7 +276,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/logical-interconnects/{id}/telemetry-configurations/{tcId}</sub>              | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
 |<sub>/rest/logical-interconnects/{id}/telemetry-configurations/{tcId}</sub>              | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
 |<sub>/rest/logical-interconnects/compliance</sub>                                        | POST     | :heavy_multiplication_x:       | :heavy_multiplication_x:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
-|<sub>/rest/logical-interconnects/{id}</sub>                                              | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   || :heavy_minus_sign:   |
+|<sub>/rest/logical-interconnects/{id}</sub>                                              | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :heavy_minus_sign:   |
 |     **Logical Switch Groups**                                                                                                                                           |
 |<sub>/rest/logical-switch-groups</sub>                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/logical-switch-groups</sub>                                                   | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
