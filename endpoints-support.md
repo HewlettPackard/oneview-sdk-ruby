@@ -98,15 +98,14 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/fc-sans/endpoints</sub>                                                       | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
 |<sub>/rest/fc-sans/endpoints/{id}</sub>                                                  | GET      |  :heavy_minus_sign:  | :heavy_multiplication_x: | :heavy_multiplication_x:
 |     **Ethernet Networks**                                                                                                                         |
-|<sub>/rest/ethernet-networks</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/ethernet-networks</sub>                                                       | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/ethernet-networks/bulk</sub>                                                  | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/ethernet-networks/{id}</sub>                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/ethernet-networks/{id}</sub>                                                  | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/ethernet-networks/{id}</sub>                                                  | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark: |
-|<sub>/rest/ethernet-networks/{id}</sub>                                                  | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/ethernet-networks/{id}/associatedProfiles</sub>                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/ethernet-networks/{id}/associatedUplinkGroups</sub>                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks</sub>                                                       | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks/bulk</sub>                                                  | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks/{id}</sub>                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks/{id}</sub>                                                  | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks/{id}</sub>                                                  | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :heavy_minus_sign:   | |<sub>/rest/ethernet-networks/{id}</sub>                                                  | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks/{id}/associatedProfiles</sub>                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/ethernet-networks/{id}/associatedUplinkGroups</sub>                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Events**                                                                                                                         |
 |<sub>/rest/events</sub>                                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/events</sub>                                                                  | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
@@ -249,34 +248,34 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/logical-interconnect-groups/{id}</sub>                                        | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/logical-interconnect-groups/{id}/settings</sub>                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Logical Interconnects**                                                                                                                     |
-|<sub>/rest/logical-interconnects</sub>                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/locations/interconnects</sub>                           | POST     | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |
-|<sub>/rest/logical-interconnects/locations/interconnects</sub>                           | DELETE   | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |
-|<sub>/rest/logical-interconnects/{id}</sub>                                              | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/compliance</sub>                                   | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/ethernetSettings</sub>                             | GET      | :heavy_minus_sign:   | :heavy_multiplication_x:  |:heavy_multiplication_x:
-|<sub>/rest/logical-interconnects/{id}/ethernetSettings</sub>                             | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/firmware</sub>                                     | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/firmware</sub>                                     | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/forwarding-information-base</sub>                  | GET      | :heavy_multiplication_x:       | :heavy_multiplication_x:       | :heavy_multiplication_x:       |
-|<sub>/rest/logical-interconnects/{id}/forwarding-information-base</sub>                  | POST     |  :heavy_multiplication_x:      | :heavy_multiplication_x:       | :heavy_multiplication_x:       |
+|<sub>/rest/logical-interconnects</sub>                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/locations/interconnects</sub>                           | POST     | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/locations/interconnects</sub>                           | DELETE   | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}</sub>                                              | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/compliance</sub>                                   | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/ethernetSettings</sub>                             | GET      | :heavy_minus_sign:   | :heavy_multiplication_x:  |:heavy_multiplication_x:  | :heavy_multiplication_x: |
+|<sub>/rest/logical-interconnects/{id}/ethernetSettings</sub>                             | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/firmware</sub>                                     | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/firmware</sub>                                     | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/forwarding-information-base</sub>                  | GET      | :heavy_multiplication_x:       | :heavy_multiplication_x:       | :heavy_multiplication_x:       | :heavy_multiplication_x: |
+|<sub>/rest/logical-interconnects/{id}/forwarding-information-base</sub>                  | POST     |  :heavy_multiplication_x:      | :heavy_multiplication_x:       | :heavy_multiplication_x:       | :heavy_multiplication_x: |
 |<sub>/rest/logical-interconnects/{id}/forwarding-information-base/{dumpFileName}.{suffix}</sub>      | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x:   |
-|<sub>/rest/logical-interconnects/{id}/internalNetworks</sub>                             | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/internalVlans</sub>                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/qos-aggregated-configuration</sub>                 | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/qos-aggregated-configuration</sub>                 | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/settings</sub>                                     | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/snmp-configuration</sub>                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/snmp-configuration</sub>                           | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/support-dumps</sub>                                | POST     |  :heavy_multiplication_x:      | :heavy_multiplication_x:       | :heavy_multiplication_x:       |
-|<sub>/rest/logical-interconnects/{id}/unassignedUplinkPortsForPortMonitor</sub>          | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/configuration</sub>                                | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/port-monitor</sub>                                 | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/port-monitor</sub>                                 | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/telemetry-configurations/{tcId}</sub>              | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/{id}/telemetry-configurations/{tcId}</sub>              | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/logical-interconnects/compliance</sub>                                        | POST     | :heavy_multiplication_x:       | :heavy_multiplication_x:       | :heavy_multiplication_x:       |
-|<sub>/rest/logical-interconnects/{id}</sub>                                              | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/internalNetworks</sub>                             | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/internalVlans</sub>                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/qos-aggregated-configuration</sub>                 | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/qos-aggregated-configuration</sub>                 | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/settings</sub>                                     | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   || :heavy_minus_sign:   |
+|<sub>/rest/logical-interconnects/{id}/snmp-configuration</sub>                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/snmp-configuration</sub>                           | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/support-dumps</sub>                                | POST     |  :heavy_multiplication_x:      | :heavy_multiplication_x:       | :heavy_multiplication_x: | :heavy_multiplication_x:  |
+|<sub>/rest/logical-interconnects/{id}/unassignedUplinkPortsForPortMonitor</sub>          | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/configuration</sub>                                | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/port-monitor</sub>                                 | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/port-monitor</sub>                                 | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/telemetry-configurations/{tcId}</sub>              | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/{id}/telemetry-configurations/{tcId}</sub>              | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |  :white_check_mark:   |
+|<sub>/rest/logical-interconnects/compliance</sub>                                        | POST     | :heavy_multiplication_x:       | :heavy_multiplication_x:       | :heavy_multiplication_x: | :heavy_multiplication_x: |
+|<sub>/rest/logical-interconnects/{id}</sub>                                              | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :heavy_minus_sign:   |
 |     **Logical Switch Groups**                                                                                                                                           |
 |<sub>/rest/logical-switch-groups</sub>                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/logical-switch-groups</sub>                                                   | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
@@ -376,13 +375,13 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/fc-sans/device-managers/{id}</sub>                                            | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/fc-sans/providers/{id}/device-managers</sub>                                  | POST     | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |
 |     **SAS Interconnect Types**                                                                                                                   |
-|<sub>/rest/sas-interconnect-types</sub>                                                  | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/sas-interconnect-types/{id}</sub>                                             | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/sas-interconnect-types</sub>                                                  | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/sas-interconnect-types/{id}</sub>                                             | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **SAS Interconnects**                                                                                                                        |
-|<sub>/rest/sas-interconnects</sub>                                                       | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/sas-interconnects/{id}</sub>                                                  | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/sas-interconnects/{id}</sub>                                                  | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/sas-interconnects/{id}/refreshState</sub>                                     | PUT      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/sas-interconnects</sub>                                                       | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/sas-interconnects/{id}</sub>                                                  | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/sas-interconnects/{id}</sub>                                                  | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/sas-interconnects/{id}/refreshState</sub>                                     | PUT      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **SAS Logical Interconnect Groups**                                                                                                          |
 |<sub>/rest/sas-logical-interconnect-groups</sub>                                         | POST     | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/sas-logical-interconnect-groups</sub>                                         | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
@@ -414,24 +413,25 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/scopes/{id}</sub>                                                             | DELETE   | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/scopes/{id}/resource-assignments</sub>                                        | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   |
 |     **Server Hardware**                                                                                                                          |
-|<sub>/rest/server-hardware</sub>                                                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware</sub>                                                         | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}</sub>                                                    | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}</sub>                                                    | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/bios</sub>                                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/environmentalConfiguration</sub>                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/environmentalConfiguration</sub>                         | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/iloSsoUrl</sub>                                          | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/javaRemoteConsoleUrl</sub>                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/mpFirmwareVersion</sub>                                  | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/physicalServerHardware</sub>                             | GET      | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/powerState</sub>                                         | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/refreshState</sub>                                       | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/remoteConsoleUrl</sub>                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/utilization</sub>                                        | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}                                                          | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/*/firmware                                                    | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-hardware/{id}/firmware                                                 | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware</sub>                                                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware</sub>                                                         | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}</sub>                                                    | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}</sub>                                                    | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/bios</sub>                                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/environmentalConfiguration</sub>                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/environmentalConfiguration</sub>                         | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/iloSsoUrl</sub>                                          | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/javaRemoteConsoleUrl</sub>                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/mpFirmwareVersion</sub>                                  | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/physicalServerHardware</sub>                             | GET      | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/powerState</sub>                                         | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/refreshState</sub>                                       | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/remoteConsoleUrl</sub>                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/utilization</sub>                                        | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}                                                          | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/*/firmware                                                    | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/{id}/firmware                                                 | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-hardware/discovery                                                     | POST     | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |
 |     **Server Hardware Types**                                                                                                                     |
 |<sub>/rest/server-hardware-types</sub>                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/server-hardware-types/{id}</sub>                                              | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
