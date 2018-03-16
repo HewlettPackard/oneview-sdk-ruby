@@ -143,7 +143,7 @@ end
 # Once grouped, with the scope it's possible to restrict an operation or action.
 puts "\nOperations with scope."
 begin
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i >= 600
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create
   scope_2 = scope_class.new(@client, name: 'Scope 2')
