@@ -38,7 +38,7 @@ if variant == 'Synergy'
   options = {
     name: 'OneViewSDK Test Logical Enclosure',
     forceInstallFirmware: false,
-    firmwareBaselineUri: nil
+    firmwareBaselineUri: nil,
     initialScopeUris: ['/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271', '/rest/scopes/e0f6b95a-67a6-4718-b42c-1f7d426b730c']
   }
 
@@ -81,9 +81,12 @@ puts "Found logical enclosure '#{item3[:uri]}'."
 
 if @client.api_version >= 600
   # Gets a logical enclosure by scopeUris
-  puts "\nGets a logical enclosure with uri '#{log_encl_uri}'"
-  item4 = logical_enclosure_class.get_all_with_query(@client, {"scopeUris": "/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271"})
-  puts "Found logical enclosure '#{item3[:uri]}'."
+  query = {
+    scopeUris: '/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271'
+  }
+  puts "\nGets a logical enclosure with scope '#{query[:scopeUris]}'"
+  item4 = logical_enclosure_class.get_all_with_query(@client, query)
+  puts "Found logical enclosure '#{item4}'."
 end
 
 puts "\nUpdating a logical enclosure with the name = '#{item3['name']}'."
