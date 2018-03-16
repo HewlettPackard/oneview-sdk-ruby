@@ -82,7 +82,7 @@ puts "Found logical enclosure '#{item3[:uri]}'."
 if @client.api_version >= 600
   # Gets a logical enclosure by scopeUris
   puts "\nGets a logical enclosure with uri '#{log_encl_uri}'"
-  item4 = logical_enclosure_class.get_all_with_query(@client, {"scopeUris": "/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271")
+  item4 = logical_enclosure_class.get_all_with_query(@client, {"scopeUris": "/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271"})
   puts "Found logical enclosure '#{item3[:uri]}'."
 end
 
