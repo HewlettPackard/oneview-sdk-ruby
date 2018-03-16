@@ -15,14 +15,16 @@ require_relative '../_client' # Gives access to @client
 # NOTE: You'll need to add an interconnect with state Configured and a port linked.
 #
 # Supported APIs:
-# - 200, 300, 500
-
+# - 200, 300, 500, 600
+#
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Interconnect'
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Interconnect'
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Interconnect'
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Interconnect'
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Interconnect'
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Interconnect'
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::Interconnect'
 
 # Resource Class used in this sample
 interconnect_class = OneviewSDK.resource_named('Interconnect', @client.api_version)
