@@ -15,8 +15,7 @@ require_relative '../_client' # Gives access to @client
 # NOTE: You'll need to add an interconnect with state Configured and a port linked.
 #
 # Supported APIs:
-# - 200, 300, 500
-# - 200, 300, 500, 600 for interconnect types
+# - 200, 300, 500, 600
 #
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Interconnect'

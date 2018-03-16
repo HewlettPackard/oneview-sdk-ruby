@@ -17,5 +17,5 @@ RSpec.describe klass, integration: true, type: CREATE do
   let(:interconnect_name) { INTERCONNECT_2_NAME }
   let(:interconnect_type) { 'HP VC FlexFabric-20/40 F8 Module' }
 
-  include_examples 'InterconnectCreateExample', 'integration api600 context', 500
+  include_examples 'InterconnectCreateExample', 'integration api600 context', 600
 end
