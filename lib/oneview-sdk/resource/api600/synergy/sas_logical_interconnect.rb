@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/sas_logical_interconnect'
+require_relative '../../api500/synergy/sas_logical_interconnect'
 
 module OneviewSDK
   module API600
     module Synergy
       # SAS Logical interconnect group resource implementation for API600 Synergy
-      class SASLogicalInterconnect < OneviewSDK::API300::Synergy::SASLogicalInterconnect
+      class SASLogicalInterconnect < OneviewSDK::API500::Synergy::SASLogicalInterconnect
       end
     end
   end

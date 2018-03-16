@@ -12,11 +12,12 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
-# - 300, 500 both api versions only for Synergy
+# - 300, 500, 600 both api versions only for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::SASLogicalInterconnect
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::SASLogicalInterconnect
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::SASLogicalInterconnect
 
 # Resource Class used in this sample
 sas_log_int_class = OneviewSDK.resource_named('SASLogicalInterconnect', @client.api_version)
