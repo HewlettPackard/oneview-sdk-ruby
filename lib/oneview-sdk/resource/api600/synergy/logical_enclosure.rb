@@ -9,30 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/logical_enclosure'
-require_relative '../c7000/logical_enclosure'
+require_relative '../../api500/synergy/logical_enclosure'
 
 module OneviewSDK
   module API600
     module Synergy
       # Logical Enclosure resource implementation on API600 Synergy
-      class LogicalEnclosure < OneviewSDK::API300::Synergy::LogicalEnclosure
-        include OneviewSDK::API600::C7000::FirmwareHelper
-
-        # Method is not available
-        # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def get_script(*)
-          unavailable_method
-        end
-
-        # Updates a logical enclosure
-        # @param [Hash] attributes attributes to be updated
-        # @return [OneviewSDK::API600::Synergy::LogicalEnclosure] self
-        def update(attributes = {})
-          super(attributes)
-          retrieve!
-          self
-        end
+      class LogicalEnclosure < OneviewSDK::API500::Synergy::LogicalEnclosure
       end
     end
   end

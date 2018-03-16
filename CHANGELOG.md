@@ -9,6 +9,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - FC Network
    - FCoE Network
    - Internal Link Set
+   - Logical Enclosure
    - Logical Interconnect
    - SAS Interconnect
    - SAS Interconnect Type
