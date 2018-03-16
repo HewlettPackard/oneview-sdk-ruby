@@ -11,33 +11,49 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::C7000::ServerHardware do
+RSpec.describe OneviewSDK::API600::C7000::ServerHardware do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API300::C7000::ServerHardware' do
-    expect(described_class).to be < OneviewSDK::API300::C7000::ServerHardware
+  it 'inherits from OneviewSDK::API500::C7000::ServerHardware' do
+    expect(described_class).to be < OneviewSDK::API500::C7000::ServerHardware
   end
 
   describe '#initialize' do
     it 'should be initialize the instance with default values' do
-      item = described_class.new(@client_500)
-      expect(item['type']).to eq('server-hardware-7')
-      expect(item['scopeUris']).to be_empty
+      item = described_class.new(@client_600)
+      expect(item['type']).to eq('server-hardware-8')
     end
   end
 
-  describe '#get_physical_server_hardware' do
-    it 'raises exception when uri is null' do
-      item = described_class.new(@client_500)
-      expect { item.get_physical_server_hardware }.to raise_error(/Please set uri attribute before interacting with this resource/)
+  describe '#add_multiple_servers' do
+    context 'with valid data' do
+      before :each do
+        allow_any_instance_of(OneviewSDK::Client).to receive(:rest_api).and_return(true)
+        allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler)
+          .and_return(name: 'En1OA1,bay 1', serialNumber: 'Fake', uri: '/rest/fake')
+
+        @data = {
+          'mpHostsAndRanges' => '["hostname.domain", "1.1.1.1-1.1.1.10"]',
+          'username' => 'Admin',
+          'password' => 'secret123',
+          'licensingIntent' => 'OneView',
+          'other' => 'blah'
+        }
+        @server_hardware = OneviewSDK::API600::C7000::ServerHardware.new(@client_600, @data)
+      end
+
+      it 'only sends certain attributes on the POST' do
+        data = @data.reject { |k, _v| k == 'other' }
+        expect(@client_600).to receive(:rest_post).with('/rest/server-hardware/discovery', { 'body' => data }, anything)
+        @server_hardware.add_multiple_servers
+      end
     end
 
-    it 'getting the physical server hardware inventory' do
-      item = described_class.new(@client_500, uri: 'rest/fake')
-      fake_response = FakeResponse.new
-      expect(@client_500).to receive(:rest_get).with('rest/fake/physicalServerHardware').and_return(fake_response)
-      expect(@client_500).to receive(:response_handler).with(fake_response).and_return('fake')
-      expect(item.get_physical_server_hardware).to eq('fake')
+    context 'with invalid data' do
+      it 'fails when certain attributes are not set' do
+        server_hardware = OneviewSDK::API600::C7000::ServerHardware.new(@client_600, {})
+        expect { server_hardware.add_multiple_servers }.to raise_error(OneviewSDK::IncompleteResource, /Missing required attribute/)
+      end
     end
   end
 end
