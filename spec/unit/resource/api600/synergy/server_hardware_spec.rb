@@ -11,18 +11,17 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::Synergy::ServerHardware do
+RSpec.describe OneviewSDK::API600::Synergy::ServerHardware do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API500::C7000::ServerHardware' do
-    expect(described_class).to be < OneviewSDK::API500::C7000::ServerHardware
+  it 'inherits from OneviewSDK::API500::Synergy::ServerHardware' do
+    expect(described_class).to be < OneviewSDK::API500::Synergy::ServerHardware
   end
 
   describe '#initialize' do
     it 'should be initialize the instance with default values' do
-      item = described_class.new(@client_500)
-      expect(item['type']).to eq('server-hardware-7')
-      expect(item['scopeUris']).to be_empty
+      item = described_class.new(@client_600)
+      expect(item['type']).to eq('server-hardware-8')
     end
   end
 end

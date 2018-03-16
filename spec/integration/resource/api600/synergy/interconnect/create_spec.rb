@@ -11,12 +11,12 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::Synergy::Interconnect
+klass = OneviewSDK::API600::Synergy::Interconnect
 RSpec.describe klass, integration: true, type: CREATE do
-  let(:current_client) { $client_500_synergy }
+  let(:current_client) { $client_600_synergy }
   let(:interconnect_name) { INTERCONNECT_4_NAME }
   let(:interconnect_type) { 'Virtual Connect SE 16Gb FC Module for Synergy' }
 
-  include_examples 'InterconnectCreateExample', 'integration api500 context', 500
-  include_examples 'LinkTopologyExample', 'integration api500 context'
+  include_examples 'InterconnectCreateExample', 'integration api600 context', 600
+  include_examples 'LinkTopologyExample', 'integration api600 context'
 end

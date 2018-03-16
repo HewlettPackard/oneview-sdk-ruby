@@ -8,11 +8,14 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Ethernet Network
    - FC Network
    - FCoE Network
+   - Interconnect
+   - Interconnect Type
    - Internal Link Set
    - Logical Enclosure
    - Logical Interconnect
    - SAS Interconnect
    - SAS Interconnect Type
+   - Server Hardware
 
 ## v5.3.0
 
