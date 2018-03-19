@@ -9,48 +9,46 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/enclosure'
+require_relative '../../api500/synergy/enclosure'
 
 module OneviewSDK
   module API600
     module Synergy
       # Enclosure resource implementation for API600 Synergy
-      class Enclosure < OneviewSDK::API300::Synergy::Enclosure
-
+      class Enclosure < OneviewSDK::API500::Synergy::Enclosure
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
-        # def initialize(client, params = {}, api_ver = nil)
-        #   @data ||= {}
-        #   # Default values:
-        #   @data['type'] ||= 'EnclosureV400'
-        #   super
-        # end
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'EnclosureListV7'
+          super
+        end
 
-        # # Updates the name and rackName (and it uses PATCH).
-        # # Overrides because is necessary to return the current state of the object and current eTag.
-        # # @param [Hash] attributes attributes to be updated
-        # # @return [OneviewSDK::Enclosure] self
-        # def update(attributes = {})
-        #   super(attributes)
-        #   retrieve!
-        #   self
-        # end
+        # Updates the configuration script for the logical enclosure
+        # @raise [OneviewSDK::IncompleteResource] if the client is not set
+        # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+        # @raise [StandardError] if the reapply fails
+        # @return [OneviewSDK::LogicalEnclosure] response
+        def create_csr_request(options, bay_number=nil)
+          ensure_client && ensure_uri
+          uri = "#{@data['uri']}/https/certificaterequest"
+          if bay_number:
+            uri += "?bayNumber=#{bay_number}"
+          response = @client.rest_post(uri, { 'body' => options }, @api_version)
+          @client.response_handler(response)
+        end
 
-        # # Performs a specific patch operation.
-        # # @param [String] operation The operation to be performed
-        # # @param [String] path The path of operation
-        # # @param [String] value The value
-        # # @return [Hash] hash with response
-        # # @note The scopeUris attribute is subject to incompatible changes in future release versions.
-        # def patch(operation, path, value = nil)
-        #   ensure_client && ensure_uri
-        #   body = [{ 'op' => operation, 'path' => path, 'value' => value }]
-        #   patch_options = { 'If-Match' => @data['eTag'] }
-        #   response = @client.rest_patch(@data['uri'], patch_options.merge('body' => body), @api_version)
-        #   @client.response_handler(response)
-        # end
+        def get_csr_request(bay_number=nil)
+          ensure_client && ensure_uri
+          uri = "#{@data['uri']}/https/certificaterequest"
+          if bay_number:
+            uri += "?bayNumber=#{bay_number}"
+          response = @client.rest_get(uri, {}, @api_version)
+          @client.response_handler(response)
+        end
       end
     end
   end

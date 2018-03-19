@@ -80,6 +80,22 @@ item2.update(name: 'Enclosure_Updated')
 item2.retrieve!
 puts "\nUpdated #{type} with new name = '#{item2[:name]}' successfully.\n  uri = '#{item2[:uri]}'"
 
+if @client.api_version >= 600
+  csr_data = {
+      "type": "CertificateDtoV2",
+      "organization": "",
+      "organizationalUnit": "",
+      "locality": "",
+      "state": "",
+      "country": "",
+      "commonName": ""
+  }
+  csr_data_post = item2.create_csr_request(csr_data)
+  puts csr_data_post
+  csr_data = item2.get_csr_request
+  puts csr_data
+end
+
 puts "\nUpdating to original name"
 item2.update(name: old_name)
 puts "\nUpdated #{type} with original name = '#{item2[:name]}' successfully.\n  uri = '#{item2[:uri]}'"
