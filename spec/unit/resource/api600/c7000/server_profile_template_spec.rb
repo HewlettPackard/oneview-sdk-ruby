@@ -16,8 +16,8 @@ RSpec.describe OneviewSDK::API600::C7000::ServerProfileTemplate do
 
   describe '#get_available_networks' do
     it 'retrieves list of networks' do
-      item = described_class.new(@client_600, uri: '/rest/server-profile-templates')
-      expect(@client_600).to receive(:rest_get).with("#{item['uri']}/available-networks?queryTest=Test")
+      item = described_class.new(@client_600)
+      expect(@client_600).to receive(:rest_get).with("#{described_class::BASE_URI}/available-networks?queryTest=Test")
                                                .and_return(FakeResponse.new('it' => 'Networks'))
       expect(item.get_available_networks(@client_600, 'query_test' => 'Test')['it']).to eq('Networks')
     end

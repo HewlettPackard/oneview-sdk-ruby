@@ -74,7 +74,7 @@ rescue NoMethodError
 end
 
 # Supported for api version 600 and above.
-puts "\nGet available networks"
+puts "\nGet all available networks to a server profile template"
 available_networks = item.get_available_networks(@client, 'enclosure_group_uri' => item['enclosureGroupUri'],
                                                           'server_hardware_type_uri' => item['serverHardwareTypeUri'])
 puts "\n Available networks \n #{available_networks}"
