@@ -27,24 +27,42 @@ module OneviewSDK
           super
         end
 
-        # Updates the configuration script for the logical enclosure
+        # Generate certificate signing request for the logical enclosure
         # @raise [OneviewSDK::IncompleteResource] if the client is not set
         # @raise [OneviewSDK::IncompleteResource] if the uri is not set
         # @raise [StandardError] if the reapply fails
         # @return [OneviewSDK::LogicalEnclosure] response
-        def create_csr_request(options, bay_number=nil)
+        def create_csr_request(options, bay_number = nil)
           ensure_client && ensure_uri
           uri = "#{@data['uri']}/https/certificaterequest"
-          uri += "?bayNumber=#{bay_number}" ? bay_number
+          uri += "?bayNumber=#{bay_number}" if bay_number
           response = @client.rest_post(uri, { 'body' => options }, @api_version)
           @client.response_handler(response)
         end
 
-        def get_csr_request(bay_number=nil)
+        # Retrieve certificate signing request for the enclosure
+        # @raise [OneviewSDK::IncompleteResource] if the client is not set
+        # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+        # @raise [StandardError] if the reapply fails
+        # @return [OneviewSDK::LogicalEnclosure] response
+        def get_csr_request(bay_number = nil)
           ensure_client && ensure_uri
           uri = "#{@data['uri']}/https/certificaterequest"
-          uri += "?bayNumber=#{bay_number}" ? bay_number
+          uri += "?bayNumber=#{bay_number}" if bay_number
           response = @client.rest_get(uri, {}, @api_version)
+          @client.response_handler(response)
+        end
+
+        # Import certificate into the logical enclosure
+        # @raise [OneviewSDK::IncompleteResource] if the client is not set
+        # @raise [OneviewSDK::IncompleteResource] if the uri is not set
+        # @raise [StandardError] if the reapply fails
+        # @return [OneviewSDK::LogicalEnclosure] response
+        def import_certificate(options, bay_number = nil)
+          ensure_client && ensure_uri
+          uri = "#{@data['uri']}/https/certificaterequest"
+          uri += "?bayNumber=#{bay_number}" if bay_number
+          response = @client.rest_put(uri, options, @api_version)
           @client.response_handler(response)
         end
       end

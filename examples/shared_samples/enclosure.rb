@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of ethernet networks and then delete them.
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Enclosure
@@ -24,6 +24,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Enclosure
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Enclosure
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Enclosure
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Enclosure
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::Enclosure
 
 # Resource Class used in this sample
 enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
@@ -81,19 +83,45 @@ item2.retrieve!
 puts "\nUpdated #{type} with new name = '#{item2[:name]}' successfully.\n  uri = '#{item2[:uri]}'"
 
 if @client.api_version >= 600
-  csr_data = {
-      "type": "CertificateDtoV2",
-      "organization": "",
-      "organizationalUnit": "",
-      "locality": "",
-      "state": "",
-      "country": "",
-      "commonName": ""
+  # Gets a enclosure by scopeUris
+  query = {
+    scopeUris: '/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271'
   }
-  csr_data_post = item2.create_csr_request(csr_data)
-  puts csr_data_post
-  csr_data = item2.get_csr_request
-  puts csr_data
+  puts "\nGets a logical enclosure with scope '#{query[:scopeUris]}'"
+  item4 = encl_group_class.get_all_with_query(@client, query)
+  puts "Found logical enclosure '#{item4}'."
+
+  bay_number = 1 if variant == 'C7000'
+  csr_data = {
+    type: 'CertificateDtoV2',
+    organization: 'Acme Corp.',
+    organizationalUnit: 'IT',
+    locality: 'Townburgh',
+    state: 'Mississippi',
+    country: 'US',
+    email: 'admin@example.com',
+    commonName: 'fe80::2:0:9:1%eth2'
+  }
+  # Generate Certificate Signing Request for the enclosure
+  item2.create_csr_request(csr_data, bay_number)
+  puts "Created CSR Request for Enclosure with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
+
+  # Retrieve Certificate Signing Request for the enclosure
+  certificate = item2.get_csr_request(bay_number)
+  puts "Certificate Request data for Enclosure with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
+
+  certificate_data = {
+    type: certificate['type'],
+    base64Data: certificate['base64Data']
+  }
+
+  # Imports a signed server certificate into the enclosure
+  begin
+    import = item2.import_certificate(certificate_data, bay_number)
+    puts import
+  rescue StandardError => msg
+    puts msg
+  end
 end
 
 puts "\nUpdating to original name"
@@ -121,9 +149,11 @@ t = Time.now
 utilization = item2.utilization(startDate: t)
 puts utilization
 
-puts "\nGetting the script"
-script = item2.script
-puts script
+if @client.api_version < 600
+  puts "\nGetting the script"
+  script = item2.script
+  puts script
+end
 
 puts "\nReapplying the appliance's configuration on the enclosure"
 item2.configuration
