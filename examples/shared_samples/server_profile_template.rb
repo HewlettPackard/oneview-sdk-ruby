@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ServerProfileTemplate
@@ -20,6 +20,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ServerProfileTemplate
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ServerProfileTemplate
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ServerProfileTemplate
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ServerProfileTemplate
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ServerProfileTemplate
 
 # Resource Class used in this sample
 server_profile_template_class = OneviewSDK.resource_named('ServerProfileTemplate', @client.api_version)
@@ -71,9 +73,10 @@ rescue NoMethodError
   puts "\nThe method #get_transformation is available from API 300 onwards."
 end
 
+# Supported for api version 600 and above.
 puts "\nGet available networks"
-puts item["serverHardwareTypeUri"]
-available_networks = item.get_available_networks(@client, 'enclosure_group_uri' => item['enclosureGroupUri'], 'server_hardware_type_uri' => item['serverHardwareTypeUri'])
+available_networks = item.get_available_networks(@client, 'enclosure_group_uri' => item['enclosureGroupUri'],
+                                                          'server_hardware_type_uri' => item['serverHardwareTypeUri'])
 puts "\n Available networks \n #{available_networks}"
 
 puts "\n\n### Deleting all Server Profiles Template created in this sample"

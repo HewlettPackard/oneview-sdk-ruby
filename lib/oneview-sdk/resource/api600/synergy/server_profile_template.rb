@@ -16,20 +16,6 @@ module OneviewSDK
     module Synergy
       # Server Profile Template resource implementation for API600 Synergy
       class ServerProfileTemplate < OneviewSDK::API600::C7000::ServerProfileTemplate
-
-        # Sets the OS deployment settings applicable when deployment is invoked through server profile template
-        # @param [OneviewSDK::API600::Synergy::OSDeploymentPlan] os_deployment_plan the OSDeploymentPlan resource with valid URI.
-        # @param [Array(Hash<String, String>)] custom_attributes The custom attributes to be configured on the OS deployment plan.
-        #   The internal hashes may contain:
-        #   - 'name' [String] name of the attribute
-        #   - 'value' [String] value of the attribute
-        # @raise [OneviewSDK::IncompleteResource] if OS Deployment not found.
-        # def set_os_deployment_settings(os_deployment_plan, custom_attributes = [])
-        #   raise IncompleteResource, 'OS Deployment Plan not found!' unless os_deployment_plan.retrieve!
-        #   self['osDeploymentSettings'] ||= {}
-        #   self['osDeploymentSettings']['osDeploymentPlanUri'] = os_deployment_plan['uri']
-        #   self['osDeploymentSettings']['osCustomAttributes'] = custom_attributes
-        # end
       end
     end
   end

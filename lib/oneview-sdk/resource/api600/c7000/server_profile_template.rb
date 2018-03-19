@@ -28,14 +28,22 @@ module OneviewSDK
           super
         end
 
+        # Retrieves the list of Ethernet networks, Fibre channel networks and network sets
+        # that are available to a server profile template along with their respective ports.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance.
+        # @param [Hash] query Query paramaters
+        # @option query [String] 'enclosure_group_uri' Enclosure group URI
+        # @option query [String] 'server_hardware_type_uri' Server hardware type URI
+        # @option query [String] 'profile_template_uri' Server profile template URI
+        # @option query [String] 'scope_uris' An expression to restrict the resources returned according to the scopes to which they are assigned
+        # @option query [String] 'view' The FunctionType (Ethernet or FibreChannel) to filter the list of networks returned
+        # @return [Hash] Hash containing the required information
         def get_available_networks(client, query = nil)
           query_uri = OneviewSDK::Resource.build_query(query) if query
-          puts query_uri
           response = client.rest_get("#{BASE_URI}/available-networks#{query_uri}")
           client.response_handler(response)
         end
-
-     end
+      end
     end
   end
 end
