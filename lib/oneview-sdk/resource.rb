@@ -351,6 +351,11 @@ module OneviewSDK
       query_path.sub('?&', '?')
     end
 
+    def self.get_all_with_query(client, query = nil)
+      query_uri = build_query(query) if query
+      find_with_pagination(client, "#{self::BASE_URI}/#{query_uri}")
+    end
+
     protected
 
     # Fail unless @client is set for this resource.

@@ -665,6 +665,15 @@ RSpec.describe OneviewSDK::Resource do
       expect(OneviewSDK::Resource.build_query(nil)).to eq('')
     end
   end
+
+  describe '#get_all_with_query' do
+    it 'retrieves all based on a query' do
+      allow(@client_600).to receive(:build_query)
+        .with(@client_600, { 'scopeUris' => 'ResourceURI' }, described_class::BASE_URI, {}).and_return('?scopeUris=ResourceURI')
+      expect(OneviewSDK::Resource).to receive(:find_with_pagination).with(@client_200, described_class::BASE_URI + '/?scopeuris=ResourceURI')
+      OneviewSDK::Resource.get_all_with_query(@client_200, 'scopeUris' => 'ResourceURI')
+    end
+  end
 end
 
 RSpec.describe OneviewSDK do

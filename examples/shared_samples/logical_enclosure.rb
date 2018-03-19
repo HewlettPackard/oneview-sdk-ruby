@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 # To run this test with Synergy you must have an enclosureGroup with enclosure count = 3.
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalEnclosure
@@ -24,6 +24,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalEnclosure
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::LogicalEnclosure
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::LogicalEnclosure
 
 # Resource Class used in this sample
 logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.api_version)
@@ -38,7 +40,8 @@ if variant == 'Synergy'
   options = {
     name: 'OneViewSDK Test Logical Enclosure',
     forceInstallFirmware: false,
-    firmwareBaselineUri: nil
+    firmwareBaselineUri: nil,
+    initialScopeUris: ['/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271', '/rest/scopes/e0f6b95a-67a6-4718-b42c-1f7d426b730c']
   }
 
   puts "\nCreating a logical enclosure with the name = '#{options[:name]}'."
@@ -77,6 +80,16 @@ puts "\nFound by name: '#{item2[:name]}'.\n  uri = '#{item2[:uri]}'"
 puts "\nGets a logical enclosure with uri '#{log_encl_uri}'"
 item3 = logical_enclosure_class.find_by(@client, uri: log_encl_uri).first
 puts "Found logical enclosure '#{item3[:uri]}'."
+
+if @client.api_version >= 600
+  # Gets a logical enclosure by scopeUris
+  query = {
+    scopeUris: '/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271'
+  }
+  puts "\nGets a logical enclosure with scope '#{query[:scopeUris]}'"
+  item4 = logical_enclosure_class.get_all_with_query(@client, query)
+  puts "Found logical enclosure '#{item4}'."
+end
 
 puts "\nUpdating a logical enclosure with the name = '#{item3['name']}'."
 old_name = item3['name']
