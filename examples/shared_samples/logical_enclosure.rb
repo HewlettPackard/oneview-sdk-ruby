@@ -24,8 +24,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalEnclosure
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
-# api_version = 600 & variant = C7000 to OneviewSDK::API500::C7000::LogicalEnclosure
-# api_version = 600 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::LogicalEnclosure
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::LogicalEnclosure
 
 # Resource Class used in this sample
 logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.api_version)
