@@ -71,6 +71,11 @@ rescue NoMethodError
   puts "\nThe method #get_transformation is available from API 300 onwards."
 end
 
+puts "\nGet available networks"
+puts item["serverHardwareTypeUri"]
+available_networks = item.get_available_networks(@client, 'enclosure_group_uri' => item['enclosureGroupUri'], 'server_hardware_type_uri' => item['serverHardwareTypeUri'])
+puts "\n Available networks \n #{available_networks}"
+
 puts "\n\n### Deleting all Server Profiles Template created in this sample"
 item2.delete
 item3.delete
