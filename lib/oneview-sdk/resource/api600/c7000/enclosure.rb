@@ -35,8 +35,7 @@ module OneviewSDK
         def create_csr_request(options, bay_number=nil)
           ensure_client && ensure_uri
           uri = "#{@data['uri']}/https/certificaterequest"
-          if bay_number:
-            uri += "?bayNumber=#{bay_number}"
+          uri += "?bayNumber=#{bay_number}" ? bay_number
           response = @client.rest_post(uri, { 'body' => options }, @api_version)
           @client.response_handler(response)
         end
@@ -44,8 +43,7 @@ module OneviewSDK
         def get_csr_request(bay_number=nil)
           ensure_client && ensure_uri
           uri = "#{@data['uri']}/https/certificaterequest"
-          if bay_number:
-            uri += "?bayNumber=#{bay_number}"
+          uri += "?bayNumber=#{bay_number}" ? bay_number
           response = @client.rest_get(uri, {}, @api_version)
           @client.response_handler(response)
         end
