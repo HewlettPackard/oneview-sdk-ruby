@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 # To run this test with Synergy you must have an enclosureGroup with enclosure count = 3.
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalEnclosure
@@ -24,6 +24,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalEnclosure
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
+# api_version = 600 & variant = C7000 to OneviewSDK::API500::C7000::LogicalEnclosure
+# api_version = 600 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
 
 # Resource Class used in this sample
 logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.api_version)
