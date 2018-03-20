@@ -40,10 +40,15 @@ encl_name = 'OneViewSDK-Test-Enclosure'
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+scope_1 = scope_class.new(@client, name: 'Scope 1')
+scope_1.create
+
 options = if variant == 'Synergy'
             {
               name: encl_name,
-              hostname: @synergy_enclosure_hostname
+              hostname: @synergy_enclosure_hostname,
+              initialScopeUris: [scope_1.uri]
             }
           else
             {
@@ -52,7 +57,8 @@ options = if variant == 'Synergy'
               username: @enclosure_username,
               password: @enclosure_password,
               enclosureGroupUri: encl_group['uri'],
-              licensingIntent: 'OneView'
+              licensingIntent: 'OneView',
+              initialScopeUris: [scope_1.uri]
             }
           end
 
@@ -84,15 +90,12 @@ puts "\nUpdated #{type} with new name = '#{item2[:name]}' successfully.\n  uri =
 
 if @client.api_version >= 600
   # Gets a enclosure by scopeUris
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
-  scope_1 = scope_class.new(@client, name: 'Scope 1')
-  scope_1.create
   query = {
     scopeUris: scope_1['uri']
   }
-  puts "\nGets a logical enclosure with scope '#{query[:scopeUris]}'"
+  puts "\nGets a enclosure with scope '#{query[:scopeUris]}'"
   item4 = encl_group_class.get_all_with_query(@client, query)
-  puts "Found logical enclosure '#{item4}'."
+  puts "Found enclosure '#{item4}'."
 
   bay_number = 1 if variant == 'C7000'
   csr_data = {
