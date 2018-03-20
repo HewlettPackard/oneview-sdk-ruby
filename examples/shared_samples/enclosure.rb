@@ -48,7 +48,7 @@ options = if variant == 'Synergy'
             {
               name: encl_name,
               hostname: @synergy_enclosure_hostname,
-              initialScopeUris: [scope_1.uri]
+              initialScopeUris: [scope_1['uri']]
             }
           else
             {
@@ -58,7 +58,7 @@ options = if variant == 'Synergy'
               password: @enclosure_password,
               enclosureGroupUri: encl_group['uri'],
               licensingIntent: 'OneView',
-              initialScopeUris: [scope_1.uri]
+              initialScopeUris: [scope_1['uri']]
             }
           end
 
@@ -94,7 +94,7 @@ if @client.api_version >= 600
     scopeUris: scope_1['uri']
   }
   puts "\nGets a enclosure with scope '#{query[:scopeUris]}'"
-  item4 = encl_group_class.get_all_with_query(@client, query)
+  item4 = enclosure_class.get_all_with_query(@client, query)
   puts "Found enclosure '#{item4}'."
 
   bay_number = 1 if variant == 'C7000'
@@ -155,7 +155,7 @@ t = Time.now
 utilization = item2.utilization(startDate: t)
 puts utilization
 
-if @client.api_version < 600
+if @client.api_version < 500
   puts "\nGetting the script"
   script = item2.script
   puts script
