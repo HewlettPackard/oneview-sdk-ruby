@@ -33,6 +33,14 @@ server_hardware_type_class = OneviewSDK.resource_named('ServerHardwareType', @cl
 server_profile_template_name = 'OneViewSDK Test ServerProfileTemplate'
 puts "\n### Creating a new Server Profile Template based on a Server Hardware Type and Enclosure Group"
 item = server_profile_template_class.new(@client, name:  server_profile_template_name)
+
+# Get server profiles filtered by scope uris.
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+scope = scope_class.get_all(@client).first
+puts "\nGet all server profile templates with scope #{scope['uri']}"
+profiles = item.get_all_with_query(@client, scope_uris => scope['uri'])
+puts "\nResponse, #{profiles}"
+
 server_hardware_type = server_hardware_type_class.find_by(@client, {}).first
 raise 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
 item.set_server_hardware_type(server_hardware_type)
