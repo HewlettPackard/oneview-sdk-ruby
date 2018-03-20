@@ -10,7 +10,6 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../../api500/c7000/logical_enclosure'
-require_relative '../../../resource_helper'
 
 module OneviewSDK
   module API600
