@@ -5,11 +5,11 @@ RSpec.describe OneviewSDK do
   it 'has a list of supported api versions' do
     versions = described_class::SUPPORTED_API_VERSIONS
     expect(versions).to be_a Array
-    [200, 300].each { |v| expect(versions).to include(v) }
+    [200, 300, 500, 600, 800].each { |v| expect(versions).to include(v) }
   end
 
   it 'returns a valid API version' do
-    %w[API200 API300].each { |v| expect { OneviewSDK.const_get(v) }.not_to raise_error }
+    %w[API200 API300 API500 API600 API800].each { |v| expect { OneviewSDK.const_get(v) }.not_to raise_error }
   end
 
   it 'raises an error when an invalid API300 version is called' do
