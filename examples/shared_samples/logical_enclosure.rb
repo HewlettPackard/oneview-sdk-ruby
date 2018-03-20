@@ -83,8 +83,11 @@ puts "Found logical enclosure '#{item3[:uri]}'."
 
 if @client.api_version >= 600
   # Gets a logical enclosure by scopeUris
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+  scope_1 = scope_class.new(@client, name: 'Scope 1')
+  scope_1.create
   query = {
-    scopeUris: '/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271'
+    scopeUris: scope_1['uri']
   }
   puts "\nGets a logical enclosure with scope '#{query[:scopeUris]}'"
   item4 = logical_enclosure_class.get_all_with_query(@client, query)
