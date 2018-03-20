@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of ethernet networks and then delete them.
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Enclosure
@@ -24,6 +24,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Enclosure
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Enclosure
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Enclosure
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Enclosure
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::Enclosure
 
 # Resource Class used in this sample
 enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
@@ -38,10 +40,15 @@ encl_name = 'OneViewSDK-Test-Enclosure'
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+scope_1 = scope_class.new(@client, name: 'Scope 1')
+scope_1.create
+
 options = if variant == 'Synergy'
             {
               name: encl_name,
-              hostname: @synergy_enclosure_hostname
+              hostname: @synergy_enclosure_hostname,
+              initialScopeUris: [scope_1['uri']]
             }
           else
             {
@@ -50,7 +57,8 @@ options = if variant == 'Synergy'
               username: @enclosure_username,
               password: @enclosure_password,
               enclosureGroupUri: encl_group['uri'],
-              licensingIntent: 'OneView'
+              licensingIntent: 'OneView',
+              initialScopeUris: [scope_1['uri']]
             }
           end
 
@@ -80,6 +88,48 @@ item2.update(name: 'Enclosure_Updated')
 item2.retrieve!
 puts "\nUpdated #{type} with new name = '#{item2[:name]}' successfully.\n  uri = '#{item2[:uri]}'"
 
+if @client.api_version >= 600
+  # Gets a enclosure by scopeUris
+  query = {
+    scopeUris: scope_1['uri']
+  }
+  puts "\nGets a enclosure with scope '#{query[:scopeUris]}'"
+  item4 = enclosure_class.get_all_with_query(@client, query)
+  puts "Found enclosure '#{item4}'."
+
+  bay_number = 1 if variant == 'C7000'
+  csr_data = {
+    type: 'CertificateDtoV2',
+    organization: 'Acme Corp.',
+    organizationalUnit: 'IT',
+    locality: 'Townburgh',
+    state: 'Mississippi',
+    country: 'US',
+    email: 'admin@example.com',
+    commonName: 'fe80::2:0:9:1%eth2'
+  }
+  # Generate Certificate Signing Request for the enclosure
+  item2.create_csr_request(csr_data, bay_number)
+  puts "Created CSR Request for Enclosure with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
+
+  # Retrieve Certificate Signing Request for the enclosure
+  certificate = item2.get_csr_request(bay_number)
+  puts "Certificate Request data for Enclosure with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
+
+  certificate_data = {
+    type: certificate['type'],
+    base64Data: certificate['base64Data']
+  }
+
+  # Imports a signed server certificate into the enclosure
+  begin
+    import = item2.import_certificate(certificate_data, bay_number)
+    puts import
+  rescue StandardError => msg
+    puts msg
+  end
+end
+
 puts "\nUpdating to original name"
 item2.update(name: old_name)
 puts "\nUpdated #{type} with original name = '#{item2[:name]}' successfully.\n  uri = '#{item2[:uri]}'"
@@ -105,9 +155,11 @@ t = Time.now
 utilization = item2.utilization(startDate: t)
 puts utilization
 
-puts "\nGetting the script"
-script = item2.script
-puts script
+if @client.api_version < 500
+  puts "\nGetting the script"
+  script = item2.script
+  puts script
+end
 
 puts "\nReapplying the appliance's configuration on the enclosure"
 item2.configuration
@@ -117,41 +169,43 @@ puts "\nRefreshing the enclosure"
 item2.set_refresh_state('RefreshPending')
 puts "\nOperation applied successfully!"
 
-# This section illustrates scope usage with the enclosure. Supported in API 300 and onwards.
+# This section illustrates scope usage with the enclosure. Supported in API 300 till 500.
 # When a scope uri is added to a enclosure, the enclosure is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
-puts "\nOperations with scope."
-begin
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
-  scope_1 = scope_class.new(@client, name: 'Scope 1')
-  scope_1.create
-  scope_2 = scope_class.new(@client, name: 'Scope 2')
-  scope_2.create
+if @client.api_version < 600
+  puts "\nOperations with scope."
+  begin
+    scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+    scope_1 = scope_class.new(@client, name: 'Scope 1')
+    scope_1.create
+    scope_2 = scope_class.new(@client, name: 'Scope 2')
+    scope_2.create
 
-  puts "\nAdding scopes to the enclosure"
-  item2.add_scope(scope_1)
-  item2.refresh
-  puts 'Scopes:', item2['scopeUris']
+    puts "\nAdding scopes to the enclosure"
+    item2.add_scope(scope_1)
+    item2.refresh
+    puts 'Scopes:', item2['scopeUris']
 
-  puts "\nReplacing scopes inside the enclosure"
-  item2.replace_scopes(scope_2)
-  item2.refresh
-  puts 'Scopes:', item2['scopeUris']
+    puts "\nReplacing scopes inside the enclosure"
+    item2.replace_scopes(scope_2)
+    item2.refresh
+    puts 'Scopes:', item2['scopeUris']
 
-  puts "\nRemoving scopes from enclosure"
-  item2.remove_scope(scope_1)
-  item2.remove_scope(scope_2)
-  item2.refresh
-  puts 'Scopes:', item2['scopeUris']
+    puts "\nRemoving scopes from enclosure"
+    item2.remove_scope(scope_1)
+    item2.remove_scope(scope_2)
+    item2.refresh
+    puts 'Scopes:', item2['scopeUris']
 
-  scope_1.refresh
-  scope_2.refresh
+    scope_1.refresh
+    scope_2.refresh
 
-  # Delete scopes
-  scope_1.delete
-  scope_2.delete
-rescue NoMethodError
-  puts "\nScope operations is not supported in this version."
+    # Delete scopes
+    scope_1.delete
+    scope_2.delete
+  rescue NoMethodError
+    puts "\nScope operations is not supported in this version."
+  end
 end
 
 # Removes an enclosure

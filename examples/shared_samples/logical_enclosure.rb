@@ -36,12 +36,16 @@ enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+scope_1 = scope_class.new(@client, name: 'Scope 1')
+scope_1.create
+
 if variant == 'Synergy'
   options = {
     name: 'OneViewSDK Test Logical Enclosure',
     forceInstallFirmware: false,
     firmwareBaselineUri: nil,
-    initialScopeUris: ['/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271', '/rest/scopes/e0f6b95a-67a6-4718-b42c-1f7d426b730c']
+    initialScopeUris: [scope_1['uri']]
   }
 
   puts "\nCreating a logical enclosure with the name = '#{options[:name]}'."
@@ -84,7 +88,7 @@ puts "Found logical enclosure '#{item3[:uri]}'."
 if @client.api_version >= 600
   # Gets a logical enclosure by scopeUris
   query = {
-    scopeUris: '/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271'
+    scopeUris: scope_1['uri']
   }
   puts "\nGets a logical enclosure with scope '#{query[:scopeUris]}'"
   item4 = logical_enclosure_class.get_all_with_query(@client, query)
