@@ -351,6 +351,11 @@ module OneviewSDK
       query_path.sub('?&', '?')
     end
 
+    # Make a GET request to the resource base uri, query parameters and returns an array with all objects of this type
+    # @param [OneviewSDK::Client] client The client object for the OneView appliance
+    # @param [Hash] query The query options for the request (key-value pairs)
+    # @param [Hash] header The header options for the request (key-value pairs)
+    # @return [Array<Resource>] Results
     def self.get_all_with_query(client, query = nil)
       query_uri = build_query(query) if query
       find_with_pagination(client, "#{self::BASE_URI}/#{query_uri}")
