@@ -163,41 +163,43 @@ puts "\nRefreshing the enclosure"
 item2.set_refresh_state('RefreshPending')
 puts "\nOperation applied successfully!"
 
-# This section illustrates scope usage with the enclosure. Supported in API 300 and onwards.
+# This section illustrates scope usage with the enclosure. Supported in API 300 till 500.
 # When a scope uri is added to a enclosure, the enclosure is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
-puts "\nOperations with scope."
-begin
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
-  scope_1 = scope_class.new(@client, name: 'Scope 1')
-  scope_1.create
-  scope_2 = scope_class.new(@client, name: 'Scope 2')
-  scope_2.create
+if @client.api_version < 600
+  puts "\nOperations with scope."
+  begin
+    scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+    scope_1 = scope_class.new(@client, name: 'Scope 1')
+    scope_1.create
+    scope_2 = scope_class.new(@client, name: 'Scope 2')
+    scope_2.create
 
-  puts "\nAdding scopes to the enclosure"
-  item2.add_scope(scope_1)
-  item2.refresh
-  puts 'Scopes:', item2['scopeUris']
+    puts "\nAdding scopes to the enclosure"
+    item2.add_scope(scope_1)
+    item2.refresh
+    puts 'Scopes:', item2['scopeUris']
 
-  puts "\nReplacing scopes inside the enclosure"
-  item2.replace_scopes(scope_2)
-  item2.refresh
-  puts 'Scopes:', item2['scopeUris']
+    puts "\nReplacing scopes inside the enclosure"
+    item2.replace_scopes(scope_2)
+    item2.refresh
+    puts 'Scopes:', item2['scopeUris']
 
-  puts "\nRemoving scopes from enclosure"
-  item2.remove_scope(scope_1)
-  item2.remove_scope(scope_2)
-  item2.refresh
-  puts 'Scopes:', item2['scopeUris']
+    puts "\nRemoving scopes from enclosure"
+    item2.remove_scope(scope_1)
+    item2.remove_scope(scope_2)
+    item2.refresh
+    puts 'Scopes:', item2['scopeUris']
 
-  scope_1.refresh
-  scope_2.refresh
+    scope_1.refresh
+    scope_2.refresh
 
-  # Delete scopes
-  scope_1.delete
-  scope_2.delete
-rescue NoMethodError
-  puts "\nScope operations is not supported in this version."
+    # Delete scopes
+    scope_1.delete
+    scope_2.delete
+  rescue NoMethodError
+    puts "\nScope operations is not supported in this version."
+  end
 end
 
 # Removes an enclosure
