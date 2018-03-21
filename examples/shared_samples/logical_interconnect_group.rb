@@ -139,9 +139,13 @@ lig_class.find_by(@client, {}).each do |r|
 end
 
 if @client.api_version >= 600
+
+  # Retrives the scopes present on the appliance
+  scopes = scope_class.find_by(@client, {})
+ 
   # Gets a logical interconnect groups by scopeUris
   query = {
-    scopeUris: '/rest/scopes/560a9d59-540a-4135-b8ad-ed97013ddfdc'
+    scopeUris: scopes.first
   }
   puts "\nGets a logical interconnect group with scope '#{query[:scopeUris]}'"
   item4 = lig_class.get_all_with_query(@client, query)
