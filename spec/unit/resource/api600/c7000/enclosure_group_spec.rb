@@ -26,6 +26,7 @@ RSpec.describe klass do
       expect(item['name']).to eq(options['name'])
       expect(item['uri']).to eq(options['uri'])
       expect(item['eTag']).to eq('anotherTag')
+      expect(item[:type]).to eq('EnclosureGroupV7')
     end
   end
 end
