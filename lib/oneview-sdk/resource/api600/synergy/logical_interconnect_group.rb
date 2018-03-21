@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/logical_interconnect_group'
+require_relative '../c7000/logical_interconnect_group'
 
 module OneviewSDK
   module API600
     module Synergy
       # Logical interconnect group resource implementation for API600 Synergy
-      class LogicalInterconnectGroup < OneviewSDK::API300::Synergy::LogicalInterconnectGroup
+      class LogicalInterconnectGroup < OneviewSDK::API600::C7000::LogicalInterconnectGroup
       end
     end
   end
