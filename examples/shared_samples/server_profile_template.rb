@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ServerProfileTemplate
@@ -20,6 +20,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ServerProfileTemplate
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ServerProfileTemplate
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ServerProfileTemplate
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ServerProfileTemplate
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ServerProfileTemplate
 
 # Resource Class used in this sample
 server_profile_template_class = OneviewSDK.resource_named('ServerProfileTemplate', @client.api_version)
@@ -31,6 +33,7 @@ server_hardware_type_class = OneviewSDK.resource_named('ServerHardwareType', @cl
 server_profile_template_name = 'OneViewSDK Test ServerProfileTemplate'
 puts "\n### Creating a new Server Profile Template based on a Server Hardware Type and Enclosure Group"
 item = server_profile_template_class.new(@client, name:  server_profile_template_name)
+
 server_hardware_type = server_hardware_type_class.find_by(@client, {}).first
 raise 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
 item.set_server_hardware_type(server_hardware_type)
@@ -41,6 +44,13 @@ item.create
 puts "\nCreated Server Profile Template '#{item['name']}' successfully.\n  uri = '#{item['uri']}'"
 puts "\nServer Hardware Type '#{server_hardware_type['name']}'.\n uri = '#{item['serverHardwareTypeUri']}'"
 puts "\nEnclosure Group '#{enclosure_group['name']}'.\n  uri = '#{item['enclosureGroupUri']}'"
+
+# Get server profiles filtered by scope uris.
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+scope = scope_class.get_all(@client).first
+puts "\nGet all server profile templates with scope #{scope['uri']}"
+profiles = server_profile_template_class.get_all_with_query(@client, 'scope_uris' => scope['uri'])
+puts "\nResponse, #{profiles}"
 
 # Find recently created item by name
 puts "\n\n### Find recently created item by name"
@@ -69,6 +79,15 @@ begin
   puts "\nTransformed Server Profile Template '#{item3['name']}' successfully.\n  uri = '#{item3['uri']}' "
 rescue NoMethodError
   puts "\nThe method #get_transformation is available from API 300 onwards."
+end
+
+puts "\nGet all available networks to a server profile template"
+begin
+  available_networks = item.get_available_networks(@client, 'enclosure_group_uri' => item['enclosureGroupUri'],
+                                                            'server_hardware_type_uri' => item['serverHardwareTypeUri'])
+  puts "\nAvailable networks \n #{available_networks}"
+rescue NoMethodError
+  puts "\nThe method #get_available_networks is available from API 600 onwards."
 end
 
 puts "\n\n### Deleting all Server Profiles Template created in this sample"

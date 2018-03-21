@@ -25,26 +25,26 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 | Endpoints                                                                       | Verb     | V200 | V300 | V500 | V600 |
 | --------------------------------------------------------------------------------------- | -------- | :------------------: | :------------------: | :------------------: | :------------------: |
 |     **Alerts**                                                                                                                                   |
-|<sub>/rest/alerts	</sub>                                                                |GET       |     |   |  
-|<sub>/rest/alerts	</sub>                                                                |DELETE    |     |   |  
-|<sub>/rest/alerts/{id}	</sub>                                                            |GET       |     |   |  
-|<sub>/rest/alerts/{id}	</sub>                                                            |PUT       |     |   |  
-|<sub>/rest/alerts/{id}	</sub>                                                            |DELETE    |     |   |  
-|<sub>/rest/alerts/AlertChangeLog/{id}</sub>                                              |DELETE    |     |   |  
+|<sub>/rest/alerts	</sub>                                                                |GET       |     |   |
+|<sub>/rest/alerts	</sub>                                                                |DELETE    |     |   |
+|<sub>/rest/alerts/{id}	</sub>                                                            |GET       |     |   |
+|<sub>/rest/alerts/{id}	</sub>                                                            |PUT       |     |   |
+|<sub>/rest/alerts/{id}	</sub>                                                            |DELETE    |     |   |
+|<sub>/rest/alerts/AlertChangeLog/{id}</sub>                                              |DELETE    |     |   |
 |     **Appliance Time and Locale Configuration**                                                                                                 |
 |<sub>/rest/appliance/configuration/time-locale</sub>                                     |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:  |
 |<sub>/rest/appliance/configuration/time-locale</sub>                                     |POST      | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
 |     **Backups**                                                                                                                                  |
-|<sub>/rest/backups</sub>                                                                 |GET       |   |   |  
-|<sub>/rest/backups</sub>                                                                 |POST      |   |   |  
-|<sub>/rest/backups/archive</sub>                                                         |POST      |   |   |  
-|<sub>/rest/backups/archive/{id}</sub>                                                    |GET       |   |   |  
-|<sub>/rest/backups/config</sub>                                                          |GET       | :heavy_minus_sign: |   |  
-|<sub>/rest/backups/config</sub>                                                          |PUT       | :heavy_minus_sign: |   |  
-|<sub>/rest/backups/remotearchive/{id}</sub>                                              |PUT       | :heavy_minus_sign: |   |  
-|<sub>/rest/backups/remotearchive/{id}</sub>                                              |DELETE    | :heavy_minus_sign: |   |  
-|<sub>/rest/backups/{id}</sub>                                                            |GET       |   |   |  
-|<sub>/rest/backups/{id}</sub>                                                            |DELETE    |   |   |  
+|<sub>/rest/backups</sub>                                                                 |GET       |   |   |
+|<sub>/rest/backups</sub>                                                                 |POST      |   |   |
+|<sub>/rest/backups/archive</sub>                                                         |POST      |   |   |
+|<sub>/rest/backups/archive/{id}</sub>                                                    |GET       |   |   |
+|<sub>/rest/backups/config</sub>                                                          |GET       | :heavy_minus_sign: |   |
+|<sub>/rest/backups/config</sub>                                                          |PUT       | :heavy_minus_sign: |   |
+|<sub>/rest/backups/remotearchive/{id}</sub>                                              |PUT       | :heavy_minus_sign: |   |
+|<sub>/rest/backups/remotearchive/{id}</sub>                                              |DELETE    | :heavy_minus_sign: |   |
+|<sub>/rest/backups/{id}</sub>                                                            |GET       |   |   |
+|<sub>/rest/backups/{id}</sub>                                                            |DELETE    |   |   |
 |     **Certificate Authority**                                                                                                                    |
 |<sub>/rest/certificates/ca</sub>                                                         |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
 |<sub>/rest/certificates/ca/crl</sub>                                                     |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
@@ -442,13 +442,14 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/server-hardware-types/{id}</sub>                                              | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/server-hardware-types/{id}</sub>                                              | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Server Profile Templates**                                                                                                                  |
-|<sub>/rest/server-profile-templates</sub>                                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-profile-templates</sub>                                                | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-profile-templates/{id}</sub>                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-profile-templates/{id}</sub>                                           | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-profile-templates/{id}</sub>                                           | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-profile-templates/{id}/new-profile</sub>                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/server-profile-templates/{id}/transformation</sub>                            | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/server-profile-templates</sub>                                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+|<sub>/rest/server-profile-templates</sub>                                                | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+|<sub>/rest/server-profile-templates/{id}</sub>                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+|<sub>/rest/server-profile-templates/{id}</sub>                                           | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+|<sub>/rest/server-profile-templates/{id}</sub>                                           | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+|<sub>/rest/server-profile-templates/{id}/new-profile</sub>                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+|<sub>/rest/server-profile-templates/{id}/transformation</sub>                            | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+|<sub>/rest/server-profile-templates/available-networks                                   | GET      | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:
 |     **Server Profiles**                                                                                                                                                 |
 |<sub>/rest/server-profiles</sub>                                                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/server-profiles</sub>                                                         | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
