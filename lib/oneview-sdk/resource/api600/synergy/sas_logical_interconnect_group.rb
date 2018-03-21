@@ -23,13 +23,8 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
-          @data['enclosureType'] ||= 'SY12000'
-          @data['enclosureIndexes'] ||= [1]
-          @data['state'] ||= 'Active'
+
           @data['type'] ||= 'sas-logical-interconnect-groupV2'
-          @data['interconnectBaySet'] ||= 1
-          @data['interconnectMapTemplate'] ||= {}
-          @data['interconnectMapTemplate']['interconnectMapEntryTemplates'] ||= []
           super
         end
       end
