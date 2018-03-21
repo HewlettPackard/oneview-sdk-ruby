@@ -138,6 +138,20 @@ lig_class.find_by(@client, {}).each do |r|
   puts "  #{r[:name]}"
 end
 
+if @client.api_version >= 600
+
+  # Retrieves the scopes present on the appliance
+  scopes = scope_class.find_by(@client, {})
+
+  # Gets a logical interconnect groups by scopeUris
+  query = {
+    scopeUris: scopes.first['uri']
+  }
+  puts "\nGets a logical interconnect group with scope '#{query[:scopeUris]}'"
+  item4 = lig_class.get_all_with_query(@client, query)
+  puts "Found logical enclosure '#{item4}'."
+end
+
 puts 'Listing default settings'
 puts lig_class.get_default_settings(@client)
 
@@ -169,8 +183,8 @@ end
 # A scope defines a collection of resources, which might be used for filtering or access control.
 # When a scope uri is added to a lig resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
-# For the lig resource, this feature is only available for api version higher than or equal to 300.
-if @client.api_version.to_i > 200
+# For the lig resource, this feature is only available for api version 300 and 500.
+if @client.api_version.to_i > 200 && @client.api_version.to_i < 600
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!
   scope_2 = scope_class.new(@client, name: 'Scope 2')
