@@ -142,7 +142,7 @@ if @client.api_version >= 600
 
   # Retrives the scopes present on the appliance
   scopes = scope_class.find_by(@client, {})
- 
+
   # Gets a logical interconnect groups by scopeUris
   query = {
     scopeUris: scopes.first
