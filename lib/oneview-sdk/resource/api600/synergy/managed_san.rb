@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../c7000/managed_san'
+require_relative '../../api600/synergy/managed_san'
 
 module OneviewSDK
   module API600
     module Synergy
       # Managed SAN resource implementation for API600 Synergy
-      class ManagedSAN < OneviewSDK::API600::C7000::ManagedSAN
+      class ManagedSAN < OneviewSDK::API500::Synergy::ManagedSAN
       end
     end
   end
