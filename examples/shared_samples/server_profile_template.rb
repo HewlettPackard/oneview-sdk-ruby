@@ -12,6 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
+<<<<<<< 41ccf1b3a449b0a7676a13011702e612c5619d4b
 # - 200, 300, 500, 600, 800
 
 # Resources that can be created according to parameters:
