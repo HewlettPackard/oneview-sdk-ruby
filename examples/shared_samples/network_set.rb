@@ -87,7 +87,7 @@ puts "\nListing the ethernet networks:"
 network_set['networkUris'].each { |network| puts "- networkUri='#{network}'" }
 
 # only for API300 and API500
-if @client.api_version.to_i >= 300 and @client.api_version.to_i <= 500
+if @client.api_version.to_i >= 300 && @client.api_version.to_i <= 500
   # Scope class used in this sample
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 

@@ -5,5 +5,4 @@ RSpec.describe OneviewSDK::API600::C7000::NetworkSet, integration: true, type: U
   let(:ethernet_class) { OneviewSDK::API600::C7000::EthernetNetwork }
 
   include_examples 'NetworkSetUpdateExample', 'integration api600 context'
-  end
 end
