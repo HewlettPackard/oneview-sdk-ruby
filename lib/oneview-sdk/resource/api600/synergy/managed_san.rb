@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api600/synergy/managed_san'
+require_relative '../../api500/synergy/managed_san'
 
 module OneviewSDK
   module API600
