@@ -21,6 +21,7 @@ require_relative '../_client' # Gives access to @client
 # - API200 for C7000 and Synergy (see /examples/shared_samples/storage_system.rb)
 # - API300 for C7000 and Synergy (see /examples/shared_samples/storage_system.rb)
 # - API500 for C7000 and Synergy
+# - API600 for C7000 and Synergy
 
 raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
@@ -33,6 +34,8 @@ end
 # Resources classes that you can use for Storage System in this example:
 # storage_system_class = OneviewSDK::API500::C7000::StorageSystem
 # storage_system_class = OneviewSDK::API500::Synergy::StorageSystem
+# storage_system_class = OneviewSDK::API600::C7000::StorageSystem
+# storage_system_class = OneviewSDK::API600::Synergy::StorageSystem
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 
 # for StorageSystem with family StoreServ
