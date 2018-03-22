@@ -36,27 +36,27 @@ end
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 
 # for StorageSystem with family StoreServ
-# options = {
-#   credentials: {
-#     username: @storage_system_username,
-#     password: @storage_system_password
-#   },
-#   hostname: @storage_system_ip,
-#   family: 'StoreServ',
-#   deviceSpecificAttributes: {
-#     managedDomain: 'TestDomain'
-#   }
-# }
-
-# for StorageSystem with family StoreVirtual
 options = {
   credentials: {
     username: @storage_system_username,
     password: @storage_system_password
   },
   hostname: @storage_system_ip,
-  family: 'StoreVirtual'
+  family: 'StoreServ',
+  deviceSpecificAttributes: {
+    managedDomain: 'TestDomain'
+  }
 }
+
+# for StorageSystem with family StoreVirtual
+# options = {
+#   credentials: {
+#     username: @storage_system_username,
+#     password: @storage_system_password
+#   },
+#   hostname: @storage_system_ip,
+#   family: 'StoreVirtual'
+# }
 
 storage_system = storage_system_class.new(@client, options)
 puts "\nAdding a storage system with"
@@ -73,10 +73,13 @@ end
 
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
 storage_system.retrieve!
-
 port = storage_system['ports'].find { |item| item['protocolType'].downcase.include?('fc') } # find first correct protocolType for using our fc network
 if port
-  fc_network = OneviewSDK::API500::C7000::FCNetwork.get_all(@client).first
+  fc_network = if @client.api_version == 600
+                 OneviewSDK::API600::C7000::FCNetwork.get_all(@client).first
+               else
+                 OneviewSDK::API500::C7000::FCNetwork.get_all(@client).first
+               end
   puts "\n Adding a fc network named '#{fc_network['name']}' with uri='#{fc_network['uri']}' to the storage system."
   port['expectedNetworkUri'] = fc_network['uri']
   port['expectedNetworkName'] = fc_network['name']

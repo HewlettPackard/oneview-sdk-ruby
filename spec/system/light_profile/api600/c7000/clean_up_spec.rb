@@ -29,6 +29,6 @@ RSpec.describe 'Clean up fluid resource pool API600 C7000', system: true, sequen
       family: 'StoreVirtual'
     }
   end
-  include_examples 'Clean up SystemTestExample', 'system API600 context'
-  include_examples 'Clean up SystemTestExample C7000', 'system API600 context'
+  include_examples 'Clean up SystemTestExample', 'system api600 context'
+  include_examples 'Clean up SystemTestExample C7000', 'system api600 context'
 end

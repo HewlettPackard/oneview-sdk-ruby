@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::StorageSystem
+klass = OneviewSDK::API600::C7000::StorageSystem
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
 
   let(:store_serv_data) do
@@ -40,18 +40,18 @@ RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
     }
   end
 
-  it_behaves_like 'StorageSystemCreateExample', 'integration api500 context', 500 do
-    let(:current_client) { $client_500 }
+  it_behaves_like 'StorageSystemCreateExample', 'integration api600 context', 600 do
+    let(:current_client) { $client_600 }
     let(:item_attributes) { store_serv_data }
   end
 
-  it_behaves_like 'StorageSystemCreateExample', 'integration api500 context', 500 do
-    let(:current_client) { $client_500 }
+  it_behaves_like 'StorageSystemCreateExample', 'integration api600 context', 600 do
+    let(:current_client) { $client_600 }
     let(:item_attributes) { store_virtual_data }
   end
 
-  it_behaves_like 'StorageSystemCreateExample', 'integration api500 context', 500 do
-    let(:current_client) { $client_500 }
+  it_behaves_like 'StorageSystemCreateExample', 'integration api600 context', 600 do
+    let(:current_client) { $client_600 }
     let(:item_attributes) { store_serv_data_with_domain }
 
     describe 'verifying managedDomain' do

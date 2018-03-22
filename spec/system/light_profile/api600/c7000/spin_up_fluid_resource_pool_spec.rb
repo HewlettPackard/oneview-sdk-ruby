@@ -29,6 +29,6 @@ RSpec.describe 'Spin up fluid resource pool API600 C7000', system: true, sequenc
       family: 'StoreVirtual'
     }
   end
-  include_examples 'SystemTestExample', 'system API600 context'
-  include_examples 'SystemTestExample C7000', 'system API600 context'
+  include_examples 'SystemTestExample', 'system api600 context'
+  include_examples 'SystemTestExample C7000', 'system api600 context'
 end
