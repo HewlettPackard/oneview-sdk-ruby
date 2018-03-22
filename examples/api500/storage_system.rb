@@ -38,6 +38,8 @@ end
 # Resources classes that you can use for Storage System in this example:
 # storage_system_class = OneviewSDK::API500::C7000::StorageSystem
 # storage_system_class = OneviewSDK::API500::Synergy::StorageSystem
+# storage_system_class = OneviewSDK::API600::C7000::StorageSystem
+# storage_system_class = OneviewSDK::API600::Synergy::StorageSystem
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 
 # for StorageSystem with family StoreServ
