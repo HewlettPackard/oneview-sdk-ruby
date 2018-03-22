@@ -40,13 +40,7 @@ server_hardware_type = server_hardware_type_class.find_by(@client, {}).first
 raise 'Failed to find Server Hardware Type' unless server_hardware_type || server_hardware_type['uri']
 item.set_server_hardware_type(server_hardware_type)
 enclosure_group = enclosure_group_class.find_by(@client, {}).first
-
-puts(item)
-puts("enclosure group")
-puts(enclosure_group_class)
-
 raise 'Failed to find Enclosure Group' unless enclosure_group || enclosure_group['uri']
-puts(item)
 item.set_enclosure_group(enclosure_group)
 item.create
 puts "\nCreated Server Profile Template '#{item['name']}' successfully.\n  uri = '#{item['uri']}'"

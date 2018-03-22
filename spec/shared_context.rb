@@ -66,7 +66,7 @@ RSpec.shared_context 'integration api600 context', a: :b do
 end
 
 # Context for API800 integration testing:
-RSpec.shared_context 'integration api600 context', a: :b do
+RSpec.shared_context 'integration api800 context', a: :b do
   before :all do
     integration_context
     $client_800 ||= OneviewSDK::Client.new($config.merge(api_version: 800))
