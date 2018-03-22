@@ -9,40 +9,32 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/enclosure_group'
+require_relative '../../api500/synergy/enclosure_group'
 
 module OneviewSDK
   module API600
     module Synergy
       # Enclosure group resource implementation on API600 Synergy
-      class EnclosureGroup < OneviewSDK::API300::Synergy::EnclosureGroup
+      class EnclosureGroup < OneviewSDK::API500::Synergy::EnclosureGroup
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
-        # def initialize(client, params = {}, api_ver = nil)
-        #   @data ||= {}
-        #   # Default values:
-        #   @data['type'] ||= 'EnclosureGroupV400'
-        #   super
-        # end
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          super
+          @data.delete('type')
+          @data.delete('interconnectBayMappingCount')
+          @data.delete('stackingMode')
+        end
 
-        # # Method is not available
-        # # @raise [OneviewSDK::MethodUnavailable] method is not available
-        # def get_script(*)
-        #   unavailable_method
-        # end
+        def update(attributes = {})
+          @data['type'] ||= 'EnclosureGroupV7'
+          @data['stackingMode'] ||= 'Enclosure'
+          super
+        end
 
-        # # Updates an enclosure group
-        # # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
-        # # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
-        # # @raise [StandardError] if the resource save fails
-        # # @return [Resource] self
-        # def update(attributes = {})
-        #   super(attributes)
-        #   retrieve!
-        #   self
-        # end
       end
     end
   end

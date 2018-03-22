@@ -15,7 +15,7 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an enclosure group named 'OneViewSDK Test Enclosure Group', then delete it.
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::EnclosureGroup
@@ -23,6 +23,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::EnclosureGroup
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::EnclosureGroup
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::EnclosureGroup
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::EnclosureGroup
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::EnclosureGroup
 
 # Resource Class used in this sample
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
@@ -37,6 +39,18 @@ item = encl_group_class.new(@client, name: encl_group_name)
 
 lig = lig_class.get_all(@client).first
 item.add_logical_interconnect_group(lig)
+
+if @client.api_version >= 600
+  # Gets enclosure group by scopeUris
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+  scope_item = scope_class.get_all(@client).first
+  query = {
+    scopeUris: scope_item['uri']
+  }
+  puts "\nGets enclosure group with scope '#{query[:scopeUris]}'"
+  items = encl_group_class.get_all_with_query(@client, query)
+  puts "Found enclosure group '#{items}'."
+end
 
 puts "\nCreating an #{type} with name = '#{item[:name]}' and logical interconnect group uri = '#{lig[:uri]}''"
 item.create!

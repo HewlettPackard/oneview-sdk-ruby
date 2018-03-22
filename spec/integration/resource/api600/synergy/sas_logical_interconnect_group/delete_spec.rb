@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::Synergy::SASLogicalInterconnectGroup
+klass = OneviewSDK::API600::Synergy::SASLogicalInterconnectGroup
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  let(:current_client) { $client_500_synergy }
-  include_examples 'SASLogInterGroupDeleteExample', 'integration api500 context'
+  let(:current_client) { $client_600_synergy }
+  include_examples 'SASLogInterGroupDeleteExample', 'integration api600 context'
 end
