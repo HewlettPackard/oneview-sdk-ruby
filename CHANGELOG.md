@@ -21,6 +21,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - SAS Logical Interconnect
    - Server Hardware
    - Server Profile Template
+   - Uplink Sets
 
 ## v5.3.0
 
