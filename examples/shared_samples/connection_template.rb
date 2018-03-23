@@ -14,12 +14,14 @@ require_relative '../_client' # Gives access to @client
 # Example: Manage connection templates
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ConnectionTemplate
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::ConnectionTemplate
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ConnectionTemplate
+# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ConnectionTemplate
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ConnectionTemplate
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ConnectionTemplate
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ConnectionTemplate
 
