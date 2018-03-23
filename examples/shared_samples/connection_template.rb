@@ -22,8 +22,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ConnectionTemplate
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ConnectionTemplate
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ConnectionTemplate
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ConnectionTemplate
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ConnectionTemplate
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ConnectionTemplate
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ConnectionTemplate
 
 # Resource Class used in this sample
 conn_template_class = OneviewSDK.resource_named('ConnectionTemplate', @client.api_version)
