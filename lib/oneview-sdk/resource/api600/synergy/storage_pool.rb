@@ -14,7 +14,7 @@ require_relative '../c7000/storage_pool'
 module OneviewSDK
   module API600
     module Synergy
-      # Storage pool resource implementation for API 500 Synergy
+      # Storage pool resource implementation for API 600 Synergy
       class StoragePool < OneviewSDK::API600::C7000::StoragePool
       end
     end
