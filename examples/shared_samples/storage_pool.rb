@@ -70,7 +70,7 @@ puts "\nListing the storage pools:"
 list = storage_pool_class.get_all(@client)
 puts list.map { |item_4| item_4['name'] } unless list.empty?
 
-if @client.api_version => 500
+if @client.api_version >= 500
   puts "\nReachable storage pools:"
   list = storage_pool_class.reachable(@client)
   puts list.map { |item_4| item_4['name'] } unless list.empty?
