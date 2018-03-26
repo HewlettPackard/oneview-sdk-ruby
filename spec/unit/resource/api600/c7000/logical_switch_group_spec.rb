@@ -7,4 +7,11 @@ RSpec.describe klass do
   it 'inherits from OneviewSDK::API500::C7000::LogicalSwitchGroup' do
     expect(described_class).to be < OneviewSDK::API500::C7000::LogicalSwitchGroup
   end
+
+  describe '#initialize' do
+    it 'sets the defaults correctly' do
+      item = klass.new(@client_300)
+      expect(item['type']).to eq('logical-switch-groupV4')
+    end
+  end
 end

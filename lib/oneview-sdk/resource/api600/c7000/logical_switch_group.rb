@@ -16,6 +16,16 @@ module OneviewSDK
     module C7000
       # Logical switch group resource implementation for API600 C7000
       class LogicalSwitchGroup < OneviewSDK::API500::C7000::LogicalSwitchGroup
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'logical-switch-groupV4'
+          super
+        end
       end
     end
   end
