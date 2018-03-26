@@ -98,7 +98,7 @@ begin
   msgs = item3.get_messages
   puts "\nMessasses retrieved successfully! \n Message: #{msgs}"
 rescue OneviewSDK::MethodUnavailable
-    puts "\nThe method #get_messages available API version <= 500"
+  puts "\nThe method #get_messages available API version <= 500"
 end
 
 puts "\nTransforming an existing profile"
