@@ -6,12 +6,4 @@ RSpec.describe OneviewSDK::API600::Synergy::ConnectionTemplate do
   it 'inherits from OneviewSDK::API500::Synergy::ConnectionTemplate' do
     expect(described_class).to be < OneviewSDK::API500::Synergy::ConnectionTemplate
   end
-
-  describe '#get_default' do
-    it 'verify endpoint' do
-      expect(@client_600).to receive(:rest_get).with('/rest/connection-templates/defaultConnectionTemplate').and_return(FakeResponse.new({}))
-      connection = described_class.get_default(@client_600)
-      expect(connection).to be_an_instance_of OneviewSDK::API600::Synergy::ConnectionTemplate
-    end
-  end
 end
