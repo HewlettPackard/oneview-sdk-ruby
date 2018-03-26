@@ -62,7 +62,7 @@ sleep(10)
 
 # NOTE: Scopes doesn't support versions smaller than 300.
 
-if @client.api_version >= 300 && @client <= 500
+if @client.api_version >= 300 && @client.api_version <= 500
   # Scopes
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   scope_1 = scope_class.new(@client, name: 'Scope 1')
