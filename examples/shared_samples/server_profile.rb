@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ServerProfile
@@ -20,6 +20,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ServerProfile
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ServerProfile
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ServerProfile
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ServerProfile
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ServerProfile
 
 # Resource Class used in this sample
 server_profile_class = OneviewSDK.resource_named('ServerProfile', @client.api_version)
@@ -92,8 +94,12 @@ ports = server_profile_class.get_profile_ports(@client, query_options)
 puts "\nPorts retrieved: \n #{ports['ports']}"
 
 puts "\nGetting the error or status messages associated with the specified profile"
-msgs = item3.get_messages
-puts "\nMessasses retrieved successfully! \n Message: #{msgs}"
+begin
+  msgs = item3.get_messages
+  puts "\nMessasses retrieved successfully! \n Message: #{msgs}"
+rescue OneviewSDK::MethodUnavailable
+    puts "\nThe method #get_messages available API version <= 500"
+end
 
 puts "\nTransforming an existing profile"
 item.get_transformation('server_hardware_type' => server_hardware_type, 'enclosure_group' => enclosure_group)
