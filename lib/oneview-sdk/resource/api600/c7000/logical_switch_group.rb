@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/logical_switch_group'
+require_relative '../../api500/c7000/logical_switch_group'
 
 module OneviewSDK
   module API600
     module C7000
       # Logical switch group resource implementation for API600 C7000
-      class LogicalSwitchGroup < OneviewSDK::API300::C7000::LogicalSwitchGroup
+      class LogicalSwitchGroup < OneviewSDK::API500::C7000::LogicalSwitchGroup
       end
     end
   end
