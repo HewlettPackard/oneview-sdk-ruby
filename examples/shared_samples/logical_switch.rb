@@ -15,12 +15,13 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an logical switch named 'LogicalSwitch', update it and then delete it.
 #
 # Supported APIs:
-# - 200, 300, 500 for C7000 only.
+# - 200, 300, 500, 600 for C7000 only.
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::LogicalSwitch
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalSwitch
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalSwitch
+# api_version = 600 & variant = C7000 to OneviewSDK::API500::C7000::LogicalSwitch
 
 # Resource Class used in this sample
 logical_switch_class = OneviewSDK.resource_named('LogicalSwitch', @client.api_version)
