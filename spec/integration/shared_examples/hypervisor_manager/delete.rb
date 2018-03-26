@@ -14,7 +14,7 @@ RSpec.shared_examples 'HypervisorManagerDeleteExample' do |context_name|
 
   describe '#delete' do
     it 'deletes the resource' do
-      item = described_class.new(current_client, name: HYPERVISOR_MGR_NAME)    
+      item = described_class.new(current_client, name: HYPERVISOR_MGR_NAME)
 
       expect(item.retrieve!).to eq(true)
 
