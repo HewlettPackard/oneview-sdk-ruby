@@ -58,45 +58,47 @@ puts 'Action done Successfully!'
 # This section illustrates scope usage with the switch. Supported in API 300 and onwards.
 # When a scope uri is added to a switch, the switch is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
-puts "\nOperations with scope."
-begin
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+if @client.api_version >= 300 && @client.api_version <= 500
+  puts "\nOperations with scope."
+  begin
+    scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 
-  # Scopes
-  scope_1 = scope_class.new(@client, name: 'Scope 1')
-  scope_1.create
-  scope_2 = scope_class.new(@client, name: 'Scope 2')
-  scope_2.create
+    # Scopes
+    scope_1 = scope_class.new(@client, name: 'Scope 1')
+    scope_1.create
+    scope_2 = scope_class.new(@client, name: 'Scope 2')
+    scope_2.create
 
-  puts "\nAdding the '#{scope_1['name']}' with URI='#{scope_1['uri']}' in the logical switch"
-  logical_switch.add_scope(scope_1)
-  logical_switch.refresh
-  puts "Listing logical_switch['scopeUris']:"
-  puts logical_switch['scopeUris'].to_s
+    puts "\nAdding the '#{scope_1['name']}' with URI='#{scope_1['uri']}' in the logical switch"
+    logical_switch.add_scope(scope_1)
+    logical_switch.refresh
+    puts "Listing logical_switch['scopeUris']:"
+    puts logical_switch['scopeUris'].to_s
 
-  puts "\nReplacing scopes to '#{scope_1['name']}' with URI='#{scope_1['uri']}' and '#{scope_2['name']}' with URI='#{scope_2['uri']}'"
-  logical_switch.replace_scopes(scope_1, scope_2)
-  logical_switch.refresh
-  puts "Listing logical_switch['scopeUris']:"
-  puts logical_switch['scopeUris'].to_s
+    puts "\nReplacing scopes to '#{scope_1['name']}' with URI='#{scope_1['uri']}' and '#{scope_2['name']}' with URI='#{scope_2['uri']}'"
+    logical_switch.replace_scopes(scope_1, scope_2)
+    logical_switch.refresh
+    puts "Listing logical_switch['scopeUris']:"
+    puts logical_switch['scopeUris'].to_s
 
-  puts "\nRemoving scope with URI='#{scope_1['uri']}' from the logical switch"
-  logical_switch.remove_scope(scope_1)
-  logical_switch.refresh
-  puts "Listing logical_switch['scopeUris']:"
-  puts logical_switch['scopeUris'].to_s
+    puts "\nRemoving scope with URI='#{scope_1['uri']}' from the logical switch"
+    logical_switch.remove_scope(scope_1)
+    logical_switch.refresh
+    puts "Listing logical_switch['scopeUris']:"
+    puts logical_switch['scopeUris'].to_s
 
-  puts "\nRemoving scope with URI='#{scope_2['uri']}' from the logical switch"
-  logical_switch.remove_scope(scope_2)
-  logical_switch.refresh
-  puts "Listing logical_switch['scopeUris']:"
-  puts logical_switch['scopeUris'].to_s
+    puts "\nRemoving scope with URI='#{scope_2['uri']}' from the logical switch"
+    logical_switch.remove_scope(scope_2)
+    logical_switch.refresh
+    puts "Listing logical_switch['scopeUris']:"
+    puts logical_switch['scopeUris'].to_s
 
-  # Delete the scopes
-  scope_1.delete
-  scope_2.delete
-rescue NoMethodError
-  puts "\nScope operations is not supported in this version."
+    # Delete the scopes
+    scope_1.delete
+    scope_2.delete
+  rescue NoMethodError
+    puts "\nScope operations is not supported in this version."
+  end
 end
 
 puts "\nDeleting the logical switch"
