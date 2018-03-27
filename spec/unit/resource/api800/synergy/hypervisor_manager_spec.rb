@@ -3,11 +3,7 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::API800::Synergy::HypervisorManager do
   include_context 'shared context'
 
-  describe '#initialize' do
-    it 'sets the defaults correctly' do
-      item = OneviewSDK::API800::Synergy::HypervisorManager.new(@client_800)
-      expect(item[:type]).to eq('HypervisorManagerV2')
-      expect(item[:hypervisorType]).to eq('Vmware')
-    end
+  it 'inherits from OneviewSDK::API800::C7000::HypervisorManager' do
+    expect(described_class).to be < OneviewSDK::API800::C7000::HypervisorManager
   end
 end

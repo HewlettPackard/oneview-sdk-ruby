@@ -16,17 +16,6 @@ module OneviewSDK
     module Synergy
       # Hypervisor Manager resource implementation
       class HypervisorManager < OneviewSDK::API800::C7000::HypervisorManager
-        # Create a resource object, associate it with a client, and set its properties.
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [Hash] params The options for this resource (key-value pairs)
-        # @param [Integer] api_ver The api version to use when interracting with this resource.
-        def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
-          # Default values
-          @data['hypervisorType'] ||= 'Vmware'
-          @data['type'] ||= 'HypervisorManagerV2'
-          super
-        end
       end
     end
   end

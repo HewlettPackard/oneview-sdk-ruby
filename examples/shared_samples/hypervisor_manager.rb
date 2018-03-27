@@ -13,7 +13,6 @@ require_relative '../_client' # Gives access to @client
 
 # Example: Create/Update/Delete hypervisor manager
 # NOTE: This will create a hypervisor manager named 'vcenter.corp.com', update it and then delete it.
-#   It will create a bulk of hypervisor managers and then delete them.
 #
 # Supported APIs:
 # - API800 for C7000
@@ -23,9 +22,9 @@ require_relative '../_client' # Gives access to @client
 # api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::HypervisorManager
 # api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::HypervisorManager
 
-raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @hypervisor_manager_ip
-raise 'ERROR: Must set @storage_system_username in _client.rb' unless @hypervisor_manager_username
-raise 'ERROR: Must set @storage_system_password in _client.rb' unless @hypervisor_manager_password
+raise 'ERROR: Must set @hypervisor_manager_ip in _client.rb' unless @hypervisor_manager_ip
+raise 'ERROR: Must set @hypervisor_manager_username in _client.rb' unless @hypervisor_manager_username
+raise 'ERROR: Must set @hypervisor_manager_password in _client.rb' unless @hypervisor_manager_password
 
 # Resource Class used in this sample
 hypervisor_manager_class = OneviewSDK.resource_named('HypervisorManager', @client.api_version)
@@ -45,7 +44,7 @@ matches = hypervisor_manager_class.find_by(@client, name: hm[:name])
 hm2 = matches.first
 puts "\nFound hypervisor-manager by name: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
 
-# Retrieve recently created network
+# Retrieve recently created hypervisor manager
 hm3 = hypervisor_manager_class.new(@client, name: hm[:name])
 hm3.retrieve!
 puts "\nRetrieved hypervisor-manager data by name: '#{hm3[:name]}'.\n  uri = '#{hm3[:uri]}'"
@@ -63,6 +62,6 @@ hypervisor_manager_class.find_by(@client, attributes).each do |hypervisor_manage
   puts "  #{hypervisor_manager[:name]}"
 end
 
-# Delete this network
+# Delete this hypervisor manager
 hm.delete
 puts "\nSucessfully deleted hypervisor-manager '#{hm[:name]}'."
