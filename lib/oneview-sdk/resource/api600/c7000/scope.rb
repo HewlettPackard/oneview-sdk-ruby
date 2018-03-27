@@ -29,7 +29,7 @@ module OneviewSDK
         end
 
         def get_resource_scopes(resource)
-          scopes_uri = resource['scopesUri'] 
+          scopes_uri = resource['scopesUri']
           response = client.rest_get(scopes_uri)
           @client.response_handler(response)
         end
@@ -66,14 +66,14 @@ module OneviewSDK
         end
 
         def add_resource_scope(resource, scope)
-          scopes_uri = resource['scopesUri'] 
-          resource_patch(scopes_uri, 'add', '/scopeUris/-', scope['uri']) 
+          scopes_uri = resource['scopesUri']
+          resource_patch(scopes_uri, 'add', '/scopeUris/-', scope['uri'])
         end
 
         def remove_resource_scope(resource, scope)
           scope_uris = get_resource_scopes(resource)['scopeUris']
           scope_index = scope_uris.find_index { |uri| uri == scope['uri'] }
-          resource_uri = resource['scopesUri'] 
+          resource_uri = resource['scopesUri']
           resource_patch(resource_uri, "remove", "/scopeUris/#{scope_index}", nil)
           true
         end
