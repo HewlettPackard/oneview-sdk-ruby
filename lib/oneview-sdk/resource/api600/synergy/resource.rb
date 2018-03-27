@@ -9,12 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/resource'
+require_relative '../../api500/synergy/resource'
 
 module OneviewSDK
   module API600
     module Synergy
-      class Resource < OneviewSDK::API300::Synergy::Resource
+      class Resource < OneviewSDK::API500::Synergy::Resource
       end
     end
   end
