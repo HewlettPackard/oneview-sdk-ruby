@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::C7000::ManagedSAN, integration: true, type: UPDATE do
-  let(:current_client) { $client_500 }
-  include_examples 'ManagedSANUpdateExample', 'integration api500 context', 500
+RSpec.describe OneviewSDK::API600::C7000::ManagedSAN, integration: true, type: UPDATE do
+  let(:current_client) { $client_600 }
+  include_examples 'ManagedSANUpdateExample', 'integration api600 context', 600
 end

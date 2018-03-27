@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/connection_template'
+require_relative '../../api500/synergy/connection_template'
 
 module OneviewSDK
   module API600
     module Synergy
       # Connection template resource implementation for API600 Synergy
-      class ConnectionTemplate < OneviewSDK::API300::Synergy::ConnectionTemplate
+      class ConnectionTemplate < OneviewSDK::API500::Synergy::ConnectionTemplate
       end
     end
   end

@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/connection_template'
+require_relative '../../api500/c7000/connection_template'
 
 module OneviewSDK
   module API600
     module C7000
       # Connection template resource implementation for API600 C7000
-      class ConnectionTemplate < OneviewSDK::API300::C7000::ConnectionTemplate
+      class ConnectionTemplate < OneviewSDK::API500::C7000::ConnectionTemplate
       end
     end
   end
