@@ -23,7 +23,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Server Hardware
    - Server Profile Template
    - Volume
-  
+
 ## v5.3.0
 
 #### New Resources:
