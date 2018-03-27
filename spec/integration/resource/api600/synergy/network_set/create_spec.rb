@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API500::Synergy::NetworkSet
+klass = OneviewSDK::API600::Synergy::NetworkSet
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_500_synergy }
-  let(:ethernet_class) { OneviewSDK::API500::Synergy::EthernetNetwork }
+  let(:current_client) { $client_600_synergy }
+  let(:ethernet_class) { OneviewSDK::API600::Synergy::EthernetNetwork }
 
-  include_examples 'NetworkSetCreateExample', 'integration api500 context'
+  include_examples 'NetworkSetCreateExample', 'integration api600 context'
 end
