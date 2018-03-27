@@ -18,6 +18,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Logical Interconnect
    - Logical Interconnect Group
    - Logical Switch
+   - Managed SAN
    - Network Set
    - SAS Interconnect
    - SAS Interconnect Type

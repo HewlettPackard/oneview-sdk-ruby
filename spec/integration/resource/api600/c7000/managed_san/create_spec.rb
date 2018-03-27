@@ -11,12 +11,12 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::ManagedSAN
+klass = OneviewSDK::API600::C7000::ManagedSAN
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
   let(:current_client) { $client_500 }
   let(:san_manager_ip) { $secrets['san_manager_ip'] }
-  let(:fc_network_class) { OneviewSDK::API500::C7000::FCNetwork }
-  let(:fcoe_network_class) { OneviewSDK::API500::C7000::FCoENetwork }
+  let(:fc_network_class) { OneviewSDK::API600::C7000::FCNetwork }
+  let(:fcoe_network_class) { OneviewSDK::API600::C7000::FCoENetwork }
 
-  include_examples 'ManagedSANCreateExample', 'integration api500 context'
+  include_examples 'ManagedSANCreateExample', 'integration api600 context'
 end
