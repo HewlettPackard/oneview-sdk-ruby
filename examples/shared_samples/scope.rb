@@ -19,13 +19,17 @@ require_relative '../_client' # Gives access to @client
 # - API300 for Synergy
 # - API500 for C7000
 # - API500 for Synergy
+# - API600 for C7000
+# - API600 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Scope
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::Scope
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Scope
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::Scope
-#
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Scope
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::C7000::Scope
+
 # NOTE: Scopes doesn't support versions smaller than 300.
 
 # Resource Class used in this sample
