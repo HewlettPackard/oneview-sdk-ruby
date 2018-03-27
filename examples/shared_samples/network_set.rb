@@ -21,13 +21,17 @@ require_relative '../_client' # Gives access to @client
 # - API300 for Synergy
 # - API500 for C7000
 # - API500 for Synergy
+# - API600 for C7000
+# - API600 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::NetworkSet
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::NetworkSet
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::NetworkSet
+# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::NetworkSet
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::NetworkSet
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::NetworkSet
+# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::NetworkSet
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::NetworkSet
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::NetworkSet
 
 # Resource Class used in this sample
 network_set_class = OneviewSDK.resource_named('NetworkSet', @client.api_version)
@@ -83,7 +87,7 @@ puts "\nListing the ethernet networks:"
 network_set['networkUris'].each { |network| puts "- networkUri='#{network}'" }
 
 # only for API300 and API500
-if @client.api_version.to_i > 200
+if @client.api_version.to_i >= 300 && @client.api_version.to_i <= 500
   # Scope class used in this sample
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 

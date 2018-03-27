@@ -23,11 +23,15 @@ require_relative '../_client' # Gives access to @client
 
 # Resource Class used in this sample
 sas_int_group_class = OneviewSDK.resource_named('SASLogicalInterconnectGroup', @client.api_version)
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
+
+scope = scope_class.get_all(@client).first
 
 type = 'SAS Logical Interconnect Group'
 
 options = {
-  name: 'ONEVIEW_SDK_SAMPLE_SAS_LIG'
+  name: 'ONEVIEW_SDK_SAMPLE_SAS_LIG',
+  initialScopeUris: ['/rest/scopes/ed1e27d2-1940-481b-bf05-a94418ab17dc']
 }
 
 item = sas_int_group_class.new(@client, options)
@@ -39,6 +43,16 @@ item.add_interconnect(4, @sas_interconnect_type)
 puts "\nCreating a #{type} with name = #{item[:name]}."
 item.create!
 puts "\n#{type} #{item[:name]} created!"
+
+# Gets a  SAS LogicalInterconnectGroup by scopeUris
+query = {
+  scopeUris: scope['uri']
+}
+if @client.api_version >= 600
+  puts "\nGets a SAS LogicalInterconnectGroup with scope '#{query[:scopeUris]}'"
+  item2 = sas_int_group_class.get_all_with_query(@client, query)
+  puts "Found SAS LogicalInterconnectGroup'#{item2}'."
+end
 
 options2 = {
   name: 'UPDATED_ONEVIEW_SDK_SAMPLE_SAS_LIG '
