@@ -20,14 +20,16 @@ require_relative '../_client' # Gives access to @client
 # - API200 for C7000 and Synergy
 # - API300 for C7000 and Synergy
 # - API500 for C7000 and Synergy (see /examples/api500/storage_system.rb)
-# - API600 for C7000 and Synergy (see /examples/api500/storage_system.rb)
+# - API600 for C7000 and Synergy (see /examples/api600/storage_system.rb)
 
 raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
 raise 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
 
-if @client.api_version == 500 || @client.api_version == 600
+if @client.api_version == 500
   raise "If you want execute sample for API #{@client.api_version}, you should execute the ruby file '/examples/api500/storage_system.rb'"
+elsif @client.api_version == 600
+  raise "If you want execute sample for API #{@client.api_version}, you should execute the ruby file '/examples/api600/storage_system.rb'"
 end
 
 # Resources classes that you can use for Storage System in this example:
