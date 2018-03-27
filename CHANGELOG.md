@@ -24,6 +24,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Server Hardware
    - Server Hardware Types
    - Server Profile Template
+   - Storage Pool
 
 ## v5.3.0
 

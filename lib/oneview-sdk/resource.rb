@@ -341,6 +341,7 @@ module OneviewSDK
         words.map!(&:capitalize!)
         words[0] = words.first.downcase
         new_key = words.join
+        v = "'" + v.join(',') + "'" if v.is_a?(Array) && v.any?
         v.retrieve! if v.respond_to?(:retrieve!) && !v['uri']
         if v.class <= OneviewSDK::Resource
           new_key = new_key.concat('Uri')
