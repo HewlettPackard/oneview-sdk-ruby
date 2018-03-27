@@ -5,6 +5,7 @@ Extends support of the SDK to OneView Rest API version 600 (OneView v4.0).
 
 #### Features supported
 This release adds support to OneView Rest API version 600 for the hardware variants C7000 and Synergy to the already existing features:
+   - Connection Templates
    - Enclosure
    - Enclosure Group
    - Ethernet Network
@@ -16,12 +17,15 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Logical Enclosure
    - Logical Interconnect
    - Logical Interconnect Group
+   - Network Set
    - SAS Interconnect
    - SAS Interconnect Type
    - SAS Logical Interconnect
    - SAS Logical Interconnect Group
    - Server Hardware
+   - Server Hardware Types
    - Server Profile Template
+   - Storage Pool
    - Volume
 
 ## v5.3.0

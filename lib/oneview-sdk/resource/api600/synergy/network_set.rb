@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/network_set'
+require_relative '../../api600/c7000/network_set'
 
 module OneviewSDK
   module API600
     module Synergy
       # Network set resource implementation for API600 Synergy
-      class NetworkSet < OneviewSDK::API300::Synergy::NetworkSet
+      class NetworkSet < OneviewSDK::API600::C7000::NetworkSet
       end
     end
   end

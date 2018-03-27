@@ -18,52 +18,84 @@ require_relative '../_client' # Gives access to @client
 # All supported APIs for Storage Pool:
 # - API200 for C7000 and Synergy
 # - API300 for C7000 and Synergy
-# - API500 for C7000 and Synergy (see /examples/api500/storage_pool.rb)
+# - API500 for C7000 and Synergy
+# - API600 for C7000 and Synergy
 
 # Resources classes that you can use for StoragePool in this example:
 # storage_pool_class = OneviewSDK::API200::StoragePool
 # storage_pool_class = OneviewSDK::API300::C7000::StoragePool
 # storage_pool_class = OneviewSDK::API300::Synergy::StoragePool
+# storage_pool_class = OneviewSDK::API500::C7000::StoragePool
+# storage_pool_class = OneviewSDK::API500::Synergy::StoragePool
+# storage_pool_class = OneviewSDK::API600::C7000::StoragePool
+# storage_pool_class = OneviewSDK::API600::Synergy::StoragePool
 storage_pool_class = OneviewSDK.resource_named('StoragePool', @client.api_version)
 
-# Resources classes that you can use for StorageSystem in this example:
-# storage_system_class = OneviewSDK::API200::StorageSystem
-# storage_system_class = OneviewSDK::API300::C7000::StorageSystem
-# storage_system_class = OneviewSDK::API300::Synergy::StorageSystem
-storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
+if @client.api_version <= 300
+  # Resources classes that you can use for StorageSystem in this example:
+  # storage_system_class = OneviewSDK::API200::StorageSystem
+  # storage_system_class = OneviewSDK::API300::C7000::StorageSystem
+  # storage_system_class = OneviewSDK::API300::Synergy::StorageSystem
+  storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 
-type = 'storage pool'
-options = {}
+  type = 'storage pool'
+  options = {}
 
-# Gather storage system information
-storage_system = storage_system_class.new(@client, credentials: { ip_hostname: @storage_system_ip })
-storage_system.retrieve! || raise("ERROR: Storage system at #{@storage_system_ip} not found!")
-puts "Storage System uri = #{storage_system[:uri]}"
-options[:storageSystemUri] = storage_system[:uri]
-raise 'ERROR: No unmanaged pools available!' if storage_system[:unmanagedPools].empty?
-pool = storage_system[:unmanagedPools].find { |storage_pool| storage_pool['domain'] == 'TestDomain' }
-puts "Unmanaged pool name = #{pool['name']}"
-options[:poolName] = pool['name']
+  # Gather storage system information
+  storage_system = storage_system_class.new(@client, credentials: { ip_hostname: @storage_system_ip })
+  storage_system.retrieve! || raise("ERROR: Storage system at #{@storage_system_ip} not found!")
+  puts "Storage System uri = #{storage_system[:uri]}"
+  options[:storageSystemUri] = storage_system[:uri]
+  raise 'ERROR: No unmanaged pools available!' if storage_system[:unmanagedPools].empty?
+  pool = storage_system[:unmanagedPools].find { |storage_pool| storage_pool['domain'] == 'TestDomain' }
+  puts "Unmanaged pool name = #{pool['name']}"
+  options[:poolName] = pool['name']
+  # Create storage pool
+  item = storage_pool_class.new(@client, options)
+  item.set_storage_system(storage_system)
+  item.add
+  puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
-# Create storage pool
-item = storage_pool_class.new(@client, options)
-item.set_storage_system(storage_system)
-item.add
-puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+  # verifying if storage pool exists
+  item_2 = storage_pool_class.new(@client, name: options[:poolName], storageSystemUri: storage_system['uri'])
+  result_exists = item_2.exists?
+  puts "\nVerifying if '#{item_2[:name]}' exists. Result: #{result_exists}"
 
-# verifying if storage pool exists
-item_2 = storage_pool_class.new(@client, name: options[:poolName], storageSystemUri: storage_system['uri'])
-result_exists = item_2.exists?
-puts "\nVerifying if '#{item_2[:name]}' exists. Result: #{result_exists}"
+  # Retrieve created storage pool
+  item_2.retrieve!
+  puts "\nRetrieved #{type} by name: '#{item_2[:name]}'.\n  uri = '#{item_2[:uri]}'"
+end
 
-# Retrieve created storage pool
-item_2.retrieve!
-puts "\nRetrieved #{type} by name: '#{item_2[:name]}'.\n  uri = '#{item_2[:uri]}'"
+puts "\nListing the storage pools:"
+list = storage_pool_class.get_all(@client)
+puts list.map { |item_4| item_4['name'] } unless list.empty?
 
-# Find recently created storage pool by name
-matches = storage_pool_class.find_by(@client, name: item[:name])
-item_3 = matches.first
-puts "\nFound #{type} by name: '#{item_3[:name]}'.\n  uri = '#{item_3[:uri]}'"
+if @client.api_version >= 500
+  puts "\nReachable storage pools:"
+  list = storage_pool_class.reachable(@client)
+  puts list.map { |item_4| item_4['name'] } unless list.empty?
 
-item.remove
-puts "\nRemoved #{type} '#{item[:name]}' successfully.\n"
+  puts "\nChanging the storage pool to managed"
+  item_4 = storage_pool_class.find_by(@client, isManaged: false).first
+  puts 'Before:'
+  puts item_4.data
+  item_4.manage(true)
+  item_4.refresh
+  puts 'After:'
+  puts item_4.data
+
+  puts "\nRefreshing the storage system"
+  puts "Last refresh time: #{item_4['lastRefreshTime']}"
+  item_4.request_refresh
+  item_4.refresh
+  puts "Last refresh time: #{item_4['lastRefreshTime']}"
+end
+
+if @client.api_version <= 300
+  # Find recently created storage pool by name
+  matches = storage_pool_class.find_by(@client, name: item[:name])
+  item_3 = matches.first
+  puts "\nFound #{type} by name: '#{item_3[:name]}'.\n  uri = '#{item_3[:uri]}'"
+  item.remove
+  puts "\nRemoved #{type} '#{item[:name]}' successfully.\n"
+end
