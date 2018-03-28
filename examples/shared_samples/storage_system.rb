@@ -26,12 +26,13 @@ raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_
 raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
 raise 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
 
-if @client.api_version == 500
-  raise "If you want execute sample for API #{@client.api_version}, you should execute the ruby file '/examples/api500/storage_system.rb'"
-elsif @client.api_version == 600
-  raise "If you want execute sample for API #{@client.api_version}, you should execute the ruby file '/examples/api600/storage_system.rb'"
+if @client.api_version == 600
+  raise "If you want execute sample for API #{@client.api_version}," \
+      "you should execute the ruby file '/examples/api600/storage_system.rb'"
+elsif @client.api_version == 500
+  raise "If you want execute sample for API #{@client.api_version}," \
+      "you should execute the ruby file '/examples/api500/storage_system.rb'"
 end
-
 # Resources classes that you can use for Storage System in this example:
 # storage_system_class = OneviewSDK::API200::StorageSystem
 # storage_system_class = OneviewSDK::API300::C7000::StorageSystem

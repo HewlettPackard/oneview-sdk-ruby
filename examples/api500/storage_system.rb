@@ -28,9 +28,11 @@ raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_s
 raise 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
 
 if @client.api_version < 500
-  raise "If you want execute sample for API < #{@client.api_version}, you should execute the ruby file '/examples/shared_samples/storage_system.rb'"
+  raise "If you want execute sample for API < #{@client.api_version}," \
+         "you should execute the ruby file '/examples/shared_samples/storage_system.rb'"
 elsif @client.api_version == 600
-  raise "If you want execute sample for API < #{@client.api_version}, you should execute the ruby file '/examples/api600/storage_system.rb'"
+  raise "If you want execute sample for API #{@client.api_version}," \
+         "you should execute the ruby file '/examples/api600/storage_system.rb'"
 end
 
 # Resources classes that you can use for Storage System in this example:
@@ -80,7 +82,7 @@ storage_system = storage_system_class.new(@client, hostname: storage_system['hos
 storage_system.retrieve!
 port = storage_system['ports'].find { |item| item['protocolType'].downcase.include?('fc') } # find first correct protocolType for using our fc network
 if port
-  fc_network = OneviewSDK::API500::C7000::FCNetwork.get_all(@client).first               
+  fc_network = OneviewSDK::API500::C7000::FCNetwork.get_all(@client).first
   puts "\n Adding a fc network named '#{fc_network['name']}' with uri='#{fc_network['uri']}' to the storage system."
   port['expectedNetworkUri'] = fc_network['uri']
   port['expectedNetworkName'] = fc_network['name']
