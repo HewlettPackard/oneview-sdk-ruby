@@ -11,18 +11,18 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::Synergy::Scope, integration: true, type: UPDATE do
-  include_context 'integration api500 context'
+RSpec.describe OneviewSDK::API600::Synergy::Scope, integration: true, type: UPDATE do
+  include_context 'integration api600 context'
 
-  subject(:item) { described_class.get_all($client_500_synergy).first }
-  subject(:enclosure) { OneviewSDK::API500::Synergy::Enclosure.get_all($client_500_synergy).first }
-  subject(:server_hardware) { OneviewSDK::API500::Synergy::ServerHardware.get_all($client_500_synergy).first }
+  subject(:item) { described_class.get_all($client_600_synergy).first }
+  subject(:enclosure) { OneviewSDK::API600::Synergy::Enclosure.get_all($client_600_synergy).first }
+  subject(:server_hardware) { OneviewSDK::API600::Synergy::ServerHardware.get_all($client_600_synergy).first }
 
-  include_examples 'ScopeUpdateExample', 'integration api500 context'
+  include_examples 'ScopeUpdateExample', 'integration api600 context'
 
   describe '#patch' do
     it 'raises exception when uri is empty' do
-      item = described_class.new($client_500_synergy)
+      item = described_class.new($client_600_synergy)
       expect { item.patch('replace', '/name', 'New_Name') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
     end
 

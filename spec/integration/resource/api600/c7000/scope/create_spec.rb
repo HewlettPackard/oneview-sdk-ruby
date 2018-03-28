@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::Scope
+klass = OneviewSDK::API600::C7000::Scope
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_500 }
-  let(:type) { 'ScopeV2' }
-  include_examples 'ScopeCreateExample', 'integration api500 context'
+  let(:current_client) { $client_600 }
+  let(:type) { 'ScopeV3' }
+  include_examples 'ScopeCreateExample', 'integration api600 context'
 end
