@@ -297,13 +297,13 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **Login Details**                                                                                                                                                   |
 |<sub>/rest/logindetails</sub>                                                            | GET      | :white_check_mark:   | :white_check_mark:  | :white_check_mark:   |
 |     **Managed SANs**                                                                                                                             |
-|<sub>/rest/fc-sans/managed-sans</sub>                                                    | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/fc-sans/managed-sans/{id}</sub>                                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/fc-sans/managed-sans/{id}</sub>                                               | PUT      | :white_check_mark:   |  :heavy_minus_sign:  | :white_check_mark:   |
-|<sub>/rest/fc-sans/managed-sans/{id}/endpoints</sub>                                     | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/fc-sans/managed-sans/{id}/endpoints</sub>                                     | POST     |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |
-|<sub>/rest/fc-sans/managed-sans/{id}/issues</sub>                                        | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/fc-sans/managed-sans/WWN+</sub>                                               | GET      | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   |
+|<sub>/rest/fc-sans/managed-sans</sub>                                                    | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/fc-sans/managed-sans/{id}</sub>                                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/fc-sans/managed-sans/{id}</sub>                                               | PUT      | :white_check_mark:   |  :heavy_minus_sign:  | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/fc-sans/managed-sans/{id}/endpoints</sub>                                     | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/fc-sans/managed-sans/{id}/endpoints</sub>                                     | POST     |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |
+|<sub>/rest/fc-sans/managed-sans/{id}/issues</sub>                                        | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/fc-sans/managed-sans/WWN+</sub>                                               | GET      | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |
 |     **Metric Streaming**                                                                                                                         |
 |<sub>/rest/metrics/capability</sub>                                                      | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
 |<sub>/rest/metrics/configuration</sub>                                                   | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
@@ -526,11 +526,11 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/unmanaged-devices/{id}</sub>                                                  | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/unmanaged-devices/{id}/environmentalConfiguration</sub>                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Uplink Sets**                                                                                                                              |
-|<sub>/rest/uplink-sets</sub>                                                             | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/uplink-sets</sub>                                                             | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/uplink-sets/{id}</sub>                                                        | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/uplink-sets/{id}</sub>                                                        | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/uplink-sets/{id}</sub>                                                        | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/uplink-sets</sub>                                                             | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/uplink-sets</sub>                                                             | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/uplink-sets/{id}</sub>                                                        | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/uplink-sets/{id}</sub>                                                        | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
+|<sub>/rest/uplink-sets/{id}</sub>                                                        | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |     **Users**                                                                                                                                   |
 |<sub>/rest/users</sub>                                                                   | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/users</sub>                                                                   | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
