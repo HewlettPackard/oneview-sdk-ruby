@@ -9,20 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/switch'
+require_relative '../../api500/c7000/switch'
 
 module OneviewSDK
   module API600
     module C7000
       # Switch resource implementation for API 500 C7000
-      class Switch < OneviewSDK::API300::C7000::Switch
-
-        # Method is not available
-        # Use {#add_scope}, {#remove_scope}, and {#replace_scopes} instead.
-        # @raise [OneviewSDK::MethodUnavailable] method is not available
-        def set_scope_uris(*)
-          unavailable_method
-        end
+      class Switch < OneviewSDK::API500::C7000::Switch
       end
     end
   end
