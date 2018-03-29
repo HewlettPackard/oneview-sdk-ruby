@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::C7000::Scope do
+RSpec.describe OneviewSDK::API600::C7000::Scope do
   include_context 'shared context'
 
   subject(:scope) { described_class.new(@client_600, uri: '/rest/scopes/UID-111') }
@@ -22,22 +22,17 @@ RSpec.describe OneviewSDK::API500::C7000::Scope do
                                                                scopesUri: '/rest/scope/resources/rest/server-hardware/UID-111',
                                                                scopeUris: ['/rest/scope/fake1', 'resr/scope/fake2'])
   end
-
   let(:resource_2) { OneviewSDK::API600::C7000::ServerHardware.new(@client_600, uri: '/rest/server-hardware/UID-222') }
 
-  it 'inherits from API 300' do
-    expect(described_class).to be < OneviewSDK::API300::C7000::Scope
-  end
-
-  it '::BASE_URI' do
-    expect(described_class::BASE_URI).to eq('/rest/scopes')
+  it 'inherits from API 500' do
+    expect(described_class).to be < OneviewSDK::API500::C7000::Scope
   end
 
   describe '#initialize' do
     it 'should be initialize the instance with default values' do
-      new_item = described_class.new(@client_500)
+      new_item = described_class.new(@client_600)
 
-      expect(new_item['type']).to eq('ScopeV2')
+      expect(new_item['type']).to eq('ScopeV3')
     end
   end
 
@@ -62,7 +57,7 @@ RSpec.describe OneviewSDK::API500::C7000::Scope do
     end
   end
 
-  describe '#patch' do
+  describe '#resource_patch' do
     it 'performs the patch successfully' do
       body = [{
         'op' => 'add',
