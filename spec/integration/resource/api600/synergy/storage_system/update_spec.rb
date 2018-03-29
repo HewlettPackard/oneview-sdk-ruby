@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API500::Synergy::StorageSystem
+klass = OneviewSDK::API600::Synergy::StorageSystem
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:store_serv_data) do
     {
@@ -13,10 +13,10 @@ RSpec.describe klass, integration: true, type: UPDATE do
     }
   end
 
-  it_behaves_like 'StorageSystemUpdateExample', 'integration api500 context', 500 do
-    let(:current_client) { $client_500_synergy }
+  it_behaves_like 'StorageSystemUpdateExample', 'integration api600 context', 600 do
+    let(:current_client) { $client_600_synergy }
     let(:item_attributes) { store_serv_data }
 
-    include_examples 'StorageSystemUpdateExample StoreServ API500'
+    include_examples 'StorageSystemUpdateExample StoreServ API600'
   end
 end
