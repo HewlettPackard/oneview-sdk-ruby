@@ -24,11 +24,6 @@ RSpec.describe OneviewSDK::API600::C7000::Scope do
   end
   let(:resource_2) { OneviewSDK::API600::C7000::ServerHardware.new(@client_600, uri: '/rest/server-hardware/UID-222') }
 
-<<<<<<< HEAD
-=======
-  let(:resource_2) { OneviewSDK::API600::C7000::ServerHardware.new(@client_600, uri: '/rest/server-hardware/UID-222') }
-
->>>>>>> 1014836db3fe20348e52792701abbe26d3ff3b7a
   it 'inherits from API 500' do
     expect(described_class).to be < OneviewSDK::API500::C7000::Scope
   end
