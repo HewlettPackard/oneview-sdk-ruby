@@ -28,54 +28,63 @@ module OneviewSDK
           super
         end
 
+        # Gets a resource's scope, containing a list of the scopes to which
+        # the resource is assigned.
+        # @param [OneviewSDK::API600::C7000::Resource] resource Resource object
         def get_resource_scopes(resource)
           scopes_uri = resource['scopesUri']
           response = client.rest_get(scopes_uri)
           @client.response_handler(response)
         end
 
+        # Replaces a resource's assigned scopes using the specified list of scope URIs.
+        # @param [OneviewSDK::API600::C7000::Resource] resource Resource object
+        # @param [Array<OneviewSDK::API600::C7000::Scope>] scopes  Array of scopes objects
         def replace_resource_assigned_scopes(resource, scopes: [])
           resource_uri = resource['uri']
           scope_uris = ensure_and_get_uris(scopes)
           scopes_uri = resource['scopesUri']
           options = { 'Content-Type' => 'application/json-patch+json',
-                      'If-Match' => "*",
-                      'body' => {'type' => "ScopedResource",
-                                'resourceUri' => resource_uri,
-                                'scopeUris' => scope_uris}
-          }
+                      'If-Match' => '*',
+                      'body' => { 'type' => 'ScopedResource',
+                                  'resourceUri' => resource_uri,
+                                  'scopeUris' => scope_uris } }
           response = @client.rest_put(scopes_uri, options)
           @client.response_handler(response)
         end
 
-	# Performs a specific patch operation.
+        # Performs a specific patch operation.
         # @param [String] scopes_uri resource's scopes uri
-	# @param [String] operation The operation to be performed
-	# @param [String] path The path of operation
-	# @param [String] value The value
+        # @param [String] operation The operation to be performed
+        # @param [String] path The path of operation
+        # @param [String] value The value
         def resource_patch(scopes_uri, operation, path, value = nil)
-            ensure_client && ensure_uri
-            body = {
-              'op' => operation,
-              'path' => path,
-              'value' => value
-            }
-            options = {'Content-Type' => 'application/json-patch+json', 'If-Match' => '*', 'body' => [body]}
-            response = @client.rest_patch(scopes_uri, options, @api_version)
-            @client.response_handler(response)
+          ensure_client && ensure_uri
+          body = { 'op' => operation,
+                   'path' => path,
+                   'value' => value }
+          options = { 'Content-Type' => 'application/json-patch+json',
+                      'If-Match' => '*', 'body' => [body] }
+          response = @client.rest_patch(scopes_uri, options, @api_version)
+          @client.response_handler(response)
         end
 
+        # Add a scope to resource's scope list
+        # @param [OneviewSDK::API600::C7000::Resource] resource Any resource object
+        # @param [OneviewSDK::API600::C7000::Scope] scope Scope object
         def add_resource_scope(resource, scope)
           scopes_uri = resource['scopesUri']
           resource_patch(scopes_uri, 'add', '/scopeUris/-', scope['uri'])
         end
 
+        # Remove a scope from resource's scope list.
+        # @param [OneviewSDK::API600::C7000::Resource] resource Any resource object
+        # @param [OneviewSDK::API600::C7000::Scope] scope Scope object
         def remove_resource_scope(resource, scope)
           scope_uris = get_resource_scopes(resource)['scopeUris']
           scope_index = scope_uris.find_index { |uri| uri == scope['uri'] }
           resource_uri = resource['scopesUri']
-          resource_patch(resource_uri, "remove", "/scopeUris/#{scope_index}", nil)
-          true
+          resource_patch(resource_uri, 'remove', "/scopeUris/#{scope_index}", nil)
         end
       end
     end

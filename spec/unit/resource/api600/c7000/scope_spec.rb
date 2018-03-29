@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::C7000::Scope do
+RSpec.describe OneviewSDK::API600::C7000::Scope do
   include_context 'shared context'
 
   subject(:scope) { described_class.new(@client_600, uri: '/rest/scopes/UID-111') }
@@ -22,7 +22,6 @@ RSpec.describe OneviewSDK::API500::C7000::Scope do
                                                                scopesUri: '/rest/scope/resources/rest/server-hardware/UID-111',
                                                                scopeUris: ['/rest/scope/fake1', 'resr/scope/fake2'])
   end
-
   let(:resource_2) { OneviewSDK::API600::C7000::ServerHardware.new(@client_600, uri: '/rest/server-hardware/UID-222') }
 
   describe '#get_resource_scope' do
@@ -46,7 +45,7 @@ RSpec.describe OneviewSDK::API500::C7000::Scope do
     end
   end
 
-  describe '#patch' do
+  describe '#resource_patch' do
     it 'performs the patch successfully' do
       body = [{
         'op' => 'add',
