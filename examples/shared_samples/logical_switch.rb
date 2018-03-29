@@ -55,7 +55,7 @@ puts 'Reclaiming the top-of-rack switches in a logical switch'
 logical_switch.refresh_state
 puts 'Action done Successfully!'
 
-# This section illustrates scope usage with the switch. Supported in API 300 and onwards.
+# This section illustrates scope usage with the switch. Supported in API 300 and 500.
 # When a scope uri is added to a switch, the switch is grouped into a resource pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
 if @client.api_version >= 300 && @client.api_version <= 500

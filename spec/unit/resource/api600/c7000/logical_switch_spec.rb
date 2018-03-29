@@ -11,7 +11,7 @@ RSpec.describe klass do
   describe '#initialize' do
     context 'OneView 4.0' do
       it 'sets the defaults correctly' do
-        logical_switch = OneviewSDK::API600::C7000::LogicalSwitch.new(@client_300)
+        logical_switch = OneviewSDK::API600::C7000::LogicalSwitch.new(@client_600)
         expect(logical_switch[:type]).to eq('logical-switchV4')
       end
     end
