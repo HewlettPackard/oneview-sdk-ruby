@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::Synergy::Scope do
+RSpec.describe OneviewSDK::API600::Synergy::Scope do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API500::Synergy::Scope' do
-    expect(described_class).to be < OneviewSDK::API500::C7000::Scope
+  it 'inherits from OneviewSDK::API600::Synergy::Scope' do
+    expect(described_class).to be < OneviewSDK::API600::C7000::Scope
   end
 end
