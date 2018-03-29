@@ -60,7 +60,7 @@ puts "\nUpdate logical-switch-group '#{item[:name]}' sucessfully.\n  uri = '#{it
 
 sleep(10)
 
-# NOTE: Scopes doesn't support versions smaller than 300.
+# NOTE: Scopes doesn't support versions smaller than 300 and greater than 500
 
 if @client.api_version >= 300 && @client.api_version <= 500
   # Scopes

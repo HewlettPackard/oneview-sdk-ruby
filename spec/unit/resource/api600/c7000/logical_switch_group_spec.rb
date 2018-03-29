@@ -10,7 +10,7 @@ RSpec.describe klass do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = klass.new(@client_300)
+      item = klass.new(@client_600)
       expect(item['type']).to eq('logical-switch-groupV4')
     end
   end
