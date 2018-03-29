@@ -85,25 +85,25 @@ if @client.api_version >= 600
   scope2 = scope_class.new(@client, options)
   scope2.create
   puts "Created Scope2 with uri #{scope2['uri']}"
-  response = scope.replace_resource_assigned_scopes(server_hardware, scopes: [scope2])
-  puts "Replaced resouce scope uris"
+  scope.replace_resource_assigned_scopes(server_hardware, scopes: [scope2])
+  puts 'Replaced resouce scope uris'
 
-  puts"\nAdd a resource to scope3"
+  puts '\nAdd a resource to scope3'
   options = {
     name: 'Scope3',
     description: 'Sample Scope description3'
   }
   scope3 = scope_class.new(@client, options)
   scope3.create
-  puts "Created scope3"
+  puts 'Created scope3'
   scope.add_resource_scope(server_hardware, scope3)
-  puts "Server hardware resource added to scope3"
+  puts 'Server hardware resource added to scope3'
 
-  puts "\nRemoving resource from scope3"
+  puts '\nRemoving resource from scope3'
   scope.remove_resource_scope(server_hardware, scope3)
-  puts "Removed resource from scope3"
- 
-  #Delete all scopes created.
+  puts 'Removed resource from scope3'
+
+  # Delete all scopes created.
   scope2.delete
   scope3.delete
 end
