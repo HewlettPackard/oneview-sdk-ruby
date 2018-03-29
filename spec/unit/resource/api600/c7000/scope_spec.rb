@@ -24,6 +24,17 @@ RSpec.describe OneviewSDK::API600::C7000::Scope do
   end
   let(:resource_2) { OneviewSDK::API600::C7000::ServerHardware.new(@client_600, uri: '/rest/server-hardware/UID-222') }
 
+  it 'inherits from API 500' do
+    expect(described_class).to be < OneviewSDK::API500::C7000::Scope
+  end
+
+  describe '#initialize' do
+    it 'should be initialize the instance with default values' do
+      new_item = described_class.new(@client_600)
+      expect(new_item['type']).to eq('ScopeV3')
+    end
+  end
+
   describe '#get_resource_scope' do
     it 'returns the response body from rest/scope/resources/*' do
       expect(@client_600).to receive(:rest_get).with('/rest/scope/resources/rest/server-hardware/UID-111')
