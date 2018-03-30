@@ -16,6 +16,18 @@ module OneviewSDK
     module C7000
       # Volume Template resource implementation for API600 C7000
       class VolumeTemplate < OneviewSDK::API500::C7000::VolumeTemplate
+        BASE_URI = '/rest/storage-volume-templates'.freeze
+
+        # Gets the storage templates that are connected to this set of expected network URIs
+        # or that are scoped to the set of scope URIs or which only allow private volumes
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] attributes Hash containing the attributes name and value to filter storage templates
+        # @param [Hash] query The query options for the request (key-value pairs)
+        # @return [Array] the collection of volume templates
+        def self.get_reachable_volume_templates(client, attributes = {}, query = nil)
+          query_uri = build_query(query) if query
+          find_by(client, attributes, "#{BASE_URI}/reachable-volume-templates#{query_uri}")
+        end
       end
     end
   end
