@@ -75,6 +75,26 @@ RSpec.shared_context 'integration i3s api300 context', a: :b do
   end
 end
 
+# Context for Image Streamer API500 integration testing:
+RSpec.shared_context 'integration i3s api500 context', a: :b do
+  before :all do
+    integration_context
+    integration_context_i3s
+    oneview_client ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 500))
+    $client_i3s_500 ||= oneview_client.new_i3s_client($config_i3s.merge(api_version: 500))
+  end
+end
+
+# Context for Image Streamer API600 integration testing:
+RSpec.shared_context 'integration i3s api600 context', a: :b do
+  before :all do
+    integration_context
+    integration_context_i3s
+    oneview_client ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 600))
+    $client_i3s_600 ||= oneview_client.new_i3s_client($config_i3s.merge(api_version: 600))
+  end
+end
+
 RSpec.shared_context 'system context', a: :b do
   before(:each) do
     load_system_properties
