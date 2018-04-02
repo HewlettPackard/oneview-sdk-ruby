@@ -17,6 +17,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Logical Enclosure
    - Logical Interconnect
    - Logical Interconnect Group
+   - Logical Switch
    - Logical Switch Group
    - Managed SAN
    - Network Set
