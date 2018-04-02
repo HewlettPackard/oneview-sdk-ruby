@@ -14,7 +14,7 @@ require_relative '../../api500/synergy/switch'
 module OneviewSDK
   module API600
     module Synergy
-      # Switch resource implementation for API 500 Synergy
+      # Switch resource implementation for API 600 Synergy
       class Switch < OneviewSDK::API500::Synergy::Switch
       end
     end

@@ -14,7 +14,7 @@ require_relative '../../api500/c7000/switch'
 module OneviewSDK
   module API600
     module C7000
-      # Switch resource implementation for API 500 C7000
+      # Switch resource implementation for API 600 C7000
       class Switch < OneviewSDK::API500::C7000::Switch
       end
     end
