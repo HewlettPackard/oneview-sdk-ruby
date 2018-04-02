@@ -111,8 +111,8 @@ end
 # A scope defines a collection of resources, which might be used for filtering or access control.
 # When a scope uri is added to a switch resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
-# For the switch resource, this feature is only available for C7000 and api version equal to 300 and 500.
-if @client.api_version >= 300 && @client.api_version <= 500 && variant == 'C7000'
+# For the switch resource, this feature is only available for C7000 and api version equal to 300.
+if @client.api_version == 300 && variant == 'C7000'
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 
   item = switch_class.get_all(@client).first
