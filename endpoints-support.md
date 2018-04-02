@@ -414,7 +414,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/scopes/{id}</sub>                                                             | PUT      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
 |<sub>/rest/scopes/{id}</sub>                                                             | PATCH    | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:
 |<sub>/rest/scopes/{id}</sub>                                                             | DELETE   | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
-|<sub>/rest/scopes/{id}/resource-assignments</sub>                                        | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   | :white_check_mark:
+|<sub>/rest/scopes/{id}/resource-assignments</sub>                                        | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:
 |<sub>/rest/scopes/resources/{resource_uri}</sub>                                         | GET      | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:
 |<sub>/rest/scopes/resources/{resource_uri}</sub>                                         | PUT      | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:
 |<sub>/rest/scopes/resources/{resource_uri}</sub>                                         | PATCH    | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:
