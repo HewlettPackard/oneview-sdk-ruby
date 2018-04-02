@@ -120,7 +120,7 @@ server_hardware.refresh
 enclosure.refresh
 puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
 
-if @client.api_version == 500
+if @client.api_version >= 500
   puts "\nUpdating the scope name '#{scope['name']}' with a patch."
   old_name = scope['name']
   scope.patch('replace', '/name', "#{old_name} Updated")
