@@ -508,7 +508,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **Switches**                                                                                                                                   |
 |<sub>/rest/switches</sub>                                                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/switches/{id}</sub>                                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/switches/{id}</sub>                                                           | PATCH    | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |
+|<sub>/rest/switches/{id}</sub>                                                           | PATCH    | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   |
 |<sub>/rest/switches/{id}</sub>                                                           | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/switches/{id}/environmentalConfiguration</sub>                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/switches/{id}/statistics</sub>                                                | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
