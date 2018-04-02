@@ -15,10 +15,10 @@ First, there's some setup you'll need to do. Do EITHER of the following:
    [one_view_secrets_synergy.json.example](one_view_secrets_synergy.json.example) files to a secure location
    **outside** this repo. When you do so, drop the `.example` part of the filename.
 
-   - [one_view_config.json.example](one_view_config.json.example): Tests for API v200, v300 and v500 C7000
-   - [one_view_secrets.json.example](one_view_secrets.json.example): Tests for API v200, v300 and v500 C7000
-   - [one_view_config_synergy.json.example](one_view_config_synergy.json.example): Tests for API v300 and v500 Synergy
-   - [one_view_secrets_synergy.json.example](one_view_secrets_synergy.json.example): Tests for API v300 and v500 Synergy
+   - [one_view_config.json.example](one_view_config.json.example): Tests for API v200, v300, v500 and v600 C7000
+   - [one_view_secrets.json.example](one_view_secrets.json.example): Tests for API v200, v300, v500 and v600 C7000
+   - [one_view_config_synergy.json.example](one_view_config_synergy.json.example): Tests for API v300, v500 and v600 Synergy
+   - [one_view_secrets_synergy.json.example](one_view_secrets_synergy.json.example): Tests for API v300, v500 and v600 Synergy
 
   2. Then set the following environment variables with the paths to the files you just created:
 
@@ -52,6 +52,8 @@ These config files get loaded and create the following global variables:
  - `$client_300_synergy`: Client object using API v300 Synergy
  - `$client_500`: Client object using API v500 C7000
  - `$client_500_synergy`: Client object using API v500 Synergy
+ - `$client_600`: Client object using API v600 C7000
+ - `$client_600_synergy`: Client object using API v600 Synergy
 
 ## Running the tests
 The following command must run in your Ruby SDK root directory:
