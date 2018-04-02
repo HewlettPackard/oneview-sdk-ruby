@@ -31,6 +31,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Storage System
    - Uplink Sets
    - Volume
+   - Volume Template
 
 ## v5.3.0
 

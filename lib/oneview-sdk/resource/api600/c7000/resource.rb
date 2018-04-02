@@ -9,12 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/resource'
+require_relative '../../api500/c7000/resource'
 
 module OneviewSDK
   module API600
     module C7000
-      class Resource < OneviewSDK::API300::C7000::Resource
+      class Resource < OneviewSDK::API500::C7000::Resource
       end
     end
   end
