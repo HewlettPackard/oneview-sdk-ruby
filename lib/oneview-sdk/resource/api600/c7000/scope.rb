@@ -33,7 +33,7 @@ module OneviewSDK
         # @param [OneviewSDK::API600::C7000::Resource] resource Resource object
         def get_resource_scopes(resource)
           scopes_uri = resource['scopesUri']
-          response = client.rest_get(scopes_uri)
+          response = @client.rest_get(scopes_uri)
           @client.response_handler(response)
         end
 
@@ -42,7 +42,7 @@ module OneviewSDK
         # @param [Array<OneviewSDK::API600::C7000::Scope>] scopes  Array of scopes objects
         def replace_resource_assigned_scopes(resource, scopes: [])
           resource_uri = resource['uri']
-          scope_uris = ensure_and_get_uris(scopes)
+          scope_uris = scopes.map { |scope| scope['uri'] }
           scopes_uri = resource['scopesUri']
           options = { 'Content-Type' => 'application/json-patch+json',
                       'If-Match' => '*',
