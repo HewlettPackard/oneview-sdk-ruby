@@ -18,6 +18,7 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Logical Interconnect
    - Logical Interconnect Group
    - Logical Switch
+   - Logical Switch Group
    - Managed SAN
    - Network Set
    - SAS Interconnect
@@ -26,9 +27,13 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - SAS Logical Interconnect Group
    - Server Hardware
    - Server Hardware Types
+   - Server Profile
    - Server Profile Template
    - Storage Pool
+   - Storage System
    - Uplink Sets
+   - Volume
+   - Volume Template
 
 ## v5.3.0
 

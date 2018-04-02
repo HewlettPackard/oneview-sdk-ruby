@@ -13,15 +13,15 @@ require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
 # - API200 for C7000
-# - API300 for C7000 & Synergy
-# - API500 for C7000 & Synergy
+# - API300 for C7000
+# - API500 for C7000
+# - API600 for C7000
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = Any to OneviewSDK::LogicalSwitchGroup
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalSwitchGroup
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::LogicalSwitchGroup
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalSwitchGroup
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::LogicalSwitchGroup
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::LogicalSwitchGroup
 
 # Resource Class used in this sample
 logical_switch_group_class = OneviewSDK.resource_named('LogicalSwitchGroup', @client.api_version)
@@ -60,9 +60,9 @@ puts "\nUpdate logical-switch-group '#{item[:name]}' sucessfully.\n  uri = '#{it
 
 sleep(10)
 
-# NOTE: Scopes doesn't support versions smaller than 300.
+# NOTE: Scopes doesn't support versions smaller than 300 and greater than 500
 
-if @client.api_version >= 300
+if @client.api_version >= 300 && @client.api_version <= 500
   # Scopes
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   scope_1 = scope_class.new(@client, name: 'Scope 1')

@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::VolumeTemplate
+klass = OneviewSDK::API600::C7000::VolumeTemplate
 RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_500 }
-  include_examples 'VolumeTemplateUpdateExample', 'integration api500 context'
-  include_examples 'VolumeTemplateUpdateExample API500'
+  let(:current_client) { $client_600 }
+  include_examples 'VolumeTemplateUpdateExample', 'integration api600 context'
+  include_examples 'VolumeTemplateUpdateExample API600'
 end
