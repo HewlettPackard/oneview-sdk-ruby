@@ -15,15 +15,4 @@ klass = OneviewSDK::API600::C7000::Switch
 RSpec.describe klass, integration: true, type: UPDATE do
   let(:current_client) { $client_600 }
   include_examples 'SwitchUpdateExample  API300', 'integration api600 context'
-
-  describe '#set_scope_uris' do
-    it 'is unavailable' do
-      item = described_class.new($client_600)
-      expect { item.set_scope_uris }.to raise_error(OneviewSDK::MethodUnavailable, /The method #set_scope_uris is unavailable/)
-    end
-  end
-
-  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API600::C7000::Scope do
-    let(:item) { described_class.find_by(current_client, name: $secrets['logical_switch1_ip']).first }
-  end
 end
