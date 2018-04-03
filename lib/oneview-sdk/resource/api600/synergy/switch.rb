@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/switch'
+require_relative '../../api500/synergy/switch'
 
 module OneviewSDK
   module API600
     module Synergy
-      # Switch resource implementation for API 500 Synergy
-      class Switch < OneviewSDK::API300::Synergy::Switch
+      # Switch resource implementation for API 600 Synergy
+      class Switch < OneviewSDK::API500::Synergy::Switch
       end
     end
   end

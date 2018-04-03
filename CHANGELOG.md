@@ -31,8 +31,10 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Server Profile
    - Server Profile Template
    - Storage Pool
+   - Switch
+   - Switch Type
    - Storage System
-   - Uplink Sets
+   - Uplink Set
    - Volume
    - Volume Template
 
