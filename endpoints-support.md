@@ -570,8 +570,8 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 
 ## HPE Synergy Image Streamer
 
-| Endpoints                                               | Verb    | V300               |
-| --------------------------------------------------------------------------------- | ------- | :----------------: |
+| Endpoints                                               | Verb    | V300               | V500               | V600               |
+| --------------------------------------------------------------------------------- | ------- | :----------------: | :----------------: | :----------------: |
 |     **Artifacts Bundle**                                                                                         |
 |<sub>	/rest/artifact-bundles	</sub>                                                  | GET | :white_check_mark: |
 |<sub>	/rest/artifact-bundles	</sub>                                       |  POST(create)  | :white_check_mark: |
