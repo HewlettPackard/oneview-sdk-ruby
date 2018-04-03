@@ -19,13 +19,17 @@ require_relative '../_client' # Gives access to @client
 # - API300 for Synergy
 # - API500 for C7000
 # - API500 for Synergy
+# - API600 for C7000
+# - API600 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Scope
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::Scope
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Scope
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::Scope
-#
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Scope
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::C7000::Scope
+
 # NOTE: Scopes doesn't support versions smaller than 300.
 
 # Resource Class used in this sample
@@ -66,7 +70,43 @@ scope.set_resources(server_hardware, enclosure)
 
 server_hardware.refresh
 enclosure.refresh
-puts "scopeUris from Resources: Server Hardware scope  - #{server_hardware['scopeUris']}, Enclosure scope #{enclosure['scopeUris']}"
+puts "\nscopeUris from Resources: Server Hardware scope  - #{server_hardware['scopeUris']}, Enclosure scope #{enclosure['scopeUris']}"
+
+if @client.api_version >= 600
+  puts "\nGet resource scope uris"
+  resource_scope = scope.get_resource_scopes(server_hardware)
+  puts "Server hardware scopes #{resource_scope}"
+
+  puts "\nReplace resource scope uris with scope2"
+  options = {
+    name: 'Scope2',
+    description: 'Sample Scope description2'
+  }
+  scope2 = scope_class.new(@client, options)
+  scope2.create
+  puts "Created Scope2 with uri #{scope2['uri']}"
+  scope.replace_resource_assigned_scopes(server_hardware, scopes: [scope2])
+  puts 'Replaced resouce scope uris'
+
+  puts '\nAdd a resource to scope3'
+  options = {
+    name: 'Scope3',
+    description: 'Sample Scope description3'
+  }
+  scope3 = scope_class.new(@client, options)
+  scope3.create
+  puts 'Created scope3'
+  scope.add_resource_scope(server_hardware, scope3)
+  puts 'Server hardware resource added to scope3'
+
+  puts '\nRemoving resource from scope3'
+  scope.remove_resource_scope(server_hardware, scope3)
+  puts 'Removed resource from scope3'
+
+  # Delete all scopes created.
+  scope2.delete
+  scope3.delete
+end
 
 puts "\nUnsetting resource from the '#{scope['name']}'"
 scope.unset_resources(server_hardware, enclosure)
@@ -80,7 +120,7 @@ server_hardware.refresh
 enclosure.refresh
 puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
 
-if @client.api_version == 500
+if @client.api_version >= 500
   puts "\nUpdating the scope name '#{scope['name']}' with a patch."
   old_name = scope['name']
   scope.patch('replace', '/name', "#{old_name} Updated")

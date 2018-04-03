@@ -11,32 +11,54 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::C7000::Scope, integration: true, type: UPDATE do
-  include_context 'integration api500 context'
+RSpec.describe OneviewSDK::API600::C7000::Scope, integration: true, type: UPDATE do
+  include_context 'integration api600 context'
 
-  subject(:item) { described_class.get_all($client_500).first }
-  subject(:enclosure) { OneviewSDK::API500::C7000::Enclosure.get_all($client_500).first }
-  subject(:server_hardware) { OneviewSDK::API500::C7000::ServerHardware.get_all($client_500).first }
+  subject(:item) { described_class.get_all($client_600).first }
+  subject(:enclosure) { OneviewSDK::API600::C7000::Enclosure.get_all($client_600).first }
+  subject(:server_hardware) { OneviewSDK::API600::C7000::ServerHardware.get_all($client_600).first }
 
-  include_examples 'ScopeUpdateExample', 'integration api500 context'
+  include_examples 'ScopeUpdateExample', 'integration api600 context'
 
-  describe '#patch' do
-    it 'raises exception when uri is empty' do
-      item = described_class.new($client_500)
-      expect { item.patch('replace', '/name', 'New_Name') }.to raise_error(OneviewSDK::IncompleteResource, /Please set uri attribute/)
+  describe '#replace_resource_assigned_scope' do
+    it 'should replace the resource scope' do
+      options = {
+        name: 'new scope',
+        description: 'Sample Scope description'
+      }
+      scope = described_class.new($client_600, options)
+      scope.create
+      new_scopes = [scope['uri']]
+      old_scopes = scope.get_resource_scopes(server_hardware)
+      expect { scope.replace_resource_assigned_scopes(server_hardware, scopes: new_scopes) }.to_not raise_error
+      server_hardware.refresh
+      updated_resource_scopes = scope.get_resource_scopes(server_hardware)['scopeUris']
+      expect(new_scopes).to match_array(updated_resource_scopes)
+
+      # Update the resource with old scopes
+      scope.replace_resource_assigned_scopes(server_hardware, old_scopes)
+      current_scopes = scope.get_resource_scopes(server_hardware)
+      expect(current_scopes).to match_array(old_scopes)
     end
+  end
 
-    it 'should update the scope name' do
-      old_name = item['name']
-      expect { item.patch('replace', '/name', "#{old_name} Updated") }.to_not raise_error
+  describe '#resource_patch' do
+    it 'should update the scope of resource' do
+      options = {
+        name: 'test scope',
+        description: 'Sample Scope description'
+      }
+      scope = described_class.new($client_600, options)
+      scope.create
+      old_scopes = scope.get_resource_scopes(server_hardware)
+      expect { scope.resource_patch(server_hardware['scopesUri'], 'add', '/scopeUris/-', scope['uri']) }.to_not raise_error
+      new_scopes = scope.get_resource_scopes(server_hardware)['scopeUris']
+      expect(new_scopes).to include(scope['uri'])
 
-      item.refresh
-      expect(item['name']).to eq("#{old_name} Updated")
-
-      # coming back to original name
-      item['name'] = old_name
-      expect { item.patch('replace', '/name', old_name) }.to_not raise_error
-      expect(item['name']).to eq(old_name)
+      scope_index = new_scopes.find_index { |uri| uri == scope['uri'] }
+      expect { scope.resource_patch(server_hardware['scopesUri'], 'remove', "/scopeUris/#{scope_index}") }.to_not raise_error
+      new_scopes = scope.get_resource_scopes(server_hardware)
+      expect(old_scopes).to match_array(new_scopes)
     end
   end
 end
