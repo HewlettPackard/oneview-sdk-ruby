@@ -36,6 +36,9 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Volume
    - Volume Template
 
+Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
+   - Plan Script
+
 ## v5.3.0
 
 #### New Resources:
