@@ -39,8 +39,8 @@ puts "\n#Gets a plan script by id #{id}:"
 item2 = OneviewSDK::ImageStreamer::API600::PlanScript.find_by(@client, uri: id).first
 puts "\n#Plan Script with id #{item2['uri']} was found."
 
-# Gets a plan script by id
-puts "\n#Gets a plan script by read only artifacts"
+# Gets a plan script which is read only artifact
+puts "\n#Gets a plan script filtered by read only artifacts"
 item3 = OneviewSDK::ImageStreamer::API600::PlanScript.find_by(@client, hpProvided: true).first
 
 read_only = item3.retrieve_read_only
