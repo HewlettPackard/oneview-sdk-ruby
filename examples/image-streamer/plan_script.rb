@@ -16,8 +16,8 @@ require_relative '../_client_i3s' # Gives access to @client
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::PlanScript
-# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API300::PlanScript
-# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API300::PlanScript
+# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::PlanScript
+# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::PlanScript
 
 # Example: Create a plan script for an Image Streamer
 # NOTE: This will create a plan script named 'Plan_Script_1', then delete it.

@@ -10,19 +10,26 @@
 # specific language governing permissions and limitations under the License.
 
 require_relative '../../_client_i3s' # Gives access to @client
+# Supported APIs:
+# - 300, 500, 600
 
-# Example: Os Volume for an API300 Image Streamer
+# Resources that can be created according to parameters:
+# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::OSVolume
+# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::OSVolume
+# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::OSVolume
+
+# Example: Os Volume for an Image Streamer
 # NOTE: You must have one os volume.
-
+os_volume_class = OneviewSDK::ImageStreamer.resource_named('OSVolume', @client.api_version)
 # List all os volume
-list = OneviewSDK::ImageStreamer::API300::OSVolume.get_all(@client)
+list = os_volume_class.get_all(@client)
 puts "\n#Listing all:"
 list.each { |p| puts "  #{p['name']}" }
 
 id = list.first['uri']
 # Gets an os volume by id
 puts "\n#Gets an os volume by id #{id}:"
-item2 = OneviewSDK::ImageStreamer::API300::OSVolume.find_by(@client, uri: id).first
+item2 = os_volume_class.find_by(@client, uri: id).first
 puts "\n#Os Volume with id #{item2['uri']} was found."
 
 
