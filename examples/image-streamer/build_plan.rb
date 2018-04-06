@@ -126,8 +126,10 @@ puts "\n#Build Plan updated successfully with id #{item5['uri']} and new name #{
 puts "\n#Removing a build plan with id #{item2['uri']} and name #{item2['name']}:"
 item2.delete
 puts "\n#Build plan with id #{item2['uri']} and name #{item2['name']} removed successfully."
-puts "\n#Removing a build plan with id #{item3['uri']} and name #{item3['name']}:"
+puts "\n#Removing a build plan with id #{plan_script2['uri']} and name #{plan_script2['name']}:"
 plan_script2.delete
+puts "\n#Plan script with id #{plan_script2['uri']} and name #{plan_script2['name']} removed successfully."
+puts "\n#Removing a build plan with id #{item3['uri']} and name #{item3['name']}:"
 item3.delete
 puts "\n#Build plan with id #{item3['uri']} and name #{item3['name']} removed successfully."
 puts "\n#Removing a build plan with id #{item5['uri']} and name #{item5['name']}:"
