@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative 'resource'
+require_relative '../api500/build_plan'
 
 module OneviewSDK
   module ImageStreamer

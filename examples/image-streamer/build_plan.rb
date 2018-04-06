@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client_i3s' # Gives access to @client
+require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
 # - 300, 500, 600
 
@@ -28,10 +28,24 @@ options = {
   name: 'Build_Plan_1',
   oeBuildPlanType: 'Deploy'
 }
+options_plan_script = {
+  description: 'Description of this plan script',
+  name: @plan_script2_name,
+  hpProvided: false,
+  planType: 'deploy',
+  content: 'esxcli system hostname set --domain "@DomainName@"'
+}
 plan_script_class = OneviewSDK::ImageStreamer.resource_named('PlanScript', @client.api_version)
 plan_script = plan_script_class.find_by(@client, name: @plan_script1_name).first
-plan_script2 = plan_script_class.find_by(@client, name: @plan_script2_name).first
+puts "\n#Creating a plan script with name #{options_plan_script[:name]}."
+plan_script2 = plan_script_class.new(@client, options_plan_script)
+plan_script2.create!
+plan_script2.retrieve!
+puts "\n#Plan script with name #{plan_script2['name']} and uri #{plan_script2['uri']} created successfully."
+
+# plan_script2 = plan_script_class.find_by(@client, name: @plan_script2_name).first
 custom_attributes = JSON.parse(plan_script2['customAttributes'])
+
 custom_attributes.replace([custom_attributes[0].merge('type' => 'String')])
 
 build_plan_class = OneviewSDK::ImageStreamer.resource_named('BuildPlan', @client.api_version)
@@ -113,6 +127,7 @@ puts "\n#Removing a build plan with id #{item2['uri']} and name #{item2['name']}
 item2.delete
 puts "\n#Build plan with id #{item2['uri']} and name #{item2['name']} removed successfully."
 puts "\n#Removing a build plan with id #{item3['uri']} and name #{item3['name']}:"
+plan_script2.delete
 item3.delete
 puts "\n#Build plan with id #{item3['uri']} and name #{item3['name']} removed successfully."
 puts "\n#Removing a build plan with id #{item5['uri']} and name #{item5['name']}:"
