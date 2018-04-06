@@ -16,7 +16,6 @@ module OneviewSDK
     module API600
       # OS Volume resource implementation for Image Streamer
       class OSVolume < OneviewSDK::ImageStreamer::API500::OSVolume
-        
         # Retrieves the os volumes storage of the selected os volumes as per the selected attributes.
         # @return [Hash] The readonly artifacts of the selected OS Volumes.
         def get_os_volumes_storage
