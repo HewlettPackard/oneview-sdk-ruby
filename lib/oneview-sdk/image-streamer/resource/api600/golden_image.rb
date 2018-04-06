@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../api500/build_plan'
+require_relative '../api500/golden_image'
 
 module OneviewSDK
   module ImageStreamer
     module API600
-      # Build Plan resource implementation for Image Streamer
-      class BuildPlan < OneviewSDK::ImageStreamer::API500::BuildPlan
+      # Golden Image resource implementation for Image Streamer
+      class GoldenImage < OneviewSDK::ImageStreamer::API500::GoldenImage
       end
     end
   end

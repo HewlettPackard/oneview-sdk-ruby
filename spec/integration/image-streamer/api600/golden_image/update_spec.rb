@@ -11,22 +11,22 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::ImageStreamer::API600::BuildPlan
+klass = OneviewSDK::ImageStreamer::API600::GoldenImage
 RSpec.describe klass, integration_i3s: true, type: UPDATE do
   include_context 'integration i3s api600 context'
 
   describe '#update' do
-    it 'updates the name of the build plan' do
-      item = klass.find_by($client_i3s_600, name: BUILD_PLAN1_NAME).first
+    it 'updates the name of the golden image' do
+      item = klass.find_by($client_i3s_600, name: GOLDEN_IMAGE1_NAME).first
       expect(item).to be
-      item['name'] = BUILD_PLAN1_NAME_UPDATED
+      item['name'] = GOLDEN_IMAGE1_NAME_UPDATE
       expect { item.update }.not_to raise_error
       item.retrieve!
-      expect(item['name']).to eq(BUILD_PLAN1_NAME_UPDATED)
-      item['name'] = BUILD_PLAN1_NAME
+      expect(item['name']).to eq(GOLDEN_IMAGE1_NAME_UPDATE)
+      item['name'] = GOLDEN_IMAGE1_NAME
       expect { item.update }.not_to raise_error
       item.retrieve!
-      expect(item['name']).to eq(BUILD_PLAN1_NAME)
+      expect(item['name']).to eq(GOLDEN_IMAGE1_NAME)
     end
   end
 end
