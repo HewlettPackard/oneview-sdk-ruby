@@ -11,9 +11,9 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::VolumeTemplate
+klass = OneviewSDK::API600::C7000::VolumeTemplate
 RSpec.describe klass, integration: true, type: DELETE, sequence: rseq(klass) do
-  let(:current_client) { $client_500 }
-  include_examples 'VolumeTemplateDeleteExample', 'integration api500 context'
-  include_examples 'VolumeTemplateDeleteExample API500', 'integration api500 context'
+  let(:current_client) { $client_600 }
+  include_examples 'VolumeTemplateDeleteExample', 'integration api600 context'
+  include_examples 'VolumeTemplateDeleteExample API600', 'integration api600 context'
 end

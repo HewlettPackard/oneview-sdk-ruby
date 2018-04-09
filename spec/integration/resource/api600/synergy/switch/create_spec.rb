@@ -11,8 +11,8 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::Synergy::Switch
+klass = OneviewSDK::API600::Synergy::Switch
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_500_synergy }
-  include_examples 'SwitchCreateExample', 'integration api500 context'
+  let(:current_client) { $client_600_synergy }
+  include_examples 'SwitchCreateExample', 'integration api600 context'
 end

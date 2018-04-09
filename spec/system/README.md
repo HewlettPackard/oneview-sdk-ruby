@@ -55,7 +55,6 @@ These config files get loaded and create the following global variables:
  - `$client_800`: Client object using API v800 C7000
  - `$client_800_synergy`: Client object using API v800 Synergy
 
-
 ## Running the tests
 The following command must run in your Ruby SDK root directory:
 

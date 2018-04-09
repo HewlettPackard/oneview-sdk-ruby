@@ -8,13 +8,14 @@ This release adds support to OneView Rest API version 800 for the hardware varia
    - Hypervisor Cluster Profile
    - Server Profile Template
 
-## v5.4.0(Unreleased)
+## v5.4.0
 
 #### Notes
 Extends support of the SDK to OneView Rest API version 600 (OneView v4.0).
 
 #### Features supported
 This release adds support to OneView Rest API version 600 for the hardware variants C7000 and Synergy to the already existing features:
+   - Connection Templates
    - Enclosure
    - Enclosure Group
    - Ethernet Network
@@ -26,12 +27,29 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Logical Enclosure
    - Logical Interconnect
    - Logical Interconnect Group
+   - Logical Switch
+   - Logical Switch Group
+   - Managed SAN
+   - Network Set
    - SAS Interconnect
    - SAS Interconnect Type
    - SAS Logical Interconnect
    - SAS Logical Interconnect Group
+   - Scope
    - Server Hardware
+   - Server Hardware Types
+   - Server Profile
    - Server Profile Template
+   - Storage Pool
+   - Switch
+   - Switch Type
+   - Storage System
+   - Uplink Set
+   - Volume
+   - Volume Template
+
+Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
+   - Plan Script
 
 ## v5.3.0
 

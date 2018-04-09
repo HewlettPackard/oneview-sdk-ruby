@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::Synergy::ManagedSAN, integration: true, type: UPDATE do
-  let(:current_client) { $client_500_synergy }
-  include_examples 'ManagedSANUpdateExample', 'integration api500 context', 500
+RSpec.describe OneviewSDK::API600::Synergy::ManagedSAN, integration: true, type: UPDATE do
+  let(:current_client) { $client_600_synergy }
+  include_examples 'ManagedSANUpdateExample', 'integration api600 context', 600
 end
