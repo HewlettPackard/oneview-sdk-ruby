@@ -5,6 +5,7 @@ Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
 
 #### Features Supported
 This release adds support to OneView Rest API version 800 for the hardware variants C7000 and Synergy to the already existing features:
+   - Hypervisor Cluster Profile
    - Server Profile Template
 
 ## v5.4.0(Unreleased)
