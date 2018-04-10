@@ -9,17 +9,28 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client_i3s' # Gives access to @client
+require_relative '../_client_i3s' # Gives access to @client
+# Supported APIs:
+# - 300, 500, 600
 
-# Example: Create a golden image for an API300 Image Streamer
+# Resources that can be created according to parameters:
+# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::GoldenImage
+# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::GoldenImage
+# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::GoldenImage
+
+# Example: Create a golden image for an Image Streamer
 # NOTE: This will create a golden images named 'Golden_Image_1' and 'Golden_Image_2', and then, it will delete them.
 # NOTE: You'll need to add the following instance variables to the _client_i3s.rb file with valid URIs for your environment:
 #   @golden_image_download_path
 #   @golden_image_upload_path
 #   @golden_image_log_path
+os_volume_class = OneviewSDK::ImageStreamer.resource_named('OSVolume', @client.api_version)
+os_volume = os_volume_class.get_all(@client).first
 
-os_volume = OneviewSDK::ImageStreamer::API300::OSVolume.find_by(@client, {}).first
-build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by(@client, oeBuildPlanType: 'capture').first
+build_plan_class = OneviewSDK::ImageStreamer.resource_named('BuildPlan', @client.api_version)
+build_plan = build_plan_class.find_by(@client, oeBuildPlanType: 'capture').first
+
+golden_image_class = OneviewSDK::ImageStreamer.resource_named('GoldenImage', @client.api_version)
 
 options = {
   type: 'GoldenImage',
@@ -29,7 +40,7 @@ options = {
 }
 
 # Creating a golden image
-item = OneviewSDK::ImageStreamer::API300::GoldenImage.new(@client, options)
+item = golden_image_class.new(@client, options)
 item.set_os_volume(os_volume)
 item.set_build_plan(build_plan)
 puts "\n#Creating a golden image with name #{options[:name]}."
@@ -38,19 +49,19 @@ item.retrieve!
 puts "\n#Golden Image with name #{item['name']} and uri #{item['uri']} created successfully."
 
 # List all golden images
-list = OneviewSDK::ImageStreamer::API300::GoldenImage.get_all(@client)
+list = golden_image_class.get_all(@client)
 puts "\n#Listing all:"
 list.each { |p| puts "  #{p['name']}" }
 
 id = list.first['uri']
 # Gets a golden image by id
 puts "\n#Gets a golden image by id #{id}:"
-item2 = OneviewSDK::ImageStreamer::API300::GoldenImage.find_by(@client, uri: id).first
+item2 = golden_image_class.find_by(@client, uri: id).first
 puts "\n#Golden Image with id #{item2['uri']} was found."
 
 # Gets a golden image by name
 puts "\n#Gets a golden image by name #{options[:name]}:"
-item3 = OneviewSDK::ImageStreamer::API300::GoldenImage.find_by(@client, name: options[:name]).first
+item3 = golden_image_class.find_by(@client, name: options[:name]).first
 puts "\n#Golden Image with name #{item2['name']} was found."
 
 # Updates a golden image
@@ -69,7 +80,7 @@ puts "\nDetails of the golden image save successfully."
 puts "\nAdds a golden image resource from the file that is uploaded from a local drive"
 options2 = { name: 'Golden_Image_2', description: 'Any_Description' }
 puts "\nAdding a golden image with name #{options2[:name]}."
-item4 = OneviewSDK::ImageStreamer::API300::GoldenImage.add(@client, @golden_image_upload_path, options2)
+item4 = golden_image_class.add(@client, @golden_image_upload_path, options2)
 puts "\nGolden Image with uri #{item4['uri']} and name #{item4['name']} added successfully."
 
 # Downloads the content of the selected golden image

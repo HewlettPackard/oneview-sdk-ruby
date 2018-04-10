@@ -601,14 +601,14 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub> /rest/deployment-plans/{id} </sub>                                  | PUT              | :white_check_mark: |
 |<sub> /rest/deployment-plans/{id} </sub>                                  | DELETE           | :white_check_mark: |
 |     **Golden Images**                                                                                            |
-|<sub> /rest/golden-images</sub>                                           | POST(create)     | :white_check_mark: |
-|<sub> /rest/golden-images</sub>                                           | POST(upload)     | :white_check_mark: |
-|<sub> /rest/golden-images</sub>                                           | GET              | :white_check_mark: |
-|<sub> /rest/golden-images/{id}</sub>                                      | GET              | :white_check_mark: |
-|<sub> /rest/golden-images/archive/{id}</sub>                              | GET              | :white_check_mark: |
-|<sub> /rest/golden-images/download/{id}</sub>                             | GET              | :white_check_mark: |
-|<sub> /rest/golden-images/{id}</sub>                                      | PUT              | :white_check_mark: |
-|<sub> /rest/golden-images/{id}</sub>                                      | DELETE           | :white_check_mark: |
+|<sub> /rest/golden-images</sub>                                           | POST(create)     | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/golden-images</sub>                                           | POST(upload)     | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/golden-images</sub>                                           | GET              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/golden-images/{id}</sub>                                      | GET              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/golden-images/archive/{id}</sub>                              | GET              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/golden-images/download/{id}</sub>                             | GET              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/golden-images/{id}</sub>                                      | PUT              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/golden-images/{id}</sub>                                      | DELETE           | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |     **OS Build Plan**                                                                                            |
 |<sub> /rest/build-plans</sub>                                             | POST             | :white_check_mark: |
 |<sub> /rest/build-plans</sub>                                             | GET              | :white_check_mark: |
