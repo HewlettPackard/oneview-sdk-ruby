@@ -17,6 +17,17 @@ module OneviewSDK
       # Deployment Plan resource implementation for Image Streamer
       class DeploymentPlan < OneviewSDK::ImageStreamer::API300::DeploymentPlan
 
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::ImageStreamer::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'OEDeploymentPlanV5'
+          super
+        end
+
         # Retrieves the Deployment Plan details as per the selected attributes.
         # @return [Hash] The OS Deployment Plan.
         def get_used_by

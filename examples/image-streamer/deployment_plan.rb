@@ -73,6 +73,22 @@ puts "\n#Gets a deployment plan by name #{options[:name]}:"
 item4 = deployment_plan_class.find_by(@client, name: options[:name]).first
 puts "\n#Deployment Plan with name #{item4['uri']} was found."
 
+# Gets a deployment plan usedby server profiles and server profiles templates
+if @client.api_version.to_i >= 500
+  puts "\n#Gets a deployment plan filtered by usedby server profiles and server profiles templates"
+  used_by = item4.get_used_by
+  puts "\n#Deployment plan used by server profiles and server profiles templates retrieved:"
+  used_by.each { |d| puts "  #{d}" }
+end
+
+# Gets a deployment plan by osdp
+if @client.api_version.to_i >= 600
+  puts "\n#Gets a deployment plan by osdp"
+  osdp = item4.get_osdp
+  puts "\n#Deployment plan osdp details retrieved:"
+  osdp.each { |d| puts "  #{d}" }
+end
+
 # Updates a deployment plan
 puts "\n#Updating a deployment plan with uri #{item4['uri']} and name #{item4['name']}:"
 item4['name'] = 'Deployment_Plan_Updated'

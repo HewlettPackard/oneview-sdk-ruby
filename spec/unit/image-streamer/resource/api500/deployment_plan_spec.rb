@@ -8,6 +8,13 @@ RSpec.describe klass do
     expect(described_class).to be < OneviewSDK::ImageStreamer::API300::DeploymentPlan
   end
 
+  describe '#initialize' do
+    it 'sets the defaults correctly' do
+      item = klass.new(@client_i3s_500)
+      expect(item['type']).to eq('OEDeploymentPlanV5')
+    end
+  end
+
   describe '#get_used_by' do
     it 'raises exception when uri is empty' do
       item = klass.new(@client_i3s_500)
