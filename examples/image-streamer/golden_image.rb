@@ -25,7 +25,7 @@ require_relative '../_client_i3s' # Gives access to @client
 #   @golden_image_upload_path
 #   @golden_image_log_path
 os_volume_class = OneviewSDK::ImageStreamer.resource_named('OSVolume', @client.api_version)
-os_volume = os_volume_class.find_by(@client, {}).first
+os_volume = os_volume_class.get_all(@client).first
 
 build_plan_class = OneviewSDK::ImageStreamer.resource_named('BuildPlan', @client.api_version)
 build_plan = build_plan_class.find_by(@client, oeBuildPlanType: 'capture').first
