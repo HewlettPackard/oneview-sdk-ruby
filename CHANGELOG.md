@@ -5,8 +5,9 @@ Extended support to Image Streamer Rest API version 500((ImageStreamer v3.10)) a
 
 #### Features supported
 Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
-   - Golden Image
    - Deployment Plan
+   - Golden Image
+
 
 ## v5.4.0
 
