@@ -8,7 +8,9 @@ Extends support to OneView Rest API version 600 for the hardware variants C7000 
    - OS Deployment Plan
 
 Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
+   - Deployment Plan
    - Golden Image
+
 
 ## v5.4.0
 
