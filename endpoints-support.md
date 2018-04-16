@@ -612,11 +612,11 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub> /rest/golden-images/{id}</sub>                                      | PUT              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |<sub> /rest/golden-images/{id}</sub>                                      | DELETE           | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |     **OS Build Plan**                                                                                            |
-|<sub> /rest/build-plans</sub>                                             | POST             | :white_check_mark: |
-|<sub> /rest/build-plans</sub>                                             | GET              | :white_check_mark: |
-|<sub> /rest/build-plans/{id}</sub>                                        | GET              | :white_check_mark: |
-|<sub> /rest/build-plans/{id}</sub>                                        | PUT              | :white_check_mark: |
-|<sub> /rest/build-plans/{id}</sub>                                        | DELETE           | :white_check_mark: |
+|<sub> /rest/build-plans</sub>                                             | POST             | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/build-plans</sub>                                             | GET              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/build-plans/{id}</sub>                                        | GET              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/build-plans/{id}</sub>                                        | PUT              | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub> /rest/build-plans/{id}</sub>                                        | DELETE           | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |     **OS Volumes**                                                                                               |
 |<sub> /rest/os-volumes</sub>                                              | GET              | :white_check_mark: |
 |<sub> /rest/os-volumes/{id}</sub>                                         | GET              | :white_check_mark: |
