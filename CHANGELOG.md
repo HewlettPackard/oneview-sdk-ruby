@@ -4,6 +4,9 @@
 Extended support to Image Streamer Rest API version 500((ImageStreamer v3.10)) and API version 600 (ImageStreamer v4.0).
 
 #### Features supported
+Extends support to OneView Rest API version 600 for the hardware variants C7000 and Synergy to the already existing features:
+   - OS Deployment Plan
+
 Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
    - Golden Image
 
