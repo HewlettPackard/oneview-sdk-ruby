@@ -186,7 +186,7 @@ module OneviewSDK
     method_option :filter,
       type: :hash,
       desc: 'Hash of key/value pairs to filter on',
-      required: true
+      default: {}
     desc 'search TYPE', 'Search for resource by key/value pair(s)'
     # Search for resource by key/value pair(s)
     def search(type)
