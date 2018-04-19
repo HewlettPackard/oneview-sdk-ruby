@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2018 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,10 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require 'spec_helper'
+require_relative '../api500/build_plan'
 
-klass = OneviewSDK::API600::Synergy::OSDeploymentPlan
-RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_600_synergy }
-  include_examples 'OSDeploymentPlanUpdateExample', 'integration api600 context'
+module OneviewSDK
+  module ImageStreamer
+    module API600
+      # Build Plan resource implementation for Image Streamer
+      class BuildPlan < OneviewSDK::ImageStreamer::API500::BuildPlan
+      end
+    end
+  end
 end
