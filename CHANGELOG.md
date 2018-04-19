@@ -13,6 +13,8 @@ Extended support to Image Streamer Rest API version 500 and 600 to the already e
    - Golden Image
    - OS Volume
 
+#### Bug fixes & Enhancements
+   - [#346](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/346) CLI search with empty filter
 
 ## v5.4.0
 

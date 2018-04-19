@@ -31,10 +31,18 @@ RSpec.describe OneviewSDK::Cli do
         expect(STDOUT).to receive(:puts).with(/Invalid resource type/)
         expect { OneviewSDK::Cli.start(%w[search InvalidType --filter name:Profile1]) }.to raise_error SystemExit
       end
+    end
 
-      it 'requires a filter' do
-        expect { OneviewSDK::Cli.start(%w[search ServerProfiles]) }
-          .to output(/No value provided for required options '--filter'/).to_stderr_from_any_process
+    context 'with no filter' do
+      before :each do
+        allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
+      end
+
+      it 'matches all resources' do
+        expect(OneviewSDK::Resource).to receive(:find_by).with(OneviewSDK::Client, {})
+        out = [resource_data['name'], resource_data2['name']]
+        expect { OneviewSDK::Cli.start(%w[search ServerProfile -f yaml]) }
+          .to output(out.to_yaml).to_stdout_from_any_process
       end
     end
 
