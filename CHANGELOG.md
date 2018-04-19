@@ -1,17 +1,12 @@
-## v5.5.0 (unreleased)
+## v5.5.0(Unreleased)
 
 #### Notes
-Extended support to Image Streamer Rest API version 500((ImageStreamer v3.10)) and API version 600 (ImageStreamer v4.0).
+Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
 
-#### Features supported
-Extends support to OneView Rest API version 600 for the hardware variants C7000 and Synergy to the already existing features:
-   - OS Deployment Plan
-
-Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
-   - Build Plan
-   - Deployment Plan
-   - Golden Image
-
+#### Features Supported
+This release adds support to OneView Rest API version 800 for the hardware variants C7000 and Synergy to the already existing features:
+   - Hypervisor Cluster Profile
+   - Server Profile Template
 
 ## v5.4.0
 
