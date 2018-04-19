@@ -44,4 +44,12 @@ RSpec.shared_examples 'HypervisorClusterProfileCreateExample' do |context_name|
       expect(names).to include(HYP_CLUSTER_PROF)
     end
   end
+
+  describe '#compliance_preview' do
+    it 'Gets the compliance preview' do
+      item = described_class.get_all(current_client).first
+      item.compliance_preview
+      expect { item.compliance_preview }.not_to raise_error
+    end
+  end
 end
