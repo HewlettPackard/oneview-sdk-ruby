@@ -369,6 +369,9 @@ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
 #   but again, you can show only certain attributes by using the -a option
 # You can also chain keys together to search in nested hashes:
 $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
+# The filter parameter is optional, so you can also use the search command
+#   to easily display customized information for all resources:
+$ oneview-sdk-ruby search ServerProfiles -a uri,enclosureBay
 ```
 
 ##### Create or delete resource by file:
