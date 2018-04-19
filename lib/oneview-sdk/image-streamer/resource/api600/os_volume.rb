@@ -16,6 +16,14 @@ module OneviewSDK
     module API600
       # OS Volume resource implementation for Image Streamer
       class OSVolume < OneviewSDK::ImageStreamer::API500::OSVolume
+        # Get the details of the archived OS volume with the specified attribute.
+        # @return [Hash] The details of the archived OS volume with the specified attribute
+        def get_details_archive
+          ensure_client && ensure_uri
+          response = @client.rest_get("#{BASE_URI}/archive/#{data['name']}")
+          @client.response_handler(response)
+        end
+
         # Retrieves the os volumes storage of the selected os volumes as per the selected attributes.
         # @return [Hash] The readonly artifacts of the selected OS Volumes.
         def get_os_volumes_storage
