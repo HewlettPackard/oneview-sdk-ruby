@@ -24,7 +24,7 @@ RSpec.describe OneviewSDK::Cli do
     end
 
     before :each do
-      @resource_data = { 'name' => 'Profile1', 'uri' => '/rest/fake', 'description' => 'Blah' }
+      @resource_data = { 'name' => 'Profile1', 'uri' => '/rest/fake', 'description' => 'Blah', 'x' => { 'y' => 'z', 'a' => 'b' } }
       response = [OneviewSDK::Resource.new(@client_200, @resource_data)]
       allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
     end
@@ -49,10 +49,22 @@ RSpec.describe OneviewSDK::Cli do
       end
     end
 
-    context 'with filter' do
-      it 'can filter & sort the resource details' do
+    context 'with attribute param' do
+      it 'only outputs the specified attribute details' do
         expect { OneviewSDK::Cli.start(%w[show ServerProfile Profile1 -a uri,name]) }
           .to output(%r{^uri: \/rest\/fake\sname: Profile1$}).to_stdout_from_any_process
+      end
+
+      it 'supports nested attributes' do
+        out = JSON.pretty_generate(name: 'Profile1', x: { y: 'z' }) + "\n"
+        expect { OneviewSDK::Cli.start(%w[show ServerProfile Profile1 -a name,x.y -f json]) }
+          .to output(out).to_stdout_from_any_process
+      end
+
+      it 'supports missing nested attributes' do
+        out = JSON.pretty_generate(a: { b: { '1' => nil } }) + "\n"
+        expect { OneviewSDK::Cli.start(%w[show ServerProfile Profile1 -a a.b.1 -f json]) }
+          .to output(out).to_stdout_from_any_process
       end
     end
 

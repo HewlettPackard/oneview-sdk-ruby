@@ -351,6 +351,8 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
 $ oneview-sdk-ruby list ServerProfiles
 # Or to show in yaml format (json is also supported):
 $ oneview-sdk-ruby list ServerProfiles -f yaml
+# Or to show specific attributes only:
+$ oneview-sdk-ruby list ServerProfiles -a uri,state,bios.overriddenSettings
 ```
 
 ##### Show details for a specific resource:
@@ -369,6 +371,8 @@ $ oneview-sdk-ruby search ServerProfiles --filter state:Normal affinity:Bay
 #   but again, you can show only certain attributes by using the -a option
 # You can also chain keys together to search in nested hashes:
 $ oneview-sdk-ruby search ServerProfiles --filter state:Normal boot.manageBoot:true
+# Or to show specific attributes only:
+$ oneview-sdk-ruby search ServerProfile --filter state:Normal -a name,uri,enclosureBay
 ```
 
 ##### Create or delete resource by file:

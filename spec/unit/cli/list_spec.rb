@@ -2,6 +2,7 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::Cli do
   include_context 'cli context'
+  include_context 'shared context'
 
   describe '#list' do
     context 'with invalid options' do
@@ -30,7 +31,11 @@ RSpec.describe OneviewSDK::Cli do
     let(:command) { OneviewSDK::Cli.start(%w[list ServerProfiles]) }
 
     before :each do
-      @response = [{ name: 'Profile1' }, { name: 'Profile2' }, { name: 'Profile3' }]
+      @response = [
+        OneviewSDK::Resource.new(@client_300, name:  'Profile1', status:  'OK', x: { 'y' => 'z' }),
+        OneviewSDK::Resource.new(@client_300, name:  'Profile2', status:  'OK', x: { 'y' => 'z' }),
+        OneviewSDK::Resource.new(@client_300, name:  'Profile3', status:  'OK', x: { 'y' => 'z', 'a' => 'b' })
+      ]
       allow(OneviewSDK::Resource).to receive(:find_by).and_return(@response)
     end
 
@@ -41,6 +46,13 @@ RSpec.describe OneviewSDK::Cli do
 
     it 'prints a resource count total at the end' do
       expect { command }.to output(/\n\nTotal: 3$/).to_stdout_from_any_process
+    end
+
+    it 'prints a subset of the resource details when the attribute option is given' do
+      out = []
+      @response.each { |r| out.push(r['name'] => { 'status' => r['status'], 'x' => { 'y' => 'z' } }) }
+      expect { OneviewSDK::Cli.start(%w[list ServerProfiles -f yaml -a status,x.y]) }
+        .to output(out.to_yaml).to_stdout_from_any_process
     end
 
     it 'sets the client api version if passed in as a param' do
