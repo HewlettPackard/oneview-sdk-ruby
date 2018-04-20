@@ -561,10 +561,10 @@ module OneviewSDK
         temp_level = temp
         attr = [attr] if attr.is_a?(String)
         attr.each_with_index do |a, index|
-          # We can safely retrieve nested keys using Hash#dig, but setting is not as easy,
-          # so we have to loop to build a nested Hash structure for the result
+          # Safely retrieving and setting nested keys is not as easy, so loop to build a nested Hash structure for the result
           if index == attr.size - 1
-            temp_level[a] = r_data.dig(*attr) rescue nil
+            # Use r_data.dig(*attr) if we ever drop support for Ruby < 2.3
+            temp_level[a] = [*attr].reduce(r_data) { |m, k| m && m[k] } rescue nil
           else
             temp_level[a] ||= {}
             temp_level = temp_level[a]
