@@ -13,7 +13,6 @@ Extended support to Image Streamer Rest API version 500 and 600 to the already e
    - Golden Image
    - OS Volume
 
-
 ## v5.4.0
 
 #### Notes
