@@ -1,11 +1,7 @@
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::LogicalSwitch
+klass = OneviewSDK::API600::C7000::LogicalSwitch
 RSpec.describe klass, integration: true, type: UPDATE do
-  let(:current_client) { $client_500 }
-  include_examples 'LogicalSwitchUpdateExample', 'integration api500 context'
-
-  include_examples 'ScopeHelperMethodsExample', OneviewSDK::API500::C7000::Scope do
-    let(:item) { described_class.get_all(current_client).first }
-  end
+  let(:current_client) { $client_600 }
+  include_examples 'LogicalSwitchUpdateExample', 'integration api600 context'
 end

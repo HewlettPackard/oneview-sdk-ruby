@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-klass = OneviewSDK::API500::C7000::Switch
+klass = OneviewSDK::API600::C7000::Switch
 RSpec.describe klass, integration: true, type: CREATE, sequence: seq(klass) do
-  let(:current_client) { $client_500 }
+  let(:current_client) { $client_600 }
   let(:item) { described_class.find_by(current_client, name: $secrets['logical_switch1_ip']).first }
 
-  include_examples 'SwitchCreateExample', 'integration api500 context', true
+  include_examples 'SwitchCreateExample', 'integration api600 context', true
 end

@@ -54,7 +54,8 @@ These config files get loaded and create the following global variables:
  - `$client_500_synergy`: Client object using API v500 Synergy
  - `$client_800`: Client object using API v800 C7000
  - `$client_800_synergy`: Client object using API v800 Synergy
-
+ - `$client_600`: Client object using API v600 C7000
+ - `$client_600_synergy`: Client object using API v600 Synergy
 
 ## Running the tests
 The following command must run in your Ruby SDK root directory:

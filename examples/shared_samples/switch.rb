@@ -14,7 +14,7 @@ require_relative '../_client' # Gives access to @client
 # NOTE: It is needed have a Switch created previously.
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::Switch
@@ -22,6 +22,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::C7000::Switch
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Switch
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::C7000::Switch
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Switch
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::C7000::Switch
 
 # Resource Class used in this sample
 switch_class = OneviewSDK.resource_named('Switch', @client.api_version)
@@ -109,8 +111,8 @@ end
 # A scope defines a collection of resources, which might be used for filtering or access control.
 # When a scope uri is added to a switch resource, this resource is grouped into a resource(enclosure, server hardware, etc.) pool.
 # Once grouped, with the scope it's possible to restrict an operation or action.
-# For the switch resource, this feature is only available for C7000 and api version higher than or equal to 300.
-if @client.api_version >= 300 && variant == 'C7000'
+# For the switch resource, this feature is only available for C7000 and api version equal to 300.
+if @client.api_version == 300 && variant == 'C7000'
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 
   item = switch_class.get_all(@client).first

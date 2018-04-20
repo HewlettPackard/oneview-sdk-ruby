@@ -69,7 +69,7 @@ First, there's some setup you'll need to do. Do **EITHER** of the following:
 
 ```bash
 spec/integration/one_view_synergy_config.json
-spec/integration/i3s_config.json # Tests for API v300 Image Streamer
+spec/integration/i3s_config.json # Tests for APIs v300. v500, v600 Image Streamer
 ```
 
 ### Option 2: Use environment variables to specify config file locations:**
@@ -78,7 +78,7 @@ spec/integration/i3s_config.json # Tests for API v300 Image Streamer
     files to a secure location **outside** this repo. When you do so, drop the `.example` part of the filename.
 
    - [one_view_synergy_config.json.example](one_view_synergy_config.json.example):
-   - [i3s_config.json.example](i3s_config.json.example): Tests for API v300 Image Streamer
+   - [i3s_config.json.example](i3s_config.json.example): Tests for APIs v300, v500, v600 Image Streamer
 
 2. Then set the following environment variables with the paths to the files you just created:
 
@@ -87,8 +87,10 @@ spec/integration/i3s_config.json # Tests for API v300 Image Streamer
    export I3S_INTEGRATION_CONFIG='/path/to/i3s_config.json'
    ```
 
-
-These config files get loaded and create the global variables `$client_i3s_300`.
+These config files get loaded and create the global variables:
+- `$client_i3s_300`: Client object pinned to API v300 Image Streamer
+- `$client_i3s_500`: Client object pinned to API v500 Image Streamer
+- `$client_i3s_600`: Client object pinned to API v600 Image Streamer
 
 ## Running the tests
 The following command must run in your Ruby SDK root directory:

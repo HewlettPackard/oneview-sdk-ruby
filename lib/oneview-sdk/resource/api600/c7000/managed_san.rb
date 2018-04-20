@@ -9,23 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/managed_san'
+require_relative '../../api500/c7000/managed_san'
 
 module OneviewSDK
   module API600
     module C7000
       # Managed SAN resource implementation for API600 C7000
-      class ManagedSAN < OneviewSDK::API300::C7000::ManagedSAN
-
-        # Set public attributes
-        # @param [Hash] attributes Public attributes
-        # @option attributes [String] :name
-        # @option attributes [String] :value
-        # @option attributes [String] :valueType
-        # @option attributes [String] :valueFormat
-        def set_public_attributes(attributes)
-          OneviewSDK::API200::ManagedSAN.instance_method(:set_public_attributes).bind(self).call(attributes)
-        end
+      class ManagedSAN < OneviewSDK::API500::C7000::ManagedSAN
       end
     end
   end

@@ -1,19 +1,27 @@
-## v5.5.0(Unreleased)
+## v5.5.0 (unreleased)
 
 #### Notes
-Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
+Extended support to Image Streamer Rest API version 500((ImageStreamer v3.10)) and API version 600 (ImageStreamer v4.0).
 
-#### Features Supported
-This release adds support to OneView Rest API version 800 for the hardware variants C7000 and Synergy to the already existing features:
-   - Server Profile Template
+#### Features supported
+Extends support to OneView Rest API version 600 for the hardware variants C7000 and Synergy to the already existing features:
+   - OS Deployment Plan
 
-## v5.4.0(Unreleased)
+Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
+   - Build Plan
+   - Deployment Plan
+   - Golden Image
+   - OS Volume
+
+
+## v5.4.0
 
 #### Notes
 Extends support of the SDK to OneView Rest API version 600 (OneView v4.0).
 
 #### Features supported
 This release adds support to OneView Rest API version 600 for the hardware variants C7000 and Synergy to the already existing features:
+   - Connection Templates
    - Enclosure
    - Enclosure Group
    - Ethernet Network
@@ -25,12 +33,29 @@ This release adds support to OneView Rest API version 600 for the hardware varia
    - Logical Enclosure
    - Logical Interconnect
    - Logical Interconnect Group
+   - Logical Switch
+   - Logical Switch Group
+   - Managed SAN
+   - Network Set
    - SAS Interconnect
    - SAS Interconnect Type
    - SAS Logical Interconnect
    - SAS Logical Interconnect Group
+   - Scope
    - Server Hardware
+   - Server Hardware Types
+   - Server Profile
    - Server Profile Template
+   - Storage Pool
+   - Switch
+   - Switch Type
+   - Storage System
+   - Uplink Set
+   - Volume
+   - Volume Template
+
+Extended support to Image Streamer Rest API version 500 and 600 to the already existing features:
+   - Plan Script
 
 ## v5.3.0
 

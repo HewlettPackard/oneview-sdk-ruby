@@ -9,15 +9,24 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-require_relative '../../_client_i3s' # Gives access to @client
+require_relative '../_client_i3s' # Gives access to @client
+# Supported APIs:
+# - 300, 500, 600
 
-# Example: Create a deployment plan for an API300 Image Streamer
+# Resources that can be created according to parameters:
+# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::DeploymentPlan
+# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::DeploymentPlan
+# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::DeploymentPlan
+
+# Example: Create a deployment plan for an Image Streamer
 # NOTE: This will create a deployment plan named 'Deployment_Plan_1', then delete it.
 # NOTE: You'll need to add the following instance variables to the _client_i3s.rb file with valid URIs for your environment:
 #   @build_plan_name
-
-build_plan = OneviewSDK::ImageStreamer::API300::BuildPlan.find_by(@client, name: @build_plan_name).first
-golden_image = OneviewSDK::ImageStreamer::API300::GoldenImage.find_by(@client, name: @golden_image_name).first
+build_plan_class = OneviewSDK::ImageStreamer.resource_named('BuildPlan', @client.api_version)
+build_plan = build_plan_class.find_by(@client, name: @build_plan_name).first
+golden_image_class = OneviewSDK::ImageStreamer.resource_named('GoldenImage', @client.api_version)
+golden_image = golden_image_class.find_by(@client, name: @golden_image_name).first
+deployment_plan_class = OneviewSDK::ImageStreamer.resource_named('DeploymentPlan', @client.api_version)
 
 options = {
   name: 'Deployment_Plan_1',
@@ -35,34 +44,50 @@ options2 = {
 }
 
 # Creating a deployment plan
-item = OneviewSDK::ImageStreamer::API300::DeploymentPlan.new(@client, options)
+item = deployment_plan_class.new(@client, options)
 puts "\n#Creating a deployment plan with name #{options[:name]}."
 item.create!
 item.retrieve!
 puts "\n#Deployment plan with name #{item['name']} and uri #{item['uri']} created successfully."
 
 # Creating a deployment plan with a golden image
-item2 = OneviewSDK::ImageStreamer::API300::DeploymentPlan.new(@client, options2)
+item2 = deployment_plan_class.new(@client, options2)
 puts "\n#Creating a deployment plan with a golden image and name #{options2[:name]}."
 item2.create!
 item2.retrieve!
 puts "\n#Deployment plan with name #{item2['name']} and golden image with uri #{item2['goldenImageURI']} created successfully."
 
 # List all deployments
-list = OneviewSDK::ImageStreamer::API300::DeploymentPlan.get_all(@client)
+list = deployment_plan_class.get_all(@client)
 puts "\n#Listing all:"
 list.each { |p| puts "  #{p['name']}" }
 
 id = list.first['uri']
 # Gets a deployment plan by id
 puts "\n#Gets a deployment plan by id #{id}:"
-item3 = OneviewSDK::ImageStreamer::API300::DeploymentPlan.find_by(@client, uri: id).first
+item3 = deployment_plan_class.find_by(@client, uri: id).first
 puts "\n#Deployment Plan with uri #{item3['uri']} was found."
 
 # Gets a deployment plan by name
 puts "\n#Gets a deployment plan by name #{options[:name]}:"
-item4 = OneviewSDK::ImageStreamer::API300::DeploymentPlan.find_by(@client, name: options[:name]).first
+item4 = deployment_plan_class.find_by(@client, name: options[:name]).first
 puts "\n#Deployment Plan with name #{item4['uri']} was found."
+
+# Gets a deployment plan usedby server profiles and server profiles templates
+if @client.api_version.to_i >= 500
+  puts "\n#Gets a deployment plan filtered by usedby server profiles and server profiles templates"
+  used_by = item4.get_used_by
+  puts "\n#Deployment plan used by server profiles and server profiles templates retrieved:"
+  used_by.each { |d| puts "  #{d}" }
+end
+
+# Gets a deployment plan by osdp
+if @client.api_version.to_i >= 600
+  puts "\n#Gets a deployment plan by osdp"
+  osdp = item4.get_osdp
+  puts "\n#Deployment plan osdp details retrieved:"
+  osdp.each { |d| puts "  #{d}" }
+end
 
 # Updates a deployment plan
 puts "\n#Updating a deployment plan with uri #{item4['uri']} and name #{item4['name']}:"

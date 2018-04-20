@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/server_hardware_type'
+require_relative '../../api500/c7000/server_hardware_type'
 
 module OneviewSDK
   module API600
     module C7000
       # Server hardware type resource implementation for API600 C7000
-      class ServerHardwareType < OneviewSDK::API300::C7000::ServerHardwareType
+      class ServerHardwareType < OneviewSDK::API500::C7000::ServerHardwareType
       end
     end
   end

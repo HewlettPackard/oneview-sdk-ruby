@@ -17,7 +17,7 @@ require_relative '../_client' # Gives access to @client
 #  @san_manager_ip (hostname or IP address)
 #
 # Supported APIs:
-# - 200, 300, 500
+# - 200, 300, 500, 600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ManagedSAN
@@ -25,6 +25,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ManagedSAN
 # api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ManagedSAN
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ManagedSAN
+# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ManagedSAN
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ManagedSAN
 
 # Resource Class used in this sample
 managed_san_class = OneviewSDK.resource_named('ManagedSAN', @client.api_version)

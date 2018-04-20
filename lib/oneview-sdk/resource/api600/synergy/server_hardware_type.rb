@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/server_hardware_type'
+require_relative '../../api500/synergy/server_hardware_type'
 
 module OneviewSDK
   module API600
     module Synergy
       # Server hardware type resource implementation for API600 Synergy
-      class ServerHardwareType < OneviewSDK::API300::Synergy::ServerHardwareType
+      class ServerHardwareType < OneviewSDK::API500::Synergy::ServerHardwareType
       end
     end
   end
