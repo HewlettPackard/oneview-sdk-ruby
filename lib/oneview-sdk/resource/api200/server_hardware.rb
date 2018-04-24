@@ -204,21 +204,6 @@ module OneviewSDK
         @client.response_handler(response)
       end
 
-      private
-
-      # Converts Date, Time, or String objects to iso8601 string
-      def convert_time(t)
-        case t
-        when nil then nil
-        when Date then t.to_time.utc.iso8601(3)
-        when Time then t.utc.iso8601(3)
-        when String then Time.parse(t).utc.iso8601(3)
-        else raise InvalidResource, "Invalid time format '#{t.class}'. Valid options are Time, Date, or String"
-        end
-      rescue StandardError => e
-        raise InvalidResource, "Failed to parse time value '#{t}'. #{e.message}"
-      end
-
       # Set power state. Takes into consideration the current state and does the right thing
       def set_power_state(state, force)
         refresh
@@ -244,6 +229,21 @@ module OneviewSDK
         body = @client.response_handler(response)
         set_all(body)
         true
+      end
+
+      private
+
+      # Converts Date, Time, or String objects to iso8601 string
+      def convert_time(t)
+        case t
+        when nil then nil
+        when Date then t.to_time.utc.iso8601(3)
+        when Time then t.utc.iso8601(3)
+        when String then Time.parse(t).utc.iso8601(3)
+        else raise InvalidResource, "Invalid time format '#{t.class}'. Valid options are Time, Date, or String"
+        end
+      rescue StandardError => e
+        raise InvalidResource, "Failed to parse time value '#{t}'. #{e.message}"
       end
     end
   end
