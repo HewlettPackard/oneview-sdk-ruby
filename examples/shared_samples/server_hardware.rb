@@ -48,6 +48,22 @@ item = server_harware_class.new(@client, options)
 item.add
 puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
 
+# Setting powerstate of the server to off.
+item.set_power_state('off', 'true')
+puts "\nSet Power state to 'off' successfully"
+
+# Set refresh state
+item.set_refresh_state('RefreshPending')
+puts "\nRefresh server hardware successful"
+
+# Get physical server hardware
+physical_server_hardware = item.get_physical_server_hardware
+puts "\nPhysical hardware found :\n#{physical_server_hardware}"
+
+# Update ilo firmware
+item.update_ilo_firmware
+puts "\niLO firmware updated to minimum ILO firmware version required by OneView to manage the server"
+
 # Below Endpoint is supported only for C7000.
 puts "\nAdding multiple #{type} with hostname Range = #{@server_mpHostsAndRanges}'"
 item_multiple = server_harware_class.new(@client, options)
