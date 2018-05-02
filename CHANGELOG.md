@@ -1,4 +1,4 @@
-## v5.5.0 (unreleased)
+## v5.5.0
 
 #### Notes
 Extended support to Image Streamer Rest API version 500((ImageStreamer v3.10)) and API version 600 (ImageStreamer v4.0).
