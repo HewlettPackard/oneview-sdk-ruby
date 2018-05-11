@@ -48,52 +48,56 @@ RSpec.describe OneviewSDK::Cli do
       expect { command }.to output(/\n\nTotal: 3$/).to_stdout_from_any_process
     end
 
-    it 'prints a subset of the resource details when the attribute option is given' do
-      out = []
-      @response.each { |r| out.push(r['name'] => { 'status' => r['status'], 'x' => { 'y' => 'z' } }) }
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles -f yaml -a status,x.y]) }
-        .to output(out.to_yaml).to_stdout_from_any_process
+    context 'with the attribute option' do
+      it 'prints a subset of the resource details' do
+        out = []
+        @response.each { |r| out.push(r['name'] => { 'status' => r['status'], 'x' => { 'y' => 'z' } }) }
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles -f yaml -a status,x.y]) }
+          .to output(out.to_yaml).to_stdout_from_any_process
+      end
     end
 
-    it 'sets the client api version if passed in as a param' do
-      allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 201)).and_call_original
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 201]) }
-        .to output.to_stdout_from_any_process
-    end
+    context 'with the api_version option' do
+      it 'sets the client api version if passed in as a param' do
+        allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 201)).and_call_original
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 201]) }
+          .to output.to_stdout_from_any_process
+      end
 
-    it "sets the client api version if ENV['ONEVIEWSDK_API_VERSION'] is set" do
-      ENV['ONEVIEWSDK_API_VERSION'] = '201'
-      allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 201)).and_call_original
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 201]) }
-        .to output.to_stdout_from_any_process
-    end
+      it "sets the client api version if ENV['ONEVIEWSDK_API_VERSION'] is set" do
+        ENV['ONEVIEWSDK_API_VERSION'] = '201'
+        allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 201)).and_call_original
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 201]) }
+          .to output.to_stdout_from_any_process
+      end
 
-    it 'checks for a valid module api version' do
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 291]) }
-        .to output(/API version 291 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
-    end
+      it 'checks for a valid module api version' do
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 291]) }
+          .to output(/API version 291 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
+      end
 
-    it 'rounds an invalid module api version down' do
-      allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(400)
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 399]) }
-        .to output(/API version 399 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
-    end
+      it 'rounds an invalid module api version down' do
+        allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(400)
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 399]) }
+          .to output(/API version 399 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
+      end
 
-    it 'rounds an invalid module api version up if cannot round down' do
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 0]) }
-        .to output(/API version 0 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
-    end
+      it 'rounds an invalid module api version up if cannot round down' do
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 0]) }
+          .to output(/API version 0 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
+      end
 
-    it 'handles a float type api version' do
-      allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 2)).and_call_original
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 2.01]) }
-        .to output(/API version 2 is not supported. Using \d+\sProfile1/).to_stdout_from_any_process
-    end
+      it 'handles a float type api version' do
+        allow(OneviewSDK::Client).to receive(:find_by).with(hash_including('api_version' => 2)).and_call_original
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 2.01]) }
+          .to output(/API version 2 is not supported. Using \d+\sProfile1/).to_stdout_from_any_process
+      end
 
-    it 'uses the api-version & variant params when looking for an API module' do
-      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).and_return(@response)
-      expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 300 --variant Synergy]) }
-        .to output.to_stdout_from_any_process
+      it 'uses the api-version & variant params when looking for an API module' do
+        expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).and_return(@response)
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 300 --variant Synergy]) }
+          .to output.to_stdout_from_any_process
+      end
     end
 
     it 'uses the ONEVIEWSDK_API_VERSION & ONEVIEWSDK_VARIANT environment variables' do

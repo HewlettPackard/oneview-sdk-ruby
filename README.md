@@ -348,6 +348,7 @@ The CLI does not expose everything in the SDK, but it is great for doing simple 
 ##### List ServerProfiles:
 
 ```bash
+# Output a list of ServerProfile names:
 $ oneview-sdk-ruby list ServerProfiles
 # Or to show in yaml format (json is also supported):
 $ oneview-sdk-ruby list ServerProfiles -f yaml
