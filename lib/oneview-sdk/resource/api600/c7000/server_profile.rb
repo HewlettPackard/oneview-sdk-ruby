@@ -44,6 +44,39 @@ module OneviewSDK
         def get_messages(*)
           unavailable_method
         end
+
+        # Adds a connection entry to server profile template
+        # @param [OneviewSDK::EthernetNetwork, OneviewSDK::FCNetwork] network Network associated with the connection
+        # @param [Hash<String,String>] connection_options Hash containing the configuration of the connection
+        # @option connection_options [Boolean] 'boot' Indicates that the server will attempt to boot from this connection.
+        # @option connection_options [String] 'functionType' Type of function required for the connection. Values: Ethernet, FibreChannel, iSCSI.
+        # @option connection_options [Integer] 'id' A unique identifier for this connection. If 0, id is automatically assigned.
+        # @option connection_options [String] 'ipv4' The IP information for a connection. This is only used for iSCSI connections.
+        # @option connection_options [String] 'name' Name of the connection.
+        # @option connection_options [String] 'portId' Identifies the port (FlexNIC) used for this connection.
+        # @option connection_options [String] 'requestedMbps' The transmit throughput (mbps) that should be allocated to this connection.
+        # @option connection_options [String] 'requestedVFs' This value can be "Auto" or 0.
+        def add_connection(network, connection_options = {})
+          connection_options = Hash[connection_options.map { |k, v| [k.to_s, v] }]
+          self['connectionSettings'] = {} unless self['connectionSettings']
+          self['connectionSettings']['connections'] = [] unless self['connectionSettings']['connections']
+          self['connectionSettings']['manageConnections'] = true
+          connection_options['id'] ||= 0
+          connection_options['networkUri'] = network['uri'] if network['uri'] || network.retrieve!
+          self['connectionSettings']['connections'] << connection_options
+        end
+
+        # Removes a connection entry in server profile template
+        # @param [String] connection_name Name of the connection
+        # @return Returns the connection hash if found, otherwise returns nil
+        def remove_connection(connection_name)
+          desired_connection = nil
+          return desired_connection unless self['connectionSettings']['connections']
+          self['connectionSettings']['connections'].each do |con|
+            desired_connection = self['connectionSettings']['connections'].delete(con) if con['name'] == connection_name
+          end
+          desired_connection
+        end
       end
     end
   end
