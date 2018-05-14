@@ -1,3 +1,11 @@
+## v5.5.1
+#### Notes
+Added helper method to change request body for Server Profile for API600
+
+#### Bug fixes & Enhancements
+- Added helper method to change request body for Server Profile for API600
+
+
 ## v5.5.0
 
 #### Notes
