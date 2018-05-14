@@ -60,7 +60,6 @@ module OneviewSDK
           connection_options = Hash[connection_options.map { |k, v| [k.to_s, v] }]
           self['connectionSettings'] = {} unless self['connectionSettings']
           self['connectionSettings']['connections'] = [] unless self['connectionSettings']['connections']
-          self['connectionSettings']['manageConnections'] = true
           connection_options['id'] ||= 0
           connection_options['networkUri'] = network['uri'] if network['uri'] || network.retrieve!
           self['connectionSettings']['connections'] << connection_options
