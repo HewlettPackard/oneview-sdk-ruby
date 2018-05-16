@@ -137,14 +137,26 @@ module OneviewSDK
       aliases: '-f',
       enum: %w[json yaml human],
       default: 'human'
-    desc 'list TYPE', 'List names of resources'
-    # List names of resources
+    method_option :attribute,
+      type: :string,
+      desc: 'Comma-separated list of attributes to show. Supports nesting/chaining with periods',
+      aliases: '-a'
+    list_examples =  "\n  oneview-sdk-ruby list ServerProfiles"
+    list_examples << "\n  oneview-sdk-ruby list ServerHardware -a serialNumber,mpHostInfo.mpHostName"
+    desc 'list TYPE', "List resources. Examples:#{list_examples}"
+    # List names of resources (and optionally, specific attributes)
     def list(type)
       resource_class = parse_type(type)
       client_setup
-      data = []
-      resource_class.get_all(@client).each { |r| data.push(r[:name]) }
-      output data
+      all = resource_class.get_all(@client)
+      if options['attribute']
+        data = select_attributes_from_multiple(options['attribute'], all)
+        output data, -2 # Shift left by 2 so things look right
+      else # List names only by default
+        names = []
+        all.each { |r| names.push(r['name']) }
+        output names
+      end
     end
 
     method_option :format,
@@ -154,9 +166,12 @@ module OneviewSDK
       default: 'human'
     method_option :attribute,
       type: :string,
-      desc: 'Comma-seperated list of attributes to show',
+      desc: 'Comma-separated list of attributes to show. Supports nesting/chaining with periods',
       aliases: '-a'
     desc 'show TYPE NAME', 'Show resource details'
+    show_examples =  "\n  oneview-sdk-ruby show ServerProfile 'Profile 1'"
+    show_examples << "\n  oneview-sdk-ruby show ServerHardware 'Rack1, bay 1' -a serialNumber,mpHostInfo.mpHostName"
+    desc 'show TYPE NAME', "Show resource details. Examples:#{show_examples}"
     # Show resource details
     def show(type, name)
       resource_class = parse_type(type)
@@ -165,11 +180,7 @@ module OneviewSDK
       fail_nice 'Not Found' if matches.empty?
       data = matches.first.data
       if options['attribute']
-        new_data = {}
-        options['attribute'].split(',').each do |attr|
-          new_data[attr] = data[attr]
-        end
-        data = new_data
+        data = select_attributes(options['attribute'], data)
       end
       output data
     end
@@ -181,13 +192,16 @@ module OneviewSDK
       default: 'human'
     method_option :attribute,
       type: :string,
-      desc: 'Comma-seperated list of attributes to show',
+      desc: 'Comma-separated list of attributes to show. Supports nesting/chaining with periods',
       aliases: '-a'
     method_option :filter,
       type: :hash,
       desc: 'Hash of key/value pairs to filter on',
       required: true
-    desc 'search TYPE', 'Search for resource by key/value pair(s)'
+    search_examples =  "\n  oneview-sdk-ruby search ServerProfiles --filter=status:Critical"
+    search_examples << "\n  oneview-sdk-ruby search ServerHardware --filter=state:ProfileApplied -a mpHostInfo.mpHostName"
+    desc 'search TYPE', "Search for resource by key/value pair(s). Examples:#{search_examples}"
+
     # Search for resource by key/value pair(s)
     def search(type)
       resource_class = parse_type(type)
@@ -199,14 +213,7 @@ module OneviewSDK
         matches = resource_class.find_by(@client, filter) unless filter == options['filter']
       end
       if options['attribute']
-        data = []
-        matches.each do |d|
-          temp = {}
-          options['attribute'].split(',').each do |attr|
-            temp[attr] = d[attr]
-          end
-          data.push(d['name'] => temp)
-        end
+        data = select_attributes_from_multiple(options['attribute'], matches)
         output data, -2 # Shift left by 2 so things look right
       else # List names only by default
         names = []
@@ -535,6 +542,57 @@ module OneviewSDK
         end
       end
       new_hash
+    end
+
+    # Select a subset of attributes from a given resource
+    # @param attributes [String, Array<Array<String>>] Comma-separated string or array of array of strings
+    #   The reason it's a nested array is to allow retrieval of nested keys.
+    #   For example, the following 2 attribute params will return the same result:
+    #     - [['key1'], ['key2', 'subKey3']]
+    #     - 'key1,key2.subKey3'
+    # @param data [Hash, OneviewSDK::Resource]
+    # @return [Hash] A Hash is returned. For example:
+    #   { 'key1' => 'val1', 'key2' => { 'subKey3' => 'val2' } }
+    def select_attributes(attributes, data = {})
+      attributes = attributes.split(',').map(&:strip).reject(&:empty?).map { |a| a.split('.') } if attributes.is_a?(String)
+      r_data = data.is_a?(Hash) ? data : data.data
+      temp = {}
+      attributes.each do |attr|
+        temp_level = temp
+        attr = [attr] if attr.is_a?(String)
+        attr.each_with_index do |a, index|
+          # Safely retrieving and setting nested keys is not as easy, so loop to build a nested Hash structure for the result
+          if index == attr.size - 1
+            # Use r_data.dig(*attr) if we ever drop support for Ruby < 2.3
+            temp_level[a] = [*attr].reduce(r_data) { |m, k| m && m[k] } rescue nil
+          else
+            temp_level[a] ||= {}
+            temp_level = temp_level[a]
+          end
+        end
+      end
+      temp
+    end
+
+    # Select a subset of attributes from a given set of resources
+    # @param attributes [String, Array<Array<String>>] Comma-separated string or array of array of strings
+    #   The reason it's a nested array is to allow retrieval of nested keys.
+    #   For example, the following 2 attribute params will return the same result:
+    #     - [['key1'], ['key2', 'subKey3']]
+    #     - 'key1,key2.subKey3'
+    # @param data [Array<Hash>, Array<OneviewSDK::Resource>]
+    # @return [Array<Hash>] An Array of Hashes is returned. For example:
+    #   [
+    #     { 'resource_name1' => { 'key1' => 'val1', 'key2' => { 'subKey3' => 'val2' } } },
+    #     { 'resource_name2' => { 'key1' => 'val3', 'key2' => { 'subKey3' => 'val4' } } },
+    #   ]
+    def select_attributes_from_multiple(attributes, data = [])
+      attributes = attributes.split(',').map(&:strip).reject(&:empty?).map { |a| a.split('.') } if attributes.is_a?(String)
+      result = []
+      data.each do |r|
+        result.push(r['name'] => select_attributes(attributes, r))
+      end
+      result
     end
 
     # Print output in a given format.
