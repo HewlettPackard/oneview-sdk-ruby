@@ -45,7 +45,7 @@ module OneviewSDK
           unavailable_method
         end
 
-        # Adds a connection entry to server profile template
+        # Adds a connection entry to server profile
         # @param [OneviewSDK::EthernetNetwork, OneviewSDK::FCNetwork] network Network associated with the connection
         # @param [Hash<String,String>] connection_options Hash containing the configuration of the connection
         # @option connection_options [Boolean] 'boot' Indicates that the server will attempt to boot from this connection.
@@ -65,7 +65,7 @@ module OneviewSDK
           self['connectionSettings']['connections'] << connection_options
         end
 
-        # Removes a connection entry in server profile template
+        # Removes a connection entry in server profile
         # @param [String] connection_name Name of the connection
         # @return Returns the connection hash if found, otherwise returns nil
         def remove_connection(connection_name)
