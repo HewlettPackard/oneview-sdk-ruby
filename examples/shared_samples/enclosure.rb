@@ -117,7 +117,7 @@ if @client.api_version >= 600
   puts "Certificate Request data for Enclosure with name = '#{item2[:name]}' and uri = '#{item2[:uri]}'"
 
   certificate_data = {
-    type: certificate['type'],
+    type: 'CertificateDataV2',
     base64Data: certificate['base64Data']
   }
 

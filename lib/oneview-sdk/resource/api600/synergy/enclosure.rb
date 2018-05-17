@@ -62,7 +62,7 @@ module OneviewSDK
           ensure_client && ensure_uri
           uri = "#{@data['uri']}/https/certificaterequest"
           uri += "?bayNumber=#{bay_number}" if bay_number
-          response = @client.rest_put(uri, options, @api_version)
+          response = @client.rest_put(uri, { 'body' => options }, @api_version)
           @client.response_handler(response)
         end
       end
