@@ -191,6 +191,10 @@ puts "\nGetting the list of extra managed storage volume paths"
 paths = volume_class.get_extra_managed_volume_paths(@client)
 puts "\nExtra managed storage volume paths found: #{paths}"
 
+puts "Remove extra presentations from the specified volume on the storage system: \nURI: #{paths['uri']}"
+item1.repair
+puts "\nExtra managed storage volume paths has been repaired"
+
 puts "\nRemoving all volumes created in this sample..."
 item2.delete
 item3.delete
