@@ -74,7 +74,7 @@ puts "\nscopeUris from Resources: Server Hardware scope  - #{server_hardware['sc
 
 if @client.api_version >= 600
   puts "\nGet resource scope uris"
-  resource_scope = scope.get_resource_scopes(server_hardware)
+  resource_scope = scope_class.get_resource_scopes(@client, server_hardware)
   puts "Server hardware scopes #{resource_scope}"
 
   puts "\nReplace resource scope uris with scope2"
@@ -85,7 +85,7 @@ if @client.api_version >= 600
   scope2 = scope_class.new(@client, options)
   scope2.create
   puts "Created Scope2 with uri #{scope2['uri']}"
-  scope.replace_resource_assigned_scopes(server_hardware, scopes: [scope2])
+  scope_class.replace_resource_assigned_scopes(@client, server_hardware, scopes: [scope2])
   puts 'Replaced resouce scope uris'
 
   puts '\nAdd a resource to scope3'
@@ -96,13 +96,15 @@ if @client.api_version >= 600
   scope3 = scope_class.new(@client, options)
   scope3.create
   puts 'Created scope3'
-  scope.add_resource_scope(server_hardware, scope3)
+  scope_item = scope_class.find_by(@client, name: 'scope2').first
+  scope_class.add_resource_scope(@client, enclosure, scopes: [scope3, scope_item])
   puts 'Server hardware resource added to scope3'
 
   puts '\nRemoving resource from scope3'
-  scope.remove_resource_scope(server_hardware, scope3)
+  scope_class.remove_resource_scope(@client, enclosure, scopes: [scope3, scope_item])
+  scope_class.add_resource_scope(@client, server_hardware, scopes: [scope_item])
+  scope_class.resource_patch(@client, server_hardware, add_scopes: [scope3], remove_scopes: [scope_item])
   puts 'Removed resource from scope3'
-
   # Delete all scopes created.
   scope2.delete
   scope3.delete
