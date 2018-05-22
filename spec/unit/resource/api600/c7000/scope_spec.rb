@@ -61,16 +61,19 @@ RSpec.describe OneviewSDK::API600::C7000::Scope do
       body = [{
         'op' => 'add',
         'path' => '/scopeUris/-',
-        'value' => '/rest/scope/id'
+        'value' => '/rest/scopes/UID-222'
+      }, {
+        'op' => 'remove',
+        'path' => '/scopeUris/1'
       }]
       data = { 'Content-Type' => 'application/json-patch+json', 'If-Match' => '*', 'body' => body }
-      expect(@client_600).to receive(:rest_patch).with('/rest/scopes/resources/', data, scope.api_version)
+      expect(@client_600).to receive(:rest_patch).with('/rest/scope/resources/rest/server-hardware/UID-111', data, scope.api_version)
                                                  .and_return(fake_response)
-      expect(@client_600).to receive(:response_handler).with(fake_response).and_return('fake')
+      expect(@client_600).to receive(:response_handler).with(fake_response).and_return(resource_1)
       expect(@client_600).to receive(:rest_get).with('/rest/scope/resources/rest/server-hardware/UID-111')
-                                               .and_return('fake')
-      expect(resource_1['scopeUris']).to match_array([scope['uri'], scope1['uri']])
-      expect(described_class.resource_patch(@client_600, resource_1, add_scopes: [scope1], remove_scopes: [scope1])).to eq('fake')
+                                               .and_return(fake_response)
+      expect(@client_600).to receive(:response_handler).with(fake_response).and_return(resource_1)
+      expect(described_class.resource_patch(@client_600, resource_1, add_scopes: [scope1], remove_scopes: [scope1])).to eq(resource_1)
     end
   end
 end
