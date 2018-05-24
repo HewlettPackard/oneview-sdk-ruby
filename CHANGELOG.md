@@ -1,11 +1,12 @@
-## v5.5.1
+## v5.5.1(unreleased)
 
 #### Notes
-Added helper method to change request body for Server Profile for API600
+This release fixes few bugs which are listed below.
 
 #### Bug fixes & Enhancements
 - Added helper method to change request body for Server Profile for API600
 - [#354](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/354)Input data has be to be a part of body, but not the header for import certificate method in enclosure
+- [#356](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/356) Not able to add and remove scopes from a resource in a single API call.
 
 ## v5.5.0
 
