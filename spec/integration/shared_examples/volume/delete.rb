@@ -25,6 +25,12 @@ RSpec.shared_examples 'VolumeDeleteExample' do |context_name|
     end
   end
 
+  describe '#repair' do
+    it 'Remove extra presentations' do
+      expect { item5.repair }.to_not raise_error
+    end
+  end
+
   describe '#delete' do
     it 'raises an exception when is passed an invalid flag' do
       expect { item.delete(:any) }.to raise_error(/Invalid flag value, use :oneview or :all/)
