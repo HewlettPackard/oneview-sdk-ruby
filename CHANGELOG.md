@@ -1,10 +1,11 @@
 ## v5.5.1
+
 #### Notes
 Added helper method to change request body for Server Profile for API600
 
 #### Bug fixes & Enhancements
 - Added helper method to change request body for Server Profile for API600
-
+- [#354](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/354)Input data has be to be a part of body, but not the header for import certificate method in enclosure
 
 ## v5.5.0
 
@@ -20,7 +21,6 @@ Extended support to Image Streamer Rest API version 500 and 600 to the already e
    - Deployment Plan
    - Golden Image
    - OS Volume
-
 
 ## v5.4.0
 

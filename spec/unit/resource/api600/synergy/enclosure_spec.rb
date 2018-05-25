@@ -42,7 +42,7 @@ RSpec.describe OneviewSDK::API600::Synergy::Enclosure do
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_put).and_return(FakeResponse.new)
       expect(@client_600).to receive(:rest_put).with('/rest/enclosures/fake/https/certificaterequest', { 'body' => 'New' },
                                                      @client_600.api_version)
-      enclosure.import_certificate('body' => 'New')
+      enclosure.import_certificate('New')
     end
   end
 end
