@@ -18,7 +18,7 @@ module OneviewSDK
       # Interconnect resource implementation on API600 Synergy
       class Interconnect < OneviewSDK::API600::C7000::Interconnect
 
-         # Retrieves the interconnect link topologies
+        # Retrieves the interconnect link topologies
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @return [Array] All the Interconnect Link Topologies
         def self.get_link_topologies(client)
