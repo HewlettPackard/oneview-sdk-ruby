@@ -13,14 +13,13 @@ require 'spec_helper'
 
 RSpec.describe OneviewSDK::API600::C7000::Scope do
   include_context 'shared context'
-
   subject(:scope) { described_class.new(@client_600, uri: '/rest/scopes/UID-111') }
   let(:scope1) { described_class.new(@client_600, uri: '/rest/scopes/UID-222') }
   let(:fake_response) { FakeResponse.new({}) }
   let(:resource_1) do
     OneviewSDK::API600::C7000::ServerHardware.new(@client_600, uri: '/rest/server-hardware/UID-111',
                                                                scopesUri: '/rest/scope/resources/rest/server-hardware/UID-111',
-                                                               scopeUris: ['/rest/scope/fake1', 'resr/scope/fake2'])
+                                                               scopeUris: ['/rest/scopes/UID-111', '/rest/scopes/UID-222'])
   end
   let(:resource_2) { OneviewSDK::API600::C7000::ServerHardware.new(@client_600, uri: '/rest/server-hardware/UID-222') }
 
@@ -35,38 +34,46 @@ RSpec.describe OneviewSDK::API600::C7000::Scope do
     end
   end
 
-  describe '#get_resource_scope' do
+  describe '::get_resource_scope' do
     it 'returns the response body from rest/scope/resources/*' do
       expect(@client_600).to receive(:rest_get).with('/rest/scope/resources/rest/server-hardware/UID-111')
                                                .and_return(fake_response)
-      expect(scope.get_resource_scopes(resource_1)).to eq({})
+      expect(described_class.get_resource_scopes(@client_600, resource_1)).to eq({})
     end
   end
 
-  describe '#replace_resource_assigned_scopes' do
+  describe '::replace_resource_assigned_scopes' do
     it 'performs replace successfully' do
       options = { 'Content-Type' => 'application/json-patch+json',
                   'If-Match' => '*',
                   'body' => { 'type' => 'ScopedResource',
                               'resourceUri' => '/rest/server-hardware/UID-111',
                               'scopeUris' => ['/rest/scopes/UID-222'] } }
-      expect(@client_600).to receive(:rest_put).with('/rest/scope/resources/rest/server-hardware/UID-111', options).and_return(fake_response)
+      expect(@client_600).to receive(:rest_put).with('/rest/scope/resources/rest/server-hardware/UID-111', options)
+                                               .and_return(fake_response)
       expect(@client_600).to receive(:response_handler).with(fake_response).and_return('fake')
-      expect(scope.replace_resource_assigned_scopes(resource_1, scopes: [scope1])).to eq('fake')
+      expect(described_class.replace_resource_assigned_scopes(@client_600, resource_1, scopes: [scope1])).to eq('fake')
     end
   end
 
-  describe '#resource_patch' do
+  describe '::resource_patch' do
     it 'performs the patch successfully' do
       body = [{
         'op' => 'add',
         'path' => '/scopeUris/-',
-        'value' => '/rest/scope/id'
+        'value' => '/rest/scopes/UID-222'
+      }, {
+        'op' => 'remove',
+        'path' => '/scopeUris/1'
       }]
       data = { 'Content-Type' => 'application/json-patch+json', 'If-Match' => '*', 'body' => body }
-      expect(@client_600).to receive(:rest_patch).with('/rest/scopes/resources/', data, scope.api_version).and_return(fake_response)
-      expect(@client_600).to receive(:response_handler).with(fake_response).and_return('fake')
-      expect(scope.resource_patch('/rest/scopes/resources/', 'add', '/scopeUris/-', '/rest/scope/id')).to eq('fake')
+      expect(@client_600).to receive(:rest_patch).with('/rest/scope/resources/rest/server-hardware/UID-111', data, scope.api_version)
+                                                 .and_return(fake_response)
+      expect(@client_600).to receive(:response_handler).with(fake_response).and_return(resource_1)
+      expect(@client_600).to receive(:rest_get).with('/rest/scope/resources/rest/server-hardware/UID-111')
+                                               .and_return(fake_response)
+      expect(@client_600).to receive(:response_handler).with(fake_response).and_return(resource_1)
+      expect(described_class.resource_patch(@client_600, resource_1, add_scopes: [scope1], remove_scopes: [scope1])).to eq(resource_1)
     end
   end
 end

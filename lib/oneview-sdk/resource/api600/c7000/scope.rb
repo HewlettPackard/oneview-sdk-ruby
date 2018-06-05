@@ -30,17 +30,19 @@ module OneviewSDK
 
         # Gets a resource's scope, containing a list of the scopes to which
         # the resource is assigned.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [OneviewSDK::API600::C7000::Resource] resource Resource object
-        def get_resource_scopes(resource)
+        def self.get_resource_scopes(client, resource)
           scopes_uri = resource['scopesUri']
-          response = @client.rest_get(scopes_uri)
-          @client.response_handler(response)
+          response = client.rest_get(scopes_uri)
+          client.response_handler(response)
         end
 
         # Replaces a resource's assigned scopes using the specified list of scope URIs.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [OneviewSDK::API600::C7000::Resource] resource Resource object
         # @param [Array<OneviewSDK::API600::C7000::Scope>] scopes  Array of scopes objects
-        def replace_resource_assigned_scopes(resource, scopes: [])
+        def self.replace_resource_assigned_scopes(client, resource, scopes: [])
           resource_uri = resource['uri']
           scope_uris = scopes.map { |scope| scope['uri'] }
           scopes_uri = resource['scopesUri']
@@ -49,42 +51,51 @@ module OneviewSDK
                       'body' => { 'type' => 'ScopedResource',
                                   'resourceUri' => resource_uri,
                                   'scopeUris' => scope_uris } }
-          response = @client.rest_put(scopes_uri, options)
-          @client.response_handler(response)
+          response = client.rest_put(scopes_uri, options)
+          client.response_handler(response)
         end
 
         # Performs a specific patch operation.
-        # @param [String] scopes_uri resource's scopes uri
-        # @param [String] operation The operation to be performed
-        # @param [String] path The path of operation
-        # @param [String] value The value
-        def resource_patch(scopes_uri, operation, path, value = nil)
-          ensure_client && ensure_uri
-          body = { 'op' => operation,
-                   'path' => path,
-                   'value' => value }
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [OneviewSDK::API600::C7000::Resource] resource Any resource object
+        # @param [Array<OneviewSDK::API600::C7000::Scope>] scopes Array of scopes objects
+        def self.resource_patch(client, resource, add_scopes: [], remove_scopes: [])
+          scopes_body = []
+          scopes_uri = resource['scopesUri']
+          unless add_scopes.empty?
+            add_scopes.each do |scope|
+              add_body = { 'op' => 'add', 'path' => '/scopeUris/-', 'value' => scope['uri'] }
+              scopes_body.push(add_body)
+            end
+          end
+          unless remove_scopes.empty?
+            remove_scopes.each do |scope|
+              scope_uris = get_resource_scopes(client, resource)['scopeUris']
+              scope_index = scope_uris.find_index { |uri| uri == scope['uri'] }
+              remove_body = { 'op' => 'remove', 'path' => "/scopeUris/#{scope_index}" }
+              scopes_body.push(remove_body)
+            end
+          end
           options = { 'Content-Type' => 'application/json-patch+json',
-                      'If-Match' => '*', 'body' => [body] }
-          response = @client.rest_patch(scopes_uri, options, @api_version)
-          @client.response_handler(response)
+                      'If-Match' => '*', 'body' => scopes_body }
+          response = client.rest_patch(scopes_uri, options, client.api_version)
+          client.response_handler(response)
         end
 
         # Add a scope to resource's scope list
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [OneviewSDK::API600::C7000::Resource] resource Any resource object
-        # @param [OneviewSDK::API600::C7000::Scope] scope Scope object
-        def add_resource_scope(resource, scope)
-          scopes_uri = resource['scopesUri']
-          resource_patch(scopes_uri, 'add', '/scopeUris/-', scope['uri'])
+        # @param [Array] scopes The array of scopes (or any number of scopes separated by comma)
+        def self.add_resource_scope(client, resource, scopes: [])
+          resource_patch(client, resource, add_scopes: scopes)
         end
 
         # Remove a scope from resource's scope list.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [OneviewSDK::API600::C7000::Resource] resource Any resource object
-        # @param [OneviewSDK::API600::C7000::Scope] scope Scope object
-        def remove_resource_scope(resource, scope)
-          scope_uris = get_resource_scopes(resource)['scopeUris']
-          scope_index = scope_uris.find_index { |uri| uri == scope['uri'] }
-          resource_uri = resource['scopesUri']
-          resource_patch(resource_uri, 'remove', "/scopeUris/#{scope_index}", nil)
+        # @param [Array] scopes The array of scopes (or any number of scopes separated by comma)
+        def self.remove_resource_scope(client, resource, scopes: [])
+          resource_patch(client, resource, remove_scopes: scopes)
         end
       end
     end
