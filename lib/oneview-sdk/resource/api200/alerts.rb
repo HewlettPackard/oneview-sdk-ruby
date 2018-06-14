@@ -16,7 +16,7 @@ module OneviewSDK
     # Event resource implementation
     class Alerts < Resource
       BASE_URI = '/rest/alerts'.freeze
-
+      DEFAULT_REQUEST_HEADER = {}.freeze
       # Create a resource object, associate it with a client, and set its properties.
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @param [Hash] params The options for this resource (key-value pairs)
@@ -27,31 +27,14 @@ module OneviewSDK
         @data['type'] ||= 'AlertResourceCollectionV3'
       end
 
-      # Gets the single alert resource identified by its ID.
-      # @return [Hash] Hash containing the required information
-      def get_id(client, query)
-        response = @client.rest_get("#{self['uri']}")
+      def update(attributes = {}, header = self.class::DEFAULT_REQUEST_HEADER)
+        set_all(attributes)
+        ensure_client && ensure_uri
+        options = {}.merge(header).merge('body' => attributes)
+        puts options
+        response = @client.rest_put(@data['uri'], options, @api_version)
         @client.response_handler(response)
-      end
-
-      # Retrieves alerts based on the specified filters.
-      # @return [Hash] Hash containing the required information
-      def get_all(client, query)
-        response = @client.rest_get("#{BASE_URI}#{query_uri}")
-        @client.response_handler(response)
-      end
-
-
-      # Deletes the single alert resource identified by its ID.
-      # @return [Hash] Hash containing the required information
-      def delete_id(client,query)
-        response = @client.rest_delete("#{self['uri']}")
-      end
-
-      # Deletes alerts based on the specified filters.
-      # @return [Hash] Hash containing the required information
-      def delete_all(client, query)
-        response = @client.rest_delete("#{BASE_URI}#{query_uri}")
+        self
       end
     end
   end
