@@ -17,22 +17,9 @@ RSpec.describe OneviewSDK::Alerts do
   describe '#initialize' do
     it 'sets the defaults correctly' do
       alerts = described_class.new(@client_200)
-      expect(alerts['type']).to eq('AlertResourceCollectionV3')
+      expect(alerts['type']).to eq('AlertResourceV3')
     end
   end
-
-  # describe '#update' do
-  #   it 'should update the attributes' do
-  #     alerts = described_class.new(@client_200)
-  #     uri = '/rest/alerts'
-  #     fake_response = FakeResponse.new
-  #     data = { 'assignedToUser' => 'Paul' }
-  #     expected_api_version = @client_200.api_version
-  #     expect(@client_200).to receive(:rest_put).with(uri, { 'body' => data }, expected_api_version).and_return(fake_response)
-  #     alerts.update(assignedToUser: 'Paul')
-  #     expect(alerts['assignedToUser']).to eq('Paul')
-  #   end
-  # end
 
   describe '#update' do
     it 'requires a uri' do

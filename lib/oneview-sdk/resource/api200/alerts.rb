@@ -24,7 +24,7 @@ module OneviewSDK
       def initialize(client, params = {}, api_ver = nil)
         super
         # Default values:
-        @data['type'] ||= 'AlertResourceCollectionV3'
+        @data['type'] ||= 'AlertResourceV3'
       end
 
       def update(attributes = {})

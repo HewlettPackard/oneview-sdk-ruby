@@ -24,13 +24,14 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 
 | Endpoints                                                                       | Verb     | V200 | V300 | V500 | V600 |
 | --------------------------------------------------------------------------------------- | -------- | :------------------: | :------------------: | :------------------: | :------------------: |
-|     **Alerts**                                                                                                                                   |
-|<sub>/rest/alerts	</sub>                                                                |GET       |     |   |
-|<sub>/rest/alerts	</sub>                                                                |DELETE    |     |   |
-|<sub>/rest/alerts/{id}	</sub>                                                            |GET       |     |   |
-|<sub>/rest/alerts/{id}	</sub>                                                            |PUT       |     |   |
-|<sub>/rest/alerts/{id}	</sub>                                                            |DELETE    |     |   |
-|<sub>/rest/alerts/AlertChangeLog/{id}</sub>                                              |DELETE    |     |   |
+|     **Alerts**                                                                                                                            |
+|<sub>/rest/alerts</sub>                                                                  |GET       | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub>/rest/alerts</sub>                                                                  |DELETE    |  :heavy_multiplication_x:   | :whiheavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
+|<sub>/rest/alerts/{id}</sub>                                                             |GET       | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub>/rest/alerts/{id}</sub>                                                             |PUT       | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub>/rest/alerts/{id}</sub>                                                             |DELETE    | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+|<sub>/rest/alerts/AlertChangeLog/{id}</sub>                                              |DELETE    | :white_check_mark: | :white_check_mark: |:white_check_mark: | :white_check_mark: |
+
 |     **Appliance Time and Locale Configuration**                                                                                                 |
 |<sub>/rest/appliance/configuration/time-locale</sub>                                     |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:  |
 |<sub>/rest/appliance/configuration/time-locale</sub>                                     |POST      | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
