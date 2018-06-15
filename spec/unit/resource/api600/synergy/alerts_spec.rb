@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::Synergy::Alerts do
+RSpec.describe OneviewSDK::API600::Synergy::Alerts do
   include_context 'shared context'
 
-  it 'inherits from API300' do
-    expect(described_class).to be < OneviewSDK::API300::Synergy::Alerts
+  it 'inherits from API500' do
+    expect(described_class).to be < OneviewSDK::API500::Synergy::Alerts
   end
 end
