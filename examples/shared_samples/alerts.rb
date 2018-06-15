@@ -21,19 +21,22 @@ require_relative '../_client' # Gives access to @client
 # Resources classes that you can use for Event in this example:
 alert_class = OneviewSDK.resource_named('Alerts', @client.api_version)
 
-
 puts "\n\n Get all alerts:"
 alert_class.get_all(@client).each do |item|
   puts item.data
 end
 
-puts "\n\n Update assignedToUser"
-alert_loc = alert_class.find_by(@client, alertState: 'Locked').first
+puts "\n\n Update Alert"
+alert_loc = alert_class.find_by(@client, alertState: 'Cleared').first
 puts "Data : '#{alert_loc.data}'"
-attribute = 'Paul'
-alert_loc.update(assignedToUser: attribute)
+alert_to_update = {
+  assignedToUser: 'Paul',
+  alertState: 'Active',
+  notes: 'A note to delete!'
+}
+alert_loc.update(alert_to_update)
 alert_loc.retrieve!
-puts "\nAlert updated successfully and new name = '#{alert_loc['assignedToUser']}'"
+puts "\nAlert updated successfully and assigned to = '#{alert_loc['assignedToUser']}'"
 
 puts "\n\n Get Alert by ID/URI"
 alert = alert_class.find_by(@client, alertState: 'Cleared').first

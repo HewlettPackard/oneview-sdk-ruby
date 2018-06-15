@@ -21,22 +21,29 @@ RSpec.describe OneviewSDK::Alerts do
     end
   end
 
-   describe '#update' do
-    it 'should update the attributes' do
-      alerts = described_class.new(@client_200)
-      uri = nil 
-      header = {'requestername': 'DEFAULT'} 
-      fake_response = FakeResponse.new
-      expected_options = {
-        'requestername' => 'DEFAULT',
-        'body' => {
-          'assignedToUser' => 'Paul',
-        }
-      }
-      expected_api_version = @client_200.api_version
-      expect(@client_200).to receive(:rest_put).with(uri, expected_options, expected_api_version).and_return(fake_response)
-      alerts.update({ assignedToUser: 'Paul' }, header)
-      expect(alerts['assignedToUser']).to eq('Paul')
+  # describe '#update' do
+  #   it 'should update the attributes' do
+  #     alerts = described_class.new(@client_200)
+  #     uri = '/rest/alerts'
+  #     fake_response = FakeResponse.new
+  #     data = { 'assignedToUser' => 'Paul' }
+  #     expected_api_version = @client_200.api_version
+  #     expect(@client_200).to receive(:rest_put).with(uri, { 'body' => data }, expected_api_version).and_return(fake_response)
+  #     alerts.update(assignedToUser: 'Paul')
+  #     expect(alerts['assignedToUser']).to eq('Paul')
+  #   end
+  # end
+
+  describe '#update' do
+    it 'requires a uri' do
+      expect { OneviewSDK::Alerts.new(@client_200).update }.to raise_error(/Please set uri/)
+    end
+
+    it 'only includes alertState, alertUrgency, assignedToUser or notes in the PUT' do
+      item = OneviewSDK::Alerts.new(@client_200, uri: '/rest/fake')
+      data = { 'body' => { 'assignedToUser' => 'Name', 'alertState' => 'Active' } }
+      expect(@client_200).to receive(:rest_put).with('/rest/fake', data, item.api_version).and_return(FakeResponse.new)
+      item.update('assignedToUser' => 'Name', 'alertState' => 'Active')
     end
   end
 end

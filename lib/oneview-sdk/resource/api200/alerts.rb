@@ -27,12 +27,11 @@ module OneviewSDK
         @data['type'] ||= 'AlertResourceCollectionV3'
       end
 
-      def update(attributes = {}, header = self.class::DEFAULT_REQUEST_HEADER)
+      def update(attributes = {})
         set_all(attributes)
         ensure_client && ensure_uri
-        options = {}.merge(header).merge('body' => attributes)
-        puts options
-        response = @client.rest_put(@data['uri'], options, @api_version)
+        data = @data.select { |k, _v| %w[alertState alertUrgency assignedToUser notes eTag].include?(k) }
+        response = @client.rest_put(@data['uri'], { 'body' => data }, @api_version)
         @client.response_handler(response)
         self
       end
