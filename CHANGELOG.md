@@ -7,7 +7,7 @@ This release fixes few bugs which are listed below.
  Alerts
 
 #### Bug fixes & Enhancements
-- Added helper method to change request body for Server Profile for API600.
+- [#362] (https://github.com/HewlettPackard/oneview-sdk-ruby/issues/362) Added helper method to change request body for Server Profile for API600.
 - [#354](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/354) Input data has be to be a part of body, but not the header for import certificate method in enclosure.
 - [#356](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/356) Not able to add and remove scopes from a resource in a single API call.
 - [#359](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/359) Interconnect link topologies endpoints not available for api600. Fixed by inheriting from API500.
