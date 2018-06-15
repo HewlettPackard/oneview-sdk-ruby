@@ -16,7 +16,6 @@ module OneviewSDK
     # Event resource implementation
     class Alerts < Resource
       BASE_URI = '/rest/alerts'.freeze
-      DEFAULT_REQUEST_HEADER = {}.freeze
       # Create a resource object, associate it with a client, and set its properties.
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @param [Hash] params The options for this resource (key-value pairs)
