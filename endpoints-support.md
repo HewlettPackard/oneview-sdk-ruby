@@ -26,12 +26,11 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 | --------------------------------------------------------------------------------------- | -------- | :------------------: | :------------------: | :------------------: | :------------------: |
 |     **Alerts**                                                                                                                            |
 |<sub>/rest/alerts</sub>                                                                  |GET       | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-|<sub>/rest/alerts</sub>                                                                  |DELETE    |  :heavy_multiplication_x:   | :whiheavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
+|<sub>/rest/alerts</sub>                                                                  |DELETE    |  :heavy_multiplication_x:   | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
 |<sub>/rest/alerts/{id}</sub>                                                             |GET       | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |<sub>/rest/alerts/{id}</sub>                                                             |PUT       | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |<sub>/rest/alerts/{id}</sub>                                                             |DELETE    | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |<sub>/rest/alerts/AlertChangeLog/{id}</sub>                                              |DELETE    | :white_check_mark: | :white_check_mark: |:white_check_mark: | :white_check_mark: |
-
 |     **Appliance Time and Locale Configuration**                                                                                                 |
 |<sub>/rest/appliance/configuration/time-locale</sub>                                     |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:  |
 |<sub>/rest/appliance/configuration/time-locale</sub>                                     |POST      | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
