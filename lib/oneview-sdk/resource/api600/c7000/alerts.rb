@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/alerts'
+require_relative '../../api500/c7000/alerts'
 
 module OneviewSDK
   module API600
     module C7000
       # Alerts resource implementation for API600 C7000
-      class Alerts < OneviewSDK::API300::C7000::Alerts
+      class Alerts < OneviewSDK::API500::C7000::Alerts
       end
     end
   end
