@@ -1,7 +1,10 @@
-## v5.5.1 (Unreleased)
+## v5.6.0
 
 #### Notes
 This release fixes few bugs which are listed below.
+
+#### New Resource
+ Alerts
 
 #### Bug fixes & Enhancements
 - Added helper method to change request body for Server Profile for API600.
