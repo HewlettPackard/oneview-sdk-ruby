@@ -205,8 +205,10 @@ RSpec.describe OneviewSDK::Volume do
       it 'returns an array of available volumes' do
         volumes = [@item]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => volumes)
-        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes/attachable-volumes', {})
-        items = OneviewSDK::Volume.get_attachable_volumes(@client_200)
+        allow(@client_200).to receive(:build_query)
+          .with(@client_200, { 'sort' => 'name:ascending' }, described_class::BASE_URI, {}).and_return('?sort=name:ascending')
+        expect(@client_200).to receive(:rest_get).with('/rest/storage-volumes/attachable-volumes?sort=name:ascending', {})
+        items = OneviewSDK::Volume.get_attachable_volumes(@client_200, 'sort' => 'name:ascending')
         expect(items.class).to eq(Array)
         expect(items.size).to eq(1)
         expect(items.first['name']).to eq('volume_name')
