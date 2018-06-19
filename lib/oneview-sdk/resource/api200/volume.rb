@@ -147,8 +147,9 @@ module OneviewSDK
       # Gets all the attachable volumes managed by the appliance
       # @param [OneviewSDK::Client] client The client object for the OneView appliance
       # @return [Array<OneviewSDK::Volume>] Array of volumes
-      def self.get_attachable_volumes(client)
-        uri = "#{BASE_URI}/attachable-volumes"
+      def self.get_attachable_volumes(client, query = nil)
+        query_uri = build_query(query) if query
+        uri = "#{BASE_URI}/attachable-volumes#{query_uri}"
         find_by(client, {}, uri)
       end
 

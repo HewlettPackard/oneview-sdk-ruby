@@ -1,3 +1,11 @@
+## v5.6.1(Unreleased)
+
+#### Notes
+This release fixes few bugs listed below
+
+#### Bug fixes & Enhancements
+- [#366](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/366) Query parameters not working for get_attachable_volumes endpoint
+
 ## v5.6.0
 
 #### Notes

@@ -150,7 +150,10 @@ item3.delete_snapshot(snapshot_name)
 puts "\nSnapshot removed successfully!"
 
 puts "\nGetting the attachable volumes managed by the appliance"
-attachables = volume_class.get_attachable_volumes(@client)
+query = {
+  connections: '<Your parameters here>'
+}
+attachables = volume_class.get_attachable_volumes(@client, query)
 puts "\nAttachable volumes found: #{attachables}"
 
 puts "\nGetting the list of extra managed storage volume paths"
