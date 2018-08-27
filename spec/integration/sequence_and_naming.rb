@@ -28,6 +28,7 @@ DEPENDENCIES = {
   FCoENetwork: [],
   FirmwareBundle: [],
   FirmwareDriver: [:FirmwareBundle],
+  HypervisorManager: [],
   IDPool: [],
   Interconnect: [:LogicalInterconnect],
   LIGUplinkSet: [],
@@ -275,3 +276,5 @@ SERVER_HARDWARE_TYPE_NAME = 'BL460c Gen8 1'.freeze
 SERVER_HARDWARE_TYPE2_NAME = 'SY 480 Gen9 1'.freeze
 
 DRIVE_ENCLOSURE_NAME = 'Encl11, bay 1'.freeze
+
+HYPERVISOR_MGR_NAME = '172.18.13.11'.freeze
