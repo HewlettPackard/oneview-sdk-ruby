@@ -15,10 +15,10 @@ First, there's some setup you'll need to do. Do **EITHER** of the following:
    [one_view_synergy_secrets.json.example](one_view_synergy_secrets.json.example) files into the same directory (spec/integration) and drop the `.example` part of the filename on the new copies. You should now have the following files:
 
 ```bash
-spec/integration/one_view_config.json # Tests for APIs v200, v300, v500 and v600 C7000
-spec/integration/one_view_secrets.json # Tests for APIs v200, v300, v500 and v600 C7000
-spec/integration/one_view_synergy_config.json # Tests for APIs v300, v500 and v600 Synergy
-spec/integration/one_view_synergy_secrets.json # Tests for APIs v300, v500 and v600 Synergy
+spec/integration/one_view_config.json # Tests for APIs v200, v300, v500 v600 and v800 C7000
+spec/integration/one_view_secrets.json # Tests for APIs v200, v300, v500 v600 and v800 C7000
+spec/integration/one_view_synergy_config.json # Tests for APIs v300, v500 v600 and v800 Synergy
+spec/integration/one_view_synergy_secrets.json # Tests for APIs v300, v500 v600 and v800 Synergy
 ```
 
 ### Option 2: Use environment variables to specify config file locations:**
@@ -28,10 +28,10 @@ spec/integration/one_view_synergy_secrets.json # Tests for APIs v300, v500 and v
    [one_view_synergy_secrets.json.example](one_view_synergy_secrets.json.example) files to a secure location
    **outside** this repo. When you do so, drop the `.example` part of the filename.
 
-   - [one_view_config.json.example](one_view_config.json.example): Tests for APIs v200, v300, v500 and v600 C7000
-   - [one_view_secrets.json.example](one_view_secrets.json.example): Tests for APIs v200, v300, v500 and v600 C7000
-   - [one_view_config.json.example](one_view_config.json.example): Tests for APIs v300, v500 and v600 Synergy
-   - [one_view_secrets.json.example](one_view_secrets.json.example): Tests for APIs v300, v500 and v600 Synergy
+   - [one_view_config.json.example](one_view_config.json.example): Tests for APIs v200, v300, v500 v600 and v800 C7000
+   - [one_view_secrets.json.example](one_view_secrets.json.example): Tests for APIs v200, v300, v500 v600 and v800 C7000
+   - [one_view_config.json.example](one_view_config.json.example): Tests for APIs v300, v500 v600 and v800 Synergy
+   - [one_view_secrets.json.example](one_view_secrets.json.example): Tests for APIs v300, v500 v600 and v800 Synergy
 
 2. Then set the following environment variables with the paths to the files you just created:
 
@@ -55,6 +55,8 @@ These config files get loaded and create the following global variables:
  - `$client_500_synergy`: Client object pinned to API v500 Synergy
  - `$client_600`: Client object pinned to API v600 C7000
  - `$client_600_synergy`: Client object pinned to API v600 Synergy
+ - `$client_800`: Client object pinned to API v800 C7000
+ - `$client_800_synergy`: Client object pinned to API v800 Synergy
 
 ## Setup for Image Streamer
 First, there's some setup you'll need to do. Do **EITHER** of the following:
