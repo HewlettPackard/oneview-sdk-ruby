@@ -2,7 +2,7 @@
 
 #### Notes
 Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
-This release fix one bug listed below.
+This release fixes one bug listed below.
 
 #### New Resource
  - Hypervisor Cluster Profile
