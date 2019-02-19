@@ -1,4 +1,4 @@
-## v5.7.0(Unreleased)
+## v5.7.0
 
 #### Notes
 Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
