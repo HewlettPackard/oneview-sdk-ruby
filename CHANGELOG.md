@@ -1,14 +1,16 @@
-## v5.7.0(Unreleased)
+## v5.7.0
 
 #### Notes
 Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
-This release fix one bug listed below.
+This release fixes one bug listed below.
+
+#### New Resource
+ - Hypervisor Cluster Profile
+ - Hypervisor Manager
 
 #### Features Supported
 This release adds support to OneView Rest API version 800 for the hardware variants C7000 and Synergy to the already existing features:
-  - Hypervisor Cluster Profile
-  - Hypervisor Manager
-  - Server Profile Template
+ - Server Profile Template
 
 #### Bug fixes & Enhancements
 - [#366](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/366) Query parameters not working for get_attachable_volumes endpoint
@@ -20,7 +22,7 @@ This release fixes few bugs which are listed below.
 
 #### New Resource
  Alerts
-
+ 
 #### Bug fixes & Enhancements
 - [#362](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/362) Added helper method to change request body for Server Profile for API600.
 - [#354](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/354) Input data has be to be a part of body, but not the header for import certificate method in enclosure.
