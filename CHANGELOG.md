@@ -1,3 +1,11 @@
+## v5.7.1
+
+#### Notes
+This release fixes one bug listed below.
+
+#### Bug fixes & Enhancements
+- [#372](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/372) Failed to create logical interconnect groups for API600. Fixed by inheriting from API500 resource.
+
 ## v5.7.0
 
 #### Notes
