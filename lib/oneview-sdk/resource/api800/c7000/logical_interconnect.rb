@@ -21,11 +21,11 @@ module OneviewSDK
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
         def initialize(client, params = {}, api_ver = nil)
-         @data ||= {}
-         # Default values:
-         @data['type'] ||= 'logical-interconnectV5'
-         super
-       end
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'logical-interconnectV5'
+          super
+        end
       end
     end
   end
