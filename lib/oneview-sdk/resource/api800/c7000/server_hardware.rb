@@ -15,7 +15,7 @@ module OneviewSDK
   module API800
     module C7000
       # Server Hardware resource implementation on API800 C7000
-      class ServerHardware < OneviewSDK::API600::C7000::ServerHardware        
+      class ServerHardware < OneviewSDK::API600::C7000::ServerHardware
       end
     end
   end

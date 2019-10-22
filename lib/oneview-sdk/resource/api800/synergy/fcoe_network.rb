@@ -15,7 +15,7 @@ module OneviewSDK
   module API800
     module Synergy
       # FCoE network resource implementation for API800 Synergy
-      class FCoENetwork < OneviewSDK::API600::Synergy::FCoENetwork        
+      class FCoENetwork < OneviewSDK::API600::Synergy::FCoENetwork
       end
     end
   end

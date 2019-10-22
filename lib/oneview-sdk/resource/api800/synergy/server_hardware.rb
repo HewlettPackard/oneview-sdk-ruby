@@ -15,7 +15,7 @@ module OneviewSDK
   module API800
     module Synergy
       # Server Hardware resource implementation on API800 Synergy
-      class ServerHardware < OneviewSDK::API600::Synergy::ServerHardware        
+      class ServerHardware < OneviewSDK::API600::Synergy::ServerHardware
       end
     end
   end

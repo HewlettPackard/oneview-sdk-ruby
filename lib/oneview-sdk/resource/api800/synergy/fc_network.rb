@@ -15,7 +15,7 @@ module OneviewSDK
   module API800
     module Synergy
       # FC network resource implementation for API800 Synergy
-      class FCNetwork < OneviewSDK::API600::Synergy::FCNetwork        
+      class FCNetwork < OneviewSDK::API600::Synergy::FCNetwork
       end
     end
   end

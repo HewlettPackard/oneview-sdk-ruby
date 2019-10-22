@@ -16,7 +16,7 @@ module OneviewSDK
   module API800
     module Synergy
       # Interconnect resource implementation on API800 Synergy
-      class Interconnect < OneviewSDK::API800::C7000::Interconnect        
+      class Interconnect < OneviewSDK::API800::C7000::Interconnect
       end
     end
   end

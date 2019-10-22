@@ -15,7 +15,7 @@ module OneviewSDK
   module API800
     module C7000
       # Storage Volume Attachment resource implementation for API800 C7000
-      class VolumeAttachment < OneviewSDK::API600::C7000::VolumeAttachment        
+      class VolumeAttachment < OneviewSDK::API600::C7000::VolumeAttachment
       end
     end
   end

@@ -15,7 +15,7 @@ module OneviewSDK
   module API800
     module C7000
       # Network set resource implementation for API800 C7000
-      class NetworkSet < OneviewSDK::API600::C7000::NetworkSet      
+      class NetworkSet < OneviewSDK::API600::C7000::NetworkSet
       end
     end
   end
