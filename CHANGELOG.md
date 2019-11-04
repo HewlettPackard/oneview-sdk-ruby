@@ -1,6 +1,7 @@
 ## v5.7.1 (Unreleased)
 
 #### Notes
+This release removes the support for Ruby 2.2 and added support for Ruby 2.5.
 Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
 This release fixes one bug listed below.
 
@@ -27,6 +28,7 @@ This release adds support to OneView Rest API version 800 for the hardware varia
 - Volume Template
 
 #### Bug fixes & Enhancements
+- [#377](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/377) Travis build failed as Listen dependency does not support Ruby 2.2.x.
 - [#372](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/372) Failed to create logical interconnect groups for API600. Fixed by inheriting from API500 resource.
 
 ## v5.7.0
