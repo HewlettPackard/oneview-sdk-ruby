@@ -15,7 +15,7 @@ module OneviewSDK
   module API800
     module Synergy
       # Server hardware type resource implementation for API800 Synergy
-      class ServerHardwareType < OneviewSDK::API800::C7000::ServerHardwareType        
+      class ServerHardwareType < OneviewSDK::API800::C7000::ServerHardwareType
       end
     end
   end
