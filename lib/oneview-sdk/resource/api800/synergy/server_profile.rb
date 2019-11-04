@@ -16,7 +16,7 @@ module OneviewSDK
   module API800
     module Synergy
       # Server profile resource implementation for API800 Synergy
-      class ServerProfile < OneviewSDK::API600::C7000::ServerProfile
+      class ServerProfile < OneviewSDK::API800::C7000::ServerProfile
         extend OneviewSDK::API300::Synergy::SASLogicalJBODHelper
         include OneviewSDK::API300::Synergy::ServerProfileHelper
       end

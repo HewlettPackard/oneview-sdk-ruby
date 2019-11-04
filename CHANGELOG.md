@@ -1,7 +1,30 @@
 ## v5.7.1 (Unreleased)
 
 #### Notes
+Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
 This release fixes one bug listed below.
+
+#### Features Supported
+This release adds support to OneView Rest API version 800 for the hardware variants C7000 and Synergy to the already existing features:
+- Enclosure
+- Enclosure Group
+- Ethernet Network
+- FC Network
+- FCoE Network
+- Interconnect
+- Logical Enclosure
+- Logical Interconnect
+- Logical Interconnect Group
+- Network Set
+- Scope
+- Server Hardware
+- Server Hardware Types
+- Server Profile
+- Storage Pool
+- Storage System
+- Uplink Set
+- Volume
+- Volume Template
 
 #### Bug fixes & Enhancements
 - [#372](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/372) Failed to create logical interconnect groups for API600. Fixed by inheriting from API500 resource.
@@ -30,7 +53,7 @@ This release fixes few bugs which are listed below.
 
 #### New Resource
  Alerts
- 
+
 #### Bug fixes & Enhancements
 - [#362](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/362) Added helper method to change request body for Server Profile for API600.
 - [#354](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/354) Input data has be to be a part of body, but not the header for import certificate method in enclosure.
