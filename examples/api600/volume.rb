@@ -147,6 +147,7 @@ options6 = {
     description: 'Volume store virtual',
     size: 1024 * 1024 * 1024,
     provisioningType: 'Thin',
+    isShareable: false,
     dataProtectionLevel: 'NetworkRaid10Mirror2Way'
   }
 }
