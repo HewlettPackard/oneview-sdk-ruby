@@ -10,7 +10,6 @@
 # language governing permissions and limitations under the License.
 
 require_relative '../c7000/interconnect'
-require_relative '../../api600/synergy/interconnect'
 
 module OneviewSDK
   module API800
