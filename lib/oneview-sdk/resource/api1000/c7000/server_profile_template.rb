@@ -24,7 +24,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values
-          @data['type'] ||= 'ServerProfileTemplateV5'
+          @data['type'] ||= 'ServerProfileTemplateV6'
           super
         end
       end
