@@ -54,8 +54,8 @@ module OneviewSDK
 
     # Helps redirect resources to the correct API1000 variant
     def self.const_missing(const)
-      API1000_module = OneviewSDK::API1000.const_get(@variant.to_s)
-      API1000_module.const_get(const)
+      api1000_module = OneviewSDK::API1000.const_get(@variant.to_s)
+      api1000_module.const_get(const)
     rescue NameError
       raise NameError, "The #{const} method or resource does not exist for OneView API1000 variant #{@variant}."
     end
@@ -63,4 +63,4 @@ module OneviewSDK
 end
 
 # Load all API1000-specific resources:
-Dir[File.dirname(__FILE__) + '/API1000/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/api1000/*.rb'].each { |file| require file }

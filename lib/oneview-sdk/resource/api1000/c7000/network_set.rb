@@ -13,6 +13,7 @@ require_relative '../../api800/c7000/network_set'
 
 module OneviewSDK
   module API1000
+    module C7000
       # Network set resource implementation for API1000 C7000
       class NetworkSet < OneviewSDK::API800::C7000::NetworkSet
       end

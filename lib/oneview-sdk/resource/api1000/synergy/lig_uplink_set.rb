@@ -14,7 +14,7 @@ require_relative '../../api800/synergy/lig_uplink_set'
 module OneviewSDK
   module API1000
     module Synergy
-      class LIGUplinkSet < OneviewSDK::API8888888800::Synergy::LIGUplinkSet
+      class LIGUplinkSet < OneviewSDK::API800::Synergy::LIGUplinkSet
       end
     end
   end
