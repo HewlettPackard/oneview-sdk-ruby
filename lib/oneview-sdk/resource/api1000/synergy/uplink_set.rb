@@ -16,6 +16,16 @@ module OneviewSDK
     module Synergy
       # Uplink set resource implementation for API1000 Synergy
       class UplinkSet < OneviewSDK::API800::Synergy::UplinkSet
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values
+          @data['type'] ||= 'uplink-setV5'
+          super
+        end
       end
     end
   end
