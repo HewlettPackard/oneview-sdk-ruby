@@ -23,7 +23,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
-          @data['type'] ||= 'logical-interconnect-groupV5'
+          @data['type'] ||= 'logical-interconnect-groupV6'
           super
         end
 
