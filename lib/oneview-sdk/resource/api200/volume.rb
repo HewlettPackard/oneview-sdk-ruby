@@ -123,7 +123,7 @@ module OneviewSDK
       # @return [true] if snapshot was created successfully
       def delete_snapshot(name)
         result = get_snapshot(name)
-        response = @client.rest_delete(result['uri'], { 'If-Match' => result['eTag'] }, @api_version)
+        response = @client.rest_delete(result['uri'], { 'If-Match' => @data['eTag'] }, @api_version)
         @client.response_handler(response)
         true
       end
