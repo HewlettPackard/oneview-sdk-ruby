@@ -169,6 +169,7 @@ item2.retrieve!
 puts "\nVolume updated successfully! New name: #{item2['name']}."
 
 puts "\nRemoving a snapshot..."
+item3.retrieve!
 item3.delete_snapshot(snapshot_name)
 puts "\nSnapshot removed successfully!"
 
@@ -193,7 +194,7 @@ paths = volume_class.get_extra_managed_volume_paths(@client)
 puts "\nExtra managed storage volume paths found: #{paths}"
 
 puts "Remove extra presentations from the specified volume on the storage system: \nURI: #{paths['uri']}"
-item1.repair
+item2.repair
 puts "\nExtra managed storage volume paths has been repaired"
 
 puts "\nRemoving all volumes created in this sample..."

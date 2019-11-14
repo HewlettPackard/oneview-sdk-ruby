@@ -16,6 +16,19 @@ module OneviewSDK
     module C7000
       # Storage System resource implementation for API1000 C7000
       class StorageSystem < OneviewSDK::API800::C7000::StorageSystem
+        # Set data and save to OneView
+        # @param [Hash] attributes The attributes to add/change for this resource (key-value pairs)
+        # @raise [OneviewSDK::IncompleteResource] if the client or uri is not set
+        # @raise [StandardError] if the resource save fails
+        # @return [Resource] self
+        def update(attributes = {})
+          set_all(attributes)
+          ensure_client && ensure_uri
+          @data.delete('type')          
+          response = @client.rest_put(@data['uri'] + '/?force=true', { 'body' => @data }, @api_version)
+          @client.response_handler(response)
+          self
+        end
       end
     end
   end

@@ -23,7 +23,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values
-          @data['type'] ||= 'server-hardware-type-9'
+          @data['type'] ||= 'server-hardware-type-10'
           super
         end
       end

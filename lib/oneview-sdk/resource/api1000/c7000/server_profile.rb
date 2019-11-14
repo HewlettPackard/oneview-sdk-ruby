@@ -23,7 +23,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values
-          @data['type'] ||= 'ServerProfileV9'
+          @data['type'] ||= 'ServerProfileV10'
           super
         end
       end
