@@ -9,21 +9,21 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api600/c7000/server_hardware_type'
+require_relative '../../api600/c7000/logical_interconnect_group'
 
 module OneviewSDK
   module API800
     module C7000
-      # Server hardware type resource implementation for API800 C7000
-      class ServerHardwareType < OneviewSDK::API600::C7000::ServerHardwareType
+      # Logical interconnect group resource implementation on API800 C7000
+      class LogicalInterconnectGroup < OneviewSDK::API600::C7000::LogicalInterconnectGroup
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
         # @param [Integer] api_ver The api version to use when interracting with this resource.
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
-          # Default values
-          @data['type'] ||= 'server-hardware-type-9'
+          # Default values:
+          @data['type'] ||= 'logical-interconnect-groupV5'
           super
         end
       end

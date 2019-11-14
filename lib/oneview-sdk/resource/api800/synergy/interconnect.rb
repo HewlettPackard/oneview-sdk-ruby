@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../c7000/server_hardware_type'
+require_relative '../c7000/interconnect'
 
 module OneviewSDK
   module API800
     module Synergy
-      # Server hardware type resource implementation for API800 Synergy
-      class ServerHardwareType < OneviewSDK::API800::C7000::ServerHardwareType
+      # Interconnect resource implementation on API800 Synergy
+      class Interconnect < OneviewSDK::API800::C7000::Interconnect
       end
     end
   end
