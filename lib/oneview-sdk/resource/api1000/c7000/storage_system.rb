@@ -24,7 +24,7 @@ module OneviewSDK
         def update(attributes = {})
           set_all(attributes)
           ensure_client && ensure_uri
-          @data.delete('type')          
+          @data.delete('type')
           response = @client.rest_put(@data['uri'] + '/?force=true', { 'body' => @data }, @api_version)
           @client.response_handler(response)
           self
