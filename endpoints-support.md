@@ -30,29 +30,6 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/alerts/{id}</sub>                                                             |PUT       | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |<sub>/rest/alerts/{id}</sub>                                                             |DELETE    | :white_check_mark:    | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |<sub>/rest/alerts/AlertChangeLog/{id}</sub>                                              |DELETE    | :white_check_mark: | :white_check_mark: |:white_check_mark: | :white_check_mark: |
-|     **Appliance Time and Locale Configuration**                                                                                                 |
-|<sub>/rest/appliance/configuration/time-locale</sub>                                     |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:  |
-|<sub>/rest/appliance/configuration/time-locale</sub>                                     |POST      | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
-|     **Backups**                                                                                                                                  |
-|<sub>/rest/backups</sub>                                                                 |GET       |   |   |
-|<sub>/rest/backups</sub>                                                                 |POST      |   |   |
-|<sub>/rest/backups/archive</sub>                                                         |POST      |   |   |
-|<sub>/rest/backups/archive/{id}</sub>                                                    |GET       |   |   |
-|<sub>/rest/backups/config</sub>                                                          |GET       | :heavy_minus_sign: |   |
-|<sub>/rest/backups/config</sub>                                                          |PUT       | :heavy_minus_sign: |   |
-|<sub>/rest/backups/remotearchive/{id}</sub>                                              |PUT       | :heavy_minus_sign: |   |
-|<sub>/rest/backups/remotearchive/{id}</sub>                                              |DELETE    | :heavy_minus_sign: |   |
-|<sub>/rest/backups/{id}</sub>                                                            |GET       |   |   |
-|<sub>/rest/backups/{id}</sub>                                                            |DELETE    |   |   |
-|     **Certificate Authority**                                                                                                                    |
-|<sub>/rest/certificates/ca</sub>                                                         |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
-|<sub>/rest/certificates/ca/crl</sub>                                                     |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
-|<sub>/rest/certificates/ca/{aliasName}</sub>                                             |DELETE    | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
-|     **Certificates Client RabbitMq**                                                                                                             |
-|<sub>/rest/certificates/client/rabbitmq</sub>                                            |POST      | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
-|<sub>/rest/certificates/client/rabbitmq/keypair/{aliasName}</sub>                        |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
-|<sub>/rest/certificates/client/rabbitmq/keys/{aliasName}</sub>                           |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
-|<sub>/rest/certificates/client/rabbitmq/{aliasName}</sub>                                |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x:
 |     **Connection Templates**                                                                                                                      |
 |<sub>/rest/connection-templates</sub>                                                    |GET       | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/connection-templates/defaultConnectionTemplate</sub>                          |GET       | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
@@ -83,7 +60,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **Enclosures**                                                                                                                                |
 |<sub>/rest/enclosures</sub>                                                              | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/enclosures</sub>                                                              | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
-|<sub>/rest/enclosures/{id}</sub>                                                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |
+|<sub>/rest/enclosures/{id}</sub>                                                         | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/enclosures/{id}</sub>                                                         | PATCH    | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/enclosures/{id}</sub>                                                         | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/enclosures/{id}/configuration</sub>                                           | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
@@ -96,9 +73,6 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/enclosures/{id}/https/certificaterequest</sub>                                | POST     | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/enclosures/{id}/https/certificaterequest</sub>                                | GET      | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/enclosures/{id}/https/certificaterequest</sub>                                | PUT      | :heavy_minus_sign:   | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
-|     **Endpoints**                                                                                                                                |
-|<sub>/rest/fc-sans/endpoints</sub>                                                       | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/fc-sans/endpoints/{id}</sub>                                                  | GET      |  :heavy_minus_sign:  | :heavy_multiplication_x: | :heavy_multiplication_x:
 |     **Ethernet Networks**                                                                                                                         |
 |<sub>/rest/ethernet-networks</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/ethernet-networks</sub>                                                       | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
@@ -160,47 +134,7 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/id-pools/{poolType}/collector</sub>                                           | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/id-pools/{poolType}/generate</sub>                                            | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/id-pools/{poolType}/validate</sub>                                            | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|<sub>/rest/id-pools/{poolType}/validate</sub>                                            | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|     **ID Pools IPv4 Ranges**                                                                                                                      |
-|<sub>/rest/id-pools/ipv4/ranges</sub>                                                    | POST     |   |   |
-|<sub>/rest/id-pools/ipv4/ranges/{id}</sub>                                               | GET      |   |   |
-|<sub>/rest/id-pools/ipv4/ranges/{id}</sub>                                               | PUT      |   |   |
-|<sub>/rest/id-pools/ipv4/ranges/{id}</sub>                                               | DELETE   |   |   |
-|<sub>/rest/id-pools/ipv4/ranges/{id}/allocated-fragments</sub>                           | GET      |   |   |
-|<sub>/rest/id-pools/ipv4/ranges/{id}/free-fragments</sub>                                | GET      |   |   |
-|     **ID Pools IPv4 Subnets**                                                                                                                      |
-|<sub>/rest/id-pools/ipv4/subnets</sub>                                                   | GET      |   |   |
-|<sub>/rest/id-pools/ipv4/subnets</sub>                                                   | POST     |   |   |
-|<sub>/rest/id-pools/ipv4/subnets/{id}</sub>                                              | GET      |   |   |
-|<sub>/rest/id-pools/ipv4/subnets/{id}</sub>                                              | PUT      |   |   |
-|<sub>/rest/id-pools/ipv4/subnets/{id}</sub>                                              | DELETE   |   |   |
-|     **ID Pools vMAC Ranges**                                                                                                                      |
-|<sub>/rest/id-pools/vmac/ranges</sub>                                                    | POST     |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vmac/ranges/{id}</sub>                                               | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vmac/ranges/{id}</sub>                                               | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vmac/ranges/{id}</sub>                                               | DELETE   |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vmac/ranges/{id}/allocated-fragments</sub>                           | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vmac/ranges/{id}/allocator</sub>                                     | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vmac/ranges/{id}/collector</sub>                                     | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vmac/ranges/{id}/free-fragments</sub>                                | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|     **ID Pools vSN Ranges**                                                                                                                       |
-|<sub>/rest/id-pools/vsn/ranges</sub>                                                     | POST     |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vsn/ranges/{id}</sub>                                                | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vsn/ranges/{id}</sub>                                                | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vsn/ranges/{id}</sub>                                                | DELETE   |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vsn/ranges/{id}/allocated-fragments</sub>                            | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vsn/ranges/{id}/allocator</sub>                                      | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vsn/ranges/{id}/collector</sub>                                      | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vsn/ranges/{id}/free-fragments</sub>                                 | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|     **ID Pools vWWN Ranges**                                                                                                                      |
-|<sub>/rest/id-pools/vwwn/ranges</sub>                                                    | POST     |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vwwn/ranges/{id}</sub>                                               | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vwwn/ranges/{id}</sub>                                               | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vwwn/ranges/{id}</sub>                                               | DELETE   |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vwwn/ranges/{id}/allocated-fragments</sub>                           | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vwwn/ranges/{id}/allocator</sub>                                     | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vwwn/ranges/{id}/collector</sub>                                     | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/id-pools/vwwn/ranges/{id}/free-fragments</sub>                                | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
+|<sub>/rest/id-pools/{poolType}/validate</sub>                                            | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | 
 |     **Interconnect Link Topologies**                                                                                                             |
 |<sub>/rest/interconnect-link-topologies</sub>                                            | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/interconnect-link-topologies/{id}</sub>                                       | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   |
@@ -225,18 +159,6 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **Internal Link Sets**                                                                                                                       |
 |<sub>/rest/internal-link-sets</sub>                                                      | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/internal-link-sets/{id}</sub>                                                 | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|     **Labels**                                                                                                                                   |
-|<sub>/rest/labels</sub>                                                                  | GET      |   |   |
-|<sub>/rest/labels/resources</sub>                                                        | POST     |   |   |
-|<sub>/rest/labels/resources/**</sub>                                                     | GET      |   |   |
-|<sub>/rest/labels/resources/**</sub>                                                     | PUT      |   |   |
-|<sub>/rest/labels/resources/**</sub>                                                     | DELETE   |   |   |
-|<sub>/rest/labels/{id}</sub>                                                             | GET      |   |   |
-|     **Licenses**                                                                                                                                 |
-|<sub>/rest/licenses</sub>                                                                |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
-|<sub>/rest/licenses</sub>                                                                |POST      | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
-|<sub>/rest/licenses/{id}</sub>                                                           |GET       | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
-|<sub>/rest/licenses/{licenseId}</sub>                                                    |DELETE    | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
 |     **Logical Downlinks**                                                                                                                         |
 |<sub>/rest/logical-downlinks</sub>                                                       |GET       | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/logical-downlinks/{id}</sub>                                                  |GET       | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
@@ -317,16 +239,6 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/fc-sans/managed-sans/{id}/endpoints</sub>                                     | POST     |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |  :heavy_multiplication_x:      |
 |<sub>/rest/fc-sans/managed-sans/{id}/issues</sub>                                        | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/fc-sans/managed-sans/WWN+</sub>                                               | GET      | :heavy_minus_sign:   | :white_check_mark:   | :heavy_minus_sign:   | :heavy_minus_sign:   |
-|     **Metric Streaming**                                                                                                                         |
-|<sub>/rest/metrics/capability</sub>                                                      | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/metrics/configuration</sub>                                                   | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/metrics/configuration</sub>                                                   | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|     **Migratable VC Domains**                                                                                                                    |
-|<sub>/rest/migratable-vc-domains</sub>                                                   | GET      | :heavy_minus_sign:   |  :heavy_multiplication_x:  | :heavy_multiplication_x:   |
-|<sub>/rest/migratable-vc-domains</sub>                                                   | POST     |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/migratable-vc-domains/{id}</sub>                                              | PUT      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/migratable-vc-domains/{id}</sub>                                              | GET      |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
-|<sub>/rest/migratable-vc-domains/{id}</sub>                                              | DELETE   |  :heavy_multiplication_x:  | :heavy_multiplication_x:   | :heavy_multiplication_x: |
 |     **Network Sets**                                                                                                                              |
 |<sub>/rest/network-sets</sub>                                                            | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/network-sets</sub>                                                            | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:  |:white_check_mark:   |
@@ -339,16 +251,6 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **OS Deployment Plans**                                                                                                                      |
 |<sub>/rest/os-deployment-plans/</sub>                                                    | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/os-deployment-plans/{id}</sub>                                                | GET      | :heavy_minus_sign:   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
-|     **OS Deployment Servers**                                                                                                                      |
-|<sub>/rest/os-deployment-servers</sub>                                                   | GET      | :heavy_minus_sign: |   |   |
-|<sub>/rest/os-deployment-servers</sub>                                                   | POST     | :heavy_minus_sign: |   |   |
-|<sub>/rest/os-deployment-servers/image-streamer-appliances</sub>                         | GET      | :heavy_minus_sign: |   |   |
-|<sub>/rest/os-deployment-servers/image-streamer-appliances/{id}</sub>                    | GET      | :heavy_minus_sign: |   |   |
-|<sub>/rest/os-deployment-servers/network</sub>                                           | GET      | :heavy_minus_sign: |   |   |
-|<sub>/rest/deployment-servers/security-mode/security-compatibility-checker</sub>         | POST     | :heavy_minus_sign: | :heavy_minus_sign:    |   |
-|<sub>/rest/os-deployment-servers/{id}</sub>                                              | GET      | :heavy_minus_sign: |   |   |
-|<sub>/rest/os-deployment-servers/{id}</sub>                                              | PUT      | :heavy_minus_sign: |   |   |
-|<sub>/rest/os-deployment-servers/{id}</sub>                                              | DELETE   | :heavy_minus_sign: |   |   |
 |     **Power Devices**                                                                                                                             |
 |<sub>/rest/power-devices</sub>                                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/power-devices</sub>                                                           | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
@@ -376,14 +278,6 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/racks/{id}</sub>                                                              | PUT      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/racks/{id}</sub>                                                              | DELETE   | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
 |<sub>/rest/racks/{id}/deviceTopology</sub>                                               | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:   |
-|     **Restores**                                                                                                                                     |
-|<sub>/rest/restores</sub>                                                                | GET      |   |   |
-|<sub>/rest/restores</sub>                                                                | POST     |   |   |
-|<sub>/rest/restores/failures</sub>                                                       | GET      |   |   |
-|<sub>/rest/restores/{id}</sub>                                                           | GET      |   |   |
-|     **Roles**                                                                                                                                     |
-|<sub>/rest/roles</sub>                                                                   | GET      |   |   |
-|<sub>/rest/roles/{roleName}</sub>                                                        | GET      |   |   |
 |     **SAN Managers**                                                                                                                             |
 |<sub>/rest/fc-sans/device-managers</sub>                                                 | GET      | :white_check_mark:   | :heavy_minus_sign:   | :white_check_mark:   |
 |<sub>/rest/fc-sans/device-managers/{id}</sub>                                            | GET      | :white_check_mark:   | :heavy_minus_sign:   | :white_check_mark:   |
