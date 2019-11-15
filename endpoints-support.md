@@ -21,8 +21,8 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 <br />
 
 ## HPE OneView
-
-| Endpoints                                                                       | Verb     | V200 | V300 | V500 | V600 | V800 | V1000 | --------------------------------------------------------------------------------------- | -------- | :------------------: | :------------------: | :------------------: | :------------------: | :------------------: | :------------------: |
+| Endpoints                                                                       | Verb     | V200 | V300 | V500 |V600 |V800 | V1000 |
+| --------------------------------------------------------------------------------------- | -------- | :------------------: | :------------------: | :------------------: | :------------------: | :------------------: | :------------------: |
 |     **Alerts**                                                                                                                            |
 |<sub>/rest/alerts</sub>                                                                  |GET       | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 |<sub>/rest/alerts</sub>                                                                  |DELETE    |  :heavy_multiplication_x:   | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
