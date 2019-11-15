@@ -56,10 +56,10 @@ options = {
 # for StorageSystem with family StoreVirtual
 # options = {
 #   credentials: {
-#     username: @storage_system_username,
-#     password: @storage_system_password
+#     username: @store_virtual_user,
+#     password: @store_virtual_password
 #   },
-#   hostname: @storage_system_ip,
+#   hostname: @store_virtual_ip,
 #   family: 'StoreVirtual'
 # }
 

@@ -268,7 +268,7 @@ puts "\nConfiguration Applied with successfully"
 puts "\nOperations with scopes"
 begin
   # Scope class used in this sample
-  scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200 || client.api_version.to_i >= 600
+  scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200 || @client.api_version.to_i >= 600
   # Creating scopes for this example
   scope_1 = scope_class.new(@client, name: 'Scope 1')
   scope_1.create!

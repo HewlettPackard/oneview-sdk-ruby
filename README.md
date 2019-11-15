@@ -167,7 +167,7 @@ You may notice resource classes being accessed in a few different ways; for exam
 require 'oneview-sdk'
 
 # Show defaults:
-OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800]
+OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800, 1000]
 OneviewSDK::DEFAULT_API_VERSION         # 200
 OneviewSDK.api_version                  # 200
 OneviewSDK.api_version_updated?         # false
@@ -204,6 +204,10 @@ OneviewSDK::API800::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API800.variant              # 'C7000'
 OneviewSDK::API800.variant_updated?     # false
 
+OneviewSDK::API1000::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API1000::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API1000.variant              # 'C7000'
+OneviewSDK::API1000.variant_updated?     # false
 # Therefore, there is 1 more namespace level to the real resource class name
 OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
 OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::C7000::EthernetNetwork

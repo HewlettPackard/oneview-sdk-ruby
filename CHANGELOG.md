@@ -2,17 +2,18 @@
 
 #### Notes
 This release removes the support for Ruby 2.2 and added support for Ruby 2.5.
-Extends support of the SDK to OneView Rest API version 800 (OneView v4.10).
-This release fixes one bug listed below.
+Extends support of the SDK to OneView Rest API version 800/1000 (OneView v4.10/v4.20).
+This release also fixes few bugs listed below.
 
 #### Features Supported
-This release adds support to OneView Rest API version 800 for the hardware variants C7000 and Synergy to the already existing features:
+This release adds support to OneView Rest API version 800/1000 for the hardware variants C7000 and Synergy to the already existing features:
 - Enclosure
 - Enclosure Group
 - Ethernet Network
 - FC Network
 - FCoE Network
 - Interconnect
+- Interconnect Type
 - Logical Enclosure
 - Logical Interconnect
 - Logical Interconnect Group
@@ -21,11 +22,14 @@ This release adds support to OneView Rest API version 800 for the hardware varia
 - Server Hardware
 - Server Hardware Types
 - Server Profile
+- Server Profile Template
 - Storage Pool
 - Storage System
 - Uplink Set
 - Volume
+- Volume Attachment
 - Volume Template
+- OS Deployment Plan
 
 #### Bug fixes & Enhancements
 - [#377](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/377) Travis build failed as Listen dependency does not support Ruby 2.2.x.

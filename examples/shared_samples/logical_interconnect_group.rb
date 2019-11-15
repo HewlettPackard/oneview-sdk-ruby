@@ -166,6 +166,7 @@ puts lig.data
 
 if variant == 'Synergy'
   puts "\nAdding an internal network with uri = #{eth01['uri']}"
+  lig.retrieve!
   lig.add_internal_network(eth01)
   lig.update
   lig.retrieve!
