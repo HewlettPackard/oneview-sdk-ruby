@@ -2,11 +2,11 @@
 
 #### Notes
 This release removes the support for Ruby 2.2 and added support for Ruby 2.5.
-Extends support of the SDK to OneView Rest API version 800/1000 (OneView v4.10/v4.20).
+Extends support of the SDK to OneView Rest API version 800/1000/1200 (OneView v4.10/v4.20/v5.0).
 This release also fixes few bugs listed below.
 
 #### Features Supported
-This release adds support to OneView Rest API version 800/1000 for the hardware variants C7000 and Synergy to the already existing features:
+This release adds support to OneView Rest API version 800/1000/1200 for the hardware variants C7000 and Synergy to the already existing features:
 - Enclosure
 - Enclosure Group
 - Ethernet Network
