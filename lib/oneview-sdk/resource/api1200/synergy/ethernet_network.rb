@@ -9,13 +9,26 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/synergy/ethernet_network'
+require_relative '../../api1000/synergy/ethernet_network'
 
 module OneviewSDK
   module API1200
     module Synergy
       # Ethernet network resource implementation for API1200 Synergy
-      class EthernetNetwork < OneviewSDK::API800::Synergy::EthernetNetwork
+      class EthernetNetwork < OneviewSDK::API1000::Synergy::EthernetNetwork
+        # Bulk create the ethernet networks
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] options information necessary to create networks
+        # @return [Array] list of ethernet networks created
+        def self.bulk_create(client, options)
+          range = options[:vlanIdRange].split('-').map(&:to_i)
+          options[:type] = 'bulk-ethernet-networkV2'
+          response = client.rest_post(BASE_URI + '/bulk', { 'body' => options }, client.api_version)
+          client.response_handler(response)
+          network_names = []
+          range[0].upto(range[1]) { |i| network_names << "#{options[:namePrefix]}_#{i}" }
+          OneviewSDK::EthernetNetwork.get_all(client).select { |network| network_names.include?(network['name']) }
+        end
       end
     end
   end

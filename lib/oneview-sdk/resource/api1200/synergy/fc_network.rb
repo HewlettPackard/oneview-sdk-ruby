@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/synergy/fc_network'
+require_relative '../../api1000/synergy/fc_network'
 
 module OneviewSDK
   module API1200
     module Synergy
       # FC network resource implementation for API1200 Synergy
-      class FCNetwork < OneviewSDK::API800::Synergy::FCNetwork
+      class FCNetwork < OneviewSDK::API1000::Synergy::FCNetwork
       end
     end
   end
