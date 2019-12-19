@@ -16,7 +16,6 @@ module OneviewSDK
     module Synergy
       # Logical Enclosure resource implementation on API1200 Synergy
       class LogicalEnclosure < OneviewSDK::API1000::Synergy::LogicalEnclosure
-        
       end
     end
   end
