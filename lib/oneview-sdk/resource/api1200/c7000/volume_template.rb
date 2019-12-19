@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/c7000/volume_template'
+require_relative '../../api1000/c7000/volume_template'
 
 module OneviewSDK
   module API1200
     module C7000
       # Volume Template resource implementation for API1200 C7000
-      class VolumeTemplate < OneviewSDK::API800::C7000::VolumeTemplate
+      class VolumeTemplate < OneviewSDK::API1000::C7000::VolumeTemplate
       end
     end
   end

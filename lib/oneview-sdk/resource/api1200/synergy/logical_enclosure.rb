@@ -9,13 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/synergy/logical_enclosure'
+require_relative '../../api1000/synergy/logical_enclosure'
 
 module OneviewSDK
   module API1200
     module Synergy
       # Logical Enclosure resource implementation on API1200 Synergy
-      class LogicalEnclosure < OneviewSDK::API800::Synergy::LogicalEnclosure
+      class LogicalEnclosure < OneviewSDK::API1000::Synergy::LogicalEnclosure
+        
       end
     end
   end

@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/synergy/uplink_set'
+require_relative '../../api1000/synergy/uplink_set'
 
 module OneviewSDK
   module API1200
     module Synergy
       # Uplink set resource implementation for API1200 Synergy
-      class UplinkSet < OneviewSDK::API800::Synergy::UplinkSet
+      class UplinkSet < OneviewSDK::API1000::Synergy::UplinkSet
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
@@ -23,7 +23,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values
-          @data['type'] ||= 'uplink-setV5'
+          @data['type'] ||= 'uplink-setV6'
           super
         end
       end

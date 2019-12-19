@@ -9,23 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/c7000/server_hardware_type'
+require_relative '../../api1000/c7000/server_hardware_type'
 
 module OneviewSDK
   module API1200
     module C7000
       # Server hardware type resource implementation for API1200 C7000
-      class ServerHardwareType < OneviewSDK::API800::C7000::ServerHardwareType
-        # Create a resource object, associate it with a client, and set its properties.
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [Hash] params The options for this resource (key-value pairs)
-        # @param [Integer] api_ver The api version to use when interracting with this resource.
-        def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
-          # Default values
-          @data['type'] ||= 'server-hardware-type-10'
-          super
-        end
+      class ServerHardwareType < OneviewSDK::API1000::C7000::ServerHardwareType
       end
     end
   end

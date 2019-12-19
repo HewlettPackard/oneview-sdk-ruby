@@ -162,7 +162,7 @@ options = {
     'portMonitorConfigInfo' => 'AnalyzerPort'
   },
   'enablePortMonitor' => true,
-  'type' => 'port-monitor',
+  'type' => 'port-monitorV1', #Type value is port-monitor for OneView API version < 1200
   'monitoredPorts' => [
     {
       'portUri' => downlinks.first['uri'],

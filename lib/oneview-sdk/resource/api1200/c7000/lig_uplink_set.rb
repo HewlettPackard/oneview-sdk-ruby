@@ -9,12 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/c7000/lig_uplink_set'
+require_relative '../../api1000/c7000/lig_uplink_set'
 
 module OneviewSDK
   module API1200
     module C7000
-      class LIGUplinkSet < OneviewSDK::API800::C7000::LIGUplinkSet
+      class LIGUplinkSet < OneviewSDK::API1000::C7000::LIGUplinkSet
       end
     end
   end

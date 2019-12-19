@@ -9,14 +9,24 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/c7000/interconnect'
+require_relative '../../api1000/c7000/interconnect'
 
 module OneviewSDK
   module API1200
     module C7000
       # Interconnect resource implementation on API1200 C7000
-      class Interconnect < OneviewSDK::API800::C7000::Interconnect
+      class Interconnect < OneviewSDK::API1000::C7000::Interconnect
         include OneviewSDK::ResourceHelper::ConfigurationOperation
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values
+          @data['type'] ||= 'InterconnectV6'
+          super
+        end
       end
     end
   end

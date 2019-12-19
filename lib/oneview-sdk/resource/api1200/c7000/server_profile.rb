@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/c7000/server_profile'
+require_relative '../../api1000/c7000/server_profile'
 
 module OneviewSDK
   module API1200
     module C7000
       # Server Profile resource implementation on API1200 C7000
-      class ServerProfile < OneviewSDK::API800::C7000::ServerProfile
+      class ServerProfile < OneviewSDK::API1000::C7000::ServerProfile
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
@@ -23,7 +23,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values
-          @data['type'] ||= 'ServerProfileV10'
+          @data['type'] ||= 'ServerProfileV11'
           super
         end
       end

@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api800/c7000/storage_pool'
+require_relative '../../api1000/c7000/storage_pool'
 
 module OneviewSDK
   module API1200
     module C7000
       # Storage pool resource implementation for API1200 C7000
-      class StoragePool < OneviewSDK::API800::C7000::StoragePool
+      class StoragePool < OneviewSDK::API1000::C7000::StoragePool
       end
     end
   end
