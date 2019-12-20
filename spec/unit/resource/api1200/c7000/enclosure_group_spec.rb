@@ -10,9 +10,8 @@ RSpec.describe klass do
 
   describe '#initialize' do
     it 'sets the defaults correctly' do
-      item = klass.new(@client_1200)
-      expect(item[:enclosureCount]).to eq(1)
-      expect(item[:type]).to eq('EnclosureGroupV8')
+      enclosure_group = described_class.new(@client_1200)
+      expect(enclosure_group[:type]).to eq('EnclosureGroupV8')
     end
   end
 end
