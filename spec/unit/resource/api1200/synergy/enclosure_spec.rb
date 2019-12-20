@@ -11,7 +11,7 @@ RSpec.describe OneviewSDK::API1200::Synergy::Enclosure do
     context 'OneView 5.00' do
       it 'sets the defaults correctly' do
         enclosure = described_class.new(@client_1200)
-        expect(enclosure[:type]).to eq('EnclosureV8)
+        expect(enclosure[:type]).to eq('EnclosureV8')
       end
     end
   end
