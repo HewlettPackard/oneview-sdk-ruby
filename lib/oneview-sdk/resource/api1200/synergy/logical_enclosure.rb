@@ -16,6 +16,16 @@ module OneviewSDK
     module Synergy
       # Logical Enclosure resource implementation on API1200 Synergy
       class LogicalEnclosure < OneviewSDK::API1000::Synergy::LogicalEnclosure
+        # Create a resource object, associate it with a client, and set its properties.
+        # @param [OneviewSDK::Client] client The client object for the OneView appliance
+        # @param [Hash] params The options for this resource (key-value pairs)
+        # @param [Integer] api_ver The api version to use when interracting with this resource.
+        def initialize(client, params = {}, api_ver = nil)
+          @data ||= {}
+          # Default values:
+          @data['type'] ||= 'LogicalEnclosureV5'
+          super
+        end
       end
     end
   end
