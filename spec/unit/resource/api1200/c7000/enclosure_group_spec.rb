@@ -11,7 +11,8 @@ RSpec.describe klass do
   describe '#initialize' do
     it 'sets the defaults correctly' do
       item = klass.new(@client_1200)
-      expect(enclosure[:type]).to eq('EnclosureGroupV8')
+      expect(item[:enclosureCount]).to eq(1)
+      expect(item[:ipAddressingMode]).to eq('DHCP')
     end
   end
 end
