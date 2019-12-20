@@ -1,4 +1,4 @@
-## v5.8.0 (Unreleased)
+## v5.8.0
 
 #### Notes
 - This release removes the support for Ruby 2.2 and added support for Ruby 2.5.
