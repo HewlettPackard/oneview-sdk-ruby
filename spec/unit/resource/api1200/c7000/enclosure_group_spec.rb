@@ -12,7 +12,7 @@ RSpec.describe klass do
     it 'sets the defaults correctly' do
       item = klass.new(@client_1200)
       expect(item[:enclosureCount]).to eq(1)
-      expect(item[:ipAddressingMode]).to eq('DHCP')
+      expect(item[:type]).to eq('EnclosureGroupV8')
     end
   end
 end

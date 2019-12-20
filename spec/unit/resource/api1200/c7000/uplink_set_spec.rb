@@ -10,7 +10,7 @@ RSpec.describe OneviewSDK::API1200::C7000::UplinkSet do
   describe '#initialize' do
     it 'should be initialize the instance with default values' do
       item = described_class.new(@client_1200)
-      expect(item['type']).to eq('uplink-setV5')
+      expect(item['type']).to eq('uplink-setV6')
     end
   end
 end
