@@ -25,7 +25,7 @@ module OneviewSDK
           # Default values:
           super
         end
-        
+
         def update(attributes = {})
           @data['type'] ||= 'EnclosureGroupV8'
           super
