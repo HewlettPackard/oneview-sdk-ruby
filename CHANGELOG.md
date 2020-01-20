@@ -1,3 +1,8 @@
+## v5.8.1 (UnRelaesed)
+
+#### Notes
+- Bugfix for the update request for enclosure group.
+
 ## v5.8.0
 
 #### Notes
