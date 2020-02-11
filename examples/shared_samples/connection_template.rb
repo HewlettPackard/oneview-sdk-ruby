@@ -42,7 +42,7 @@ connections.each do |c|
   puts "  Name: #{c[:name]} with uri: #{c[:uri]}"
 end
 
-conn_name = connections.first['name']
+conn_name = connections.fetch(2)['name']
 
 puts "\nFinding a connection template by name. Name: #{conn_name}"
 item = conn_template_class.find_by(@client, name: conn_name).first
