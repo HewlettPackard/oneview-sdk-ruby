@@ -2,11 +2,10 @@ require_relative './../lib/oneview-sdk'
 require 'pry'
 
 @client = OneviewSDK::Client.new(
-  url: ENV['ONEVIEWSDK_URL'],
-  user: ENV['ONEVIEWSDK_USER'],
-  password: ENV['ONEVIEWSDK_PASSWORD'],
-  ssl_enabled: false,
-  version: ENV['ONEVIEWSDK_VERSION'],
+  url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
+  user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
+  password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
+  ssl_enabled: false
 )
 
 ## This setting allows the SDK to flush messages to the screen as it is being run.
@@ -18,7 +17,7 @@ require 'pry'
   # when referring to OneviewSDK::<API_version>::Synergy::<Resource_name>
 # Versions supported: [200, 300, 500, 600, 800]
 # Variants supported[C7000, Synergy]
-OneviewSDK::API<version>.variant='Synergy'
+# OneviewSDK::API<version>.variant='Synergy'
 
 puts "Connected to OneView appliance at #{@client.url}\n\n"
 

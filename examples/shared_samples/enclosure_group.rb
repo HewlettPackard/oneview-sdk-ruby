@@ -65,6 +65,24 @@ puts "\nUpdating an #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]
 item.update(name: 'OneViewSDK Test Enclosure_Group Updated')
 puts "\nUpdated #{type} with new name = '#{item[:name]}' sucessfully."
 
+begin
+  command = '#TEST COMMAND'
+  puts "\nSetting a script with command = '#{command}'"
+  item.set_script(command)
+  puts "\nScript attributed sucessfully."
+rescue OneviewSDK::MethodUnavailable => e
+  puts "\n#{e}. Available only for C7000."
+end
+
+begin
+  puts "\nGetting a script"
+  script = item.get_script
+  puts "\nScript retrieved sucessfully."
+  puts script
+rescue OneviewSDK::MethodUnavailable => e
+  puts "\n#{e}. Available only for C7000."
+end
+
 puts "\nDeleting the #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"
 item.delete
 puts "\nSucessfully deleted #{type} '#{item[:name]}'."
