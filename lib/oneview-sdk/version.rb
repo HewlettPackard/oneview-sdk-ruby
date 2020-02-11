@@ -11,5 +11,5 @@
 
 # Gem version defined here
 module OneviewSDK
-  VERSION = '5.8.0'.freeze
+  VERSION = '5.9.0'.freeze
 end
