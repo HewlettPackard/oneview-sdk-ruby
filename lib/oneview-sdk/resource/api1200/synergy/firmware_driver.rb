@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/firmware_driver'
+require_relative '../../api1000/synergy/firmware_driver'
 
 module OneviewSDK
   module API1200
     module Synergy
-      # FirmwareDriver resource implementation for API600 Synergy
-      class FirmwareDriver < OneviewSDK::API300::Synergy::FirmwareDriver
+      # FirmwareDriver resource implementation for API1200 Synergy
+      class FirmwareDriver < OneviewSDK::API1000::Synergy::FirmwareDriver
       end
     end
   end

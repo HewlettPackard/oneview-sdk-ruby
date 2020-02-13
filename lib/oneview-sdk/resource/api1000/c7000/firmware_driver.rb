@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/c7000/firmware_driver'
+require_relative '../../api800/c7000/firmware_driver'
 
 module OneviewSDK
   module API1000
     module C7000
-      # FirmwareDriver resource implementation for API600 C7000
-      class FirmwareDriver < OneviewSDK::API300::C7000::FirmwareDriver
+      # FirmwareDriver resource implementation for API1000 C7000
+      class FirmwareDriver < OneviewSDK::API800::C7000::FirmwareDriver
       end
     end
   end
