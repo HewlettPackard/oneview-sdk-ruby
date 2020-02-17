@@ -23,6 +23,10 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
+          super
+        end
+
+        def update(attributes = {})
           @data['type'] ||= 'EnclosureGroupV8'
           super
         end
