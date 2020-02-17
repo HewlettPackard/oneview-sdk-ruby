@@ -1,4 +1,4 @@
-# (c) Copyright 2016-2017 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -9,7 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-# Gem version defined here
+require_relative '../../api1000/c7000/connection_template'
+
 module OneviewSDK
-  VERSION = '5.9.0'.freeze
+  module API1200
+    module C7000
+      # Connection template resource implementation for API1200 C7000
+      class ConnectionTemplate < OneviewSDK::API1000::C7000::ConnectionTemplate
+      end
+    end
+  end
 end
