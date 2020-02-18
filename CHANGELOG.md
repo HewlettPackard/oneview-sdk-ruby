@@ -4,6 +4,7 @@
 
 #### Features Supported
 This release adds support to OneView Rest API version 800/1000/1200 for the hardware variants C7000 and Synergy to the already existing features:
+- Connection Template
 - Firmware Driver
 - SAS Logical Interconnect Group
 
