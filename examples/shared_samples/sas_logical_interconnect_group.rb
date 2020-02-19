@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017-2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -15,14 +15,19 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a sas logical interconnect group named 'ONEVIEW_SDK_SAMPLE_SAS_LIG', update it and then delete it.
 #
 # Supported APIs:
-# - 300, 500
+# - 300, 500, 600, 800, 1000, 1200
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::SASLogicalInterconnectGroup
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::SASLogicalInterconnectGroup
+# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::SASLogicalInterconnectGroup
+# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::SASLogicalInterconnectGroup
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::SASLogicalInterconnectGroup
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::SASLogicalInterconnectGroup
 
 # Resource Class used in this sample
 sas_int_group_class = OneviewSDK.resource_named('SASLogicalInterconnectGroup', @client.api_version)
+
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 
 scope = scope_class.get_all(@client).first
