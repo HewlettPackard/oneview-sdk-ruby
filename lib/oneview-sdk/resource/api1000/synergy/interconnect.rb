@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../c7000/interconnect'
+require_relative '../../api800/synergy/interconnect'
 
 module OneviewSDK
   module API1000
     module Synergy
       # Interconnect resource implementation on API1000 Synergy
-      class Interconnect < OneviewSDK::API1000::C7000::Interconnect
+      class Interconnect < OneviewSDK::API800::Synergy::Interconnect
       end
     end
   end
