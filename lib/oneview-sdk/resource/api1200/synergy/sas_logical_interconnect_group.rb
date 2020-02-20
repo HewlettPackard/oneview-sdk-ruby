@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1000/synergy/logical_enclosure'
+require_relative '../../api1000/synergy/sas_logical_interconnect_group'
 
 module OneviewSDK
   module API1200
     module Synergy
-      # Logical Enclosure resource implementation on API1200 Synergy
-      class LogicalEnclosure < OneviewSDK::API1000::Synergy::LogicalEnclosure
+      # SAS Logical interconnect group resource implementation for API1200 Synergy
+      class SASLogicalInterconnectGroup < OneviewSDK::API1000::Synergy::SASLogicalInterconnectGroup
       end
     end
   end
