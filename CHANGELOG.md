@@ -1,3 +1,16 @@
+## v5.10.0
+
+#### Notes
+Extended support to Image Streamer Rest API version 800((ImageStreamer v4.10)), API version 1000 (ImageStreamer v4.20) and API version 1020 (ImageStreamer v5.00).
+This release does not support any new features added in API versions 800,1000 and 1020.
+
+#### Features supported
+- Build Plan
+- Deployment Plan
+- Golden Image
+- OS Volume
+- Plan Script
+
 ## v5.9.0
 - This release supports OneView Rest API versions 800/1000/1200 minimally where we can use OneView v4.10/v4.20/v5.0 with this SDK. No new fields are added/deleted to support OneView Rest API 800/1000/1200. Complete support will be done in next releases.
 - Bugfix for the update request for enclosure group.
