@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,12 +11,15 @@
 
 require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
-# - 300, 500, 600
+# - 300, 500, 600, 800, 1000, 1020
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::GoldenImage
 # api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::GoldenImage
 # api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::GoldenImage
+# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::GoldenImage
+# api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::GoldenImage
+# api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::GoldenImage
 
 # Example: Create a golden image for an Image Streamer
 # NOTE: This will create a golden images named 'Golden_Image_1' and 'Golden_Image_2', and then, it will delete them.
@@ -76,17 +79,18 @@ puts "\nGetting details of the golden image capture logs with id #{item3['uri']}
 item3.download_details_archive(@golden_image_log_path)
 puts "\nDetails of the golden image save successfully."
 
-# Adds a golden image resource from the file that is uploaded from a local drive
-puts "\nAdds a golden image resource from the file that is uploaded from a local drive"
-options2 = { name: 'Golden_Image_2', description: 'Any_Description' }
-puts "\nAdding a golden image with name #{options2[:name]}."
-item4 = golden_image_class.add(@client, @golden_image_upload_path, options2)
-puts "\nGolden Image with uri #{item4['uri']} and name #{item4['name']} added successfully."
 
 # Downloads the content of the selected golden image
 puts "\nDownloads the content of the selected golden image with id #{item3['uri']} and name #{item3['name']}"
 item3.download(@golden_image_download_path)
 puts "\nDownload done successfully."
+
+# Adds a golden image resource from the file that is uploaded from a local drive
+puts "\nAdds a golden image resource from the file that is uploaded from a local drive"
+options2 = { name: 'Golden_Image_2', description: 'Any_Description' }
+puts "\nAdding a golden image with name #{options2[:name]}."
+item4 = golden_image_class.add(@client, @golden_image_download_path, options2)
+puts "\nGolden Image with uri #{item4['uri']} and name #{item4['name']} added successfully."
 
 # Removes all golden images
 puts "\n#Removing a golden image with id #{item3['uri']} and name #{item3['name']}:"

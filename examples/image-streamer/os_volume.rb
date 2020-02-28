@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,12 +11,15 @@
 
 require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
-# - 300, 500, 600
+# - 300, 500, 600, 800, 1000, 1020
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::OSVolume
 # api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::OSVolume
 # api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::OSVolume
+# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::OSVolume
+# api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::OSVolume
+# api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::OSVolume
 
 # Example: Os Volume for an Image Streamer
 # NOTE: You must have one os volume.
