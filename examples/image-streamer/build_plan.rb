@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,12 +11,15 @@
 
 require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
-# - 300, 500, 600
+# - 300, 500, 600, 800, 1000, 1020
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::BuildPlan
 # api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::BuildPlan
 # api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::BuildPlan
+# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::BuildPlan
+# api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::BuildPlan
+# api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::BuildPlan
 
 # Example: Create a build plan for an Image Streamer
 # NOTE: This will create three build plans with the following names 'Build_Plan_1', 'Build_Plan_2' and 'Build_Plan_3', then delete them.

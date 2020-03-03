@@ -117,7 +117,7 @@ RSpec.configure do |config|
       # Mock appliance version and login api requests, as well as loading trusted certs
       allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(1200)
       allow_any_instance_of(OneviewSDK::Client).to receive(:login).and_return('secretToken')
-      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_i3s_api_version).and_return(600)
+      allow_any_instance_of(OneviewSDK::ImageStreamer::Client).to receive(:appliance_i3s_api_version).and_return(1020)
       allow(OneviewSDK::SSLHelper).to receive(:load_trusted_certs).and_return(nil)
     end
 

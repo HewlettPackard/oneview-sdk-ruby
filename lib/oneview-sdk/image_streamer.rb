@@ -1,4 +1,4 @@
-# (c) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ Dir[File.dirname(__FILE__) + '/image-streamer/resource/*.rb'].each { |file| requ
 module OneviewSDK
   # Module for interacting with the Image Streamer
   module ImageStreamer
-    SUPPORTED_API_VERSIONS = [300, 500, 600].freeze
+    SUPPORTED_API_VERSIONS = [300, 500, 600, 800, 1000, 1020].freeze
     DEFAULT_API_VERSION = 300
     @api_version = DEFAULT_API_VERSION
     @api_version_updated = false # Whether or not the API version has been set by the user
