@@ -22,6 +22,10 @@ require_relative '../_client' # Gives access to @client
 # api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::HypervisorManager
 # api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::HypervisorManager
 
+@hypervisor_manager_ip= "172.18.13.11"
+@hypervisor_manager_username= "dcs"
+@hypervisor_manager_password= "dcs"
+
 raise 'ERROR: Must set @hypervisor_manager_ip in _client.rb' unless @hypervisor_manager_ip
 raise 'ERROR: Must set @hypervisor_manager_username in _client.rb' unless @hypervisor_manager_username
 raise 'ERROR: Must set @hypervisor_manager_password in _client.rb' unless @hypervisor_manager_password
