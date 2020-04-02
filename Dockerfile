@@ -1,9 +1,13 @@
-FROM ruby:alpine
-ENV USER root
-RUN apk update 
-RUN apk add curl vim wget openssl bash ca-certificates
-# RUN \curl -L https://get.rvm.io | rvm_tar_command=tar bash -s stable
-# RUN /bin/bash -l -c "rvm install 2.0"
-# RUN /bin/bash -l -c "gem install bundler"
-RUN gem install oneview-sdk
+FROM ubuntu:18.04
+MAINTAINER "Chebrolu Harika <bala-sai-harika.chebrolu@hpe.com>"
+WORKDIR /root
+RUN apt-get update && \ 
+    apt-get install -y curl vim wget openssl bash ca-certificates git && \
+    apt-get install -y ruby2.5-dev && \
+    apt-get install -y gcc make
+RUN gem install oneview && \
+    git clone https://github.com/HewlettPackard/oneview-sdk-ruby.git oneview-ruby
+WORKDIR  /root/oneview-ruby
+RUN gem install bundler
+RUN bundle install
 CMD ["/bin/bash"]
