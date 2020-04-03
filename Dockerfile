@@ -9,5 +9,6 @@ RUN gem install oneview && \
     git clone https://github.com/HewlettPackard/oneview-sdk-ruby.git oneview-ruby
 WORKDIR  /root/oneview-ruby
 RUN gem install bundler
+RUN bundle update
 RUN bundle install
 CMD ["/bin/bash"]
