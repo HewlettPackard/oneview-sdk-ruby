@@ -42,7 +42,7 @@ module OneviewSDK
           response = @client.rest_delete(self.class::BASE_URI + "/#{@data["aliasName"]}")
           body = @client.response_handler(response)
           true
-		end
+		    end
       end
     end
   end
