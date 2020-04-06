@@ -12,45 +12,38 @@
 require_relative 'resource'
 
 module OneviewSDK
-    module API600
-	    module C7000
-		    class ServerCertificate < Resource
-			    # Server certificate resource implementation
-                            BASE_URI = '/rest/certificates/servers'.freeze
-                            DEFAULT_REQUEST_HEADER = { 'requestername' => 'DEFAULT' }.freeze
-                           
-			    alias remove delete
-
-                            def initialize(client, param = {}, api_ver = nil)
-				    super
-                                    #Default values
-#				    @data['uri'] ||= "#{self.class::BASE_URI}/#{@data["aliasName"]}" if @data["aliasName"]
-                                    @data["type"] ||= "CertificateInfoV2"
-			    end
-			    
-			    def import
-				    @data.delete("aliasName")
-				    create(header = self.class::DEFAULT_REQUEST_HEADER)
-				    true
-                            end
-
-			    def delete(*)
-				    unavailable_method
-			    end
-			    def retrieve!
-				    response = @client.rest_get(self.class::BASE_URI + "/#{@data["aliasName"]}")
-				    body = @client.response_handler(response)
-				    set_all(body)
-			    	    true
-			    end
-			    
-			    def remove
-			    	    response = @client.rest_delete(self.class::BASE_URI + "/#{@data["aliasName"]}")
-			    	    body = @client.response_handler(response)
-			    	    true
-			    end
-			    
-		    end
-	    end
+  module API600
+    module C7000
+      class ServerCertificate < Resource
+        # Server certificate resource implementation
+        BASE_URI = '/rest/certificates/servers'.freeze
+        DEFAULT_REQUEST_HEADER = { 'requestername' => 'DEFAULT' }.freeze
+        alias remove delete
+        def initialize(client, param = {}, api_ver = nil)
+          super
+          #Default values
+          @data["type"] ||= "CertificateInfoV2"
+        end    
+        def import
+          @data.delete("aliasName")
+          create(header = self.class::DEFAULT_REQUEST_HEADER)
+          true
+        end
+        def delete(*)
+          unavailable_method
+        end
+        def retrieve!
+          response = @client.rest_get(self.class::BASE_URI + "/#{@data["aliasName"]}")
+          body = @client.response_handler(response)
+          set_all(body)
+          true
+        end	    
+        def remove
+          response = @client.rest_delete(self.class::BASE_URI + "/#{@data["aliasName"]}")
+          body = @client.response_handler(response)
+          true
+		end
+      end
     end
+  end
 end

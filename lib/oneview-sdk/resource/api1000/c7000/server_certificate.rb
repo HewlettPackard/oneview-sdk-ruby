@@ -12,11 +12,11 @@
 require_relative '../../api800/c7000/server_certificate'
 
 module OneviewSDK
-    module API1000
-	    module C7000
-		    # Server certificate resource implementation for API1000 C7000
-		    class ServerCertificate < OneviewSDK::API800::C7000::ServerCertificate
-		    end
-	    end
+  module API1000
+    module C7000
+      # Server certificate resource implementation for API1000 C7000
+      class ServerCertificate < OneviewSDK::API800::C7000::ServerCertificate
+      end
     end
+  end
 end
