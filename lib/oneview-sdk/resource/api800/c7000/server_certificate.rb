@@ -1,4 +1,4 @@
-#(C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 require_relative '../../api600/c7000/server_certificate'
 
 module OneviewSDK
-    module API800
-	    module C7000
-		    # Server certificate resource implementation for API800 C7000
-		    class ServerCertificate < OneviewSDK::API600::C7000::ServerCertificate
-		    end
-	    end
+  module API800
+    module C7000
+      # Server certificate resource implementation for API800 C7000
+      class ServerCertificate < OneviewSDK::API600::C7000::ServerCertificate
+      end
     end
+  end
 end

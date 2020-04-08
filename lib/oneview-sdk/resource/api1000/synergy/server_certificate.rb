@@ -1,4 +1,4 @@
-#(C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 require_relative '../../api800/synergy/server_certificate'
 
 module OneviewSDK
-    module API1000
-	    module Synergy
-		    # Server certificate resource implementation for API1000 Synergy
-		    class ServerCertificate < OneviewSDK::API800::Synergy::ServerCertificate
-		    end
-	    end
+  module API1000
+    module Synergy
+      # Server certificate resource implementation for API1000 Synergy
+	    class ServerCertificate < OneviewSDK::API800::Synergy::ServerCertificate
+      end
     end
+  end
 end
