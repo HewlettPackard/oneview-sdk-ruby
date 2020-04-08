@@ -18,7 +18,6 @@ This release does not support any new features added in API versions 800,1000 an
 - Golden Image
 - OS Volume
 - Plan Script
-- Hypervisor Manager
 
 ## v5.9.0
 - This release supports OneView Rest API versions 800/1000/1200 minimally where we can use OneView v4.10/v4.20/v5.0 with this SDK. No new fields are added/deleted to support OneView Rest API 800/1000/1200. Complete support will be done in next releases.
