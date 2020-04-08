@@ -26,7 +26,6 @@ require_relative '../_client' # Gives access to @client
 # server_certificate_class = OneviewSDK::API1200::C7000::ClientCertificate
 # server_certificate_class = OneviewSDK::API1200::Synergy::ClientCertificate
 
-web_certificate_api = 500
 # Resources classes that you can use for Web Server Certificate in this example:
 # web_certificate_class = OneviewSDK::API200::WebServerCertificate
 # web_certificate_class = OneviewSDK::API300::C7000::WebServerCertificate
@@ -34,28 +33,33 @@ web_certificate_api = 500
 # web_certificate_class = OneviewSDK::API500::C7000::WebServerCertificate
 # web_certificate_class = OneviewSDK::API500::Synergy::WebServerCertificate
 
+web_certificate_api = 500
+
+# Initialize the resources
 server_certificate_class = OneviewSDK.resource_named('ServerCertificate', @client.api_version)
 web_certificate_class = OneviewSDK.resource_named('WebServerCertificate', web_certificate_api )
 
+# Imports certificates 
 puts "\nImporting the certificate:- "
 item = server_certificate_class.new(@client, aliasName: @storage_system_ip)
 web_certificate = web_certificate_class.get_certificate(@client, @storage_system_ip)
-
 item.data["type"]="CertificateInfoV2"
 item.data["certificateDetails"]= []
 item.data["certificateDetails"][0]={"type":"CertificateDetailV2","base64Data":web_certificate.data["certificateDetails"][0]["base64Data"]}
-
 item.import
 puts 'Imported successfully.'
 
+# Updates the certificate
 puts "Updating certificate:-"
 item.refresh
 item.update
 puts "Updated Successfully"
 
+# Retrieve the certificates as per the aliasName
 puts "Retrieving Imported Certificate:-"
 item = server_certificate_class.new(@client, aliasName: @storage_system_ip)
 puts  item.data if item.retrieve!
 
+# Deleres the certificate as per the aliasName
 puts "Removing certificate"
 puts "Successfully Removed" if item.remove
