@@ -1,3 +1,11 @@
+## v5.11.0(unreleased)
+
+#### Notes
+Extended support to Hypervisor Manaager Rest API version 1000, and  API version 1200.
+
+#### Features supported
+- Hypervisor Manager
+
 ## v5.10.0
 
 #### Notes
