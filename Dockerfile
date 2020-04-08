@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y ruby-dev && \
     apt-get install -y gcc make
 RUN gem install oneview && \
-    git clone https://github.com/HewlettPackard/oneview-sdk-ruby.git oneview-ruby
+ADD . oneview/
 WORKDIR  /root/oneview-ruby
 RUN gem install bundler
 RUN bundle update
