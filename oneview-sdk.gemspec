@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'thor'
   spec.add_runtime_dependency 'highline'
-  spec.add_runtime_dependency 'pry'
+  spec.add_runtime_dependency 'pry', '~> 0.12.2'
   spec.add_runtime_dependency 'multipart-post'
   spec.add_runtime_dependency 'bunny'
 
