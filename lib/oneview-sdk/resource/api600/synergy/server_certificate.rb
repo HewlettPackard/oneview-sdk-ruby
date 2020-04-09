@@ -13,7 +13,7 @@ require_relative '../../api600/c7000/server_certificate'
 
 module OneviewSDK
   module API600
-  	module Synergy
+    module Synergy
       # Server certificate resource implementation for API 600 Synergy
       class ServerCertificate < OneviewSDK::API600::C7000::ServerCertificate
       end

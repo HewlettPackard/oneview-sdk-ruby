@@ -4,7 +4,7 @@ require 'pry'
 @client = OneviewSDK::Client.new(
   url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
   user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
-  password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
+  password: 'secret@123',  # or set ENV['ONEVIEWSDK_PASSWORD']
   ssl_enabled: false
 )
 
@@ -36,7 +36,7 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @server_hardware_username = 'Administrator'
 # @server_hardware_password = 'password123'
 # @server_mpHostsAndRanges = ["Hostname.Domain", "172.1.1.10-172.1.1.20"]
-#@storage_system_ip = '172.18.11.11'
+# @storage_system_ip = '172.18.11.11'
 # @storage_system_username = 'Administrator'
 # @storage_system_password = 'password123'
 # @store_virtual_ip = "172.18.30.1",
