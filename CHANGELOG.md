@@ -1,3 +1,8 @@
+## v5.11.0(unreleased)
+
+#### Bug fixes & Enhancements
+- [#394](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/394) Travis build failed as disable method is deprecated for Pry Gem.
+
 ## v5.10.0
 
 #### Notes
