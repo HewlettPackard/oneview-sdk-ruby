@@ -14,7 +14,7 @@ require_relative '../../api800/c7000/hypervisor_cluster_profile'
 module OneviewSDK
   module API1000
     module C7000
-      # Hypervisor cluster profile resource implementation for API1000 Synergy
+      # Hypervisor cluster profile resource implementation for API1000 C7000
       class HypervisorClusterProfile < OneviewSDK::API800::C7000::HypervisorClusterProfile
       end
     end
