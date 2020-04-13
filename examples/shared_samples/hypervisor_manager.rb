@@ -17,10 +17,18 @@ require_relative '../_client' # Gives access to @client
 # Supported APIs:
 # - API800 for C7000
 # - API800 for Synergy
+# - API1000 for C7000
+# - API1000 for Synergy
+# - API1200 for C7000
+# - API1200 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::HypervisorManager
 # api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::HypervisorManager
+# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::HypervisorManager
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::HypervisorManager
+# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::HypervisorManager
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::HypervisorManager
 
 raise 'ERROR: Must set @hypervisor_manager_ip in _client.rb' unless @hypervisor_manager_ip
 raise 'ERROR: Must set @hypervisor_manager_username in _client.rb' unless @hypervisor_manager_username
