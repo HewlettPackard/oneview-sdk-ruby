@@ -6,6 +6,10 @@ Extended support to Hypervisor Cluster Profile Rest API version 1000 and API ver
 #### Features supported
 - Hypervisor Cluster Profile
 
+#### Bug fixes & Enhancements
+- [#394](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/394) Travis build failed as disable method is deprecated for Pry Gem.
+
+
 ## v5.10.0
 
 #### Notes
