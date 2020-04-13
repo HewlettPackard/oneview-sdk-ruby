@@ -1,7 +1,7 @@
 ## v5.11.0(unreleased)
 
 #### Notes
-Extended support to Hypervisor Manaager and Hypervisor Cluster Profile Rest API version 1000, and  API version 1200.
+Extended support to Hypervisor Manager and Hypervisor Cluster Profile Rest API version 1000, and  API version 1200.
 
 #### Features supported
 - Hypervisor Manager
