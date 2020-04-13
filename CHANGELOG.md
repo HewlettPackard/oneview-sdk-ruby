@@ -1,15 +1,14 @@
 ## v5.11.0(unreleased)
 
-
 #### Notes
-Extended support to Hypervisor Manaager Rest API version 1000, and  API version 1200.
+Extended support to Hypervisor Manaager and Hypervisor Cluster Profile Rest API version 1000, and  API version 1200.
 
 #### Features supported
 - Hypervisor Manager
+- Hypervisor Cluster Profile
 
 #### Bug fixes & Enhancements
 - [#394](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/394) Travis build failed as disable method is deprecated for Pry Gem.
-
 
 ## v5.10.0
 
