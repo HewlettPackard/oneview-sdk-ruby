@@ -1,4 +1,4 @@
-# (C) Copyright 2018 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -17,10 +17,18 @@ require_relative '../_client' # Gives access to @client
 # Supported APIs:
 # - API800 for C7000
 # - API800 for Synergy
+# - API1000 for C7000
+# - API1000 for Synergy
+# - API1200 for C7000
+# - API1200 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::HypervisorClusterProfile
 # api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::HypervisorClusterProfile
+# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::HypervisorClusterProfile
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::HypervisorClusterProfile
+# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::HypervisorClusterProfile
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::HypervisorClusterProfile
 
 # Resource Class used in this sample
 hypervisor_cluster_profile_class = OneviewSDK.resource_named('HypervisorClusterProfile', @client.api_version)

@@ -1,15 +1,20 @@
 ## v5.11.0(unreleased)
 
-<<<<<<< HEAD
 #### Notes
 This release adds support to OneView Rest API version 600/800/1000/1200 for the hardware variants C7000 and Synergy to the features Server Certificate.
 
 #### New Resource
  - Server Certificate
-=======
+
+#### Notes
+Extended support to Hypervisor Manager and Hypervisor Cluster Profile Rest API version 1000, and  API version 1200.
+
+#### Features supported
+- Hypervisor Manager
+- Hypervisor Cluster Profile
+
 #### Bug fixes & Enhancements
 - [#394](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/394) Travis build failed as disable method is deprecated for Pry Gem.
->>>>>>> 7d40ef557095a37f1bf0d936d50657a8b25edbc5
 
 ## v5.10.0
 
