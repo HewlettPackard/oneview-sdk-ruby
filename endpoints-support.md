@@ -313,7 +313,6 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **SAS Logical JBODs**                                                                                                 |
 |<sub>/rest/sas-logical-jbods</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
 |<sub>/rest/sas-logical-jbods/{id}</sub>                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
-
 |<sub>/rest/sas-logical-jbods/{id}/drives</sub>                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
 |     **Scopes**                                                                                                            |
 |<sub>/rest/scopes</sub>                                                                  | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:| :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
