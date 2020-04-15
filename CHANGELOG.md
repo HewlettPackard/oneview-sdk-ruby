@@ -1,13 +1,10 @@
 ## v5.11.0(unreleased)
 
 #### Notes
-This release adds support to OneView Rest API version 600/800/1000/1200 for the hardware variants C7000 and Synergy to the features Server Certificate.
+This release adds support to OneView Rest API version 600/800/1000/1200 for the hardware variants C7000 and Synergy to the features Server Certificate. Extended support to Hypervisor Manager and Hypervisor Cluster Profile Rest API version 1000, and API version 1200.
 
 #### New Resource
  - Server Certificate
-
-#### Notes
-Extended support to Hypervisor Manager and Hypervisor Cluster Profile Rest API version 1000, and  API version 1200.
 
 #### Features supported
 - Hypervisor Manager
