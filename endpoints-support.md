@@ -313,8 +313,11 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |     **SAS Logical JBODs**                                                                                                 |
 |<sub>/rest/sas-logical-jbods</sub>                                                       | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
 |<sub>/rest/sas-logical-jbods/{id}</sub>                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+
 |<sub>/rest/sas-logical-jbods/{id}/drives</sub>                                           | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:
+
 |     **Scopes**                                                                                                            |
+
 |<sub>/rest/scopes</sub>                                                                  | POST     | :white_check_mark:   | :white_check_mark:   | :white_check_mark:| :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/scopes</sub>                                                                  | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:| :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/scopes/{id}</sub>                                                             | GET      | :white_check_mark:   | :white_check_mark:   | :white_check_mark:| :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
@@ -327,7 +330,8 @@ OneviewSDK::Datacenter.find_by(@client, width: 11000).map(&:remove)
 |<sub>/rest/scopes/resources/{resource_uri}</sub>                                         | PATCH    | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:| :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 
 |     **Server Certificate**                                                                                                   |
-|<sub>/rest/certificates/https/remote/{address}</sub>                                                    | GET      | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
+
+|<sub>/rest/certificates/https/remote/{address}</sub>                                     | GET       | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/certificates/servers</sub>                                                    | POST      | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/certificates/servers/{aliasName}</sub>                                        | GET       | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
 |<sub>/rest/certificates/servers/{aliasName}</sub>                                        | PUT       | :heavy_minus_sign:   | :heavy_minus_sign:   | :white_check_mark:   |:white_check_mark:   |:white_check_mark:   |:white_check_mark:   |
