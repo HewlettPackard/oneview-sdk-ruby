@@ -18,10 +18,11 @@ module OneviewSDK
       class ServerCertificate < Resource
         BASE_URI = '/rest/certificates/servers'.freeze
         DEFAULT_REQUEST_HEADER = { 'requestername' => 'DEFAULT' }.freeze
-
+        CERT_URI = '/rest/certificates/https/remote/'.freeze
         def initialize(client, param = {}, api_ver = nil)
-          super
           # Default values
+          super
+          @data['uri'] ||= "#{self.class::BASE_URI}/#{@data['aliasName']}" if @data['aliasName']
           @data['type'] ||= 'CertificateInfoV2'
         end
 
@@ -42,8 +43,16 @@ module OneviewSDK
           true
         end
 
+        def get_certificate
+          response = @client.rest_get(self.class::CERT_URI + "/#{@data['remoteIp']}")
+          body = @client.response_handler(response)
+          set_all(body)
+          body
+        end
+
         def remove
-          response = @client.rest_delete(self.class::BASE_URI + "/#{@data['aliasName']}")
+          header = DEFAULT_REQUEST_HEADER
+          response = @client.rest_delete(self.class::BASE_URI + "/#{@data['aliasName']}", header, @api_version)
           body = @client.response_handler(response)
           set_all(body)
           true

@@ -26,28 +26,26 @@ require_relative '../_client' # Gives access to @client
 # server_certificate_class = OneviewSDK::API1200::C7000::ClientCertificate
 # server_certificate_class = OneviewSDK::API1200::Synergy::ClientCertificate
 
-# Resources classes that you can use for Web Server Certificate in this example:
-# web_certificate_class = OneviewSDK::API200::WebServerCertificate
-# web_certificate_class = OneviewSDK::API300::C7000::WebServerCertificate
-# web_certificate_class = OneviewSDK::API300::Synergy::WebServerCertificate
-# web_certificate_class = OneviewSDK::API500::C7000::WebServerCertificate
-# web_certificate_class = OneviewSDK::API500::Synergy::WebServerCertificate
-
-web_certificate_api = 500
-
 # Initialize the resources
 server_certificate_class = OneviewSDK.resource_named('ServerCertificate', @client.api_version)
-web_certificate_class = OneviewSDK.resource_named('WebServerCertificate', web_certificate_api)
 
-# Imports certificates
+# Gets certificates from remote IP
+puts 'Fetching Certificate:-'
+certificate = server_certificate_class.new(@client)
+certificate.data['remoteIp'] = '172.18.13.11'
+puts certificate.get_certificate
+
+# Imports the certificates
 puts 'Importing the certificate:- '
 item = server_certificate_class.new(@client, aliasName: @storage_system_ip)
-web_certificate = web_certificate_class.get_certificate(@client, @storage_system_ip)
-item.data['type'] = 'CertificateInfoV2'
+item.data['type'] = certificate.get_certificate['type']
 item.data['certificateDetails'] = []
-item.data['certificateDetails'][0] = { 'type' => 'CertificateDetailV2', 'base64Data' => web_certificate.data['certificateDetails'][0]['base64Data'] }
-item.import
-puts 'Imported successfully.'
+item.data['certificateDetails'][0] = {
+  'type' => certificate.get_certificate['certificateDetails'][0]['type'],
+  'base64Data' => certificate.get_certificate['certificateDetails'][0]['base64Data']
+}
+puts 'Imported successfully.' if item.import
+
 # Updates the certificate
 puts 'Updating certificate:-'
 item.refresh
