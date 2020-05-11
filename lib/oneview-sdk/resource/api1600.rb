@@ -63,4 +63,4 @@ module OneviewSDK
 end
 
 # Load all API1600-specific resources:
-Dir[File.dirname(__FILE__) + '/API1600/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/api1600/*.rb'].each { |file| require file }
