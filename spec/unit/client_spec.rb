@@ -87,7 +87,7 @@ RSpec.describe OneviewSDK::Client do
       options = { url: 'https://oneview.example.com', token: 'token123', api_version: 1400 }
       client = nil
       expect { client = OneviewSDK::Client.new(options) }.to output(/is greater than the appliance API version/).to_stdout_from_any_process
-      expect(client.api_version).to eq(1400)
+      expect(client.api_version).to eq(1800)
     end
 
     it 'sets @print_wait_dots to false by default' do
