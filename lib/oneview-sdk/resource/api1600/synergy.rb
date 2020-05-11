@@ -22,7 +22,6 @@ module OneviewSDK
     end
   end
 end
-  
+ 
 # Load all API-specific resources:
 Dir[File.dirname(__FILE__) + '/synergy/*.rb'].each { |file| require file }
-  
