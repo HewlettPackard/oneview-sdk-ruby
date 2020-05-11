@@ -1,4 +1,4 @@
-# (c) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ module OneviewSDK
   env_i3s = %w[I3S_URL I3S_SSL_ENABLED]
   ENV_VARS = env_sdk.concat(env_i3s).freeze
 
-  SUPPORTED_API_VERSIONS = [200, 300, 500, 600, 800, 1000, 1200].freeze
+  SUPPORTED_API_VERSIONS = [200, 300, 500, 600, 800, 1000, 1200, 1600].freeze
   DEFAULT_API_VERSION = 200
   @api_version = DEFAULT_API_VERSION
   @api_version_updated = false # Whether or not the API version has been set by the user
