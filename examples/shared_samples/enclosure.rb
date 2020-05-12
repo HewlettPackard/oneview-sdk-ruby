@@ -26,11 +26,19 @@ require_relative '../_client' # Gives access to @client
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Enclosure
 # api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Enclosure
 # api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::Enclosure
+# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::Enclosure
+# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::Enclosure
+# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::Enclosure
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::Enclosure
+# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::Enclosure
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::Enclosure
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::Enclosure
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::Enclosure
 
 # Resource Class used in this sample
 enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
 
-# EnclosureGroup class used in this sample
+# EnclosureGroup class used in this samplei
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 
 encl_group = encl_group_class.get_all(@client).first
@@ -40,6 +48,7 @@ encl_name = 'OneViewSDK-Test-Enclosure'
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
+# To run this example for API Verison 1600, you would need to mention API Versio 1200 or less for scope resource.
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 scope_1 = scope_class.new(@client, name: 'Scope 1')
 scope_1.create
