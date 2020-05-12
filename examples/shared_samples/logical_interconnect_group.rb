@@ -15,14 +15,9 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a few networks (ethernet & FC), as well as a LIG named 'ONEVIEW_SDK_TEST_LIG', then delete them all.
 #
 # Supported APIs:
-# - 200, 300, 500
-
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::LogicalInterconnectGroup
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalInterconnectGroup
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::LogicalInterconnectGroup
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalInterconnectGroup
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalInterconnectGroup
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# Supported API variants
+# C7000, Synergy
 
 # Resource Class used in this sample
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
