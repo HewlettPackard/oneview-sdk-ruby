@@ -64,7 +64,7 @@ Follow step1 as mentioned above, folllowed by steps mentioned below.
      oneview-ruby ruby examples/image-streamer/api300/plan_script.rb
    ```
 
-That's it! If you'd like to modify an example, simply modify the file (on the host), then re-build the image and run it.
+That's it! If you'd like to modify an example, simply modify the file (on the host), then re-run the image and run your samples.
 
 ## Concurrent Execution
 
