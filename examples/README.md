@@ -25,34 +25,32 @@ All you need is Docker and git (optional).
 
 1. Clone this repo and cd into it:
    ```bash
-   $ git clone https://github.com/HewlettPackard/oneview-sdk-ruby.git
+   $ git clone https://github.com/HewlettPackard/oneview-sdk-ruby
    $ cd oneview-sdk-ruby
    ```
 
    Note: You can navigate to the repo url and download the repo as a zip file if you don't want to use git
 
-2. Build the docker image: `$ docker build -t oneview-ruby .`
+2. `cd` into this examples directory, then copy the `_client.rb.example` file to a new file named `_client.rb`.
+
+3. Modify it by inserting your credentials or authentication token, ssl_enabled flag, and anything else your environment requires. The options are commented in the `_client.rb.example` file;
+
+4. Build the docker image: `$ docker build -t oneview-ruby .`
 
    Note: If you're behind a proxy, please edit the Dockerfile before building, uncommenting/adding the necessary ENV directives for your environment.
 
-3. Create volume in Docker to mount: `$ docker volume create oneview-ruby-volume .`
-
-4. `cd` into this examples directory, then copy the `_client.rb.example` file to a new file named `_client.rb`.
-
-5. Modify it by inserting your credentials or authentication token, ssl_enabled flag, and anything else your environment requires. The options are commented in the `_client.rb.example` file;
-
-6. Now you can run any of the examples in this directory:
+5. Now you can run any of the examples in this directory:
    ```bash
-   # Replace "connection_template" with the name of the recipe you'd like to run.
+   # Replace "fc_network" with the name of the recipe you'd like to run.
    # Replace "pwd" with the path of the example file you'd like to run.
-   $ docker run -it \
-     -v $(pwd)/:/ oneview-ruby-volume
-     oneview-ruby ruby shared_samples/fc_network.rb
+   $ docker run -it --rm \
+     -v $(pwd)/:/root/oneview
+     oneview-ruby ruby examples/shared_samples/fc_network.rb
    ```
 
 ### To run ImageStreamer examples in docker:
 
-Follow steps from 1 to 3 as mentioned above, folllowed by steps mentioned below.
+Follow step1 as mentioned above, folllowed by steps mentioned below.
 1. `cd` into this examples directory, then copy the `_client_i3s.rb.example` file to a new file named `_client_i3s.rb`.
 
 2. Modify it by inserting your authentication token, ssl_enabled flag, and anything else your environment requires. The options are commented in the `_client_i3s.rb.example` file.
@@ -61,12 +59,12 @@ Follow steps from 1 to 3 as mentioned above, folllowed by steps mentioned below.
    ```bash
    # (Replace "plan_script" with the name of the example you'd like to run)
    # (Replace "pwd" with the path of the example file you'd like to run)
-   $ docker run -it \
-     -v $(pwd)/:/ oneview-ruby-volume
-     oneview-ruby ruby image-streamer/api300/plan_script.rb
+   $ docker run -it --rm \
+     -v $(pwd)/:/root/oneview
+     oneview-ruby ruby examples/image-streamer/api300/plan_script.rb
    ```
 
-That's it! If you'd like to modify a recipe, simply modify the recipe file (on the host), then re-build the image and run it.
+That's it! If you'd like to modify an example, simply modify the file (on the host), then re-run the image and run your samples.
 
 ## Concurrent Execution
 
