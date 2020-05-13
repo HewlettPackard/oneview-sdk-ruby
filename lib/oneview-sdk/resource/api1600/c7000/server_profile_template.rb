@@ -14,10 +14,8 @@ require_relative '../../api1200/c7000/server_profile_template'
 module OneviewSDK
   module API1600
     module C7000
-<<<<<<< HEAD:lib/oneview-sdk/resource/api1600/c7000/server_profile_template.rb
       # Server Profile Template resource implementation on API1600 C7000
       class ServerProfileTemplate < OneviewSDK::API1200::C7000::ServerProfileTemplate
-
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
@@ -28,10 +26,6 @@ module OneviewSDK
           @data['type'] ||= 'ServerProfileTemplateV8'
           super
         end
-=======
-      # Enclosure resource implementation for API1600 C7000
-      class Enclosure < OneviewSDK::API1200::C7000::Enclosure
->>>>>>> e876cf6e27982338d4b561d45b5014008b0e678c:lib/oneview-sdk/resource/api1600/c7000/enclosure.rb
       end
     end
   end
