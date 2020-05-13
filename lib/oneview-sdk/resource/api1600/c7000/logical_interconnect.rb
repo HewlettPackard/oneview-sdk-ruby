@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1200/c7000/logical_interconnect_group'
+require_relative '../../api1200/c7000/logical_interconnect'
 
 module OneviewSDK
   module API1600
     module C7000
-      # Logical interconnect group resource implementation on API1600 C7000
-      class LogicalInterconnectGroup < OneviewSDK::API1200::C7000::LogicalInterconnectGroup
+      # Logical interconnect resource implementation for API1600 C7000
+      class LogicalInterconnect < OneviewSDK::API1200::C7000::LogicalInterconnect
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
@@ -23,7 +23,7 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
-          @data['type'] ||= 'logical-interconnect-groupV8'
+          @data['type'] ||= 'logical-interconnectV8'
           super
         end
         def self.api_version

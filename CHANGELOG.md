@@ -1,3 +1,10 @@
+## v5.12.0
+This release adds support to OneView Rest API version 600/800/1000/1200/1600 for the hardware variants C7000 and Synergy to the following features.
+
+#### Features supported
+- Logical Interconnect
+- Logical Interconnect Group
+
 ## v5.11.0
 
 #### Notes
