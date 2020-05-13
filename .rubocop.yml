@@ -38,7 +38,8 @@ Metrics/PerceivedComplexity:
   Enabled: false
 
 Style/GlobalVars:
-  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $client_500, $client_500_synergy, $client_i3s_500, $client_600, $client_600_synergy, $client_i3s_600, $client_800, $client_800_synergy, $client_1000, $client_1000_synergy, $client_1200, $client_1200_synergy, $client_1600_synergy, $client_1600]
+
+  AllowedVariables: [$config, $secrets, $client, $client_120, $client_300, $client_300_synergy, $config_synergy, $secrets_synergy, $config_i3s, $client_i3s_300, $client_500, $client_500_synergy, $client_i3s_500, $client_600, $client_600_synergy, $client_i3s_600, $client_800, $client_800_synergy, $client_1000, $client_1000_synergy, $client_1200, $client_1200_synergy, $client_1600, $client_1600_synergy]
 
 Style/FrozenStringLiteralComment:
   Enabled: false

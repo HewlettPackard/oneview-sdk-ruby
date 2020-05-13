@@ -22,12 +22,12 @@ RSpec.describe OneviewSDK::API1600 do
 
   describe '#resource_named' do
     it 'gets the correct resource class' do
-      expect(described_class.resource_named('ServerHardware')).to eq(described_class::ServerHardware)
+      expect(described_class.resource_named('Enclosure')).to eq(described_class::Enclosure)
     end
 
     it 'allows you to override the variant' do
-      expect(described_class.resource_named('ServerHardware', 'Synergy')).to eq(described_class::Synergy::ServerHardware)
-      expect(described_class.resource_named('ServerHardware', 'C7000')).to eq(described_class::C7000::ServerHardware)
+      expect(described_class.resource_named('Enclosure', 'Synergy')).to eq(described_class::Synergy::Enclosure)
+      expect(described_class.resource_named('Enclosure', 'C7000')).to eq(described_class::C7000::Enclosure)
     end
   end
 

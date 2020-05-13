@@ -1,9 +1,10 @@
-## v5.12.0(unreleased)
+## v5.12.0 (unreleased)
 
 #### Notes
-This release adds support to OneView Rest API version 600/800/1000/1200/1600 for the hardware variants C7000 and Synergy to the below features
+This release extends support of the SDK to OneView REST API version 1600 (OneView v5.20).
 
 #### Features supported
+- Enclosure
 - Server Hardware
 
 ## v5.11.0
