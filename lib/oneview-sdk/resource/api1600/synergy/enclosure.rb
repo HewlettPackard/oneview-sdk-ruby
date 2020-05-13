@@ -1,7 +1,7 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# You may not use this file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1200/c7000/enclosure_group'
+require_relative '../../api1200/synergy/enclosure'
 
 module OneviewSDK
   module API1600
-    module C7000
-      # Enclosure group resource implementation on API1600 C7000
-      class EnclosureGroup < OneviewSDK::API1200::C7000::EnclosureGroup
+    module Synergy
+      # Enclosure resource implementation for API1600 Synergy
+      class Enclosure < OneviewSDK::API1200::Synergy::Enclosure
       end
     end
   end
