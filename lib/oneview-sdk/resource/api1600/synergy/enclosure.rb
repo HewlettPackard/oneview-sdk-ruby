@@ -16,16 +16,6 @@ module OneviewSDK
     module Synergy
       # Enclosure resource implementation for API1600 Synergy
       class Enclosure < OneviewSDK::API1200::Synergy::Enclosure
-        # Create a resource object, associate it with a client, and set its properties.
-        # @param [OneviewSDK::Client] client The client object for the OneView appliance
-        # @param [Hash] params The options for this resource (key-value pairs)
-        # @param [Integer] api_ver The api version to use when interracting with this resource.
-        def initialize(client, params = {}, api_ver = nil)
-          @data ||= {}
-          # Default values:
-          @data['type'] ||= 'EnclosureV8'
-          super
-        end
       end
     end
   end

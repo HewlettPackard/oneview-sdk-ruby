@@ -38,7 +38,7 @@ require_relative '../_client' # Gives access to @client
 # Resource Class used in this sample
 enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
 
-# EnclosureGroup class used in this samplei
+# EnclosureGroup class used in this sample
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 
 encl_group = encl_group_class.get_all(@client).first
@@ -48,7 +48,6 @@ encl_name = 'OneViewSDK-Test-Enclosure'
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
-# To run this example for API Verison 1600, you would need to mention API Versio 1200 or less for scope resource.
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 scope_1 = scope_class.new(@client, name: 'Scope 1')
 scope_1.create
