@@ -1,9 +1,10 @@
 ## v5.12.0 (unreleased)
 
 #### Notes
-Extended support to Server Profile Template for OneView Rest API version 1600.
+This release extends support of the SDK to OneView REST API version 1600 (OneView v5.20).
 
 #### Features supported
+- Enclosure
 - Server Profile Template
 
 ## v5.11.0
