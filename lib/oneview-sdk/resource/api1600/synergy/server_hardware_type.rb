@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../synergy/server_hardware_type'
+require_relative '../c7000/server_hardware_type'
 
 module OneviewSDK
   module API1600
