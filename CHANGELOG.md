@@ -1,10 +1,11 @@
 ## v5.12.0
 
 #### Notes
-Extended support to Enclosure for OneView Rest API version 1600.
+Extended support to Enclosure and Enclosure Group for OneView Rest API version 1600.
 
 #### Features supported
 - Enclosure
+- Enclosure Group
 
 ## v5.11.0
 

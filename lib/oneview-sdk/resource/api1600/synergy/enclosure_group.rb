@@ -1,7 +1,7 @@
-# (c) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1200/synergy/enclosure'
+require_relative '../../api1200/synergy/enclosure_group'
 
 module OneviewSDK
   module API1600
     module Synergy
-      # Enclosure resource implementation for API1600 Synergy
-      class Enclosure < OneviewSDK::API1200::Synergy::Enclosure
+      # Enclosure group resource implementation on API1600 Synergy
+      class EnclosureGroup < OneviewSDK::API1200::Synergy::EnclosureGroup
         # Create a resource object, associate it with a client, and set its properties.
         # @param [OneviewSDK::Client] client The client object for the OneView appliance
         # @param [Hash] params The options for this resource (key-value pairs)
@@ -23,7 +23,11 @@ module OneviewSDK
         def initialize(client, params = {}, api_ver = nil)
           @data ||= {}
           # Default values:
-          @data['type'] ||= 'EnclosureV8'
+          super
+        end
+
+        def update(attributes = {})
+          @data['type'] ||= 'EnclosureGroupV8'
           super
         end
       end
