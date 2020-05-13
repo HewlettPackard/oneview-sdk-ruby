@@ -1,0 +1,68 @@
+require_relative './../lib/oneview-sdk'
+require 'pry'
+
+@client = OneviewSDK::Client.new(
+  url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
+  user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
+  password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
+  ssl_enabled: false
+)
+
+## This setting allows the SDK to flush messages to the screen as it is being run.
+#  # It defaults to true when a client is created, and can be set to false in order
+#  # to only flush at the end of execution.
+# STDOUT.sync = false
+
+# This setting allows for use of the shortened name of the resources, like OneviewSDK::<Resource_name>,
+  # when referring to OneviewSDK::<API_version>::Synergy::<Resource_name>
+# Versions supported: [200, 300, 500, 600, 800]
+# Variants supported[C7000, Synergy]
+# OneviewSDK::API<version>.variant='Synergy'
+
+puts "Connected to OneView appliance at #{@client.url}\n\n"
+
+
+# Instance variables for examples:
+# @server_hardware_type_uri = '/rest/server-hardware-types/11111111-1111-1111-1111-111111111111'
+# @enclosure_group_uri = '/rest/enclosure-groups/11111111-1111-1111-1111-111111111111'
+# @enclosure_name = '0000A66101'
+# @enclosure_hostname = '172.1.1.11'
+# @enclosure_username = 'Administrator'
+# @enclosure_password = 'password123'
+# @ipdu_username = 'dcs'
+# @ipdu_password = 'dcs'
+# @ipdu_hostname = '172.18.8.12'
+# @server_hardware_hostname = '172.1.1.12'
+# @server_hardware_username = 'Administrator'
+# @server_hardware_password = 'password123'
+# @server_mpHostsAndRanges = ["Hostname.Domain", "172.1.1.10-172.1.1.20"]
+# @storage_system_ip = '172.18.11.11'
+# @storage_system_username = 'Administrator'
+# @storage_system_password = 'password123'
+# @store_virtual_ip = "172.18.30.1",
+# @store_virtual_user = "dcs",
+# @store_virtual_password = "dcs",
+# @unmanaged_volume_wwn = 'DC:72:02:07:87:00:10:00:30:71:49:79:72:48:86:60'
+# @firmware_bundle_spp_path = 'custom-spp-c7000.iso'
+# @firmware_bundle_hotfix_path = 'hp-firmware-a1b08f8a6b-HPGH-1.1.i386.rpm'
+# @sas_interconnect_type = 'Synergy 12Gb SAS Connection Module'
+# @synergy_enclosure_hostname = 'fe80::2:0:9:1%eth2'
+# @interconnect_name = '0000A66101, interconnect 3'
+# @logical_switch1_ip = '172.18.16.91'
+# @logical_switch2_ip = '172.18.16.92'
+# @logical_switch_ssh_user = "dcs"
+# @logical_switch_ssh_password = "dcs"
+# @logical_switch_community_string = "public"
+# @logical_interconnect_name = 'Encl1-LogicalInterconnectGroup_1'
+# @hypervisor_manager_ip = '172.18.13.11'
+# @hypervisor_manager_username ='dcs'
+# @hypervisor_manager_password ='dcs'
+# @hypervisor_cluster_profile_name = "Cluster5"
+# @hypervisor_path = "DC2"
+# @hypervisor_server_password = "dcs"
+# @hypervisor_host_prefix = "Test-Cluster-host"
+# @hypervisor_hypervisorType = "Vmware"
+# @hypervisor_type = "HypervisorClusterProfileV3"
+# @hypervisor_manager_uri = "/rest/hypervisor-managers/befc6bd9-0366-4fd9-a3fc-c92ab0df3603"
+# @hypervisor_serverProfileTemplateUri = "/rest/server-profile-templates/c865a62c-8fd8-414c-8c16-3f7ca75ab2ba"
+# @hypervisor_deploymentPlanUri = "/rest/os-deployment-plans/c54e1dab-cc14-48fa-92bf-d301671fb0cf"
