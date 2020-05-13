@@ -26,6 +26,7 @@ module OneviewSDK
           @data['type'] ||= 'InterconnectV7'
           super
         end
+        
         def self.api_version
           1600
         end
