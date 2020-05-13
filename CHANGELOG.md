@@ -1,10 +1,10 @@
-## v5.12.0
+## v5.12.0 (unreleased)
 
 #### Notes
-Extended support to Enclosure for OneView Rest API version 1600.
+Extended support to Server Profile Template for OneView Rest API version 1600.
 
 #### Features supported
-- Enclosure
+- Server Profile Template
 
 ## v5.11.0
 

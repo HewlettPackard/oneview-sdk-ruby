@@ -20,16 +20,16 @@ RSpec.describe OneviewSDK::API1600 do
     expect(described_class::DEFAULT_VARIANT).to eq('C7000')
   end
 
-  describe '#resource_named' do
-    it 'gets the correct resource class' do
-      expect(described_class.resource_named('Enclosure')).to eq(described_class::Enclosure)
-    end
+#  describe '#resource_named' do
+#    it 'gets the correct resource class' do
+#      expect(described_class.resource_named('Enclosure')).to eq(described_class::Enclosure)
+#    end
 
-    it 'allows you to override the variant' do
-      expect(described_class.resource_named('Enclosure', 'Synergy')).to eq(described_class::Synergy::Enclosure)
-      expect(described_class.resource_named('Enclosure', 'C7000')).to eq(described_class::C7000::Enclosure)
-    end
-  end
+#    it 'allows you to override the variant' do
+#      expect(described_class.resource_named('Enclosure', 'Synergy')).to eq(described_class::Synergy::Enclosure)
+#      expect(described_class.resource_named('Enclosure', 'C7000')).to eq(described_class::C7000::Enclosure)
+#    end
+#  end
 
   describe '#variant' do
     it 'gets the current variant' do
