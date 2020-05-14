@@ -26,6 +26,14 @@ module OneviewSDK
           @data['type'] ||= 'ServerProfileV12'
           super
         end
+
+        def get_availble_server(*)
+          unavailable_method
+        end
+
+        def get_profile_template(*)
+          unavailable_method
+        end
       end
     end
   end
