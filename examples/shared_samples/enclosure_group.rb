@@ -38,7 +38,6 @@ require_relative '../_client' # Gives access to @client
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 
 # LogicalInterconnectGroup class used in this sample.
-# To run this example for  API > 1200, you would need to set api version for LIG to 1200 or less.
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
 
 type = 'enclosure group'
@@ -51,7 +50,6 @@ item.add_logical_interconnect_group(lig)
 
 if @client.api_version >= 600
   # Gets enclosure group by scopeUris
-  # To run this example for  API > 1200, you would need to set api version for scope to 1200 or less.
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   scope_item = scope_class.get_all(@client).first
   query = {
