@@ -26,9 +26,10 @@ module OneviewSDK
           @data['type'] ||= 'logical-interconnect-groupV7'
           super
         end
+
         def self.api_version
-            1600
-          end
+          1600
+        end
       end
     end
   end
