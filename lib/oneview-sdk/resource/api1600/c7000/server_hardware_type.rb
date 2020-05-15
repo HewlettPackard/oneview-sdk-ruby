@@ -1,7 +1,7 @@
-# (c) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -9,19 +9,17 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+require_relative '../../api1200/c7000/server_hardware_type'
+
 module OneviewSDK
   module API1600
-    # Module for API1600 C7000
     module C7000
-      # Get resource class that matches the type given
-      # @param [String] type Name of the desired class type
-      # @return [Class] Resource class or nil if not found
-      def self.resource_named(type)
-        OneviewSDK::API1600.resource_named(type, 'C7000')
+      # Server hardware type resource implementation for API1600 C7000
+      class ServerHardwareType < OneviewSDK::API1200::C7000::ServerHardwareType
+        def self.api_version
+          1600
+        end
       end
     end
   end
 end
-
-# Load all API-specific resources:
-Dir[File.dirname(__FILE__) + '/c7000/*.rb'].each { |file| require file }
