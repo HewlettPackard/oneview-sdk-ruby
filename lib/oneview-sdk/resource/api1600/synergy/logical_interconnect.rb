@@ -29,7 +29,7 @@ module OneviewSDK
 
         def self.api_version
           1600
-        end 
+        end
       end
     end
   end
