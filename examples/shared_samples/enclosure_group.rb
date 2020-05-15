@@ -15,7 +15,7 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an enclosure group named 'OneViewSDK Test Enclosure Group', then delete it.
 #
 # Supported APIs:
-# - 200, 300, 500, 600
+# - 200, 300, 500, 600, 800, 1200, and 1600.
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::EnclosureGroup
@@ -25,11 +25,19 @@ require_relative '../_client' # Gives access to @client
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::EnclosureGroup
 # api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::EnclosureGroup
 # api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::EnclosureGroup
+# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::EnclosureGroup
+# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::EnclosureGroup
+# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::EnclosureGroup
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::EnclosureGroup
+# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::EnclosureGroup
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::EnclosureGroup
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::EnclosureGroup
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::EnclosureGroup
 
 # Resource Class used in this sample
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 
-# LogicalInterconnectGroup class used in this sample
+# LogicalInterconnectGroup class used in this sample.
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
 
 type = 'enclosure group'
