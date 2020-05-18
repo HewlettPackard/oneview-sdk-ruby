@@ -7,6 +7,7 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 - Enclosure
 - Enclosure Group
 - Logical Enclosure
+- Logical Interconnect
 - Server Hardware
 - Server Hardware Type
 - Server Profile Template
