@@ -39,13 +39,13 @@ puts "\nPerforming example for #{scope_class}"
 
 # Extra resources used in this example
 server_hardware_class = OneviewSDK.resource_named('ServerHardware', @client.api_version)
-enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
+enclosure_class = OneviewSDK.resource_named('Enclosure', 1200)
 
 server_hardware = server_hardware_class.get_all(@client).first
 enclosure = enclosure_class.get_all(@client).first
 
 options = {
-  name: 'Scope',
+  name: 'Scope102',
   description: 'Sample Scope description'
 }
 scope = scope_class.new(@client, options)
@@ -79,7 +79,7 @@ if @client.api_version >= 600
 
   puts "\nReplace resource scope uris with scope2"
   options = {
-    name: 'Scope2',
+    name: 'Scope202',
     description: 'Sample Scope description2'
   }
   scope2 = scope_class.new(@client, options)
@@ -90,14 +90,14 @@ if @client.api_version >= 600
 
   puts '\nAdd a resource to scope3'
   options = {
-    name: 'Scope3',
+    name: 'Scope302',
     description: 'Sample Scope description3'
   }
   scope3 = scope_class.new(@client, options)
   scope3.create
   puts 'Created scope3'
-  scope_item = scope_class.find_by(@client, name: 'scope2').first
-  scope_class.add_resource_scope(@client, enclosure, scopes: [scope3, scope_item])
+  scope_item = scope_class.find_by(@client, name: 'scope201').first
+  scope_class.add_resource_scope(@client, server_hardware, scopes: [scope3, scope_item])
   puts 'Server hardware resource added to scope3'
 
   puts '\nRemoving resource from scope3'

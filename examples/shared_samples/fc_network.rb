@@ -37,7 +37,7 @@ require_relative '../_client' # Gives access to @client
 fc_network_class = OneviewSDK.resource_named('FCNetwork', @client.api_version)
 
 # Scope class used in this sample
-scope_class = OneviewSDK.resource_named('Scope', 1200) unless @client.api_version.to_i <= 200
+scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
 
 options = {
   name: 'OneViewSDK Test FC Network',
