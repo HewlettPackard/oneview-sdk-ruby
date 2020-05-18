@@ -14,7 +14,7 @@ require_relative '../../resource'
 module OneviewSDK
   # Module Image Streamer
   module ImageStreamer
-    # Module API 1200
+    # Module API 1600
     module API1600
       # Get resource class that matches the type given
       # @param [String] type Name of the desired class type
