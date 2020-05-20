@@ -10,6 +10,7 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 - FC Network
 - FCOE Network
 - Logical Enclosure
+- Server Certificate
 - Server Hardware
 - Server Hardware Type
 - Server Profile Template
