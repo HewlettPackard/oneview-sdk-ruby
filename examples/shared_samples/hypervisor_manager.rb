@@ -1,4 +1,4 @@
-# (C) Copyright 2018 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::HypervisorManager
 # api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::HypervisorManager
 # api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::HypervisorManager
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1200::C7000::HypervisorManager
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1200::Synergy::HypervisorManager
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::HypervisorManager
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::HypervisorManager
 
 raise 'ERROR: Must set @hypervisor_manager_ip in _client.rb' unless @hypervisor_manager_ip
 raise 'ERROR: Must set @hypervisor_manager_username in _client.rb' unless @hypervisor_manager_username
