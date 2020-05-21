@@ -68,7 +68,7 @@ puts "\nUplinkSet '#{uplink['uri']}' created successfully!"
 
 puts "\nUpdating the port config"
 uplink.add_port_config(
-	port['uri'],
+  port['uri'],
   'Auto',
   [
     { value: port['bayNumber'], type: 'Bay' },
