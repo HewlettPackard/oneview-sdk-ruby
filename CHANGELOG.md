@@ -13,6 +13,7 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 - Server Hardware
 - Server Hardware Type
 - Server Profile Template
+- Volume Attachment
 
 ## v5.11.0
 
