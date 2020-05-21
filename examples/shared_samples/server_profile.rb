@@ -73,8 +73,11 @@ puts "\nServer Profile updated successfully! Name: #{item3['name']}"
 
 # This method supports till OneView REST API Version 1200
 puts "\nGetting the available servers"
-servers = server_profile_class.get_available_servers(@client)
-puts "\nAvailable servers: \n#{servers}"
+begin
+  servers = server_profile_class.get_available_servers(@client)
+  puts "\nAvailable servers: \n#{servers}"
+rescue OneviewSDK::MethodUnavailable
+  puts "\nThe method #get_available_servers is available for API version <= 1200"
 
 puts "\nGetting the available networks"
 query_options = {

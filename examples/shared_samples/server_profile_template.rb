@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
-# - 200, 300, 500, 600, 800
+# - 200, 300, 500, 600, 800, 1000, 1200, and 1600.
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ServerProfileTemplate
@@ -24,6 +24,12 @@ require_relative '../_client' # Gives access to @client
 # api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ServerProfileTemplate
 # api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::ServerProfileTemplate
 # api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::ServerProfileTemplate
+# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::ServerProfileTemplate
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::ServerProfileTemplate
+# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::ServerProfileTemplate
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::ServerProfileTemplate
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::ServerProfileTemplate
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::ServerProfileTemplate
 
 # Resource Class used in this sample
 server_profile_template_class = OneviewSDK.resource_named('ServerProfileTemplate', @client.api_version)
