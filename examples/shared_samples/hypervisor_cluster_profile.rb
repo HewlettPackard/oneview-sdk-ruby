@@ -21,6 +21,8 @@ require_relative '../_client' # Gives access to @client
 # - API1000 for Synergy
 # - API1200 for C7000
 # - API1200 for Synergy
+# - API1600 for C7000
+# - API1600 for Synergy
 
 # Resources that can be created according to parameters:
 # api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::HypervisorClusterProfile
@@ -29,6 +31,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::HypervisorClusterProfile
 # api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::HypervisorClusterProfile
 # api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::HypervisorClusterProfile
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::HypervisorClusterProfile
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::HypervisorClusterProfile
 
 # Resource Class used in this sample
 hypervisor_cluster_profile_class = OneviewSDK.resource_named('HypervisorClusterProfile', @client.api_version)
@@ -75,5 +79,7 @@ cp = hcp2.compliance_preview
 puts "\nCompliance preview details are :\n#{cp}\n"
 
 # Deletes the created hypervisor cluster profile
-hcp.delete
+# Delete method accepts 2 optional arguments - soft_delete(boolean) and force(boolean)
+# The default values for both the arguments is "false"
+hcp.delete(true, true)
 puts "\nSuccesfully deleted the cluster profile"
