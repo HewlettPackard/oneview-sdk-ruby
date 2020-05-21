@@ -39,7 +39,7 @@ require_relative '../_client' # Gives access to @client and @logical_interconnec
 # Resource Class used in this sample
 uplink_set_class = OneviewSDK.resource_named('UplinkSet', @client.api_version)
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
-li_class = OneviewSDK.resource_named('LogicalInterconnect' @client.api_version)
+li_class = OneviewSDK.resource_named('LogicalInterconnect', @client.api_version)
 interconnect_class = OneviewSDK.resource_named('Interconnect', @client.api_version)
 
 ethernet = ethernet_class.get_all(@client).first
