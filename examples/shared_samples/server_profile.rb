@@ -78,6 +78,7 @@ begin
   puts "\nAvailable servers: \n#{servers}"
 rescue OneviewSDK::MethodUnavailable
   puts "\nThe method #get_available_servers is available for API version <= 1200"
+end
 
 puts "\nGetting the available networks"
 query_options = {
