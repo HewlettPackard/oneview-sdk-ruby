@@ -17,4 +17,5 @@ RSpec.describe OneviewSDK::API1600::C7000::Scope do
   it 'inherits from API 1200' do
     expect(described_class).to be < OneviewSDK::API1200::C7000::Scope
   end
+end
 
