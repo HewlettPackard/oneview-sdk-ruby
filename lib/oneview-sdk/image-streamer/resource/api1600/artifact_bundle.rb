@@ -15,7 +15,7 @@ module OneviewSDK
   module ImageStreamer
     module API1600
       # Artifact Bundle resource implementation for Image Streamer
-      class ArtifactBundle < OneviewSDK::ImageStreamer::API020::ArtifactBundle
+      class ArtifactBundle < OneviewSDK::ImageStreamer::API1020::ArtifactBundle
       end
     end
   end
