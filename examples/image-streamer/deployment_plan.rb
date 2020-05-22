@@ -11,7 +11,7 @@
 
 require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
-# - 300, 500, 600, 800, 1000, 1020
+# - 300, 500, 600, 800, 1000, 1020, 1600
 
 # Resources that can be created according to parameters:
 # api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::DeploymentPlan
@@ -20,6 +20,7 @@ require_relative '../_client_i3s' # Gives access to @client
 # api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::DeploymentPlan
 # api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::DeploymentPlan
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::DeploymentPlan
+# api_version = 1600 & variant = Synergy to OneviewSDK::ImageStreamer::API1600::DeploymentPlan
 
 # Example: Create a deployment plan for an Image Streamer
 # NOTE: This will create a deployment plan named 'Deployment_Plan_1', then delete it.
