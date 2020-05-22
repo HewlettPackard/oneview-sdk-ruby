@@ -18,4 +18,3 @@ RSpec.describe OneviewSDK::API1600::C7000::Scope do
     expect(described_class).to be < OneviewSDK::API1200::C7000::Scope
   end
 end
-
