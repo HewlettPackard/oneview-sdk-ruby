@@ -44,7 +44,7 @@ options = {
   connectionTemplateUri: nil,
   autoLoginRedistribution: true,
   fabricType: 'FabricAttach',
-  initialScopeUris: ['/rest/scopes/a5f8ca3d-2cea-4f82-b880-344572eb7271', '/rest/scopes/e0f6b95a-67a6-4718-b42c-1f7d426b730c']
+  initialScopeUris: ['/rest/scopes/e025d93b-b08a-42cb-af56-b67a750c65b7', '/rest/scopes/92517890-87e4-47b5-9b33-ba78bd878293']
 }
 
 fc = fc_network_class.new(@client, options)
