@@ -14,6 +14,7 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 - FCOE Network
 - Hypervisor Cluster Profile
 - Hypervisor Manager
+- Interconnects
 - Logical Enclosure
 - Logical Interconnect
 - Logical Interconnect Group
