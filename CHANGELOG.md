@@ -4,17 +4,33 @@
 This release extends support of the SDK to OneView REST API version 1600 (OneView v5.20).
 
 #### Features supported
+- Artifact Bundle
+- Deployment Group
+- Deployment Plan
 - Enclosure
 - Enclosure Group
 - Ethernet Network
 - FC Network
 - FCOE Network
+- Hypervisor Cluster Profile
+- Hypervisor Manager
+- Interconnects
 - Logical Enclosure
 - Network Set
+- Logical Interconnect
+- Logical Interconnect Group
+- OS Deployment Plan
+- Server Certificate
 - Server Hardware
 - Server Hardware Type
+- Server Profile
 - Server Profile Template
 - Uplink Set
+- Storage Pool
+- Storage System
+- Volume
+- Volume Attachment
+- Volume Template
 
 ## v5.11.0
 
