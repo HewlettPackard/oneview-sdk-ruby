@@ -6,15 +6,17 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the
-# specific language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
 
-require 'spec_helper'
+require_relative '../c7000/volume'
 
-RSpec.describe OneviewSDK::API1000::Synergy::StorageSystem do
-  include_context 'shared context'
-
-  it 'inherits from OneviewSDK::API1000::C7000::StorageSystem' do
-    expect(described_class).to be < OneviewSDK::API1000::C7000::StorageSystem
+module OneviewSDK
+  module API1600
+    module Synergy
+      # Volume resource implementation for API1600 Synergy
+      class Volume < OneviewSDK::API1600::C7000::Volume
+      end
+    end
   end
 end

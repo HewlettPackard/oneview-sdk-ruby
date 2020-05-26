@@ -8,13 +8,12 @@
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
-
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API1000::Synergy::StorageSystem do
+RSpec.describe OneviewSDK::API1600::C7000::Interconnect do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API1000::C7000::StorageSystem' do
-    expect(described_class).to be < OneviewSDK::API1000::C7000::StorageSystem
+  it 'inherits from OneviewSDK::API1200::C7000::Interconnect' do
+    expect(described_class).to be < OneviewSDK::API1200::C7000::Interconnect
   end
 end
