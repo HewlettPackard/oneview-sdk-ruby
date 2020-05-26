@@ -82,5 +82,5 @@ puts "\nCompliance preview details are :\n#{cp}\n"
 # Delete method accepts 2 arguments - soft_delete(boolean) and force(boolean) which are optional till API1200
 # soft_delete has become mandatory argument in API1600 and force is still optional
 # The default values for the arguments is "false"
-hcp.delete(soft_delete = true, force = true)
+hcp.delete(true, true)
 puts "\nSuccesfully deleted the cluster profile"
