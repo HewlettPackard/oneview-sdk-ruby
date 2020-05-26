@@ -19,6 +19,8 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 - Logical Interconnect
 - Logical Interconnect Group
 - OS Deployment Plan
+- Scopes
+- Server Certificate
 - Server Hardware
 - Server Hardware Type
 - Server Profile
