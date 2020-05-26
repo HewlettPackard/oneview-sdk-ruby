@@ -14,7 +14,7 @@ require_relative '../c7000/storage_system'
 module OneviewSDK
   module API1600
     module Synergy
-      # Storage system resource implementation for API 1600 Synergy
+      # Storage system resource implementation for API1600 Synergy
       class StorageSystem < OneviewSDK::API1600::C7000::StorageSystem
       end
     end
