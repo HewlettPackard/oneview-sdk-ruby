@@ -19,6 +19,9 @@ require_relative '../_client' # Gives access to @client
 # Supported API variants
 # C7000, Synergy
 
+# for example, if api_version = 800 & variant = C7000 then, resource that can be created will be in form
+# OneviewSDK::API800::C7000::LogicalInterconnectGroup
+
 # Resource Class used in this sample
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
 
