@@ -19,6 +19,8 @@ require_relative '../_client' # Gives access to @client
 # Supoported Variants
 # C7000, Synergy
 
+# for example, if api_version = 800 & variant = C7000 then, resource created will be in form
+# OneviewSDK::API800::C7000::Interconnect
 
 # Resource Class used in this sample
 interconnect_class = OneviewSDK.resource_named('Interconnect', @client.api_version)
