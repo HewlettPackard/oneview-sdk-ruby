@@ -79,7 +79,8 @@ cp = hcp2.compliance_preview
 puts "\nCompliance preview details are :\n#{cp}\n"
 
 # Deletes the created hypervisor cluster profile
-# Delete method accepts 2 optional arguments - soft_delete(boolean) and force(boolean)
-# The default values for both the arguments is "false"
-hcp.delete(true, true)
+# Delete method accepts 2 arguments - soft_delete(boolean) and force(boolean) which are optional till API1200
+# soft_delete has become mandatory argument in API1600 and force is still optional
+# The default values for the arguments is "false"
+hcp.delete(soft_delete = true, force = true)
 puts "\nSuccesfully deleted the cluster profile"

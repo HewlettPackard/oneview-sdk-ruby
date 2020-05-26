@@ -17,7 +17,7 @@ module OneviewSDK
       # Hypervisor cluster profile resource implementation for API1600 C7000
       class HypervisorClusterProfile < OneviewSDK::API1200::C7000::HypervisorClusterProfile
 
-        # Both softDelete and force are optional arguments but from API1600 softDelete is made mandatory argument
+        # softDelete is mandatory argument in API1600
         def delete(soft_delete = false, force = false)
           ensure_client && ensure_uri
           uri = @data['uri']
