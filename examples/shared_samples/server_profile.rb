@@ -71,9 +71,14 @@ item3.update
 item3.retrieve!
 puts "\nServer Profile updated successfully! Name: #{item3['name']}"
 
+# This method supports till OneView REST API Version 1200
 puts "\nGetting the available servers"
-servers = server_profile_class.get_available_servers(@client)
-puts "\nAvailable servers: \n#{servers}"
+begin
+  servers = server_profile_class.get_available_servers(@client)
+  puts "\nAvailable servers: \n#{servers}"
+rescue OneviewSDK::MethodUnavailable
+  puts "\nThe method #get_available_servers is available for API version <= 1200"
+end
 
 puts "\nGetting the available networks"
 query_options = {
@@ -109,6 +114,7 @@ puts "\nUpdating the server profile from the server profile template."
 item2.update_from_template
 puts "\nServer Profile updated successfully!"
 
+# This method supports till OneView REST API Version 1200
 puts "\nGetting a new profile template of a given server profile"
 begin
   new_template = item2.get_profile_template
