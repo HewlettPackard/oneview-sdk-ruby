@@ -14,6 +14,7 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 - OS Deployment Plan
 - Server Hardware
 - Server Hardware Type
+- Server Profile
 - Server Profile Template
 
 ## v5.11.0
