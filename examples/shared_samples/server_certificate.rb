@@ -12,10 +12,10 @@
 require_relative '../_client' # Gives access to @client
 
 # NOTE: You'll need to add the following instance variable to the _client.rb file with valid values for your environment:
-#   @storage_system_ip
+#   @hypervisor_manager_ip
 
 # All supported APIs for  Server Certificate:
-# - 600, 800, 1000, 1200
+# - 600, 800, 1000, 1200, 1600
 # # Resources classes that you can use for Server Certificate in this example:
 # server_certificate_class = OneviewSDK::API600::C7000::ServerCertificate
 # server_certificate_class = OneviewSDK::API600::Synergy::ServerCertificate
@@ -25,6 +25,8 @@ require_relative '../_client' # Gives access to @client
 # server_certificate_class = OneviewSDK::API1000::Synergy::ServerCertificate
 # server_certificate_class = OneviewSDK::API1200::C7000::ServerCertificate
 # server_certificate_class = OneviewSDK::API1200::Synergy::ServerCertificate
+# server_certificate_class = OneviewSDK::API1600::C7000::ServerCertificate
+# server_certificate_class = OneviewSDK::API1600::Synergy::ServerCertificate
 
 # Initialize the resources
 server_certificate_class = OneviewSDK.resource_named('ServerCertificate', @client.api_version)
@@ -32,13 +34,12 @@ server_certificate_class = OneviewSDK.resource_named('ServerCertificate', @clien
 # Gets certificates from remote IP
 puts 'Fetching Certificate:-'
 certificate = server_certificate_class.new(@client)
-certificate.data['remoteIp'] = '172.18.13.11'
+certificate.data['remoteIp'] = @hypervisor_manager_ip
 puts certificate.get_certificate
 
 # Imports the certificates
 puts 'Importing the certificate:- '
-item = server_certificate_class.new(@client, aliasName: @storage_system_ip)
-item.data['type'] = certificate.get_certificate['type']
+item = server_certificate_class.new(@client, aliasName: @hypervisor_manager_ip)
 item.data['certificateDetails'] = []
 item.data['certificateDetails'][0] = {
   'type' => certificate.get_certificate['certificateDetails'][0]['type'],
@@ -54,9 +55,9 @@ puts 'Updated Successfully.'
 
 # Retrieve the certificates as per the aliasName
 puts 'Retrieving Imported Certificate:-'
-item = server_certificate_class.new(@client, aliasName: @storage_system_ip)
+item = server_certificate_class.new(@client, aliasName: @hypervisor_manager_ip)
 puts item.data if item.retrieve!
 
-# Deleres the certificate as per the aliasName
+# Deletes the certificate as per the aliasName
 puts 'Removing certificate:-'
 puts 'Successfully Removed.' if item.remove
