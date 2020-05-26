@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ require_relative '../_client' # Gives access to @client and @logical_interconnec
 # NOTE 3: To add an ethernet network, the interconnect must support ethernet network.
 #
 # Supported APIs:
-# - 200, 300, 500, 600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::UplinkSet
@@ -27,7 +27,15 @@ require_relative '../_client' # Gives access to @client and @logical_interconnec
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::UplinkSet
 # api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::UplinkSet
 # api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::UplinkSet
-
+# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::UplinkSet
+# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::UplinkSet
+# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::UplinkSet
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::UplinkSet
+# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::UplinkSet
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::UplinkSet
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::UplinkSet
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::UplinkSet
+#
 # Resource Class used in this sample
 uplink_set_class = OneviewSDK.resource_named('UplinkSet', @client.api_version)
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
@@ -36,9 +44,7 @@ interconnect_class = OneviewSDK.resource_named('Interconnect', @client.api_versi
 
 ethernet = ethernet_class.get_all(@client).first
 logical_interconnect = li_class.find_by(@client, name: @logical_interconnect_name).first
-
 interconnect = interconnect_class.find_by(@client, logicalInterconnectUri: logical_interconnect['uri']).first
-
 port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['portStatus'] == 'Unlinked' }.first
 
 options = {
@@ -70,7 +76,6 @@ uplink.add_port_config(
     { value: port['portName'], type: 'Port' }
   ]
 )
-
 uplink.update
 uplink.retrieve!
 

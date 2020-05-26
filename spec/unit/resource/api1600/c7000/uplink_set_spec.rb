@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API1600::C7000::EthernetNetwork do
+RSpec.describe OneviewSDK::API1600::C7000::UplinkSet do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API1200::C7000::EthernetNetwork' do
-    expect(described_class).to be < OneviewSDK::API1200::C7000::EthernetNetwork
+  it 'inherits from OneviewSDK::API1200::C7000::UplinkSet' do
+    expect(described_class).to be < OneviewSDK::API1200::C7000::UplinkSet
   end
 end
