@@ -167,7 +167,7 @@ You may notice resource classes being accessed in a few different ways; for exam
 require 'oneview-sdk'
 
 # Show defaults:
-OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800, 1000,1200]
+OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800, 1000,1200, 1600]
 OneviewSDK::DEFAULT_API_VERSION         # 200
 OneviewSDK.api_version                  # 200
 OneviewSDK.api_version_updated?         # false
@@ -224,12 +224,18 @@ OneviewSDK::API300.variant_updated?     # true
 OneviewSDK::EthernetNetwork             # OneviewSDK::API300::Synergy::EthernetNetwork
 OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::Synergy::EthernetNetwork
 
+OneviewSDK::API1600::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API1600::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API1600.variant              # 'C7000'
+OneviewSDK::API1600.variant_updated?     # false
+
 # Likewise, we can set a new default variant for the API1600 module:
 OneviewSDK::API1600.variant = 'Synergy'
 OneviewSDK::API1600.variant              # 'Synergy'
 OneviewSDK::API1600.variant_updated?     # true
-OneviewSDK::EthernetNetwork              # OneviewSDK::API1600::Synergy::EthernetNetwork
-OneviewSDK::API1600::EthernetNetwork     # OneviewSDK::API1600::Synergy::EthernetNetwork
+# Therefore, there is 1 more namespace level to the real resource class name
+OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
+OneviewSDK::API1600::EthernetNetwork     # OneviewSDK::API1600::C7000::EthernetNetwork
 ```
 
 We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.

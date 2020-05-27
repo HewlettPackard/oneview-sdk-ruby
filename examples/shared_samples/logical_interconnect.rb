@@ -14,7 +14,7 @@ require_relative '../_client' # Gives access to @client
 # Example: Explores functionalities of Logical Interconnects
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600
 # Supported Variants:
 # - C7000, Synergy
 
