@@ -1,3 +1,14 @@
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
 require 'spec_helper'
 
 RSpec.describe OneviewSDK::API1600::Synergy::UplinkSet do
@@ -9,7 +20,7 @@ RSpec.describe OneviewSDK::API1600::Synergy::UplinkSet do
 
   describe '#initialize' do
     it 'should be initialize the instance with default values' do
-      item = described_class.new(@client_1000)
+      item = described_class.new(@client_1600)
       expect(item['type']).to eq('uplink-setV7')
     end
   end

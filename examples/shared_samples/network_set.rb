@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ require_relative '../_client' # Gives access to @client
 # api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::NetworkSet
 # api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::NetworkSet
 # api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::NetworkSet
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1200::C7000::NetworkSet
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1200::Synergy::NetworkSet
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::NetworkSet
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::NetworkSet
 #
 #
 # Resource Class used in this sample
