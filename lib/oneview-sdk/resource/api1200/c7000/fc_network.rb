@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api600/c7000/fc_network'
+require_relative '../../api1000/c7000/fc_network'
 
 module OneviewSDK
   module API1200
     module C7000
       # FC network resource implementation for API1200 C7000
-      class FCNetwork < OneviewSDK::API600::C7000::FCNetwork
+      class FCNetwork < OneviewSDK::API1000::C7000::FCNetwork
       end
     end
   end
