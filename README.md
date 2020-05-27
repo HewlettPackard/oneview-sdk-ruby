@@ -233,6 +233,9 @@ OneviewSDK::API1600.variant_updated?     # false
 OneviewSDK::API1600.variant = 'Synergy'
 OneviewSDK::API1600.variant              # 'Synergy'
 OneviewSDK::API1600.variant_updated?     # true
+# Therefore, there is 1 more namespace level to the real resource class name
+OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
+OneviewSDK::API1600::EthernetNetwork     # OneviewSDK::API1600::C7000::EthernetNetwork
 ```
 
 We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.
