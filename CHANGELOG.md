@@ -1,4 +1,4 @@
-## v5.12.0 (unreleased)
+## v5.12.0
 
 #### Notes
 This release extends support of the SDK to OneView REST API version 1600 (OneView v5.20).
@@ -16,19 +16,19 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 - Hypervisor Manager
 - Interconnects
 - Logical Enclosure
-- Network Set
 - Logical Interconnect
 - Logical Interconnect Group
+- Network Set
 - OS Deployment Plan
-- Scopes
+- Scope
 - Server Certificate
 - Server Hardware
 - Server Hardware Type
+- Storage Pool
 - Server Profile
 - Server Profile Template
-- Uplink Set
-- Storage Pool
 - Storage System
+- Uplink Set
 - Volume
 - Volume Attachment
 - Volume Template
