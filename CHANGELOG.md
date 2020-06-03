@@ -1,4 +1,4 @@
-## v5.13.0 (unreleased)
+## v5.12.1 (unreleased)
 
 #### Notes
 This release extends support of the SDK to OneView REST API version 1600 (OneView v5.20).
