@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ require_relative '../_client' # Gives access to @client
 # Example: Manage connection templates
 #
 # Supported APIs:
-# - 200, 300, 500, 600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600
 
 # Resources that can be created according to parameters:
 # api_version = 200 & variant = any to OneviewSDK::API200::ConnectionTemplate
@@ -24,6 +24,15 @@ require_relative '../_client' # Gives access to @client
 # api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ConnectionTemplate
 # api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ConnectionTemplate
 # api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ConnectionTemplate
+# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::ConnectionTemplate
+# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::ConnectionTemplate
+# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::ConnectionTemplate
+# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::ConnectionTemplate
+# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::ConnectionTemplate
+# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::ConnectionTemplate
+# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::ConnectionTemplate
+# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::ConnectionTemplate
+
 
 # Resource Class used in this sample
 conn_template_class = OneviewSDK.resource_named('ConnectionTemplate', @client.api_version)
