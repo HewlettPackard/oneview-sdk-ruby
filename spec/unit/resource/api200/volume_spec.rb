@@ -191,7 +191,8 @@ RSpec.describe OneviewSDK::Volume do
       it 'Deletes a snapshot of the volume' do
         @item['uri'] = '/rest/storage-volumes/fake'
         @item['eTag'] = 'any_tag'
-        snapshot_options = { 'uri' => '/rest/fake', 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot' }
+        snapshot_options = { 'uri' => '/rest/fake', 'type' => 'Snapshot', 'name' => 'Vol1_Snapshot1', 'description' => 'New Snapshot',
+                             'eTag' => 'any_tag' }
         snapshots = [OneviewSDK::VolumeSnapshot.new(@client_200, snapshot_options)]
         allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return('members' => snapshots)
         expect(@client_200).to receive(:rest_get).with("#{@item['uri']}/snapshots", {})
