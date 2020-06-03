@@ -1,4 +1,4 @@
-# (C) Copyright 2016 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -123,7 +123,6 @@ module OneviewSDK
       # @return [true] if snapshot was created successfully
       def delete_snapshot(name)
         result = get_snapshot(name)
-	puts "hi"
         response = @client.rest_delete(result['uri'], { 'If-Match' => result['eTag'] }, @api_version)
         @client.response_handler(response)
         true
