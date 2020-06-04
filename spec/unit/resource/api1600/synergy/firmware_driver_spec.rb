@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API600::Synergy::FirmwareDriver do
+RSpec.describe OneviewSDK::API1600::Synergy::FirmwareDriver do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API500::Synergy::FirmwareDriver' do
-    expect(described_class).to be < OneviewSDK::API500::Synergy::FirmwareDriver
+  it 'inherits from OneviewSDK::API1200::Synergy::FirmwareDriver' do
+    expect(described_class).to be < OneviewSDK::API1200::Synergy::FirmwareDriver
   end
 end
