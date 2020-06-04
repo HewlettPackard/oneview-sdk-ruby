@@ -5,6 +5,7 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 
 #### Features supported
 - Connection Template
+- LIG UplinkSet
 
 #### Bug fixes & Enhancements
 - [#432](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/432)Snapshot deletion will fail with mis match etags error
