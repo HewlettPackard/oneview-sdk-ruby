@@ -11,9 +11,8 @@
 
 RSpec.describe OneviewSDK::API1000::C7000::FirmwareDriver do
   include_context 'shared context'
- 
+
   it 'inherits from OneviewSDK::API800::C7000::FirmwareDriver' do
     expect(described_class).to be < OneviewSDK::API800::C7000::FirmwareDriver
   end
 end
- 
