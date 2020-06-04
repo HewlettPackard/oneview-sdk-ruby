@@ -5,6 +5,7 @@ This release extends support of the SDK to OneView REST API version 1600 (OneVie
 
 #### Features supported
 - Connection Template
+- Firmware Driver
 
 ## v5.12.0
 
