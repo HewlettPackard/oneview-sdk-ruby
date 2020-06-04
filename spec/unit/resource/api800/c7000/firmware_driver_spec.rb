@@ -16,4 +16,3 @@ RSpec.describe OneviewSDK::API800::C7000::FirmwareDriver do
     expect(described_class).to be < OneviewSDK::API600::C7000::FirmwareDriver
   end
 end
- 
