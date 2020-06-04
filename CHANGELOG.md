@@ -11,7 +11,6 @@ This release extends support to OneView Rest API version 1600 (OneView v5.20) fo
 #### Bug fixes & Enhancements
 - [#432](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/432)Snapshot deletion will fail with mis match etags error
 
-
 ## v5.12.0
 
 #### Notes
