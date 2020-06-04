@@ -1,10 +1,11 @@
 ## v5.12.1 (unreleased)
 
 #### Notes
-This release extends support of the SDK to OneView REST API version 1600 (OneView v5.20).
+This release extends support to OneView Rest API version 1600 (OneView v5.20) for the hardware variants C7000 and Synergy to the following features:
 
 #### Features supported
 - Connection Template
+- Firmware Driver
 - LIG UplinkSet
 
 #### Bug fixes & Enhancements
