@@ -9,6 +9,22 @@
 The OneView SDK provides a Ruby library to easily interact with HPE OneView and Image Streamer APIs. The Ruby SDK enables developers to easily build integrations and scalable solutions with HPE OneView and Image Streamer.
 
 ## Installation
+You can either use a docker container which will have the oneview-sdk-ruby installed or perform local installation.
+###  Docker Setup
+We also provide a lightweight and easy way to test and execute `oneview-sdk-ruby`. The `hpe-oneview-sdk-for-ruby:<tag>` docker image contains
+an installation of oneview-sdk-ruby and you can use it by just pulling down the Docker Image:
+The Docker Store image tag consist of two sections: <sdk_version-OV_version>
+
+```bash
+# Download and store a local copy of oneview-sdk-ruby and
+# use it as a Docker image.
+$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.13.0-OV5.2
+# Run docker commands below given, which  will in turn create
+# a sh session where you can create files, issue commands and execute the recipes.
+$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-chef:v5.13.0-OV5.2 /bin/sh
+```
+
+### Local Setup
 - Require the gem in your Gemfile:
 
   ```ruby
