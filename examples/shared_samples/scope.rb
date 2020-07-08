@@ -14,38 +14,10 @@ require_relative '../_client' # Gives access to @client
 # NOTE: It is necessary a server hardware and an enclosure previous created
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
-# - API600 for C7000
-# - API600 for Synergy
-# - API800 for C7000
-# - API800 for Synergy
-# - API1000 for C7000
-# - API1000 for Synergy
-# - API1200 for C7000
-# - API1200 for Synergy
-# - API1600 for C7000
-# - API1600 for Synergy
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
 
-# Resources that can be created according to parameters:
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Scope
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Scope
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Scope
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Scope
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Scope
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::Scope
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::Scope
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::Scope
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::Scope
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000:Synergy::Scope
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::Scope
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::Scope
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::Scope
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::Scope
-
+# Supported Variants
+# C7000 and Synergy for all API versions
 
 # NOTE: Scopes doesn't support versions smaller than 300.
 
