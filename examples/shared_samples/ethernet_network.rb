@@ -76,7 +76,7 @@ end
 
 # Bulk create ethernet networks
 options = {
-  vlanIdRange: '26-28',
+  vlanIdRange: '21-24',
   purpose: 'General',
   namePrefix: 'OneViewSDK_Bulk_Network',
   smartLink: false,
@@ -92,7 +92,14 @@ list = ethernet_class.bulk_create(@client, options).each { |network| puts networ
 puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully."
 
 list.sort_by! { |e| e['name'] }
-list.each { |e| puts "  #{e['name']}" }
+list.each { |e| puts "  #{e['name']} - #{e['uri']}" }
+
+# Bulk delete ethernet networks
+delete_networks = []
+list.each { |e| delete_networks.append(e['uri']).to_s }
+bulk_options = { 'networkUris' => delete_networks }
+ethernet_class.bulk_delete(@client, bulk_options)
+puts "\nDeleted all bulk-created ethernet networks sucessfully."
 
 # only for API300 and API500, not supported for OneView 4.0 or greater
 if @client.api_version.to_i > 200 && @client.api_version.to_i < 600
@@ -126,6 +133,3 @@ end
 # Delete this network
 ethernet2.delete
 puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
-
-list.each(&:delete)
-puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"
