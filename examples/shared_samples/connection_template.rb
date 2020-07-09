@@ -14,24 +14,10 @@ require_relative '../_client' # Gives access to @client
 # Example: Manage connection templates
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::ConnectionTemplate
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::ConnectionTemplate
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::ConnectionTemplate
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::ConnectionTemplate
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::ConnectionTemplate
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::ConnectionTemplate
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::ConnectionTemplate
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::ConnectionTemplate
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::ConnectionTemplate
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::ConnectionTemplate
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::ConnectionTemplate
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::ConnectionTemplate
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::ConnectionTemplate
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::ConnectionTemplate
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::ConnectionTemplate
+# Supported variants:
+# - C7000 and Synergy for all api versions
 
 
 # Resource Class used in this sample
@@ -61,8 +47,8 @@ puts "(- typicalBandwidth: #{item['bandwidth']['typicalBandwidth']})\n"
 
 puts "\nUpdating a connection template with name='#{item['name']}"
 puts "\n adding value 100 for maximumBandwidth and typicalBandwidth:"
-item['bandwidth']['maximumBandwidth'] += 100
-item['bandwidth']['typicalBandwidth'] += 100
+item['bandwidth']['maximumBandwidth'] -= 100
+item['bandwidth']['typicalBandwidth'] -= 100
 item.update
 item.retrieve!
 puts "\nConnection template with name='#{item['name']}' bandwidth specification changed:"
@@ -70,8 +56,8 @@ puts "(- maximumBandwidth: #{item['bandwidth']['maximumBandwidth']})"
 puts "(- typicalBandwidth: #{item['bandwidth']['typicalBandwidth']})\n"
 
 puts "\nReturnig to original state."
-item['bandwidth']['maximumBandwidth'] -= 100
-item['bandwidth']['typicalBandwidth'] -= 100
+item['bandwidth']['maximumBandwidth'] += 100
+item['bandwidth']['typicalBandwidth'] += 100
 item.update
 item.retrieve!
 puts "\nConnection template with name='#{item['name']}' returned to original state:"

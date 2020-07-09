@@ -17,25 +17,12 @@ require_relative '../_client' # Gives access to @client and @logical_interconnec
 # NOTE 3: To add an ethernet network, the interconnect must support ethernet network.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::UplinkSet
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::UplinkSet
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::UplinkSet
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::UplinkSet
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::UplinkSet
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::UplinkSet
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::UplinkSet
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::UplinkSet
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::UplinkSet
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::UplinkSet
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::UplinkSet
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::UplinkSet
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::UplinkSet
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::UplinkSet
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::UplinkSet
-#
+# Supported variants:
+# - C7000 and Synergy for all api versions
+
+
 # Resource Class used in this sample
 uplink_set_class = OneviewSDK.resource_named('UplinkSet', @client.api_version)
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
