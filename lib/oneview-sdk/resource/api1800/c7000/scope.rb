@@ -9,12 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../c7000/scope'
+require_relative '../../api1600/c7000/scope'
 
 module OneviewSDK
-  module API1600
-    module Synergy
-      # Scope resource implementation for API1600 Synergy
+  module API1800
+    module C7000
+      # Scope resource implementation for API1800 C7000
       class Scope < OneviewSDK::API1600::C7000::Scope
       end
     end
