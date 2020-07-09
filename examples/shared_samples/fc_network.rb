@@ -38,18 +38,18 @@ options = {
 
 fc = fc_network_class.new(@client, options)
 fc.create!
-puts "\nCreated fc-network '#{fc[:name]}' sucessfully.\n  uri = '#{fc[:uri]}'"
+puts "\nCreated fc-network '#{fc[:name]}' successfully.\n  uri = '#{fc[:uri]}'"
 
 # Create 2 more FC networks
 options['name'] = 'FC Network 2'
 fc4 = fc_network_class.new(@client, options)
 fc4.create!
-puts "\nCreated fc-network '#{fc4[:name]}' sucessfully.\n  uri = '#{fc4[:uri]}'"
+puts "\nCreated fc-network '#{fc4[:name]}' successfully.\n  uri = '#{fc4[:uri]}'"
 
 options['name'] = 'FC Network 3'
 fc5 = fc_network_class.new(@client, options)
 fc5.create!
-puts "\nCreated fc-network '#{fc5[:name]}' sucessfully.\n  uri = '#{fc5[:uri]}'"
+puts "\nCreated fc-network '#{fc5[:name]}' successfully.\n  uri = '#{fc5[:uri]}'"
 
 # Find recently created network by name
 matches = fc_network_class.find_by(@client, name: fc[:name])
@@ -104,10 +104,10 @@ end
 
 # Delete this network
 fc3.delete
-puts "\nSucessfully deleted fc-network '#{fc3[:name]}'."
+puts "\nSuccessfully deleted fc-network '#{fc3[:name]}'."
 
 # Bulk-delete FC network
 delete_networks = [fc4[:uri], fc5[:uri]]
 bulk_options = { 'networkUris' => delete_networks }
 fc_network_class.bulk_delete(@client, bulk_options)
-puts "\nBulk deleted the fc networks sucessfully."
+puts "\nBulk deleted the fc networks successfully."

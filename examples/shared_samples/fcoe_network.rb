@@ -35,21 +35,21 @@ options = {
   vlanId: 300
 }
 
-# Sucess case - 1
+# Success case - 1
 fcoe = fcoe_network_class.new(@client, options)
 fcoe.create!
-puts "\nCreated fcoe-network '#{fcoe[:name]}' sucessfully.\n  uri = '#{fcoe[:uri]}'"
+puts "\nCreated fcoe-network '#{fcoe[:name]}' successfully.\n  uri = '#{fcoe[:uri]}'"
 
 # Create 2 more fcoe networks
 options['name'] = 'FCoE network2'
 fcoe4 = fcoe_network_class.new(@client, options)
 fcoe4.create!
-puts "\nCreated fcoe-network '#{fcoe4[:name]}' sucessfully.\n  uri = '#{fcoe4[:uri]}'"
+puts "\nCreated fcoe-network '#{fcoe4[:name]}' successfully.\n  uri = '#{fcoe4[:uri]}'"
 
 options['name'] = 'FCoE network3'
 fcoe5 = fcoe_network_class.new(@client, options)
 fcoe5.create!
-puts "\nCreated fcoe-network '#{fcoe5[:name]}' sucessfully.\n  uri = '#{fcoe5[:uri]}'"
+puts "\nCreated fcoe-network '#{fcoe5[:name]}' successfully.\n  uri = '#{fcoe5[:uri]}'"
 
 # Find recently created network by name
 matches = fcoe_network_class.find_by(@client, name: fcoe[:name])
@@ -98,10 +98,10 @@ end
 
 # Delete this network
 fcoe3.delete
-puts "\nSucessfully deleted fc-network '#{fcoe3[:name]}'."
+puts "\nSuccessfully deleted fc-network '#{fcoe3[:name]}'."
 
 # Bulk-delete FC network
 delete_networks = [fcoe4[:uri], fcoe5[:uri]]
 bulk_options = { 'networkUris' => delete_networks }
 fcoe_network_class.bulk_delete(@client, bulk_options)
-puts "\nBulk deleted the fcoe networks sucessfully."
+puts "\nBulk deleted the fcoe networks successfully."

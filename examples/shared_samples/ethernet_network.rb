@@ -40,7 +40,7 @@ options = {
 # Creating a ethernet network
 ethernet = ethernet_class.new(@client, options)
 ethernet.create!
-puts "\nCreated ethernet-network '#{ethernet[:name]}' sucessfully.\n  uri = '#{ethernet[:uri]}'"
+puts "\nCreated ethernet-network '#{ethernet[:name]}' successfully.\n  uri = '#{ethernet[:uri]}'"
 
 # Find recently created network by name
 matches = ethernet_class.find_by(@client, name: ethernet[:name])
@@ -89,7 +89,7 @@ options = {
 
 list = ethernet_class.bulk_create(@client, options).each { |network| puts network['uri'] }
 
-puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully."
+puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' successfully."
 
 list.sort_by! { |e| e['name'] }
 list.each { |e| puts "  #{e['name']} - #{e['uri']}" }
@@ -99,7 +99,7 @@ delete_networks = []
 list.each { |e| delete_networks.append(e['uri']).to_s }
 bulk_options = { 'networkUris' => delete_networks }
 ethernet_class.bulk_delete(@client, bulk_options)
-puts "\nDeleted all bulk-created ethernet networks sucessfully."
+puts "\nDeleted all bulk-created ethernet networks successfully."
 
 # only for API300 and API500, not supported for OneView 4.0 or greater
 if @client.api_version.to_i > 200 && @client.api_version.to_i < 600
@@ -132,4 +132,4 @@ end
 # Clean up
 # Delete this network
 ethernet2.delete
-puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
+puts "\nSuccessfully deleted ethernet-network '#{ethernet[:name]}'."
