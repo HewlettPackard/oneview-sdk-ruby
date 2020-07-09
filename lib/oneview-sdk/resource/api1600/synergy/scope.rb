@@ -15,7 +15,7 @@ module OneviewSDK
   module API1600
     module Synergy
       # Scope resource implementation for API1600 Synergy
-      class Scope < OneviewSDK::API1200::C7000::Scope
+      class Scope < OneviewSDK::API1600::C7000::Scope
       end
     end
   end
