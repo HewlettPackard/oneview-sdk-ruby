@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1200/c7000/scope'
+require_relative '../c7000/scope'
 
 module OneviewSDK
   module API1600
