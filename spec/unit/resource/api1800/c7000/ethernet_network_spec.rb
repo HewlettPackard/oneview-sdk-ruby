@@ -17,4 +17,18 @@ RSpec.describe OneviewSDK::API1800::C7000::EthernetNetwork do
   it 'inherits from OneviewSDK::API1600::C7000::EthernetNetwork' do
     expect(described_class).to be < OneviewSDK::API1600::C7000::EthernetNetwork
   end
+
+  describe '#bulk_delete' do
+    let(:options) do
+      {
+        networkUris: ['/rest/network1', '/rest/network2']
+      }
+    end
+
+    it 'returns true' do
+      allow_any_instance_of(OneviewSDK::Client).to receive(:response_handler).and_return(true)
+      expect_any_instance_of(OneviewSDK::Client).to receive(:rest_post).and_return(FakeResponse.new({}, 202))
+      OneviewSDK::API1800::C7000::EthernetNetwork.bulk_delete(@client_1800, options)
+    end
+  end
 end

@@ -15,38 +15,11 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an ethernet network named 'OneViewSDK Test FCoE Network', update it and then delete it.
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
-# - API600 for C7000
-# - API600 for Synergy
-# - API800 for C7000
-# - API800 for Synergy
-# - API1000 for C7000
-# - API1000 for Synergy
-# - API1200 for C7000
-# - API1200 for Synergy
-# - API1600 for C7000
-# - API1600 for Synergy
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+#
+# Supported Variants
+# C7000 and Synergy for all api versions
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::FCoENetwork
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::FCoENetwork
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::FCoENetwork
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::FCoENetwork
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::FCoENetwork
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::FCoENetwork
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::FCoENetwork
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::FCoENetwork
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::FCoENetwork
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::FCoENetwork
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::FCoENetwork
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::FCoENetwork
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::FCoENetwork
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::FCoENetwork
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::FCoENetwork
 
 # Resource Class used in this sample
 fcoe_network_class = OneviewSDK.resource_named('FCoENetwork', @client.api_version)
@@ -54,18 +27,29 @@ fcoe_network_class = OneviewSDK.resource_named('FCoENetwork', @client.api_versio
 # Scope class used in this sample
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version) unless @client.api_version.to_i <= 200
 
-# Example: Create an fc network
-# NOTE: This will create an fc network named 'OneViewSDK Test FC Network', then delete it.
+# Example: Create an fcoe network
+# NOTE: This will create an fcoe network named 'OneViewSDK Test FCoE Network', then delete it.
 options = {
   name: 'OneViewSDK Test FCoE Network',
   connectionTemplateUri: nil,
   vlanId: 300
 }
 
-# Sucess case - 1
+# Success case - 1
 fcoe = fcoe_network_class.new(@client, options)
 fcoe.create!
-puts "\nCreated fcoe-network '#{fcoe[:name]}' sucessfully.\n  uri = '#{fcoe[:uri]}'"
+puts "\nCreated fcoe-network '#{fcoe[:name]}' successfully.\n  uri = '#{fcoe[:uri]}'"
+
+# Create 2 more fcoe networks
+options['name'] = 'FCoE network2'
+fcoe4 = fcoe_network_class.new(@client, options)
+fcoe4.create!
+puts "\nCreated fcoe-network '#{fcoe4[:name]}' successfully.\n  uri = '#{fcoe4[:uri]}'"
+
+options['name'] = 'FCoE network3'
+fcoe5 = fcoe_network_class.new(@client, options)
+fcoe5.create!
+puts "\nCreated fcoe-network '#{fcoe5[:name]}' successfully.\n  uri = '#{fcoe5[:uri]}'"
 
 # Find recently created network by name
 matches = fcoe_network_class.find_by(@client, name: fcoe[:name])
@@ -75,7 +59,7 @@ puts "\nFound fcoe-network by name: '#{fcoe2[:name]}'.\n  uri = '#{fcoe2[:uri]}'
 # Retrieve recently created network
 fcoe3 = fcoe_network_class.new(@client, name: fcoe[:name])
 fcoe3.retrieve!
-puts "\nRetrieved ethernet-network data by name: '#{fcoe3[:name]}'.\n  uri = '#{fcoe3[:uri]}'"
+puts "\nRetrieved fcoe-network data by name: '#{fcoe3[:name]}'.\n  uri = '#{fcoe3[:uri]}'"
 
 # Example: List all fcoe networks with certain attributes
 attributes = { status: 'OK' }
@@ -114,4 +98,10 @@ end
 
 # Delete this network
 fcoe3.delete
-puts "\nSucessfully deleted fc-network '#{fcoe3[:name]}'."
+puts "\nSuccessfully deleted fc-network '#{fcoe3[:name]}'."
+
+# Bulk-delete FC network
+delete_networks = [fcoe4[:uri], fcoe5[:uri]]
+bulk_options = { 'networkUris' => delete_networks }
+fcoe_network_class.bulk_delete(@client, bulk_options)
+puts "\nBulk deleted the fcoe networks successfully."
