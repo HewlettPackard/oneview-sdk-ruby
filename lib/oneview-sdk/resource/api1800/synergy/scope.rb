@@ -12,10 +12,10 @@
 require_relative '../c7000/scope'
 
 module OneviewSDK
-  module API1600
+  module API1800
     module Synergy
-      # Scope resource implementation for API1600 Synergy
-      class Scope < OneviewSDK::API1600::C7000::Scope
+      # Scope resource implementation for API1800 Synergy
+      class Scope < OneviewSDK::API1800::C7000::Scope
       end
     end
   end
