@@ -46,7 +46,7 @@ puts "(- maximumBandwidth: #{item['bandwidth']['maximumBandwidth']})"
 puts "(- typicalBandwidth: #{item['bandwidth']['typicalBandwidth']})\n"
 
 puts "\nUpdating a connection template with name='#{item['name']}"
-puts "\n adding value 100 for maximumBandwidth and typicalBandwidth:"
+puts "\n Reducing value 100 for maximumBandwidth and typicalBandwidth:"
 item['bandwidth']['maximumBandwidth'] -= 100
 item['bandwidth']['typicalBandwidth'] -= 100
 item.update

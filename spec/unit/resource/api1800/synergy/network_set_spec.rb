@@ -14,7 +14,7 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::API1800::Synergy::NetworkSet do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API1600::C7000::NetworkSet' do
-    expect(described_class).to be < OneviewSDK::API1600::C7000::NetworkSet
+  it 'inherits from OneviewSDK::API1800::C7000::NetworkSet' do
+    expect(described_class).to be < OneviewSDK::API1800::C7000::NetworkSet
   end
 end
