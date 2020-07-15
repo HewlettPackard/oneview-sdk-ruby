@@ -60,4 +60,4 @@ puts item.data if item.retrieve!
 
 # Deletes the certificate as per the aliasName
 puts 'Removing certificate:-'
-puts 'Successfully Removed.' if item.remove
+#puts 'Successfully Removed.' if item.remove
