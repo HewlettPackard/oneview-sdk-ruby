@@ -9,14 +9,14 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1600/c7000/ethernet_network'
+require_relative '../../api1600/c7000/fcoe_network'
 
 module OneviewSDK
   module API1800
     module C7000
-      # Ethernet network resource implementation for API1800 C7000
-      class EthernetNetwork < OneviewSDK::API1600::C7000::EthernetNetwork
-        # Bulk delete the ethernet networks
+      # FCoE network resource implementation for API1800 C7000
+      class FCoENetwork < OneviewSDK::API1600::C7000::FCoENetwork
+        # Bulk delete the fcoe networks
         def self.bulk_delete(client, options)
           response = client.rest_post(BASE_URI + '/bulk-delete', { 'body' => options }, client.api_version)
           client.response_handler(response)

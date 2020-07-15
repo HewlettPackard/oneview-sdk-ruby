@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1600/synergy/ethernet_network'
+require_relative '../../api1800/c7000/ethernet_network'
 
 module OneviewSDK
   module API1800
     module Synergy
       # Ethernet network resource implementation for API1800 Synergy
-      class EthernetNetwork < OneviewSDK::API1600::Synergy::EthernetNetwork
+      class EthernetNetwork < OneviewSDK::API1800::C7000::EthernetNetwork
       end
     end
   end

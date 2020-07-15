@@ -6,15 +6,17 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the
-# specific language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
 
-require 'spec_helper'
+require_relative '../c7000/scope'
 
-RSpec.describe OneviewSDK::API1800::Synergy::EthernetNetwork do
-  include_context 'shared context'
-
-  it 'inherits from OneviewSDK::API1800::C7000::EthernetNetwork' do
-    expect(described_class).to be < OneviewSDK::API1800::C7000::EthernetNetwork
+module OneviewSDK
+  module API1800
+    module Synergy
+      # Scope resource implementation for API1800 Synergy
+      class Scope < OneviewSDK::API1800::C7000::Scope
+      end
+    end
   end
 end
