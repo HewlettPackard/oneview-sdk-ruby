@@ -15,24 +15,10 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an enclosure group named 'OneViewSDK Test Enclosure Group', then delete it.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1200, and 1600.
+# - 200, 300, 500, 600, 800, 1200, 1600 and 1800.
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::EnclosureGroup
-# api_version = 300 & variant = C7000 to encl_group_class
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::EnclosureGroup
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::EnclosureGroup
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::EnclosureGroup
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::EnclosureGroup
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::EnclosureGroup
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::EnclosureGroup
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::EnclosureGroup
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::EnclosureGroup
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::EnclosureGroup
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::EnclosureGroup
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::EnclosureGroup
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::EnclosureGroup
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::EnclosureGroup
+# Supported Variants:
+# C7000 and Synergy for all API versions
 
 # Resource Class used in this sample
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
@@ -43,7 +29,19 @@ lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_ve
 type = 'enclosure group'
 encl_group_name = 'OneViewSDK Test Enclosure Group'
 
-item = encl_group_class.new(@client, name: encl_group_name)
+interconnect_bay_mapping = [
+       { interconnectBay: 3, logicalInterconnectGroupUri: '/rest/logical-interconnect-groups/6aabd433-7ed0-4c59-963c-c3f36bbd4f85' },
+       { interconnectBay: 6, logicalInterconnectGroupUri: '/rest/logical-interconnect-groups/6aabd433-7ed0-4c59-963c-c3f36bbd4f85' }
+]
+
+options = {
+  name: encl_group_name,
+  ipAddressingMode: 'External',
+  enclosureCount: 1,
+  interconnectBayMappings: interconnect_bay_mapping
+}
+
+item = encl_group_class.new(@client, options)
 
 lig = lig_class.get_all(@client).first
 item.add_logical_interconnect_group(lig)

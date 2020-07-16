@@ -5,6 +5,8 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 
 #### Features supported
 - Connection Template
+- Enclosure
+- Enclosure Group
 - Ethernet Network
 - FC Network
 - FCOE Network
