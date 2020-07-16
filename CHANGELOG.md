@@ -4,10 +4,13 @@
 This release extends support to OneView Rest API version 1800 (OneView v5.30) for the hardware variants C7000 and Synergy to the following features:
 
 #### Features supported
+- Connection Template
 - Ethernet Network
 - FC Network
 - FCOE Network
+- Network Set
 - Scope
+- Uplink Set
 
 ## v5.13.0
 
