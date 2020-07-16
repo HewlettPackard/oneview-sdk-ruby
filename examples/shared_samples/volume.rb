@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@ require_relative '../_client' # Gives access to @client
 #   @unmanaged_volume_wwn (optional)
 # NOTE: This sample is for APIs 200 and 300 only. To see sample for API 500, look at the example volume.rb in the examples/api500 folder.
 #
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::Volume
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Volume
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Volume
+
+# Supported API Versions
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+
+# Supported Variants:
+# C7000 and Synergy for all API versions
 
 # Resource Class used in this sample
 volume_class = OneviewSDK.resource_named('Volume', @client.api_version)
@@ -28,6 +30,14 @@ volume_class = OneviewSDK.resource_named('Volume', @client.api_version)
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 storage_pool_class = OneviewSDK.resource_named('StoragePool', @client.api_version)
 volume_template_class = OneviewSDK.resource_named('VolumeTemplate', @client.api_version)
+
+if @client.api_version >= 600
+  raise "If you want execute sample for API #{@client.api_version}," \
+      "you should execute the ruby file '/examples/api600/volume.rb'"
+elsif @client.api_version == 500
+  raise "If you want execute sample for API #{@client.api_version}," \
+      "you should execute the ruby file '/examples/api500/volume.rb'"
+end
 
 puts '1) Common = Storage System + Storage Pool'
 
