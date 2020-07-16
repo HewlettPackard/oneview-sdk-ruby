@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -12,14 +12,11 @@
 require_relative '../_client' # Gives access to @client
 
 # All supported APIs for Volume Attachment:
-# - 200, 300, 500
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
 
-# Resources classes that you can use for Volume Attachment in this example:
-# volume_attachment_class = OneviewSDK::API200::VolumeAttachment
-# volume_attachment_class = OneviewSDK::API300::C7000::VolumeAttachment
-# volume_attachment_class = OneviewSDK::API300::Synergy::VolumeAttachment
-# volume_attachment_class = OneviewSDK::API500::C7000::VolumeAttachment
-# volume_attachment_class = OneviewSDK::API500::Synergy::VolumeAttachment
+# Supported Variants:
+# C7000 and Synergy for all API versions
+
 volume_attachment_class = OneviewSDK.resource_named('VolumeAttachment', @client.api_version)
 
 # List volume attachments

@@ -11,6 +11,9 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - Network Set
 - Scope
 - Uplink Set
+- Volume
+- Volume Attachment
+- Volume Template
 
 ## v5.13.0
 
