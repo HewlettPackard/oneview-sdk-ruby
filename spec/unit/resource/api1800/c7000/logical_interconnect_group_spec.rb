@@ -17,11 +17,4 @@ RSpec.describe OneviewSDK::API1800::C7000::LogicalInterconnectGroup do
   it 'inherits from OneviewSDK::API1600::C7000::LogicalInterconnectGroup' do
     expect(described_class).to be < OneviewSDK::API1600::C7000::LogicalInterconnectGroup
   end
-
-  describe '#initialize' do
-    it 'should be initialize the instance with default values' do
-      item = described_class.new(@client_1800)
-      expect(item['type']).to eq('logical-interconnect-groupV8')
-    end
-  end
 end
