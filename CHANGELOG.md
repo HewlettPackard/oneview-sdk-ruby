@@ -10,6 +10,8 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - Ethernet Network
 - FC Network
 - FCOE Network
+- Hypervisor Cluster Profile
+- Hypervisor Manager
 - Interconnects
 - Logical Enclosure
 - Network Set
