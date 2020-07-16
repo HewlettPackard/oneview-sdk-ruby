@@ -10,14 +10,14 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - Ethernet Network
 - FC Network
 - FCOE Network
-- Interconnects
-- Logical Enclosure
 - Logical Interconnect
 - Network Set
 - Scope
+- Server Certificate
 - Storage Pool
 - Storage System
 - Uplink Set
+
 
 ## v5.13.0
 
