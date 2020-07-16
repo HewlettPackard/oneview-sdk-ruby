@@ -13,43 +13,15 @@ require_relative '../_client' # Gives access to @client
 
 # Example: Create/Update/Delete networks set
 # NOTE: This will create a network set named 'NetworkSet_1', update it and then delete it.
-# It's necessary an ethernet network created.
+# PRE-REQUISITE:Tagged ethernet networks should be created.
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
-# - API600 for C7000
-# - API600 for Synergy
-# - API800 for C7000
-# - API800 for Synergy
-# - API1000 for C7000
-# - API1000 for Synergy
-# - API1200 for C7000
-# - API1200 for Synergy
-# - API1600 for C7000
-# - API1600 for Synergy
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::NetworkSet
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::NetworkSet
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::NetworkSet
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::NetworkSet
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::NetworkSet
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::NetworkSet
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::NetworkSet
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::NetworkSet
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::NetworkSet
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::NetworkSet
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::NetworkSet
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::NetworkSet
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::NetworkSet
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::NetworkSet
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::NetworkSet
-#
-#
+# Supported variants:
+# - C7000 and Synergy for all api versions
+
+
 # Resource Class used in this sample
 network_set_class = OneviewSDK.resource_named('NetworkSet', @client.api_version)
 
