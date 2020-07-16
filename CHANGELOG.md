@@ -12,6 +12,8 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - FCOE Network
 - Network Set
 - Scope
+- Storage Pool
+- Storage System
 - Uplink Set
 
 ## v5.13.0
