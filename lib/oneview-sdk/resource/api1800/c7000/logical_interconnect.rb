@@ -16,25 +16,25 @@ module OneviewSDK
     module C7000
       # Logical interconnect resource implementation for API1800 C7000
       class LogicalInterconnect < OneviewSDK::API1600::C7000::LogicalInterconnect
-	# Get igmpSettings of logical interconnect
+        # Gets igmpSettings of logical interconnect
         def get_igmp_settings
-           ensure_client && ensure_uri
-           response = @client.rest_get("#{@data['uri']}/igmpSettings")
-           @client.response_handler(response)
-           body = @client.response_handler(response)
-           body['members']
+          ensure_client && ensure_uri
+          response = @client.rest_get("#{@data['uri']}/igmpSettings")
+          @client.response_handler(response)
+          body = @client.response_handler(response)
+          body['members']
         end
-	
-	# Update igmpSettings for LI
+
+        # Updates igmpSettings for LI
         def update_igmp_settings
-           raise IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['igmpSettings']
-           update_options = {
-           'If-Match' =>  @data['igmpSettings'].delete('eTag'),
-           'body' => @data['igmpSettings']
-            }
-           response = @client.rest_put("#{@data['uri']}/igmpSettings", update_options, @api_version)
-           body = @client.response_handler(response)
-           set_all(body)
+          raise IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['igmpSettings']
+          update_options = {
+            'If-Match' =>  @data['igmpSettings'].delete('eTag'),
+            'body' => @data['igmpSettings']
+          }
+          response = @client.rest_put("#{@data['uri']}/igmpSettings", update_options, @api_version)
+          body = @client.response_handler(response)
+          set_all(body)
         end
       end
     end
