@@ -16,16 +16,12 @@ require_relative '../_client' # Gives access to @client
 #   @storage_system_username
 #   @storage_system_password
 
-# All supported APIs for Storage System:
-# - API200 for C7000 and Synergy
-# - API300 for C7000 and Synergy
-# - API500 for C7000 and Synergy (see /examples/api500/storage_system.rb)
-# - API600 for C7000 and Synergy (see /examples/api600/storage_system.rb)
-# - API800 for C7000 and Synergy (see /examples/api600/storage_system.rb)
-# - API1000 for C7000 and Synergy (see /examples/api600/storage_system.rb)
-# - API1200 for C7000 and Synergy (see /examples/api600/storage_system.rb)
-# - API1600 for C7000 and Synergy (see /examples/api600/storage_system.rb)
+# Supported API Versions:
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
 
+# Supported Variants:
+# C7000 and Synergy for all API versions
+#
 raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
 raise 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
