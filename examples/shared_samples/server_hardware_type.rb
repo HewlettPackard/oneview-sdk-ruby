@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ require_relative '../_client' # Gives access to @client
 # Example: Actions with a Server Hardware Type
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
 # Supported API variants:
 # C7000, Synergy
 
