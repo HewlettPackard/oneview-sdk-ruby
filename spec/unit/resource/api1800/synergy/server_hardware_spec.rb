@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API1600::C7000::LogicalEnclosure do
+RSpec.describe OneviewSDK::API1800::Synergy::ServerHardware do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API1200::C7000::LogicalEnclosure' do
-    expect(described_class).to be < OneviewSDK::API1200::C7000::LogicalEnclosure
+  it 'inherits from OneviewSDK::API1800::C7000::ServerHardware' do
+    expect(described_class).to be < OneviewSDK::API1800::C7000::ServerHardware
   end
 end

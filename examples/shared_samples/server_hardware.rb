@@ -20,7 +20,7 @@ require_relative '../_client' # Gives access to @client
 #
 # Resources that can be created according to parameters:
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
 # Supported Variants:
 # C7000 and Synergy for all api-versions
 
@@ -107,6 +107,14 @@ puts "\nEnviromental configuration found sucessfully: \n#{environmental}"
 puts "\nRetrieving historical utilization data for the specified resource, metrics, and time span."
 utilization = item3.utilization
 puts "\nHistorical utilization retrieved sucessfully: \n#{utilization}"
+
+puts "\nRetrieving local storage data for the specified resource."
+local_storage = item3.get_local_storage
+puts "\nLocal storage data retrieved sucessfully: \n#{local_storage}"
+
+puts "\nRetrieving local storageV2 data for the specified resource of Gen10 plus model."
+local_storagev2 = item3.get_local_storagev2
+puts "\nLocal storageV2 data retrieved sucessfully: \n#{local_storagev2}"
 
 puts "\nRetrieving historical utilization with day view."
 utilization2 = item3.utilization(view: 'day')

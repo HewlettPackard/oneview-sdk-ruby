@@ -6,15 +6,17 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the
-# specific language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
 
-require 'spec_helper'
+require_relative '../../api1600/synergy/logical_enclosure'
 
-RSpec.describe OneviewSDK::API1600::C7000::LogicalEnclosure do
-  include_context 'shared context'
-
-  it 'inherits from OneviewSDK::API1200::C7000::LogicalEnclosure' do
-    expect(described_class).to be < OneviewSDK::API1200::C7000::LogicalEnclosure
+module OneviewSDK
+  module API1800
+    module Synergy
+      # Logical Enclosure resource implementation on API1800 Synergy
+      class LogicalEnclosure < OneviewSDK::API1600::Synergy::LogicalEnclosure
+      end
+    end
   end
 end

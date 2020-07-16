@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -16,25 +16,10 @@ require_relative '../_client' # Gives access to @client
 # To run this test with Synergy you must have an enclosureGroup with enclosure count = 3.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, and 1600.
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::LogicalEnclosure
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::LogicalEnclosure
-# api_version = 300 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::LogicalEnclosure
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::LogicalEnclosure
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::LogicalEnclosure
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::LogicalEnclosure
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::LogicalEnclosure
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::LogicalEnclosure
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::LogicalEnclosure
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::LogicalEnclosure
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::LogicalEnclosure
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::LogicalEnclosure
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::LogicalEnclosure
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::LogicalEnclosure
-
+# Supported Variants:
+# - C7000 and Synergy for all API versions
 
 # Resource Class used in this sample
 logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.api_version)
