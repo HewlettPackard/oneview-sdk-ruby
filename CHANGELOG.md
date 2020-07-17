@@ -14,7 +14,7 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - Hypervisor Manager
 - Interconnects
 - Logical Enclosure
-- Logical Ingterconnect Group
+- Logical Interconnect Group
 - Network Set
 - Scope
 - Server Certificate
