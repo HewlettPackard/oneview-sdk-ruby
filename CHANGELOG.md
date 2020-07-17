@@ -1,4 +1,4 @@
-## v5.14.0 (unreleased)
+## v5.14.0
 
 #### Notes
 This release extends support to OneView Rest API version 1800 (OneView v5.30) for the hardware variants C7000 and Synergy to the following features:
@@ -15,9 +15,9 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - Hypervisor Manager
 - Interconnects
 - Interconnect Types
+- LIG UplinkSet
 - Logical Enclosure
 - Logical Interconnect
-- LIG UplinkSet
 - Logical Interconnect Group
 - Network Set
 - Scope
