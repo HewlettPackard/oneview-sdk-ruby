@@ -14,8 +14,10 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - Hypervisor Cluster Profile
 - Hypervisor Manager
 - Interconnects
-- LIG UplinkSet
+- Interconnect Types
 - Logical Enclosure
+- Logical Interconnect
+- LIG UplinkSet
 - Logical Interconnect Group
 - Network Set
 - Scope

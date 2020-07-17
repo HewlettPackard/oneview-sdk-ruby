@@ -14,7 +14,8 @@ require_relative '../_client' # Gives access to @client
 # Example: Explores functionalities of Logical Interconnects
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+
 # Supported Variants:
 # - C7000, Synergy
 
@@ -134,6 +135,18 @@ item.update_ethernet_settings
 item.retrieve! # Retrieving to guarantee the remote is updated
 puts "igmpIdleTimeoutInterval: #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
 puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
+
+# Gets igmp settings of LI
+puts "\nGets igmp settings of LI "
+item.get_igmp_settings
+puts "IGMP Settings: #{item['igmpSettings']}"
+
+# Update igmp setting for LI
+puts "\nUpdates igmp setting for LI "
+item['igmpSettings']['igmpIdleTimeoutInterval'] = 210
+item.update_igmp_settings
+item.retrieve!
+puts "Updated igmpIdleTimeoutInterval: #{item['igmpSettings']['igmpIdleTimeoutInterval']}"
 
 # Gets a collection of uplink ports eligibles for assignment to an analyzer port
 puts "\nGets a collection of uplink ports eligibles for assignment to an analyzer port "
