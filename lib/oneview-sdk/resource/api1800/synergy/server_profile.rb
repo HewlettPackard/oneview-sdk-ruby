@@ -9,13 +9,16 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1600/synergy/server_profile'
+require_relative '../../api300/synergy/server_profile'
+require_relative '../c7000/server_profile'
 
 module OneviewSDK
   module API1800
     module Synergy
       # Server profile resource implementation for API1800 Synergy
-      class ServerProfile < OneviewSDK::API1600::Synergy::ServerProfile
+      class ServerProfile < OneviewSDK::API1800::C7000::ServerProfile
+        extend OneviewSDK::API300::Synergy::SASLogicalJBODHelper
+        include OneviewSDK::API300::Synergy::ServerProfileHelper
       end
     end
   end
