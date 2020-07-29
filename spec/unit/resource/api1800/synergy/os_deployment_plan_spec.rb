@@ -18,4 +18,3 @@ RSpec.describe OneviewSDK::API1800::Synergy::OSDeploymentPlan do
     expect(described_class).to be < OneviewSDK::API300::Synergy::OSDeploymentPlan
   end
 end
-
