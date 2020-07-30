@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/os_deployment_plan'
+require_relative '../../api1600/synergy/os_deployment_plan'
 
 module OneviewSDK
   module API1800
     module Synergy
       # OS Deployment Plan resource implementation for API1800 Synergy
-      class OSDeploymentPlan < OneviewSDK::API300::Synergy::OSDeploymentPlan
+      class OSDeploymentPlan < OneviewSDK::API1600::Synergy::OSDeploymentPlan
       end
     end
   end
