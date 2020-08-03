@@ -1,4 +1,4 @@
-## v5.14.1(Unreleased)
+## v5.15.0
 
 #### Notes
 This release extends support to OneView Rest API version 1800 (OneView v5.30) for the Synergy hardware variant to the following features:
