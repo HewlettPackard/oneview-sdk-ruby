@@ -1,7 +1,7 @@
-# (c) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -9,16 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api300/synergy/server_profile'
-require_relative '../c7000/server_profile'
+require_relative '../../api1600/synergy/os_deployment_plan'
 
 module OneviewSDK
   module API1800
     module Synergy
-      # Server profile resource implementation for API1800 Synergy
-      class ServerProfile < OneviewSDK::API1800::C7000::ServerProfile
-        extend OneviewSDK::API300::Synergy::SASLogicalJBODHelper
-        include OneviewSDK::API300::Synergy::ServerProfileHelper
+      # OS Deployment Plan resource implementation for API1800 Synergy
+      class OSDeploymentPlan < OneviewSDK::API1600::Synergy::OSDeploymentPlan
       end
     end
   end

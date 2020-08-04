@@ -18,10 +18,10 @@ The Docker Store image tag consist of two sections: <sdk_version-OV_version>
 ```bash
 # Download and store a local copy of oneview-sdk-ruby and
 # use it as a Docker image.
-$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.14.0-OV5.3
+$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.15.0-OV5.3
 # Run docker commands below given, which  will in turn create
 # a sh session where you can create files, issue commands and execute the examples.
-$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.14.0-OV5.3 /bin/sh
+$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.15.0-OV5.3 /bin/sh
 ```
 
 ### Local Setup

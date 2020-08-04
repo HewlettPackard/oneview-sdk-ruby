@@ -1,3 +1,15 @@
+## v5.15.0
+
+#### Notes
+This release extends support to OneView Rest API version 1800 (OneView v5.30) for the Synergy hardware variant to the following features:
+
+#### Features supported
+- OS Deployment Plan
+
+#### Bug fixes & Enhancements
+- [#454](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/454)OSDP resource is missing in API1800
+- [#455](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/455)sasjbod helper function is missing in API1800 server profile resource
+
 ## v5.14.0
 
 #### Notes
