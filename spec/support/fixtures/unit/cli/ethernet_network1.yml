@@ -1,6 +1,6 @@
 ---
-:type: OneviewSDK::EthernetNetwork
-:api_version: 200
+:type: OneviewSDK::API600::C7000::EthernetNetwork
+:api_version: 600
 :data:
   name: My_Ethernet_Network
   description: Short Description

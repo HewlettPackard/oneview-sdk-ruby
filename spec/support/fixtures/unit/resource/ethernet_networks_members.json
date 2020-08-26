@@ -2,7 +2,7 @@
   "type": "NetworkCollectionV3",
   "members": [
     {
-      "type": "ethernet-networkV3",
+      "type": "ethernet-networkV4",
       "vlanId": 28,
       "ethernetNetworkType": "Tagged",
       "smartLink": false,
@@ -21,7 +21,7 @@
       "uri": "/rest/ethernet-networks/07a077d7-9454-407e-a2cd-78c940a1b703"
     },
     {
-      "type": "ethernet-networkV3",
+      "type": "ethernet-networkV4",
       "vlanId": 26,
       "ethernetNetworkType": "Tagged",
       "smartLink": false,
@@ -40,7 +40,7 @@
       "uri": "/rest/ethernet-networks/29ff37e6-ab56-4e4c-9d54-593ae04edfd8"
     },
     {
-      "type": "ethernet-networkV3",
+      "type": "ethernet-networkV4",
       "vlanId": 27,
       "ethernetNetworkType": "Tagged",
       "smartLink": false,
@@ -59,7 +59,7 @@
       "uri": "/rest/ethernet-networks/af25b11e-1326-4c76-a7f8-42098fea3532"
     },
     {
-      "type": "ethernet-networkV3",
+      "type": "ethernet-networkV4",
       "vlanId": 0,
       "ethernetNetworkType": "Untagged",
       "smartLink": false,

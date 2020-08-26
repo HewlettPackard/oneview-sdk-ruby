@@ -1,6 +1,6 @@
 {
   "data" : {
-    "type": "logical-interconnectV3",
+    "type": "logical-interconnectV4",
     "enclosureType": "C7000",
     "enclosureUris": [
       "/rest/enclosures/09SGH100X6J1"
@@ -94,7 +94,7 @@
       "fcoeMode": "NotApplicable"
     },
     "ethernetSettings": {
-      "type": "EthernetInterconnectSettingsV3",
+      "type": "EthernetInterconnectSettingsV4",
       "interconnectType": "Ethernet",
       "enableIgmpSnooping": false,
       "enableFastMacCacheFailover": true,

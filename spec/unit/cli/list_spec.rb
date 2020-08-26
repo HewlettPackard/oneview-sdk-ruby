@@ -73,7 +73,7 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'checks for a valid module api version' do
         expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 291]) }
-          .to output(/API version 291 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
+          .to output(/API version 291 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
       end
 
       it 'rounds an invalid module api version down' do
@@ -84,7 +84,7 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'rounds an invalid module api version up if cannot round down' do
         expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 0]) }
-          .to output(/API version 0 is not supported. Using 200+\sProfile1/).to_stdout_from_any_process
+          .to output(/API version 0 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
       end
 
       it 'handles a float type api version' do
@@ -94,16 +94,16 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'uses the api-version & variant params when looking for an API module' do
-        expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).and_return(@response)
-        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 300 --variant Synergy]) }
+        expect(OneviewSDK::API600::Synergy::ServerProfile).to receive(:get_all).and_return(@response)
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 600 --variant Synergy]) }
           .to output.to_stdout_from_any_process
       end
     end
 
     it 'uses the ONEVIEWSDK_API_VERSION & ONEVIEWSDK_VARIANT environment variables' do
-      ENV['ONEVIEWSDK_API_VERSION'] = '300'
+      ENV['ONEVIEWSDK_API_VERSION'] = '600'
       ENV['ONEVIEWSDK_VARIANT'] = 'Synergy'
-      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).and_return(@response)
+      expect(OneviewSDK::API600::Synergy::ServerProfile).to receive(:get_all).and_return(@response)
       expect { OneviewSDK::Cli.start(%w[list ServerProfiles]) }
         .to output.to_stdout_from_any_process
     end

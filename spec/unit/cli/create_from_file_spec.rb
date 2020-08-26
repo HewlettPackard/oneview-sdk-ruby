@@ -18,7 +18,7 @@ RSpec.describe OneviewSDK::Cli do
     context 'with valid options' do
       before :each do
         @resource_data = { 'name' => 'My', 'uri' => '/rest/fake', 'description' => 'Blah' }
-        response = [OneviewSDK::EthernetNetwork.new(@client_200, @resource_data)]
+        response = [OneviewSDK::EthernetNetwork.new(@client_600, @resource_data)]
         allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:create).and_return(true)
         allow_any_instance_of(OneviewSDK::Resource).to receive(:update).and_return(true)
@@ -32,7 +32,7 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'updates a valid resource by name' do
         resource_data = { 'name' => 'My_Ethernet_Network', 'description' => 'Blah' }
-        response = [OneviewSDK::EthernetNetwork.new(@client_200, resource_data)]
+        response = [OneviewSDK::EthernetNetwork.new(@client_600, resource_data)]
         allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
           .to output(/Updated Successfully!/).to_stdout_from_any_process
@@ -40,7 +40,7 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'makes no changes if the resource is up to date' do
         resource_data = { 'name' => 'My_Ethernet_Network', 'description' => 'Short Description' }
-        response = [OneviewSDK::EthernetNetwork.new(@client_200, resource_data)]
+        response = [OneviewSDK::API600::C7000::EthernetNetwork.new(@client_600, resource_data)]
         allow(OneviewSDK::Resource).to receive(:find_by).and_return(response)
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
           .to output(/Skipped.*up to date/).to_stdout_from_any_process
@@ -58,7 +58,7 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'fails if the resource is a generic "Resource" type' do
-        resource = OneviewSDK::Resource.new(@client_200)
+        resource = OneviewSDK::Resource.new(@client_600)
         allow(OneviewSDK::Resource).to receive(:from_file).and_return(resource)
         expect(STDOUT).to receive(:puts).with(/Failed to determine resource type/)
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }
@@ -66,7 +66,7 @@ RSpec.describe OneviewSDK::Cli do
       end
 
       it 'fails if the file does not specify a unique identifier' do
-        resource = OneviewSDK::EthernetNetwork.new(@client_200)
+        resource = OneviewSDK::EthernetNetwork.new(@client_600)
         allow(OneviewSDK::Resource).to receive(:from_file).and_return(resource)
         expect(STDOUT).to receive(:puts).with(/Must set/)
         expect { OneviewSDK::Cli.start(['create_from_file', yaml_file]) }

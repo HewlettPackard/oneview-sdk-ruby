@@ -38,8 +38,8 @@ RSpec.describe OneviewSDK::Cli do
     end
 
     it 'shows ONEVIEWSDK_API_VERSION when set' do
-      ENV['ONEVIEWSDK_API_VERSION'] = '120'
-      expect { command }.to output(/ONEVIEWSDK_API_VERSION\s+=\s'120'/).to_stdout_from_any_process
+      ENV['ONEVIEWSDK_API_VERSION'] = '600'
+      expect { command }.to output(/ONEVIEWSDK_API_VERSION\s+=\s'600'/).to_stdout_from_any_process
     end
 
     it 'shows ONEVIEWSDK_VARIANT when set' do

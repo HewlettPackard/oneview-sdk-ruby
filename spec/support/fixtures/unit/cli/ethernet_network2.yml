@@ -1,0 +1,8 @@
+---
+:type: OneviewSDK::API600::C7000::EthernetNetwork
+:api_version: 600
+:data:
+  ethernetNetworkType: Tagged
+  type: ethernet-networkV4
+  name: Test
+  uri: "/rest/fake"

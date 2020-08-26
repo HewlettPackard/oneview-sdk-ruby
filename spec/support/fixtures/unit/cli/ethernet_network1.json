@@ -1,6 +1,6 @@
 {
   "type": "OneviewSDK::EthernetNetwork",
-  "api_version": 200,
+  "api_version": 600,
   "data": {
     "uri": "/rest/ethernet-networks/11111111-1111-1111-1111-111111111111",
     "description": "Short Description",

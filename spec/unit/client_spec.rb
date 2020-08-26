@@ -130,8 +130,8 @@ RSpec.describe OneviewSDK::Client do
 
     it 'sets the module api version unless it has already been set' do
       expect(OneviewSDK).to receive(:api_version_updated?).and_return false
-      expect(OneviewSDK).to receive(:api_version=).with(200).and_return true
-      OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'token123', api_version: 200)
+      expect(OneviewSDK).to receive(:api_version=).with(600).and_return true
+      OneviewSDK::Client.new(url: 'https://oneview.example.com', token: 'token123', api_version: 600)
     end
   end
 
@@ -139,34 +139,34 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it 'allows the url to be re-set' do
-      @client_200.url = 'https://new-url.example.com'
-      expect(@client_200.url).to eq('https://new-url.example.com')
+      @client_600.url = 'https://new-url.example.com'
+      expect(@client_600.url).to eq('https://new-url.example.com')
     end
 
     it 'allows the user to be re-set' do
-      @client_200.user = 'updatedUser'
-      expect(@client_200.user).to eq('updatedUser')
+      @client_600.user = 'updatedUser'
+      expect(@client_600.user).to eq('updatedUser')
     end
 
     it 'allows the password to be re-set' do
-      @client_200.password = 'updatedPassword'
-      expect(@client_200.password).to eq('updatedPassword')
+      @client_600.password = 'updatedPassword'
+      expect(@client_600.password).to eq('updatedPassword')
     end
 
     it 'allows the token to be re-set' do
-      @client_200.token = 'updatedToken'
-      expect(@client_200.token).to eq('updatedToken')
+      @client_600.token = 'updatedToken'
+      expect(@client_600.token).to eq('updatedToken')
     end
 
     it 'allows the log level to be re-set' do
-      expect(@client_200.log_level).to_not eq(:error)
-      @client_200.log_level = :error
-      expect(@client_200.log_level).to eq(:error)
-      expect(@client_200.logger.level).to eq(Logger.const_get(:ERROR))
+      expect(@client_600.log_level).to_not eq(:error)
+      @client_600.log_level = :error
+      expect(@client_600.log_level).to eq(:error)
+      expect(@client_600.logger.level).to eq(Logger.const_get(:ERROR))
     end
 
     it 'does not allow the max_api_version to be set manually' do
-      expect { @client_200.max_api_version = 1 }.to raise_error(NoMethodError, /undefined method/)
+      expect { @client_600.max_api_version = 1 }.to raise_error(NoMethodError, /undefined method/)
     end
   end
 
@@ -219,27 +219,27 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     before :each do
-      @resource = OneviewSDK::Resource.new(@client_200)
+      @resource = OneviewSDK::Resource.new(@client_600)
     end
 
     it 'implements the #create method' do
       expect(@resource).to receive(:create)
-      @client_200.create(@resource)
+      @client_600.create(@resource)
     end
 
     it 'implements the #update method' do
       expect(@resource).to receive(:update)
-      @client_200.update(@resource, name: 'NewName')
+      @client_600.update(@resource, name: 'NewName')
     end
 
     it 'implements the #refresh method' do
       expect(@resource).to receive(:refresh)
-      @client_200.refresh(@resource)
+      @client_600.refresh(@resource)
     end
 
     it 'implements the #delete method' do
       expect(@resource).to receive(:delete)
-      @client_200.delete(@resource)
+      @client_600.delete(@resource)
     end
   end
 
@@ -247,30 +247,30 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it "calls the correct resource's get_all method" do
-      expect(OneviewSDK::API200::ServerProfile).to receive(:get_all).with(@client_200)
-      @client_200.get_all('ServerProfiles')
+      expect(OneviewSDK::API600::C7000::ServerProfile).to receive(:get_all).with(@client_600)
+      @client_600.get_all('ServerProfiles')
     end
 
     it 'accepts API version and variant parameters' do
-      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).with(@client_200)
-      @client_200.get_all('ServerProfiles', 300, 'Synergy')
+      expect(OneviewSDK::API600::C7000::ServerProfile).to receive(:get_all).with(@client_600)
+      @client_600.get_all('ServerProfiles', 600, 'C7000')
     end
 
     it 'accepts symbols instead of strings' do
-      expect(OneviewSDK::API300::Synergy::ServerProfile).to receive(:get_all).with(@client_200)
-      @client_200.get_all(:ServerProfiles, 300, :Synergy)
+      expect(OneviewSDK::API600::Synergy::ServerProfile).to receive(:get_all).with(@client_600)
+      @client_600.get_all(:ServerProfiles, 600, :Synergy)
     end
 
     it 'fails when a bogus resource type is given' do
-      expect { @client_200.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
+      expect { @client_600.get_all('BogusResources') }.to raise_error(TypeError, /Invalid resource type/)
     end
 
     it 'fails when a bogus API version is given' do
-      expect { @client_200.get_all('ServerProfiles', 100) }.to raise_error(OneviewSDK::UnsupportedVersion, /version 100 is not supported/)
+      expect { @client_600.get_all('ServerProfiles', 100) }.to raise_error(OneviewSDK::UnsupportedVersion, /version 100 is not supported/)
     end
 
     it 'fails when a bogus variant is given' do
-      expect { @client_200.get_all('ServerProfiles', 300, 'Bogus') }.to raise_error(/variant 'Bogus' is not supported/)
+      expect { @client_600.get_all('ServerProfiles', 600, 'Bogus') }.to raise_error(/variant 'Bogus' is not supported/)
     end
   end
 
@@ -278,11 +278,11 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it 'refreshes the token and max_api_version' do
-      expect(@client_200).to receive(:appliance_api_version).and_return(250)
-      expect(@client_200).to receive(:login).and_return('newToken')
-      @client_200.refresh_login
-      expect(@client_200.max_api_version).to eq(250)
-      expect(@client_200.token).to eq('newToken')
+      expect(@client_600).to receive(:appliance_api_version).and_return(250)
+      expect(@client_600).to receive(:login).and_return('newToken')
+      @client_600.refresh_login
+      expect(@client_600.max_api_version).to eq(250)
+      expect(@client_600.token).to eq('newToken')
     end
   end
 
@@ -290,8 +290,8 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it 'makes a REST call to destroy the session' do
-      expect(@client_200).to receive(:rest_delete).with('/rest/login-sessions').and_return(FakeResponse.new)
-      expect(@client_200.destroy_session).to eq(@client_200)
+      expect(@client_600).to receive(:rest_delete).with('/rest/login-sessions').and_return(FakeResponse.new)
+      expect(@client_600.destroy_session).to eq(@client_600)
     end
   end
 
@@ -299,13 +299,13 @@ RSpec.describe OneviewSDK::Client do
     include_context 'shared context'
 
     it 'requires a task_uri' do
-      expect { @client_200.wait_for('') }.to raise_error(ArgumentError, /Must specify a task_uri/)
+      expect { @client_600.wait_for('') }.to raise_error(ArgumentError, /Must specify a task_uri/)
     end
 
     it 'returns the response body for completed tasks' do
       fake_response = FakeResponse.new(taskState: 'Completed', name: 'NewName')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-      ret = @client_200.wait_for('/rest/tasks/1')
+      ret = @client_600.wait_for('/rest/tasks/1')
       expect(ret).to eq('taskState' => 'Completed', 'name' => 'NewName')
     end
 
@@ -313,7 +313,7 @@ RSpec.describe OneviewSDK::Client do
       fake_response = FakeResponse.new(taskState: 'Warning', taskErrors: 'Blah')
       allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
       ret = nil
-      expect { ret = @client_200.wait_for('/rest/tasks/1') }.to output(/ended with warning.*Blah/).to_stdout_from_any_process
+      expect { ret = @client_600.wait_for('/rest/tasks/1') }.to output(/ended with warning.*Blah/).to_stdout_from_any_process
       expect(ret).to eq('taskState' => 'Warning', 'taskErrors' => 'Blah')
     end
 
@@ -321,7 +321,7 @@ RSpec.describe OneviewSDK::Client do
       %w[Error Killed Terminated].each do |state|
         fake_response = FakeResponse.new(taskState: state, message: 'Blah')
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-        expect { @client_200.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
+        expect { @client_600.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
       end
     end
 
@@ -329,7 +329,7 @@ RSpec.describe OneviewSDK::Client do
       %w[Error Killed Terminated].each do |state|
         fake_response = FakeResponse.new(taskState: state, taskErrors: { message: 'Blah' })
         allow_any_instance_of(OneviewSDK::Client).to receive(:rest_get).and_return(fake_response)
-        expect { @client_200.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
+        expect { @client_600.wait_for('/rest/tasks/1') }.to raise_error(OneviewSDK::TaskError, /ended with bad state[\S\s]*Blah/)
       end
     end
   end
