@@ -50,7 +50,7 @@ module OneviewSDK
       end
     end
 
-    SUPPORTED_VARIANTS = OneviewSDK::API300::SUPPORTED_VARIANTS
+    SUPPORTED_VARIANTS = OneviewSDK::API600::SUPPORTED_VARIANTS
 
     class_option :ssl_verify,
       type: :boolean,
@@ -493,7 +493,7 @@ module OneviewSDK
         api_ver = valid_api_ver
       end
       variant = @options['variant'] || ENV['ONEVIEWSDK_VARIANT']
-      variant ||= OneviewSDK::API300.variant if api_ver == 300
+      variant ||= OneviewSDK::API600.variant if api_ver == 600
       if variant && !SUPPORTED_VARIANTS.include?(variant)
         fail_nice "Variant '#{variant}' is not supported. Try one of #{SUPPORTED_VARIANTS}"
       end
@@ -503,7 +503,7 @@ module OneviewSDK
       return r if r && r.respond_to?(:find_by)
       valid_classes = []
       api_module = OneviewSDK.const_get("API#{api_ver}")
-      api_module = api_module.const_get(variant.to_s) unless api_ver.to_i == 200
+      api_module = api_module.const_get(variant.to_s) unless api_ver.to_i == 600
       api_module.constants.each do |c|
         klass = api_module.const_get(c)
         next unless klass.is_a?(Class) && klass.respond_to?(:find_by)

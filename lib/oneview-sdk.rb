@@ -26,8 +26,8 @@ module OneviewSDK
   env_i3s = %w[I3S_URL I3S_SSL_ENABLED]
   ENV_VARS = env_sdk.concat(env_i3s).freeze
 
-  SUPPORTED_API_VERSIONS = [300, 500, 600, 800, 1000, 1200, 1600, 1800].freeze
-  DEFAULT_API_VERSION = 200
+  SUPPORTED_API_VERSIONS = [600, 800, 1000, 1200, 1600, 1800].freeze
+  DEFAULT_API_VERSION = 600
   @api_version = DEFAULT_API_VERSION
   @api_version_updated = false # Whether or not the API version has been set by the user
 

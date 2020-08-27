@@ -32,9 +32,9 @@ RSpec.describe OneviewSDK::Cli do
 
     before :each do
       @response = [
-        OneviewSDK::Resource.new(@client_300, name:  'Profile1', status:  'OK', x: { 'y' => 'z' }),
-        OneviewSDK::Resource.new(@client_300, name:  'Profile2', status:  'OK', x: { 'y' => 'z' }),
-        OneviewSDK::Resource.new(@client_300, name:  'Profile3', status:  'OK', x: { 'y' => 'z', 'a' => 'b' })
+        OneviewSDK::Resource.new(@client_600, name:  'Profile1', status:  'OK', x: { 'y' => 'z' }),
+        OneviewSDK::Resource.new(@client_600, name:  'Profile2', status:  'OK', x: { 'y' => 'z' }),
+        OneviewSDK::Resource.new(@client_600, name:  'Profile3', status:  'OK', x: { 'y' => 'z', 'a' => 'b' })
       ]
       allow(OneviewSDK::Resource).to receive(:find_by).and_return(@response)
     end
@@ -73,18 +73,18 @@ RSpec.describe OneviewSDK::Cli do
 
       it 'checks for a valid module api version' do
         expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 291]) }
-          .to output(/API version 291 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
+          .to output(/API version 291 is not supported. Using 600+\sProfile1/).to_stdout_from_any_process
       end
 
       it 'rounds an invalid module api version down' do
         allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_return(400)
-        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 399]) }
-          .to output(/API version 399 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
+        expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 399])}
+          .to output(/API version 399 is not supported. Using 600+\sProfile1/).to_stdout_from_any_process
       end
 
       it 'rounds an invalid module api version up if cannot round down' do
         expect { OneviewSDK::Cli.start(%w[list ServerProfiles --api_version 0]) }
-          .to output(/API version 0 is not supported. Using 300+\sProfile1/).to_stdout_from_any_process
+          .to output(/API version 0 is not supported. Using 600+\sProfile1/).to_stdout_from_any_process
       end
 
       it 'handles a float type api version' do

@@ -189,7 +189,7 @@ RSpec.describe OneviewSDK::Client do
       client = nil
       expect { client = OneviewSDK::Client.new(options) }.to output(/Failed to get OneView max api version. Using default/)
         .to_stdout_from_any_process
-      expect(client.api_version).to eq(200)
+      expect(client.api_version).to eq(600)
     end
   end
 
@@ -372,7 +372,7 @@ RSpec.describe OneviewSDK::Client do
       options = { url: 'https://oneview.example.com', token: 'token123' }
       client = OneviewSDK::Client.new(options)
       expect(client.token).to eq('token123')
-      expect(client.api_version).to eq(200)
+      expect(client.api_version).to eq(600)
 
       i3s_options = { url: 'https://imagestreamer.example.com', api_version: 300 }
       i3s_client = client.new_i3s_client(i3s_options)

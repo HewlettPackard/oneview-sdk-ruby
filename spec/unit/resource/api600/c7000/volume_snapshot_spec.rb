@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API500::C7000::VolumeSnapshot do
+RSpec.describe OneviewSDK::API600::C7000::VolumeSnapshot do
   include_context 'shared context'
 
   it 'inherits from OneviewSDK::API300::C7000::VolumeSnapshot' do
@@ -9,7 +9,7 @@ RSpec.describe OneviewSDK::API500::C7000::VolumeSnapshot do
 
   describe '#initialize' do
     it 'sets the type correctly' do
-      snapshot = described_class.new(@client_500)
+      snapshot = described_class.new(@client_600)
       expect(snapshot.data).to_not include('type')
     end
   end
