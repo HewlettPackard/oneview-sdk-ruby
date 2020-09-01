@@ -51,7 +51,7 @@ module OneviewSDK
       if options[:api_version] && options[:api_version].to_i > @max_api_version
         logger.warn "API version #{options[:api_version]} is greater than the appliance API version (#{@max_api_version})"
       end
-      @api_version = options[:api_version] || [OneviewSDK::DEFAULT_API_VERSION, @max_api_version].min
+      @api_version = options[:api_version] || @max_api_version
       # Set the default OneviewSDK module API version
       OneviewSDK.api_version = @api_version unless OneviewSDK.api_version_updated? || !OneviewSDK::SUPPORTED_API_VERSIONS.include?(@api_version)
       @ssl_enabled = true

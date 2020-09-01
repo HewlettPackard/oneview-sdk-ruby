@@ -25,6 +25,7 @@ RSpec.shared_context 'cli context', a: :b do
     ENV['ONEVIEWSDK_USER'] = 'Admin'
     ENV['ONEVIEWSDK_TOKEN'] = 'secret456'
     ENV['I3S_URL'] = 'https://i3s.example.com'
+    ENV['ONEVIEWSDK_VARIANT'] = 'C7000'
   end
 end
 
