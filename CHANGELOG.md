@@ -1,3 +1,11 @@
+## v5.16.0 (Unreleased)
+
+#### Notes
+This release extends support to OneView Rest API version 2000 (OneView v5.40) for the hardware variants C7000 and Synergy to the following features:
+
+#### Features supported
+- Ethernet Network
+
 ## v5.15.0
 
 #### Notes
