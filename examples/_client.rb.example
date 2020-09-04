@@ -5,7 +5,8 @@ require 'pry'
   url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
   user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
   password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
-  ssl_enabled: false
+  ssl_enabled: false,
+  api_version: 2000
 )
 
 ## This setting allows the SDK to flush messages to the screen as it is being run.
