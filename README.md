@@ -74,7 +74,7 @@ i3s_client = OneviewSDK::ImageStreamer::Client.new(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 1600                   # Defaults to appliance's max API version
+  api_version: 300                    # Defaults to minimum of 300 and appliance's max API version
 )
 ```
 
@@ -87,7 +87,7 @@ i3s_client = client.new_i3s_client(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 1600                   # Defaults to appliance's max API version
+  api_version: 300                    # Defaults to minimum of 300 and appliance's max API version
 )
 ```
 
