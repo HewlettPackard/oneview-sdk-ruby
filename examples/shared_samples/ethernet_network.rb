@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of ethernet networks and then delete them.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants
 # C7000 and Synergy for all api versions
@@ -94,12 +94,17 @@ puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' successfull
 list.sort_by! { |e| e['name'] }
 list.each { |e| puts "  #{e['name']} - #{e['uri']}" }
 
-# Bulk delete ethernet networks
-delete_networks = []
-list.each { |e| delete_networks.append(e['uri']).to_s }
-bulk_options = { 'networkUris' => delete_networks }
-ethernet_class.bulk_delete(@client, bulk_options)
-puts "\nDeleted all bulk-created ethernet networks successfully."
+# Bulk delete ethernet networks is supported only from API1800
+if @client.api_version.to_i > 1800
+  delete_networks = []
+  list.each { |e| delete_networks.append(e['uri']).to_s }
+  bulk_options = { 'networkUris' => delete_networks }
+  ethernet_class.bulk_delete(@client, bulk_options)
+  puts "\nBulk-deleted all bulk-created ethernet networks successfully."
+else
+  list.each(&:delete)
+  puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"
+end
 
 # only for API300 and API500, not supported for OneView 4.0 or greater
 if @client.api_version.to_i > 200 && @client.api_version.to_i < 600

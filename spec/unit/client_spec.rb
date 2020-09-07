@@ -84,10 +84,10 @@ RSpec.describe OneviewSDK::Client do
     end
 
     it 'warns if the api level is greater than the appliance api version' do
-      options = { url: 'https://oneview.example.com', token: 'token123', api_version: 2000 }
+      options = { url: 'https://oneview.example.com', token: 'token123', api_version: 2200 }
       client = nil
       expect { client = OneviewSDK::Client.new(options) }.to output(/is greater than the appliance API version/).to_stdout_from_any_process
-      expect(client.api_version).to eq(2000)
+      expect(client.api_version).to eq(2200)
     end
 
     it 'sets @print_wait_dots to false by default' do
