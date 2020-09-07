@@ -35,7 +35,7 @@ module OneviewSDK
     # @option options [String] :domain ('LOCAL') The name of the domain directory used for authentication
     # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) The token to use for authentication with OneView appliance
     #   Use the token or the username and password (not both). The token has precedence.
-    # @option options [Integer] :api_version (200) This is the API version to use by default for requests
+    # @option options [Integer] :api_version (1800) Appliance's max API version to be used by default for requests
     # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['ONEVIEWSDK_SSL_ENABLED']
     # @option options [Integer] :timeout (nil) Override the default request timeout value
     def initialize(options = {})

@@ -32,7 +32,7 @@ module OneviewSDK
       # @option options [Boolean] :print_wait_dots (false) When true, prints status dots while waiting on the tasks to complete.
       # @option options [String] :url URL of Image Streamer
       # @option options [String] :token (ENV['ONEVIEWSDK_TOKEN']) The token to use for authentication
-      # @option options [Integer] :api_version (300) This is the API version to use by default for requests
+      # @option options [Integer] :api_version (1600) Appliance's max API version to be used by default for requests
       # @option options [Boolean] :ssl_enabled (true) Use ssl for requests? Respects ENV['I3S_SSL_ENABLED']
       # @option options [Integer] :timeout (nil) Override the default request timeout value
       def initialize(options = {})
@@ -48,7 +48,7 @@ module OneviewSDK
         if options[:api_version] && options[:api_version].to_i > @max_api_version
           logger.warn "API version #{options[:api_version]} is greater than the Image Streamer API version (#{@max_api_version})"
         end
-        @api_version = options[:api_version] || [OneviewSDK::ImageStreamer::DEFAULT_API_VERSION, @max_api_version].min
+        @api_version = options[:api_version] || @max_api_version
         # Set the default Image Streamer module API version
         OneviewSDK::ImageStreamer.api_version = @api_version unless
           OneviewSDK::ImageStreamer.api_version_updated? || !OneviewSDK::ImageStreamer::SUPPORTED_API_VERSIONS.include?(@api_version)
