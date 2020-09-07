@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of fc networks and then delete them.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 #
 # Supported Variants
 # C7000 and Synergy for all api versions
@@ -33,7 +33,7 @@ options = {
   connectionTemplateUri: nil,
   autoLoginRedistribution: true,
   fabricType: 'FabricAttach',
-  initialScopeUris: ['/rest/scopes/e025d93b-b08a-42cb-af56-b67a750c65b7', '/rest/scopes/92517890-87e4-47b5-9b33-ba78bd878293']
+  initialScopeUris: [] # Add scope uris if required
 }
 
 fc = fc_network_class.new(@client, options)
