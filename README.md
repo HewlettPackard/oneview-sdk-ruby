@@ -54,7 +54,7 @@ client = OneviewSDK::Client.new(
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   domain: 'LOCAL',                    # This is the default
-  api_version: 200                    # Defaults to minimum of 200 and appliance's max API version
+  api_version: 1800                   # Defaults to appliance's max API version
 )
 ```
 
@@ -184,8 +184,8 @@ require 'oneview-sdk'
 
 # Show defaults:
 OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800, 1000, 1200, 1600, 1800]
-OneviewSDK::DEFAULT_API_VERSION         # 200
-OneviewSDK.api_version                  # 200
+OneviewSDK::DEFAULT_API_VERSION         # 1800
+OneviewSDK.api_version                  # 1800
 OneviewSDK.api_version_updated?         # false
 
 # Notice the automatic redirection/resolution when we use the shorthand accessor:
