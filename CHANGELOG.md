@@ -1,3 +1,8 @@
+## v5.16.0(unreleased)
+
+#### Bug fixes & Enhancements:
+- Enahanced the method to set the default API version to appliance's max API version instead of hard-coding to 200.
+
 ## v5.15.0
 
 #### Notes
