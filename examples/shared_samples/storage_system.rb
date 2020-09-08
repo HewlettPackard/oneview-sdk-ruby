@@ -17,7 +17,7 @@ require_relative '../_client' # Gives access to @client
 #   @storage_system_password
 
 # Supported API Versions:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 # Supported Variants:
 # C7000 and Synergy for all API versions
@@ -27,8 +27,11 @@ raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_s
 raise 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
 
 if @client.api_version >= 600
-  raise "If you want execute sample for API #{@client.api_version}," \
-      "you should execute the ruby file '/examples/api600/storage_system.rb'"
+  puts "Executing /examples/api600/storage_system.rb for version >=600"
+  system("ruby ../api600/storage_system.rb")
+	 
+  #raise "If you want execute sample for API #{@client.api_version}," \
+      #"you should execute the ruby file '/examples/api600/storage_system.rb'"
 elsif @client.api_version == 500
   raise "If you want execute sample for API #{@client.api_version}," \
       "you should execute the ruby file '/examples/api500/storage_system.rb'"
