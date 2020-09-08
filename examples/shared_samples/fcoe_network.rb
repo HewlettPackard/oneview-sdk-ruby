@@ -15,7 +15,7 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an ethernet network named 'OneViewSDK Test FCoE Network', update it and then delete it.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 #
 # Supported Variants
 # C7000 and Synergy for all api versions
