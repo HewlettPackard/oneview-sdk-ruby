@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 # PRE-REQUISITE:Tagged ethernet networks should be created.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported variants:
 # - C7000 and Synergy for all api versions
@@ -28,8 +28,24 @@ network_set_class = OneviewSDK.resource_named('NetworkSet', @client.api_version)
 # EthernetNetwork class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
 
-# Retrieve ethernet networks available in HPE OneView
-ethernet_networks = ethernet_class.find_by(@client, {})
+# Bulk create ethernet networks for network set
+options = {
+  vlanIdRange: '21-23',
+  purpose: 'General',
+  namePrefix: 'OneViewSDK_Bulk_Network',
+  smartLink: false,
+  privateNetwork: false,
+  bandwidth: {
+    maximumBandwidth: 10_000,
+    typicalBandwidth: 2000
+  }
+}
+
+list = ethernet_class.bulk_create(@client, options).each { |network| puts network['uri'] }
+puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' successfully."
+
+# Retrieve tagged ethernet networks available in HPE OneView
+ethernet_networks = ethernet_class.find_by(@client, ethernetNetworkType: 'Tagged')
 network_set_name = 'NetworkSet_1'
 
 puts "\nCreating a network set with name = #{network_set_name}"
@@ -111,3 +127,10 @@ end
 puts "\nDeletes network set with name='#{network_set['name']}' and uri='#{network_set['uri']}."
 network_set.delete
 puts "\nThe network set with name='#{network_set['name']}' and uri='#{network_set['uri']}' was deleted!\n"
+
+# Bulk delete ethernet networks
+delete_networks = []
+list.each { |e| delete_networks.append(e['uri']).to_s }
+bulk_options = { 'networkUris' => delete_networks }
+ethernet_class.bulk_delete(@client, bulk_options)
+puts "\nDeleted all bulk-created ethernet networks successfully."
