@@ -28,7 +28,7 @@ network_set_class = OneviewSDK.resource_named('NetworkSet', @client.api_version)
 # EthernetNetwork class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
 
-# Bulk create ethernet networks for netset
+# Bulk create ethernet networks for network set
 options = {
   vlanIdRange: '21-23',
   purpose: 'General',
