@@ -11,14 +11,16 @@
 
 require_relative '../_client' # Gives access to @client
 
-# Example: Create an enclosure group for an API300 C7000 Appliance
+# Example: Create an enclosure group for an API2000 C7000 Appliance
 # NOTE: This will create an enclosure group named 'OneViewSDK Test Enclosure Group', then delete it.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1200, 1600 and 1800.
+# - 200, 300, 500, 600, 800, 1200, 1600, 1800, 2000.
 
 # Supported Variants:
 # C7000 and Synergy for all API versions
+# NOTE: Logical interconnect group "LIG-1enc" should be created as a pre-requisite
+# NOTE: variant should be updated before running example
 
 # Resource Class used in this sample
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
@@ -26,12 +28,16 @@ encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_versi
 # LogicalInterconnectGroup class used in this sample.
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
 
+variant = 'Synergy'
+lig_name = 'LIG-1enc'
 type = 'enclosure group'
 encl_group_name = 'OneViewSDK Test Enclosure Group'
 
+lig = lig_class.find_by(@client, name: @lig_name).first
+
 interconnect_bay_mapping = [
-       { interconnectBay: 3, logicalInterconnectGroupUri: '/rest/logical-interconnect-groups/6aabd433-7ed0-4c59-963c-c3f36bbd4f85' },
-       { interconnectBay: 6, logicalInterconnectGroupUri: '/rest/logical-interconnect-groups/6aabd433-7ed0-4c59-963c-c3f36bbd4f85' }
+       { interconnectBay: 3, logicalInterconnectGroupUri: lig[:uri] },
+       { interconnectBay: 6, logicalInterconnectGroupUri: lig[:uri] }
 ]
 
 options = {
@@ -43,7 +49,7 @@ options = {
 
 item = encl_group_class.new(@client, options)
 
-lig = lig_class.get_all(@client).first
+# lig = lig_class.get_all(@client).first
 item.add_logical_interconnect_group(lig)
 
 if @client.api_version >= 600
@@ -71,22 +77,18 @@ puts "\nUpdating an #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]
 item.update(name: 'OneViewSDK Test Enclosure_Group Updated')
 puts "\nUpdated #{type} with new name = '#{item[:name]}' sucessfully."
 
-begin
+if variant == 'C7000'
   command = '#TEST COMMAND'
   puts "\nSetting a script with command = '#{command}'"
   item.set_script(command)
   puts "\nScript attributed sucessfully."
-rescue OneviewSDK::MethodUnavailable => e
-  puts "\n#{e}. Available only for C7000."
 end
 
-begin
+if variant == 'C7000'
   puts "\nGetting a script"
   script = item.get_script
   puts "\nScript retrieved sucessfully."
   puts script
-rescue OneviewSDK::MethodUnavailable => e
-  puts "\n#{e}. Available only for C7000."
 end
 
 puts "\nDeleting the #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"

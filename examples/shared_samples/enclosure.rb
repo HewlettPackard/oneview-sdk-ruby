@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of ethernet networks and then delete them.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # C7000 and Synergy for all API versions
@@ -33,6 +33,7 @@ type = 'enclosure'
 encl_name = 'OneViewSDK-Test-Enclosure'
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
+puts "variant: #{variant}"
 
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 scope_1 = scope_class.new(@client, name: 'Scope 1')
@@ -91,7 +92,12 @@ if @client.api_version >= 600
   item4 = enclosure_class.get_all_with_query(@client, query)
   puts "Found enclosure '#{item4}'."
 
-  bay_number = 1 if variant == 'C7000'
+  if variant == 'C7000'
+    bay_number = 1
+  elsif variant == 'Synergy'
+    bay_number = nil
+  end
+
   csr_data = {
     type: 'CertificateDtoV2',
     organization: 'Acme Corp.',
