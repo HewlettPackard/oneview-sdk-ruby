@@ -15,7 +15,7 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a hypervisor manager named 'vcenter.corp.com', update it and then delete it.
 #
 # Supported APIs:
-# - 800, 1000, 1200, 1600 and 1800
+# - 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions
