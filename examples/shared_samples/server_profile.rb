@@ -12,7 +12,7 @@
 require_relative '../_client' # Gives access to @client
 
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all supported API versions
@@ -67,12 +67,14 @@ item3.retrieve!
 puts "\nServer Profile updated successfully! Name: #{item3['name']}"
 
 # This method supports till OneView REST API Version 1200
-puts "\nGetting the available servers"
-begin
-  servers = server_profile_class.get_available_servers(@client)
-  puts "\nAvailable servers: \n#{servers}"
-rescue OneviewSDK::MethodUnavailable
-  puts "\nThe method #get_available_servers is available for API version <= 1200"
+if @client.api_version <= 1200
+  puts "\nGetting the available servers"
+  begin
+    servers = server_profile_class.get_available_servers(@client)
+    puts "\nAvailable servers: \n#{servers}"
+  rescue OneviewSDK::MethodUnavailable
+    puts "\nThe method #get_available_servers is available for API version <= 1200"
+  end
 end
 
 puts "\nGetting the available networks"
@@ -110,12 +112,14 @@ item2.update_from_template
 puts "\nServer Profile updated successfully!"
 
 # This method supports till OneView REST API Version 1200
-puts "\nGetting a new profile template of a given server profile"
-begin
-  new_template = item2.get_profile_template
-  puts "\nNew template generated: \n#{new_template.data}"
-rescue NoMethodError
-  puts "\nThe method #get_profile_template is available from API 500."
+if @client.api_version <= 1200
+  puts "\nGetting a new profile template of a given server profile"
+  begin
+    new_template = item2.get_profile_template
+    puts "\nNew template generated: \n#{new_template.data}"
+  rescue NoMethodError
+    puts "\nThe method #get_profile_template is available from API 500."
+  end
 end
 
 puts "\nRemoving the server profiles created is this sample"
