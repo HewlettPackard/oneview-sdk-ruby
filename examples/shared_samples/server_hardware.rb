@@ -144,7 +144,7 @@ end
 puts "\nRetrieving historical utilization with day view."
 utilization2 = item3.utilization(view: 'day')
 puts "\nHistorical utilization retrieved sucessfully: \n#{utilization2}"
- 
+
 utilization3 = item3.utilization(fields: %w[AmbientTemperature])
 puts "\nRetrieving historical utilization with AmbientTemperature field."
 puts "\nHistorical utilization retrieved sucessfully: \n#{utilization3}"

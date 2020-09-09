@@ -19,7 +19,7 @@ require_relative '../_client' # Gives access to @client
 
 # Supported Variants:
 # C7000 and Synergy for all API versions
-# NOTE: Logical interconnect group "LIG-1enc" should be created as a pre-requisite
+# NOTE: Logical interconnect group variable "logical_interconnect_name" should be uncommented and created as a pre-requisite
 # NOTE: variant should be updated before running example
 
 # Resource Class used in this sample
@@ -29,11 +29,10 @@ encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_versi
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
 
 variant = 'Synergy'
-lig_name = 'LIG-1enc'
 type = 'enclosure group'
 encl_group_name = 'OneViewSDK Test Enclosure Group'
 
-lig = lig_class.find_by(@client, name: @lig_name).first
+lig = lig_class.find_by(@client, name: @logical_interconnect_name).first
 
 interconnect_bay_mapping = [
        { interconnectBay: 3, logicalInterconnectGroupUri: lig[:uri] },
