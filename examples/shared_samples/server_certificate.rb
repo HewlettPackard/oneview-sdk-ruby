@@ -15,7 +15,7 @@ require_relative '../_client' # Gives access to @client
 #   @hypervisor_manager_ip
 
 # All supported APIs for  Server Certificate:
-# - 600, 800, 1000, 1200, 1600 and 1800
+# - 600, 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions

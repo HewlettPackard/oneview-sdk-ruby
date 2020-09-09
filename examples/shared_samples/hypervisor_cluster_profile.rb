@@ -15,24 +15,35 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a hypervisor cluster profile named 'cluster5', update it and then delete it.
 #
 # Supported API Versions:
-# - 800, 1000, 1200, 1600 and 1800
+# - 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions
 
 # Resource Class used in this sample
 hypervisor_cluster_profile_class = OneviewSDK.resource_named('HypervisorClusterProfile', @client.api_version)
+hypervisor_manager_class = OneviewSDK.resource_named('HypervisorManager', @client.api_version)
+server_profile_template_class = OneviewSDK.resource_named('ServerProfileTemplate', @client.api_version)
+os_deployment_plan_class = OneviewSDK.resource_named('OSDeploymentPlan', @client.api_version, 'Synergy')
+
+# Making GET calls on below resources and fetch URI
+hm_matches = hypervisor_manager_class.find_by(@client, name: @hypervisor_manager_ip)
+hm = hm_matches.first
+spt_matches = server_profile_template_class.find_by(@client, name: @hypervisor_serverProfileTemplate)
+spt = spt_matches.first
+dp_matches = os_deployment_plan_class.find_by(@client, name: @hypervisor_deploymentPlan)
+osdp = dp_matches.first
 
 options = {
   type: @hypervisor_type,
   name: @hypervisor_cluster_profile_name,
-  hypervisorManagerUri: @hypervisor_manager_uri,
+  hypervisorManagerUri: hm[:uri],
   path: @hypervisor_path,
   hypervisorType: @hypervisor_hypervisorType,
   hypervisorHostProfileTemplate: {
-    serverProfileTemplateUri: @hypervisor_serverProfileTemplateUri,
+    serverProfileTemplateUri: spt[:uri],
     deploymentPlan: {
-      deploymentPlanUri: @hypervisor_deploymentPlanUri,
+      deploymentPlanUri: osdp[:uri],
       serverPassword: @hypervisor_server_password
     },
     hostprefix: @hypervisor_host_prefix
@@ -68,5 +79,9 @@ puts "\nCompliance preview details are :\n#{cp}\n"
 # Delete method accepts 2 arguments - soft_delete(boolean) and force(boolean) which are optional till API1200
 # soft_delete has become mandatory argument in API1600 and force is still optional
 # The default values for the arguments is "false"
-hcp.delete(true, true)
+if @client.api_version.to_i < 1600
+  hcp.delete
+else
+  hcp.delete(true, true)
+end
 puts "\nSuccesfully deleted the cluster profile"
