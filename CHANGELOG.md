@@ -14,6 +14,8 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Network Set
 - OS Deployment Plan
 - Server Certificate
+- Server Profile
+- Server Profile Template
 - Storage Pool
 - Storage System
 - Volume
@@ -21,7 +23,7 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Volume Template
 
 #### Bug fixes & Enhancements:
-- Enahanced the method to set the default API version to appliance's max API version instead of hardcoded 200.
+- Enhanced the method to set the default API version to appliance's max API version instead of hardcoded 200.
 
 ## v5.15.0
 
