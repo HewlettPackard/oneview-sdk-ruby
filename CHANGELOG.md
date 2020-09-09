@@ -8,7 +8,12 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Ethernet Network
 - FC Network
 - FCOE Network
+- Firmware Driver
+- Hypervisor Cluster Profile
+- Hypervisor Manager
 - Network Set
+- OS Deployment Plan
+- Server Certificate
 - Storage Pool
 - Storage System
 - Volume
