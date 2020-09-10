@@ -8,6 +8,8 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Ethernet Network
 - FC Network
 - FCOE Network
+- LIG Uplink Set
+- Logical Interconnect Group
 - Network Set
 
 #### Bug fixes & Enhancements:
