@@ -28,6 +28,9 @@ lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_ve
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
+# To set variant to Synergy as the default variant is C7000
+variant = 'Synergy'
+
 # Ethernet network class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
 # Ethernet network class used in this sample
