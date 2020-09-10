@@ -15,7 +15,7 @@ require_relative '../_client'
 #   @storage_system_ip
 
 # All supported APIs for Volume Template:
-# - 200, 300, 500. 600, 800, 1000, 1200, 1600 and 1800
+# - 200, 300, 500. 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 raise 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
