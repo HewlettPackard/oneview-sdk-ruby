@@ -20,14 +20,18 @@ require_relative '../_client' # Gives access to @client
 #
 # Resources that can be created according to parameters:
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 # Supported Variants:
 # C7000 and Synergy for all api-versions
+
+# NOTE: User should update variant name before running this example
+variant = 'Synergy'
 
 # Resource Class used in this sample
 server_harware_class = OneviewSDK.resource_named('ServerHardware', @client.api_version)
 
 type = 'server hardware'
+sh_name = '0000A66103, bay 4'
 options = {
   hostname: @server_hardware_hostname,
   username: @server_hardware_username,
@@ -37,10 +41,19 @@ options = {
 }
 
 # Below Endpoint is supported only for C7000.
-puts "\nAdding #{type} with hostname = '#{@server_hardware_hostname}'"
-item = server_harware_class.new(@client, options)
-item.add
-puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+if variant == 'C7000'
+  puts "\nAdding #{type} with hostname = '#{@server_hardware_hostname}'"
+  item = server_harware_class.new(@client, options)
+  item.add
+  puts "\nAdded #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+end
+
+# Retrieve server hardware
+if variant == 'Synergy'
+  sh_matches = server_harware_class.find_by(@client, name: sh_name)
+  item = sh_matches.first
+  puts "\nFound #{type} by name: '#{item[:name]}'.\n  uri = '#{item[:uri]}'"
+end
 
 # Setting powerstate of the server to off.
 item.set_power_state('off', 'true')
@@ -51,18 +64,22 @@ item.set_refresh_state('RefreshPending')
 puts "\nRefresh server hardware successful"
 
 # Get physical server hardware
-physical_server_hardware = item.get_physical_server_hardware
-puts "\nPhysical hardware found :\n#{physical_server_hardware}"
+if variant == 'C7000'
+  physical_server_hardware = item.get_physical_server_hardware
+  puts "\nPhysical hardware found :\n#{physical_server_hardware}"
+end
 
 # Update ilo firmware
 item.update_ilo_firmware
 puts "\niLO firmware updated to minimum ILO firmware version required by OneView to manage the server"
 
 # Below Endpoint is supported only for C7000.
-puts "\nAdding multiple #{type} with hostname Range = #{@server_mpHostsAndRanges}'"
-item_multiple = server_harware_class.new(@client, options)
-item_multiple.add_multiple_servers
-puts "\nAdded multiple #{type} successfully \n'#{item_multiple}'"
+if variant == 'C7000'
+  puts "\nAdding multiple #{type} with hostname Range = #{@server_mpHostsAndRanges}'"
+  item_multiple = server_harware_class.new(@client, options)
+  item_multiple.add_multiple_servers
+  puts "\nAdded multiple #{type} successfully \n'#{item_multiple}'"
+end
 
 # Find recently created item by name
 puts "\nSearch server by name = #{item[:name]}"
@@ -78,10 +95,16 @@ server_harware_class.get_all(@client).each do |p|
 end
 
 # Retrieve recently created item
-puts "\nSearch server by hostname = #{@server_hardware_hostname}"
-item3 = server_harware_class.new(@client, hostname: @server_hardware_hostname)
-item3.retrieve!
-puts "\nFound #{type} by hostname: '#{item3[:hostname]}'.\n  uri = '#{item3[:uri]}'"
+if variant == 'C7000'
+  puts "\nSearch server by hostname = #{@server_hardware_hostname}"
+  item3 = server_harware_class.new(@client, hostname: @server_hardware_hostname)
+  item3.retrieve!
+  puts "\nFound #{type} by hostname: '#{item3[:hostname]}'.\n  uri = '#{item3[:uri]}'"
+elsif variant == 'Synergy'
+  sh_matches = server_harware_class.find_by(@client, name: sh_name)
+  item3 = sh_matches.first
+  item3.retrieve!
+end
 
 puts "\nGetting list of bios UEFI values"
 bios = item3.get_bios
@@ -108,13 +131,15 @@ puts "\nRetrieving historical utilization data for the specified resource, metri
 utilization = item3.utilization
 puts "\nHistorical utilization retrieved sucessfully: \n#{utilization}"
 
-puts "\nRetrieving local storage data for the specified resource."
-local_storage = item3.get_local_storage
-puts "\nLocal storage data retrieved sucessfully: \n#{local_storage}"
-
-puts "\nRetrieving local storageV2 data for the specified resource of Gen10 plus model."
-local_storagev2 = item3.get_local_storagev2
-puts "\nLocal storageV2 data retrieved sucessfully: \n#{local_storagev2}"
+begin
+  puts "\nRetrieving local storage data for the specified resource."
+  local_storage = item3.get_local_storage
+  puts "\nLocal storage data retrieved sucessfully: \n#{local_storage}"
+rescue
+  puts "\nRetrieving local storageV2 data for the specified resource of Gen10 plus model."
+  local_storagev2 = item3.get_local_storagev2
+  puts "\nLocal storageV2 data retrieved sucessfully: \n#{local_storagev2}"
+end
 
 puts "\nRetrieving historical utilization with day view."
 utilization2 = item3.utilization(view: 'day')
@@ -147,8 +172,7 @@ begin
 
   puts 'Get a list of firmware with filters componentName and serverName'
   filters = [
-    { name: 'components.componentName', operation: '=', value: 'iLO' },
-    { name: 'serverName', operation: '=', value: @server_hardware_hostname }
+    { name: 'components.componentName', operation: '=', value: 'iLO' }
   ]
   response2 = item3.get_firmwares(filters)
   puts "\nFound firware inventory: '#{response2}'."
@@ -194,6 +218,8 @@ rescue NoMethodError
 end
 
 # Delete this item
-puts "\nRemoving the #{type} with name = '#{item[:name]}'."
-item3.remove
-puts "\n#{type} was removed sucessfully."
+if variant == 'C7000'
+  puts "\nRemoving the #{type} with name = '#{item[:name]}'."
+  item3.remove
+  puts "\n#{type} was removed sucessfully."
+end
