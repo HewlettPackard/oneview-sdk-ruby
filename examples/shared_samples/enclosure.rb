@@ -33,7 +33,6 @@ type = 'enclosure'
 encl_name = 'OneViewSDK-Test-Enclosure'
 
 variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
-puts "variant: #{variant}"
 
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 scope_1 = scope_class.new(@client, name: 'Scope 1')

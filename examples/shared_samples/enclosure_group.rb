@@ -47,8 +47,6 @@ options = {
 }
 
 item = encl_group_class.new(@client, options)
-
-# lig = lig_class.get_all(@client).first
 item.add_logical_interconnect_group(lig)
 
 if @client.api_version >= 600
