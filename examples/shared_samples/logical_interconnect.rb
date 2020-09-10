@@ -14,13 +14,15 @@ require_relative '../_client' # Gives access to @client
 # Example: Explores functionalities of Logical Interconnects
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 # Supported Variants:
 # - C7000, Synergy
 
 # for example, if api_version = 800 & variant = C7000 then, resource that can be created will be in form
 # OneviewSDK::API800::C7000::LogicalInterconnect
+
+variant = 'Synergy'
 
 # Resource Class used in this sample
 logical_interconnect_class = OneviewSDK.resource_named('LogicalInterconnect', @client.api_version)
@@ -102,29 +104,17 @@ et02.delete
 
 # Updating Ethernet Settings
 puts "\nUpdating Ethernet Settings"
-puts 'Current:'
-puts "igmpIdleTimeoutInterval: #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
-puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
-
-# Backing up
 eth_set_backup = {}
-eth_set_backup['igmpIdleTimeoutInterval'] = item['ethernetSettings']['igmpIdleTimeoutInterval']
-eth_set_backup['macRefreshInterval'] = item['ethernetSettings']['macRefreshInterval']
+if variant == 'C7000'
+  eth_set_backup['macRefreshInterval'] = item['ethernetSettings']['macRefreshInterval']
+  item['ethernetSettings']['macRefreshInterval'] = 15
+else
+  eth_set_backup['stormControlPollingInterval'] = item['ethernetSettings']['stormControlPollingInterval']
+  item['ethernetSettings']['stormControlPollingInterval'] = 15
+end
 
-item['ethernetSettings']['igmpIdleTimeoutInterval'] = 222
-item['ethernetSettings']['macRefreshInterval'] = 15
-
-puts "\nChanging:"
-puts "igmpIdleTimeoutInterval to #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
-puts "macRefreshInterval to #{item['ethernetSettings']['macRefreshInterval']}"
-
-puts "\nUpdating internet settings"
 item.update_ethernet_settings
-item.retrieve! # Retrieving to guarantee the remote is updated
-
-puts "\nNew Ethernet Settings:"
-puts "igmpIdleTimeoutInterval: #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
-puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
+item.retrieve!
 
 # Rolling back
 puts "\nRolling back..."
@@ -132,9 +122,7 @@ eth_set_backup.each do |k, v|
   item['ethernetSettings'][k] = v
 end
 item.update_ethernet_settings
-item.retrieve! # Retrieving to guarantee the remote is updated
-puts "igmpIdleTimeoutInterval: #{item['ethernetSettings']['igmpIdleTimeoutInterval']}"
-puts "macRefreshInterval: #{item['ethernetSettings']['macRefreshInterval']}"
+item.retrieve!
 
 # Gets igmp settings of LI
 puts "\nGets igmp settings of LI "
@@ -147,6 +135,14 @@ item['igmpSettings']['igmpIdleTimeoutInterval'] = 210
 item.update_igmp_settings
 item.retrieve!
 puts "Updated igmpIdleTimeoutInterval: #{item['igmpSettings']['igmpIdleTimeoutInterval']}"
+
+# Gets the consolidated inconsistency report for bulk update
+if @client.api_version >= 2000 && variant == 'Synergy'
+  puts "\nGets the consolidated inconsistency report for bulk update"
+  item['logicalInterconnectUris'] = [item['uri']]
+  report = item.bulk_inconsistency_validate
+  puts "\nValidation report:\n #{report['logicalInterconnectsReport']}"
+end
 
 # Gets a collection of uplink ports eligibles for assignment to an analyzer port
 puts "\nGets a collection of uplink ports eligibles for assignment to an analyzer port "
