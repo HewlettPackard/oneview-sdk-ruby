@@ -27,12 +27,9 @@ server_profile_template_class = OneviewSDK.resource_named('ServerProfileTemplate
 os_deployment_plan_class = OneviewSDK.resource_named('OSDeploymentPlan', @client.api_version, 'Synergy')
 
 # Making GET calls on below resources and fetch URI
-hm_matches = hypervisor_manager_class.find_by(@client, name: @hypervisor_manager_ip)
-hm = hm_matches.first
-spt_matches = server_profile_template_class.find_by(@client, name: @hypervisor_serverProfileTemplate)
-spt = spt_matches.first
-dp_matches = os_deployment_plan_class.find_by(@client, name: @hypervisor_deploymentPlan)
-osdp = dp_matches.first
+hm = hypervisor_manager_class.find_by(@client, name: @hypervisor_manager_ip).first
+spt = server_profile_template_class.find_by(@client, name: @hypervisor_serverProfileTemplate).first
+osdp = os_deployment_plan_class.find_by(@client, name: @hypervisor_deploymentPlan).first
 
 options = {
   type: @hypervisor_type,

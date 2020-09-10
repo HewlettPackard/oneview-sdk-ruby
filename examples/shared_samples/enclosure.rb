@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of ethernet networks and then delete them.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # C7000 and Synergy for all API versions
@@ -91,7 +91,12 @@ if @client.api_version >= 600
   item4 = enclosure_class.get_all_with_query(@client, query)
   puts "Found enclosure '#{item4}'."
 
-  bay_number = 1 if variant == 'C7000'
+  if variant == 'C7000'
+    bay_number = 1
+  elsif variant == 'Synergy'
+    bay_number = nil
+  end
+
   csr_data = {
     type: 'CertificateDtoV2',
     organization: 'Acme Corp.',
