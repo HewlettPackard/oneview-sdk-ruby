@@ -26,7 +26,7 @@ require_relative '../_client' # Gives access to @client
 # Resource Class used in this sample
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
 
-variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
+# variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
 # To set variant to Synergy as the default variant is C7000
 variant = 'Synergy'
@@ -121,6 +121,7 @@ end
 if variant == 'Synergy'
   lig['redundancyType'] = 'Redundant'
   lig['interconnectBaySet'] = 3
+  lig['enclosureType'] = 'SY12000'
 
   # Adds the following interconnects to the bays 3 and 6 with an Interconnect Type, respectively
   lig.add_interconnect(3, VIRTUAL_CONNECT_SE_40_SYNERGY)
@@ -164,10 +165,11 @@ lig.update
 puts "#{type} was updated successfully:"
 puts lig.data
 
+puts eth01['uri']
 if variant == 'Synergy'
   puts "\nAdding an internal network with uri = #{eth01['uri']}"
   lig.retrieve!
-  lig.add_internal_network(eth01)
+  lig['internalNetworkUris'] = [eth01['uri']]
   lig.update
   lig.retrieve!
   puts "\nAdded an internal network with uri = #{eth01['uri']} successfully."
