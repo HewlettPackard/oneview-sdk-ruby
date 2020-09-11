@@ -29,11 +29,11 @@ RSpec.describe OneviewSDK::API2000::C7000::LogicalInterconnect do
 
     it 'gets the inconsistency report for bulk update' do
       item = log_int
+      uri = item.class::BASE_URI + '/bulk-inconsistency-validation'
       options = {
         'logicalInterconnectUris' => []
       }
-      expect(@client_2000).to receive(:rest_post).with(item.class::BASE_URI + '/bulk-inconsistency-validation',
-        { 'body' => options }, item.api_version).and_return(FakeResponse.new)
+      expect(@client_2000).to receive(:rest_post).with(uri, { 'body' => options }, item.api_version).and_return(FakeResponse.new)
       item.bulk_inconsistency_validate
     end
   end
