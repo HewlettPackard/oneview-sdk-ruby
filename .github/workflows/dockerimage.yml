@@ -15,11 +15,9 @@ jobs:
         name: Check out code
       - name: Set up Ruby 2.6
         uses: actions/setup-ruby@v1
-        if: contains(github.ref, 'refs/tags/')
         with:
          ruby-version: 2.6.x
       - name: Set Credentials
-        if: contains(github.ref, 'refs/tags/')
         run: |
           mkdir -p $HOME/.gem
           touch $HOME/.gem/credentials
@@ -29,7 +27,6 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
       - name: Publish to RubyGems
-        if: contains(github.ref, 'refs/tags/')
         run: |
           gem build *.gemspec
           gem push --KEY rubygems_api_key *.gem
