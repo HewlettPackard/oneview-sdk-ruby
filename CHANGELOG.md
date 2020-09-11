@@ -13,6 +13,7 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Firmware Driver
 - Hypervisor Cluster Profile
 - Hypervisor Manager
+- Logical Enclosure
 - Network Set
 - OS Deployment Plan
 - Scope
@@ -26,6 +27,8 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Volume
 - Volume Attachment
 - Volume Template
+- Uplink Set
+
 
 #### Bug fixes & Enhancements:
 - Enhanced the method to set the default API version to appliance's max API version instead of hardcoded 200.

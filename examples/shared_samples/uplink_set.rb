@@ -17,7 +17,7 @@ require_relative '../_client' # Gives access to @client and @logical_interconnec
 # NOTE 3: To add an ethernet network, the interconnect must support ethernet network.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 # Supported variants:
 # - C7000 and Synergy for all api versions
