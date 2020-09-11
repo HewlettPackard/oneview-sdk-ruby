@@ -9,12 +9,12 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api1600/synergy/lig_uplink_set'
+require_relative '../../api1800/synergy/lig_uplink_set'
 
 module OneviewSDK
-  module API1800
+  module API2000
     module Synergy
-      class LIGUplinkSet < OneviewSDK::API1600::Synergy::LIGUplinkSet
+      class LIGUplinkSet < OneviewSDK::API1800::Synergy::LIGUplinkSet
       end
     end
   end

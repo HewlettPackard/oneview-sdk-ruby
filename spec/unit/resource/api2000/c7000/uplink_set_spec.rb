@@ -6,16 +6,15 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
-# language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
 
-require_relative '../../api1800/c7000/lig_uplink_set'
+require 'spec_helper'
 
-module OneviewSDK
-  module API2000
-    module C7000
-      class LIGUplinkSet < OneviewSDK::API1800::C7000::LIGUplinkSet
-      end
-    end
+RSpec.describe OneviewSDK::API2000::C7000::UplinkSet do
+  include_context 'shared context'
+
+  it 'inherits from OneviewSDK::API1800::C7000::UplinkSet' do
+    expect(described_class).to be < OneviewSDK::API1800::C7000::UplinkSet
   end
 end

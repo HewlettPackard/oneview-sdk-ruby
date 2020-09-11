@@ -16,7 +16,7 @@ require_relative '../_client' # Gives access to @client
 # To run this test with Synergy you must have an enclosureGroup with enclosure count = 3.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions

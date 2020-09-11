@@ -5,6 +5,8 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 
 #### Features supported
 - Connection Template
+- Enclosure
+- Enclosure Group
 - Ethernet Network
 - FC Network
 - FCOE Network
@@ -12,10 +14,14 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Hypervisor Cluster Profile
 - Hypervisor Manager
 - LIG Uplink Set
+- Logical Enclosure
 - Logical Interconnect Group
 - Network Set
 - OS Deployment Plan
+- Scope
 - Server Certificate
+- Server Hardware
+- Server Hardware Type
 - Server Profile
 - Server Profile Template
 - Storage Pool
@@ -23,6 +29,8 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Volume
 - Volume Attachment
 - Volume Template
+- Uplink Set
+
 
 #### Bug fixes & Enhancements:
 - Enhanced the method to set the default API version to appliance's max API version instead of hardcoded 200.
