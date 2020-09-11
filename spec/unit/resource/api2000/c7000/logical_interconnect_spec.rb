@@ -29,25 +29,9 @@ RSpec.describe OneviewSDK::API2000::C7000::LogicalInterconnect do
 
     it 'gets the inconsistency report for bulk update' do
       item = log_int
-      expect(@client_2000).to receive(:rest_post).with(BASE_URI + '/bulk-inconsistency-validate', Hash, item.api_version)
-                                                 .and_return(FakeResponse.new(key: 'val'))
-      item.bulk_inconsistency_validate
-      expect(item['key']).to eq('val')
-    end
-  end
-
-  describe '#update_igmp_settings' do
-    it 'requires the uri to be set' do
-      expect { OneviewSDK::API2000::C7000::LogicalInterconnect.new(@client_2000).update_igmp_settings }
-        .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve the Logical Interconnect before trying to update/)
-    end
-
-    it 'does a PUT to uri/igmpSettings & updates @data' do
-      item = log_int
-      expect(@client_2000).to receive(:rest_put).with(item['uri'] + '/igmpSettings', Hash, item.api_version)
-                                                .and_return(FakeResponse.new(key: 'val'))
-      item.update_igmp_settings
-      expect(item['key']).to eq('val')
+      expect(@client_2000).to receive(:rest_post).with(item.class::LOCATION_URI + '/bulk-inconsistency-validate', Hash, item.api_version)
+                                                 .and_return(FakeResponse.new)
+      item.bulk_inconsistency_validate(1, OneviewSDK::API2000::C7000::LogicalInterconnect.new(@client_2000, uri: '/rest/fake'))
     end
   end
 end
