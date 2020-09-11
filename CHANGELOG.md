@@ -34,9 +34,9 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Volume Attachment
 - Volume Template
 
-
 #### Bug fixes & Enhancements:
 - Enhanced the method to set the default API version to appliance's max API version instead of hardcoded 200.
+- Added an automation to upload  package to Gems followed with uploading a new image to DockerHub when there is a new release in GitHub
 
 ## v5.15.0
 
