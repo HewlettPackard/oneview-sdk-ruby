@@ -4,10 +4,34 @@
 This release extends support to OneView Rest API version 2000 (OneView v5.40) for the hardware variants C7000 and Synergy to the following features:
 
 #### Features supported
+- Connection Template
+- Enclosure
+- Enclosure Group
 - Ethernet Network
+- FC Network
+- FCOE Network
+- Firmware Driver
+- Hypervisor Cluster Profile
+- Hypervisor Manager
+- Logical Enclosure
+- Network Set
+- OS Deployment Plan
+- Scope
+- Server Certificate
+- Server Hardware
+- Server Hardware Type
+- Server Profile
+- Server Profile Template
+- Storage Pool
+- Storage System
+- Volume
+- Volume Attachment
+- Volume Template
+- Uplink Set
+
 
 #### Bug fixes & Enhancements:
-- Enahanced the method to set the default API version to appliance's max API version instead of hardcoded 200.
+- Enhanced the method to set the default API version to appliance's max API version instead of hardcoded 200.
 
 ## v5.15.0
 
