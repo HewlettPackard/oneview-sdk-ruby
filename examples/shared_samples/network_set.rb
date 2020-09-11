@@ -13,51 +13,39 @@ require_relative '../_client' # Gives access to @client
 
 # Example: Create/Update/Delete networks set
 # NOTE: This will create a network set named 'NetworkSet_1', update it and then delete it.
-# It's necessary an ethernet network created.
+# PRE-REQUISITE:Tagged ethernet networks should be created.
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
-# - API600 for C7000
-# - API600 for Synergy
-# - API800 for C7000
-# - API800 for Synergy
-# - API1000 for C7000
-# - API1000 for Synergy
-# - API1200 for C7000
-# - API1200 for Synergy
-# - API1600 for C7000
-# - API1600 for Synergy
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::NetworkSet
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::NetworkSet
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::NetworkSet
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::NetworkSet
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::NetworkSet
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::NetworkSet
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::NetworkSet
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::NetworkSet
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::NetworkSet
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::NetworkSet
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::NetworkSet
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::NetworkSet
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::NetworkSet
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::NetworkSet
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::NetworkSet
-#
-#
+# Supported variants:
+# - C7000 and Synergy for all api versions
+
+
 # Resource Class used in this sample
 network_set_class = OneviewSDK.resource_named('NetworkSet', @client.api_version)
 
 # EthernetNetwork class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
 
-# Retrieve ethernet networks available in HPE OneView
-ethernet_networks = ethernet_class.find_by(@client, {})
+# Bulk create ethernet networks for network set
+options = {
+  vlanIdRange: '21-23',
+  purpose: 'General',
+  namePrefix: 'OneViewSDK_Bulk_Network',
+  smartLink: false,
+  privateNetwork: false,
+  bandwidth: {
+    maximumBandwidth: 10_000,
+    typicalBandwidth: 2000
+  }
+}
+
+list = ethernet_class.bulk_create(@client, options).each { |network| puts network['uri'] }
+puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' successfully."
+
+# Retrieve tagged ethernet networks available in HPE OneView
+ethernet_networks = ethernet_class.find_by(@client, ethernetNetworkType: 'Tagged')
 network_set_name = 'NetworkSet_1'
 
 puts "\nCreating a network set with name = #{network_set_name}"
@@ -139,3 +127,10 @@ end
 puts "\nDeletes network set with name='#{network_set['name']}' and uri='#{network_set['uri']}."
 network_set.delete
 puts "\nThe network set with name='#{network_set['name']}' and uri='#{network_set['uri']}' was deleted!\n"
+
+# Bulk delete ethernet networks
+delete_networks = []
+list.each { |e| delete_networks.append(e['uri']).to_s }
+bulk_options = { 'networkUris' => delete_networks }
+ethernet_class.bulk_delete(@client, bulk_options)
+puts "\nDeleted all bulk-created ethernet networks successfully."

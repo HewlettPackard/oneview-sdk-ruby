@@ -11,28 +11,16 @@
 
 require_relative '../_client' # Gives access to @client
 
-# Example: Create an enclosure group for an API300 C7000 Appliance
+# Example: Create an enclosure group for an API2000 C7000 Appliance
 # NOTE: This will create an enclosure group named 'OneViewSDK Test Enclosure Group', then delete it.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1200, and 1600.
+# - 200, 300, 500, 600, 800, 1200, 1600, 1800, 2000.
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::EnclosureGroup
-# api_version = 300 & variant = C7000 to encl_group_class
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::EnclosureGroup
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::EnclosureGroup
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::EnclosureGroup
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::EnclosureGroup
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::EnclosureGroup
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::EnclosureGroup
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::EnclosureGroup
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::EnclosureGroup
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::EnclosureGroup
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::EnclosureGroup
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::EnclosureGroup
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::EnclosureGroup
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::EnclosureGroup
+# Supported Variants:
+# C7000 and Synergy for all API versions
+# NOTE: Logical interconnect group variable "logical_interconnect_name" should be uncommented and created as a pre-requisite
+# NOTE: variant should be updated before running example
 
 # Resource Class used in this sample
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
@@ -40,12 +28,25 @@ encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_versi
 # LogicalInterconnectGroup class used in this sample.
 lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
 
+variant = 'Synergy'
 type = 'enclosure group'
 encl_group_name = 'OneViewSDK Test Enclosure Group'
 
-item = encl_group_class.new(@client, name: encl_group_name)
+lig = lig_class.find_by(@client, name: @logical_interconnect_name).first
 
-lig = lig_class.get_all(@client).first
+interconnect_bay_mapping = [
+       { interconnectBay: 3, logicalInterconnectGroupUri: lig[:uri] },
+       { interconnectBay: 6, logicalInterconnectGroupUri: lig[:uri] }
+]
+
+options = {
+  name: encl_group_name,
+  ipAddressingMode: 'External',
+  enclosureCount: 1,
+  interconnectBayMappings: interconnect_bay_mapping
+}
+
+item = encl_group_class.new(@client, options)
 item.add_logical_interconnect_group(lig)
 
 if @client.api_version >= 600
@@ -73,22 +74,18 @@ puts "\nUpdating an #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]
 item.update(name: 'OneViewSDK Test Enclosure_Group Updated')
 puts "\nUpdated #{type} with new name = '#{item[:name]}' sucessfully."
 
-begin
+if variant == 'C7000'
   command = '#TEST COMMAND'
   puts "\nSetting a script with command = '#{command}'"
   item.set_script(command)
   puts "\nScript attributed sucessfully."
-rescue OneviewSDK::MethodUnavailable => e
-  puts "\n#{e}. Available only for C7000."
 end
 
-begin
+if variant == 'C7000'
   puts "\nGetting a script"
   script = item.get_script
   puts "\nScript retrieved sucessfully."
   puts script
-rescue OneviewSDK::MethodUnavailable => e
-  puts "\n#{e}. Available only for C7000."
 end
 
 puts "\nDeleting the #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"

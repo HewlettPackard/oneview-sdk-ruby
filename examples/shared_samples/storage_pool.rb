@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -15,20 +15,12 @@ require_relative '../_client' # Gives access to @client
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #   @storage_system_ip
 
-# All supported APIs for Storage Pool:
-# - API200 for C7000 and Synergy
-# - API300 for C7000 and Synergy
-# - API500 for C7000 and Synergy
-# - API600 for C7000 and Synergy
+# Supported API Versions:
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
-# Resources classes that you can use for StoragePool in this example:
-# storage_pool_class = OneviewSDK::API200::StoragePool
-# storage_pool_class = OneviewSDK::API300::C7000::StoragePool
-# storage_pool_class = OneviewSDK::API300::Synergy::StoragePool
-# storage_pool_class = OneviewSDK::API500::C7000::StoragePool
-# storage_pool_class = OneviewSDK::API500::Synergy::StoragePool
-# storage_pool_class = OneviewSDK::API600::C7000::StoragePool
-# storage_pool_class = OneviewSDK::API600::Synergy::StoragePool
+# Supported Variants:
+# C7000 and Synergy for all API versions
+
 storage_pool_class = OneviewSDK.resource_named('StoragePool', @client.api_version)
 
 if @client.api_version <= 300

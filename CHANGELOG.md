@@ -1,5 +1,84 @@
-## v5.13.1(unreleased)
-This release added support for versioning docker image while we do release. 
+## v5.16.0 (Unreleased)
+
+#### Notes
+This release extends support to OneView Rest API version 2000 (OneView v5.40) for the hardware variants C7000 and Synergy to the following features:
+
+#### Features supported
+- Connection Template
+- Enclosure
+- Enclosure Group
+- Ethernet Network
+- FC Network
+- FCOE Network
+- Firmware Driver
+- Hypervisor Cluster Profile
+- Hypervisor Manager
+- Logical Enclosure
+- Network Set
+- OS Deployment Plan
+- Scope
+- Server Certificate
+- Server Hardware
+- Server Hardware Type
+- Server Profile
+- Server Profile Template
+- Storage Pool
+- Storage System
+- Volume
+- Volume Attachment
+- Volume Template
+- Uplink Set
+
+#### Bug fixes & Enhancements:
+- Enhanced the method to set the default API version to appliance's max API version instead of hardcoded 200.
+- Added an automation to upload  package to Gems followed with uploading a new image to DockerHub when there is a new release in GitHub
+
+## v5.15.0
+
+#### Notes
+This release extends support to OneView Rest API version 1800 (OneView v5.30) for the Synergy hardware variant to the following features:
+
+#### Features supported
+- OS Deployment Plan
+
+#### Bug fixes & Enhancements
+- [#454](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/454)OSDP resource is missing in API1800
+- [#455](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/455)sasjbod helper function is missing in API1800 server profile resource
+
+## v5.14.0
+
+#### Notes
+This release extends support to OneView Rest API version 1800 (OneView v5.30) for the hardware variants C7000 and Synergy to the following features:
+
+#### Features supported
+- Connection Template
+- Enclosure
+- Enclosure Group
+- Ethernet Network
+- FC Network
+- FCOE Network
+- Firmware Driver
+- Hypervisor Cluster Profile
+- Hypervisor Manager
+- Interconnects
+- Interconnect Types
+- LIG UplinkSet
+- Logical Enclosure
+- Logical Interconnect
+- Logical Interconnect Group
+- Network Set
+- Scope
+- Server Certificate
+- Server Hardware
+- Server Hardware Type
+- Server Profile
+- Server Profile Template
+- Storage Pool
+- Storage System
+- Uplink Set
+- Volume
+- Volume Attachment
+- Volume Template
 
 ## v5.13.0
 

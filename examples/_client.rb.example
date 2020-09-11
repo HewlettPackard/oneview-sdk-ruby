@@ -5,7 +5,8 @@ require 'pry'
   url: 'https://oneview.example.com', # or set ENV['ONEVIEWSDK_URL']
   user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
   password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
-  ssl_enabled: false
+  ssl_enabled: false,
+  api_version: 2000
 )
 
 ## This setting allows the SDK to flush messages to the screen as it is being run.
@@ -15,7 +16,7 @@ require 'pry'
 
 # This setting allows for use of the shortened name of the resources, like OneviewSDK::<Resource_name>,
   # when referring to OneviewSDK::<API_version>::Synergy::<Resource_name>
-# Versions supported: [200, 300, 500, 600, 800, 1000, 1200, 1600]
+# Versions supported: [200, 300, 500, 600, 800, 1000, 1200, 1600, 1800]
 # Variants supported[C7000, Synergy]
 # OneviewSDK::API<version>.variant='Synergy'
 
@@ -63,6 +64,5 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @hypervisor_host_prefix = "Test-Cluster-host"
 # @hypervisor_hypervisorType = "Vmware"
 # @hypervisor_type = "HypervisorClusterProfileV3"
-# @hypervisor_manager_uri = "/rest/hypervisor-managers/befc6bd9-0366-4fd9-a3fc-c92ab0df3603"
-# @hypervisor_serverProfileTemplateUri = "/rest/server-profile-templates/c865a62c-8fd8-414c-8c16-3f7ca75ab2ba"
-# @hypervisor_deploymentPlanUri = "/rest/os-deployment-plans/c54e1dab-cc14-48fa-92bf-d301671fb0cf"
+# @hypervisor_serverProfileTemplate = "spt-hypervisor"
+# @hypervisor_deploymentPlan = "Basic Deployment Plan"

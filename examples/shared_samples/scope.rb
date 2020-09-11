@@ -14,38 +14,10 @@ require_relative '../_client' # Gives access to @client
 # NOTE: It is necessary a server hardware and an enclosure previous created
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
-# - API600 for C7000
-# - API600 for Synergy
-# - API800 for C7000
-# - API800 for Synergy
-# - API1000 for C7000
-# - API1000 for Synergy
-# - API1200 for C7000
-# - API1200 for Synergy
-# - API1600 for C7000
-# - API1600 for Synergy
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
-# Resources that can be created according to parameters:
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::Scope
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Scope
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Scope
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Scope
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Scope
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::Scope
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::Scope
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::Scope
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::Scope
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000:Synergy::Scope
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::Scope
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::Scope
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::Scope
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::Scope
-
+# Supported Variants
+# C7000 and Synergy for all API versions
 
 # NOTE: Scopes doesn't support versions smaller than 300.
 
@@ -105,7 +77,7 @@ if @client.api_version >= 600
   scope_class.replace_resource_assigned_scopes(@client, server_hardware, scopes: [scope2])
   puts 'Replaced resouce scope uris'
 
-  puts '\nAdd a resource to scope3'
+  puts "\nAdd a resource to scope3"
   options = {
     name: 'Scope3',
     description: 'Sample Scope description3'
@@ -117,7 +89,7 @@ if @client.api_version >= 600
   scope_class.add_resource_scope(@client, enclosure, scopes: [scope3, scope_item])
   puts 'Server hardware resource added to scope3'
 
-  puts '\nRemoving resource from scope3'
+  puts "\nRemoving resource from scope3"
   scope_class.remove_resource_scope(@client, enclosure, scopes: [scope3, scope_item])
   scope_class.add_resource_scope(@client, server_hardware, scopes: [scope_item])
   scope_class.resource_patch(@client, server_hardware, add_scopes: [scope3], remove_scopes: [scope_item])
@@ -126,19 +98,20 @@ if @client.api_version >= 600
   # Delete all scopes created.
   scope2.delete
   scope3.delete
+  puts 'Deleted scope2 and scope3 successfully'
 end
 
 puts "\nUnsetting resource from the '#{scope['name']}'"
 scope.unset_resources(server_hardware, enclosure)
 server_hardware.refresh
 enclosure.refresh
-puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
+puts "scopeUris from Resources: '#{server_hardware['scopeUris']}' and '#{enclosure['scopeUris']}'"
 
 puts "\nReplacing resources from the '#{scope['name']}'"
 scope.change_resource_assignments(add_resources: [server_hardware], remove_resources: [enclosure])
 server_hardware.refresh
 enclosure.refresh
-puts 'scopeUris from Resources:', server_hardware['scopeUris'], enclosure['scopeUris']
+puts "scopeUris from Resources: '#{server_hardware['scopeUris']}' and '#{enclosure['scopeUris']}'"
 
 if @client.api_version >= 500
   puts "\nUpdating the scope name '#{scope['name']}' with a patch."
@@ -155,4 +128,4 @@ end
 puts "\nDeleting scope"
 scope.refresh
 scope.delete
-puts 'Scope was successfully deleted.' unless scope.retrieve!
+puts "'Scope' was successfully deleted." unless scope.retrieve!

@@ -16,25 +16,11 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of ethernet networks and then delete them.
 #
 # Supported APIs:
-# - 200, 300, 500, 600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::Enclosure
-# api_version = 300 & variant = C7000 to enclosure_class
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::Enclosure
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::Enclosure
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::Enclosure
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::Enclosure
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::Enclosure
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::Enclosure
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::Enclosure
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::Enclosure
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::Enclosure
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::Enclosure
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::Enclosure
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::Enclosure
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::Enclosure
-
+# Supported Variants:
+# C7000 and Synergy for all API versions
+#
 # Resource Class used in this sample
 enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
 
@@ -105,7 +91,12 @@ if @client.api_version >= 600
   item4 = enclosure_class.get_all_with_query(@client, query)
   puts "Found enclosure '#{item4}'."
 
-  bay_number = 1 if variant == 'C7000'
+  if variant == 'C7000'
+    bay_number = 1
+  elsif variant == 'Synergy'
+    bay_number = nil
+  end
+
   csr_data = {
     type: 'CertificateDtoV2',
     organization: 'Acme Corp.',

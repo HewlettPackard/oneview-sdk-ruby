@@ -30,7 +30,7 @@ module OneviewSDK
     # @param [OneviewSDK::Client] client The client object for the OneView appliance
     # @param [Hash] params The options for this resource (key-value pairs)
     # @param [Integer] api_ver The api version to use when interracting with this resource.
-    #   Defaults to the client.api_version if it exists, or the OneviewSDK::Client::DEFAULT_API_VERSION.
+    #   Defaults to the client.api_version if it exists, or  Appliance's max API version to be used by default for requests
     def initialize(client, params = {}, api_ver = nil)
       raise InvalidClient, 'Must specify a valid client'\
         unless client.is_a?(OneviewSDK::Client) || client.is_a?(OneviewSDK::ImageStreamer::Client)

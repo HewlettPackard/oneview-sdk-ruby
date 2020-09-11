@@ -15,42 +15,12 @@ require_relative '../_client'
 #   @storage_system_ip
 
 # All supported APIs for Volume Template:
-# - 200, 300, 500. 600
+# - 200, 300, 500. 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 raise 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
-# Resources classes that you can use for Volume Template in this example:
-# volume_template_class = OneviewSDK::API200::VolumeTemplate
-# volume_template_class = OneviewSDK::API300::C7000::VolumeTemplate
-# volume_template_class = OneviewSDK::API300::Synergy::VolumeTemplate
-# volume_template_class = OneviewSDK::API500::C7000::VolumeTemplate
-# volume_template_class = OneviewSDK::API500::Synergy::VolumeTemplate
-# volume_template_class = OneviewSDK::API600::C7000::VolumeTemplate
-# volume_template_class = OneviewSDK::API600::Synergy::VolumeTemplate
-# volume_template_class = OneviewSDK::API1600::C7000::VolumeTemplate
-# volume_template_class = OneviewSDK::API1600::Synergy::VolumeTemplate
-
-# Resources classes that you can use for Storage System in this example:
-# storage_system_class = OneviewSDK::API200::StorageSystem
-# storage_system_class = OneviewSDK::API300::C7000::StorageSystem
-# storage_system_class = OneviewSDK::API300::Synergy::StorageSystem
-# storage_system_class = OneviewSDK::API500::C7000::StorageSystem
-# storage_system_class = OneviewSDK::API500::Synergy::StorageSystem
-# storage_system_class = OneviewSDK::API600::C7000::StorageSystem
-# storage_system_class = OneviewSDK::API600::Synergy::StorageSystem
-# storage_system_class = OneviewSDK::API1600::C7000::StorageSystem
-# storage_system_class = OneviewSDK::API1600::Synergy::StorageSystem
-
-# Resources classes that you can use for Storage Pool in this example:
-# storage_pool_class = OneviewSDK::API200::StoragePool
-# storage_pool_class = OneviewSDK::API300::C7000::StoragePool
-# storage_pool_class = OneviewSDK::API300::Synergy::StoragePool
-# storage_pool_class = OneviewSDK::API500::C7000::StoragePool
-# storage_pool_class = OneviewSDK::API500::Synergy::StoragePool
-# storage_pool_class = OneviewSDK::API600::C7000::StoragePool
-# storage_pool_class = OneviewSDK::API600::Synergy::StoragePool
-# storage_pool_class = OneviewSDK::API1600::C7000::StoragePool
-# storage_pool_class = OneviewSDK::API1600::Synergy::StoragePool
+# Supported Variants for Storage System, Storage Pool and Volume Attachment
+# - C7000 and Synergy for all API versions
 
 # Resource classses used in this sample
 volume_template_class = OneviewSDK.resource_named('VolumeTemplate', @client.api_version)

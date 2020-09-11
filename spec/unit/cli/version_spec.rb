@@ -11,7 +11,7 @@ RSpec.describe OneviewSDK::Cli do
     end
 
     it 'prints the appliance version' do
-      expect { command }.to output(/OneView appliance API version at .* = 1600/).to_stdout_from_any_process
+      expect { command }.to output(/OneView appliance API version at .* = 2000/).to_stdout_from_any_process
     end
 
     it 'requires the url to be set' do

@@ -16,38 +16,10 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of fc networks and then delete them.
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
-# - API600 for C7000
-# - API600 for Synergy
-# - API800 for C7000
-# - API800 for Synergy
-# - API1000 for C7000
-# - API1000 for Synergy
-# - API1200 for C7000
-# - API1200 for Synergy
-# - API1600 for C7000
-# - API1600 for Synergy
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 #
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::FCNetwork
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::FCNetwork
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::FCNetwork
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::FCNetwork
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::FCNetwork
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::FCNetwork
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::FCNetwork
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::FCNetwork
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::FCNetwork
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::FCNetwork
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::FCNetwork
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::FCNetwork
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::FCNetwork
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::FCNetwork
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::FCNetwork
+# Supported Variants
+# C7000 and Synergy for all api versions
 
 
 # Resource Class used in this sample
@@ -61,12 +33,23 @@ options = {
   connectionTemplateUri: nil,
   autoLoginRedistribution: true,
   fabricType: 'FabricAttach',
-  initialScopeUris: ['/rest/scopes/e025d93b-b08a-42cb-af56-b67a750c65b7', '/rest/scopes/92517890-87e4-47b5-9b33-ba78bd878293']
+  initialScopeUris: [] # Add scope uris if required
 }
 
 fc = fc_network_class.new(@client, options)
 fc.create!
-puts "\nCreated fc-network '#{fc[:name]}' sucessfully.\n  uri = '#{fc[:uri]}'"
+puts "\nCreated fc-network '#{fc[:name]}' successfully.\n  uri = '#{fc[:uri]}'"
+
+# Create 2 more FC networks
+options['name'] = 'FC Network 2'
+fc4 = fc_network_class.new(@client, options)
+fc4.create!
+puts "\nCreated fc-network '#{fc4[:name]}' successfully.\n  uri = '#{fc4[:uri]}'"
+
+options['name'] = 'FC Network 3'
+fc5 = fc_network_class.new(@client, options)
+fc5.create!
+puts "\nCreated fc-network '#{fc5[:name]}' successfully.\n  uri = '#{fc5[:uri]}'"
 
 # Find recently created network by name
 matches = fc_network_class.find_by(@client, name: fc[:name])
@@ -121,4 +104,10 @@ end
 
 # Delete this network
 fc3.delete
-puts "\nSucessfully deleted fc-network '#{fc3[:name]}'."
+puts "\nSuccessfully deleted fc-network '#{fc3[:name]}'."
+
+# Bulk-delete FC network
+delete_networks = [fc4[:uri], fc5[:uri]]
+bulk_options = { 'networkUris' => delete_networks }
+fc_network_class.bulk_delete(@client, bulk_options)
+puts "\nBulk deleted the fc networks successfully."

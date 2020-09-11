@@ -15,7 +15,8 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a few networks (ethernet & FC), as well as a LIG named 'ONEVIEW_SDK_TEST_LIG', then delete them all.
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
+
 # Supported API variants
 # C7000, Synergy
 
@@ -114,7 +115,6 @@ if variant == 'C7000' || @client.api_version == 200
 
   lig.add_uplink_set(upset02)
 end
-
 if variant == 'Synergy'
   lig['redundancyType'] = 'Redundant'
   lig['interconnectBaySet'] = 3
@@ -123,7 +123,6 @@ if variant == 'Synergy'
   lig.add_interconnect(3, VIRTUAL_CONNECT_SE_40_SYNERGY)
   lig.add_interconnect(6, VIRTUAL_CONNECT_SE_40_SYNERGY)
 end
-
 # Create the fully configured LIG
 puts "\nCreating a #{type} with name = #{lig[:name]}."
 lig.create!

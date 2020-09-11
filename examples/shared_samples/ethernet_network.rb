@@ -16,38 +16,10 @@ require_relative '../_client' # Gives access to @client
 #   It will create a bulk of ethernet networks and then delete them.
 #
 # Supported APIs:
-# - API200 for C7000
-# - API300 for C7000
-# - API300 for Synergy
-# - API500 for C7000
-# - API500 for Synergy
-# - API600 for C7000
-# - API600 for Synergy
-# - API800 for C7000
-# - API800 for Synergy
-# - API1000 for C7000
-# - API1000 for Synergy
-# - API1200 for C7000
-# - API1200 for Synergy
-# - API1600 for C7000
-# - API1600 for Synergy
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
-# Resources that can be created according to parameters:
-# api_version = 200 & variant = any to OneviewSDK::API200::EthernetNetwork
-# api_version = 300 & variant = C7000 to OneviewSDK::API300::C7000::EthernetNetwork
-# api_version = 300 & variant = Synergy to OneviewSDK::API300::Synergy::EthernetNetwork
-# api_version = 500 & variant = C7000 to OneviewSDK::API500::C7000::EthernetNetwork
-# api_version = 500 & variant = Synergy to OneviewSDK::API500::Synergy::EthernetNetwork
-# api_version = 600 & variant = C7000 to OneviewSDK::API600::C7000::EthernetNetwork
-# api_version = 600 & variant = Synergy to OneviewSDK::API600::Synergy::EthernetNetwork
-# api_version = 800 & variant = C7000 to OneviewSDK::API800::C7000::EthernetNetwork
-# api_version = 800 & variant = Synergy to OneviewSDK::API800::Synergy::EthernetNetwork
-# api_version = 1000 & variant = C7000 to OneviewSDK::API1000::C7000::EthernetNetwork
-# api_version = 1000 & variant = Synergy to OneviewSDK::API1000::Synergy::EthernetNetwork
-# api_version = 1200 & variant = C7000 to OneviewSDK::API1200::C7000::EthernetNetwork
-# api_version = 1200 & variant = Synergy to OneviewSDK::API1200::Synergy::EthernetNetwork
-# api_version = 1600 & variant = C7000 to OneviewSDK::API1600::C7000::EthernetNetwork
-# api_version = 1600 & variant = Synergy to OneviewSDK::API1600::Synergy::EthernetNetwork
+# Supported Variants
+# C7000 and Synergy for all api versions
 
 
 # Resource Class used in this sample
@@ -68,7 +40,7 @@ options = {
 # Creating a ethernet network
 ethernet = ethernet_class.new(@client, options)
 ethernet.create!
-puts "\nCreated ethernet-network '#{ethernet[:name]}' sucessfully.\n  uri = '#{ethernet[:uri]}'"
+puts "\nCreated ethernet-network '#{ethernet[:name]}' successfully.\n  uri = '#{ethernet[:uri]}'"
 
 # Find recently created network by name
 matches = ethernet_class.find_by(@client, name: ethernet[:name])
@@ -104,7 +76,7 @@ end
 
 # Bulk create ethernet networks
 options = {
-  vlanIdRange: '26-28',
+  vlanIdRange: '21-24',
   purpose: 'General',
   namePrefix: 'OneViewSDK_Bulk_Network',
   smartLink: false,
@@ -117,10 +89,22 @@ options = {
 
 list = ethernet_class.bulk_create(@client, options).each { |network| puts network['uri'] }
 
-puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' sucessfully."
+puts "\nBulk-created ethernet networks '#{options[:namePrefix]}_<x>' successfully."
 
 list.sort_by! { |e| e['name'] }
-list.each { |e| puts "  #{e['name']}" }
+list.each { |e| puts "  #{e['name']} - #{e['uri']}" }
+
+# Bulk delete ethernet networks is supported only from API1800
+if @client.api_version.to_i > 1800
+  delete_networks = []
+  list.each { |e| delete_networks.append(e['uri']).to_s }
+  bulk_options = { 'networkUris' => delete_networks }
+  ethernet_class.bulk_delete(@client, bulk_options)
+  puts "\nBulk-deleted all bulk-created ethernet networks successfully."
+else
+  list.each(&:delete)
+  puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"
+end
 
 # only for API300 and API500, not supported for OneView 4.0 or greater
 if @client.api_version.to_i > 200 && @client.api_version.to_i < 600
@@ -153,7 +137,4 @@ end
 # Clean up
 # Delete this network
 ethernet2.delete
-puts "\nSucessfully deleted ethernet-network '#{ethernet[:name]}'."
-
-list.each(&:delete)
-puts "\nDeleted all bulk-created ethernet networks sucessfully.\n"
+puts "\nSuccessfully deleted ethernet-network '#{ethernet[:name]}'."

@@ -15,18 +15,10 @@ require_relative '../_client' # Gives access to @client
 #   @hypervisor_manager_ip
 
 # All supported APIs for  Server Certificate:
-# - 600, 800, 1000, 1200, 1600
-# # Resources classes that you can use for Server Certificate in this example:
-# server_certificate_class = OneviewSDK::API600::C7000::ServerCertificate
-# server_certificate_class = OneviewSDK::API600::Synergy::ServerCertificate
-# server_certificate_class = OneviewSDK::API800::C7000::ServerCertificate
-# server_certificate_class = OneviewSDK::API800::Synergy::ServerCertificate
-# server_certificate_class = OneviewSDK::API1000::C7000::ServerCertificate
-# server_certificate_class = OneviewSDK::API1000::Synergy::ServerCertificate
-# server_certificate_class = OneviewSDK::API1200::C7000::ServerCertificate
-# server_certificate_class = OneviewSDK::API1200::Synergy::ServerCertificate
-# server_certificate_class = OneviewSDK::API1600::C7000::ServerCertificate
-# server_certificate_class = OneviewSDK::API1600::Synergy::ServerCertificate
+# - 600, 800, 1000, 1200, 1600, 1800, 2000
+
+# Supported Variants:
+# - C7000 and Synergy for all API versions
 
 # Initialize the resources
 server_certificate_class = OneviewSDK.resource_named('ServerCertificate', @client.api_version)

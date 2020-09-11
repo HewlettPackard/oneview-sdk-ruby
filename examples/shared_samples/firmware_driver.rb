@@ -16,12 +16,12 @@ require_relative '../_client' # Gives access to @client
 # The OneView appliance must have a valid spp and hotfix
 #
 # Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600
+# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 # Supported API variants
 # C7000, Synergy
 
-# for example, if api_version = 800 & variant = C7000 then, resource that can be created will be in form
-# OneviewSDK::API800::C7000::FirmwareDriver
+# for example, if api_version = 1800 & variant = C7000 then, resource that can be created will be in form
+# OneviewSDK::API1800::C7000::FirmwareDriver
 
 # Resource Class used in this sample
 fw_driver_class = OneviewSDK.resource_named('FirmwareDriver', @client.api_version)
