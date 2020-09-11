@@ -18,17 +18,17 @@ The Docker Store image tag consist of two sections: <sdk_version-OV_version>
 ```bash
 # Download and store a local copy of oneview-sdk-ruby and
 # use it as a Docker image.
-$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.15.0-OV5.3
+$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.16.0-OV5.4
 # Run docker commands below given, which  will in turn create
 # a sh session where you can create files, issue commands and execute the examples.
-$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.15.0-OV5.3 /bin/sh
+$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.16.0-OV5.4 /bin/sh
 ```
 
 ### Local Setup
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk', '~> 5.3'
+  gem 'oneview-sdk', '~> 5.4'
   ```
 
   Then run `$ bundle install`
@@ -54,7 +54,7 @@ client = OneviewSDK::Client.new(
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   domain: 'LOCAL',                    # This is the default
-  api_version: 1800                   # Defaults to appliance's max API version
+  api_version: 2000                   # Defaults to appliance's max API version
 )
 ```
 
@@ -145,7 +145,7 @@ Configuration files can also be used to define client configuration (json or yam
   "url": "https://oneview.example.com",
   "user": "Administrator",
   "password": "secret123",
-  "api_version": 1800
+  "api_version": 2000
 }
 ```
 
@@ -183,9 +183,9 @@ You may notice resource classes being accessed in a few different ways; for exam
 require 'oneview-sdk'
 
 # Show defaults:
-OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800, 1000, 1200, 1600, 1800]
-OneviewSDK::DEFAULT_API_VERSION         # 1800
-OneviewSDK.api_version                  # 1800
+OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000]
+OneviewSDK::DEFAULT_API_VERSION         # 2000
+OneviewSDK.api_version                  # 2000
 OneviewSDK.api_version_updated?         # false
 
 # Notice the automatic redirection/resolution when we use the shorthand accessor:
@@ -250,13 +250,18 @@ OneviewSDK::API1800::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API1800.variant              # 'C7000'
 OneviewSDK::API1800.variant_updated?     # false
 
-# Likewise, we can set a new default variant for the API1800 module:
-OneviewSDK::API1800.variant = 'Synergy'
-OneviewSDK::API1800.variant              # 'Synergy'
-OneviewSDK::API1800.variant_updated?     # true
+OneviewSDK::API2000::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API2000::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API2000.variant              # 'C7000'
+OneviewSDK::API2000.variant_updated?     # false
+
+# Likewise, we can set a new default variant for the API2000 module:
+OneviewSDK::API2000.variant = 'Synergy'
+OneviewSDK::API2000.variant              # 'Synergy'
+OneviewSDK::API2000.variant_updated?     # true
 # Therefore, there is 1 more namespace level to the real resource class name
 OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
-OneviewSDK::API1800::EthernetNetwork     # OneviewSDK::API1800::C7000::EthernetNetwork
+OneviewSDK::API2000::EthernetNetwork     # OneviewSDK::API2000::C7000::EthernetNetwork
 ```
 
 We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.
