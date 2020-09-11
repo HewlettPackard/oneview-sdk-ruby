@@ -31,7 +31,7 @@ RSpec.describe OneviewSDK::API2000::C7000::LogicalInterconnect do
       item = log_int
       expect(@client_2000).to receive(:rest_post).with(item.class::LOCATION_URI + '/bulk-inconsistency-validate', Hash, item.api_version)
                                                  .and_return(FakeResponse.new)
-      item.bulk_inconsistency_validate(1, OneviewSDK::API2000::C7000::LogicalInterconnect.new(@client_2000, uri: '/rest/fake'))
+      item.bulk_inconsistency_validate
     end
   end
 end
