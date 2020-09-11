@@ -10,6 +10,7 @@
       "/rest/interconnects/d3eb1592-f078-4b16-951e-04f6e47ad6f0"
     ],
     "stackingHealth": "BiConnected",
+    "logicalInterconnectUris": [],
     "telemetryConfiguration": {
       "type": "telemetry-configuration",
       "enableTelemetry": true,
