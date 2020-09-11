@@ -13,8 +13,11 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Firmware Driver
 - Hypervisor Cluster Profile
 - Hypervisor Manager
+- Interconnect
+- Interconnect Type
 - LIG Uplink Set
 - Logical Enclosure
+- Logical Interconnect
 - Logical Interconnect Group
 - Network Set
 - OS Deployment Plan
@@ -26,10 +29,10 @@ This release extends support to OneView Rest API version 2000 (OneView v5.40) fo
 - Server Profile Template
 - Storage Pool
 - Storage System
+- Uplink Set
 - Volume
 - Volume Attachment
 - Volume Template
-- Uplink Set
 
 
 #### Bug fixes & Enhancements:
