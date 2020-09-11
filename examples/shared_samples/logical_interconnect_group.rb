@@ -1,4 +1,4 @@
-# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -23,10 +23,12 @@ require_relative '../_client' # Gives access to @client
 # for example, if api_version = 800 & variant = C7000 then, resource that can be created will be in form
 # OneviewSDK::API800::C7000::LogicalInterconnectGroup
 
-# Resource Class used in this sample
-lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version)
+# NOTE: Set the variant type before running example
+variant = 'Synergy'
+# variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
 
-variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
+# Resource Class used in this sample
+lig_class = OneviewSDK.resource_named('LogicalInterconnectGroup', @client.api_version, variant)
 
 # Ethernet network class used in this sample
 ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
@@ -118,6 +120,7 @@ end
 if variant == 'Synergy'
   lig['redundancyType'] = 'Redundant'
   lig['interconnectBaySet'] = 3
+  lig['enclosureType'] = 'SY12000'
 
   # Adds the following interconnects to the bays 3 and 6 with an Interconnect Type, respectively
   lig.add_interconnect(3, VIRTUAL_CONNECT_SE_40_SYNERGY)
@@ -161,6 +164,7 @@ lig.update
 puts "#{type} was updated successfully:"
 puts lig.data
 
+puts eth01['uri']
 if variant == 'Synergy'
   puts "\nAdding an internal network with uri = #{eth01['uri']}"
   lig.retrieve!
