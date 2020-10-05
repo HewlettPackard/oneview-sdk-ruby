@@ -36,8 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'pry', '~> 0.12.2'
   spec.add_runtime_dependency 'multipart-post'
   spec.add_runtime_dependency 'bunny'
+  spec.add_runtime_dependency 'addressable'
 
-  spec.add_development_dependency 'addressable'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'byebug'

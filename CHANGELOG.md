@@ -1,3 +1,8 @@
+## v5.17.0(Unreleased)
+
+#### Bug fixes & Enhancements
+- [#473](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/473)Failing to install oneview-sdk gem as runtime environment
+
 ## v5.16.0
 
 #### Notes
