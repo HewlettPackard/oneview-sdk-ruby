@@ -14,12 +14,6 @@ require_relative '../_client' # Gives access to @client
 # Example: Create/Update/Delete ethernet networks
 # NOTE: This will create an ethernet network named 'OneViewSDK Test Vlan', update it and then delete it.
 #   It will create a bulk of ethernet networks and then delete them.
-#
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
-
-# Supported Variants
-# C7000 and Synergy for all api versions
 
 
 # Resource Class used in this sample
@@ -138,3 +132,8 @@ end
 # Delete this network
 ethernet2.delete
 puts "\nSuccessfully deleted ethernet-network '#{ethernet[:name]}'."
+
+# Creating another ethernet network to ensure continuity for automation script
+ethernet4 = ethernet_class.new(@client, options)
+ethernet4.create!
+puts "\nCreated ethernet-network '#{ethernet4[:name]}' successfully.\n  uri = '#{ethernet4[:uri]}'"

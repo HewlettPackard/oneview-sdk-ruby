@@ -15,8 +15,6 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a logical enclosure named 'OneViewSDK Test Logical Enclosure', update it and then delete it.
 # To run this test with Synergy you must have an enclosureGroup with enclosure count = 3.
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions

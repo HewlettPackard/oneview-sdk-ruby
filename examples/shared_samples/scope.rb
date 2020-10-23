@@ -12,12 +12,6 @@
 require_relative '../_client' # Gives access to @client
 
 # NOTE: It is necessary a server hardware and an enclosure previous created
-#
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
-
-# Supported Variants
-# C7000 and Synergy for all API versions
 
 # NOTE: Scopes doesn't support versions smaller than 300.
 
@@ -129,3 +123,12 @@ puts "\nDeleting scope"
 scope.refresh
 scope.delete
 puts "'Scope' was successfully deleted." unless scope.retrieve!
+
+# creating scope to ensure continuity for automation script
+options = {
+  name: 'Scope',
+  description: 'Sample Scope description'
+}
+scope = scope_class.new(@client, options)
+scope.create
+puts 'Created scope'

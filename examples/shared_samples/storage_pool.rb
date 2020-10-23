@@ -15,12 +15,6 @@ require_relative '../_client' # Gives access to @client
 # NOTE: You'll need to add the following instance variables to the _client.rb file with valid URIs for your environment:
 #   @storage_system_ip
 
-# Supported API Versions:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
-# Supported Variants:
-# C7000 and Synergy for all API versions
-
 storage_pool_class = OneviewSDK.resource_named('StoragePool', @client.api_version)
 
 if @client.api_version <= 300

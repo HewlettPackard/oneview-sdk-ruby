@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -13,15 +13,8 @@ require_relative '../_client' # Gives access to @client
 
 # NOTE: You'll need to add the following instance variable to the _client.rb file with valid values for your environment:
 #   @storage_system_ip
-#   @unmanaged_volume_wwn (optional)
-# NOTE: This sample is for APIs 200 and 300 only. To see sample for API 500, look at the example volume.rb in the examples/api500 folder.
+#   @storage_virtual_ip
 #
-
-# Supported API Versions
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
-# Supported Variants:
-# C7000 and Synergy for all API versions
 
 # Resource Class used in this sample
 volume_class = OneviewSDK.resource_named('Volume', @client.api_version)
@@ -31,38 +24,32 @@ storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_ve
 storage_pool_class = OneviewSDK.resource_named('StoragePool', @client.api_version)
 volume_template_class = OneviewSDK.resource_named('VolumeTemplate', @client.api_version)
 
-if @client.api_version >= 600
-  raise "If you want execute sample for API #{@client.api_version}," \
-      "you should execute the ruby file '/examples/api600/volume.rb'"
-elsif @client.api_version == 500
-  raise "If you want execute sample for API #{@client.api_version}," \
-      "you should execute the ruby file '/examples/api500/volume.rb'"
-end
-
-puts '1) Common = Storage System + Storage Pool'
+# Network class for getting volumes by query parameter connections
+# Use Fc networks, Fcoe networks based on your requirement.
+ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_version)
 
 # Set Storage System
-storage_system = storage_system_class.new(@client, credentials: { ip_hostname: @storage_system_ip })
+storage_system = storage_system_class.new(@client, hostname: @storage_system_ip)
 storage_system.retrieve!
 
 # Retrieve a Storage Pool
-pools = storage_pool_class.find_by(@client, storageSystemUri: storage_system[:uri])
+pools = storage_pool_class.find_by(@client, storageSystemUri: storage_system[:uri], isManaged: true)
 raise 'ERROR: No storage pools found attached to the provided storage system' if pools.empty?
 storage_pool = pools.first
 
-puts "\nCreating a volume with Storage System + Storage Pool..."
+puts "\nCreating a volume with a Storage Pool..."
 
 options1 = {
-  name: 'ONEVIEW_SDK_TEST_VOLUME_1',
-  description: 'Volume example',
-  provisioningParameters: {
-    provisionType: 'Thin',
-    requestedCapacity: 1024 * 1024 * 1024
+  properties: {
+    name: 'ONEVIEW_SDK_TEST_VOLUME_1',
+    description: 'Volume store serv',
+    size: 1024 * 1024 * 1024,
+    provisioningType: 'Thin',
+    isShareable: false
   }
 }
 
 item1 = volume_class.new(@client, options1)
-item1.set_storage_system(storage_system)
 item1.set_storage_pool(storage_pool)
 item1.create
 item1.retrieve!
@@ -71,15 +58,18 @@ puts "\nVolume created successfully! \nName: #{item1['name']} \nURI: #{item1['ur
 puts "\nCreating a volume with a volume template..."
 
 options2 = {
-  name: 'ONEVIEW_SDK_TEST_VOLUME_2',
-  description: 'Volume example',
-  provisioningParameters: {
-    requestedCapacity: 1024 * 1024 * 1024
+  properties: {
+    name: 'ONEVIEW_SDK_TEST_VOLUME_2',
+    description: 'Volume store serv',
+    size: 1024 * 1024 * 1024,
+    provisioningType: 'Thin',
+    isShareable: false
   }
 }
 
-volume_template = volume_template_class.get_all(@client).first
+volume_template = volume_template_class.find_by(@client, storagePoolUri: storage_pool['uri']).first
 item2 = volume_class.new(@client, options2)
+item2.set_storage_pool(storage_pool)
 item2.set_storage_volume_template(volume_template)
 item2.create
 item2.retrieve!
@@ -88,18 +78,19 @@ puts "\nVolume created successfully! \nName: #{item2['name']} \nURI: #{item2['ur
 puts "\nCreating a volume with a snapshot pool specified..."
 
 options3 = {
-  name: 'ONEVIEW_SDK_TEST_VOLUME_3',
-  description: 'Volume example',
-  provisioningParameters: {
-    provisionType: 'Thin',
-    requestedCapacity: 1024 * 1024 * 1024
+  properties: {
+    name: 'ONEVIEW_SDK_TEST_VOLUME_3',
+    description: 'Volume store serv',
+    size: 1024 * 1024 * 1024,
+    provisioningType: 'Thin',
+    isShareable: false
   }
 }
 
 item3 = volume_class.new(@client, options3)
-item3.set_storage_system(storage_system)
 item3.set_storage_pool(storage_pool)
 item3.set_snapshot_pool(storage_pool)
+item3.set_storage_volume_template(volume_template)
 item3.create
 item3.retrieve!
 puts "\nVolume created successfully! \nName: #{item3['name']} \nURI: #{item3['uri']}"
@@ -110,70 +101,101 @@ item3.set_snapshot_pool(storage_pool)
 item3.create_snapshot(snapshot_name)
 puts "\nGetting the snapshot created by name"
 snap = item3.get_snapshot(snapshot_name)
-puts "\nSnaphot found: \n Name: #{snap['name']} \n URI: #{snap['uri']}"
+puts "\nSnapshot found: \n Name: #{snap['name']} \n URI: #{snap['uri']}"
 
 puts "\nCreating a volume from a snapshot..."
-options4 = {
-  name: 'ONEVIEW_SDK_TEST_VOLUME_4',
-  description: 'Volume example',
-  snapshotUri: "#{item3[:uri]}/snapshots/#{snap['uri']}",
-  provisioningParameters: {
-    provisionType: 'Thin',
-    requestedCapacity: 1024 * 1024 * 1024
-  }
+properties = {
+  'provisioningType' => 'Thin',
+  'name' => 'ONEVIEW_SDK_TEST_VOLUME_4',
+  'isShareable' => false
 }
 
-item4 = volume_class.new(@client, options4)
-item4.set_storage_system(storage_system)
-item4.set_storage_pool(storage_pool)
-item4.create
+item4 = item3.create_from_snapshot(snapshot_name, properties, volume_template)
 item4.retrieve!
 puts "\nVolume created successfully! \nName: #{item4['name']} \nURI: #{item4['uri']}"
 
-if @unmanaged_volume_wwn
-  puts "\nAdding a unmanaged volume wwn..."
+puts "\nRemoving a volume only from Oneview and maintaining  on the Storage System"
+if item1
+  device_volume = item1['deviceVolumeName']
+  item1.delete(:oneview)
+  puts "\nVolume removed successfully!"
 
-  options5 = {
-    name: 'ONEVIEW_SDK_TEST_VOLUME_5',
-    description: 'Test volume - management creation: Storage System + wwn',
-    wwn: @unmanaged_volume_wwn, # Need unmanaged volume
-    provisioningParameters: {
-      shareable: false
-    }
+puts "\nAdding a unmanaged volume..."
+
+options5 = {
+  name: 'ONEVIEW_SDK_TEST_VOLUME_5',
+  description: 'Volume added',
+  deviceVolumeName: device_volume,
+  isShareable: false,
+  storageSystemUri: storage_system['uri']
+}
+
+item5 = volume_class.new(@client, options5)
+item5.add
+puts "\nVolume added successfully! \nName: #{item5['name']} \nURI: #{item5['uri']}"
+
+puts "\nCreating a volume from Storage Virtual..."
+
+options6 = {
+  properties: {
+    name: 'ONEVIEW_SDK_TEST_VOLUME_VIRTUAL_1',
+    description: 'Volume store virtual',
+    size: 1024 * 1024 * 1024,
+    provisioningType: 'Thin',
+    isShareable: false,
+    dataProtectionLevel: 'NetworkRaid10Mirror2Way'
   }
+}
 
-  item5 = volume_class.new(@client, options5)
-  item5.set_storage_system(storage_system)
-  item5.create
-  item4.retrieve!
-  puts "\nVolume added successfully! \nName: #{item5['name']} \nURI: #{item5['uri']}"
-end
+storage_virtual = storage_system_class.find_by(@client, hostname: @store_virtual_ip).first
+storage_virtual_pool = storage_pool_class.find_by(@client, storageSystemUri: storage_virtual['uri'], isManaged: true).first
+vol_template_virtual = volume_template_class.find_by(@client, storagePoolUri: storage_virtual_pool['uri']).first
+
+item6 = volume_class.new(@client, options6)
+item6.set_storage_pool(storage_virtual_pool)
+item6.set_storage_volume_template(vol_template_virtual)
+item6.create
+puts "\nVolume added successfully! \nName: #{item6['name']} \nURI: #{item6['uri']}"
 
 puts "\nUpdating the volume name"
-old_name = item1['name']
-item1.update(name: "#{old_name}_Updated")
-item1.retrieve!
-puts "\nVolume updated successfully! New name: #{item1['name']}."
+old_name = item2['name']
+item2.update(name: "#{old_name}_Updated")
+item2.retrieve!
+puts "\nVolume updated successfully! New name: #{item2['name']}."
 
 puts "\nRemoving a snapshot..."
+item3.retrieve!
 item3.delete_snapshot(snapshot_name)
 puts "\nSnapshot removed successfully!"
 
 puts "\nGetting the attachable volumes managed by the appliance"
-query = {
-  connections: '<Your parameters here>'
-}
-attachables = volume_class.get_attachable_volumes(@client, query)
+attachables = volume_class.get_attachable_volumes(@client)
 puts "\nAttachable volumes found: #{attachables}"
+
+# Getting volumes by query parameter connections
+networks = ethernet_class.find_by(@client, {})
+
+puts "\n Getting the attachable volumes managed by the applicance by connections"
+query = {
+  connections: {
+    networkUri: networks.first['uri']
+  }
+}
+attachables_connections = volume_class.get_all_with_query(@client, query)
+puts "\nAttachable volumes found: #{attachables_connections}"
 
 puts "\nGetting the list of extra managed storage volume paths"
 paths = volume_class.get_extra_managed_volume_paths(@client)
 puts "\nExtra managed storage volume paths found: #{paths}"
 
+puts "Remove extra presentations from the specified volume on the storage system: \nURI: #{paths['uri']}"
+item2.repair
+puts "\nExtra managed storage volume paths has been repaired"
+
 puts "\nRemoving all volumes created in this sample..."
-item1.delete
 item2.delete
 item3.delete
 item4.delete
-item5.delete(:oneview) if @unmanaged_volume_wwn # Removes only of the Oneview and keep on' the Storage System
+item5.delete
+item6.delete
 puts "\nVolumes removed successfully!"

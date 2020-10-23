@@ -14,8 +14,6 @@ require_relative '../_client' # Gives access to @client
 # Example: Create an enclosure group for an API2000 C7000 Appliance
 # NOTE: This will create an enclosure group named 'OneViewSDK Test Enclosure Group', then delete it.
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1200, 1600, 1800, 2000.
 
 # Supported Variants:
 # C7000 and Synergy for all API versions
@@ -46,6 +44,11 @@ options = {
   interconnectBayMappings: interconnect_bay_mapping
 }
 
+options_for_scope = {
+  name: 'Scope',
+  description: 'Sample Scope description'
+}
+
 item = encl_group_class.new(@client, options)
 item.add_logical_interconnect_group(lig)
 
@@ -53,17 +56,29 @@ if @client.api_version >= 600
   # Gets enclosure group by scopeUris
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   scope_item = scope_class.get_all(@client).first
-  query = {
-    scopeUris: scope_item['uri']
-  }
+  if scope_item
+    query = {
+      scopeUris: scope_item['uri']
+    }
+  else 
+    {
+      scope = scope_class.new(@client, options_for_scope)
+      scope.create
+      query = {
+      scopeUris: scope['uri']
+      }
+    }
   puts "\nGets enclosure group with scope '#{query[:scopeUris]}'"
   items = encl_group_class.get_all_with_query(@client, query)
   puts "Found enclosure group '#{items}'."
 end
 
-puts "\nCreating an #{type} with name = '#{item[:name]}' and logical interconnect group uri = '#{lig[:uri]}''"
-item.create!
-puts "\nCreated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+def add_enclosure_group(item)
+  puts "\nCreating an #{type} with name = '#{item[:name]}' and logical interconnect group uri = '#{lig[:uri]}''"
+  item.create!
+  puts "\nCreated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+
+add_enclosure_group(item)
 
 item2 = encl_group_class.new(@client, name: encl_group_name)
 item2.retrieve!
@@ -91,3 +106,8 @@ end
 puts "\nDeleting the #{type} with name = '#{item[:name]}' and uri = '#{item[:uri]}''"
 item.delete
 puts "\nSucessfully deleted #{type} '#{item[:name]}'."
+
+# creating enclosureGroup to ensure continuity for automation script
+item = encl_group_class.new(@client, options)
+item.add_logical_interconnect_group(lig)
+add_enclosure_group(item)

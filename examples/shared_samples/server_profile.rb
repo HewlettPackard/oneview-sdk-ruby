@@ -11,9 +11,6 @@
 
 require_relative '../_client' # Gives access to @client
 
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
 # Supported Variants:
 # - C7000 and Synergy for all supported API versions
 
