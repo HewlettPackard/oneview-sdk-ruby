@@ -199,21 +199,7 @@ OneviewSDK.api_version = 2200
 OneviewSDK.api_version                  # 2200
 OneviewSDK.api_version_updated?         # true
 
-# The API300 and above has 2 variants (C7000 & Synergy):
-OneviewSDK::API1000::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API1000::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API1000.variant              # 'C7000'
-OneviewSDK::API1000.variant_updated?     # false
-
-OneviewSDK::API1200::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API1200::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API1200.variant              # 'C7000'
-OneviewSDK::API1200.variant_updated?     # false
-
-OneviewSDK::API1600::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API1600::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API1600.variant              # 'C7000'
-OneviewSDK::API1600.variant_updated?     # false
+# The API300 and above has 2 variants (C7000 & Synergy): For eg
 
 OneviewSDK::API1800::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
 OneviewSDK::API1800::DEFAULT_VARIANT     # 'C7000'
