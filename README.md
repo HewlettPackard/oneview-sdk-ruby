@@ -145,7 +145,7 @@ Configuration files can also be used to define client configuration (json or yam
   "url": "https://oneview.example.com",
   "user": "Administrator",
   "password": "secret123",
-  "api_version": 2000
+  "api_version": 2200
 }
 ```
 
@@ -177,7 +177,7 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 A status of the HPE OneView REST interfaces that have been implemented in this SDK can be found in the [endpoints-support.md](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/endpoints-support.md) file.
 
 ### OneView API versions and appliance types
-You may notice resource classes being accessed in a few different ways; for example, `OneviewSDK::EthernetNetwork`, `OneviewSDK::API300::EthernetNetwork`, and `OneviewSDK::API300::C7000::EthernetNetwork`. However, each of these accessors may actually be referring to the same class. This is because in order to keep backwards compatibility and make examples a little more simple, there are module methods in place to redirect/resolve the shorthand accessors to their full namespace identifier. In order to automatically complete the full namespace identifier, there are some defaults in place. Here's some example code that should help clear things up (return values are commented behind the code):
+You may notice resource classes being accessed in a few different ways; for example, `OneviewSDK::EthernetNetwork`, `OneviewSDK::API1000::EthernetNetwork`, and `OneviewSDK::API1000::C7000::EthernetNetwork`. However, each of these accessors may actually be referring to the same class. This is because in order to keep backwards compatibility and make examples a little more simple, there are module methods in place to redirect/resolve the shorthand accessors to their full namespace identifier. In order to automatically complete the full namespace identifier, there are some defaults in place. Here's some example code that should help clear things up (return values are commented behind the code):
 
 ```ruby
 require 'oneview-sdk'
@@ -225,8 +225,13 @@ OneviewSDK::API2000::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API2000.variant              # 'C7000'
 OneviewSDK::API2000.variant_updated?     # false
 
-# Likewise, we can set a new default variant for the API2000 module:
-OneviewSDK::API2200.variant = 'Synergy'
+OneviewSDK::API2200::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API2200::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API2200.variant              # 'C7000'
+OneviewSDK::API2200.variant_updated?     # false
+
+# Likewise, we can set a new default variant for the API2200 module:
+OneviewSDK::2200.variant = 'Synergy'
 OneviewSDK::API2200.variant              # 'Synergy'
 OneviewSDK::API2200.variant_updated?     # true
 
