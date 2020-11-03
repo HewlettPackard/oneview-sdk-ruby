@@ -364,7 +364,6 @@ def generate_clients(api_version)
   when 2000
     $client_2000 ||= OneviewSDK::Client.new($config.merge(api_version: api_version))
     $client_2000_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: api_version))
-  end
   when 2200
     $client_2200 ||= OneviewSDK::Client.new($config.merge(api_version: api_version))
     $client_2200_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: api_version))
