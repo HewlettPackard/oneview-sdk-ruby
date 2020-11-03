@@ -15,7 +15,7 @@ RSpec.describe OneviewSDK do
 
   it 'raises an error when an invalid API300 version is called' do
     expect { OneviewSDK::API999 }.to raise_error(NameError,
-                                                 'The API999 method or resource does not exist for OneView API version 2000.')
+                                                 'The API999 method or resource does not exist for OneView API version 2200.')
   end
 
   it 'has a default api version' do
