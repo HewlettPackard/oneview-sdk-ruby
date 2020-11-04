@@ -30,7 +30,6 @@ elsif @client.api_version == 500
 end
 
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
-storage_system = storage_system_class.new(@client, options)
 
 # for StorageSystem with family StoreServ
 options = {
@@ -54,21 +53,23 @@ options = {
 #   hostname: @store_virtual_ip,
 #   family: 'StoreVirtual'
 # }
+storage_system = storage_system_class.new(@client, options)
 
-def add_storage_system(storage_system)
+def add_storage_system(storage_system, options)
   puts "\nAdding a storage system with"
   puts "Managed Domain: #{storage_system['deviceSpecificAttributes']['managedDomain']}" if options['family'] == 'StoreServ'
   puts "Family: #{storage_system['family']}"
   puts "Hostname: #{storage_system['hostname']}."
   storage_system.add
-  puts "\nStorage system with uri='#{storage_system['uri']}' added successfully."
-
+  puts "\nStorage system with uri='#{storage_system['uri']}' added successfully.
+  "
   puts "\nFinding a storage system with hostname: #{storage_system['hostname']}"
   storage_system_class.find_by(@client, hostname: storage_system['hostname']).each do |storage|
     puts "\nStorage system with uri='#{storage['uri']}' found."
   end
+end
 
-add_storage_system(storage_system)
+add_storage_system(storage_system, options)
 
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
 storage_system.retrieve!
@@ -100,6 +101,3 @@ puts "\nRemoving the storage system."
 storage_system.remove
 puts "\nStorage system removed successfully."
 
-# adding storage system to ensure continuity for automation script
-storage_system = storage_system_class.new(@client, options)
-add_storage_system(storage_system)

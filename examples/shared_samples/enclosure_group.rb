@@ -56,18 +56,9 @@ if @client.api_version >= 600
   # Gets enclosure group by scopeUris
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   scope_item = scope_class.get_all(@client).first
-  if scope_item
-    query = {
-      scopeUris: scope_item['uri']
-    }
-  else 
-    {
-      scope = scope_class.new(@client, options_for_scope)
-      scope.create
-      query = {
-      scopeUris: scope['uri']
-      }
-    }
+  query = {
+	scopeUris: scope_item['uri']
+  }
   puts "\nGets enclosure group with scope '#{query[:scopeUris]}'"
   items = encl_group_class.get_all_with_query(@client, query)
   puts "Found enclosure group '#{items}'."
@@ -77,6 +68,7 @@ def add_enclosure_group(item)
   puts "\nCreating an #{type} with name = '#{item[:name]}' and logical interconnect group uri = '#{lig[:uri]}''"
   item.create!
   puts "\nCreated #{type} '#{item[:name]}' sucessfully.\n  uri = '#{item[:uri]}'"
+end
 
 add_enclosure_group(item)
 
