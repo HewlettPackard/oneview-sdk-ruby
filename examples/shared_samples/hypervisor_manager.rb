@@ -40,11 +40,8 @@ if hm2
   puts "\nFound hypervisor-manager by name: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
 end
 
-if not hm2
-  hm.create!
-  puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'"
-end
-
+hm.create! unless hm2
+puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'"
 
 # Retrieve recently created hypervisor manager
 hm3 = hypervisor_manager_class.new(@client, name: hm[:name])

@@ -70,9 +70,7 @@ end
   end
 
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
-if not storage_system
-  add_storage_system(storage_system, options)
-end
+add_storage_system(storage_system, options) unless storage_system
 
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
 storage_system.retrieve!
@@ -111,7 +109,5 @@ end
 # creating another storage_system to ensure continuity for automation script
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
 storage_system.retrieve!
-if not storage_system
-  storage_system = storage_system_class.new(@client, options)
-  add_storage_system(storage_system, options)
-end
+storage_system = storage_system_class.new(@client, options) unless storage_system
+add_storage_system(storage_system, options) unless storage_system

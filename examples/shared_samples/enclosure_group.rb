@@ -44,11 +44,6 @@ options = {
   interconnectBayMappings: interconnect_bay_mapping
 }
 
-options_for_scope = {
-  name: 'Scope',
-  description: 'Sample Scope description'
-}
-
 item = encl_group_class.new(@client, options)
 item.add_logical_interconnect_group(lig)
 
@@ -57,7 +52,7 @@ if @client.api_version >= 600
   scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
   scope_item = scope_class.get_all(@client).first
   query = {
-	scopeUris: scope_item['uri']
+    scopeUris: scope_item['uri']
   }
   puts "\nGets enclosure group with scope '#{query[:scopeUris]}'"
   items = encl_group_class.get_all_with_query(@client, query)
@@ -71,9 +66,7 @@ def add_enclosure_group(item, type, lig)
 end
 
 item = encl_group_class.new(@client, name: encl_group_name)
-if not item
-  add_enclosure_group(item, type, lig)
-end
+add_enclosure_group(item, type, lig) unless item
 
 item2 = encl_group_class.new(@client, name: encl_group_name)
 item2.retrieve!

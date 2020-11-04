@@ -43,9 +43,8 @@ if item
 end
 
 # Get statistics for an interconnect, for the specified port
-if item
-  port = item[:ports].last
-end
+port = item[:ports].last if item
+
 if item && port
   puts "\nGetting statistics for the interconnect #{item['name']} and port #{port['name']}"
   stats = item.statistics(port['name'])
