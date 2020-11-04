@@ -37,4 +37,3 @@ if @client.api_version <= 300 && volume_attachment
     puts "- #{path['initiatorName']}"
   end
 end
-puts

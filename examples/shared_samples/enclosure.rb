@@ -28,7 +28,7 @@ encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_versi
 encl_group = encl_group_class.get_all(@client).first
 
 type = 'enclosure'
-encl_name = '0000AA66101'
+encl_name = '0000A66101'
 
 variant = 'Synergy'
 
@@ -36,27 +36,15 @@ scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
 scope_1 = scope_class.new(@client, name: 'Scope_for_enclosure')
 scope_1.create
 
-options = if variant == 'Synergy'
-            {
-	      name: encl_name,
-	      hostname: @enclosure_hostname,
-	      username: @enclosure_username,
-	      password: @enclosure_password,
-	      enclosureGroupUri: encl_group['uri'],
-	      licensingIntent: 'OneView',
-	      initialScopeUris: [scope_1['uri']]
-	    }
-	  else
-            {
-              name: encl_name,
-              hostname: @enclosure_hostname,
-              username: @enclosure_username,
-              password: @enclosure_password,
-              enclosureGroupUri: encl_group['uri'],
-              licensingIntent: 'OneView',
-              initialScopeUris: [scope_1['uri']]
-            }
-          end
+options = {
+            name: encl_name,
+            hostname: @enclosure_hostname,
+            username: @enclosure_username,
+            password: @enclosure_password,
+            enclosureGroupUri: encl_group['uri'],
+            licensingIntent: 'OneView',
+            initialScopeUris: [scope_1['uri']]
+           }
 
 item = enclosure_class.new(@client, options)
 
@@ -214,3 +202,5 @@ begin
 rescue OneviewSDK::TaskError
   puts "\nRemoving Synergy enclosures on OneView requires the enclosures to be physically disconnected first."
 end
+
+scope_1.delete

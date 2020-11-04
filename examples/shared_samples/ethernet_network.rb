@@ -134,6 +134,14 @@ ethernet2.delete
 puts "\nSuccessfully deleted ethernet-network '#{ethernet[:name]}'."
 
 # Creating another ethernet network to ensure continuity for automation script
+options = {
+  vlanId:  '1001',
+  purpose:  'General',
+  name:  'OneViewSDK Test Vlan',
+  smartLink:  false,
+  privateNetwork:  false,
+  connectionTemplateUri: nil
+}
 ethernet4 = ethernet_class.new(@client, options)
 ethernet4.create!
 puts "\nCreated ethernet-network '#{ethernet4[:name]}' successfully.\n  uri = '#{ethernet4[:uri]}'"

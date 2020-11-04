@@ -119,6 +119,7 @@ if item1
   device_volume = item1['deviceVolumeName']
   item1.delete(:oneview)
   puts "\nVolume removed successfully!"
+end
 
 puts "\nAdding a unmanaged volume..."
 
@@ -142,8 +143,8 @@ options6 = {
     description: 'Volume store virtual',
     size: 1024 * 1024 * 1024,
     provisioningType: 'Thin',
-    isShareable: false,
-    dataProtectionLevel: 'NetworkRaid10Mirror2Way'
+    isShareable: false
+    #dataProtectionLevel: 'NetworkRaid10Mirror2Way'
   }
 }
 

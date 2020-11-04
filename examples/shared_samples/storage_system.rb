@@ -101,8 +101,12 @@ storage_system.refresh
 puts "\nLast refresh time: #{storage_system['lastRefreshTime']}"
 
 puts "\nRemoving the storage system."
-storage_system.remove
-puts "\nStorage system removed successfully."
+begin
+  storage_system.remove
+  puts "\nStorage system removed successfully."
+rescue
+  puts "\nUnable to delete: #{storage_system['hostname']}"
+end
 
 # creating another storage_system to ensure continuity for automation script
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])

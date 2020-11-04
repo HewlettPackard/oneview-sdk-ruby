@@ -26,10 +26,10 @@ logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
 
-variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
+variant = 'Synergy'
 
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
-scope_1 = scope_class.new(@client, name: 'Scope 1')
+scope_1 = scope_class.new(@client, name: 'Scope_for_LE')
 scope_1.create
 
 if variant == 'Synergy'
@@ -115,11 +115,13 @@ end
 
 # Set configuration script
 puts "\nSetting a logical enclosure script"
-begin
-  item3.set_script(orig_script)
-  puts "\nOperation performed successfully."
-rescue OneviewSDK::MethodUnavailable => e
-  puts "\n#{e}. Available only for C7000."
+if variant == 'C7000'
+  begin
+    item3.set_script(orig_script)
+    puts "\nOperation performed successfully."
+  rescue OneviewSDK::MethodUnavailable => e
+    puts "\n#{e}. Available only for C7000."
+  end
 end
 
 # Update from Group

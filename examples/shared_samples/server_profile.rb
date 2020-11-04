@@ -95,7 +95,7 @@ puts "\nPorts retrieved: \n #{ports['ports']}"
 puts "\nGetting the error or status messages associated with the specified profile"
 begin
   msgs = item3.get_messages
-  puts "\nMessasses retrieved successfully! \n Message: #{msgs}"
+  puts "\nMessages retrieved successfully! \n Message: #{msgs}"
 rescue OneviewSDK::MethodUnavailable
   puts "\nThe method #get_messages available for API version <= 500"
 end

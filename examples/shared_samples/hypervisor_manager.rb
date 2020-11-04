@@ -36,7 +36,9 @@ hm = hypervisor_manager_class.new(@client, options)
 # Find recently created hypervisor manager by name
 matches = hypervisor_manager_class.find_by(@client, name: hm[:name])
 hm2 = matches.first
-puts "\nFound hypervisor-manager by name: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
+if hm2
+  puts "\nFound hypervisor-manager by name: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
+end
 
 if not hm2
   hm.create!
@@ -51,8 +53,8 @@ puts "\nRetrieved hypervisor-manager data by name: '#{hm3[:name]}'.\n  uri = '#{
 
 # Update hypervisor manager registration
 attribute = { name: @hypervisor_manager_ip }
-hm2.update(attribute)
-puts "\nUpdated hypervisor-manager: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
+hm3.update(attribute)
+puts "\nUpdated hypervisor-manager: '#{hm3[:name]}'.\n  uri = '#{hm3[:uri]}'"
 puts "with attribute: #{attribute}"
 
 # Example: List all hypervisor managers certain attributes
@@ -63,5 +65,5 @@ hypervisor_manager_class.find_by(@client, attributes).each do |hypervisor_manage
 end
 
 # Delete this hypervisor manager
-hm2.delete
+hm3.delete
 puts "\nSucessfully deleted hypervisor-manager '#{hm[:name]}'."
