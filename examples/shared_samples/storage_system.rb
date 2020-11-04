@@ -65,9 +65,9 @@ def add_storage_system(storage_system, options)
   "
   puts "\nFinding a storage system with hostname: #{storage_system['hostname']}"
 end
-  storage_system_class.find_by(@client, hostname: storage_system['hostname']).each do |storage|
-    puts "\nStorage system with uri='#{storage['uri']}' found."
-  end
+storage_system_class.find_by(@client, hostname: storage_system['hostname']).each do |storage|
+  puts "\nStorage system with uri='#{storage['uri']}' found."
+end
 
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
 add_storage_system(storage_system, options) unless storage_system
@@ -109,5 +109,5 @@ end
 # creating another storage_system to ensure continuity for automation script
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
 storage_system.retrieve!
-storage_system = storage_system_class.new(@client, options) unless storage_system
+storage_system ||= storage_system_class.new(@client, options)
 add_storage_system(storage_system, options) unless storage_system

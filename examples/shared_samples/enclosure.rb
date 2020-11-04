@@ -37,13 +37,13 @@ scope_1 = scope_class.new(@client, name: 'Scope_for_enclosure')
 scope_1.create
 
 options = {
-    name: encl_name,
-    hostname: @enclosure_hostname,
-    username: @enclosure_username,
-    password: @enclosure_password,
-    enclosureGroupUri: encl_group['uri'],
-    licensingIntent: 'OneView',
-    initialScopeUris: [scope_1['uri']]
+  name: encl_name,
+  hostname: @enclosure_hostname,
+  username: @enclosure_username,
+  password: @enclosure_password,
+  enclosureGroupUri: encl_group['uri'],
+  licensingIntent: 'OneView',
+  initialScopeUris: [scope_1['uri']]
 }
 
 item = enclosure_class.new(@client, options)
