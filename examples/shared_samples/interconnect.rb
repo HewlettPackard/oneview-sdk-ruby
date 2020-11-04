@@ -40,21 +40,25 @@ if item
   servers = item.name_servers
   puts 'Server not found.' unless servers.empty?
   puts servers
+end
 
 # Get statistics for an interconnect, for the specified port
-if item:
+if item
   port = item[:ports].last
+end
 if item && port
   puts "\nGetting statistics for the interconnect #{item['name']} and port #{port['name']}"
   stats = item.statistics(port['name'])
   puts "\nStatistics for the interconnect #{item['name']} and port #{port['name']}"
   puts stats
+end
 
 # Resert Port Protection
-if item:
+if item
   puts "\nReseting port protection for interconnect #{item['name']}"
   item.reset_port_protection
   puts 'Reset port protection successfully.'
+end
 
 # Update port
 ports = item['ports'].select { |k| k['portType'] == 'Uplink' }
@@ -88,6 +92,7 @@ if item
   item.patch('replace', '/uidState', 'On')
   item.retrieve!
   puts "Interconnect #{item['name']} updated successfully with previous uidState #{item['uidState']}"
+end
 
 # List of synergy interconnect link topologies
 begin
@@ -101,23 +106,21 @@ end
 
 # Gets all the Small Form-factor Pluggable (SFP) instances from an interconnect.
 # This method 'get_pluggable_module_information' was added from api version 500.
-if @client.api_version >= 500
-  begin
-    puts "\nGets all the Small Form-factor Pluggable (SFP) instances of interconnect #{item['uri']}."
-    results = item.get_pluggable_module_information
-    puts "\nThe Small Form-factor Pluggable (SFP) instances retrieved successfully:"
-    puts results
-  rescue NoMethodError
-    puts 'The method #get_pluggable_module_information is available only for api greater than or equal to 500.'
-  end
+begin
+  puts "\nGets all the Small Form-factor Pluggable (SFP) instances of interconnect #{item['uri']}."
+  results = item.get_pluggable_module_information
+  puts "\nThe Small Form-factor Pluggable (SFP) instances retrieved successfully:"
+  puts results
+rescue NoMethodError
+  puts 'The method #get_pluggable_module_information is available only for api greater than or equal to 500.'
+end
 
 # Applies or reapplies the current interconnect configuration.
 # This method 'configuration' was added in API version 500.
-if @client.api_version >= 500
-  begin
-    puts "\nApplying the configuration to interconnect #{item['uri']}."
-    item.configuration
-    puts "\nThe action was executed successfully"
-  rescue NoMethodError
-    puts 'The method #configuration is available only for API version greater than or equal to 500.'
-  end
+begin
+  puts "\nApplying the configuration to interconnect #{item['uri']}."
+  item.configuration
+  puts "\nThe action was executed successfully"
+rescue NoMethodError
+  puts 'The method #configuration is available only for API version greater than or equal to 500.'
+end

@@ -32,13 +32,17 @@ options = {
 }
 
 hm = hypervisor_manager_class.new(@client, options)
-hm.create!
-puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'"
 
 # Find recently created hypervisor manager by name
 matches = hypervisor_manager_class.find_by(@client, name: hm[:name])
 hm2 = matches.first
 puts "\nFound hypervisor-manager by name: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
+
+if not hm2
+  hm.create!
+  puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'"
+end
+
 
 # Retrieve recently created hypervisor manager
 hm3 = hypervisor_manager_class.new(@client, name: hm[:name])
@@ -59,5 +63,5 @@ hypervisor_manager_class.find_by(@client, attributes).each do |hypervisor_manage
 end
 
 # Delete this hypervisor manager
-hm.delete
+hm2.delete
 puts "\nSucessfully deleted hypervisor-manager '#{hm[:name]}'."

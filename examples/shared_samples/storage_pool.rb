@@ -63,18 +63,20 @@ if @client.api_version >= 500
 
   puts "\nChanging the storage pool to managed"
   item_4 = storage_pool_class.find_by(@client, isManaged: false).first
-  puts 'Before:'
-  puts item_4.data
-  item_4.manage(true)
-  item_4.refresh
-  puts 'After:'
-  puts item_4.data
+  if item_4
+    puts 'Before:'
+    puts item_4.data
+    item_4.manage(true)
+    item_4.refresh
+    puts 'After:'
+    puts item_4.data
 
-  puts "\nRefreshing the storage system"
-  puts "Last refresh time: #{item_4['lastRefreshTime']}"
-  item_4.request_refresh
-  item_4.refresh
-  puts "Last refresh time: #{item_4['lastRefreshTime']}"
+    puts "\nRefreshing the storage system"
+    puts "Last refresh time: #{item_4['lastRefreshTime']}"
+    item_4.request_refresh
+    item_4.refresh
+    puts "Last refresh time: #{item_4['lastRefreshTime']}"
+  end
 end
 
 if @client.api_version <= 300
