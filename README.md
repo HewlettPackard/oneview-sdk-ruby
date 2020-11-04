@@ -54,7 +54,7 @@ client = OneviewSDK::Client.new(
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   domain: 'LOCAL',                    # This is the default
-  api_version: 2000                   # Defaults to appliance's max API version
+  api_version: 2200                   # Defaults to appliance's max supported API version (For OV 5.50 it is 2200)
 )
 ```
 
@@ -74,7 +74,7 @@ i3s_client = OneviewSDK::ImageStreamer::Client.new(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 300                    # Defaults to minimum of 300 and appliance's max API version
+  api_version: 300                    # Defaults to Min supported API version, however user should change it to max supported API version (For I3S 5.40 it is 2000)
 )
 ```
 
@@ -87,7 +87,7 @@ i3s_client = client.new_i3s_client(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 300                    # Defaults to minimum of 300 and appliance's max API version
+  api_version: 300                    # Defaults to Min supported API version, however user should change it to max supported API version (For I3S 5.40 it is 2000)
 )
 ```
 
@@ -145,7 +145,7 @@ Configuration files can also be used to define client configuration (json or yam
   "url": "https://oneview.example.com",
   "user": "Administrator",
   "password": "secret123",
-  "api_version": 2000
+  "api_version": 2200
 }
 ```
 
@@ -177,73 +177,29 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 A status of the HPE OneView REST interfaces that have been implemented in this SDK can be found in the [endpoints-support.md](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/endpoints-support.md) file.
 
 ### OneView API versions and appliance types
-You may notice resource classes being accessed in a few different ways; for example, `OneviewSDK::EthernetNetwork`, `OneviewSDK::API300::EthernetNetwork`, and `OneviewSDK::API300::C7000::EthernetNetwork`. However, each of these accessors may actually be referring to the same class. This is because in order to keep backwards compatibility and make examples a little more simple, there are module methods in place to redirect/resolve the shorthand accessors to their full namespace identifier. In order to automatically complete the full namespace identifier, there are some defaults in place. Here's some example code that should help clear things up (return values are commented behind the code):
+You may notice resource classes being accessed in a few different ways; for example, `OneviewSDK::EthernetNetwork`, `OneviewSDK::API1000::EthernetNetwork`, and `OneviewSDK::API1000::C7000::EthernetNetwork`. However, each of these accessors may actually be referring to the same class. This is because in order to keep backwards compatibility and make examples a little more simple, there are module methods in place to redirect/resolve the shorthand accessors to their full namespace identifier. In order to automatically complete the full namespace identifier, there are some defaults in place. Here's some example code that should help clear things up (return values are commented behind the code):
 
 ```ruby
 require 'oneview-sdk'
 
 # Show defaults:
-OneviewSDK::SUPPORTED_API_VERSIONS      # [200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000]
-OneviewSDK::DEFAULT_API_VERSION         # 2000
-OneviewSDK.api_version                  # 2000
+OneviewSDK::SUPPORTED_API_VERSIONS      # [1000, 1200, 1600, 1800, 2000, 2200]
+OneviewSDK::DEFAULT_API_VERSION         # 2200
+OneviewSDK.api_version                  # 2200
 OneviewSDK.api_version_updated?         # false
 
 # Notice the automatic redirection/resolution when we use the shorthand accessor:
-OneviewSDK::EthernetNetwork             # OneviewSDK::API200::EthernetNetwork
+OneviewSDK::EthernetNetwork             # OneviewSDK::API2200::EthernetNetwork
 
 # Even this comparison is true:
-OneviewSDK::EthernetNetwork == OneviewSDK::API200::EthernetNetwork  # true
+OneviewSDK::EthernetNetwork == OneviewSDK::API2200::EthernetNetwork  # true
 
 # Now let's set a new API version default:
-OneviewSDK.api_version = 300
-OneviewSDK.api_version                  # 300
+OneviewSDK.api_version = 2200
+OneviewSDK.api_version                  # 2200
 OneviewSDK.api_version_updated?         # true
 
-# The API200 module has no variants, but API300 and above has 2 (C7000 & Synergy):
-OneviewSDK::API300::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API300::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API300.variant              # 'C7000'
-OneviewSDK::API300.variant_updated?     # false
-
-OneviewSDK::API500::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API500::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API500.variant              # 'C7000'
-OneviewSDK::API500.variant_updated?     # false
-
-OneviewSDK::API600::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API600::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API600.variant              # 'C7000'
-OneviewSDK::API600.variant_updated?     # false
-
-OneviewSDK::API800::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API800::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API800.variant              # 'C7000'
-OneviewSDK::API800.variant_updated?     # false
-
-OneviewSDK::API1000::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API1000::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API1000.variant              # 'C7000'
-OneviewSDK::API1000.variant_updated?     # false
-
-OneviewSDK::API1200::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API1200::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API1200.variant              # 'C7000'
-OneviewSDK::API1200.variant_updated?     # false
-# Therefore, there is 1 more namespace level to the real resource class name
-OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
-OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::C7000::EthernetNetwork
-
-# Likewise, we can set a new default variant for the API300 module:
-OneviewSDK::API300.variant = 'Synergy'
-OneviewSDK::API300.variant              # 'Synergy'
-OneviewSDK::API300.variant_updated?     # true
-OneviewSDK::EthernetNetwork             # OneviewSDK::API300::Synergy::EthernetNetwork
-OneviewSDK::API300::EthernetNetwork     # OneviewSDK::API300::Synergy::EthernetNetwork
-
-OneviewSDK::API1600::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API1600::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API1600.variant              # 'C7000'
-OneviewSDK::API1600.variant_updated?     # false
+# The API300 and above has 2 variants (C7000 & Synergy): For eg
 
 OneviewSDK::API1800::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
 OneviewSDK::API1800::DEFAULT_VARIANT     # 'C7000'
@@ -255,16 +211,19 @@ OneviewSDK::API2000::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API2000.variant              # 'C7000'
 OneviewSDK::API2000.variant_updated?     # false
 
-# Likewise, we can set a new default variant for the API2000 module:
-OneviewSDK::API2000.variant = 'Synergy'
-OneviewSDK::API2000.variant              # 'Synergy'
-OneviewSDK::API2000.variant_updated?     # true
-# Therefore, there is 1 more namespace level to the real resource class name
-OneviewSDK::EthernetNetwork             # OneviewSDK::API300::C7000::EthernetNetwork
-OneviewSDK::API2000::EthernetNetwork     # OneviewSDK::API2000::C7000::EthernetNetwork
+OneviewSDK::API2200::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API2200::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API2200.variant              # 'C7000'
+OneviewSDK::API2200.variant_updated?     # false
+
+# Likewise, we can set a new default variant for the API2200 module:
+OneviewSDK::2200.variant = 'Synergy'
+OneviewSDK::API2200.variant              # 'Synergy'
+OneviewSDK::API2200.variant_updated?     # true
+
 ```
 
-We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API300.variant = <variant>`, as the defaults may change.
+We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API2200.variant = <variant>`, as the defaults may change.
 
 ## Resources
 Each OneView and Image Streamer resource is exposed via a Ruby class, enabling CRUD-like functionality (with some exceptions).
