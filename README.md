@@ -28,7 +28,7 @@ $ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.17.0-OV5.5
 - Require the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk', '~> 5.4'
+  gem 'oneview-sdk', '~> 5.5'
   ```
 
   Then run `$ bundle install`
