@@ -23,8 +23,9 @@ ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_versio
 li_class = OneviewSDK.resource_named('LogicalInterconnect', @client.api_version)
 interconnect_class = OneviewSDK.resource_named('Interconnect', @client.api_version)
 
+logical_interconnect_name = 'LE-LIG'
 ethernet = ethernet_class.get_all(@client).first
-logical_interconnect = li_class.find_by(@client, name: @logical_interconnect_name).first
+logical_interconnect = li_class.find_by(@client, name: logical_interconnect_name).first
 interconnect = interconnect_class.find_by(@client, logicalInterconnectUri: logical_interconnect['uri']).first
 port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['portStatus'] == 'Unlinked' }.first
 

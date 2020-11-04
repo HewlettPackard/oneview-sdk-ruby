@@ -34,7 +34,7 @@ scope_1.create
 
 if variant == 'Synergy'
   options = {
-    name: 'OneViewSDK Test Logical Enclosure',
+    name: 'LE',
     forceInstallFirmware: false,
     firmwareBaselineUri: nil,
     initialScopeUris: [scope_1['uri']]

@@ -107,6 +107,9 @@ rescue
 end
 
 # creating enclosureGroup to ensure continuity for automation script
-item3 = encl_group_class.new(@client, options)
-item3.add_logical_interconnect_group(lig)
-add_enclosure_group(item3, type, lig)
+item = encl_group_class.new(@client, name: encl_group_name)
+if not item
+  item.add_logical_interconnect_group(lig)
+  add_enclosure_group(item, type, lig)
+end
+
