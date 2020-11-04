@@ -84,7 +84,7 @@ if @client.api_version >= 600
   puts 'Server hardware resource added to scope3'
 
   puts "\nRemoving resource from scope3"
-  scope_class.remove_resource_scope(@client, enclosure, scopes: [scope3, scope_item])
+  scope_class.remove_resource_scope(@client, enclosure, scopes: [scope2, scope_item])
   scope_class.add_resource_scope(@client, server_hardware, scopes: [scope_item])
   scope_class.resource_patch(@client, server_hardware, add_scopes: [scope3], remove_scopes: [scope_item])
   puts 'Removed resource from scope3'
