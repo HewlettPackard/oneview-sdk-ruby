@@ -11,15 +11,12 @@
 
 require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
-# - 300, 500, 600, 800, 1000, 1020
+# - 1000, 1020, 2000
 
 # Resources that can be created according to parameters:
-# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::BuildPlan
-# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::BuildPlan
-# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::BuildPlan
-# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::BuildPlan
 # api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::BuildPlan
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::BuildPlan
+# api_version = 2000 & variant = Synergy to OneviewSDK::ImageStreamer::API2000::BuildPlan
 
 # Example: Create a build plan for an Image Streamer
 # NOTE: This will create three build plans with the following names 'Build_Plan_1', 'Build_Plan_2' and 'Build_Plan_3', then delete them.
@@ -39,7 +36,8 @@ options_plan_script = {
   content: 'esxcli system hostname set --domain "@DomainName@"'
 }
 plan_script_class = OneviewSDK::ImageStreamer.resource_named('PlanScript', @client.api_version)
-plan_script = plan_script_class.find_by(@client, name: @plan_script1_name).first
+plan_script1 = plan_script_class.find_by(@client, name: @plan_script1_name).first
+puts "\n#Found a plan script with name #{plan_script1[:name]} and uri #{plan_script1[:uri]}."
 puts "\n#Creating a plan script with name #{options_plan_script[:name]}."
 plan_script2 = plan_script_class.new(@client, options_plan_script)
 plan_script2.create!
@@ -47,7 +45,6 @@ plan_script2.retrieve!
 puts "\n#Plan script with name #{plan_script2['name']} and uri #{plan_script2['uri']} created successfully."
 
 custom_attributes = JSON.parse(plan_script2['customAttributes'])
-
 custom_attributes.replace([custom_attributes[0].merge('type' => 'String')])
 
 build_plan_class = OneviewSDK::ImageStreamer.resource_named('BuildPlan', @client.api_version)
@@ -56,7 +53,7 @@ build_step = [
     serialNumber: '1',
     parameters: 'anystring',
     planScriptName: @plan_script1_name,
-    planScriptUri: plan_script['uri']
+    planScriptUri: plan_script1['uri']
   }
 ]
 
@@ -105,9 +102,9 @@ item3.create!
 item3.retrieve!
 puts "\n#Build plan with name #{item3['name']} and uri #{item3['uri']} created successfully."
 
-# List all builds
+# List all build plans
 list = build_plan_class.get_all(@client)
-puts "\n#Listing all:"
+puts "\n#Listing all build plans:"
 list.each { |p| puts "  #{p['name']}" }
 
 id = list.first['uri']
@@ -137,3 +134,10 @@ puts "\n#Build plan with id #{item3['uri']} and name #{item3['name']} removed su
 puts "\n#Removing a build plan with id #{item5['uri']} and name #{item5['name']}:"
 item5.delete
 puts "\n#Build plan with id #{item5['uri']} and name #{item5['name']} removed successfully."
+
+# Creating a build plan to support automation
+item = build_plan_class.new(@client, options)
+puts "\n#Creating a build plan with name #{options[:name]}."
+item.create!
+item.retrieve!
+puts "\n#Build plan with name #{item['name']} and uri #{item['uri']} created successfully."
