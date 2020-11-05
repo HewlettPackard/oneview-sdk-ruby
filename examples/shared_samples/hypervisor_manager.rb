@@ -67,8 +67,6 @@ puts "\nSucessfully deleted hypervisor-manager '#{hm[:name]}'."
 
 # Created HypervisorManager to ensure continuity for automation script
 hm4 = hypervisor_manager_class.find_by(@client, name: hm[:name]).first
-if !hm4
-  hm5 = hypervisor_manager_class.new(@client, options)
-  hm5.create!
-  puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'"
-end
+hm5 = hypervisor_manager_class.new(@client, options) unless hm4
+hm5.create! unless hm4
+puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'" unless hm4
