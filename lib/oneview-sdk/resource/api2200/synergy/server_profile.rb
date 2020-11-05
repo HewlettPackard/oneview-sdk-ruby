@@ -17,6 +17,8 @@ module OneviewSDK
     module Synergy
       # Server profile resource implementation for API2200 Synergy
       class ServerProfile < OneviewSDK::API2200::C7000::ServerProfile
+        extend OneviewSDK::API300::Synergy::SASLogicalJBODHelper
+        include OneviewSDK::API300::Synergy::ServerProfileHelper
       end
     end
   end

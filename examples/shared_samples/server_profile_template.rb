@@ -14,7 +14,6 @@ require_relative '../_client' # Gives access to @client
 # Supported Variants:
 # - C7000 and Synergy for all supported API versions.
 
-
 # Resource Class used in this sample
 server_profile_template_class = OneviewSDK.resource_named('ServerProfileTemplate', @client.api_version)
 

@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api2000/synergy/hypervisor_cluster_profile'
+require_relative '../../api2200/c7000/hypervisor_cluster_profile'
 
 module OneviewSDK
   module API2200
     module Synergy
       # Hypervisor cluster profile resource implementation for API2200 Synergy
-      class HypervisorClusterProfile < OneviewSDK::API2000::Synergy::HypervisorClusterProfile
+      class HypervisorClusterProfile < OneviewSDK::API2200::C7000::HypervisorClusterProfile
       end
     end
   end
