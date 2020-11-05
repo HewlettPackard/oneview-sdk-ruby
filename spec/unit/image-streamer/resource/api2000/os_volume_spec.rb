@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ImageStreamer::API1600::OSVolume
+klass = OneviewSDK::ImageStreamer::API2000::OSVolume
 RSpec.describe klass do
   include_context 'shared context'
 

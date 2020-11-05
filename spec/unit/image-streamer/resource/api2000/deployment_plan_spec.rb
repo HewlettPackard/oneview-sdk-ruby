@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-klass = OneviewSDK::ImageStreamer::API1600::DeploymentPlan
+klass = OneviewSDK::ImageStreamer::AP2000::DeploymentPlan
 RSpec.describe klass do
   include_context 'shared context'
 
