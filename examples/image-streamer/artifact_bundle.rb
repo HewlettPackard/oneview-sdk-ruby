@@ -65,26 +65,26 @@ puts "Artifact Bundle with name #{item_uploaded['name']} and uri #{item_uploaded
 puts "\nExtracting artifact bundle uploaded"
 puts 'Artifact Bundle extracted successfully.' if item_uploaded.extract
 
-#puts "\nCreating a backup associated to deployment group with name='#{deployment_group['name']}' and uri='#{deployment_group['uri']}'"
-#puts artifact_bundle_class.create_backup(@client, deployment_group)
+puts "\nCreating a backup associated to deployment group with name='#{deployment_group['name']}' and uri='#{deployment_group['uri']}'"
+puts artifact_bundle_class.create_backup(@client, deployment_group)
 
 puts "\nListing backups"
 backups = artifact_bundle_class.get_backups(@client)
 backups.each { |bkp| puts bkp['name'] }
 
-# backup_download_file = Tempfile.new(['backup-bundle', '.zip'])
-# backup_download_path = backup_download_file.path
-# puts "\nDownloading backup bundle file and saving at #{backup_download_path}"
-# artifact_bundle_class.download_backup(@client, backup_download_path, backups.first)
-# puts 'Downloaded successfully.' if File.exist?(backup_download_path)
-# 
-# puts "\nUploading backup bundle"
-# puts artifact_bundle_class.create_backup_from_file!(@client, deployment_group, backup_download_path, 'Backup Bundle')
-# 
-# puts "\nExtracting backup bundle uploaded"
-# backup = artifact_bundle_class.get_backups(@client).first
-# puts artifact_bundle_class.extract_backup(@client, deployment_group, backup)
-# puts 'Backup extracted successfully'
+backup_download_file = Tempfile.new(['backup-bundle', '.zip'])
+backup_download_path = backup_download_file.path
+puts "\nDownloading backup bundle file and saving at #{backup_download_path}"
+artifact_bundle_class.download_backup(@client, backup_download_path, backups.first)
+puts 'Downloaded successfully.' if File.exist?(backup_download_path)
+
+puts "\nUploading backup bundle"
+puts artifact_bundle_class.create_backup_from_file!(@client, deployment_group, backup_download_path, 'Backup Bundle')
+
+puts "\nExtracting backup bundle uploaded"
+backup = artifact_bundle_class.get_backups(@client).first
+puts artifact_bundle_class.extract_backup(@client, deployment_group, backup)
+puts 'Backup extracted successfully'
 
 puts "\nDeleting the artifact bundles"
 item.delete
