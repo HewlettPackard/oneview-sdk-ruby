@@ -17,9 +17,9 @@ module OneviewSDK
       # Hypervisor cluster profile resource implementation for API2200 C7000
       class HypervisorClusterProfile < OneviewSDK::API2000::C7000::HypervisorClusterProfile
         def initialize(client, params = {}, api_ver = nil)
-        super
-        # Default values
-        @data['type'] ||= 'HypervisorClusterProfileV4'
+          super
+          # Default values
+          @data['type'] ||= 'HypervisorClusterProfileV4'
         end
       end
     end
