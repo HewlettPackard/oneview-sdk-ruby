@@ -14,8 +14,8 @@ require 'spec_helper'
 RSpec.describe OneviewSDK::API2200::Synergy::HypervisorClusterProfile do
   include_context 'shared context'
 
-  # it inherit latest changes from API2000 Synergy lib file
-  it 'inherits from OneviewSDK::API2000::Synergy::HypervisorClusterProfile' do
-    expect(described_class).to be < OneviewSDK::API2000::Synergy::HypervisorClusterProfile
+  # it inherit latest changes from API2200 C7000 lib file
+  it 'inherits from OneviewSDK::API2200::C7000::HypervisorClusterProfile' do
+    expect(described_class).to be < OneviewSDK::API2200::C7000::HypervisorClusterProfile
   end
 end
