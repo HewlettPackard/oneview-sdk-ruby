@@ -12,15 +12,12 @@
 require_relative '../_client_i3s' # Gives access to @client
 
 # Supported APIs:
-# - 300, 500, 600, 800, 1000, 1020
+# - 1000, 1020, 2000
 
 # Resources that can be created according to parameters:
-# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::PlanScript
-# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::PlanScript
-# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::PlanScript
-# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::PlanScript
 # api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::PlanScript
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::PlanScript
+# api_version = 2000 & variant = Synergy to OneviewSDK::ImageStreamer::API2000::PlanScript
 
 # Example: Create a plan script for an Image Streamer
 # NOTE: This will create a plan script named 'Plan_Script_1', then delete it.
@@ -66,14 +63,14 @@ item2.update
 item2.retrieve!
 puts "\n#Plan script updated successfully with id #{item2['uri']} and new name #{item2['name']}."
 
-# Updates a plan script
-puts "\n#Retrieves the modified contents of the selected Plan Script with id #{item2['uri']} and name #{item2['name']}:"
-differences = item2.retrieve_differences
-puts "\n#Differences retrieved:"
-differences.each { |d| puts "  #{d}" }
-puts "\n#Plan script updated successfully with id #{item2['uri']} and new name #{item2['name']}."
-
 # Removes a plan script
 puts "\n#Removing a plan script with id #{item2['uri']} and name #{item2['name']}:"
 item2.delete
 puts "\n#Plan script with id #{item2['uri']} and name #{item2['name']} removed successfully."
+
+# Creating a plan script to support automation
+puts "\n#Creating a plan script with name #{options[:name]}."
+plan_script = plan_script_class.new(@client, options)
+plan_script.create!
+plan_script.retrieve!
+puts "\n#Plan script with name #{plan_script['name']} and uri #{plan_script['uri']} created successfully."

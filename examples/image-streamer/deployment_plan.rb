@@ -11,16 +11,13 @@
 
 require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
-# - 300, 500, 600, 800, 1000, 1020, 1600
+# - 1000, 1020, 1600, 2000
 
 # Resources that can be created according to parameters:
-# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::DeploymentPlan
-# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::DeploymentPlan
-# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::DeploymentPlan
-# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::DeploymentPlan
 # api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::DeploymentPlan
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::DeploymentPlan
 # api_version = 1600 & variant = Synergy to OneviewSDK::ImageStreamer::API1600::DeploymentPlan
+# api_version = 2000 & variant = Synergy to OneviewSDK::ImageStreamer::API2000::DeploymentPlan
 
 # Example: Create a deployment plan for an Image Streamer
 # NOTE: This will create a deployment plan named 'Deployment_Plan_1', then delete it.
@@ -36,15 +33,15 @@ options = {
   name: 'Deployment_Plan_1',
   description: 'AnyDescription',
   hpProvided: false,
-  oeBuildPlanURI: build_plan.data['uri']
+  oeBuildPlanURI: build_plan['uri']
 }
 
 options2 = {
   name: 'Deployment_Plan_2',
   description: 'AnyDescription',
   hpProvided: false,
-  oeBuildPlanURI: build_plan.data['uri'],
-  goldenImageURI: golden_image.data['uri']
+  oeBuildPlanURI: build_plan['uri'],
+  goldenImageURI: golden_image['uri']
 }
 
 # Creating a deployment plan
