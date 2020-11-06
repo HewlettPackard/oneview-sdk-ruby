@@ -1,31 +1,46 @@
-# oneview-sdk for Ruby
-[![Gem Version](https://badge.fury.io/rb/oneview-sdk.svg)](https://badge.fury.io/rb/oneview-sdk)
-[![Yard Docs](https://img.shields.io/badge/yard-docs-yellow.svg)](http://www.rubydoc.info/gems/oneview-sdk)
+# HPE OneView SDK for Ruby
 
-[![Build Status](https://travis-ci.org/HewlettPackard/oneview-sdk-ruby.svg?branch=master)](https://travis-ci.org/HewlettPackard/oneview-sdk-ruby)
-[![Coverage Status](https://coveralls.io/repos/github/HewlettPackard/oneview-sdk-ruby/badge.svg)](https://coveralls.io/github/HewlettPackard/oneview-sdk-ruby)
-[![Code Climate](https://codeclimate.com/github/HewlettPackard/oneview-sdk-ruby/badges/gpa.svg)](https://codeclimate.com/github/HewlettPackard/oneview-sdk-ruby)
+## Build Status 
 
-The OneView SDK provides a Ruby library to easily interact with HPE OneView and Image Streamer APIs. The Ruby SDK enables developers to easily build integrations and scalable solutions with HPE OneView and Image Streamer.
+| 5.50 Branch   | 5.40 Branch   | 5.30 Branch   | 5.20 Branch   |
+| ------------- |:-------------:| -------------:| -------------:|
+| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)
+
+
+## Introduction
+
+HPE OneView makes it simple to deploy and manage today’s complex hybrid cloud infrastructure. HPE OneView can help you transform your data center to software-defined, and it supports HPE’s broad portfolio of servers, storage, and networking solutions, ensuring the simple and automated management of your hybrid infrastructure. Software-defined intelligence enables a template-driven approach for deploying, provisioning, updating, and integrating compute, storage, and networking infrastructure.
+
+The HPE OneView Ruby SDK provides library to easily interact with HPE OneView and HPE Image Streamer REST APIs. The HPE OneView Ruby SDK enables developers to easily build integrations and scalable solutions with HPE OneView and HPE Image Streamer.
+
+You can find the latest supported HPE OneView Ruby SDK [here](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/latest)
+
+## What's New
+
+HPE OneView Ruby library extends support of the SDK to OneView REST API version 2200 (OneView v5.50)
+
+Please refer to [notes](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/CHANGELOG.md) for more information on the changes , features supported and issues fixed in this version
+
+## Getting Started 
+
+## Installation and Configuration
 
 ## Installation
-You can either use a docker container which will have the oneview-sdk-ruby installed or perform local installation.
+HPE OneView SDK for Ruby can be installed from Source and Docker container installation methods.You can either use a docker container which will have the HPE OneView SDK for Ruby installed or perform local installation.
+
 ###  Docker Setup
-We also provide a lightweight and easy way to test and execute `oneview-sdk-ruby`. The `hpe-oneview-sdk-for-ruby:<tag>` docker image contains
-an installation of oneview-sdk-ruby and you can use it by just pulling down the Docker Image:
-The Docker Store image tag consist of two sections: <sdk_version-OV_version>
+The light weight containerized version of the HPE OneView SDK for Ruby is available in the [Docker Store](https://store.docker.com/community/images/hewlettpackardenterprise/hpe-oneview-sdk-for-ruby). The Docker Store image tag consist of two sections: <sdk_version-OV_version>
 
 ```bash
-# Download and store a local copy of oneview-sdk-ruby and
-# use it as a Docker image.
-$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.17.0-OV5.5
-# Run docker commands below given, which  will in turn create
-# a sh session where you can create files, issue commands and execute the examples.
-$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.17.0-OV5.5 /bin/sh
+# Download and store a local copy of oneview-sdk-ruby and use it as a Docker Image.
+$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.16.0-OV5.4
+# Run docker commands below given, which  will in turn create a sh session 
+# where you can create files, issue commands and execute the examples.
+$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.16.0-OV5.4 /bin/sh
 ```
 
 ### Local Setup
-- Require the gem in your Gemfile:
+- Local installation requires the gem in your Gemfile:
 
   ```ruby
   gem 'oneview-sdk', '~> 5.5'
@@ -40,7 +55,9 @@ $ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.17.0-OV5.5
 
 
 ## Configuration
-The OneView client has a few configuration options, which you can pass in during creation:
+
+### OneView Client Configuration
+The OneView Client configuration options that can be passed during OneView Client object creation:
 
 ```ruby
 # Create a OneView client object:
@@ -49,18 +66,19 @@ client = OneviewSDK::Client.new(
   url: 'https://oneview.example.com',
   user: 'Administrator',              # This is the default
   password: 'secret123',
-  token: 'xxxx...',                   # Set EITHER this or the user & password
+  token: 'xxxx...',                   # Set EITHER token or the username & password
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   domain: 'LOCAL',                    # This is the default
-  api_version: 2200                   # Defaults to appliance's max supported API version (For OV 5.50 it is 2200)
+  api_version: 2200                   # Defaults to appliance's max API version which is API version of OneView 5.50
 )
 ```
 
 :lock: Tip: Check the file permissions because the password is stored in clear-text.
 
-The Image Streamer (I3S) client is very similar to the OneView client, but has one key difference:
+### Image Streamer Client Configuration
+The Image Streamer (I3S) client is very much similar to the OneView client, but has one key difference:
 it cannot generate it's own token. However, it uses the same token given to or generated by the OneView client,
 so if you need to generate a token, create a OneView client using a user & password, then pass the generated token
 into the Image Streamer client.
@@ -74,11 +92,12 @@ i3s_client = OneviewSDK::ImageStreamer::Client.new(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 300                    # Defaults to Min supported API version, however user should change it to max supported API version (For I3S 5.40 it is 2000)
+  api_version: 2000                    # Defaults to minimum of 300 and appliance's max API version
 )
 ```
 
-You can also create the i3s client through the Oneview client instance.
+You can also create the Image Streamer(I3S) client through the Oneview client instance.
+
 ```ruby
 # Create an Image Streamer client object through the Oneview client object:
 require 'oneview-sdk'
@@ -87,13 +106,13 @@ i3s_client = client.new_i3s_client(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 300                    # Defaults to Min supported API version, however user should change it to max supported API version (For I3S 5.40 it is 2000)
+  api_version: 2000                    # Defaults to minimum of 300 and appliance's max API version
 )
 ```
 
-##### Environment Variables
+### Environment Variables
 
-You can also set many of the client attributes using environment variables. To set these variables in bash:
+Configuration can also be defined through environment variables.To set these variables in bash:
 
 ```bash
 # OneView client options:
@@ -136,7 +155,7 @@ i3s_client = OneviewSDK::ImageStreamer::Client.new
 
 NOTE: Run `$ oneview-sdk-ruby env` to see a list of available environment variables and their current values.
 
-##### Configuration Files
+### Configuration Files
 
 Configuration files can also be used to define client configuration (json or yaml formats). Here's an example json file:
 
@@ -174,9 +193,9 @@ level=(Symbol, etc.) # The parameter here will be the log_level attribute
 
 ## API Implementation
 
-A status of the HPE OneView REST interfaces that have been implemented in this SDK can be found in the [endpoints-support.md](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/endpoints-support.md) file.
+A detailed list of the HPE OneView REST interfaces that have been implemented in this SDK can be found in the [endpoints-support.md](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/endpoints-support.md) file.
 
-### OneView API versions and appliance types
+### HPE OneView API Versions and Appliance types
 You may notice resource classes being accessed in a few different ways; for example, `OneviewSDK::EthernetNetwork`, `OneviewSDK::API1000::EthernetNetwork`, and `OneviewSDK::API1000::C7000::EthernetNetwork`. However, each of these accessors may actually be referring to the same class. This is because in order to keep backwards compatibility and make examples a little more simple, there are module methods in place to redirect/resolve the shorthand accessors to their full namespace identifier. In order to automatically complete the full namespace identifier, there are some defaults in place. Here's some example code that should help clear things up (return values are commented behind the code):
 
 ```ruby
@@ -223,7 +242,7 @@ OneviewSDK::API2200.variant_updated?     # true
 
 ```
 
-We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API2200.variant = <variant>`, as the defaults may change.
+:lock: Tip: We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API2200.variant = <variant>`, as the defaults may change.
 
 ## Resources
 Each OneView and Image Streamer resource is exposed via a Ruby class, enabling CRUD-like functionality (with some exceptions).
@@ -344,7 +363,6 @@ This example is about as basic as it gets, but you can make any type of OneView 
 If a resource does not do what you need, this will allow you to do it.
 Please refer to the documentation and [code](lib/oneview-sdk/rest.rb) for complete list of methods and information about how to use them.
 
-
 ## CLI
 This gem also comes with a command-line interface to make interacting with OneView possible without the need to create a Ruby program or script.
 
@@ -443,19 +461,6 @@ $ oneview-sdk-ruby cert import https://oneview.example.com
 $ oneview-sdk-ruby scmb
 $ oneview-sdk-ruby scmb -r 'scmb.ethernet-networks.#'
 ```
-
-## License
-This project is licensed under the Apache 2.0 license. Please see [LICENSE](LICENSE) for more info.
-
-## Contributing and feature requests
-**Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it.
-We are passionate about improving this project, and glad to accept help to make it better.
-
-NOTE: We reserve the right to reject changes that we feel do not fit the scope of this project, so for feature additions, please open an issue to discuss your ideas before doing the work.
-
-**Feature Requests:** If you have a need that is not met by the current implementation, please let us know (via a new issue).
-This feedback is crucial for us to deliver a useful product. Do not assume we have already thought of everything, because we assure you that is not the case.
-
 ### Building the Gem
 First run `$ bundle` (requires the bundler gem), then...
  - To build only, run `$ rake build`.
@@ -471,5 +476,49 @@ First run `$ bundle` (requires the bundler gem), then...
 
 For the full testing reference please look into [TESTING.md](TESTING.md) file.
 
-## Authors
-See the [contributors graph](https://github.com/HewlettPackard/oneview-sdk-ruby/graphs/contributors)
+## Getting Help 
+
+Are you running into a road block? Have an issue with unexpected bahriov? Feel free to open a new issue on the [issue tracker](https://github.com/HewlettPackard/oneview-ansible/issues)
+
+## License
+This project is licensed under the Apache 2.0 license. Please see [LICENSE](LICENSE) for more info.
+
+## Contributing and feature requests
+
+We welcome your contributions to the HPE OneView for Ruby SDK library. 
+
+**Contributing:** You know the drill. Fork it, branch it, change it, commit it, and pull-request it.
+We are passionate about improving this project, and glad to accept help to make it better.
+
+NOTE: We reserve the right to reject changes that we feel do not fit the scope of this project, so for feature additions, please open an issue to discuss your ideas before doing the work.
+
+**Feature Requests:** If you have a need that is not met by the current implementation, please let us know opening an new enhancement request/issue.
+This feedback is important for us to deliver a useful product. 
+
+
+## Additional Resources 
+
+**HPE OneView Documentation**
+
+[HPE OneView Release Notes](http://hpe.com/info/OneView/docs)
+
+[HPE OneView Support Matrix](http://hpe.com/info/OneView/docs)
+
+[HPE OneView Installation Guide](http://hpe.com/info/OneView/docs)
+
+[HPE OneView User Guide](http://hpe.com/info/OneView/docs)
+
+[HPE OneView Online Help](http://hpe.com/info/OneView/docs)
+
+[HPE OneView REST API Reference](http://hpe.com/info/OneView/docs)
+
+[HPE OneView Firmware Management White Paper](http://hpe.com/info/OneView/docs)
+
+[HPE OneView Deployment and Management White Paper](http://hpe.com/info/OneView/docs)
+
+
+**HPE OneView Community**
+
+[HPE OneView Community Forums](http://hpe.com/info/oneviewcommunity)
+
+Learn more about HPE OneView at [hpe.com/info/oneview](https://hpe.com/info/oneview)
