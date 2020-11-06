@@ -11,9 +11,6 @@
 
 require_relative '../_client' # Gives access to @client
 
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
 # Supported Variants:
 # - C7000 and Synergy for all supported API versions
 
@@ -98,7 +95,7 @@ puts "\nPorts retrieved: \n #{ports['ports']}"
 puts "\nGetting the error or status messages associated with the specified profile"
 begin
   msgs = item3.get_messages
-  puts "\nMessasses retrieved successfully! \n Message: #{msgs}"
+  puts "\nMessages retrieved successfully! \n Message: #{msgs}"
 rescue OneviewSDK::MethodUnavailable
   puts "\nThe method #get_messages available for API version <= 500"
 end

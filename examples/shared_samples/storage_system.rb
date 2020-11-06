@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2017 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -11,60 +11,103 @@
 
 require_relative '../_client' # Gives access to @client
 
-# NOTE: You'll need to add the following instance variables to the _client.rb file with valid credentials for your environment:
+# NOTE 1: You'll need to add a FCNetwork before execute this sample
+# NOTE 2: You'll need to add the following instance variables to the _client.rb file with valid credentials for your environment:
 #   @storage_system_ip
 #   @storage_system_username
 #   @storage_system_password
 
-# Supported API Versions:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
-# Supported Variants:
-# C7000 and Synergy for all API versions
-#
 raise 'ERROR: Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 raise 'ERROR: Must set @storage_system_username in _client.rb' unless @storage_system_username
 raise 'ERROR: Must set @storage_system_password in _client.rb' unless @storage_system_password
 
-if @client.api_version >= 600
-  raise "If you want execute sample for API #{@client.api_version}," \
-      "you should execute the ruby file '/examples/api600/storage_system.rb'"
+if @client.api_version < 500
+  raise "If you want execute sample for API < #{@client.api_version}," \
+        "you should execute the ruby file '/examples/shared_samples/storage_system.rb'"
 elsif @client.api_version == 500
   raise "If you want execute sample for API #{@client.api_version}," \
-      "you should execute the ruby file '/examples/api500/storage_system.rb'"
+        "you should execute the ruby file '/examples/api500/storage_system.rb'"
 end
-# Resources classes that you can use for Storage System in this example:
-# storage_system_class = OneviewSDK::API200::StorageSystem
-# storage_system_class = OneviewSDK::API300::C7000::StorageSystem
-# storage_system_class = OneviewSDK::API300::Synergy::StorageSystem
+
 storage_system_class = OneviewSDK.resource_named('StorageSystem', @client.api_version)
 
+# for StorageSystem with family StoreServ
 options = {
-  ip_hostname: @storage_system_ip,
-  username: @storage_system_username,
-  password: @storage_system_password
+  credentials: {
+    username: @storage_system_username,
+    password: @storage_system_password
+  },
+  hostname: @storage_system_ip,
+  family: 'StoreServ',
+  deviceSpecificAttributes: {
+    managedDomain: 'TestDomain'
+  }
 }
 
-storage1 = storage_system_class.new(@client)
-storage1['credentials'] = options
-storage1['managedDomain'] = 'TestDomain'
-puts "\nAdding a storage system with Managed Domain: #{storage1['managedDomain']}"
-puts "and hostname: #{options[:ip_hostname]}."
-storage1.add
-puts "\nStorage system added successfully."
+# for StorageSystem with family StoreVirtual
+# options = {
+#   credentials: {
+#     username: @store_virtual_user,
+#     password: @store_virtual_password
+#   },
+#   hostname: @store_virtual_ip,
+#   family: 'StoreVirtual'
+# }
+storage_system = storage_system_class.new(@client, options)
 
-puts "\nFinding a storage system with hostname: #{options[:ip_hostname]}"
-storage_system_class.find_by(@client, credentials: { ip_hostname: options[:ip_hostname] }).each do |storage|
-  puts "\nStorage system with name #{storage['name']} found."
+def add_storage_system(storage_system, options)
+  puts "\nAdding a storage system with"
+  puts "Managed Domain: #{storage_system['deviceSpecificAttributes']['managedDomain']}" if options['family'] == 'StoreServ'
+  puts "Family: #{storage_system['family']}"
+  puts "Hostname: #{storage_system['hostname']}."
+  storage_system.add
+  puts "\nStorage system with uri='#{storage_system['uri']}' added successfully.
+  "
+  puts "\nFinding a storage system with hostname: #{storage_system['hostname']}"
+end
+storage_system_class.find_by(@client, hostname: storage_system['hostname']).each do |storage|
+  puts "\nStorage system with uri='#{storage['uri']}' found."
 end
 
-storage2 = storage_system_class.new(@client, credentials: { ip_hostname: options[:ip_hostname] })
-storage2.retrieve!
-puts "\nRefreshing a storage system with #{options[:ip_hostname]}"
-puts "and state #{storage2['refreshState']}"
-storage2.set_refresh_state('RefreshPending')
-puts "\nStorage system refreshed successfully and with new state: #{storage2['refreshState']}."
+storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
+add_storage_system(storage_system, options) unless storage_system
 
-puts "\nRemoving the Storage system."
-storage2.remove
-puts "\nStorage system removed successfully."
+storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
+storage_system.retrieve!
+port = storage_system['ports'].find { |item| item['protocolType'].downcase.include?('fc') } # find first correct protocolType for using our fc network
+if port
+  fc_network = OneviewSDK::API600::C7000::FCNetwork.get_all(@client).first
+  puts "\n Adding a fc network named '#{fc_network['name']}' with uri='#{fc_network['uri']}' to the storage system."
+  port['expectedNetworkUri'] = fc_network['uri']
+  port['expectedNetworkName'] = fc_network['name']
+  port['mode'] = 'Managed'
+  storage_system.update
+  puts "\nNetwork added successfully."
+  storage_system.refresh
+end
+
+puts "\nReachable ports:"
+puts storage_system.get_reachable_ports
+
+puts "\nTemplates:"
+storage_system.get_templates
+
+puts "\nLast refresh time: #{storage_system['lastRefreshTime']}"
+puts "\nRefreshing the storage system"
+storage_system.request_refresh
+storage_system.refresh
+puts "\nLast refresh time: #{storage_system['lastRefreshTime']}"
+
+puts "\nRemoving the storage system."
+begin
+  storage_system.remove
+  puts "\nStorage system removed successfully."
+rescue
+  puts "\nUnable to delete: #{storage_system['hostname']}"
+end
+
+# creating another storage_system to ensure continuity for automation script
+storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
+storage_system.retrieve!
+storage_system ||= storage_system_class.new(@client, options)
+add_storage_system(storage_system, options) unless storage_system

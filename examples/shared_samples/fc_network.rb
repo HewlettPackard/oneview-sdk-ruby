@@ -15,9 +15,6 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create an fc network named 'OneViewSDK Test FC Network', update it and then delete it.
 #   It will create a bulk of fc networks and then delete them.
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
-#
 # Supported Variants
 # C7000 and Synergy for all api versions
 
@@ -111,3 +108,8 @@ delete_networks = [fc4[:uri], fc5[:uri]]
 bulk_options = { 'networkUris' => delete_networks }
 fc_network_class.bulk_delete(@client, bulk_options)
 puts "\nBulk deleted the fc networks successfully."
+
+# created fc-network to ensure continuity for automation script
+fc6 = fc_network_class.new(@client, options)
+fc6.create!
+puts "\nCreated fc-network '#{fc6[:name]}' successfully.\n  uri = '#{fc6[:uri]}'"

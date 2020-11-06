@@ -14,8 +14,6 @@ require_relative '../_client' # Gives access to @client
 # Example: Create/Update/Delete logical interconnects groups
 # NOTE: This will create a few networks (ethernet & FC), as well as a LIG named 'ONEVIEW_SDK_TEST_LIG', then delete them all.
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600 and 1800
 
 # Supported API variants
 # C7000, Synergy
@@ -44,7 +42,7 @@ type = 'Logical Interconnect Group'
 HP_VC_FF_24_MODEL = 'HP VC FlexFabric 10Gb/24-Port Module'.freeze
 VIRTUAL_CONNECT_SE_40_SYNERGY = 'Virtual Connect SE 40Gb F8 Module for Synergy'.freeze
 
-lig = lig_class.new(@client, name: 'ONEVIEW_SDK_TEST_LIG')
+lig = lig_class.new(@client, name: 'LIG')
 
 # Create an Ethernet Uplink Set
 eth1_options = {

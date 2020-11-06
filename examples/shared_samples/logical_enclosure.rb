@@ -15,8 +15,6 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a logical enclosure named 'OneViewSDK Test Logical Enclosure', update it and then delete it.
 # To run this test with Synergy you must have an enclosureGroup with enclosure count = 3.
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions
@@ -28,15 +26,15 @@ logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.
 encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
 enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
 
-variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
+variant = 'Synergy'
 
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
-scope_1 = scope_class.new(@client, name: 'Scope 1')
+scope_1 = scope_class.new(@client, name: 'Scope_for_LE')
 scope_1.create
 
 if variant == 'Synergy'
   options = {
-    name: 'OneViewSDK Test Logical Enclosure',
+    name: 'LE',
     forceInstallFirmware: false,
     firmwareBaselineUri: nil,
     initialScopeUris: [scope_1['uri']]
@@ -117,11 +115,13 @@ end
 
 # Set configuration script
 puts "\nSetting a logical enclosure script"
-begin
-  item3.set_script(orig_script)
-  puts "\nOperation performed successfully."
-rescue OneviewSDK::MethodUnavailable => e
-  puts "\n#{e}. Available only for C7000."
+if variant == 'C7000'
+  begin
+    item3.set_script(orig_script)
+    puts "\nOperation performed successfully."
+  rescue OneviewSDK::MethodUnavailable => e
+    puts "\n#{e}. Available only for C7000."
+  end
 end
 
 # Update from Group
@@ -155,8 +155,9 @@ puts 'Generate support dump'
 item3.support_dump(dump)
 puts "\nGenerated dump for logical enclosure '#{item3['name']}'."
 
-if variant == 'Synergy'
-  puts "\nRemoving the logical enclosure"
-  item3.delete
-  puts "\nRemoved logical enclosure '#{item3['name']}'."
-end
+# Skipping delete LE since the system will goto bad state after LE delete
+# if variant == 'Synergy'
+#   puts "\nRemoving the logical enclosure"
+#   item3.delete
+#   puts "\nRemoved logical enclosure '#{item3['name']}'."
+# end

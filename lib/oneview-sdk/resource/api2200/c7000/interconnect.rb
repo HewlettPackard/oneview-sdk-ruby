@@ -16,6 +16,7 @@ module OneviewSDK
     module C7000
       # Interconnect resource implementation on API2200 C7000
       class Interconnect < OneviewSDK::API2000::C7000::Interconnect
+        include OneviewSDK::ResourceHelper::ConfigurationOperation
       end
     end
   end
