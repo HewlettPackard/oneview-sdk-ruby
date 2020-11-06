@@ -11,15 +11,12 @@
 
 require_relative '../_client_i3s' # Gives access to @client
 # Supported APIs:
-# - 300, 500, 600, 800, 1000, 1020
+# - 1000, 1020, 2000
 
 # Resources that can be created according to parameters:
-# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::OSVolume
-# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::OSVolume
-# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::OSVolume
-# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::OSVolume
 # api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::OSVolume
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::OSVolume
+# api_version = 2000 & variant = Synergy to OneviewSDK::ImageStreamer::API2000::OSVolume
 
 # Example: Os Volume for an Image Streamer
 # NOTE: You must have one os volume.
