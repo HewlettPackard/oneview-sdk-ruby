@@ -6,7 +6,7 @@ require 'pry'
   user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
   password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
   ssl_enabled: false,
-  api_version: 2000
+  api_version: 2200
 )
 
 ## This setting allows the SDK to flush messages to the screen as it is being run.
@@ -63,6 +63,6 @@ puts "Connected to OneView appliance at #{@client.url}\n\n"
 # @hypervisor_server_password = "dcs"
 # @hypervisor_host_prefix = "Test-Cluster-host"
 # @hypervisor_hypervisorType = "Vmware"
-# @hypervisor_type = "HypervisorClusterProfileV3"
+# @hypervisor_type = "HypervisorClusterProfileV4"
 # @hypervisor_serverProfileTemplate = "spt-hypervisor"
 # @hypervisor_deploymentPlan = "Basic Deployment Plan"
