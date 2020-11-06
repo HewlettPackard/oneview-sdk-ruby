@@ -155,8 +155,9 @@ puts 'Generate support dump'
 item3.support_dump(dump)
 puts "\nGenerated dump for logical enclosure '#{item3['name']}'."
 
-if variant == 'Synergy'
-  puts "\nRemoving the logical enclosure"
-  item3.delete
-  puts "\nRemoved logical enclosure '#{item3['name']}'."
-end
+# Skipping delete LE since the system will goto bad state after LE delete
+# if variant == 'Synergy'
+#   puts "\nRemoving the logical enclosure"
+#   item3.delete
+#   puts "\nRemoved logical enclosure '#{item3['name']}'."
+# end
