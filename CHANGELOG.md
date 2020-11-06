@@ -97,30 +97,29 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 This release extends support to OneView Rest API version 1800 (OneView v5.30) for the hardware variants C7000 and Synergy to the following features:
 
 #### Features supported
-- Artifact Bundle
-- Deployment Group
-- Deployment Plan
+- Connection Template
 - Enclosure
 - Enclosure Group
 - Ethernet Network
 - FC Network
 - FCOE Network
+- Firmware Driver
 - Hypervisor Cluster Profile
 - Hypervisor Manager
 - Interconnects
 - Interconnect Types
+- LIG Uplink Set
 - Logical Enclosure
 - Logical Interconnect
 - Logical Interconnect Group
 - Network Set
-- OS Deployment Plan
 - Scope
 - Server Certificate
 - Server Hardware
 - Server Hardware Type
-- Storage Pool
 - Server Profile
 - Server Profile Template
+- Storage Pool
 - Storage System
 - Uplink Set
 - Volume
