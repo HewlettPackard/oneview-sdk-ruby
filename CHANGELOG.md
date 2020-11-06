@@ -7,6 +7,7 @@ Extends support of the SDK to OneView REST API version 2200 (OneView v5.50) and 
 
 #### Features supported
 - Artifact Bundle
+- Build Plan
 - Connection Template
 - Deployment Group
 - Deployment Plan
@@ -16,6 +17,7 @@ Extends support of the SDK to OneView REST API version 2200 (OneView v5.50) and 
 - FC Network
 - FCOE Network
 - Firmware Driver
+- Golden Image
 - Hypervisor Cluster Profile
 - Hypervisor Manager
 - Interconnects
@@ -26,6 +28,8 @@ Extends support of the SDK to OneView REST API version 2200 (OneView v5.50) and 
 - Logical Interconnect Group
 - Network Set
 - OS Deployment Plan
+- OS Volume
+- Plan Script
 - Scope
 - Server Certificate
 - Server Hardware

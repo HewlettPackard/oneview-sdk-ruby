@@ -33,10 +33,10 @@ The light weight containerized version of the HPE OneView SDK for Ruby is availa
 
 ```bash
 # Download and store a local copy of oneview-sdk-ruby and use it as a Docker Image.
-$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.16.0-OV5.4
+$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.17.0-OV5.5
 # Run docker commands below given, which  will in turn create a sh session 
 # where you can create files, issue commands and execute the examples.
-$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.16.0-OV5.4 /bin/sh
+$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v5.17.0-OV5.5 /bin/sh
 ```
 
 ### Local Setup
