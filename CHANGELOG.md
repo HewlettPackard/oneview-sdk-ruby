@@ -1,7 +1,47 @@
-## v5.17.0(Unreleased)
+## v5.17.0
+#### Notes
+Extends support of the SDK to OneView REST API version 2200 (OneView v5.50) and ImageStreamer REST API version 2000 (I3S v5.40).
 
 #### Bug fixes & Enhancements
 - [#473](https://github.com/HewlettPackard/oneview-sdk-ruby/issues/473)Failing to install oneview-sdk gem as runtime environment
+
+#### Features supported
+- Artifact Bundle
+- Build Plan
+- Connection Template
+- Deployment Group
+- Deployment Plan
+- Enclosure
+- Enclosure Group
+- Ethernet Network
+- FC Network
+- FCOE Network
+- Firmware Driver
+- Golden Image
+- Hypervisor Cluster Profile
+- Hypervisor Manager
+- Interconnects
+- Interconnect Type
+- LIG Uplink Set
+- Logical Enclosure
+- Logical Interconnect
+- Logical Interconnect Group
+- Network Set
+- OS Deployment Plan
+- OS Volume
+- Plan Script
+- Scope
+- Server Certificate
+- Server Hardware
+- Server Hardware Type
+- Storage Pool
+- Server Profile
+- Server Profile Template
+- Storage System
+- Uplink Set
+- Volume
+- Volume Attachment
+- Volume Template
 
 ## v5.16.0
 
@@ -72,7 +112,7 @@ This release extends support to OneView Rest API version 1800 (OneView v5.30) fo
 - Hypervisor Manager
 - Interconnects
 - Interconnect Types
-- LIG UplinkSet
+- LIG Uplink Set
 - Logical Enclosure
 - Logical Interconnect
 - Logical Interconnect Group
