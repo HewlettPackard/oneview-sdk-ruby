@@ -14,9 +14,6 @@ require_relative '../_client'
 # NOTE: You'll need to add the following instance variable to the _client.rb file with valid values for your environment:
 #   @storage_system_ip
 
-# All supported APIs for Volume Template:
-# - 200, 300, 500. 600, 800, 1000, 1200, 1600, 1800 and 2000
-
 raise 'Must set @storage_system_ip in _client.rb' unless @storage_system_ip
 
 # Supported Variants for Storage System, Storage Pool and Volume Attachment
@@ -39,6 +36,7 @@ options = {
 }
 
 puts "\nCreating a Storage Volume Template"
+
 if @client.api_version < 500
   # Retrieve storage pool and storage system
   storage_pool = storage_pool_class.find_by(@client, {}).first
@@ -127,6 +125,6 @@ volume_template_4 = matches.first
 puts "\nFound Volume Template by name: '#{volume_template_4[:name]}'.\n  uri = '#{volume_template_4[:uri]}'"
 
 # Delete Volume Template
-volume_template.retrieve!
-volume_template.delete
-puts "\nDeleted Volume Template '#{volume_template[:name]}' successfully.\n"
+# volume_template.retrieve!
+# volume_template.delete
+# puts "\nDeleted Volume Template '#{volume_template[:name]}' successfully.\n"

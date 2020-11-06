@@ -15,8 +15,6 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will create a custom firmware driver, then delete it.
 # The OneView appliance must have a valid spp and hotfix
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 # Supported API variants
 # C7000, Synergy
 

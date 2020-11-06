@@ -15,12 +15,6 @@ require_relative '../_client' # Gives access to @client and @logical_interconnec
 # NOTE: This will create a uplink set named 'UplinkSet Example', then update it with network, then delete it.
 # NOTE 2: Dependencies: Enclosure, EthernetNetwork, LogicalInterconnectGroup, LogicalInterconnect, Interconnect.
 # NOTE 3: To add an ethernet network, the interconnect must support ethernet network.
-#
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
-# Supported variants:
-# - C7000 and Synergy for all api versions
 
 
 # Resource Class used in this sample
@@ -29,8 +23,9 @@ ethernet_class = OneviewSDK.resource_named('EthernetNetwork', @client.api_versio
 li_class = OneviewSDK.resource_named('LogicalInterconnect', @client.api_version)
 interconnect_class = OneviewSDK.resource_named('Interconnect', @client.api_version)
 
+logical_interconnect_name = 'LE-LIG'
 ethernet = ethernet_class.get_all(@client).first
-logical_interconnect = li_class.find_by(@client, name: @logical_interconnect_name).first
+logical_interconnect = li_class.find_by(@client, name: logical_interconnect_name).first
 interconnect = interconnect_class.find_by(@client, logicalInterconnectUri: logical_interconnect['uri']).first
 port = interconnect['ports'].select { |item| item['portType'] == 'Uplink' && item['portStatus'] == 'Unlinked' }.first
 

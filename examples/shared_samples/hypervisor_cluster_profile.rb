@@ -14,8 +14,6 @@ require_relative '../_client' # Gives access to @client
 # Example: Create/Update/Delete hypervisor cluster profile
 # NOTE: This will create a hypervisor cluster profile named 'cluster5', update it and then delete it.
 #
-# Supported API Versions:
-# - 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions

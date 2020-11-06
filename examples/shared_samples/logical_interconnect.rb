@@ -12,12 +12,6 @@
 require_relative '../_client' # Gives access to @client
 
 # Example: Explores functionalities of Logical Interconnects
-#
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
-# Supported Variants:
-# - C7000, Synergy
 
 # for example, if api_version = 800 & variant = C7000 then, resource that can be created will be in form
 # OneviewSDK::API800::C7000::LogicalInterconnect

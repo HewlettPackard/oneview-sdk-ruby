@@ -5,31 +5,19 @@ on:
     types:
       - created
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
-    steps:      
-      - uses: actions/checkout@v2
-        name: Check out code
-      - name: Set up Ruby 2.6
-        uses: actions/setup-ruby@v1
-        with:
-         ruby-version: 2.6.x
-      - name: Set Credentials
-        run: |
-          mkdir -p $HOME/.gem
-          touch $HOME/.gem/credentials
-          chmod 0600 $HOME/.gem/credentials
-          printf -- "---\n:github: Bearer ${GITHUB_TOKEN}\n:rubygems_api_key: Bearer ${RUBYGEMS_API_KEY}\n" > $HOME/.gem/credentials
+    steps:
+      - uses: actions/checkout@v1
+        name: Checkout code
+      - name: Release Gem
+        if: contains(github.ref, 'refs/tags/v')
+        uses: cadwallion/publish-rubygems-action@master
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
-      - name: Publish to RubyGems
-        run: |
-          gem build *.gemspec
-          gem push --KEY rubygems_api_key *.gem
+          RELEASE_COMMAND: rake release
       - run: |
          echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
       - name: Login to Docker Hub

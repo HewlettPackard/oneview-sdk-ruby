@@ -13,12 +13,6 @@ require_relative '../_client' # Gives access to @client
 
 # Example: Actions with interconnect
 # NOTE: You'll need to add an interconnect with state Configured and a port linked.
-#
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800 and 2000
-
-# Supoported Variants
-# C7000, Synergy
 
 # for example, if api_version = 800 & variant = C7000 then, resource created will be in form
 # OneviewSDK::API800::C7000::Interconnect
@@ -42,21 +36,28 @@ item = interconnect_class.find_by(@client, state: 'Configured').first
 
 # Retrieving the named servers for this interconnect
 puts "\nRetrieving the named servers for interconnect #{item['name']}"
-servers = item.name_servers
-puts 'Server not found.' unless servers.empty?
-puts servers
+if item
+  servers = item.name_servers
+  puts 'Server not found.' unless servers.empty?
+  puts servers
+end
 
 # Get statistics for an interconnect, for the specified port
-port = item[:ports].last
-puts "\nGetting statistics for the interconnect #{item['name']} and port #{port['name']}"
-stats = item.statistics(port['name'])
-puts "\nStatistics for the interconnect #{item['name']} and port #{port['name']}"
-puts stats
+port = item[:ports].last if item
+
+if item && port
+  puts "\nGetting statistics for the interconnect #{item['name']} and port #{port['name']}"
+  stats = item.statistics(port['name'])
+  puts "\nStatistics for the interconnect #{item['name']} and port #{port['name']}"
+  puts stats
+end
 
 # Resert Port Protection
-puts "\nReseting port protection for interconnect #{item['name']}"
-item.reset_port_protection
-puts 'Reset port protection successfully.'
+if item
+  puts "\nReseting port protection for interconnect #{item['name']}"
+  item.reset_port_protection
+  puts 'Reset port protection successfully.'
+end
 
 # Update port
 ports = item['ports'].select { |k| k['portType'] == 'Uplink' }
@@ -79,16 +80,18 @@ port_original_state = ports_3.first
 puts "\nPort #{port_original_state['name']} with status #{port_original_state['enabled']}"
 
 # Patch
-puts "\nUpdating an interconnect across a patch."
-puts "Interconnect #{item['name']} with uidState #{item['uidState']}"
-item.patch('replace', '/uidState', 'Off')
-item.retrieve!
-puts "Interconnect #{item['name']} updated successfully with new uidState #{item['uidState']}"
-# Returning to original state
-puts "\nReturning for original state"
-item.patch('replace', '/uidState', 'On')
-item.retrieve!
-puts "Interconnect #{item['name']} updated successfully with previous uidState #{item['uidState']}"
+if item
+  puts "\nUpdating an interconnect across a patch."
+  puts "Interconnect #{item['name']} with uidState #{item['uidState']}"
+  item.patch('replace', '/uidState', 'Off')
+  item.retrieve!
+  puts "Interconnect #{item['name']} updated successfully with new uidState #{item['uidState']}"
+  # Returning to original state
+  puts "\nReturning for original state"
+  item.patch('replace', '/uidState', 'On')
+  item.retrieve!
+  puts "Interconnect #{item['name']} updated successfully with previous uidState #{item['uidState']}"
+end
 
 # List of synergy interconnect link topologies
 begin

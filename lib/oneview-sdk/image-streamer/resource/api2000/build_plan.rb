@@ -1,7 +1,7 @@
-# (c) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software distributed
@@ -9,13 +9,13 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-require_relative '../../api2200/c7000/hypervisor_cluster_profile'
+require_relative '../api1600/build_plan'
 
 module OneviewSDK
-  module API2200
-    module Synergy
-      # Hypervisor cluster profile resource implementation for API2200 Synergy
-      class HypervisorClusterProfile < OneviewSDK::API2200::C7000::HypervisorClusterProfile
+  module ImageStreamer
+    module API2000
+      # Build Plan resource implementation for Image Streamer
+      class BuildPlan < OneviewSDK::ImageStreamer::API1600::BuildPlan
       end
     end
   end

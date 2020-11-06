@@ -12,12 +12,6 @@
 require_relative '../_client' # Gives access to @client
 
 # NOTE: It is necessary a server hardware and an enclosure previous created
-#
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
-
-# Supported Variants
-# C7000 and Synergy for all API versions
 
 # NOTE: Scopes doesn't support versions smaller than 300.
 
@@ -90,7 +84,7 @@ if @client.api_version >= 600
   puts 'Server hardware resource added to scope3'
 
   puts "\nRemoving resource from scope3"
-  scope_class.remove_resource_scope(@client, enclosure, scopes: [scope3, scope_item])
+  scope_class.remove_resource_scope(@client, enclosure, scopes: [scope2, scope_item])
   scope_class.add_resource_scope(@client, server_hardware, scopes: [scope_item])
   scope_class.resource_patch(@client, server_hardware, add_scopes: [scope3], remove_scopes: [scope_item])
   puts 'Removed resource from scope3'
@@ -129,3 +123,12 @@ puts "\nDeleting scope"
 scope.refresh
 scope.delete
 puts "'Scope' was successfully deleted." unless scope.retrieve!
+
+# creating scope to ensure continuity for automation script
+options = {
+  name: 'Scope',
+  description: 'Sample Scope description'
+}
+scope = scope_class.new(@client, options)
+scope.create
+puts 'Created scope'

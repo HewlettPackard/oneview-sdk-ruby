@@ -14,8 +14,6 @@ require_relative '../_client' # Gives access to @client
 # Example: Create/Update/Delete hypervisor manager
 # NOTE: This will create a hypervisor manager named 'vcenter.corp.com', update it and then delete it.
 #
-# Supported APIs:
-# - 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # - C7000 and Synergy for all API versions
@@ -34,13 +32,16 @@ options = {
 }
 
 hm = hypervisor_manager_class.new(@client, options)
-hm.create!
-puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'"
 
 # Find recently created hypervisor manager by name
 matches = hypervisor_manager_class.find_by(@client, name: hm[:name])
 hm2 = matches.first
-puts "\nFound hypervisor-manager by name: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
+if hm2
+  puts "\nFound hypervisor-manager by name: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
+end
+
+hm.create! unless hm2
+puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'"
 
 # Retrieve recently created hypervisor manager
 hm3 = hypervisor_manager_class.new(@client, name: hm[:name])
@@ -49,8 +50,8 @@ puts "\nRetrieved hypervisor-manager data by name: '#{hm3[:name]}'.\n  uri = '#{
 
 # Update hypervisor manager registration
 attribute = { name: @hypervisor_manager_ip }
-hm2.update(attribute)
-puts "\nUpdated hypervisor-manager: '#{hm2[:name]}'.\n  uri = '#{hm2[:uri]}'"
+hm3.update(attribute)
+puts "\nUpdated hypervisor-manager: '#{hm3[:name]}'.\n  uri = '#{hm3[:uri]}'"
 puts "with attribute: #{attribute}"
 
 # Example: List all hypervisor managers certain attributes
@@ -61,5 +62,11 @@ hypervisor_manager_class.find_by(@client, attributes).each do |hypervisor_manage
 end
 
 # Delete this hypervisor manager
-hm.delete
+hm3.delete
 puts "\nSucessfully deleted hypervisor-manager '#{hm[:name]}'."
+
+# Created HypervisorManager to ensure continuity for automation script
+hm4 = hypervisor_manager_class.find_by(@client, name: hm[:name]).first
+hm5 = hypervisor_manager_class.new(@client, options) unless hm4
+hm5.create! unless hm4
+puts "\nCreated hypervisor-manager '#{hm[:name]}' sucessfully.\n  uri = '#{hm[:uri]}'" unless hm4

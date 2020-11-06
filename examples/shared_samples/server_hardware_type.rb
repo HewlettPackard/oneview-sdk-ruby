@@ -13,8 +13,6 @@ require_relative '../_client' # Gives access to @client
 
 # Example: Actions with a Server Hardware Type
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 # Supported API variants:
 # C7000, Synergy
 

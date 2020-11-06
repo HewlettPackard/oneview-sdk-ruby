@@ -15,8 +15,6 @@ require_relative '../_client' # Gives access to @client
 # NOTE: This will add an enclosure named 'OneViewSDK-Test-Enclosure', then delete it.
 #   It will create a bulk of ethernet networks and then delete them.
 #
-# Supported APIs:
-# - 200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000
 
 # Supported Variants:
 # C7000 and Synergy for all API versions
@@ -30,44 +28,32 @@ encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_versi
 encl_group = encl_group_class.get_all(@client).first
 
 type = 'enclosure'
-encl_name = 'OneViewSDK-Test-Enclosure'
+encl_name = '0000A66101'
 
-variant = OneviewSDK.const_get("API#{@client.api_version}").variant unless @client.api_version < 300
+variant = 'Synergy'
 
 scope_class = OneviewSDK.resource_named('Scope', @client.api_version)
-scope_1 = scope_class.new(@client, name: 'Scope 1')
+scope_1 = scope_class.new(@client, name: 'Scope_for_enclosure')
 scope_1.create
 
-options = if variant == 'Synergy'
-            {
-              name: encl_name,
-              hostname: @synergy_enclosure_hostname,
-              initialScopeUris: [scope_1['uri']]
-            }
-          else
-            {
-              name: encl_name,
-              hostname: @enclosure_hostname,
-              username: @enclosure_username,
-              password: @enclosure_password,
-              enclosureGroupUri: encl_group['uri'],
-              licensingIntent: 'OneView',
-              initialScopeUris: [scope_1['uri']]
-            }
-          end
+options = {
+  name: encl_name,
+  hostname: @enclosure_hostname,
+  username: @enclosure_username,
+  password: @enclosure_password,
+  enclosureGroupUri: encl_group['uri'],
+  licensingIntent: 'OneView',
+  initialScopeUris: [scope_1['uri']]
+}
 
 item = enclosure_class.new(@client, options)
 
 puts "\nAdding an #{type} with name = '#{item[:name]}'"
-if variant == 'Synergy'
+if variant == 'C7000'
   enclosures_added = item.add
   enclosures_added.each do |encl|
     puts "\nAdded #{type} '#{encl[:name]}' sucessfully.\n  uri = '#{encl[:uri]}'"
   end
-  encl_name = 'OneViewSDK-Test-Enclosure1'
-else
-  item.add
-  puts "\nAdded #{type} '#{item[:name]}' successfully.\n  uri = '#{item[:uri]}'"
 end
 
 item2 = enclosure_class.new(@client, name: encl_name)
@@ -216,3 +202,5 @@ begin
 rescue OneviewSDK::TaskError
   puts "\nRemoving Synergy enclosures on OneView requires the enclosures to be physically disconnected first."
 end
+
+scope_1.delete

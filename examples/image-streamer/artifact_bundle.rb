@@ -13,16 +13,13 @@ require 'tempfile'
 require_relative '../_client_i3s' # Gives access to @client
 
 # Supported APIs:
-# - 300, 500, 600, 800, 1000, 1020, 1600
+# - 1000, 1020, 1600, 2000
 
 # Resources that can be created according to parameters:
-# api_version = 300 & variant = Synergy to OneviewSDK::ImageStreamer::API300::ArtifactBundle
-# api_version = 500 & variant = Synergy to OneviewSDK::ImageStreamer::API500::ArtifactBundle
-# api_version = 600 & variant = Synergy to OneviewSDK::ImageStreamer::API600::ArtifactBundle
-# api_version = 800 & variant = Synergy to OneviewSDK::ImageStreamer::API800::ArtifactBundle
 # api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::ArtifactBundle
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::ArtifactBundle
 # api_version = 1600 & variant = Synergy to OneviewSDK::ImageStreamer::API1600::ArtifactBundle
+# api_version = 2000 & variant = Synergy to OneviewSDK::ImageStreamer::API2000::ArtifactBundle
 
 # Example:
 # - Create, update, download, upload, extract and delete an artifact bundle for an Image Streamer
