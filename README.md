@@ -478,7 +478,7 @@ For the full testing reference please look into [TESTING.md](TESTING.md) file.
 
 ## Getting Help 
 
-Are you running into a road block? Have an issue with unexpected bahriov? Feel free to open a new issue on the [issue tracker](https://github.com/HewlettPackard/oneview-ansible/issues)
+Are you running into a road block? Have an issue with unexpected behavior? Feel free to open a new issue on the [issue tracker](https://github.com/HewlettPackard/oneview-ansible/issues)
 
 ## License
 This project is licensed under the Apache 2.0 license. Please see [LICENSE](LICENSE) for more info.
