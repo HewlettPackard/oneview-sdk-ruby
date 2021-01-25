@@ -130,6 +130,13 @@ item.update_igmp_settings
 item.retrieve!
 puts "Updated igmpIdleTimeoutInterval: #{item['igmpSettings']['igmpIdleTimeoutInterval']}"
 
+# Update port flap setting for LI
+puts "\nUpdates port flap setting for LI "
+item['portFlapProtection']['portFlapThresholdPerInterval'] = 5
+item.update_port_flap_settings
+item.retrieve!
+puts "Updated portFlapThresholdPerInterval: #{item['portFlapProtection']['portFlapThresholdPerInterval']}"
+
 # Gets the consolidated inconsistency report for bulk update
 if @client.api_version >= 2000 && variant == 'Synergy'
   puts "\nGets the consolidated inconsistency report for bulk update"
@@ -279,7 +286,7 @@ begin
   item.refresh
   puts 'Scopes:', item['scopeUris']
 
-  puts "\nReplacing scopes inside the logical interconnec"
+  puts "\nReplacing scopes inside the logical interconnect"
   item.replace_scopes(scope_2)
   item.refresh
   puts 'Scopes:', item['scopeUris']

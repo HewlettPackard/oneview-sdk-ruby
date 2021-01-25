@@ -18,10 +18,10 @@ module OneviewSDK
       class LogicalInterconnect < OneviewSDK::API2200::C7000::LogicalInterconnect
         # Updates the port flap interconnect settings for the logical interconnect
         def update_port_flap_settings
-          raise IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['portFlapSettings']
+          raise IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['portFlapProtection']
           update_options = {
-            'If-Match' =>  @data['portFlapSettings'].delete('eTag'),
-            'body' => @data['portFlapSettings']
+            'If-Match' =>  @data['portFlapProtection'].delete('eTag'),
+            'body' => @data['portFlapProtection']
           }
           response = @client.rest_put("#{@data['uri']}/portFlapSettings", update_options, @api_version)
           body = @client.response_handler(response)
