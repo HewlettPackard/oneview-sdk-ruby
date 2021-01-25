@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -19,5 +19,20 @@ RSpec.describe OneviewSDK::API2400::C7000::LogicalInterconnect do
 
   it 'inherits from OneviewSDK::API2200::C7000::LogicalInterconnect' do
     expect(described_class).to be < OneviewSDK::API2200::C7000::LogicalInterconnect
+  end
+
+  describe '#update_port_flap_settings' do
+    it 'requires the uri to be set' do
+      expect { OneviewSDK::API2400::C7000::LogicalInterconnect.new(@client_2400).update_port_flap_settings }
+        .to raise_error(OneviewSDK::IncompleteResource, /Please retrieve the Logical Interconnect before trying to update/)
+    end
+
+    it 'does a PUT to uri/portFlapSettings & updates @data' do
+      item = log_int
+      expect(@client_2400).to receive(:rest_put).with(item['uri'] + '/portFlapSettings', Hash, item.api_version)
+                                                .and_return(FakeResponse.new(key: 'val'))
+      item.update_port_flap_settings
+      expect(item['key']).to eq('val')
+    end
   end
 end

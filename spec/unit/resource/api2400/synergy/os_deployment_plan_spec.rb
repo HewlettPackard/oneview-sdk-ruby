@@ -11,10 +11,10 @@
 
 require 'spec_helper'
 
-RSpec.describe OneviewSDK::API2400::C7000::EnclosureGroup do
+RSpec.describe OneviewSDK::API2400::Synergy::OSDeploymentPlan do
   include_context 'shared context'
 
-  it 'inherits from OneviewSDK::API2200::C7000::EnclosureGroup' do
-    expect(described_class).to be < OneviewSDK::API2200::C7000::EnclosureGroup
+  it 'inherits from OneviewSDK::API2200::Synergy::OSDeploymentPlan' do
+    expect(described_class).to be < OneviewSDK::API2200::Synergy::OSDeploymentPlan
   end
 end

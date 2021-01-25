@@ -6,15 +6,17 @@
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the
-# specific language governing permissions and limitations under the License.
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
 
-require 'spec_helper'
+require_relative '../../api2200/synergy/os_deployment_plan'
 
-RSpec.describe OneviewSDK::API2400::C7000::EnclosureGroup do
-  include_context 'shared context'
-
-  it 'inherits from OneviewSDK::API2200::C7000::EnclosureGroup' do
-    expect(described_class).to be < OneviewSDK::API2200::C7000::EnclosureGroup
+module OneviewSDK
+  module API2400
+    module Synergy
+      # OS Deployment Plan resource implementation for API2400 Synergy
+      class OSDeploymentPlan < OneviewSDK::API2200::Synergy::OSDeploymentPlan
+      end
+    end
   end
 end

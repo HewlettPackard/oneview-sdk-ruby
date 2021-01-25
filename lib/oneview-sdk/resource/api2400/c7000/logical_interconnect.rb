@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -16,6 +16,17 @@ module OneviewSDK
     module C7000
       # Logical interconnect resource implementation for API2400 C7000
       class LogicalInterconnect < OneviewSDK::API2200::C7000::LogicalInterconnect
+        # Updates the port flap interconnect settings for the logical interconnect
+        def update_port_flap_settings
+          raise IncompleteResource, 'Please retrieve the Logical Interconnect before trying to update' unless @data['portFlapSettings']
+          update_options = {
+            'If-Match' =>  @data['portFlapSettings'].delete('eTag'),
+            'body' => @data['portFlapSettings']
+          }
+          response = @client.rest_put("#{@data['uri']}/portFlapSettings", update_options, @api_version)
+          body = @client.response_handler(response)
+          set_all(body)
+        end
       end
     end
   end
