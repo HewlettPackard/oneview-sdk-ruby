@@ -30,7 +30,7 @@ fw_driver_class.find_by(@client, {}).each do |firmware|
   puts firmware['name']
 end
 
-spp = fw_driver_class.find_by(@client, state: 'Created', bundleType: 'SPP').first
+spp = fw_driver_class.find_by(@client, state: 'Created', bundleType: 'ServicePack').first
 hotfix = fw_driver_class.find_by(@client, state: 'Created', bundleType: 'Hotfix').first
 
 custom_spp = fw_driver_class.new(@client)

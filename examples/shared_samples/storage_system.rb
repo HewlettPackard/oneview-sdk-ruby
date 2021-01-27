@@ -55,16 +55,14 @@ options = {
 # }
 storage_system = storage_system_class.new(@client, options)
 
-def add_storage_system(storage_system, options)
-  puts "\nAdding a storage system with"
-  puts "Managed Domain: #{storage_system['deviceSpecificAttributes']['managedDomain']}" if options['family'] == 'StoreServ'
-  puts "Family: #{storage_system['family']}"
-  puts "Hostname: #{storage_system['hostname']}."
-  storage_system.add
-  puts "\nStorage system with uri='#{storage_system['uri']}' added successfully.
-  "
-  puts "\nFinding a storage system with hostname: #{storage_system['hostname']}"
-end
+puts "\nAdding a storage system with"
+puts "Managed Domain: #{storage_system['deviceSpecificAttributes']['managedDomain']}" if options['family'] == 'StoreServ'
+puts "Family: #{storage_system['family']}"
+puts "Hostname: #{storage_system['hostname']}."
+storage_system.add
+puts "\nStorage system with uri='#{storage_system['uri']}' added successfully."
+
+puts "\nFinding a storage system with hostname: #{storage_system['hostname']}"
 storage_system_class.find_by(@client, hostname: storage_system['hostname']).each do |storage|
   puts "\nStorage system with uri='#{storage['uri']}' found."
 end
@@ -110,4 +108,9 @@ end
 storage_system = storage_system_class.new(@client, hostname: storage_system['hostname'])
 storage_system.retrieve!
 storage_system ||= storage_system_class.new(@client, options)
-add_storage_system(storage_system, options) unless storage_system
+puts "\nAdding a storage system with"
+puts "Managed Domain: #{storage_system['deviceSpecificAttributes']['managedDomain']}" if options['family'] == 'StoreServ'
+puts "Family: #{storage_system['family']}"
+puts "Hostname: #{storage_system['hostname']}."
+storage_system.add
+puts "\nStorage system with uri='#{storage_system['uri']}' added successfully."

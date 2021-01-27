@@ -95,7 +95,7 @@ end
 
 # Delete this network
 fcoe3.delete
-puts "\nSuccessfully deleted fc-network '#{fcoe3[:name]}'."
+puts "\nSuccessfully deleted fcoe-network '#{fcoe3[:name]}'."
 
 # Bulk-delete FC network
 delete_networks = [fcoe4[:uri], fcoe5[:uri]]

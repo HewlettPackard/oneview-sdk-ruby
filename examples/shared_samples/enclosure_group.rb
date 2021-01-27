@@ -40,7 +40,7 @@ interconnect_bay_mapping = [
 options = {
   name: encl_group_name,
   ipAddressingMode: 'External',
-  enclosureCount: 3,
+  enclosureCount: 1,
   interconnectBayMappings: interconnect_bay_mapping
 }
 
@@ -59,14 +59,9 @@ if @client.api_version >= 600
   puts "Found enclosure group '#{items}'."
 end
 
-def add_enclosure_group(item, type, lig)
-  puts "\nCreating an #{type} with name = '#{item[:name]}' and logical interconnect group uri = '#{lig[:uri]}''"
-  item.create!
-  puts "\nCreated #{type} '#{item[:name]}' successfully.\n  uri = '#{item[:uri]}'"
-end
-
-item = encl_group_class.new(@client, name: encl_group_name)
-add_enclosure_group(item, type, lig) unless item
+puts "\nCreating an #{type} with name = '#{item[:name]}' and logical interconnect group uri = '#{lig[:uri]}''"
+item.create!
+puts "\nCreated #{type} '#{item[:name]}' successfully.\n  uri = '#{item[:uri]}'"
 
 item2 = encl_group_class.new(@client, name: encl_group_name)
 item2.retrieve!
@@ -100,6 +95,8 @@ rescue
 end
 
 # creating enclosureGroup to ensure continuity for automation script
-item = encl_group_class.new(@client, name: encl_group_name)
+item = encl_group_class.new(@client, options)
 item.add_logical_interconnect_group(lig) unless item
-add_enclosure_group(item, type, lig) unless item
+puts "\nCreating an #{type} with name = '#{item[:name]}' and logical interconnect group uri = '#{lig[:uri]}''"
+item.create!
+puts "\nCreated #{type} '#{item[:name]}' successfully.\n  uri = '#{item[:uri]}'"

@@ -11,8 +11,8 @@
 
 require_relative '../_client' # Gives access to @client
 
-# Supported APIs:
-# - 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000 only for Synergy
+# Supported Variants
+# Synergy for all api versions
 
 # Resource Class used in this sample
 os_deployment_plan_class = OneviewSDK.resource_named('OSDeploymentPlan', @client.api_version, 'Synergy')

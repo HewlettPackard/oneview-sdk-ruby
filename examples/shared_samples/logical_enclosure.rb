@@ -20,11 +20,11 @@ require_relative '../_client' # Gives access to @client
 # - C7000 and Synergy for all API versions
 
 # Resource Class used in this sample
-logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.api_version)
+logical_enclosure_class = OneviewSDK.resource_named('LogicalEnclosure', @client.api_version, 'Synergy')
 
 # Scope class used in this sample
-encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version)
-enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version)
+encl_group_class = OneviewSDK.resource_named('EnclosureGroup', @client.api_version, 'Synergy')
+enclosure_class = OneviewSDK.resource_named('Enclosure', @client.api_version, 'Synergy')
 
 variant = 'Synergy'
 
