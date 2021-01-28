@@ -36,7 +36,7 @@ RSpec.describe OneviewSDK::Resource do
     end
 
     it 'can\'t use an api version greater than the client\'s max' do
-      expect { OneviewSDK::Resource.new(@client_200, {}, 2400) }.to raise_error(OneviewSDK::UnsupportedVersion, /is greater than the client's max/)
+      expect { OneviewSDK::Resource.new(@client_200, {}, 2600) }.to raise_error(OneviewSDK::UnsupportedVersion, /is greater than the client's max/)
     end
 
     it 'starts with an empty data hash' do

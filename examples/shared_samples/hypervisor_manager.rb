@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ raise 'ERROR: Must set @hypervisor_manager_username in _client.rb' unless @hyper
 raise 'ERROR: Must set @hypervisor_manager_password in _client.rb' unless @hypervisor_manager_password
 
 # Resource Class used in this sample
+server_certificate_class = OneviewSDK.resource_named('ServerCertificate', @client.api_version)
 hypervisor_manager_class = OneviewSDK.resource_named('HypervisorManager', @client.api_version)
 
 options = {
@@ -64,6 +65,21 @@ end
 # Delete this hypervisor manager
 hm3.delete
 puts "\nSucessfully deleted hypervisor-manager '#{hm[:name]}'."
+
+# Gets certificates from remote IP
+puts 'Fetching Certificate:-'
+certificate = server_certificate_class.new(@client)
+certificate.data['remoteIp'] = @hypervisor_manager_ip
+
+# Imports the certificates
+puts 'Importing the certificate:- '
+item = server_certificate_class.new(@client, aliasName: @hypervisor_manager_ip)
+item.data['certificateDetails'] = []
+item.data['certificateDetails'][0] = {
+  'type' => certificate.get_certificate['certificateDetails'][0]['type'],
+  'base64Data' => certificate.get_certificate['certificateDetails'][0]['base64Data']
+}
+puts 'Imported successfully.' if item.import
 
 # Created HypervisorManager to ensure continuity for automation script
 hm4 = hypervisor_manager_class.find_by(@client, name: hm[:name]).first

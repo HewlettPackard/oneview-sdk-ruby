@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -221,3 +221,18 @@ eth01.delete
 eth02.delete
 fc01.delete
 puts "\nCleanup complete!"
+
+# Re-Create the fully configured LIG
+if variant == 'Synergy'
+  lig['redundancyType'] = 'Redundant'
+  lig['interconnectBaySet'] = 3
+  lig['enclosureType'] = 'SY12000'
+
+  # Adds the following interconnects to the bays 3 and 6 with an Interconnect Type, respectively
+  lig.add_interconnect(3, VIRTUAL_CONNECT_SE_40_SYNERGY)
+  lig.add_interconnect(6, VIRTUAL_CONNECT_SE_40_SYNERGY)
+end
+
+puts "\nRe-creating a #{type} with name = #{lig[:name]}."
+lig.create!
+puts "\n#{type} #{lig[:name]} created!"

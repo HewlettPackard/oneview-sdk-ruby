@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -129,6 +129,13 @@ item['igmpSettings']['igmpIdleTimeoutInterval'] = 210
 item.update_igmp_settings
 item.retrieve!
 puts "Updated igmpIdleTimeoutInterval: #{item['igmpSettings']['igmpIdleTimeoutInterval']}"
+
+# Update port flap setting for LI
+puts "\nUpdates port flap setting for LI "
+item['portFlapProtection']['portFlapThresholdPerInterval'] = 5
+item.update_port_flap_settings
+item.retrieve!
+puts "Updated portFlapThresholdPerInterval: #{item['portFlapProtection']['portFlapThresholdPerInterval']}"
 
 # Gets the consolidated inconsistency report for bulk update
 if @client.api_version >= 2000 && variant == 'Synergy'
@@ -279,7 +286,7 @@ begin
   item.refresh
   puts 'Scopes:', item['scopeUris']
 
-  puts "\nReplacing scopes inside the logical interconnec"
+  puts "\nReplacing scopes inside the logical interconnect"
   item.replace_scopes(scope_2)
   item.refresh
   puts 'Scopes:', item['scopeUris']

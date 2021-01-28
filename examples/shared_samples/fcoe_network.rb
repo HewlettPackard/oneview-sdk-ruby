@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ end
 
 # Delete this network
 fcoe3.delete
-puts "\nSuccessfully deleted fc-network '#{fcoe3[:name]}'."
+puts "\nSuccessfully deleted fcoe-network '#{fcoe3[:name]}'."
 
 # Bulk-delete FC network
 delete_networks = [fcoe4[:uri], fcoe5[:uri]]

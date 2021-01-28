@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ fw_driver_class.find_by(@client, {}).each do |firmware|
   puts firmware['name']
 end
 
-spp = fw_driver_class.find_by(@client, state: 'Created', bundleType: 'SPP').first
+spp = fw_driver_class.find_by(@client, state: 'Created', bundleType: 'ServicePack').first
 hotfix = fw_driver_class.find_by(@client, state: 'Created', bundleType: 'Hotfix').first
 
 custom_spp = fw_driver_class.new(@client)

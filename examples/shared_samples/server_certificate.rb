@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -50,3 +50,13 @@ puts item.data if item.retrieve!
 # Deletes the certificate as per the aliasName
 puts 'Removing certificate:-'
 puts 'Successfully Removed.' if item.remove
+
+# Imports the certificate again
+puts 'Importing the certificate again:- '
+item = server_certificate_class.new(@client, aliasName: @hypervisor_manager_ip)
+item.data['certificateDetails'] = []
+item.data['certificateDetails'][0] = {
+  'type' => certificate.get_certificate['certificateDetails'][0]['type'],
+  'base64Data' => certificate.get_certificate['certificateDetails'][0]['base64Data']
+}
+puts 'Imported successfully.' if item.import
