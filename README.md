@@ -72,7 +72,7 @@ client = OneviewSDK::Client.new(
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   domain: 'LOCAL',                    # This is the default
-  api_version: 2200                   # Defaults to appliance's max API version which is API version of OneView 5.50
+  api_version: 2400                   # Defaults to appliance's max API version which is API version of OneView 5.60
 )
 ```
 
@@ -107,7 +107,7 @@ i3s_client = client.new_i3s_client(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 2000                    # Defaults to appliance's max API version
+  api_version: 2000                   # Defaults to appliance's max API version
 )
 ```
 
