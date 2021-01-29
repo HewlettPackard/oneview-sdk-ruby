@@ -1,5 +1,6 @@
 # Testing 'oneview-sdk' gem source code
 The 'oneview-sdk' source code provides a unit, integration/functional, and system testing strategies. It also provides linting tools to ensure its code style.
+
 This document will cover how to execute and implement them.
 
 ## Executing tests
