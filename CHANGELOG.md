@@ -1,4 +1,4 @@
-## v5.18.0 (Unreleased)
+## v5.18.0
 #### Notes
 Extends support of the SDK to OneView REST API version 2400 (OneView v5.60).
 
