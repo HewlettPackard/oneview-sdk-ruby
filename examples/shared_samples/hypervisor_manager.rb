@@ -51,10 +51,10 @@ puts "\nRetrieved hypervisor-manager data by name: '#{hm3[:name]}'.\n  uri = '#{
 
 # Update hypervisor manager registration
 attribute = { name: @hypervisor_manager_ip }
-force, query_param = '', {}
+query_param = {}
 if @client.api_version >= 2600
-   force = true
-   query_param = { force: force }
+  force = true
+  query_param = { force: force }
 end
 hm3.update(attribute, query_param)
 puts "\nUpdated hypervisor-manager: '#{hm3[:name]}'.\n  uri = '#{hm3[:uri]}'"
