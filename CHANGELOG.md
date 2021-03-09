@@ -31,9 +31,9 @@ Extends support of the SDK to OneView REST API version 2600 (OneView v6.00) and 
 - Server Certificate
 - Server Hardware
 - Server Hardware Type
-- Storage Pool
 - Server Profile
 - Server Profile Template
+- Storage Pool
 - Storage System
 - Uplink Set
 - Volume
