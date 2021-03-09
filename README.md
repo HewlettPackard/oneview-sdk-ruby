@@ -2,9 +2,9 @@
 
 ## Build Status 
 
-OV Version | 6.0 | 5.60 | 5.50 | 5.40 |
+OV Version | 6.00 | 5.60 | 5.50 | 5.40 |
 | ------------- |:-------------:| -------------:| -------------:| -------------:|
-SDK Version/Tag | [Master](https://github.com/HewlettPackard/oneview-sdk-ruby/tree/master) | [v5.18.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.18.0) | [v5.17.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.17.0) | [v5.16.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.16.0) |
+SDK Version/Tag | [v6.0.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v6.0.0) | [v5.18.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.18.0) | [v5.17.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.17.0) | [v5.16.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.16.0) |
 Build Status | ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)|
 
 
@@ -18,7 +18,7 @@ You can find the latest supported HPE OneView Ruby SDK [here](https://github.com
 
 ## What's New
 
-HPE OneView Ruby library extends support of the SDK to OneView REST API version 2600 (OneView v6.0)
+HPE OneView Ruby library extends support of the SDK to OneView REST API version 2600 (OneView v6.00)
 
 Please refer to [notes](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/CHANGELOG.md) for more information on the changes , features supported and issues fixed in this version
 
@@ -72,7 +72,7 @@ client = OneviewSDK::Client.new(
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   domain: 'LOCAL',                    # This is the default
-  api_version: 2600                   # Defaults to appliance's max API version which is API version of OneView 5.60
+  api_version: 2600                   # Defaults to appliance's max API version which is API version of OneView 6.00
 )
 ```
 
