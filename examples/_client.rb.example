@@ -6,7 +6,7 @@ require 'pry'
   user: 'Administrator',  # or set ENV['ONEVIEWSDK_USER']
   password: 'secret123',  # or set ENV['ONEVIEWSDK_PASSWORD']
   ssl_enabled: false,
-  api_version: 2400
+  api_version: 2600
 )
 
 ## This setting allows the SDK to flush messages to the screen as it is being run.
@@ -16,7 +16,7 @@ require 'pry'
 
 # This setting allows for use of the shortened name of the resources, like OneviewSDK::<Resource_name>,
   # when referring to OneviewSDK::<API_version>::Synergy::<Resource_name>
-# Versions supported: [200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000, 2200, 2400]
+# Versions supported: [200, 300, 500, 600, 800, 1000, 1200, 1600, 1800, 2000, 2200, 2400, 2600]
 # Variants supported[C7000, Synergy]
 # OneviewSDK::API<version>.variant='Synergy'
 
