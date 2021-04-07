@@ -1,3 +1,39 @@
+## 6.1.0 (Unreleased)
+#### Notes
+Extends support of the SDK to OneView REST API version 2800 (OneView v6.10)
+
+#### Features supported
+- Connection Template
+- Deployment Group
+- Deployment Plan
+- Enclosure
+- Enclosure Group
+- Ethernet Network
+- FC Network
+- FCOE Network
+- Firmware Driver
+- Hypervisor Cluster Profile
+- Hypervisor Manager
+- Interconnects
+- Interconnect Type
+- LIG Uplink Set
+- Logical Enclosure
+- Logical Interconnect
+- Logical Interconnect Group
+- Network Set
+- Scope
+- Server Certificate
+- Server Hardware
+- Server Hardware Type
+- Server Profile
+- Server Profile Template
+- Storage Pool
+- Storage System
+- Uplink Set
+- Volume
+- Volume Attachment
+- Volume Template
+
 ## 6.0.0
 #### Notes
 Extends support of the SDK to OneView REST API version 2600 (OneView v6.00) and ImageStreamer REST API version 2010 (I3S v6.00).
