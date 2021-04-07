@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ require_relative '../_client_i3s' # Gives access to @client
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::DeploymentPlan
 # api_version = 1600 & variant = Synergy to OneviewSDK::ImageStreamer::API1600::DeploymentPlan
 # api_version = 2000 & variant = Synergy to OneviewSDK::ImageStreamer::API2000::DeploymentPlan
+# api_version = 2010 & variant = Synergy to OneviewSDK::ImageStreamer::API2010::DeploymentPlan
+# api_version = 2020 & variant = Synergy to OneviewSDK::ImageStreamer::API2020::DeploymentPlan
 
 # Example: Create a deployment plan for an Image Streamer
 # NOTE: This will create a deployment plan named 'Deployment_Plan_1', then delete it.
