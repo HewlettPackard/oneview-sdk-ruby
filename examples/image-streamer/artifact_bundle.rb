@@ -1,4 +1,4 @@
-# (C) Copyright 2020 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -13,13 +13,15 @@ require 'tempfile'
 require_relative '../_client_i3s' # Gives access to @client
 
 # Supported APIs:
-# - 1000, 1020, 1600, 2000
+# - 1000, 1020, 1600, 2000, 2010, 2020
 
 # Resources that can be created according to parameters:
 # api_version = 1000 & variant = Synergy to OneviewSDK::ImageStreamer::API1000::ArtifactBundle
 # api_version = 1020 & variant = Synergy to OneviewSDK::ImageStreamer::API1020::ArtifactBundle
 # api_version = 1600 & variant = Synergy to OneviewSDK::ImageStreamer::API1600::ArtifactBundle
 # api_version = 2000 & variant = Synergy to OneviewSDK::ImageStreamer::API2000::ArtifactBundle
+# api_version = 2010 & variant = Synergy to OneviewSDK::ImageStreamer::API2010::ArtifactBundle
+# api_version = 2020 & variant = Synergy to OneviewSDK::ImageStreamer::API2020::ArtifactBundle
 
 # Example:
 # - Create, update, download, upload, extract and delete an artifact bundle for an Image Streamer

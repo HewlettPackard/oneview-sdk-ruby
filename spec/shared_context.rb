@@ -147,6 +147,15 @@ RSpec.shared_context 'integration api2600 context', a: :b do
   end
 end
 
+# Context for API2800 integration testing:
+RSpec.shared_context 'integration api2800 context', a: :b do
+  before :all do
+    integration_context
+    $client_2800 ||= OneviewSDK::Client.new($config.merge(api_version: 2800))
+    $client_2800_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: 2800))
+  end
+end
+
 # Context for Image Streamer API300 integration testing:
 RSpec.shared_context 'integration i3s api300 context', a: :b do
   before :all do
@@ -265,6 +274,13 @@ RSpec.shared_context 'system api2600 context', a: :b do
   before(:each) do
     load_system_properties
     generate_clients(2600)
+  end
+end
+
+RSpec.shared_context 'system api2800 context', a: :b do
+  before(:each) do
+    load_system_properties
+    generate_clients(2800)
   end
 end
 
@@ -405,6 +421,9 @@ def generate_clients(api_version)
   when 2600
     $client_2600 ||= OneviewSDK::Client.new($config.merge(api_version: api_version))
     $client_2600_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: api_version))
+  when 2800
+    $client_2800 ||= OneviewSDK::Client.new($config.merge(api_version: api_version))
+    $client_2800_synergy ||= OneviewSDK::Client.new($config_synergy.merge(api_version: api_version))
   end
 
   allow_any_instance_of(OneviewSDK::Client).to receive(:appliance_api_version).and_call_original
