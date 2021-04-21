@@ -2,10 +2,10 @@
 
 ## Build Status 
 
-OV Version | 6.00 | 5.60 | 5.50 | 5.40 |
-| ------------- |:-------------:| -------------:| -------------:| -------------:|
-SDK Version/Tag | [v6.0.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v6.0.0) | [v5.18.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.18.0) | [v5.17.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.17.0) | [v5.16.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.16.0) |
-Build Status | ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)|
+OV Version | 6.10 | 6.00 | 5.60 | 5.50 | 5.40 |
+| ------------- |:-------------:| :-------------:| :-------------:| :-------------:| :-------------:|
+SDK Version/Tag | [v6.1.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v6.1.0) | [v6.0.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v6.0.0) | [v5.18.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.18.0) | [v5.17.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.17.0) | [v5.16.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.16.0) |
+Build Status | [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/769868941)| [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/634796649)| [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/519793086)| [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/349360042)|[![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/343154951)|
 
 
 ## Introduction
@@ -18,7 +18,7 @@ You can find the latest supported HPE OneView Ruby SDK [here](https://github.com
 
 ## What's New
 
-HPE OneView Ruby library extends support of the SDK to OneView REST API version 2600 (OneView v6.00)
+HPE OneView Ruby library extends support of the SDK to OneView REST API version 2800 (OneView v6.10)
 
 Please refer to [notes](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/master/CHANGELOG.md) for more information on the changes , features supported and issues fixed in this version
 
@@ -34,17 +34,17 @@ The light weight containerized version of the HPE OneView SDK for Ruby is availa
 
 ```bash
 # Download and store a local copy of oneview-sdk-ruby and use it as a Docker Image.
-$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v6.0.0-OV6.0
+$ docker pull hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v6.1.0-OV6.1
 # Run docker commands below given, which  will in turn create a sh session 
 # where you can create files, issue commands and execute the examples.
-$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v6.0.0-OV6.0 /bin/sh
+$ docker run -it hewlettpackardenterprise/hpe-oneview-sdk-for-ruby:v6.1.0-OV6.1 /bin/sh
 ```
 
 ### Local Setup
 - Local installation requires the gem in your Gemfile:
 
   ```ruby
-  gem 'oneview-sdk', '~> 6.0.0'
+  gem 'oneview-sdk', '~> 6.1.0'
   ```
 
   Then run `$ bundle install`
@@ -72,7 +72,7 @@ client = OneviewSDK::Client.new(
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
   domain: 'LOCAL',                    # This is the default
-  api_version: 2600                   # Defaults to appliance's max API version which is API version of OneView 6.00
+  api_version: 2800                   # Defaults to appliance's max API version which is API version of OneView 6.10
 )
 ```
 
@@ -93,7 +93,7 @@ i3s_client = OneviewSDK::ImageStreamer::Client.new(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 2010                   # Defaults to appliance's max API version
+  api_version: 2020                   # Defaults to appliance's max API version
 )
 ```
 
@@ -107,7 +107,7 @@ i3s_client = client.new_i3s_client(
   ssl_enabled: true,                  # This is the default and strongly encouraged
   logger: Logger.new(STDOUT),         # This is the default
   log_level: :info,                   # This is the default
-  api_version: 2010                   # Defaults to appliance's max API version
+  api_version: 2020                   # Defaults to appliance's max API version
 )
 ```
 
@@ -165,7 +165,7 @@ Configuration files can also be used to define client configuration (json or yam
   "url": "https://oneview.example.com",
   "user": "Administrator",
   "password": "secret123",
-  "api_version": 2600
+  "api_version": 2800
 }
 ```
 
@@ -203,20 +203,20 @@ You may notice resource classes being accessed in a few different ways; for exam
 require 'oneview-sdk'
 
 # Show defaults:
-OneviewSDK::SUPPORTED_API_VERSIONS      # [1000, 1200, 1600, 1800, 2000, 2200, 2600]
-OneviewSDK::DEFAULT_API_VERSION         # 2600
-OneviewSDK.api_version                  # 2600
+OneviewSDK::SUPPORTED_API_VERSIONS      # [1000, 1200, 1600, 1800, 2000, 2200, 2600, 2800]
+OneviewSDK::DEFAULT_API_VERSION         # 2800
+OneviewSDK.api_version                  # 2800
 OneviewSDK.api_version_updated?         # false
 
 # Notice the automatic redirection/resolution when we use the shorthand accessor:
-OneviewSDK::EthernetNetwork             # OneviewSDK::API2600::EthernetNetwork
+OneviewSDK::EthernetNetwork             # OneviewSDK::API2800::EthernetNetwork
 
 # Even this comparison is true:
-OneviewSDK::EthernetNetwork == OneviewSDK::API2600::EthernetNetwork  # true
+OneviewSDK::EthernetNetwork == OneviewSDK::API2800::EthernetNetwork  # true
 
 # Now let's set a new API version default:
-OneviewSDK.api_version = 2600
-OneviewSDK.api_version                  # 2600
+OneviewSDK.api_version = 2800
+OneviewSDK.api_version                  # 2800
 OneviewSDK.api_version_updated?         # true
 
 # The API300 and above has 2 variants (C7000 & Synergy): For eg
@@ -236,19 +236,19 @@ OneviewSDK::API2200::DEFAULT_VARIANT     # 'C7000'
 OneviewSDK::API2200.variant              # 'C7000'
 OneviewSDK::API2200.variant_updated?     # false
 
-OneviewSDK::API2600::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
-OneviewSDK::API2600::DEFAULT_VARIANT     # 'C7000'
-OneviewSDK::API2600.variant              # 'C7000'
-OneviewSDK::API2600.variant_updated?     # false
+OneviewSDK::API2800::SUPPORTED_VARIANTS  # ['C7000', 'Synergy']
+OneviewSDK::API2800::DEFAULT_VARIANT     # 'C7000'
+OneviewSDK::API2800.variant              # 'C7000'
+OneviewSDK::API2800.variant_updated?     # false
 
-# Likewise, we can set a new default variant for the API2600 module:
-OneviewSDK::2600.variant = 'Synergy'
-OneviewSDK::API2600.variant              # 'Synergy'
-OneviewSDK::API2600.variant_updated?     # true
+# Likewise, we can set a new default variant for the API2800 module:
+OneviewSDK::2800.variant = 'Synergy'
+OneviewSDK::API2800.variant              # 'Synergy'
+OneviewSDK::API2800.variant_updated?     # true
 
 ```
 
-:lock: Tip: We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API2600.variant = <variant>`, as the defaults may change.
+:lock: Tip: We understand that this can be confusing, so to avoid any confusion or unexpected behavior, we recommend specifying the full namespace identifier in your code. At the very least, set defaults explicitly using `OneviewSDK.api_version = <ver>` and `OneviewSDK::API2800.variant = <variant>`, as the defaults may change.
 
 ## Resources
 Each OneView and Image Streamer resource is exposed via a Ruby class, enabling CRUD-like functionality (with some exceptions).
