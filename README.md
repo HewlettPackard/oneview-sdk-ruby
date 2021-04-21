@@ -3,9 +3,9 @@
 ## Build Status 
 
 OV Version | 6.10 | 6.00 | 5.60 | 5.50 | 5.40 |
-| ------------- |:-------------:| -------------:| -------------:| -------------:| -------------:|
+| ------------- |:-------------:| :-------------:| :-------------:| :-------------:| :-------------:|
 SDK Version/Tag | [v6.1.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v6.1.0) | [v6.0.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v6.0.0) | [v5.18.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.18.0) | [v5.17.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.17.0) | [v5.16.0](https://github.com/HewlettPackard/oneview-sdk-ruby/releases/tag/v5.16.0) |
-Build Status | ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)| ![Build status](https://ci.appveyor.com/api/projects/status/u84505l6syp70013?svg=true)|
+Build Status | [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/769868941)| [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/634796649)| [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/519793086)| [![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/349360042)|[![Build status](https://action-badges.now.sh/JasonEtco/action-badges)](https://github.com/HewlettPackard/oneview-sdk-ruby/actions/runs/343154951)|
 
 
 ## Introduction
