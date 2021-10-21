@@ -26,6 +26,8 @@ Please refer to [notes](https://github.com/HewlettPackard/oneview-sdk-ruby/blob/
 
 ## Installation and Configuration
 
+Check out [this video](https://www.youtube.com/watch?v=n_E9Besi4jc) to help get started using this library and see what it is capable of.
+
 ## Installation
 HPE OneView SDK for Ruby can be installed from Source and Docker container installation methods.You can either use a docker container which will have the HPE OneView SDK for Ruby installed or perform local installation.
 
